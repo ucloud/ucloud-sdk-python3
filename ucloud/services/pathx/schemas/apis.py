@@ -7,67 +7,6 @@ from ucloud.services.pathx.schemas import models
 
 
 """
-API: CreateGlobalSSHInstance
-
-创建GlobalSSH实例
-"""
-
-
-class CreateGlobalSSHInstanceRequestSchema(schema.RequestSchema):
-    """ CreateGlobalSSHInstance - 创建GlobalSSH实例
-    """
-
-    fields = {
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
-        "Port": fields.Int(required=True, dump_to="Port"),
-        "AreaCode": fields.Str(required=True, dump_to="AreaCode"),
-        "Quantity": fields.Int(required=False, dump_to="Quantity"),
-        "CouponId": fields.Str(required=False, dump_to="CouponId"),
-        "Area": fields.Str(required=True, dump_to="Area"),
-        "TargetIP": fields.Str(required=True, dump_to="TargetIP"),
-        "Remark": fields.Str(required=False, dump_to="Remark"),
-        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
-    }
-
-
-class CreateGlobalSSHInstanceResponseSchema(schema.ResponseSchema):
-    """ CreateGlobalSSHInstance - 创建GlobalSSH实例
-    """
-
-    fields = {
-        "InstanceId": fields.Str(required=True, load_from="InstanceId"),
-        "AcceleratingDomain": fields.Str(
-            required=False, load_from="AcceleratingDomain"
-        ),
-        "Message": fields.Str(required=False, load_from="Message"),
-    }
-
-
-"""
-API: DeleteGlobalSSHInstance
-
-删除GlobalSSH实例
-"""
-
-
-class DeleteGlobalSSHInstanceRequestSchema(schema.RequestSchema):
-    """ DeleteGlobalSSHInstance - 删除GlobalSSH实例
-    """
-
-    fields = {
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
-        "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
-    }
-
-
-class DeleteGlobalSSHInstanceResponseSchema(schema.ResponseSchema):
-    """ DeleteGlobalSSHInstance - 删除GlobalSSH实例
-    """
-
-    fields = {"Message": fields.Str(required=False, load_from="Message")}
-
-
-"""
 API: DescribeGlobalSSHArea
 
 获取GlobalSSH覆盖的地区列表 用于控制显示哪些机房地域可以使用SSH特性
@@ -136,9 +75,9 @@ class ModifyGlobalSSHPortRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
         "Port": fields.Int(required=True, dump_to="Port"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
     }
 
 
@@ -161,14 +100,75 @@ class ModifyGlobalSSHRemarkRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
         "Remark": fields.Str(required=False, dump_to="Remark"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
     }
 
 
 class ModifyGlobalSSHRemarkResponseSchema(schema.ResponseSchema):
     """ ModifyGlobalSSHRemark - 修改GlobalSSH备注
+    """
+
+    fields = {"Message": fields.Str(required=False, load_from="Message")}
+
+
+"""
+API: CreateGlobalSSHInstance
+
+创建GlobalSSH实例
+"""
+
+
+class CreateGlobalSSHInstanceRequestSchema(schema.RequestSchema):
+    """ CreateGlobalSSHInstance - 创建GlobalSSH实例
+    """
+
+    fields = {
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "Area": fields.Str(required=True, dump_to="Area"),
+        "TargetIP": fields.Str(required=True, dump_to="TargetIP"),
+        "Port": fields.Int(required=True, dump_to="Port"),
+        "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "AreaCode": fields.Str(required=True, dump_to="AreaCode"),
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+    }
+
+
+class CreateGlobalSSHInstanceResponseSchema(schema.ResponseSchema):
+    """ CreateGlobalSSHInstance - 创建GlobalSSH实例
+    """
+
+    fields = {
+        "InstanceId": fields.Str(required=True, load_from="InstanceId"),
+        "AcceleratingDomain": fields.Str(
+            required=False, load_from="AcceleratingDomain"
+        ),
+        "Message": fields.Str(required=False, load_from="Message"),
+    }
+
+
+"""
+API: DeleteGlobalSSHInstance
+
+删除GlobalSSH实例
+"""
+
+
+class DeleteGlobalSSHInstanceRequestSchema(schema.RequestSchema):
+    """ DeleteGlobalSSHInstance - 删除GlobalSSH实例
+    """
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
+    }
+
+
+class DeleteGlobalSSHInstanceResponseSchema(schema.ResponseSchema):
+    """ DeleteGlobalSSHInstance - 删除GlobalSSH实例
     """
 
     fields = {"Message": fields.Str(required=False, load_from="Message")}

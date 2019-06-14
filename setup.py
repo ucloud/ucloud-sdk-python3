@@ -30,9 +30,10 @@ logger = logging.getLogger(__name__)
 PY3 = sys.version_info[0] == 3 and sys.version_info[1] >= 5
 
 if not PY3:
-    raise NotImplementedError(
-        "ucloud-sdk-python3 should be used in 3.5 and above of python interpreter"
-    )
+    raise NotImplementedError((
+        "ucloud-sdk-python3 should be used in 3.5 "
+        "and above of python interpreter"
+    ))
 
 
 def load_version():
@@ -43,7 +44,7 @@ def load_version():
 
 def load_long_description():
     try:
-        with io.open("README.md", encoding="utf-8") as f:
+        with io.open("README.rst", encoding="utf-8") as f:
             return f.read()
     except FileNotFoundError:
         return ""
@@ -57,6 +58,23 @@ def load_requirements(requirements_file):
         return []
 
 
+dependencies = load_requirements("requirements.txt")
+
+dependencies_test = dependencies + [
+    'mypy',
+    'flake8>=3.6.0',
+    'tox',
+    'pytest',
+    'pytest-cov',
+]
+
+dependencies_doc = dependencies + ['sphinx']
+
+dependencies_dev = list(set(
+    dependencies_doc + dependencies_test + ['black']
+))
+
+
 def do_setup():
     setup(
         name="ucloud-sdk-python3",
@@ -68,8 +86,12 @@ def do_setup():
         package_data={"": []},
         include_package_data=True,
         zip_safe=False,
-        install_requires=load_requirements("requirements.txt"),
-        extras_require={"dev": load_requirements("requirements_dev.txt")},
+        install_requires=dependencies,
+        extras_require={
+            "test": dependencies_test,
+            "doc": dependencies_doc,
+            "dev": dependencies_dev,
+        },
         classifiers=[
             "Development Status :: 3 - Alpha",
             "Environment :: Console",

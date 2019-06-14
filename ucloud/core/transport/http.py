@@ -1,16 +1,19 @@
+import logging
 import json as json_mod
+
+logger = logging.getLogger(__name__)
 
 
 class Request:
-    url: str
-    method: str
-    params: dict = None
-    data: dict = None
-    json: dict = None
-    headers: dict = None
-
     def __init__(
-        self, url: str, method: str, params: dict, data: dict, json: dict, headers: dict
+        self,
+        url: str,
+        method: str = "GET",
+        params: dict = None,
+        data: dict = None,
+        json: dict = None,
+        headers: dict = None,
+        **kwargs
     ):
         self.url = url
         self.method = method
@@ -21,23 +24,16 @@ class Request:
 
 
 class Response:
-    url: str
-    method: str
-    request: Request
-    status_code: int
-    reason: str
-    headers: dict = dict
-    content: str = str
-
     def __init__(
         self,
         url: str,
         method: str,
-        request: Request,
-        status_code: int,
-        reason: str,
-        headers: dict,
-        content: str,
+        request: Request = None,
+        status_code: int = None,
+        reason: str = None,
+        headers: dict = None,
+        content: str = None,
+        **kwargs
     ):
         self.url = url
         self.method = method

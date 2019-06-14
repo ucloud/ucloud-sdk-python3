@@ -15,5 +15,5 @@ export UCLOUD_PROJECT_ID="your project id"
 ## How to run
 
 ```sh
-python main.go
+python main.py
 ```

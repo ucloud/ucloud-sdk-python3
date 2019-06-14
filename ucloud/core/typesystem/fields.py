@@ -1,3 +1,4 @@
+import base64
 import typing
 import collections
 
@@ -61,7 +62,6 @@ class List(abstract.Field):
         return values
 
 
-# TODO: base64 password
 class Str(abstract.Field):
     def dumps(self, value, **kwargs):
         if not isinstance(value, str):
@@ -72,6 +72,16 @@ class Str(abstract.Field):
         if not isinstance(value, str):
             raise ValidationException("invalid str")
         return str(value)
+
+
+class Base64(Str):
+    def dumps(self, value, **kwargs):
+        s = super(Base64, self).dumps(value)
+        return base64.b64encode(s.encode()).decode()
+
+    def loads(self, value, **kwargs):
+        s = super(Base64, self).loads(value)
+        return base64.b64decode(s.encode()).decode()
 
 
 class Int(abstract.Field):
@@ -90,11 +100,7 @@ class Float(abstract.Field):
     def dumps(self, value, **kwargs):
         if not isinstance(value, float):
             raise ValidationException("invalid float")
-
-        try:
-            return float(value)
-        except ValueError:
-            raise ValidationException("invalid")
+        return float(value)
 
     def loads(self, value, **kwargs):
         if not isinstance(value, float):

@@ -5,6 +5,8 @@ python:
   - 3.7
   - 3.6
   - 3.5
+dist: xenial
+sudo: true
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -U tox-travis
@@ -12,16 +14,31 @@ install: pip install -U tox-travis
 # command to run tests, e.g. python setup.py test
 script: tox
 
-# deploy new versions to PyPI
-deploy:
-  provider: pypi
-  distributions: sdist bdist_wheel
-  skip_existing: true
-  user: ucloud
-  password:
-    secure: PLEASE_REPLACE_ME
-  on:
-    tags: true
-    repo: ucloud/ucloud-sdk-python3
-    python: 3.7
+before_deploy:
+    - pip install -e .[doc]
+    - make docs
+    - touch docs/build/html/.nojekyll
 
+# deploy new versions to PyPI / GithubIO
+deploy:
+  - provider: pages
+    skip_cleanup: true
+    github_token:
+      secure: "6QeIhg8F4Ztr+u4C7KuwmsiinglEBwjSafN/QYVf4pmJ6Jn5HzJSbZYPsHhqkDS0HbrJr4IOYkTL9ezeKif1Jd8lQ2ZrtTrKxvWiuO2EysF2hk0j0nDbYsaGct+Aam5M1mr2EVU6mwrr34sivs6pn6ZcpMNcpPHWMDIg5+2WyOspP9mWDFGTcOapvtky8SKpmpffmRnOcrsziYKEgDv/s9zJrP4IJ9CoICvMdgQMNb7OfIhNNBow6UOV7gkczOajFLCSmO/cFOyO5D/V/B+6DCUaYLlFr/az224+KSflkB7WWtEouJ+hlLV0T9XyabmZG+pp8jutgBnygXBwVMFj29AfCC0fCuZzXoQofYZNnLPpGUxdDQpZrDhMe85D3dXS+2FT8zc8bJ5Sdr7K8b70xLrZunzSxGT9LBa5riN+rqsB3laSEk4j5+WGye4U2RIsak3jTe4Hr3MnPIS/Xaof/2bn7ikInLa5W98KVUHbIute0B2FpZkOl0u4NatPrZJHUVhYII7m4jnZzoOCDWRpV09okwkHtLaGE7ekNTIa2Qgdbj6gdJ5kYl6kngT+3hYOVmz6txCHB7sfZhizl/wq1zf2YU6gL2JiSg8noYuLd/Fasulu9cpogjrvj/TPAw1W4vSk9CMwEU8REiCyU5lrCK2FJPKQeH/h0wXZ3kPhGGo="
+    local_dir: docs/build/html
+    on:
+      branch: master
+      tags: true
+      repo: ucloud/ucloud-sdk-python3
+      python: 3.7
+  - provider: pypi
+    distributions: sdist bdist_wheel
+    skip_existing: true
+    user: ucloud
+    password:
+      secure: "IVZJgV6z5wYb53RP1XNIO4aOedbdlSCGNSKfnMVugmeVFCLoBZsT99FeRzmQ8xFUU6PBSL4avX1QBgzYBIKqksTMVR4bFDha+Nw4NChy/XK7AEsGXnzyb8usnzqx4GzopDGZWqY8mNAd4UVsrmhcdYozKU8ZdSAg/H5zm/yx2Jnv8mcjFrdC11Mv+qtHbNLADvNwV6mACNvPr9jAVtkoYSLZ+mOEc6ZoORgxhcpnZXSb2ABnC/7BvCqqnlrDYNftMFF21lX7xHsA+il0xkWMrrsapWSueW4y1wWt5WksfOjFL2F0fbkS18CMYoIqCyk0A6BVkvqR0n9JUFwA9Zz1bikf4ZdMsQyLcjb9l5Xfc4+ij22oevrnQ0A90lgZi8foiCRiMGAiKyxY91pEAfrSEj+TWqqWlHAv6HPKU+975dSkQIZHhlL0cyqxx0Zl/SvcQ1deGyuXnME4VJm6fyoq+aI47Yg8ZFGuwGbJyCVZrsA+8thDUHTf5BNlMMIqQn8RYoHOsAIpgkVzcHa2Ko/kQRcTrhYoUIN9EoR4wuxjFhW1UGRe8khazT4qu9jIpT7TnuWX5xxHL+ZRTaiwMr5ZU79WVvnYNZymKLMWQ0ExVsIix+Z8BwO+pK9FyQ8mMgVWdCJDepVDZgcSdikd4+i81UfJkF71bu50Y7el/rqrOrA="
+    on:
+      branch: master
+      tags: true
+      repo: ucloud/ucloud-sdk-python3
+      python: 3.7

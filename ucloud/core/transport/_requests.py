@@ -14,7 +14,7 @@ class RequestsTransport(http.Transport):
     :param max_retries: max retries is the max number of transport request when occur http error
     :type backoff_factor: float
     :param backoff_factor: backoff factor will calculate the backoff delay during retrying,
-    the backoff delay = {backoff factor} * (2 ^ ({number of total retries} - 1))
+        the backoff delay = {backoff factor} * (2 ^ ({number of total retries} - 1))
     :type status_forcelist: tuple
     :param status_forcelist: the status code list that could be retried
     """
@@ -29,14 +29,7 @@ class RequestsTransport(http.Transport):
         self.backoff_factor = backoff_factor
         self.status_forcelist = status_forcelist
 
-        self._retry = Retry(
-            total=self.max_retries,
-            read=self.max_retries,
-            connect=self.max_retries,
-            backoff_factor=self.backoff_factor,
-            status_forcelist=self.status_forcelist,
-        )
-        self._adapter = HTTPAdapter(max_retries=self._retry)
+        self._adapter = self._load_adapter(max_retries)
         self._middleware = Middleware()
 
     def send(self, req: Request, **options: dict) -> http.Response:
@@ -48,14 +41,7 @@ class RequestsTransport(http.Transport):
         for handler in self.middleware.request_handlers:
             req = handler(req)
 
-        resp = self._send(
-            url=req.url,
-            params=req.params,
-            data=req.data,
-            json=req.json,
-            headers=req.headers,
-            **options
-        )
+        resp = self._send(req, **options)
 
         for handler in self.middleware.response_handlers:
             resp = handler(resp)
@@ -70,20 +56,40 @@ class RequestsTransport(http.Transport):
         """
         return self._middleware
 
-    def _send(self, url: str, json: dict, **options: dict) -> requests.Response:
+    def _send(self, req: Request, **options: dict) -> requests.Response:
         with requests.Session() as session:
-            session.mount("http://", adapter=self._adapter)
-            session.mount("https://", adapter=self._adapter)
-            return self._convert_response(session.post(url, json=json, **options))
+            adapter = self._load_adapter(options.get("max_retries"))
+            session.mount("http://", adapter=adapter)
+            session.mount("https://", adapter=adapter)
+
+            resp = self.convert_response(
+                session.request(req.method.upper(), url=req.url, json=req.json)
+            )
+            resp.request = req
+            return resp
+
+    def _load_adapter(self, max_retries: typing.Optional[int] = None) -> HTTPAdapter:
+        if max_retries is None and self._adapter is not None:
+            return self._adapter
+
+        max_retries = max_retries or 0
+        adapter = HTTPAdapter()
+        adapter.max_retries = Retry(
+            total=max_retries,
+            read=max_retries,
+            connect=max_retries,
+            backoff_factor=self.backoff_factor,
+            status_forcelist=self.status_forcelist,
+        )
+        return adapter
 
     @staticmethod
-    def _convert_response(r: requests.Response) -> Response:
+    def convert_response(r: requests.Response) -> Response:
         return Response(
             url=r.url,
             method=r.request.method,
-            request=r.request,
             status_code=r.status_code,
             reason=r.reason,
             headers=r.headers,
-            content=r.content,
+            content=r.content.decode(),
         )

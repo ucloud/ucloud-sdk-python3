@@ -56,8 +56,8 @@ class Credential:
     PUBLIC_KEY_NAME = "PublicKey"
 
     def __init__(self, public_key: str, private_key: str, **kwargs):
-        self.public_key: str = public_key
-        self.private_key: str = private_key
+        self.public_key = public_key
+        self.private_key = private_key
 
     def verify_ac(self, args: dict) -> str:
         args[Credential.PUBLIC_KEY_NAME] = self.public_key

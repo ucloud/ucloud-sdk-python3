@@ -1,44 +1,6 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class SubnetInfoSchema(schema.ResponseSchema):
-    """ SubnetInfo - 子网信息
-    """
-
-    fields = {
-        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-        "Remark": fields.Str(required=False, load_from="Remark"),
-        "Zone": fields.Str(required=False, load_from="Zone"),
-        "IPv6Network": fields.Str(required=False, load_from="IPv6Network"),
-        "Tag": fields.Str(required=False, load_from="Tag"),
-        "Subnet": fields.Str(required=False, load_from="Subnet"),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "HasNATGW": fields.Bool(required=False, load_from="HasNATGW"),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "Gateway": fields.Str(required=False, load_from="Gateway"),
-        "VPCName": fields.Str(required=False, load_from="VPCName"),
-        "SubnetName": fields.Str(required=False, load_from="SubnetName"),
-        "SubnetType": fields.Int(required=False, load_from="SubnetType"),
-        "Netmask": fields.Int(required=False, load_from="Netmask"),
-        "RouteTableId": fields.Str(required=False, load_from="RouteTableId"),
-    }
-
-
-class VPCIntercomInfoSchema(schema.ResponseSchema):
-    """ VPCIntercomInfo - 
-    """
-
-    fields = {
-        "DstRegion": fields.Str(required=False, load_from="DstRegion"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-        "Tag": fields.Str(required=False, load_from="Tag"),
-        "ProjectId": fields.Str(required=False, load_from="ProjectId"),
-        "Network": fields.List(fields.Str()),
-    }
-
-
 class RouteRuleInfoSchema(schema.ResponseSchema):
     """ RouteRuleInfo - 路由规则信息
     """
@@ -58,15 +20,39 @@ class RouteTableInfoSchema(schema.ResponseSchema):
     """
 
     fields = {
-        "SubnetCount": fields.Str(required=False, load_from="SubnetCount"),
+        "RouteTableType": fields.Int(required=False, load_from="RouteTableType"),
         "Remark": fields.Str(required=False, load_from="Remark"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "RouteRules": fields.List(RouteRuleInfoSchema()),
         "RouteTableId": fields.Str(required=False, load_from="RouteTableId"),
-        "RouteTableType": fields.Int(required=False, load_from="RouteTableType"),
+        "SubnetCount": fields.Str(required=False, load_from="SubnetCount"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
         "VPCName": fields.Str(required=False, load_from="VPCName"),
         "Tag": fields.Str(required=False, load_from="Tag"),
+    }
+
+
+class SubnetInfoSchema(schema.ResponseSchema):
+    """ SubnetInfo - 子网信息
+    """
+
+    fields = {
+        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
+        "SubnetName": fields.Str(required=False, load_from="SubnetName"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "Subnet": fields.Str(required=False, load_from="Subnet"),
+        "HasNATGW": fields.Bool(required=False, load_from="HasNATGW"),
+        "RouteTableId": fields.Str(required=False, load_from="RouteTableId"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "SubnetType": fields.Int(required=False, load_from="SubnetType"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "Gateway": fields.Str(required=False, load_from="Gateway"),
+        "IPv6Network": fields.Str(required=False, load_from="IPv6Network"),
+        "VPCName": fields.Str(required=False, load_from="VPCName"),
+        "Netmask": fields.Int(required=False, load_from="Netmask"),
     }
 
 
@@ -75,14 +61,14 @@ class SubnetResourceSchema(schema.ResponseSchema):
     """
 
     fields = {
-        "SubResourceId": fields.Str(required=False, load_from="SubResourceId"),
-        "SubResourceType": fields.Str(required=False, load_from="SubResourceType"),
         "IP": fields.Str(required=False, load_from="IP"),
         "IPv6Address": fields.Str(required=False, load_from="IPv6Address"),
         "Name": fields.Str(required=False, load_from="Name"),
         "ResourceId": fields.Str(required=False, load_from="ResourceId"),
         "ResourceType": fields.Str(required=False, load_from="ResourceType"),
         "SubResourceName": fields.Str(required=False, load_from="SubResourceName"),
+        "SubResourceId": fields.Str(required=False, load_from="SubResourceId"),
+        "SubResourceType": fields.Str(required=False, load_from="SubResourceType"),
     }
 
 
@@ -101,14 +87,28 @@ class VPCInfoSchema(schema.ResponseSchema):
     """
 
     fields = {
+        "Network": fields.List(fields.Str()),
+        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
+        "Tag": fields.Str(required=True, load_from="Tag"),
+        "Name": fields.Str(required=True, load_from="Name"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "UpdateTime": fields.Int(required=True, load_from="UpdateTime"),
+        "IPv6Network": fields.Str(required=False, load_from="IPv6Network"),
         "NetworkInfo": fields.List(VPCNetworkInfoSchema()),
         "SubnetCount": fields.Int(required=True, load_from="SubnetCount"),
         "CreateTime": fields.Int(required=True, load_from="CreateTime"),
-        "Tag": fields.Str(required=True, load_from="Tag"),
-        "IPv6Network": fields.Str(required=False, load_from="IPv6Network"),
-        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
-        "UpdateTime": fields.Int(required=True, load_from="UpdateTime"),
-        "Name": fields.Str(required=True, load_from="Name"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
+    }
+
+
+class VPCIntercomInfoSchema(schema.ResponseSchema):
+    """ VPCIntercomInfo - 
+    """
+
+    fields = {
         "Network": fields.List(fields.Str()),
+        "DstRegion": fields.Str(required=False, load_from="DstRegion"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "ProjectId": fields.Str(required=False, load_from="ProjectId"),
     }

@@ -52,13 +52,19 @@ class StateConf:
                 interval *= 2
                 if interval > self.max_backoff_interval:
                     interval = self.max_backoff_interval
-                logger.info(f"waiting state for {self.refresh}, got state {state}")
+                logger.info(
+                    "waiting state for {self.refresh}, got state {state}".format(
+                        self=self, state=state
+                    )
+                )
                 continue
 
             if state in self.target:
                 return
 
-        raise WaitTimeoutException(f"wait timeout {self.timeout}s for {self.refresh}")
+        raise WaitTimeoutException(
+            "wait timeout {self.timeout}s for {self.refresh}".format(self=self)
+        )
 
 
 def wait_for_state(
@@ -72,6 +78,13 @@ def wait_for_state(
 ):
     """ wait_for_state is a utilities function to wait the state return by refresh function achieve the specific state,
     the generally usage is wait the cloud resource, such as uhost、udb ... is ready after created.
+
+    >>> wait_for_state(
+    ...     pending=["pending"],
+    ...     target=["running"],
+    ...     refresh=lambda: "running",
+    ...     timeout=0.5,
+    ... )
 
     :param pending: pending is the list of pending state, the state is returned by refresh function
     :param target: target is the list of target state, it is usually the terminate state, eg. running and fail
