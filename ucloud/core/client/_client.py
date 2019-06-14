@@ -3,7 +3,7 @@ import logging
 import sys
 
 from ucloud import version
-from ucloud.core.client.cfg import Config
+from ucloud.core.client._cfg import Config
 from ucloud.core.transport import Transport, RequestsTransport, Request, Response
 from ucloud.core.utils.middleware import Middleware
 from ucloud.core import auth, exc

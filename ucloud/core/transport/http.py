@@ -10,7 +10,13 @@ class Request:
     headers: dict = None
 
     def __init__(
-        self, url: str, method: str, params: dict, data: dict, json: dict, headers: dict
+        self,
+        url: str,
+        method: str = "GET",
+        params: dict = None,
+        data: dict = None,
+        json: dict = None,
+        headers: dict = None,
     ):
         self.url = url
         self.method = method

@@ -14,7 +14,7 @@ class RequestsTransport(http.Transport):
     :param max_retries: max retries is the max number of transport request when occur http error
     :type backoff_factor: float
     :param backoff_factor: backoff factor will calculate the backoff delay during retrying,
-    the backoff delay = {backoff factor} * (2 ^ ({number of total retries} - 1))
+        the backoff delay = {backoff factor} * (2 ^ ({number of total retries} - 1))
     :type status_forcelist: tuple
     :param status_forcelist: the status code list that could be retried
     """

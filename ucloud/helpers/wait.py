@@ -73,6 +73,13 @@ def wait_for_state(
     """ wait_for_state is a utilities function to wait the state return by refresh function achieve the specific state,
     the generally usage is wait the cloud resource, such as uhost、udb ... is ready after created.
 
+    >>> wait_for_state(
+    ...     pending=["pending"],
+    ...     target=["running"],
+    ...     refresh=lambda: "running",
+    ...     timeout=0.5,
+    ... )
+
     :param pending: pending is the list of pending state, the state is returned by refresh function
     :param target: target is the list of target state, it is usually the terminate state, eg. running and fail
     :param refresh: the customized refresh function, expect no arguments and return a state

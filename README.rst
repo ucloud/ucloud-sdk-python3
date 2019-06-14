@@ -1,5 +1,5 @@
-UCloud SDK Python3
-==================
+UCloud SDK Python 3
+===================
 
 UCloud SDK is a Python client library for accessing the UCloud API.
 
@@ -44,24 +44,37 @@ QuickStart
 
 Currently, user public key & private key is the only method of authenticating with the API. You could get your keys here:
 
-- [Key Generation](https://console.ucloud.cn/uapi/apikey)
+- `Key Generation <https://console.ucloud.cn/uapi/apikey>`_
 
 You can then use your keys to create a new client of uhost service:
 
 .. code-block:: python
 
-    # demo
+    client = Client({
+        "region": "cn-bj2",
+        "project_id": "...",
+        "public_key": "...",
+        "private_key": "...",
+    })
+
+    resp = client.uhost().create_uhost_instance({
+        'Name': 'sdk-python-example',
+        'Zone': image["zone"],
+        'ImageId': image["image_id"],
+        'LoginMode': "Password",
+        'Password': utils.b64encode(utils.gen_password(20)),
+        'CPU': 1,
+        'Memory': 1,
+        'Disks': [{
+            'Size': 10,
+            'Type': 'CLOUD_SSD'
+        }],
+    })
+
+    print(resp)
 
 
 .. note:: UHost created above cannot be accessed via Internet unless an EIP is created and bind to the UHost.
-
-User can also use complex structure in query, eg. set array as query:
-
-.. code-block:: python
-
-    # demo
-
-will encoded as `UHostIds.0=uhost-xxx&UHostIds.1=uhost-yyy` describe in ``
 
 Advantage Usage
 ---------------
@@ -77,5 +90,5 @@ Wait State Changed
 Feedback & Contribution
 -----------------------
 
-- [Issue](https://github.com/ucloud/ucloud-sdk-go/issues)
-- [Pull Request](https://github.com/ucloud/ucloud-sdk-go/pulls)
+- `Issue <https://github.com/ucloud/ucloud-sdk-python3/issues>`_
+- `Pull Request <https://github.com/ucloud/ucloud-sdk-python3/pulls>`_

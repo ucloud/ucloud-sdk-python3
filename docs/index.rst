@@ -12,4 +12,14 @@ API Guide
 
 Here is the API reference for agen.
 
-.. module:: ucloud
+.. automodule:: ucloud
+
+API Reference
+=============
+
+.. toctree::
+    :maxdepth: 2
+
+    services
+    helpers
+    core

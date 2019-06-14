@@ -22,27 +22,26 @@ class Config:
 
     :type region: str
     :param region: Region is the region of backend service,
-    See also `Region list Documentation <https://docs.ucloud.cn/api/summary/regionlist>`__
+        See also `Region list Documentation <https://docs.ucloud.cn/api/summary/regionlist>`_
     :type project_id: str
     :param project_id: ProjectId is the unique identify of project, used for organize resources,
-    Most of resources should belong to a project.
-    Sub-Account must have an project id.
-    See also `Project list Documentation <https://docs.ucloud.cn/api/summary/get_project_list>`__
+                       Most of resources should belong to a project. Sub-Account must have an project id.
+                       See also `Project list Documentation <https://docs.ucloud.cn/api/summary/get_project_list>`_
     :type base_url: str
     :param base_url: BaseUrl is the url of backend api
     :param user_agent: UserAgent is an attribute for sdk client, used for distinguish who is using sdk.
-    See also `User Agent <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent>`...
-    It will be appended to the end of sdk user-agent.
-    eg. "MyAPP/0.10.1" -> "Python/3.7.0 Python-SDK/0.1.0 MyAPP/0.10.1"
+                       See also `User Agent <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent>`_
+                       It will be appended to the end of sdk user-agent.
+                       eg. "MyAPP/0.10.1" -> "Python/3.7.0 Python-SDK/0.1.0 MyAPP/0.10.1"
     :type timeout: int
     :param timeout: Timeout is timeout for every request.
     :type max_retries: int
     :param max_retries: MaxRetries is the number of max retry times.
-    Set MaxRetries more than 0 to enable auto-retry for network and service availability problem
-    if auto-retry is enabled, it will enable default retry policy using exponential backoff.
+                        Set MaxRetries more than 0 to enable auto-retry for network and service availability problem
+                        if auto-retry is enabled, it will enable default retry policy using exponential backoff.
     :type log_level: int
     :param log_level:  LogLevel is equal to builtin logging level,
-    if logLevel not be set, use INFO level as default.
+        if logLevel not be set, use INFO level as default.
     """
 
     def __init__(
