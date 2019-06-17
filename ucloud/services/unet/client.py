@@ -9,81 +9,34 @@ class UNetClient(Client):
     def __init__(self, config: dict, transport: typing.Optional[Transport] = None):
         super(UNetClient, self).__init__(config, transport)
 
-    def update_e_ip_attribute(self, req: dict = None) -> dict:
-        """ UpdateEIPAttribute - 更新弹性IP名称，业务组，备注等属性字段
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param EIPId: (Required) EIP资源ID
-        :param Name: (Optional) 名字（Name Tag Remark都为空则报错）
-        :param Remark: (Optional) 备注
-        :param Tag: (Optional) 业务
-        """
-        req = apis.UpdateEIPAttributeRequestSchema().dumps(req or {})
-        resp = self.invoke("UpdateEIPAttribute", req)
-        return apis.UpdateEIPAttributeResponseSchema().loads(resp)
-
-    def delete_bandwidth_package(self, req: dict = None) -> dict:
-        """ DeleteBandwidthPackage - 删除弹性IP上已附加带宽包
+    def get_e_ip_pay_mode(self, req: dict = None) -> dict:
+        """ GetEIPPayMode - 获取弹性IP计费模式
 
         :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写
         :param Region: (Config) 地域
-        :param BandwidthPackageId: (Required) 带宽包资源ID
+        :param EIPId: (Required) 弹性IP的资源Id
         """
-        req = apis.DeleteBandwidthPackageRequestSchema().dumps(req or {})
-        resp = self.invoke("DeleteBandwidthPackage", req)
-        return apis.DeleteBandwidthPackageResponseSchema().loads(resp)
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.GetEIPPayModeRequestSchema().dumps(d)
+        resp = self.invoke("GetEIPPayMode", d)
+        return apis.GetEIPPayModeResponseSchema().loads(resp)
 
-    def describe_bandwidth_usage(self, req: dict = None) -> dict:
-        """ DescribeBandwidthUsage - 获取带宽用量信息
+    def create_firewall(self, req: dict = None) -> dict:
+        """ CreateFirewall - 创建防火墙
 
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param EIPIds: (Optional) 弹性IP的资源Id. 如果为空, 则返回当前 Region中符合条件的所有EIP的带宽用量, n为自然数
-        :param Limit: (Optional) 返回数据分页值, 取值范围为 [0,10000000] 之间的整数, 默认为20
-        :param OffSet: (Optional) 返回数据偏移量, 默认为0
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写
+        :param Region: (Config) 地域
+        :param Name: (Required) 防火墙名称
+        :param Rule: (Required) 防火墙规则，例如：TCP|22|192.168.1.1/22|DROP|LOW|禁用22端口，第一个参数代表协议：第二个参数代表端口号，第三个参数为ip，第四个参数为ACCEPT（接受）和DROP（拒绝），第五个参数优先级：HIGH（高），MEDIUM（中），LOW（低），第六个参数为该条规则的自定义备注
+        :param Remark: (Optional) 防火墙描述，默认为空
+        :param Tag: (Optional) 防火墙业务组，默认为Default
         """
-        req = apis.DescribeBandwidthUsageRequestSchema().dumps(req or {})
-        resp = self.invoke("DescribeBandwidthUsage", req)
-        return apis.DescribeBandwidthUsageResponseSchema().loads(resp)
-
-    def describe_share_bandwidth(self, req: dict = None) -> dict:
-        """ DescribeShareBandwidth - 获取共享带宽信息
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param ShareBandwidthIds: (Optional) 需要返回的共享带宽Id
-        """
-        req = apis.DescribeShareBandwidthRequestSchema().dumps(req or {})
-        resp = self.invoke("DescribeShareBandwidth", req)
-        return apis.DescribeShareBandwidthResponseSchema().loads(resp)
-
-    def release_share_bandwidth(self, req: dict = None) -> dict:
-        """ ReleaseShareBandwidth - 关闭共享带宽
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param EIPBandwidth: (Required) 关闭共享带宽后，各EIP恢复为的带宽值
-        :param ShareBandwidthId: (Required) 共享带宽ID
-        :param PayMode: (Optional) Bandwidth 带宽计费, Traffic 转流量计费
-        """
-        req = apis.ReleaseShareBandwidthRequestSchema().dumps(req or {})
-        resp = self.invoke("ReleaseShareBandwidth", req)
-        return apis.ReleaseShareBandwidthResponseSchema().loads(resp)
-
-    def disassociate_e_ip_with_share_bandwidth(self, req: dict = None) -> dict:
-        """ DisassociateEIPWithShareBandwidth - 将EIP移出共享带宽
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param Bandwidth: (Required) 移出共享带宽后，EIP的外网带宽, 单位为Mbps. 各地域带宽范围如下：  流量计费[1-200],带宽计费[1-800]
-        :param ShareBandwidthId: (Required) 共享带宽ID
-        :param EIPIds: (Optional) EIP的资源Id；默认移出该共享带宽下所有的EIP
-        :param PayMode: (Optional) 移出共享带宽后，EIP的计费模式. 枚举值: "Traffic", 流量计费; "Bandwidth", 带宽计费;  默认为 "Bandwidth".
-        """
-        req = apis.DisassociateEIPWithShareBandwidthRequestSchema().dumps(req or {})
-        resp = self.invoke("DisassociateEIPWithShareBandwidth", req)
-        return apis.DisassociateEIPWithShareBandwidthResponseSchema().loads(resp)
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.CreateFirewallRequestSchema().dumps(d)
+        resp = self.invoke("CreateFirewall", d)
+        return apis.CreateFirewallResponseSchema().loads(resp)
 
     def allocate_share_bandwidth(self, req: dict = None) -> dict:
         """ AllocateShareBandwidth - 开通共享带宽
@@ -96,33 +49,31 @@ class UNetClient(Client):
         :param Quantity: (Optional) 购买时长
         :param ShareBandwidthGuarantee: (Optional) 共享带宽保底值(后付费)
         """
-        req = apis.AllocateShareBandwidthRequestSchema().dumps(req or {})
-        resp = self.invoke("AllocateShareBandwidth", req)
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.AllocateShareBandwidthRequestSchema().dumps(d)
+        resp = self.invoke("AllocateShareBandwidth", d)
         return apis.AllocateShareBandwidthResponseSchema().loads(resp)
 
-    def associate_e_ip_with_share_bandwidth(self, req: dict = None) -> dict:
-        """ AssociateEIPWithShareBandwidth - 将EIP加入共享带宽
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。
-        :param Region: (Config) 地域。
-        :param EIPIds: (Required) 要加入共享带宽的EIP的资源Id
-        :param ShareBandwidthId: (Required) 共享带宽ID
-        """
-        req = apis.AssociateEIPWithShareBandwidthRequestSchema().dumps(req or {})
-        resp = self.invoke("AssociateEIPWithShareBandwidth", req)
-        return apis.AssociateEIPWithShareBandwidthResponseSchema().loads(resp)
-
-    def describe_bandwidth_package(self, req: dict = None) -> dict:
-        """ DescribeBandwidthPackage - 获取某地域下的带宽包信息
+    def allocate_v_ip(self, req: dict = None) -> dict:
+        """ AllocateVIP - 根据提供信息，申请内网VIP(Virtual IP），多用于高可用程序作为漂移IP。
 
         :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param Limit: (Optional) 返回数据分页值, 取值范围为 [0,10000000] 之间的整数, 默认为20
-        :param Offset: (Optional) 返回数据偏移量, 默认为0
+        :param Region: (Config) 地域
+        :param SubnetId: (Required) 子网id
+        :param VPCId: (Required) 指定vip所属的VPC
+        :param BusinessId: (Optional) 业务组
+        :param Count: (Optional) 申请数量，默认: 1
+        :param Name: (Optional) vip名，默认为VIP
+        :param Remark: (Optional) 备注
+        :param Tag: (Optional) 业务组名称，默认为Default
+        :param Zone: (Optional) 可用区
         """
-        req = apis.DescribeBandwidthPackageRequestSchema().dumps(req or {})
-        resp = self.invoke("DescribeBandwidthPackage", req)
-        return apis.DescribeBandwidthPackageResponseSchema().loads(resp)
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.AllocateVIPRequestSchema().dumps(d)
+        resp = self.invoke("AllocateVIP", d)
+        return apis.AllocateVIPResponseSchema().loads(resp)
 
     def describe_e_ip(self, req: dict = None) -> dict:
         """ DescribeEIP - 获取弹性IP信息
@@ -133,9 +84,338 @@ class UNetClient(Client):
         :param Limit: (Optional) 数据分页值, 默认为20
         :param Offset: (Optional) 数据偏移量, 默认为0
         """
-        req = apis.DescribeEIPRequestSchema().dumps(req or {})
-        resp = self.invoke("DescribeEIP", req)
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.DescribeEIPRequestSchema().dumps(d)
+        resp = self.invoke("DescribeEIP", d)
         return apis.DescribeEIPResponseSchema().loads(resp)
+
+    def grant_firewall(self, req: dict = None) -> dict:
+        """ GrantFirewall - 将防火墙应用到资源上
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param FWId: (Required) 防火墙资源ID
+        :param ResourceId: (Required) 所应用资源ID
+        :param ResourceType: (Required) 绑定防火墙组的资源类型，默认为全部资源类型。枚举值为："unatgw"，NAT网关； "uhost"，云主机； "upm"，物理云主机； "hadoophost"，hadoop节点； "fortresshost"，堡垒机； "udhost"，私有专区主机；"udockhost"，容器；"dbaudit"，数据库审计，”uni“，虚拟网卡。
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.GrantFirewallRequestSchema().dumps(d)
+        resp = self.invoke("GrantFirewall", d)
+        return apis.GrantFirewallResponseSchema().loads(resp)
+
+    def release_e_ip(self, req: dict = None) -> dict:
+        """ ReleaseEIP - 释放弹性IP资源, 所释放弹性IP必须为非绑定状态.
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param EIPId: (Required) 弹性IP的资源ID
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.ReleaseEIPRequestSchema().dumps(d)
+        resp = self.invoke("ReleaseEIP", d)
+        return apis.ReleaseEIPResponseSchema().loads(resp)
+
+    def set_e_ip_pay_mode(self, req: dict = None) -> dict:
+        """ SetEIPPayMode - 设置弹性IP计费模式, 切换时会涉及付费/退费.
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param Bandwidth: (Required) 调整的目标带宽值, 单位Mbps. 各地域的带宽值范围如下: 流量计费[1-200],其余情况[1-800]
+        :param EIPId: (Required) 弹性IP的资源Id
+        :param PayMode: (Required) 计费模式. 枚举值："Traffic", 流量计费模式; "Bandwidth", 带宽计费模式
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.SetEIPPayModeRequestSchema().dumps(d)
+        resp = self.invoke("SetEIPPayMode", d)
+        return apis.SetEIPPayModeResponseSchema().loads(resp)
+
+    def un_bind_e_ip(self, req: dict = None) -> dict:
+        """ UnBindEIP - 将弹性IP从资源上解绑
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param EIPId: (Required) 弹性IP的资源Id
+        :param ResourceId: (Required) 弹性IP请求解绑的资源ID
+        :param ResourceType: (Required) 弹性IP请求解绑的资源类型, 枚举值为: uhost: 云主机; ulb, 负载均衡器 upm: 物理机; hadoophost: 大数据集群;fortresshost：堡垒机；udockhost：容器；udhost：私有专区主机；natgw：NAT网关；udb：udb；vpngw：ipsec vpn；ucdr：云灾备；dbaudit：数据库审计；uni，虚拟网卡。
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.UnBindEIPRequestSchema().dumps(d)
+        resp = self.invoke("UnBindEIP", d)
+        return apis.UnBindEIPResponseSchema().loads(resp)
+
+    def delete_firewall(self, req: dict = None) -> dict:
+        """ DeleteFirewall - 删除防火墙
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写
+        :param Region: (Config) 地域
+        :param FWId: (Required) 防火墙资源ID
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.DeleteFirewallRequestSchema().dumps(d)
+        resp = self.invoke("DeleteFirewall", d)
+        return apis.DeleteFirewallResponseSchema().loads(resp)
+
+    def describe_bandwidth_package(self, req: dict = None) -> dict:
+        """ DescribeBandwidthPackage - 获取某地域下的带宽包信息
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param Limit: (Optional) 返回数据分页值, 取值范围为 [0,10000000] 之间的整数, 默认为20
+        :param Offset: (Optional) 返回数据偏移量, 默认为0
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.DescribeBandwidthPackageRequestSchema().dumps(d)
+        resp = self.invoke("DescribeBandwidthPackage", d)
+        return apis.DescribeBandwidthPackageResponseSchema().loads(resp)
+
+    def release_share_bandwidth(self, req: dict = None) -> dict:
+        """ ReleaseShareBandwidth - 关闭共享带宽
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param EIPBandwidth: (Required) 关闭共享带宽后，各EIP恢复为的带宽值
+        :param ShareBandwidthId: (Required) 共享带宽ID
+        :param PayMode: (Optional) Bandwidth 带宽计费, Traffic 转流量计费
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.ReleaseShareBandwidthRequestSchema().dumps(d)
+        resp = self.invoke("ReleaseShareBandwidth", d)
+        return apis.ReleaseShareBandwidthResponseSchema().loads(resp)
+
+    def update_e_ip_attribute(self, req: dict = None) -> dict:
+        """ UpdateEIPAttribute - 更新弹性IP名称，业务组，备注等属性字段
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param EIPId: (Required) EIP资源ID
+        :param Name: (Optional) 名字（Name Tag Remark都为空则报错）
+        :param Remark: (Optional) 备注
+        :param Tag: (Optional) 业务
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.UpdateEIPAttributeRequestSchema().dumps(d)
+        resp = self.invoke("UpdateEIPAttribute", d)
+        return apis.UpdateEIPAttributeResponseSchema().loads(resp)
+
+    def describe_bandwidth_usage(self, req: dict = None) -> dict:
+        """ DescribeBandwidthUsage - 获取带宽用量信息
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param EIPIds: (Optional) 弹性IP的资源Id. 如果为空, 则返回当前 Region中符合条件的所有EIP的带宽用量, n为自然数
+        :param Limit: (Optional) 返回数据分页值, 取值范围为 [0,10000000] 之间的整数, 默认为20
+        :param OffSet: (Optional) 返回数据偏移量, 默认为0
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.DescribeBandwidthUsageRequestSchema().dumps(d)
+        resp = self.invoke("DescribeBandwidthUsage", d)
+        return apis.DescribeBandwidthUsageResponseSchema().loads(resp)
+
+    def describe_share_bandwidth(self, req: dict = None) -> dict:
+        """ DescribeShareBandwidth - 获取共享带宽信息
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param ShareBandwidthIds: (Optional) 需要返回的共享带宽Id
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.DescribeShareBandwidthRequestSchema().dumps(d)
+        resp = self.invoke("DescribeShareBandwidth", d)
+        return apis.DescribeShareBandwidthResponseSchema().loads(resp)
+
+    def delete_bandwidth_package(self, req: dict = None) -> dict:
+        """ DeleteBandwidthPackage - 删除弹性IP上已附加带宽包
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写
+        :param Region: (Config) 地域
+        :param BandwidthPackageId: (Required) 带宽包资源ID
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.DeleteBandwidthPackageRequestSchema().dumps(d)
+        resp = self.invoke("DeleteBandwidthPackage", d)
+        return apis.DeleteBandwidthPackageResponseSchema().loads(resp)
+
+    def get_e_ip_upgrade_price(self, req: dict = None) -> dict:
+        """ GetEIPUpgradePrice - 获取弹性IP带宽改动价格
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param Bandwidth: (Required) 弹性IP的外网带宽, 单位为Mbps, 范围 [1-800]
+        :param EIPId: (Required) 弹性IP的资源ID
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.GetEIPUpgradePriceRequestSchema().dumps(d)
+        resp = self.invoke("GetEIPUpgradePrice", d)
+        return apis.GetEIPUpgradePriceResponseSchema().loads(resp)
+
+    def associate_e_ip_with_share_bandwidth(self, req: dict = None) -> dict:
+        """ AssociateEIPWithShareBandwidth - 将EIP加入共享带宽
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。
+        :param Region: (Config) 地域。
+        :param EIPIds: (Required) 要加入共享带宽的EIP的资源Id
+        :param ShareBandwidthId: (Required) 共享带宽ID
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.AssociateEIPWithShareBandwidthRequestSchema().dumps(d)
+        resp = self.invoke("AssociateEIPWithShareBandwidth", d)
+        return apis.AssociateEIPWithShareBandwidthResponseSchema().loads(resp)
+
+    def create_bandwidth_package(self, req: dict = None) -> dict:
+        """ CreateBandwidthPackage - 为非共享带宽模式下, 已绑定资源实例的带宽计费弹性IP附加临时带宽包
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。
+        :param Region: (Config) 地域
+        :param Bandwidth: (Required) 带宽大小(单位Mbps), 取值范围[2,800] (最大值受地域限制)
+        :param EIPId: (Required) 所绑定弹性IP的资源ID
+        :param TimeRange: (Required) 带宽包有效时长, 取值范围为大于0的整数, 即该带宽包在EnableTime到 EnableTime+TimeRange时间段内生效
+        :param CouponId: (Optional) 代金券ID
+        :param EnableTime: (Optional) 生效时间, 格式为 Unix timestamp, 默认为立即开通
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.CreateBandwidthPackageRequestSchema().dumps(d)
+        resp = self.invoke("CreateBandwidthPackage", d)
+        return apis.CreateBandwidthPackageResponseSchema().loads(resp)
+
+    def modify_e_ip_bandwidth(self, req: dict = None) -> dict:
+        """ ModifyEIPBandwidth - 调整弹性IP的外网带宽
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param Bandwidth: (Required) 弹性IP的外网带宽, 单位为Mbps. 各地域的带宽值范围如下：流量计费[1-200],带宽计费[1-800]
+        :param EIPId: (Required) 弹性IP的资源ID
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.ModifyEIPBandwidthRequestSchema().dumps(d)
+        resp = self.invoke("ModifyEIPBandwidth", d)
+        return apis.ModifyEIPBandwidthResponseSchema().loads(resp)
+
+    def release_v_ip(self, req: dict = None) -> dict:
+        """ ReleaseVIP - 释放VIP资源
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写
+        :param Region: (Config) 地域
+        :param VIPId: (Required) 内网VIP的id
+        :param Zone: (Optional) 可用区
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.ReleaseVIPRequestSchema().dumps(d)
+        resp = self.invoke("ReleaseVIP", d)
+        return apis.ReleaseVIPResponseSchema().loads(resp)
+
+    def resize_share_bandwidth(self, req: dict = None) -> dict:
+        """ ResizeShareBandwidth - 调整共享带宽的带宽值
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param ShareBandwidth: (Required) 带宽值，单位为Mb，范围 [20-5000] (最大值受地域限制)
+        :param ShareBandwidthId: (Required) 共享带宽的Id
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.ResizeShareBandwidthRequestSchema().dumps(d)
+        resp = self.invoke("ResizeShareBandwidth", d)
+        return apis.ResizeShareBandwidthResponseSchema().loads(resp)
+
+    def update_firewall_attribute(self, req: dict = None) -> dict:
+        """ UpdateFirewallAttribute - 更新防火墙规则
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param FWId: (Required) 防火墙资源ID
+        :param Name: (Optional) 防火墙名称，默认为空，为空则不做修改。Name,Tag,Remark必须填写1个及以上
+        :param Remark: (Optional) 防火墙备注，默认为空，为空则不做修改。Name,Tag,Remark必须填写1个及以上
+        :param Tag: (Optional) 防火墙业务组，默认为空，为空则不做修改。Name,Tag,Remark必须填写1个及以上
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.UpdateFirewallAttributeRequestSchema().dumps(d)
+        resp = self.invoke("UpdateFirewallAttribute", d)
+        return apis.UpdateFirewallAttributeResponseSchema().loads(resp)
+
+    def describe_firewall(self, req: dict = None) -> dict:
+        """ DescribeFirewall - 获取防火墙组信息
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写
+        :param Region: (Config) 地域
+        :param FWId: (Optional) 防火墙ID，默认为返回所有防火墙
+        :param Limit: (Optional) 返回数据长度，默认为20，最大10000000
+        :param Offset: (Optional) 列表起始位置偏移量，默认为0
+        :param ResourceId: (Optional) 绑定防火墙组的资源ID
+        :param ResourceType: (Optional) 绑定防火墙组的资源类型，默认为全部资源类型。枚举值为："unatgw"，NAT网关； "uhost"，云主机； "upm"，物理云主机； "hadoophost"，hadoop节点； "fortresshost"，堡垒机； "udhost"，私有专区主机；"udockhost"，容器；"dbaudit"，数据库审计.
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.DescribeFirewallRequestSchema().dumps(d)
+        resp = self.invoke("DescribeFirewall", d)
+        return apis.DescribeFirewallResponseSchema().loads(resp)
+
+    def disassociate_e_ip_with_share_bandwidth(self, req: dict = None) -> dict:
+        """ DisassociateEIPWithShareBandwidth - 将EIP移出共享带宽
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param Bandwidth: (Required) 移出共享带宽后，EIP的外网带宽, 单位为Mbps. 各地域带宽范围如下：  流量计费[1-200],带宽计费[1-800]
+        :param ShareBandwidthId: (Required) 共享带宽ID
+        :param EIPIds: (Optional) EIP的资源Id；默认移出该共享带宽下所有的EIP
+        :param PayMode: (Optional) 移出共享带宽后，EIP的计费模式. 枚举值: "Traffic", 流量计费; "Bandwidth", 带宽计费;  默认为 "Bandwidth".
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.DisassociateEIPWithShareBandwidthRequestSchema().dumps(d)
+        resp = self.invoke("DisassociateEIPWithShareBandwidth", d)
+        return apis.DisassociateEIPWithShareBandwidthResponseSchema().loads(resp)
+
+    def describe_v_ip(self, req: dict = None) -> dict:
+        """ DescribeVIP - 获取内网VIP详细信息
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param BusinessId: (Optional) 业务组
+        :param SubnetId: (Optional) 子网id，不指定则获取VPCId下的所有vip
+        :param Tag: (Optional) 业务组名称, 默认为 Default
+        :param VPCId: (Optional) vpc的id,指定SubnetId时必填
+        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.DescribeVIPRequestSchema().dumps(d)
+        resp = self.invoke("DescribeVIP", d)
+        return apis.DescribeVIPResponseSchema().loads(resp)
+
+    def get_e_ip_price(self, req: dict = None) -> dict:
+        """ GetEIPPrice - 获取弹性IP价格
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param Bandwidth: (Required) 弹性IP的外网带宽, 单位为Mbps, 范围 [0-800]
+        :param OperatorName: (Required) 弹性IP的线路如下: 国际: International BGP: Bgp 各地域允许的线路参数如下: cn-sh1: Bgp cn-sh2: Bgp cn-gd: Bgp cn-bj1: Bgp cn-bj2: Bgp hk: International us-ca: International th-bkk: International kr-seoul:International us-ws:International ge-fra:International sg:International tw-kh:International.其他海外线路均为 International,泉州为移动单线cn-qz:ChinaMobile
+        :param ChargeType: (Optional) 付费方式, 枚举值为: Year, 按年付费; Month, 按月付费; Dynamic, 按时付费; 默认为获取三种价格
+        :param PayMode: (Optional) 弹性IP计费方式r. 枚举值为: Traffic, 流量计费; Bandwidth, 带宽计费; "ShareBandwidth",共享带宽模式. 默认为Bandwidth
+        :param Quantity: (Optional) 购买时长。默认: 1。按小时购买(Dynamic)时无需此参数。 月付时，此参数传0，代表了购买至月末
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.GetEIPPriceRequestSchema().dumps(d)
+        resp = self.invoke("GetEIPPrice", d)
+        return apis.GetEIPPriceResponseSchema().loads(resp)
 
     def allocate_e_ip(self, req: dict = None) -> dict:
         """ AllocateEIP - 根据提供信息, 申请弹性IP
@@ -153,86 +433,11 @@ class UNetClient(Client):
         :param ShareBandwidthId: (Optional) 绑定的共享带宽Id，仅当PayMode为ShareBandwidth时有效
         :param Tag: (Optional) 业务组名称, 默认为 "Default"
         """
-        req = apis.AllocateEIPRequestSchema().dumps(req or {})
-        resp = self.invoke("AllocateEIP", req)
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.AllocateEIPRequestSchema().dumps(d)
+        resp = self.invoke("AllocateEIP", d)
         return apis.AllocateEIPResponseSchema().loads(resp)
-
-    def get_e_ip_upgrade_price(self, req: dict = None) -> dict:
-        """ GetEIPUpgradePrice - 获取弹性IP带宽改动价格
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param Bandwidth: (Required) 弹性IP的外网带宽, 单位为Mbps, 范围 [1-800]
-        :param EIPId: (Required) 弹性IP的资源ID
-        """
-        req = apis.GetEIPUpgradePriceRequestSchema().dumps(req or {})
-        resp = self.invoke("GetEIPUpgradePrice", req)
-        return apis.GetEIPUpgradePriceResponseSchema().loads(resp)
-
-    def release_e_ip(self, req: dict = None) -> dict:
-        """ ReleaseEIP - 释放弹性IP资源, 所释放弹性IP必须为非绑定状态.
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param EIPId: (Required) 弹性IP的资源ID
-        """
-        req = apis.ReleaseEIPRequestSchema().dumps(req or {})
-        resp = self.invoke("ReleaseEIP", req)
-        return apis.ReleaseEIPResponseSchema().loads(resp)
-
-    def resize_share_bandwidth(self, req: dict = None) -> dict:
-        """ ResizeShareBandwidth - 调整共享带宽的带宽值
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param ShareBandwidth: (Required) 带宽值，单位为Mb，范围 [20-5000] (最大值受地域限制)
-        :param ShareBandwidthId: (Required) 共享带宽的Id
-        """
-        req = apis.ResizeShareBandwidthRequestSchema().dumps(req or {})
-        resp = self.invoke("ResizeShareBandwidth", req)
-        return apis.ResizeShareBandwidthResponseSchema().loads(resp)
-
-    def describe_v_ip(self, req: dict = None) -> dict:
-        """ DescribeVIP - 获取内网VIP详细信息
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param BusinessId: (Optional) 业务组
-        :param SubnetId: (Optional) 子网id，不指定则获取VPCId下的所有vip
-        :param Tag: (Optional) 业务组名称, 默认为 Default
-        :param VPCId: (Optional) vpc的id,指定SubnetId时必填
-        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
-        """
-        req = apis.DescribeVIPRequestSchema().dumps(req or {})
-        resp = self.invoke("DescribeVIP", req)
-        return apis.DescribeVIPResponseSchema().loads(resp)
-
-    def un_bind_e_ip(self, req: dict = None) -> dict:
-        """ UnBindEIP - 将弹性IP从资源上解绑
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param EIPId: (Required) 弹性IP的资源Id
-        :param ResourceId: (Required) 弹性IP请求解绑的资源ID
-        :param ResourceType: (Required) 弹性IP请求解绑的资源类型, 枚举值为: uhost: 云主机; ulb, 负载均衡器 upm: 物理机; hadoophost: 大数据集群;fortresshost：堡垒机；udockhost：容器；udhost：私有专区主机；natgw：NAT网关；udb：udb；vpngw：ipsec vpn；ucdr：云灾备；dbaudit：数据库审计；uni，虚拟网卡。
-        """
-        req = apis.UnBindEIPRequestSchema().dumps(req or {})
-        resp = self.invoke("UnBindEIP", req)
-        return apis.UnBindEIPResponseSchema().loads(resp)
-
-    def update_firewall_attribute(self, req: dict = None) -> dict:
-        """ UpdateFirewallAttribute - 更新防火墙规则
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param FWId: (Required) 防火墙资源ID
-        :param Name: (Optional) 防火墙名称，默认为空，为空则不做修改。Name,Tag,Remark必须填写1个及以上
-        :param Remark: (Optional) 防火墙备注，默认为空，为空则不做修改。Name,Tag,Remark必须填写1个及以上
-        :param Tag: (Optional) 防火墙业务组，默认为空，为空则不做修改。Name,Tag,Remark必须填写1个及以上
-        """
-        req = apis.UpdateFirewallAttributeRequestSchema().dumps(req or {})
-        resp = self.invoke("UpdateFirewallAttribute", req)
-        return apis.UpdateFirewallAttributeResponseSchema().loads(resp)
 
     def bind_e_ip(self, req: dict = None) -> dict:
         """ BindEIP - 将尚未使用的弹性IP绑定到指定的资源
@@ -243,24 +448,11 @@ class UNetClient(Client):
         :param ResourceId: (Required) 弹性IP请求绑定的资源ID
         :param ResourceType: (Required) 弹性IP请求绑定的资源类型, 枚举值为: uhost: 云主机; ulb, 负载均衡器 upm: 物理机; hadoophost: 大数据集群;fortresshost：堡垒机；udockhost：容器；udhost：私有专区主机；natgw：natgw；udb：udb；vpngw：ipsec vpn；ucdr：云灾备；dbaudit：数据库审计；uni：虚拟网卡。
         """
-        req = apis.BindEIPRequestSchema().dumps(req or {})
-        resp = self.invoke("BindEIP", req)
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.BindEIPRequestSchema().dumps(d)
+        resp = self.invoke("BindEIP", d)
         return apis.BindEIPResponseSchema().loads(resp)
-
-    def create_bandwidth_package(self, req: dict = None) -> dict:
-        """ CreateBandwidthPackage - 为非共享带宽模式下, 已绑定资源实例的带宽计费弹性IP附加临时带宽包
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。
-        :param Region: (Config) 地域
-        :param Bandwidth: (Required) 带宽大小(单位Mbps), 取值范围[2,800] (最大值受地域限制)
-        :param EIPId: (Required) 所绑定弹性IP的资源ID
-        :param TimeRange: (Required) 带宽包有效时长, 取值范围为大于0的整数, 即该带宽包在EnableTime到 EnableTime+TimeRange时间段内生效
-        :param CouponId: (Optional) 代金券ID
-        :param EnableTime: (Optional) 生效时间, 格式为 Unix timestamp, 默认为立即开通
-        """
-        req = apis.CreateBandwidthPackageRequestSchema().dumps(req or {})
-        resp = self.invoke("CreateBandwidthPackage", req)
-        return apis.CreateBandwidthPackageResponseSchema().loads(resp)
 
     def update_firewall(self, req: dict = None) -> dict:
         """ UpdateFirewall - 更新防火墙规则
@@ -270,53 +462,11 @@ class UNetClient(Client):
         :param FWId: (Required) 防火墙资源ID
         :param Rule: (Required) 防火墙规则，例如：TCP|22|192.168.1.1/22|DROP|LOW|禁用22端口，第一个参数代表协议：第二个参数代表端口号，第三个参数为ip，第四个参数为ACCEPT（接受）和DROP（拒绝），第五个参数优先级：HIGH（高），MEDIUM（中），LOW（低），第六个参数为该条规则的自定义备注
         """
-        req = apis.UpdateFirewallRequestSchema().dumps(req or {})
-        resp = self.invoke("UpdateFirewall", req)
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.UpdateFirewallRequestSchema().dumps(d)
+        resp = self.invoke("UpdateFirewall", d)
         return apis.UpdateFirewallResponseSchema().loads(resp)
-
-    def allocate_v_ip(self, req: dict = None) -> dict:
-        """ AllocateVIP - 根据提供信息，申请内网VIP(Virtual IP），多用于高可用程序作为漂移IP。
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域
-        :param SubnetId: (Required) 子网id
-        :param VPCId: (Required) 指定vip所属的VPC
-        :param BusinessId: (Optional) 业务组
-        :param Count: (Optional) 申请数量，默认: 1
-        :param Name: (Optional) vip名，默认为VIP
-        :param Remark: (Optional) 备注
-        :param Tag: (Optional) 业务组名称，默认为Default
-        :param Zone: (Optional) 可用区
-        """
-        req = apis.AllocateVIPRequestSchema().dumps(req or {})
-        resp = self.invoke("AllocateVIP", req)
-        return apis.AllocateVIPResponseSchema().loads(resp)
-
-    def delete_firewall(self, req: dict = None) -> dict:
-        """ DeleteFirewall - 删除防火墙
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写
-        :param Region: (Config) 地域
-        :param FWId: (Required) 防火墙资源ID
-        """
-        req = apis.DeleteFirewallRequestSchema().dumps(req or {})
-        resp = self.invoke("DeleteFirewall", req)
-        return apis.DeleteFirewallResponseSchema().loads(resp)
-
-    def describe_firewall(self, req: dict = None) -> dict:
-        """ DescribeFirewall - 获取防火墙组信息
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写
-        :param Region: (Config) 地域
-        :param FWId: (Optional) 防火墙ID，默认为返回所有防火墙
-        :param Limit: (Optional) 返回数据长度，默认为20，最大10000000
-        :param Offset: (Optional) 列表起始位置偏移量，默认为0
-        :param ResourceId: (Optional) 绑定防火墙组的资源ID
-        :param ResourceType: (Optional) 绑定防火墙组的资源类型，默认为全部资源类型。枚举值为："unatgw"，NAT网关； "uhost"，云主机； "upm"，物理云主机； "hadoophost"，hadoop节点； "fortresshost"，堡垒机； "udhost"，私有专区主机；"udockhost"，容器；"dbaudit"，数据库审计.
-        """
-        req = apis.DescribeFirewallRequestSchema().dumps(req or {})
-        resp = self.invoke("DescribeFirewall", req)
-        return apis.DescribeFirewallResponseSchema().loads(resp)
 
     def describe_firewall_resource(self, req: dict = None) -> dict:
         """ DescribeFirewallResource - 获取防火墙组所绑定资源的外网IP
@@ -327,99 +477,11 @@ class UNetClient(Client):
         :param Limit: (Optional) 返回数据长度，默认为20，最大10000000
         :param Offset: (Optional) 列表起始位置偏移量，默认为0
         """
-        req = apis.DescribeFirewallResourceRequestSchema().dumps(req or {})
-        resp = self.invoke("DescribeFirewallResource", req)
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.DescribeFirewallResourceRequestSchema().dumps(d)
+        resp = self.invoke("DescribeFirewallResource", d)
         return apis.DescribeFirewallResourceResponseSchema().loads(resp)
-
-    def set_e_ip_pay_mode(self, req: dict = None) -> dict:
-        """ SetEIPPayMode - 设置弹性IP计费模式, 切换时会涉及付费/退费.
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param Bandwidth: (Required) 调整的目标带宽值, 单位Mbps. 各地域的带宽值范围如下: 流量计费[1-200],其余情况[1-800]
-        :param EIPId: (Required) 弹性IP的资源Id
-        :param PayMode: (Required) 计费模式. 枚举值："Traffic", 流量计费模式; "Bandwidth", 带宽计费模式
-        """
-        req = apis.SetEIPPayModeRequestSchema().dumps(req or {})
-        resp = self.invoke("SetEIPPayMode", req)
-        return apis.SetEIPPayModeResponseSchema().loads(resp)
-
-    def create_firewall(self, req: dict = None) -> dict:
-        """ CreateFirewall - 创建防火墙
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写
-        :param Region: (Config) 地域
-        :param Name: (Required) 防火墙名称
-        :param Rule: (Required) 防火墙规则，例如：TCP|22|192.168.1.1/22|DROP|LOW|禁用22端口，第一个参数代表协议：第二个参数代表端口号，第三个参数为ip，第四个参数为ACCEPT（接受）和DROP（拒绝），第五个参数优先级：HIGH（高），MEDIUM（中），LOW（低），第六个参数为该条规则的自定义备注
-        :param Remark: (Optional) 防火墙描述，默认为空
-        :param Tag: (Optional) 防火墙业务组，默认为Default
-        """
-        req = apis.CreateFirewallRequestSchema().dumps(req or {})
-        resp = self.invoke("CreateFirewall", req)
-        return apis.CreateFirewallResponseSchema().loads(resp)
-
-    def get_e_ip_price(self, req: dict = None) -> dict:
-        """ GetEIPPrice - 获取弹性IP价格
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param Bandwidth: (Required) 弹性IP的外网带宽, 单位为Mbps, 范围 [0-800]
-        :param OperatorName: (Required) 弹性IP的线路如下: 国际: International BGP: Bgp 各地域允许的线路参数如下: cn-sh1: Bgp cn-sh2: Bgp cn-gd: Bgp cn-bj1: Bgp cn-bj2: Bgp hk: International us-ca: International th-bkk: International kr-seoul:International us-ws:International ge-fra:International sg:International tw-kh:International.其他海外线路均为 International,泉州为移动单线cn-qz:ChinaMobile
-        :param ChargeType: (Optional) 付费方式, 枚举值为: Year, 按年付费; Month, 按月付费; Dynamic, 按时付费; 默认为获取三种价格
-        :param PayMode: (Optional) 弹性IP计费方式r. 枚举值为: Traffic, 流量计费; Bandwidth, 带宽计费; "ShareBandwidth",共享带宽模式. 默认为Bandwidth
-        :param Quantity: (Optional) 购买时长。默认: 1。按小时购买(Dynamic)时无需此参数。 月付时，此参数传0，代表了购买至月末
-        """
-        req = apis.GetEIPPriceRequestSchema().dumps(req or {})
-        resp = self.invoke("GetEIPPrice", req)
-        return apis.GetEIPPriceResponseSchema().loads(resp)
-
-    def modify_e_ip_bandwidth(self, req: dict = None) -> dict:
-        """ ModifyEIPBandwidth - 调整弹性IP的外网带宽
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param Bandwidth: (Required) 弹性IP的外网带宽, 单位为Mbps. 各地域的带宽值范围如下：流量计费[1-200],带宽计费[1-800]
-        :param EIPId: (Required) 弹性IP的资源ID
-        """
-        req = apis.ModifyEIPBandwidthRequestSchema().dumps(req or {})
-        resp = self.invoke("ModifyEIPBandwidth", req)
-        return apis.ModifyEIPBandwidthResponseSchema().loads(resp)
-
-    def release_v_ip(self, req: dict = None) -> dict:
-        """ ReleaseVIP - 释放VIP资源
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写
-        :param Region: (Config) 地域
-        :param VIPId: (Required) 内网VIP的id
-        :param Zone: (Optional) 可用区
-        """
-        req = apis.ReleaseVIPRequestSchema().dumps(req or {})
-        resp = self.invoke("ReleaseVIP", req)
-        return apis.ReleaseVIPResponseSchema().loads(resp)
-
-    def get_e_ip_pay_mode(self, req: dict = None) -> dict:
-        """ GetEIPPayMode - 获取弹性IP计费模式
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写
-        :param Region: (Config) 地域
-        :param EIPId: (Required) 弹性IP的资源Id
-        """
-        req = apis.GetEIPPayModeRequestSchema().dumps(req or {})
-        resp = self.invoke("GetEIPPayMode", req)
-        return apis.GetEIPPayModeResponseSchema().loads(resp)
-
-    def grant_firewall(self, req: dict = None) -> dict:
-        """ GrantFirewall - 将防火墙应用到资源上
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param FWId: (Required) 防火墙资源ID
-        :param ResourceId: (Required) 所应用资源ID
-        :param ResourceType: (Required) 绑定防火墙组的资源类型，默认为全部资源类型。枚举值为："unatgw"，NAT网关； "uhost"，云主机； "upm"，物理云主机； "hadoophost"，hadoop节点； "fortresshost"，堡垒机； "udhost"，私有专区主机；"udockhost"，容器；"dbaudit"，数据库审计，”uni“，虚拟网卡。
-        """
-        req = apis.GrantFirewallRequestSchema().dumps(req or {})
-        resp = self.invoke("GrantFirewall", req)
-        return apis.GrantFirewallResponseSchema().loads(resp)
 
     def modify_e_ip_weight(self, req: dict = None) -> dict:
         """ ModifyEIPWeight - 修改弹性IP的外网出口权重
@@ -429,6 +491,8 @@ class UNetClient(Client):
         :param EIPId: (Required) 弹性IP的资源ID
         :param Weight: (Required) 外网出口权重, 范围[0-100] 取值为0时, 该弹性IP不会被使用. 取值为100时, 同主机下只会使用这个弹性IP，其他弹性IP不会被使用 请勿将多个绑定在同一资源的弹性IP设置为相同权重
         """
-        req = apis.ModifyEIPWeightRequestSchema().dumps(req or {})
-        resp = self.invoke("ModifyEIPWeight", req)
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.ModifyEIPWeightRequestSchema().dumps(d)
+        resp = self.invoke("ModifyEIPWeight", d)
         return apis.ModifyEIPWeightResponseSchema().loads(resp)

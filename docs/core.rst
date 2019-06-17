@@ -1,5 +1,5 @@
-UCloud SDK Core Modules
-=======================
+Core
+====
 
 Config
 ------

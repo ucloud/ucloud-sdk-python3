@@ -5,7 +5,7 @@ from ucloud.core.exc import ValidationException
 
 
 class Schema(abstract.Schema):
-    fields: typing.Dict[str, abstract.Field]
+    fields = {}
 
     def dumps(self, d: dict) -> dict:
         result = {}
@@ -17,7 +17,7 @@ class Schema(abstract.Schema):
             # resolve value is empty
             if v is None:
                 if field.required:
-                    errors.append(ValidationException(f"the field {k} is required"))
+                    errors.append(ValidationException("the field {k} is required".format(k=k)))
                     continue
 
                 if field.default is None:
@@ -63,7 +63,7 @@ class Schema(abstract.Schema):
 
 
 class RequestSchema(Schema):
-    fields: typing.Dict[str, abstract.Field]
+    fields = {}
 
     def dumps(self, d: dict) -> dict:
         result = {}
@@ -75,7 +75,7 @@ class RequestSchema(Schema):
             # resolve value is empty
             if v is None:
                 if field.required:
-                    errors.append(ValidationException(f"the field {k} is required"))
+                    errors.append(ValidationException("the field {k} is required".format(k=k)))
                     continue
 
                 if field.default is None:
@@ -97,14 +97,14 @@ class RequestSchema(Schema):
             if isinstance(field, fields.List):
                 for i, item in enumerate(serialized):
                     if not isinstance(field.item, RequestSchema):
-                        result[f"{k}.{i}"] = item
+                        result["{k}.{i}".format(k=k, i=i)] = item
                         continue
 
                     for item_k, item_v in item.items():
-                        result[f"{k}.{i}.{item_k}"] = item_v
+                        result["{k}.{i}.{item_k}".format(k=k, i=i, item_k=item_k)] = item_v
             elif isinstance(field, RequestSchema):
                 for dk, dv in serialized.items():
-                    result[f"{k}.{dk}"] = dv
+                    result["{k}.{dk}".format(k=k, dk=dk)] = dv
             else:
                 result[k] = serialized
 

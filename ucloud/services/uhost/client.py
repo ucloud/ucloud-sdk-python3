@@ -55,45 +55,11 @@ class UHostClient(Client):
         :param UserDataScript: (Optional) 【暂不支持】cloudinit方式下，用户初始化脚本
         :param VPCId: (Optional) VPC ID。默认为当前地域的默认VPC。
         """
-        req = apis.CreateUHostInstanceRequestSchema().dumps(req or {})
-        resp = self.invoke("CreateUHostInstance", req)
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.CreateUHostInstanceRequestSchema().dumps(d)
+        resp = self.invoke("CreateUHostInstance", d)
         return apis.CreateUHostInstanceResponseSchema().loads(resp)
-
-    def describe_image(self, req: dict = None) -> dict:
-        """ DescribeImage - 获取指定数据中心镜像列表，用户可通过指定操作系统类型，镜像Id进行过滤。
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param ImageId: (Optional) 镜像Id
-        :param ImageType: (Optional) 镜像类型。标准镜像：Base，镜像市场：Business， 自定义镜像：Custom，默认返回所有类型
-        :param Limit: (Optional) 返回数据长度，默认为20
-        :param Offset: (Optional) 列表起始位置偏移量，默认为0
-        :param OsType: (Optional) 操作系统类型：Linux， Windows 默认返回所有类型
-        :param PriceSet: (Optional) 是否返回价格：1返回，0不返回；默认不返回
-        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
-        """
-        req = apis.DescribeImageRequestSchema().dumps(req or {})
-        resp = self.invoke("DescribeImage", req)
-        return apis.DescribeImageResponseSchema().loads(resp)
-
-    def describe_uhost_instance(self, req: dict = None) -> dict:
-        """ DescribeUHostInstance - 获取主机或主机列表信息，并可根据数据中心，主机ID等参数进行过滤。
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param IsolationGroup: (Optional) 硬件隔离组id。通过硬件隔离组筛选主机。
-        :param LifeCycle: (Optional) 1：普通云主机；2：抢占型云主机；如不传此参数，默认全部获取
-        :param Limit: (Optional) 返回数据长度，默认为20，最大100
-        :param Offset: (Optional) 列表起始位置偏移量，默认为0
-        :param SubnetId: (Optional) 子网id。通过子网筛选主机。
-        :param Tag: (Optional) 要查询的业务组名称
-        :param UHostIds: (Optional) 【数组】UHost主机的资源ID，例如UHostIds.0代表希望获取信息 的主机1，UHostIds.1代表主机2。 如果不传入，则返回当前Region 所有符合条件的UHost实例。
-        :param VPCId: (Optional) vpc id。通过VPC筛选主机。
-        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
-        """
-        req = apis.DescribeUHostInstanceRequestSchema().dumps(req or {})
-        resp = self.invoke("DescribeUHostInstance", req)
-        return apis.DescribeUHostInstanceResponseSchema().loads(resp)
 
     def get_uhost_instance_vnc_info(self, req: dict = None) -> dict:
         """ GetUHostInstanceVncInfo - 获取指定UHost实例的管理VNC配置详细信息。
@@ -103,28 +69,11 @@ class UHostClient(Client):
         :param UHostId: (Required) UHost实例ID 参见 [DescribeUHostInstance](./describe_uhost_instance.html)
         :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
         """
-        req = apis.GetUHostInstanceVncInfoRequestSchema().dumps(req or {})
-        resp = self.invoke("GetUHostInstanceVncInfo", req)
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.GetUHostInstanceVncInfoRequestSchema().dumps(d)
+        resp = self.invoke("GetUHostInstanceVncInfo", d)
         return apis.GetUHostInstanceVncInfoResponseSchema().loads(resp)
-
-    def get_uhost_upgrade_price(self, req: dict = None) -> dict:
-        """ GetUHostUpgradePrice - 获取UHost实例升级配置的价格。可选配置范围请参考[[api:uhost-api:uhost_type|云主机机型说明]]。
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param UHostId: (Required) UHost实例ID。 参见 [DescribeUHostInstance](describe_uhost_instance.html)。
-        :param BootDiskSpace: (Optional) 【待废弃】系统大小，单位: GB，范围[20,100]，步长: 10。
-        :param CPU: (Optional) 虚拟CPU核数。可选参数：1-32（可选范围与UHostType相关）。默认值为当前实例的CPU核数。
-        :param DiskSpace: (Optional) 【待废弃】数据盘大小，单位: GB，范围[0,1000]，步长: 10， 默认值是该主机当前数据盘大小。
-        :param HostType: (Optional) 【待废弃】主机系列，目前支持N1,N2
-        :param Memory: (Optional) 内存大小。单位：MB。范围 ：[1024, 262144]，取值为1024的倍数（可选范围与UHostType相关）。默认值为当前实例的内存大小。
-        :param NetCapValue: (Optional) 网卡升降级（1，表示升级，2表示降级，0表示不变）
-        :param TimemachineFeature: (Optional) 方舟机型。No，Yes。默认是No。
-        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
-        """
-        req = apis.GetUHostUpgradePriceRequestSchema().dumps(req or {})
-        resp = self.invoke("GetUHostUpgradePrice", req)
-        return apis.GetUHostUpgradePriceResponseSchema().loads(resp)
 
     def poweroff_uhost_instance(self, req: dict = None) -> dict:
         """ PoweroffUHostInstance - 直接关闭UHost实例电源，无需等待实例正常关闭。
@@ -134,39 +83,11 @@ class UHostClient(Client):
         :param UHostId: (Required) UHost实例ID 参见 [DescribeUHostInstance](./describe_uhost_instance.html)
         :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
         """
-        req = apis.PoweroffUHostInstanceRequestSchema().dumps(req or {})
-        resp = self.invoke("PoweroffUHostInstance", req)
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.PoweroffUHostInstanceRequestSchema().dumps(d)
+        resp = self.invoke("PoweroffUHostInstance", d)
         return apis.PoweroffUHostInstanceResponseSchema().loads(resp)
-
-    def copy_custom_image(self, req: dict = None) -> dict:
-        """ CopyCustomImage - 复制自制镜像
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param SourceImageId: (Required) 源镜像Id, 参见 DescribeImage
-        :param TargetProjectId: (Required) 目标项目Id, 参见 GetProjectList
-        :param TargetImageDescription: (Optional) 目标镜像描述
-        :param TargetImageName: (Optional) 目标镜像名称
-        :param TargetRegion: (Optional) 目标地域，不跨地域不用填
-        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
-        """
-        req = apis.CopyCustomImageRequestSchema().dumps(req or {})
-        resp = self.invoke("CopyCustomImage", req)
-        return apis.CopyCustomImageResponseSchema().loads(resp)
-
-    def create_custom_image(self, req: dict = None) -> dict:
-        """ CreateCustomImage - 从指定UHost实例，生成自定义镜像。
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param ImageName: (Required) 镜像名称
-        :param UHostId: (Required) UHost实例ID 参见 [DescribeUHostInstance](describe_uhost_instance.html)
-        :param ImageDescription: (Optional) 镜像描述
-        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
-        """
-        req = apis.CreateCustomImageRequestSchema().dumps(req or {})
-        resp = self.invoke("CreateCustomImage", req)
-        return apis.CreateCustomImageResponseSchema().loads(resp)
 
     def reinstall_uhost_instance(self, req: dict = None) -> dict:
         """ ReinstallUHostInstance - 重新安装指定UHost实例的操作系统
@@ -182,156 +103,11 @@ class UHostClient(Client):
         :param ResourceType: (Optional) 云灾备指明191
         :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
         """
-        req = apis.ReinstallUHostInstanceRequestSchema().dumps(req or {})
-        resp = self.invoke("ReinstallUHostInstance", req)
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.ReinstallUHostInstanceRequestSchema().dumps(d)
+        resp = self.invoke("ReinstallUHostInstance", d)
         return apis.ReinstallUHostInstanceResponseSchema().loads(resp)
-
-    def terminate_custom_image(self, req: dict = None) -> dict:
-        """ TerminateCustomImage - 删除用户自定义镜像
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param ImageId: (Required) 自制镜像ID 参见 [DescribeImage](describe_image.html)
-        """
-        req = apis.TerminateCustomImageRequestSchema().dumps(req or {})
-        resp = self.invoke("TerminateCustomImage", req)
-        return apis.TerminateCustomImageResponseSchema().loads(resp)
-
-    def modify_uhost_instance_name(self, req: dict = None) -> dict:
-        """ ModifyUHostInstanceName - 修改指定UHost实例名称，需要给出数据中心，UHostId，及新的实例名称。
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param UHostId: (Required) UHost实例ID 参见 [DescribeUHostInstance](describe_uhost_instance.html)
-        :param Name: (Optional) UHost实例名称
-        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
-        """
-        req = apis.ModifyUHostInstanceNameRequestSchema().dumps(req or {})
-        resp = self.invoke("ModifyUHostInstanceName", req)
-        return apis.ModifyUHostInstanceNameResponseSchema().loads(resp)
-
-    def modify_uhost_instance_remark(self, req: dict = None) -> dict:
-        """ ModifyUHostInstanceRemark - 修改指定UHost实例备注信息。
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param UHostId: (Required) UHost实例ID 参见 [DescribeUHostInstance](describe_uhost_instance.html)
-        :param Remark: (Optional) 备注
-        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
-        """
-        req = apis.ModifyUHostInstanceRemarkRequestSchema().dumps(req or {})
-        resp = self.invoke("ModifyUHostInstanceRemark", req)
-        return apis.ModifyUHostInstanceRemarkResponseSchema().loads(resp)
-
-    def resize_attached_disk(self, req: dict = None) -> dict:
-        """ ResizeAttachedDisk - 修改挂载的磁盘大小，包含系统盘和数据盘
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param DiskId: (Required) 磁盘ID。参见 [DescribeUHostInstance](describe_uhost_instance.html)返回值中的DiskSet。
-        :param DiskSpace: (Required) 磁盘大小，单位GB，步长为10。取值范围需大于当前磁盘大小，最大值请参考[[api:uhost-api:disk_type|磁盘类型]]。
-        :param UHostId: (Required) UHost实例ID。 参见 [DescribeUHostInstance](describe_uhost_instance.html)。
-        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
-        """
-        req = apis.ResizeAttachedDiskRequestSchema().dumps(req or {})
-        resp = self.invoke("ResizeAttachedDisk", req)
-        return apis.ResizeAttachedDiskResponseSchema().loads(resp)
-
-    def start_uhost_instance(self, req: dict = None) -> dict:
-        """ StartUHostInstance - 启动处于关闭状态的UHost实例，需要指定数据中心及UHostID两个参数的值。
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param UHostId: (Required) UHost实例ID 参见 [DescribeUHostInstance](describe_uhost_instance.html)
-        :param DiskPassword: (Optional) 加密盘密码
-        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
-        """
-        req = apis.StartUHostInstanceRequestSchema().dumps(req or {})
-        resp = self.invoke("StartUHostInstance", req)
-        return apis.StartUHostInstanceResponseSchema().loads(resp)
-
-    def terminate_uhost_instance(self, req: dict = None) -> dict:
-        """ TerminateUHostInstance - 删除指定数据中心的UHost实例。
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param UHostId: (Required) UHost资源Id 参见 [DescribeUHostInstance](describe_uhost_instance.html)
-        :param Destroy: (Optional) 是否直接删除，0表示按照原来的逻辑（有回收站权限，则进入回收站），1表示直接删除
-        :param ReleaseEIP: (Optional) 是否释放绑定的EIP。true: 解绑EIP后，并释放；其他值或不填：解绑EIP。
-        :param ReleaseUDisk: (Optional) 是否删除挂载的数据盘。true删除，其他不删除。
-        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
-        """
-        req = apis.TerminateUHostInstanceRequestSchema().dumps(req or {})
-        resp = self.invoke("TerminateUHostInstance", req)
-        return apis.TerminateUHostInstanceResponseSchema().loads(resp)
-
-    def upgrade_to_ark_uhost_instance(self, req: dict = None) -> dict:
-        """ UpgradeToArkUHostInstance - 普通升级为方舟机型
-
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param UHostIds: (Required) UHost主机的资源ID，例如UHostIds.0代表希望升级的主机1，UHostIds.1代表主机2。
-        :param Zone: (Required) 可用区。参见 [可用区列表](../summary/regionlist.html)
-        :param CouponId: (Optional) 代金券ID 请参考DescribeCoupon接口
-        """
-        req = apis.UpgradeToArkUHostInstanceRequestSchema().dumps(req or {})
-        resp = self.invoke("UpgradeToArkUHostInstance", req)
-        return apis.UpgradeToArkUHostInstanceResponseSchema().loads(resp)
-
-    def modify_uhost_instance_tag(self, req: dict = None) -> dict:
-        """ ModifyUHostInstanceTag - 修改指定UHost实例业务组标识。
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param UHostId: (Required) UHost实例ID 参见 [DescribeUHostInstance](describe_uhost_instance.html)
-        :param Tag: (Optional) 业务组名称
-        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
-        """
-        req = apis.ModifyUHostInstanceTagRequestSchema().dumps(req or {})
-        resp = self.invoke("ModifyUHostInstanceTag", req)
-        return apis.ModifyUHostInstanceTagResponseSchema().loads(resp)
-
-    def reset_uhost_instance_password(self, req: dict = None) -> dict:
-        """ ResetUHostInstancePassword - 重置UHost实例的管理员密码。
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param Password: (Required) UHost新密码（密码格式使用BASE64编码）
-        :param UHostId: (Required) UHost实例ID
-        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
-        """
-        req = apis.ResetUHostInstancePasswordRequestSchema().dumps(req or {})
-        resp = self.invoke("ResetUHostInstancePassword", req)
-        return apis.ResetUHostInstancePasswordResponseSchema().loads(resp)
-
-    def import_custom_image(self, req: dict = None) -> dict:
-        """ ImportCustomImage - 把UFile的镜像文件导入到UHost，生成自定义镜像
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param Auth: (Required) 是否授权。必须填true
-        :param Format: (Required) 镜像格式，可选RAW、VHD、VMDK、qcow2
-        :param ImageName: (Required) 镜像名称
-        :param OsName: (Required) 操作系统详细版本，请参考控制台的镜像版本；OsType为Other时，输入参数为Other
-        :param OsType: (Required) 操作系统平台，比如CentOS、Ubuntu、Windows、RedHat等，请参考控制台的镜像版本；若导入控制台上没有的操作系统，参数为Other
-        :param UFileUrl: (Required) UFile私有空间地址
-        :param ImageDescription: (Optional) 镜像描述
-        """
-        req = apis.ImportCustomImageRequestSchema().dumps(req or {})
-        resp = self.invoke("ImportCustomImage", req)
-        return apis.ImportCustomImageResponseSchema().loads(resp)
-
-    def reboot_uhost_instance(self, req: dict = None) -> dict:
-        """ RebootUHostInstance - 重新启动UHost实例，需要指定数据中心及UHostID两个参数的值。
-
-        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
-        :param UHostId: (Required) UHost实例ID 参见 [DescribeUHostInstance](describe_uhost_instance.html)
-        :param DiskPassword: (Optional) 加密盘密码
-        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
-        """
-        req = apis.RebootUHostInstanceRequestSchema().dumps(req or {})
-        resp = self.invoke("RebootUHostInstance", req)
-        return apis.RebootUHostInstanceResponseSchema().loads(resp)
 
     def resize_uhost_instance(self, req: dict = None) -> dict:
         """ ResizeUHostInstance - 修改指定UHost实例的资源配置，如CPU核心数，内存容量大小，网络增强等。可选配置范围请参考[[api:uhost-api:uhost_type|云主机机型说明]]。
@@ -346,8 +122,10 @@ class UHostClient(Client):
         :param NetCapValue: (Optional) 网卡升降级（1，表示升级，2表示降级，0表示不变）
         :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
         """
-        req = apis.ResizeUHostInstanceRequestSchema().dumps(req or {})
-        resp = self.invoke("ResizeUHostInstance", req)
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.ResizeUHostInstanceRequestSchema().dumps(d)
+        resp = self.invoke("ResizeUHostInstance", d)
         return apis.ResizeUHostInstanceResponseSchema().loads(resp)
 
     def stop_uhost_instance(self, req: dict = None) -> dict:
@@ -358,9 +136,27 @@ class UHostClient(Client):
         :param UHostId: (Required) UHost实例ID 参见 [DescribeUHostInstance](describe_uhost_instance.html)
         :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
         """
-        req = apis.StopUHostInstanceRequestSchema().dumps(req or {})
-        resp = self.invoke("StopUHostInstance", req)
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.StopUHostInstanceRequestSchema().dumps(d)
+        resp = self.invoke("StopUHostInstance", d)
         return apis.StopUHostInstanceResponseSchema().loads(resp)
+
+    def create_custom_image(self, req: dict = None) -> dict:
+        """ CreateCustomImage - 从指定UHost实例，生成自定义镜像。
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param ImageName: (Required) 镜像名称
+        :param UHostId: (Required) UHost实例ID 参见 [DescribeUHostInstance](describe_uhost_instance.html)
+        :param ImageDescription: (Optional) 镜像描述
+        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.CreateCustomImageRequestSchema().dumps(d)
+        resp = self.invoke("CreateCustomImage", d)
+        return apis.CreateCustomImageResponseSchema().loads(resp)
 
     def describe_uhost_tags(self, req: dict = None) -> dict:
         """ DescribeUHostTags - 获取指定数据中心的业务组列表。
@@ -369,9 +165,146 @@ class UHostClient(Client):
         :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
         :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
         """
-        req = apis.DescribeUHostTagsRequestSchema().dumps(req or {})
-        resp = self.invoke("DescribeUHostTags", req)
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.DescribeUHostTagsRequestSchema().dumps(d)
+        resp = self.invoke("DescribeUHostTags", d)
         return apis.DescribeUHostTagsResponseSchema().loads(resp)
+
+    def import_custom_image(self, req: dict = None) -> dict:
+        """ ImportCustomImage - 把UFile的镜像文件导入到UHost，生成自定义镜像
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param Auth: (Required) 是否授权。必须填true
+        :param Format: (Required) 镜像格式，可选RAW、VHD、VMDK、qcow2
+        :param ImageName: (Required) 镜像名称
+        :param OsName: (Required) 操作系统详细版本，请参考控制台的镜像版本；OsType为Other时，输入参数为Other
+        :param OsType: (Required) 操作系统平台，比如CentOS、Ubuntu、Windows、RedHat等，请参考控制台的镜像版本；若导入控制台上没有的操作系统，参数为Other
+        :param UFileUrl: (Required) UFile私有空间地址
+        :param ImageDescription: (Optional) 镜像描述
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.ImportCustomImageRequestSchema().dumps(d)
+        resp = self.invoke("ImportCustomImage", d)
+        return apis.ImportCustomImageResponseSchema().loads(resp)
+
+    def modify_uhost_instance_name(self, req: dict = None) -> dict:
+        """ ModifyUHostInstanceName - 修改指定UHost实例名称，需要给出数据中心，UHostId，及新的实例名称。
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param UHostId: (Required) UHost实例ID 参见 [DescribeUHostInstance](describe_uhost_instance.html)
+        :param Name: (Optional) UHost实例名称
+        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.ModifyUHostInstanceNameRequestSchema().dumps(d)
+        resp = self.invoke("ModifyUHostInstanceName", d)
+        return apis.ModifyUHostInstanceNameResponseSchema().loads(resp)
+
+    def reset_uhost_instance_password(self, req: dict = None) -> dict:
+        """ ResetUHostInstancePassword - 重置UHost实例的管理员密码。
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param Password: (Required) UHost新密码（密码格式使用BASE64编码）
+        :param UHostId: (Required) UHost实例ID
+        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.ResetUHostInstancePasswordRequestSchema().dumps(d)
+        resp = self.invoke("ResetUHostInstancePassword", d)
+        return apis.ResetUHostInstancePasswordResponseSchema().loads(resp)
+
+    def start_uhost_instance(self, req: dict = None) -> dict:
+        """ StartUHostInstance - 启动处于关闭状态的UHost实例，需要指定数据中心及UHostID两个参数的值。
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param UHostId: (Required) UHost实例ID 参见 [DescribeUHostInstance](describe_uhost_instance.html)
+        :param DiskPassword: (Optional) 加密盘密码
+        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.StartUHostInstanceRequestSchema().dumps(d)
+        resp = self.invoke("StartUHostInstance", d)
+        return apis.StartUHostInstanceResponseSchema().loads(resp)
+
+    def terminate_custom_image(self, req: dict = None) -> dict:
+        """ TerminateCustomImage - 删除用户自定义镜像
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param ImageId: (Required) 自制镜像ID 参见 [DescribeImage](describe_image.html)
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.TerminateCustomImageRequestSchema().dumps(d)
+        resp = self.invoke("TerminateCustomImage", d)
+        return apis.TerminateCustomImageResponseSchema().loads(resp)
+
+    def copy_custom_image(self, req: dict = None) -> dict:
+        """ CopyCustomImage - 复制自制镜像
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param SourceImageId: (Required) 源镜像Id, 参见 DescribeImage
+        :param TargetProjectId: (Required) 目标项目Id, 参见 GetProjectList
+        :param TargetImageDescription: (Optional) 目标镜像描述
+        :param TargetImageName: (Optional) 目标镜像名称
+        :param TargetRegion: (Optional) 目标地域，不跨地域不用填
+        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.CopyCustomImageRequestSchema().dumps(d)
+        resp = self.invoke("CopyCustomImage", d)
+        return apis.CopyCustomImageResponseSchema().loads(resp)
+
+    def describe_image(self, req: dict = None) -> dict:
+        """ DescribeImage - 获取指定数据中心镜像列表，用户可通过指定操作系统类型，镜像Id进行过滤。
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param ImageId: (Optional) 镜像Id
+        :param ImageType: (Optional) 镜像类型。标准镜像：Base，镜像市场：Business， 自定义镜像：Custom，默认返回所有类型
+        :param Limit: (Optional) 返回数据长度，默认为20
+        :param Offset: (Optional) 列表起始位置偏移量，默认为0
+        :param OsType: (Optional) 操作系统类型：Linux， Windows 默认返回所有类型
+        :param PriceSet: (Optional) 是否返回价格：1返回，0不返回；默认不返回
+        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.DescribeImageRequestSchema().dumps(d)
+        resp = self.invoke("DescribeImage", d)
+        return apis.DescribeImageResponseSchema().loads(resp)
+
+    def describe_uhost_instance(self, req: dict = None) -> dict:
+        """ DescribeUHostInstance - 获取主机或主机列表信息，并可根据数据中心，主机ID等参数进行过滤。
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param IsolationGroup: (Optional) 硬件隔离组id。通过硬件隔离组筛选主机。
+        :param LifeCycle: (Optional) 1：普通云主机；2：抢占型云主机；如不传此参数，默认全部获取
+        :param Limit: (Optional) 返回数据长度，默认为20，最大100
+        :param Offset: (Optional) 列表起始位置偏移量，默认为0
+        :param SubnetId: (Optional) 子网id。通过子网筛选主机。北京一地域无效。
+        :param Tag: (Optional) 要查询的业务组名称
+        :param UHostIds: (Optional) 【数组】UHost主机的资源ID，例如UHostIds.0代表希望获取信息 的主机1，UHostIds.1代表主机2。 如果不传入，则返回当前Region 所有符合条件的UHost实例。
+        :param VPCId: (Optional) vpc id。通过VPC筛选主机。北京一地域无效。
+        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.DescribeUHostInstanceRequestSchema().dumps(d)
+        resp = self.invoke("DescribeUHostInstance", d)
+        return apis.DescribeUHostInstanceResponseSchema().loads(resp)
 
     def get_uhost_instance_price(self, req: dict = None) -> dict:
         """ GetUHostInstancePrice - 根据UHost实例配置，获取UHost实例的价格。
@@ -396,6 +329,121 @@ class UHostClient(Client):
         :param UHostType: (Optional) 云主机机型。参考[[api:uhost-api:uhost_type|云主机机型说明]]。
         :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
         """
-        req = apis.GetUHostInstancePriceRequestSchema().dumps(req or {})
-        resp = self.invoke("GetUHostInstancePrice", req)
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.GetUHostInstancePriceRequestSchema().dumps(d)
+        resp = self.invoke("GetUHostInstancePrice", d)
         return apis.GetUHostInstancePriceResponseSchema().loads(resp)
+
+    def modify_uhost_instance_tag(self, req: dict = None) -> dict:
+        """ ModifyUHostInstanceTag - 修改指定UHost实例业务组标识。
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param UHostId: (Required) UHost实例ID 参见 [DescribeUHostInstance](describe_uhost_instance.html)
+        :param Tag: (Optional) 业务组名称
+        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.ModifyUHostInstanceTagRequestSchema().dumps(d)
+        resp = self.invoke("ModifyUHostInstanceTag", d)
+        return apis.ModifyUHostInstanceTagResponseSchema().loads(resp)
+
+    def reboot_uhost_instance(self, req: dict = None) -> dict:
+        """ RebootUHostInstance - 重新启动UHost实例，需要指定数据中心及UHostID两个参数的值。
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param UHostId: (Required) UHost实例ID 参见 [DescribeUHostInstance](describe_uhost_instance.html)
+        :param DiskPassword: (Optional) 加密盘密码
+        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.RebootUHostInstanceRequestSchema().dumps(d)
+        resp = self.invoke("RebootUHostInstance", d)
+        return apis.RebootUHostInstanceResponseSchema().loads(resp)
+
+    def resize_attached_disk(self, req: dict = None) -> dict:
+        """ ResizeAttachedDisk - 修改挂载的磁盘大小，包含系统盘和数据盘
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param DiskId: (Required) 磁盘ID。参见 [DescribeUHostInstance](describe_uhost_instance.html)返回值中的DiskSet。
+        :param DiskSpace: (Required) 磁盘大小，单位GB，步长为10。取值范围需大于当前磁盘大小，最大值请参考[[api:uhost-api:disk_type|磁盘类型]]。
+        :param UHostId: (Required) UHost实例ID。 参见 [DescribeUHostInstance](describe_uhost_instance.html)。
+        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.ResizeAttachedDiskRequestSchema().dumps(d)
+        resp = self.invoke("ResizeAttachedDisk", d)
+        return apis.ResizeAttachedDiskResponseSchema().loads(resp)
+
+    def terminate_uhost_instance(self, req: dict = None) -> dict:
+        """ TerminateUHostInstance - 删除指定数据中心的UHost实例。
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param UHostId: (Required) UHost资源Id 参见 [DescribeUHostInstance](describe_uhost_instance.html)
+        :param Destroy: (Optional) 是否直接删除，0表示按照原来的逻辑（有回收站权限，则进入回收站），1表示直接删除
+        :param ReleaseEIP: (Optional) 是否释放绑定的EIP。true: 解绑EIP后，并释放；其他值或不填：解绑EIP。
+        :param ReleaseUDisk: (Optional) 是否删除挂载的数据盘。true删除，其他不删除。
+        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.TerminateUHostInstanceRequestSchema().dumps(d)
+        resp = self.invoke("TerminateUHostInstance", d)
+        return apis.TerminateUHostInstanceResponseSchema().loads(resp)
+
+    def get_uhost_upgrade_price(self, req: dict = None) -> dict:
+        """ GetUHostUpgradePrice - 获取UHost实例升级配置的价格。可选配置范围请参考[[api:uhost-api:uhost_type|云主机机型说明]]。
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param UHostId: (Required) UHost实例ID。 参见 [DescribeUHostInstance](describe_uhost_instance.html)。
+        :param BootDiskSpace: (Optional) 【待废弃】系统大小，单位: GB，范围[20,100]，步长: 10。
+        :param CPU: (Optional) 虚拟CPU核数。可选参数：1-32（可选范围与UHostType相关）。默认值为当前实例的CPU核数。
+        :param DiskSpace: (Optional) 【待废弃】数据盘大小，单位: GB，范围[0,1000]，步长: 10， 默认值是该主机当前数据盘大小。
+        :param HostType: (Optional) 【待废弃】主机系列，目前支持N1,N2
+        :param Memory: (Optional) 内存大小。单位：MB。范围 ：[1024, 262144]，取值为1024的倍数（可选范围与UHostType相关）。默认值为当前实例的内存大小。
+        :param NetCapValue: (Optional) 网卡升降级（1，表示升级，2表示降级，0表示不变）
+        :param TimemachineFeature: (Optional) 方舟机型。No，Yes。默认是No。
+        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.GetUHostUpgradePriceRequestSchema().dumps(d)
+        resp = self.invoke("GetUHostUpgradePrice", d)
+        return apis.GetUHostUpgradePriceResponseSchema().loads(resp)
+
+    def modify_uhost_instance_remark(self, req: dict = None) -> dict:
+        """ ModifyUHostInstanceRemark - 修改指定UHost实例备注信息。
+
+        :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param UHostId: (Required) UHost实例ID 参见 [DescribeUHostInstance](describe_uhost_instance.html)
+        :param Remark: (Optional) 备注
+        :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
+        """
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.ModifyUHostInstanceRemarkRequestSchema().dumps(d)
+        resp = self.invoke("ModifyUHostInstanceRemark", d)
+        return apis.ModifyUHostInstanceRemarkResponseSchema().loads(resp)
+
+    def upgrade_to_ark_uhost_instance(self, req: dict = None) -> dict:
+        """ UpgradeToArkUHostInstance - 普通升级为方舟机型
+
+        :param Region: (Config) 地域。 参见 [地域和可用区列表](../summary/regionlist.html)
+        :param UHostIds: (Required) UHost主机的资源ID，例如UHostIds.0代表希望升级的主机1，UHostIds.1代表主机2。
+        :param Zone: (Required) 可用区。参见 [可用区列表](../summary/regionlist.html)
+        :param CouponId: (Optional) 代金券ID 请参考DescribeCoupon接口
+        """
+        d = {"Region": self.config.region}
+        req and d.update(req)
+        d = apis.UpgradeToArkUHostInstanceRequestSchema().dumps(d)
+        resp = self.invoke("UpgradeToArkUHostInstance", d)
+        return apis.UpgradeToArkUHostInstanceResponseSchema().loads(resp)

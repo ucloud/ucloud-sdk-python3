@@ -1,8 +1,8 @@
-UCloud SDK Helpers
-==================
+Helpers
+=======
 
 Wait Resource State
------------------------
+-------------------
 
 .. autofunction:: ucloud.helpers.wait.wait_for_state
 

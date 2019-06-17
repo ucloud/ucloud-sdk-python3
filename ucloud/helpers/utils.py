@@ -44,12 +44,12 @@ def gen_password(
             "the length of password must be larger than total minimal letters number"
         )
 
-    minimal_letters = (
-        [random.choice(lower_letters) for i in range(min_lower)]
-        + [random.choice(upper_letters) for i in range(min_upper)]
-        + [random.choice(number_letters) for i in range(min_number)]
-        + [random.choice(special_letters) for i in range(min_specials)]
-    )
+    minimal_letters = sum([
+        [random.choice(lower_letters) for i in range(min_lower)],
+        [random.choice(upper_letters) for i in range(min_upper)],
+        [random.choice(number_letters) for i in range(min_number)],
+        [random.choice(special_letters) for i in range(min_specials)]
+    ])
 
     additional_letters = random.sample(all_letters, n - minimal_total)
     results = minimal_letters + additional_letters

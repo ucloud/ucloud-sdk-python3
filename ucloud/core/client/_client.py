@@ -4,23 +4,32 @@ import sys
 
 from ucloud import version
 from ucloud.core.client._cfg import Config
-from ucloud.core.transport import Transport, RequestsTransport, Request, Response
+from ucloud.core.transport import (
+    Transport,
+    RequestsTransport,
+    Request,
+    Response
+)
 from ucloud.core.utils.middleware import Middleware
 from ucloud.core import auth, exc
 
 logger = logging.getLogger(__name__)
 
-
 default_transport = RequestsTransport()
 
 
 class Client:
-    def __init__(self, config: dict, transport: Transport = None):
+    def __init__(
+        self,
+        config: dict,
+        transport: typing.Optional[Transport] = None,
+        middleware: typing.Optional[Middleware] = None
+    ):
         cfg, cred = self._parse_dict_config(config)
-        self.config: Config = cfg
-        self.credential: auth.Credential = cred
+        self.config = cfg
+        self.credential = cred
         self.transport = transport or default_transport
-        self._middleware = Middleware()
+        self._middleware = middleware or Middleware()
         self.middleware.response(Client.logged_response_handler)
 
     def invoke(self, action: str, args: dict = None, **options: dict) -> dict:
@@ -34,12 +43,15 @@ class Client:
         req = self._build_request(action, args)
         max_retries = options.get("max_retries") or self.config.max_retries
 
-        while retries <= max_retries + 1:
+        while retries <= max_retries:
             try:
-                retries += 1
                 return self._send(req, **options)
             except exc.UCloudException as e:
-                if e.retryable:
+                if e.retryable and retries != max_retries:
+                    logging.info(
+                        "Retrying {action}: {args}".format(action=action,
+                                                           args=args))
+                    retries += 1
                     continue
                 raise e
             except Exception as e:
@@ -65,7 +77,8 @@ class Client:
         yield self
 
     @staticmethod
-    def _parse_dict_config(config: dict) -> typing.Tuple[Config, auth.Credential]:
+    def _parse_dict_config(config: dict) -> typing.Tuple[Config,
+                                                         auth.Credential]:
         return Config.from_dict(config), auth.Credential.from_dict(config)
 
     def _send(self, req: Request, **options: dict) -> dict:
@@ -88,7 +101,8 @@ class Client:
         return resp
 
     def _build_request(self, action: str, data: dict = None) -> Request:
-        payload = {"Region": self.config.region, "ProjectId": self.config.project_id}
+        payload = {"Region": self.config.region,
+                   "ProjectId": self.config.project_id}
         payload.update(
             {k: v for k, v in (data or {}).items() if v is not None}
         )  # overwrite region and project id
@@ -99,7 +113,10 @@ class Client:
             url=self.config.base_url,
             method="post",
             json=payload,
-            headers={"User-Agent": self._build_user_agent()},
+            headers={
+                "User-Agent": self._build_user_agent(),
+                "Content-Type": "application/json",
+            },
         )
 
     def _build_user_agent(self) -> str:

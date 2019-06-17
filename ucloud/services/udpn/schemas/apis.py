@@ -7,6 +7,31 @@ from ucloud.services.udpn.schemas import models
 
 
 """
+API: ReleaseUDPN
+
+释放 UDPN
+"""
+
+
+class ReleaseUDPNRequestSchema(schema.RequestSchema):
+    """ ReleaseUDPN - 释放 UDPN
+    """
+
+    fields = {
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "UDPNId": fields.Str(required=True, dump_to="UDPNId"),
+    }
+
+
+class ReleaseUDPNResponseSchema(schema.ResponseSchema):
+    """ ReleaseUDPN - 释放 UDPN
+    """
+
+    fields = {}
+
+
+"""
 API: AllocateUDPN
 
 分配一条 UDPN 专线
@@ -80,8 +105,8 @@ class GetUDPNLineListRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=False, dump_to="Region"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
     }
 
 
@@ -109,12 +134,12 @@ class GetUDPNPriceRequestSchema(schema.RequestSchema):
     """
 
     fields = {
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Peer1": fields.Str(required=True, dump_to="Peer1"),
         "Peer2": fields.Str(required=True, dump_to="Peer2"),
         "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
-        "Region": fields.Str(required=False, dump_to="Region"),
-        "Peer1": fields.Str(required=True, dump_to="Peer1"),
     }
 
 
@@ -166,41 +191,16 @@ class ModifyUDPNBandwidthRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
-        "CouponId": fields.Str(required=False, dump_to="CouponId"),
         "Region": fields.Str(required=False, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "UDPNId": fields.Str(required=True, dump_to="UDPNId"),
+        "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
     }
 
 
 class ModifyUDPNBandwidthResponseSchema(schema.ResponseSchema):
     """ ModifyUDPNBandwidth - 修改带宽值
-    """
-
-    fields = {}
-
-
-"""
-API: ReleaseUDPN
-
-释放 UDPN
-"""
-
-
-class ReleaseUDPNRequestSchema(schema.RequestSchema):
-    """ ReleaseUDPN - 释放 UDPN
-    """
-
-    fields = {
-        "Region": fields.Str(required=False, dump_to="Region"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "UDPNId": fields.Str(required=True, dump_to="UDPNId"),
-    }
-
-
-class ReleaseUDPNResponseSchema(schema.ResponseSchema):
-    """ ReleaseUDPN - 释放 UDPN
     """
 
     fields = {}

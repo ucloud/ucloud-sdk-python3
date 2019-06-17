@@ -3,8 +3,6 @@ import abc
 
 
 class Field(abc.ABC):
-    required: bool
-
     def __init__(
         self,
         required: bool = False,
@@ -27,7 +25,7 @@ class Field(abc.ABC):
 
 
 class Schema(abc.ABC):
-    fields: typing.Dict[str, Field]
+    fields = {}
 
     def __init__(
         self,

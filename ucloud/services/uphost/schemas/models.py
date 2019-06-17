@@ -1,18 +1,16 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class PHostIPSetSchema(schema.ResponseSchema):
-    """ PHostIPSet - DescribePHost
+class PHostDiskSetSchema(schema.ResponseSchema):
+    """ PHostDiskSet - GetPHostTypeInfo
     """
 
     fields = {
-        "MACAddr": fields.Str(required=False, load_from="MACAddr"),
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
-        "IPId": fields.Str(required=False, load_from="IPId"),
-        "IPAddr": fields.Str(required=False, load_from="IPAddr"),
+        "Space": fields.Int(required=False, load_from="Space"),
+        "Count": fields.Int(required=False, load_from="Count"),
+        "Type": fields.Str(required=False, load_from="Type"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "IOCap": fields.Int(required=False, load_from="IOCap"),
     }
 
 
@@ -21,23 +19,25 @@ class PHostCPUSetSchema(schema.ResponseSchema):
     """
 
     fields = {
+        "CoreCount": fields.Int(required=False, load_from="CoreCount"),
         "Model": fields.Str(required=False, load_from="Model"),
         "Frequence": fields.Float(required=False, load_from="Frequence"),
         "Count": fields.Int(required=False, load_from="Count"),
-        "CoreCount": fields.Int(required=False, load_from="CoreCount"),
     }
 
 
-class PHostDiskSetSchema(schema.ResponseSchema):
-    """ PHostDiskSet - GetPHostTypeInfo
+class PHostIPSetSchema(schema.ResponseSchema):
+    """ PHostIPSet - DescribePHost
     """
 
     fields = {
-        "IOCap": fields.Int(required=False, load_from="IOCap"),
-        "Space": fields.Int(required=False, load_from="Space"),
-        "Count": fields.Int(required=False, load_from="Count"),
-        "Type": fields.Str(required=False, load_from="Type"),
-        "Name": fields.Str(required=False, load_from="Name"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
+        "IPId": fields.Str(required=False, load_from="IPId"),
+        "IPAddr": fields.Str(required=False, load_from="IPAddr"),
+        "MACAddr": fields.Str(required=False, load_from="MACAddr"),
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
     }
 
 
@@ -46,40 +46,42 @@ class PHostSetSchema(schema.ResponseSchema):
     """
 
     fields = {
-        "Components": fields.Str(required=False, load_from="Components"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "OSname": fields.Str(required=False, load_from="OSname"),
-        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "DiskSet": fields.List(PHostDiskSetSchema()),
-        "Zone": fields.Str(required=False, load_from="Zone"),
-        "ImageName": fields.Str(required=False, load_from="ImageName"),
-        "PHostType": fields.Str(required=False, load_from="PHostType"),
+        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
         "Cluster": fields.Str(required=False, load_from="Cluster"),
-        "Memory": fields.Int(required=False, load_from="Memory"),
-        "CPUSet": fields.List(PHostCPUSetSchema()),
-        "IPSet": fields.List(PHostIPSetSchema()),
         "IsSupportKVM": fields.Str(required=False, load_from="IsSupportKVM"),
+        "OSType": fields.Str(required=False, load_from="OSType"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
         "SN": fields.Str(required=False, load_from="SN"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "Remark": fields.Str(required=False, load_from="Remark"),
         "Tag": fields.Str(required=False, load_from="Tag"),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "CPUSet": fields.List(PHostCPUSetSchema()),
+        "DiskSet": fields.List(PHostDiskSetSchema()),
         "AutoRenew": fields.Str(required=False, load_from="AutoRenew"),
-        "OSType": fields.Str(required=False, load_from="OSType"),
-        "RaidSupported": fields.Str(required=False, load_from="RaidSupported"),
         "PHostId": fields.Str(required=False, load_from="PHostId"),
-        "PMStatus": fields.Str(required=False, load_from="PMStatus"),
-        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "ImageName": fields.Str(required=False, load_from="ImageName"),
+        "OSname": fields.Str(required=False, load_from="OSname"),
         "PowerState": fields.Str(required=False, load_from="PowerState"),
+        "IPSet": fields.List(PHostIPSetSchema()),
+        "Components": fields.Str(required=False, load_from="Components"),
+        "RaidSupported": fields.Str(required=False, load_from="RaidSupported"),
+        "PMStatus": fields.Str(required=False, load_from="PMStatus"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "PHostType": fields.Str(required=False, load_from="PHostType"),
+        "Memory": fields.Int(required=False, load_from="Memory"),
     }
 
 
-class PHostPriceSetSchema(schema.ResponseSchema):
-    """ PHostPriceSet - GetPHostPrice
+class PHostImageSetSchema(schema.ResponseSchema):
+    """ PHostImageSet - DescribePHostImage
     """
 
     fields = {
-        "Price": fields.Float(required=False, load_from="Price"),
-        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "OsName": fields.Str(required=False, load_from="OsName"),
+        "OsType": fields.Str(required=False, load_from="OsType"),
+        "ImageId": fields.Str(required=False, load_from="ImageId"),
+        "ImageName": fields.Str(required=False, load_from="ImageName"),
     }
 
 
@@ -93,13 +95,11 @@ class PHostTagSetSchema(schema.ResponseSchema):
     }
 
 
-class PHostImageSetSchema(schema.ResponseSchema):
-    """ PHostImageSet - DescribePHostImage
+class PHostPriceSetSchema(schema.ResponseSchema):
+    """ PHostPriceSet - GetPHostPrice
     """
 
     fields = {
-        "ImageId": fields.Str(required=False, load_from="ImageId"),
-        "ImageName": fields.Str(required=False, load_from="ImageName"),
-        "OsName": fields.Str(required=False, load_from="OsName"),
-        "OsType": fields.Str(required=False, load_from="OsType"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "Price": fields.Float(required=False, load_from="Price"),
     }

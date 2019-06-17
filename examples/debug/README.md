@@ -1,8 +1,8 @@
-# UCloud SDK Two-Tier Example
+# UCloud SDK UHost Example
 
 ## What is the goal
 
-Build a two-tier architecture with ulb and uhost, and remove all example data.
+Create an uhost, wait it created, and remove all example data.
 
 ## Setup Environment
 
@@ -15,5 +15,5 @@ export UCLOUD_PROJECT_ID="your project id"
 ## How to run
 
 ```sh
-python main.go
+python main.py
 ```

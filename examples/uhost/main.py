@@ -7,6 +7,7 @@ from ucloud.helpers import wait, utils
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 
 def main():
@@ -18,7 +19,7 @@ def main():
     })
 
     logger.info("finding image, random choice one")
-    images = client.uhost().describe_image().get('ImageSet', [])
+    images = client.uhost().describe_image({'ImageType': 'Base'}).get('ImageSet', [])
 
     assert len(images) > 0
 
@@ -27,15 +28,16 @@ def main():
 
     resp = client.uhost().create_uhost_instance({
         'Name': 'sdk-python-example',
-        'Zone': image["zone"],
-        'ImageId': image["image_id"],
+        'Zone': image["Zone"],
+        'ImageId': image["ImageId"],
         'LoginMode': "Password",
         'Password': utils.b64encode(utils.gen_password(20)),
         'CPU': 1,
-        'Memory': 1,
+        'Memory': 1024,
         'Disks': [{
-            'Size': 10,
-            'Type': 'CLOUD_SSD'
+            'Size': 20,
+            'Type': 'CLOUD_NORMAL',
+            'IsBoot': 'True',
         }],
     })
     uhost_id = utils.first(resp["UHostIds"])
@@ -49,13 +51,13 @@ def main():
 
     logger.info("wait uhost state is running ...")
     try:
-        wait.wait_for_state(pending=['running'], target=['pending'], timeout=300, refresh=refresh_state)
+        wait.wait_for_state(pending=['pending'], target=['running'], timeout=300, refresh=refresh_state)
     except wait.WaitTimeoutException as e:
         logger.error(e)
     logger.info("uhost instance is running")
 
     logger.info("stopping uhost for clean up resources ...")
-    client.uhost().stop_uhost_instance({'UHostId': [uhost_id]})
+    client.uhost().stop_uhost_instance({'UHostId': uhost_id})
 
     try:
         wait.wait_for_state(pending=['pending'], target=['stopped'], timeout=180, refresh=refresh_state)
