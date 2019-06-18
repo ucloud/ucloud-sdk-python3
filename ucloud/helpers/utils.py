@@ -37,7 +37,7 @@ def gen_password(
     :param int min_specials: minimal number of special letters
     :return:
     """
-    all_letters = sum([
+    all_letters = ''.join([
         lower_letters, upper_letters, number_letters, special_letters
     ])
     minimal_total = min_lower + min_upper + min_number + min_specials
@@ -47,7 +47,7 @@ def gen_password(
             "total minimal letters number"
         ))
 
-    minimal_letters = sum([
+    minimal_letters = ''.join([
         gen_string(lower_letters, min_lower),
         gen_string(upper_letters, min_upper),
         gen_string(number_letters, min_number),
