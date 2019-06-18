@@ -58,7 +58,9 @@ def load_requirements(requirements_file):
         return []
 
 
-dependencies_test = [
+dependencies = load_requirements("requirements.txt")
+
+dependencies_test = dependencies + [
     'mypy',
     'flake8>=3.6.0',
     'tox',
@@ -66,7 +68,11 @@ dependencies_test = [
     'pytest-cov',
 ]
 
-dependencies_dev = dependencies_test + ['black', 'sphinx']
+dependencies_doc = dependencies + ['sphinx']
+
+dependencies_dev = list(set(
+    dependencies_doc + dependencies_test + ['black']
+))
 
 
 def do_setup():
@@ -80,9 +86,10 @@ def do_setup():
         package_data={"": []},
         include_package_data=True,
         zip_safe=False,
-        install_requires=load_requirements("requirements.txt"),
+        install_requires=dependencies,
         extras_require={
             "test": dependencies_test,
+            "doc": dependencies_doc,
             "dev": dependencies_dev,
         },
         classifiers=[
