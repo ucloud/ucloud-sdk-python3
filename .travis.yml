@@ -10,7 +10,7 @@ sudo: true
 
 env:
     global:
-        secure: $SECURE
+        secure: "ViyR40jzy3sz9Si7WNVKByvMQ83Tdj/E5OxiF0Pb8Xk40pA2LspBhvTYOunZn3V9NGAwGNF9CjxwfOpXIRA1o0nbwyb1JHedMvvw4FkhwYfPKSOayeVrkIfKwleHiCCzqELzkz22W74Czoc5UKWsz3GEqMrZ+Z221egYl/bMNtcpyBPQDeaR4kP3gReEFWbJAHmq42ScRmFOHLcSOuuuB/ystU0tjAUPsuXnT5cr8sa27JedOQb4+V7b78CEM4f+irZ6tU9p01/mvhZoEuWeD20PyOspE8LBPSg9u+VEQIt9f3/xhGfL91YjA5591Z1W9ZxQgSoH7QV13yQyDKnd8Qb4ecCd+0NlWXXpFJK+aJid4RaPVsoDPSXk1dVSK5JXBPkLg07hhdNjl+RzMdqx81ovNALT+m/A4eOk/GeeexHxZj8Kqe8Q43F4nFVe0WQQFD3N9ECWclN+lsZbuNyFXLc5+y7SiGIh3buMpm8hrGrX8kTcJUZlkcX5iSBbzDi3TOUGDxGJf8ALTJZJatpLEW5cnDMTqgcjrQ9x8GU127GKByHzGHbjlkiAvDTzWD5mlMcA5dvsIovZ5jAfh1ovazWi21S7e0Z4VNENK01HqW0AhMI0g1FQE+c4Cu+m4e86HDA0VaTqlx8pFrvmv94kcWL6gS6AmaeqGTlGEDNyylE="
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -U tox-travis
