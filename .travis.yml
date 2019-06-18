@@ -18,6 +18,7 @@ before_deploy:
     - pip install sphinx
     - make docs
     - ls docs/build/html
+    - echo ${GITHUB_TOKEN:0:5}
 
 # deploy new versions to PyPI / GithubIO
 deploy:
