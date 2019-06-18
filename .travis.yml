@@ -8,10 +8,6 @@ python:
 dist: xenial
 sudo: true
 
-env:
-    global:
-        secure: "0vITN4tv7GHlXKzx5Q+2n2MrzpfAQgeuf6fiD6JyO48VsvX6S/ExaCQJUuoU9xgov+UQ2bHb5SHNStOFjrJgpAAmktH7HMCEt8CYZUi5mqG2t2e8Gu6pDMZcA0DW3U7K2dYq5ka3LvIcZI6RrLlDpx7/hHkgGJKIjSVTi6hHyjs9KZCXbzl8RoDRmSgmD8CFYskKn4/yEVyaj1fz6q7l9chbpb04WSzZLj9h3J65efY8JQ3h9s5i8JIvAJ+PPP4Qpvfge/1dd5VOrDB9ppWbTx67Swy1p+DZh6Q/qa7L873Tmhmi53tTo6Q+a6eBea2cnevt1cwxsjRVcNwRwEZGoCrqDiL23y6GMI0sAx83tS3CAuuNufI/f2bdhGpnwPa+hx1PlP31JAnAaUkSIKf74WoVeNAxSJ+bY1acpaHzpOtL95cYhaD9dL8Iu+HaTBV1Vxq9x58ozB62wcalZ+P/rMa6rsswWI1zyznwiUDbU3HHG63BZOqpAwdpH1IA8Am+G0wfREvr1+ICpbjtKalgr0wT/v3fM7ScsTozT2tTj/b6RwbXsfeDoy+TMqt+P3PiJeqALqqv9k7cbfMQEadw8e6zTns7IfMO5LktP1Cb6ALcMqhgDP6dd5g+aqMl5wj/QQg9ImUYVZvZm5nb5iLvtKjkIDebmrUdRGUtO6aw9Jk="
-
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -U tox-travis
 
@@ -21,16 +17,13 @@ script: tox
 before_deploy:
     - pip install -e .[doc]
     - make docs
-    - ls docs/build/html
-    - echo ${TEST}
-    - echo ${GITHUB_TOKEN:0:5}
 
 # deploy new versions to PyPI / GithubIO
 deploy:
   - provider: pages
     skip_cleanup: true
     github_token:
-      secure: $GITHUB_TOKEN
+      secure: "G/z8CnMHS1DfvSxZgkqGxH4Wr8yAxyOAGFAtbacXmosCnVLO4GKO7Je1KEgCsGJbQdjpexBaPxDg2SbE9jYCxyAzSim+S91WYeqMkrnyTh8Pmaoxbo8OTkImZYu4t/dcPOkSMH1kPHUOT6vwdlzyBays5EfD3jAnjLV2CEZdH4cr3Rfv3lV8tSF/XC3CSPE9UAyO5NQTW/0EGogQtBaa9/DwsjvnAOeA9azFvr3/nhVbZ/KSVS5A86s/YJiMYeGeIrTFelKXIAFOKrRfU6Jnw7y/LdkFZIwptlsQAnaxsvVvIQOFyW4fz+0UgUDUC39wQvxPwHyc/vVs2CbjaO/OFFDdqb9SaP4ZuwGQPXFzNL7FJSoIc0EIZZ2gLA26pWD47SbJI74mZpoxEjvVbL1ZozhWRWHuhXkwjTPuV9ewCXKosDPaCxwohU3xdb9rNawpUDstDLePylwuBXyLZz4BJyU3/yYdyXVGwKNJ33LBOHayidsKSfInSuC0I3+Xfw+6zX/fJnrG0GU0EcvkBZ2GoQRe042oyBADtQ2R4tmlhtzn04etbAbXCrb4OYk7onUxSIKFHarIY4ckIwmO2UklTPPoQZ/aIQSBBTV60uHo0C1MSJLduo0ZoRI3gNLfu7ObKB0YWN+PrJAWpCFeWBmxA/utQpQY7zllgYV7hyT0cn4="
     local_dir: docs/build/html
     on:
       branch: master
@@ -42,7 +35,7 @@ deploy:
     skip_existing: true
     user: ucloud
     password:
-      secure: $PYPI_PASSWORD
+      secure: "NrYxM9Coe8YRBejYtd6Kg32OKkdTFKbW6MKgAUIh4xW58enfnT1f1c/hE+0d1mBcOAR0sfArVIYaqUwz4B7s6QxyBvbHtJ97VThTmDkwx2u0ESq5pGnS2886kKfAODudfmKriCd6gZ8i3wyILriMcf4P8vojpXJ7ZzmbkesgX1fIzDEOJyxpBA/v9RXD+HfoXsAvY05PvgSFHSRZid15R4c+J09GKE2BgqRWLY5q+RKQyANZw8ee/fEl5a3zAMf/MHcB+Bwjv1dh21LWg+WUza2yZWO60E2KNcI5PFxXSiVWPm0xdeFGA9wLEW4QDdugPcjQN2ou+uyHOl9UFcJQ/+/HmYc/TnesZbv1HZkZyWzfBEsM4yrs4FE6Q7QWvL7szSyTyaamLKBaFtMwNzgpCHo1kOD6Lz2ezJRfCJe05d+EBCdxovCdbsRlTwEB2FDXuKRjvqNOJSzCtRpo+dOYz+5NjGq7o9n6yQYpEtQ9YDKm6vF8wFBDjsARG+BmUzGq+jBIY+UQIY+yTsuODS/AdT8jFlO2HkGjcBpV1Kru8Z9hu0NpDcuUvM2XxUvElbLtdS1jEgSBMGhQ7NjPPRKFFRHruL3JnXFEN12ZEi6ccnZmExINtH+hNWJpfFRl/CMBMqbtLhQh2qi4qJktQoEHgFoDWDUe9jXQk1v8TqraHps="
     on:
       branch: master
 #      tags: true
