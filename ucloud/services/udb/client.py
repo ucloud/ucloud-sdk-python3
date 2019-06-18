@@ -83,7 +83,7 @@ class UDBClient(Client):
         resp = self.invoke("CreateUDBParamGroup", d)
         return apis.CreateUDBParamGroupResponseSchema().loads(resp)
 
-    def delete_udb_param_group(self, req: dict = None) -> dict:
+    def delete_udb_param_group(self, req = None):
         """ DeleteUDBParamGroup - 删除配置参数组
 
         :param ProjectId: (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考[GetProjectList接口](../summary/get_project_list.html)

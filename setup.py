@@ -30,9 +30,10 @@ logger = logging.getLogger(__name__)
 PY3 = sys.version_info[0] == 3 and sys.version_info[1] >= 5
 
 if not PY3:
-    raise NotImplementedError(
-        "ucloud-sdk-python3 should be used in 3.5 and above of python interpreter"
-    )
+    raise NotImplementedError((
+        "ucloud-sdk-python3 should be used in 3.5 "
+        "and above of python interpreter"
+    ))
 
 
 def load_version():
@@ -57,6 +58,17 @@ def load_requirements(requirements_file):
         return []
 
 
+dependencies_test = [
+    'mypy',
+    'flake8>=3.6.0',
+    'tox',
+    'pytest',
+    'pytest-cov',
+]
+
+dependencies_dev = dependencies_test + ['black', 'sphinx']
+
+
 def do_setup():
     setup(
         name="ucloud-sdk-python3",
@@ -69,7 +81,10 @@ def do_setup():
         include_package_data=True,
         zip_safe=False,
         install_requires=load_requirements("requirements.txt"),
-        extras_require={"dev": load_requirements("requirements_dev.txt")},
+        extras_require={
+            "test": dependencies_test,
+            "dev": dependencies_dev,
+        },
         classifiers=[
             "Development Status :: 3 - Alpha",
             "Environment :: Console",
