@@ -28,8 +28,8 @@ deploy:
     local_dir: docs/build/html
     on:
       branch: master
-#      tags: true
-#      repo: ucloud/ucloud-sdk-python3
+      tags: true
+      repo: ucloud/ucloud-sdk-python3
       python: 3.7
   - provider: pypi
     distributions: sdist bdist_wheel
@@ -39,6 +39,6 @@ deploy:
       secure: "IVZJgV6z5wYb53RP1XNIO4aOedbdlSCGNSKfnMVugmeVFCLoBZsT99FeRzmQ8xFUU6PBSL4avX1QBgzYBIKqksTMVR4bFDha+Nw4NChy/XK7AEsGXnzyb8usnzqx4GzopDGZWqY8mNAd4UVsrmhcdYozKU8ZdSAg/H5zm/yx2Jnv8mcjFrdC11Mv+qtHbNLADvNwV6mACNvPr9jAVtkoYSLZ+mOEc6ZoORgxhcpnZXSb2ABnC/7BvCqqnlrDYNftMFF21lX7xHsA+il0xkWMrrsapWSueW4y1wWt5WksfOjFL2F0fbkS18CMYoIqCyk0A6BVkvqR0n9JUFwA9Zz1bikf4ZdMsQyLcjb9l5Xfc4+ij22oevrnQ0A90lgZi8foiCRiMGAiKyxY91pEAfrSEj+TWqqWlHAv6HPKU+975dSkQIZHhlL0cyqxx0Zl/SvcQ1deGyuXnME4VJm6fyoq+aI47Yg8ZFGuwGbJyCVZrsA+8thDUHTf5BNlMMIqQn8RYoHOsAIpgkVzcHa2Ko/kQRcTrhYoUIN9EoR4wuxjFhW1UGRe8khazT4qu9jIpT7TnuWX5xxHL+ZRTaiwMr5ZU79WVvnYNZymKLMWQ0ExVsIix+Z8BwO+pK9FyQ8mMgVWdCJDepVDZgcSdikd4+i81UfJkF71bu50Y7el/rqrOrA="
     on:
       branch: master
-#      tags: true
-#      repo: ucloud/ucloud-sdk-python3
+      tags: true
+      repo: ucloud/ucloud-sdk-python3
       python: 3.7
