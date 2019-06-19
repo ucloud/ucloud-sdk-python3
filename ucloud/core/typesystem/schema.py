@@ -31,7 +31,7 @@ class Schema(abstract.Schema):
                     v = field.default
 
             try:
-                serialized = field.dumps(v)
+                serialized = field.dumps(v, name=k)
             except ValidationException as e:
                 errors.extend(e.errors)
                 continue
@@ -51,7 +51,7 @@ class Schema(abstract.Schema):
             v = d.get(field.load_from or k)
 
             try:
-                serialized = field.loads(v)
+                serialized = field.loads(v, name=k)
             except ValidationException as e:
                 errors.extend(e.errors)
                 continue
@@ -91,7 +91,7 @@ class RequestSchema(Schema):
                     v = field.default
 
             try:
-                serialized = field.dumps(v)
+                serialized = field.dumps(v, name=k)
             except ValidationException as e:
                 errors.extend(e.errors)
                 continue
@@ -127,17 +127,16 @@ class ResponseSchema(Schema):
 
         for k, field in self.fields.items():
             v = d.get(field.load_from or k)
+            if v is None:
+                continue
 
             try:
-                serialized = field.loads(v)
+                serialized = field.loads(v, name=k)
             except ValidationException as e:
                 errors.extend(e.errors)
                 continue
 
             result[k] = serialized
-
-        if len(errors) > 0:
-            raise ValidationException(errors)
 
         return result
 

@@ -1,5 +1,7 @@
 import collections
 
+from ucloud.core.utils import compact
+
 
 class UCloudException(Exception):
     @property
@@ -30,7 +32,9 @@ class RetryTimeoutException(UCloudException):
 
 class ValidationException(UCloudException):
     def __init__(self, e=None):
-        if isinstance(e, collections.Iterable):
+        if isinstance(e, compact.string_types):
+            self.errors = [e]
+        elif isinstance(e, collections.Iterable):
             self.errors = e or []
         else:
             self.errors = [e]
@@ -38,3 +42,6 @@ class ValidationException(UCloudException):
     @property
     def retryable(self):
         return False
+
+    def __str__(self):
+        return str([str(e) for e in self.errors])
