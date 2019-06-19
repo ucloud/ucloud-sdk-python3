@@ -14,30 +14,30 @@ class PHostDiskSetSchema(schema.ResponseSchema):
     }
 
 
-class PHostCPUSetSchema(schema.ResponseSchema):
-    """ PHostCPUSet - DescribePHost
-    """
-
-    fields = {
-        "CoreCount": fields.Int(required=False, load_from="CoreCount"),
-        "Model": fields.Str(required=False, load_from="Model"),
-        "Frequence": fields.Float(required=False, load_from="Frequence"),
-        "Count": fields.Int(required=False, load_from="Count"),
-    }
-
-
 class PHostIPSetSchema(schema.ResponseSchema):
     """ PHostIPSet - DescribePHost
     """
 
     fields = {
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
         "OperatorName": fields.Str(required=False, load_from="OperatorName"),
         "IPId": fields.Str(required=False, load_from="IPId"),
         "IPAddr": fields.Str(required=False, load_from="IPAddr"),
         "MACAddr": fields.Str(required=False, load_from="MACAddr"),
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+    }
+
+
+class PHostCPUSetSchema(schema.ResponseSchema):
+    """ PHostCPUSet - DescribePHost
+    """
+
+    fields = {
+        "Model": fields.Str(required=False, load_from="Model"),
+        "Frequence": fields.Float(required=False, load_from="Frequence"),
+        "Count": fields.Int(required=False, load_from="Count"),
+        "CoreCount": fields.Int(required=False, load_from="CoreCount"),
     }
 
 
@@ -46,30 +46,30 @@ class PHostSetSchema(schema.ResponseSchema):
     """
 
     fields = {
-        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
-        "Cluster": fields.Str(required=False, load_from="Cluster"),
+        "ImageName": fields.Str(required=False, load_from="ImageName"),
+        "PowerState": fields.Str(required=False, load_from="PowerState"),
+        "DiskSet": fields.List(PHostDiskSetSchema()),
         "IsSupportKVM": fields.Str(required=False, load_from="IsSupportKVM"),
-        "OSType": fields.Str(required=False, load_from="OSType"),
         "Zone": fields.Str(required=False, load_from="Zone"),
+        "OSname": fields.Str(required=False, load_from="OSname"),
+        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "PHostType": fields.Str(required=False, load_from="PHostType"),
+        "Memory": fields.Int(required=False, load_from="Memory"),
+        "CPUSet": fields.List(PHostCPUSetSchema()),
+        "Cluster": fields.Str(required=False, load_from="Cluster"),
+        "Components": fields.Str(required=False, load_from="Components"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "RaidSupported": fields.Str(required=False, load_from="RaidSupported"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "IPSet": fields.List(PHostIPSetSchema()),
+        "AutoRenew": fields.Str(required=False, load_from="AutoRenew"),
+        "OSType": fields.Str(required=False, load_from="OSType"),
+        "PMStatus": fields.Str(required=False, load_from="PMStatus"),
         "SN": fields.Str(required=False, load_from="SN"),
         "Name": fields.Str(required=False, load_from="Name"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "Remark": fields.Str(required=False, load_from="Remark"),
-        "Tag": fields.Str(required=False, load_from="Tag"),
-        "CPUSet": fields.List(PHostCPUSetSchema()),
-        "DiskSet": fields.List(PHostDiskSetSchema()),
-        "AutoRenew": fields.Str(required=False, load_from="AutoRenew"),
         "PHostId": fields.Str(required=False, load_from="PHostId"),
-        "ImageName": fields.Str(required=False, load_from="ImageName"),
-        "OSname": fields.Str(required=False, load_from="OSname"),
-        "PowerState": fields.Str(required=False, load_from="PowerState"),
-        "IPSet": fields.List(PHostIPSetSchema()),
-        "Components": fields.Str(required=False, load_from="Components"),
-        "RaidSupported": fields.Str(required=False, load_from="RaidSupported"),
-        "PMStatus": fields.Str(required=False, load_from="PMStatus"),
-        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "PHostType": fields.Str(required=False, load_from="PHostType"),
-        "Memory": fields.Int(required=False, load_from="Memory"),
     }
 
 
@@ -78,10 +78,10 @@ class PHostImageSetSchema(schema.ResponseSchema):
     """
 
     fields = {
-        "OsName": fields.Str(required=False, load_from="OsName"),
-        "OsType": fields.Str(required=False, load_from="OsType"),
         "ImageId": fields.Str(required=False, load_from="ImageId"),
         "ImageName": fields.Str(required=False, load_from="ImageName"),
+        "OsName": fields.Str(required=False, load_from="OsName"),
+        "OsType": fields.Str(required=False, load_from="OsType"),
     }
 
 

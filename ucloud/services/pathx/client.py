@@ -1,65 +1,16 @@
 import typing
 
 from ucloud.core.client import Client
-from ucloud.core.transport import Transport
 from ucloud.services.pathx.schemas import apis
 
 
 class PathXClient(Client):
-    def __init__(self, config: dict, transport: typing.Optional[Transport] = None):
-        super(PathXClient, self).__init__(config, transport)
+    def __init__(self, config: dict, transport=None, middleware=None):
+        super(PathXClient, self).__init__(config, transport, middleware)
 
-    def describe_global_ssh_area(self, req: dict = None) -> dict:
-        """ DescribeGlobalSSHArea - 获取GlobalSSH覆盖的地区列表 用于控制显示哪些机房地域可以使用SSH特性
-
-        :param ProjectId: (Config) 项目ID,如org-xxxx。请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param Region: (Config) 机房地域代号，如hk、 us-ca、 us-ws等。不填默认为空，返回所有支持地区。
-        """
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
-        req and d.update(req)
-        d = apis.DescribeGlobalSSHAreaRequestSchema().dumps(d)
-        resp = self.invoke("DescribeGlobalSSHArea", d)
-        return apis.DescribeGlobalSSHAreaResponseSchema().loads(resp)
-
-    def describe_global_ssh_instance(self, req: dict = None) -> dict:
-        """ DescribeGlobalSSHInstance - 获取GlobalSSH实例列表（传实例ID获取单个实例信息，不传获取项目下全部实例）
-
-        :param ProjectId: (Config) 项目ID，如org-xxxx。请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param InstanceId: (Optional) 实例ID，资源唯一标识
-        """
-        d = {"ProjectId": self.config.project_id}
-        req and d.update(req)
-        d = apis.DescribeGlobalSSHInstanceRequestSchema().dumps(d)
-        resp = self.invoke("DescribeGlobalSSHInstance", d)
-        return apis.DescribeGlobalSSHInstanceResponseSchema().loads(resp)
-
-    def modify_global_ssh_port(self, req: dict = None) -> dict:
-        """ ModifyGlobalSSHPort - 修改GlobalSSH端口
-
-        :param ProjectId: (Config) 项目ID，如org-xxxx。请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param InstanceId: (Required) 实例ID,资源唯一标识
-        :param Port: (Required) 调整后的SSH登陆端口
-        """
-        d = {"ProjectId": self.config.project_id}
-        req and d.update(req)
-        d = apis.ModifyGlobalSSHPortRequestSchema().dumps(d)
-        resp = self.invoke("ModifyGlobalSSHPort", d)
-        return apis.ModifyGlobalSSHPortResponseSchema().loads(resp)
-
-    def modify_global_ssh_remark(self, req: dict = None) -> dict:
-        """ ModifyGlobalSSHRemark - 修改GlobalSSH备注
-
-        :param ProjectId: (Config) 项目ID，如org-xxxx。请参考[GetProjectList接口](../summary/get_project_list.html)
-        :param InstanceId: (Required) 实例ID,资源唯一标识
-        :param Remark: (Optional) 备注信息，不填默认为空字符串
-        """
-        d = {"ProjectId": self.config.project_id}
-        req and d.update(req)
-        d = apis.ModifyGlobalSSHRemarkRequestSchema().dumps(d)
-        resp = self.invoke("ModifyGlobalSSHRemark", d)
-        return apis.ModifyGlobalSSHRemarkResponseSchema().loads(resp)
-
-    def create_global_ssh_instance(self, req: dict = None) -> dict:
+    def create_global_ssh_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ CreateGlobalSSHInstance - 创建GlobalSSH实例
 
         :param ProjectId: (Config) 项目ID,如org-xxxx。请参考[GetProjectList接口](../summary/get_project_list.html)
@@ -72,20 +23,95 @@ class PathXClient(Client):
         :param Quantity: (Optional) 购买数量
         :param Remark: (Optional) 备注信息
         """
+        # build request
         d = {"ProjectId": self.config.project_id}
         req and d.update(req)
         d = apis.CreateGlobalSSHInstanceRequestSchema().dumps(d)
-        resp = self.invoke("CreateGlobalSSHInstance", d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateGlobalSSHInstance", d, **kwargs)
         return apis.CreateGlobalSSHInstanceResponseSchema().loads(resp)
 
-    def delete_global_ssh_instance(self, req: dict = None) -> dict:
+    def delete_global_ssh_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DeleteGlobalSSHInstance - 删除GlobalSSH实例
 
         :param ProjectId: (Config) 项目ID,如org-xxxx。请参考[GetProjectList接口](../summary/get_project_list.html)
         :param InstanceId: (Required) 实例Id,资源的唯一标识
         """
+        # build request
         d = {"ProjectId": self.config.project_id}
         req and d.update(req)
         d = apis.DeleteGlobalSSHInstanceRequestSchema().dumps(d)
-        resp = self.invoke("DeleteGlobalSSHInstance", d)
+
+        resp = self.invoke("DeleteGlobalSSHInstance", d, **kwargs)
         return apis.DeleteGlobalSSHInstanceResponseSchema().loads(resp)
+
+    def describe_global_ssh_area(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ DescribeGlobalSSHArea - 获取GlobalSSH覆盖的地区列表 用于控制显示哪些机房地域可以使用SSH特性
+
+        :param ProjectId: (Config) 项目ID,如org-xxxx。请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param Region: (Config) 机房地域代号，如hk、 us-ca、 us-ws等。不填默认为空，返回所有支持地区。
+        """
+        # build request
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.DescribeGlobalSSHAreaRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeGlobalSSHArea", d, **kwargs)
+        return apis.DescribeGlobalSSHAreaResponseSchema().loads(resp)
+
+    def describe_global_ssh_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ DescribeGlobalSSHInstance - 获取GlobalSSH实例列表（传实例ID获取单个实例信息，不传获取项目下全部实例）
+
+        :param ProjectId: (Config) 项目ID，如org-xxxx。请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param InstanceId: (Optional) 实例ID，资源唯一标识
+        """
+        # build request
+        d = {"ProjectId": self.config.project_id}
+        req and d.update(req)
+        d = apis.DescribeGlobalSSHInstanceRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeGlobalSSHInstance", d, **kwargs)
+        return apis.DescribeGlobalSSHInstanceResponseSchema().loads(resp)
+
+    def modify_global_ssh_port(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ ModifyGlobalSSHPort - 修改GlobalSSH端口
+
+        :param ProjectId: (Config) 项目ID，如org-xxxx。请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param InstanceId: (Required) 实例ID,资源唯一标识
+        :param Port: (Required) 调整后的SSH登陆端口
+        """
+        # build request
+        d = {"ProjectId": self.config.project_id}
+        req and d.update(req)
+        d = apis.ModifyGlobalSSHPortRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyGlobalSSHPort", d, **kwargs)
+        return apis.ModifyGlobalSSHPortResponseSchema().loads(resp)
+
+    def modify_global_ssh_remark(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ ModifyGlobalSSHRemark - 修改GlobalSSH备注
+
+        :param ProjectId: (Config) 项目ID，如org-xxxx。请参考[GetProjectList接口](../summary/get_project_list.html)
+        :param InstanceId: (Required) 实例ID,资源唯一标识
+        :param Remark: (Optional) 备注信息，不填默认为空字符串
+        """
+        # build request
+        d = {"ProjectId": self.config.project_id}
+        req and d.update(req)
+        d = apis.ModifyGlobalSSHRemarkRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyGlobalSSHRemark", d, **kwargs)
+        return apis.ModifyGlobalSSHRemarkResponseSchema().loads(resp)

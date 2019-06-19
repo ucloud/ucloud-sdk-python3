@@ -1,151 +1,15 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
-    """ UDBSlaveInstanceSet - DescribeUDBSlaveInstance
+class UDBInstanceBinlogSetSchema(schema.ResponseSchema):
+    """ UDBInstanceBinlogSet - DescribeUDBInstanceBinlog
     """
 
     fields = {
-        "Role": fields.Str(required=False, load_from="Role"),
-        "ClusterRole": fields.Str(required=False, load_from="ClusterRole"),
-        "DBTypeId": fields.Str(required=False, load_from="DBTypeId"),
-        "Port": fields.Int(required=False, load_from="Port"),
-        "BackupDuration": fields.Int(required=False, load_from="BackupDuration"),
-        "UseSSD": fields.Bool(required=False, load_from="UseSSD"),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "VirtualIPMac": fields.Str(required=False, load_from="VirtualIPMac"),
-        "BackupBeginTime": fields.Int(required=False, load_from="BackupBeginTime"),
-        "LogFileSize": fields.Float(required=False, load_from="LogFileSize"),
-        "BackupDate": fields.Str(required=False, load_from="BackupDate"),
-        "State": fields.Str(required=False, load_from="State"),
-        "DiskSpace": fields.Int(required=False, load_from="DiskSpace"),
-        "SystemFileSize": fields.Float(required=False, load_from="SystemFileSize"),
-        "InstanceType": fields.Str(required=False, load_from="InstanceType"),
+        "BeginTime": fields.Int(required=False, load_from="BeginTime"),
+        "EndTime": fields.Int(required=False, load_from="EndTime"),
         "Name": fields.Str(required=False, load_from="Name"),
-        "AdminUser": fields.Str(required=False, load_from="AdminUser"),
-        "VirtualIP": fields.Str(required=False, load_from="VirtualIP"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-        "ExpiredTime": fields.Int(required=False, load_from="ExpiredTime"),
-        "SSDType": fields.Str(required=False, load_from="SSDType"),
-        "DiskUsedSize": fields.Float(required=False, load_from="DiskUsedSize"),
-        "InstanceMode": fields.Str(required=False, load_from="InstanceMode"),
-        "Zone": fields.Str(required=False, load_from="Zone"),
-        "DBId": fields.Str(required=False, load_from="DBId"),
-        "Tag": fields.Str(required=False, load_from="Tag"),
-        "MemoryLimit": fields.Int(required=False, load_from="MemoryLimit"),
-        "DataFileSize": fields.Float(required=False, load_from="DataFileSize"),
-        "InstanceTypeId": fields.Int(required=False, load_from="InstanceTypeId"),
-        "SrcDBId": fields.Str(required=False, load_from="SrcDBId"),
-        "BackupBlacklist": fields.Str(required=False, load_from="BackupBlacklist"),
-        "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
-        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "ParamGroupId": fields.Int(required=False, load_from="ParamGroupId"),
-        "BackupCount": fields.Int(required=False, load_from="BackupCount"),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-    }
-
-
-class UDBInstanceSetSchema(schema.ResponseSchema):
-    """ UDBInstanceSet - DescribeUDBInstance
-    """
-
-    fields = {
-        "VirtualIP": fields.Str(required=False, load_from="VirtualIP"),
-        "VirtualIPMac": fields.Str(required=False, load_from="VirtualIPMac"),
-        "InstanceTypeId": fields.Int(required=False, load_from="InstanceTypeId"),
-        "LogFileSize": fields.Float(required=False, load_from="LogFileSize"),
-        "CluserRole": fields.Str(required=False, load_from="CluserRole"),
-        "DBTypeId": fields.Str(required=False, load_from="DBTypeId"),
-        "AdminUser": fields.Str(required=False, load_from="AdminUser"),
-        "BackupBlacklist": fields.Str(required=False, load_from="BackupBlacklist"),
-        "MemoryLimit": fields.Int(required=False, load_from="MemoryLimit"),
-        "SystemFileSize": fields.Float(required=False, load_from="SystemFileSize"),
-        "BackupBeginTime": fields.Int(required=False, load_from="BackupBeginTime"),
-        "DiskUsedSize": fields.Float(required=False, load_from="DiskUsedSize"),
-        "BackupZone": fields.Str(required=False, load_from="BackupZone"),
-        "Zone": fields.Str(required=False, load_from="Zone"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-        "Port": fields.Int(required=False, load_from="Port"),
-        "BackupDuration": fields.Int(required=False, load_from="BackupDuration"),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "State": fields.Str(required=False, load_from="State"),
-        "Role": fields.Str(required=False, load_from="Role"),
-        "InstanceMode": fields.Str(required=False, load_from="InstanceMode"),
-        "UseSSD": fields.Bool(required=False, load_from="UseSSD"),
-        "DataSet": fields.List(UDBSlaveInstanceSetSchema()),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "Tag": fields.Str(required=False, load_from="Tag"),
-        "SrcDBId": fields.Str(required=False, load_from="SrcDBId"),
-        "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
-        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "ParamGroupId": fields.Int(required=False, load_from="ParamGroupId"),
-        "InstanceType": fields.Str(required=False, load_from="InstanceType"),
-        "BackupDate": fields.Str(required=False, load_from="BackupDate"),
-        "DBId": fields.Str(required=False, load_from="DBId"),
-        "BackupCount": fields.Int(required=False, load_from="BackupCount"),
-        "ExpiredTime": fields.Int(required=False, load_from="ExpiredTime"),
-        "DiskSpace": fields.Int(required=False, load_from="DiskSpace"),
-        "SSDType": fields.Str(required=False, load_from="SSDType"),
-        "DataFileSize": fields.Float(required=False, load_from="DataFileSize"),
-    }
-
-
-class UDBTypeSetSchema(schema.ResponseSchema):
-    """ UDBTypeSet - DescribeUDBType
-    """
-
-    fields = {"DBTypeId": fields.Str(required=False, load_from="DBTypeId")}
-
-
-class UDBBackupSetSchema(schema.ResponseSchema):
-    """ UDBBackupSet - DescribeUDBBackup
-    """
-
-    fields = {
-        "BackupId": fields.Int(required=False, load_from="BackupId"),
-        "BackupSize": fields.Int(required=False, load_from="BackupSize"),
-        "State": fields.Str(required=False, load_from="State"),
-        "ErrorInfo": fields.Str(required=False, load_from="ErrorInfo"),
-        "DBId": fields.Str(required=False, load_from="DBId"),
-        "BackupEndTime": fields.Int(required=False, load_from="BackupEndTime"),
-        "Zone": fields.Str(required=False, load_from="Zone"),
-        "BackupName": fields.Str(required=False, load_from="BackupName"),
-        "BackupTime": fields.Int(required=False, load_from="BackupTime"),
-        "BackupType": fields.Int(required=False, load_from="BackupType"),
-        "DBName": fields.Str(required=False, load_from="DBName"),
-        "BackupZone": fields.Str(required=False, load_from="BackupZone"),
-    }
-
-
-class UDBParamMemberSetSchema(schema.ResponseSchema):
-    """ UDBParamMemberSet - DescribeUDBParamGroup
-    """
-
-    fields = {
-        "ValueType": fields.Int(required=False, load_from="ValueType"),
-        "AllowedVal": fields.Str(required=False, load_from="AllowedVal"),
-        "ApplyType": fields.Int(required=False, load_from="ApplyType"),
-        "Modifiable": fields.Bool(required=False, load_from="Modifiable"),
-        "FormatType": fields.Int(required=False, load_from="FormatType"),
-        "Key": fields.Str(required=False, load_from="Key"),
-        "Value": fields.Str(required=False, load_from="Value"),
-    }
-
-
-class UDBParamGroupSetSchema(schema.ResponseSchema):
-    """ UDBParamGroupSet - DescribeUDBParamGroup
-    """
-
-    fields = {
-        "GroupId": fields.Int(required=False, load_from="GroupId"),
-        "GroupName": fields.Str(required=False, load_from="GroupName"),
-        "DBTypeId": fields.Str(required=False, load_from="DBTypeId"),
-        "Description": fields.Str(required=False, load_from="Description"),
-        "Modifiable": fields.Bool(required=False, load_from="Modifiable"),
-        "ParamMember": fields.List(UDBParamMemberSetSchema()),
-        "Zone": fields.Str(required=False, load_from="Zone"),
-        "RegionFlag": fields.Bool(required=False, load_from="RegionFlag"),
+        "Size": fields.Int(required=False, load_from="Size"),
     }
 
 
@@ -159,31 +23,167 @@ class UDBInstancePriceSetSchema(schema.ResponseSchema):
     }
 
 
+class UDBBackupSetSchema(schema.ResponseSchema):
+    """ UDBBackupSet - DescribeUDBBackup
+    """
+
+    fields = {
+        "BackupId": fields.Int(required=False, load_from="BackupId"),
+        "BackupType": fields.Int(required=False, load_from="BackupType"),
+        "State": fields.Str(required=False, load_from="State"),
+        "DBName": fields.Str(required=False, load_from="DBName"),
+        "BackupZone": fields.Str(required=False, load_from="BackupZone"),
+        "BackupEndTime": fields.Int(required=False, load_from="BackupEndTime"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+        "BackupName": fields.Str(required=False, load_from="BackupName"),
+        "BackupTime": fields.Int(required=False, load_from="BackupTime"),
+        "BackupSize": fields.Int(required=False, load_from="BackupSize"),
+        "ErrorInfo": fields.Str(required=False, load_from="ErrorInfo"),
+        "DBId": fields.Str(required=False, load_from="DBId"),
+    }
+
+
+class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
+    """ UDBSlaveInstanceSet - DescribeUDBSlaveInstance
+    """
+
+    fields = {
+        "ParamGroupId": fields.Int(required=False, load_from="ParamGroupId"),
+        "VirtualIP": fields.Str(required=False, load_from="VirtualIP"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "SSDType": fields.Str(required=False, load_from="SSDType"),
+        "LogFileSize": fields.Float(required=False, load_from="LogFileSize"),
+        "ExpiredTime": fields.Int(required=False, load_from="ExpiredTime"),
+        "MemoryLimit": fields.Int(required=False, load_from="MemoryLimit"),
+        "DiskUsedSize": fields.Float(required=False, load_from="DiskUsedSize"),
+        "BackupDate": fields.Str(required=False, load_from="BackupDate"),
+        "VirtualIPMac": fields.Str(required=False, load_from="VirtualIPMac"),
+        "InstanceTypeId": fields.Int(required=False, load_from="InstanceTypeId"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "SrcDBId": fields.Str(required=False, load_from="SrcDBId"),
+        "State": fields.Str(required=False, load_from="State"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "UseSSD": fields.Bool(required=False, load_from="UseSSD"),
+        "ClusterRole": fields.Str(required=False, load_from="ClusterRole"),
+        "DBTypeId": fields.Str(required=False, load_from="DBTypeId"),
+        "AdminUser": fields.Str(required=False, load_from="AdminUser"),
+        "BackupBlacklist": fields.Str(required=False, load_from="BackupBlacklist"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "Port": fields.Int(required=False, load_from="Port"),
+        "BackupBeginTime": fields.Int(required=False, load_from="BackupBeginTime"),
+        "DataFileSize": fields.Float(required=False, load_from="DataFileSize"),
+        "InstanceType": fields.Str(required=False, load_from="InstanceType"),
+        "InstanceMode": fields.Str(required=False, load_from="InstanceMode"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+        "DBId": fields.Str(required=False, load_from="DBId"),
+        "BackupCount": fields.Int(required=False, load_from="BackupCount"),
+        "BackupDuration": fields.Int(required=False, load_from="BackupDuration"),
+        "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
+        "DiskSpace": fields.Int(required=False, load_from="DiskSpace"),
+        "Role": fields.Str(required=False, load_from="Role"),
+        "SystemFileSize": fields.Float(required=False, load_from="SystemFileSize"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+    }
+
+
+class UDBInstanceSetSchema(schema.ResponseSchema):
+    """ UDBInstanceSet - DescribeUDBInstance
+    """
+
+    fields = {
+        "State": fields.Str(required=False, load_from="State"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "UseSSD": fields.Bool(required=False, load_from="UseSSD"),
+        "SSDType": fields.Str(required=False, load_from="SSDType"),
+        "Role": fields.Str(required=False, load_from="Role"),
+        "DataSet": fields.List(UDBSlaveInstanceSetSchema()),
+        "InstanceType": fields.Str(required=False, load_from="InstanceType"),
+        "BackupZone": fields.Str(required=False, load_from="BackupZone"),
+        "VirtualIPMac": fields.Str(required=False, load_from="VirtualIPMac"),
+        "InstanceTypeId": fields.Int(required=False, load_from="InstanceTypeId"),
+        "BackupCount": fields.Int(required=False, load_from="BackupCount"),
+        "BackupBeginTime": fields.Int(required=False, load_from="BackupBeginTime"),
+        "DiskUsedSize": fields.Float(required=False, load_from="DiskUsedSize"),
+        "DataFileSize": fields.Float(required=False, load_from="DataFileSize"),
+        "InstanceMode": fields.Str(required=False, load_from="InstanceMode"),
+        "VirtualIP": fields.Str(required=False, load_from="VirtualIP"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "Port": fields.Int(required=False, load_from="Port"),
+        "LogFileSize": fields.Float(required=False, load_from="LogFileSize"),
+        "BackupDate": fields.Str(required=False, load_from="BackupDate"),
+        "BackupDuration": fields.Int(required=False, load_from="BackupDuration"),
+        "BackupBlacklist": fields.Str(required=False, load_from="BackupBlacklist"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "ParamGroupId": fields.Int(required=False, load_from="ParamGroupId"),
+        "AdminUser": fields.Str(required=False, load_from="AdminUser"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "ExpiredTime": fields.Int(required=False, load_from="ExpiredTime"),
+        "MemoryLimit": fields.Int(required=False, load_from="MemoryLimit"),
+        "DiskSpace": fields.Int(required=False, load_from="DiskSpace"),
+        "SystemFileSize": fields.Float(required=False, load_from="SystemFileSize"),
+        "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+        "CluserRole": fields.Str(required=False, load_from="CluserRole"),
+        "DBId": fields.Str(required=False, load_from="DBId"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "DBTypeId": fields.Str(required=False, load_from="DBTypeId"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "SrcDBId": fields.Str(required=False, load_from="SrcDBId"),
+    }
+
+
+class UDBTypeSetSchema(schema.ResponseSchema):
+    """ UDBTypeSet - DescribeUDBType
+    """
+
+    fields = {"DBTypeId": fields.Str(required=False, load_from="DBTypeId")}
+
+
 class LogPackageDataSetSchema(schema.ResponseSchema):
     """ LogPackageDataSet - DescribeUDBLogPackage
     """
 
     fields = {
-        "BackupName": fields.Str(required=False, load_from="BackupName"),
         "BackupTime": fields.Int(required=False, load_from="BackupTime"),
         "BackupSize": fields.Int(required=False, load_from="BackupSize"),
-        "Zone": fields.Str(required=False, load_from="Zone"),
-        "BackupZone": fields.Str(required=False, load_from="BackupZone"),
-        "BackupId": fields.Int(required=False, load_from="BackupId"),
         "BackupType": fields.Int(required=False, load_from="BackupType"),
         "State": fields.Str(required=False, load_from="State"),
-        "DBId": fields.Str(required=False, load_from="DBId"),
         "DBName": fields.Str(required=False, load_from="DBName"),
+        "BackupId": fields.Int(required=False, load_from="BackupId"),
+        "BackupName": fields.Str(required=False, load_from="BackupName"),
+        "BackupZone": fields.Str(required=False, load_from="BackupZone"),
+        "DBId": fields.Str(required=False, load_from="DBId"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
     }
 
 
-class UDBInstanceBinlogSetSchema(schema.ResponseSchema):
-    """ UDBInstanceBinlogSet - DescribeUDBInstanceBinlog
+class UDBParamMemberSetSchema(schema.ResponseSchema):
+    """ UDBParamMemberSet - DescribeUDBParamGroup
     """
 
     fields = {
-        "BeginTime": fields.Int(required=False, load_from="BeginTime"),
-        "EndTime": fields.Int(required=False, load_from="EndTime"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Size": fields.Int(required=False, load_from="Size"),
+        "AllowedVal": fields.Str(required=False, load_from="AllowedVal"),
+        "ApplyType": fields.Int(required=False, load_from="ApplyType"),
+        "Modifiable": fields.Bool(required=False, load_from="Modifiable"),
+        "FormatType": fields.Int(required=False, load_from="FormatType"),
+        "Key": fields.Str(required=False, load_from="Key"),
+        "Value": fields.Str(required=False, load_from="Value"),
+        "ValueType": fields.Int(required=False, load_from="ValueType"),
+    }
+
+
+class UDBParamGroupSetSchema(schema.ResponseSchema):
+    """ UDBParamGroupSet - DescribeUDBParamGroup
+    """
+
+    fields = {
+        "GroupName": fields.Str(required=False, load_from="GroupName"),
+        "DBTypeId": fields.Str(required=False, load_from="DBTypeId"),
+        "Description": fields.Str(required=False, load_from="Description"),
+        "Modifiable": fields.Bool(required=False, load_from="Modifiable"),
+        "ParamMember": fields.List(UDBParamMemberSetSchema()),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+        "RegionFlag": fields.Bool(required=False, load_from="RegionFlag"),
+        "GroupId": fields.Int(required=False, load_from="GroupId"),
     }

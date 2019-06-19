@@ -29,15 +29,7 @@ class RequestsTransport(http.Transport):
         self.backoff_factor = backoff_factor
         self.status_forcelist = status_forcelist
 
-        self._retry = Retry(
-            total=self.max_retries,
-            read=self.max_retries,
-            connect=self.max_retries,
-            backoff_factor=self.backoff_factor,
-            status_forcelist=self.status_forcelist,
-        )
-        self._adapter = HTTPAdapter()
-        self._adapter.max_retries = self._retry
+        self._adapter = self._load_adapter(max_retries)
         self._middleware = Middleware()
 
     def send(self, req: Request, **options: dict) -> http.Response:
@@ -66,17 +58,30 @@ class RequestsTransport(http.Transport):
 
     def _send(self, req: Request, **options: dict) -> requests.Response:
         with requests.Session() as session:
-            session.mount("http://", adapter=self._adapter)
-            session.mount("https://", adapter=self._adapter)
+            adapter = self._load_adapter(options.get("max_retries"))
+            session.mount("http://", adapter=adapter)
+            session.mount("https://", adapter=adapter)
 
-            resp = self.convert_response(session.request(
-                req.method.upper(),
-                url=req.url,
-                json=req.json,
-                **options
-            ))
+            resp = self.convert_response(
+                session.request(req.method.upper(), url=req.url, json=req.json)
+            )
             resp.request = req
             return resp
+
+    def _load_adapter(self, max_retries: typing.Optional[int] = None) -> HTTPAdapter:
+        if max_retries is None and self._adapter is not None:
+            return self._adapter
+
+        max_retries = max_retries or 0
+        adapter = HTTPAdapter()
+        adapter.max_retries = Retry(
+            total=max_retries,
+            read=max_retries,
+            connect=max_retries,
+            backoff_factor=self.backoff_factor,
+            status_forcelist=self.status_forcelist,
+        )
+        return adapter
 
     @staticmethod
     def convert_response(r: requests.Response) -> Response:

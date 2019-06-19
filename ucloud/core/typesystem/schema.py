@@ -17,7 +17,9 @@ class Schema(abstract.Schema):
             # resolve value is empty
             if v is None:
                 if field.required:
-                    errors.append(ValidationException("the field {k} is required".format(k=k)))
+                    errors.append(
+                        ValidationException("the field {k} is required".format(k=k))
+                    )
                     continue
 
                 if field.default is None:
@@ -75,7 +77,9 @@ class RequestSchema(Schema):
             # resolve value is empty
             if v is None:
                 if field.required:
-                    errors.append(ValidationException("the field {k} is required".format(k=k)))
+                    errors.append(
+                        ValidationException("the field {k} is required".format(k=k))
+                    )
                     continue
 
                 if field.default is None:
@@ -101,7 +105,9 @@ class RequestSchema(Schema):
                         continue
 
                     for item_k, item_v in item.items():
-                        result["{k}.{i}.{item_k}".format(k=k, i=i, item_k=item_k)] = item_v
+                        result[
+                            "{k}.{i}.{item_k}".format(k=k, i=i, item_k=item_k)
+                        ] = item_v
             elif isinstance(field, RequestSchema):
                 for dk, dv in serialized.items():
                     result["{k}.{dk}".format(k=k, dk=dk)] = dv

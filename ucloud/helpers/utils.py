@@ -37,22 +37,26 @@ def gen_password(
     :param int min_specials: minimal number of special letters
     :return:
     """
-    all_letters = ''.join([
-        lower_letters, upper_letters, number_letters, special_letters
-    ])
+    all_letters = "".join(
+        [lower_letters, upper_letters, number_letters, special_letters]
+    )
     minimal_total = min_lower + min_upper + min_number + min_specials
     if n < minimal_total:
-        raise ValueError((
-            "the length of password must be larger than "
-            "total minimal letters number"
-        ))
+        raise ValueError(
+            (
+                "the length of password must be larger than "
+                "total minimal letters number"
+            )
+        )
 
-    minimal_letters = ''.join([
-        gen_string(lower_letters, min_lower),
-        gen_string(upper_letters, min_upper),
-        gen_string(number_letters, min_number),
-        gen_string(special_letters, min_specials)
-    ])
+    minimal_letters = "".join(
+        [
+            gen_string(lower_letters, min_lower),
+            gen_string(upper_letters, min_upper),
+            gen_string(number_letters, min_number),
+            gen_string(special_letters, min_specials),
+        ]
+    )
 
     additional_letters = random.sample(all_letters, n - minimal_total)
     results = list(minimal_letters) + additional_letters
@@ -61,7 +65,7 @@ def gen_password(
 
 
 def gen_string(letters: str, length: int):
-    return ''.join([random.choice(letters) for i in range(length)])
+    return "".join([random.choice(letters) for i in range(length)])
 
 
 def first(l: typing.List[T]) -> T:

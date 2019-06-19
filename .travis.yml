@@ -17,6 +17,7 @@ script: tox
 before_deploy:
     - pip install -e .[doc]
     - make docs
+    - touch docs/build/html/.nojekyll
 
 # deploy new versions to PyPI / GithubIO
 deploy:

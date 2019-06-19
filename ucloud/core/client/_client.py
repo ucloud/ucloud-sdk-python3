@@ -4,12 +4,7 @@ import sys
 
 from ucloud import version
 from ucloud.core.client._cfg import Config
-from ucloud.core.transport import (
-    Transport,
-    RequestsTransport,
-    Request,
-    Response
-)
+from ucloud.core.transport import Transport, RequestsTransport, Request, Response
 from ucloud.core.utils.middleware import Middleware
 from ucloud.core import auth, exc
 
@@ -23,16 +18,19 @@ class Client:
         self,
         config: dict,
         transport: typing.Optional[Transport] = None,
-        middleware: typing.Optional[Middleware] = None
+        middleware: typing.Optional[Middleware] = None,
     ):
         cfg, cred = self._parse_dict_config(config)
         self.config = cfg
         self.credential = cred
         self.transport = transport or default_transport
-        self._middleware = middleware or Middleware()
-        self.middleware.response(Client.logged_response_handler)
 
-    def invoke(self, action: str, args: dict = None, **options: dict) -> dict:
+        if middleware is None:
+            middleware = Middleware()
+            middleware.response(Client.logged_response_handler)
+        self._middleware = middleware
+
+    def invoke(self, action: str, args: dict = None, **options: typing.Any) -> dict:
         """ invoke will invoke the action with arguments data and options
 
         :param str action: the api action, like `CreateUHostInstance`
@@ -49,8 +47,8 @@ class Client:
             except exc.UCloudException as e:
                 if e.retryable and retries != max_retries:
                     logging.info(
-                        "Retrying {action}: {args}".format(action=action,
-                                                           args=args))
+                        "Retrying {action}: {args}".format(action=action, args=args)
+                    )
                     retries += 1
                     continue
                 raise e
@@ -77,16 +75,16 @@ class Client:
         yield self
 
     @staticmethod
-    def _parse_dict_config(config: dict) -> typing.Tuple[Config,
-                                                         auth.Credential]:
+    def _parse_dict_config(config: dict) -> typing.Tuple[Config, auth.Credential]:
         return Config.from_dict(config), auth.Credential.from_dict(config)
 
     def _send(self, req: Request, **options: dict) -> dict:
         for handler in self.middleware.request_handlers:
             req = handler(req)
 
+        max_retries = options.get("max_retries") or self.config.max_retries
         timeout = options.get("timeout") or self.config.timeout
-        resp = self.transport.send(req, timeout=timeout).json()
+        resp = self.transport.send(req, timeout=timeout, max_retries=max_retries).json()
 
         for handler in self.middleware.response_handlers:
             resp = handler(resp)
@@ -101,8 +99,7 @@ class Client:
         return resp
 
     def _build_request(self, action: str, data: dict = None) -> Request:
-        payload = {"Region": self.config.region,
-                   "ProjectId": self.config.project_id}
+        payload = {"Region": self.config.region, "ProjectId": self.config.project_id}
         payload.update(
             {k: v for k, v in (data or {}).items() if v is not None}
         )  # overwrite region and project id

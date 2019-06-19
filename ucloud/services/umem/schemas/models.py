@@ -1,73 +1,6 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class UMemcacheGroupSetSchema(schema.ResponseSchema):
-    """ UMemcacheGroupSet - DescribeUMemcacheGroup
-    """
-
-    fields = {
-        "ConfigId": fields.Str(required=False, load_from="ConfigId"),
-        "UsedSize": fields.Int(required=False, load_from="UsedSize"),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "State": fields.Str(required=False, load_from="State"),
-        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "GroupId": fields.Str(required=False, load_from="GroupId"),
-        "Size": fields.Int(required=False, load_from="Size"),
-        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
-        "Tag": fields.Str(required=False, load_from="Tag"),
-        "VirtualIP": fields.Str(required=False, load_from="VirtualIP"),
-        "Version": fields.Str(required=False, load_from="Version"),
-        "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-        "Port": fields.Int(required=False, load_from="Port"),
-    }
-
-
-class URedisGroupSetSchema(schema.ResponseSchema):
-    """ URedisGroupSet - DescribeURedisGroup
-    """
-
-    fields = {
-        "GroupName": fields.Str(required=False, load_from="GroupName"),
-        "VirtualIP": fields.Str(required=False, load_from="VirtualIP"),
-        "Port": fields.Int(required=False, load_from="Port"),
-        "UsedSize": fields.Int(required=False, load_from="UsedSize"),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "Protocol": fields.Str(required=False, load_from="Protocol"),
-        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "Zone": fields.Str(required=False, load_from="Zone"),
-        "AutoBackup": fields.Str(required=False, load_from="AutoBackup"),
-        "Size": fields.Int(required=False, load_from="Size"),
-        "BackupTime": fields.Int(required=False, load_from="BackupTime"),
-        "Version": fields.Str(required=False, load_from="Version"),
-        "State": fields.Str(required=False, load_from="State"),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
-        "VPCId": fields.Str(required=True, load_from="VPCId"),
-        "MemorySize": fields.Int(required=False, load_from="MemorySize"),
-        "Type": fields.Str(required=False, load_from="Type"),
-        "ConfigId": fields.Str(required=False, load_from="ConfigId"),
-        "HighAvailability": fields.Str(required=False, load_from="HighAvailability"),
-        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
-        "Tag": fields.Str(required=False, load_from="Tag"),
-        "SlaveZone": fields.Str(required=False, load_from="SlaveZone"),
-        "GroupId": fields.Str(required=False, load_from="GroupId"),
-        "Name": fields.Str(required=False, load_from="Name"),
-    }
-
-
-class URedisPriceSetSchema(schema.ResponseSchema):
-    """ URedisPriceSet - 主备Redis价格
-    """
-
-    fields = {
-        "Price": fields.Float(required=False, load_from="Price"),
-        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-    }
-
-
 class UMemcachePriceSetSchema(schema.ResponseSchema):
     """ UMemcachePriceSet - DescribeUMemcachePrice
     """
@@ -78,13 +11,73 @@ class UMemcachePriceSetSchema(schema.ResponseSchema):
     }
 
 
+class URedisBackupSetSchema(schema.ResponseSchema):
+    """ URedisBackupSet - DescribeURedisBackup
+    """
+
+    fields = {
+        "GroupName": fields.Str(required=False, load_from="GroupName"),
+        "BackupName": fields.Str(required=False, load_from="BackupName"),
+        "BackupSize": fields.Int(required=False, load_from="BackupSize"),
+        "State": fields.Str(required=False, load_from="State"),
+        "BackupId": fields.Str(required=False, load_from="BackupId"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+        "GroupId": fields.Str(required=False, load_from="GroupId"),
+        "BackupTime": fields.Int(required=False, load_from="BackupTime"),
+        "BackupType": fields.Str(required=False, load_from="BackupType"),
+    }
+
+
 class UMemPriceSetSchema(schema.ResponseSchema):
     """ UMemPriceSet - DescribeUMemPrice
     """
 
     fields = {
-        "Price": fields.Float(required=False, load_from="Price"),
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "Price": fields.Float(required=False, load_from="Price"),
+    }
+
+
+class URedisGroupSetSchema(schema.ResponseSchema):
+    """ URedisGroupSet - DescribeURedisGroup
+    """
+
+    fields = {
+        "ConfigId": fields.Str(required=False, load_from="ConfigId"),
+        "VirtualIP": fields.Str(required=False, load_from="VirtualIP"),
+        "Port": fields.Int(required=False, load_from="Port"),
+        "AutoBackup": fields.Str(required=False, load_from="AutoBackup"),
+        "HighAvailability": fields.Str(required=False, load_from="HighAvailability"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Protocol": fields.Str(required=False, load_from="Protocol"),
+        "UsedSize": fields.Int(required=False, load_from="UsedSize"),
+        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "SlaveZone": fields.Str(required=False, load_from="SlaveZone"),
+        "MemorySize": fields.Int(required=False, load_from="MemorySize"),
+        "GroupName": fields.Str(required=False, load_from="GroupName"),
+        "BackupTime": fields.Int(required=False, load_from="BackupTime"),
+        "State": fields.Str(required=False, load_from="State"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
+        "VPCId": fields.Str(required=True, load_from="VPCId"),
+        "Type": fields.Str(required=False, load_from="Type"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "Version": fields.Str(required=False, load_from="Version"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+        "GroupId": fields.Str(required=False, load_from="GroupId"),
+    }
+
+
+class URedisPriceSetSchema(schema.ResponseSchema):
+    """ URedisPriceSet - 主备Redis价格
+    """
+
+    fields = {
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "Price": fields.Float(required=False, load_from="Price"),
     }
 
 
@@ -93,8 +86,8 @@ class UMemSpaceAddressSetSchema(schema.ResponseSchema):
     """
 
     fields = {
-        "IP": fields.Str(required=False, load_from="IP"),
         "Port": fields.Int(required=False, load_from="Port"),
+        "IP": fields.Str(required=False, load_from="IP"),
     }
 
 
@@ -103,37 +96,44 @@ class UMemSpaceSetSchema(schema.ResponseSchema):
     """
 
     fields = {
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Protocol": fields.Str(required=False, load_from="Protocol"),
-        "Zone": fields.Str(required=False, load_from="Zone"),
-        "RewriteTime": fields.Int(required=True, load_from="RewriteTime"),
-        "SpaceId": fields.Str(required=False, load_from="SpaceId"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "Size": fields.Int(required=False, load_from="Size"),
-        "Address": fields.List(UMemSpaceAddressSetSchema()),
+        "State": fields.Str(required=False, load_from="State"),
         "Tag": fields.Str(required=True, load_from="Tag"),
         "Type": fields.Str(required=False, load_from="Type"),
-        "UsedSize": fields.Int(required=False, load_from="UsedSize"),
+        "SpaceId": fields.Str(required=False, load_from="SpaceId"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "Name": fields.Str(required=False, load_from="Name"),
         "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
-        "State": fields.Str(required=False, load_from="State"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "Address": fields.List(UMemSpaceAddressSetSchema()),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+        "RewriteTime": fields.Int(required=True, load_from="RewriteTime"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "Protocol": fields.Str(required=False, load_from="Protocol"),
+        "UsedSize": fields.Int(required=False, load_from="UsedSize"),
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
     }
 
 
-class URedisBackupSetSchema(schema.ResponseSchema):
-    """ URedisBackupSet - DescribeURedisBackup
+class UMemcacheGroupSetSchema(schema.ResponseSchema):
+    """ UMemcacheGroupSet - DescribeUMemcacheGroup
     """
 
     fields = {
-        "GroupId": fields.Str(required=False, load_from="GroupId"),
-        "GroupName": fields.Str(required=False, load_from="GroupName"),
-        "BackupName": fields.Str(required=False, load_from="BackupName"),
-        "BackupSize": fields.Int(required=False, load_from="BackupSize"),
-        "Zone": fields.Str(required=False, load_from="Zone"),
-        "BackupTime": fields.Int(required=False, load_from="BackupTime"),
-        "BackupType": fields.Str(required=False, load_from="BackupType"),
+        "ConfigId": fields.Str(required=False, load_from="ConfigId"),
+        "Version": fields.Str(required=False, load_from="Version"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "Port": fields.Int(required=False, load_from="Port"),
         "State": fields.Str(required=False, load_from="State"),
-        "BackupId": fields.Str(required=False, load_from="BackupId"),
+        "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "VirtualIP": fields.Str(required=False, load_from="VirtualIP"),
+        "UsedSize": fields.Int(required=False, load_from="UsedSize"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "GroupId": fields.Str(required=False, load_from="GroupId"),
     }

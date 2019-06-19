@@ -52,13 +52,19 @@ class StateConf:
                 interval *= 2
                 if interval > self.max_backoff_interval:
                     interval = self.max_backoff_interval
-                logger.info("waiting state for {self.refresh}, got state {state}".format(self=self, state=state))
+                logger.info(
+                    "waiting state for {self.refresh}, got state {state}".format(
+                        self=self, state=state
+                    )
+                )
                 continue
 
             if state in self.target:
                 return
 
-        raise WaitTimeoutException("wait timeout {self.timeout}s for {self.refresh}".format(self=self))
+        raise WaitTimeoutException(
+            "wait timeout {self.timeout}s for {self.refresh}".format(self=self)
+        )
 
 
 def wait_for_state(

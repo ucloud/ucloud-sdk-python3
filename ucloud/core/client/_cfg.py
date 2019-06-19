@@ -53,7 +53,6 @@ class Config:
         timeout: int = 30,
         max_retries: int = 3,
         log_level: int = logging.INFO,
-        validate_request: bool = True,
         **kwargs
     ):
         self.region = region
@@ -63,7 +62,6 @@ class Config:
         self.timeout = timeout
         self.max_retries = max_retries
         self.log_level = log_level
-        self.validate_request = validate_request
 
     @classmethod
     def from_dict(cls, d: dict):
@@ -71,4 +69,12 @@ class Config:
         return cls(**parsed)
 
     def to_dict(self) -> dict:
-        return self.__dict__  # TODO: implement it.
+        return {
+            "region": self.region,
+            "project_id": self.project_id,
+            "base_url": self.base_url,
+            "user_agent": self.user_agent,
+            "timeout": self.timeout,
+            "max_retries": self.max_retries,
+            "log_level": self.log_level,
+        }
