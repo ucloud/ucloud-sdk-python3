@@ -56,7 +56,7 @@ def create_uhost_batch(image_id, count):
         'Zone': 'cn-bj2-05',
         'ImageId': image_id,
         'LoginMode': "Password",
-        'Password': utils.b64encode(utils.gen_password(20)),
+        'Password': utils.gen_password(20),
         'CPU': 1,
         'Memory': 1024,
         'MaxCount': count,

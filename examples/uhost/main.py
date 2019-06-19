@@ -31,7 +31,7 @@ def main():
         'Zone': image["Zone"],
         'ImageId': image["ImageId"],
         'LoginMode': "Password",
-        'Password': utils.b64encode(utils.gen_password(20)),
+        'Password': utils.gen_password(20),
         'CPU': 1,
         'Memory': 1024,
         'Disks': [{
