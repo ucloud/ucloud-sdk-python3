@@ -1,4 +1,4 @@
-import typing
+import collections
 
 from ucloud.core.typesystem import abstract, fields
 from ucloud.core.exc import ValidationException
@@ -25,7 +25,7 @@ class Schema(abstract.Schema):
                 if field.default is None:
                     continue
 
-                if isinstance(field.default, typing.Callable):
+                if isinstance(field.default, collections.Callable):
                     v = field.default()
                 else:
                     v = field.default
@@ -85,7 +85,7 @@ class RequestSchema(Schema):
                 if field.default is None:
                     continue
 
-                if isinstance(field.default, typing.Callable):
+                if isinstance(field.default, collections.Callable):
                     v = field.default()
                 else:
                     v = field.default
@@ -137,3 +137,12 @@ class ResponseSchema(Schema):
             result[k] = serialized
 
         return result
+
+
+if __name__ == '__main__':
+    import ast
+    t = ast.parse('''
+def _send(self, req, **options: dict):
+    pass
+    ''')
+    print(ast.dump(t))

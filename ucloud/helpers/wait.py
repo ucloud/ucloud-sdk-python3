@@ -15,7 +15,8 @@ class WaitTimeoutException(exc.UCloudException):
 
 class StateConf:
     """ StateConf is the utilities class to wait the state return by refresh function achieve the specific state,
-    the generally usage is wait the cloud resource, such as uhost、udb ... is ready after created.
+    the generally usage is wait the cloud resource, such as uhost, udb ... is
+    ready after created.
     """
 
     def __init__(
@@ -77,7 +78,8 @@ def wait_for_state(
     max_backoff_interval: float = MAX_BACKOFF_INTERVAL,
 ):
     """ wait_for_state is a utilities function to wait the state return by refresh function achieve the specific state,
-    the generally usage is wait the cloud resource, such as uhost、udb ... is ready after created.
+    the generally usage is wait the cloud resource, such as uhost, udb ... is
+    ready after created.
 
     >>> wait_for_state(
     ...     pending=["pending"],

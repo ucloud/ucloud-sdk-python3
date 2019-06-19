@@ -30,7 +30,7 @@ class Client:
             middleware.response(Client.logged_response_handler)
         self._middleware = middleware
 
-    def invoke(self, action: str, args: dict = None, **options: typing.Any) -> dict:
+    def invoke(self, action: str, args: dict = None, **options) -> dict:
         """ invoke will invoke the action with arguments data and options
 
         :param str action: the api action, like `CreateUHostInstance`

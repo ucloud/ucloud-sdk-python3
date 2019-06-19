@@ -1,8 +1,7 @@
 import typing
-import abc
 
 
-class Field(abc.ABC):
+class Field(object):
     def __init__(
         self,
         required: bool = False,
@@ -24,7 +23,7 @@ class Field(abc.ABC):
         raise NotImplementedError
 
 
-class Schema(abc.ABC):
+class Schema(object):
     fields = {}
 
     def __init__(
@@ -46,3 +45,4 @@ class Schema(abc.ABC):
 
     def loads(self, d: dict) -> dict:
         raise NotImplementedError
+
