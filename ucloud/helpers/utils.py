@@ -73,10 +73,7 @@ def first(l: typing.List[typing.Any]) -> typing.Any:
 
 
 def b64encode(s: str) -> str:
-    """
-
-    >>> b64encode("foobar42")
-    'Zm9vYmFyNDI='
+    """ base64 encode
 
     :param str s: input string
     :return: base64 string
@@ -85,10 +82,7 @@ def b64encode(s: str) -> str:
 
 
 def b64decode(s: str) -> str:
-    """
-
-    >>> b64decode("Zm9vYmFyNDI=")
-    'foobar42'
+    """ base64 decode
 
     :param str s: base64 string
     :return: output string

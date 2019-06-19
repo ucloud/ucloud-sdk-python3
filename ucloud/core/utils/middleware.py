@@ -8,14 +8,14 @@ class Middleware:
     Add a request handler to prepare the request
 
     >>> @middleware.request
-    ... def prepare(req: dict) -> dict:
+    ... def prepare(req):
     ...     req['Region'] = 'cn-bj2'
     ...     return req
 
     Add a response handler to log the response detail
 
     >>> @middleware.response
-    ... def logged(resp: dict) -> dict:
+    ... def logged(resp):
     ...     print(resp)
     ...     return resp
 
