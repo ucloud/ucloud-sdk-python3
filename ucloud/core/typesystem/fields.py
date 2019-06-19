@@ -33,7 +33,7 @@ class List(abstract.Field):
             try:
                 v = self.item.dumps(each)
             except ValidationException as e:
-                errors.append(e)
+                errors.extend(e.errors)
             else:
                 values.append(v)
 
@@ -52,7 +52,7 @@ class List(abstract.Field):
             try:
                 v = self.item.loads(each)
             except ValidationException as e:
-                errors.append(e)
+                errors.extend(e.errors)
             else:
                 values.append(v)
 

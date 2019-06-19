@@ -33,7 +33,7 @@ class Schema(abstract.Schema):
             try:
                 serialized = field.dumps(v)
             except ValidationException as e:
-                errors.append(e)
+                errors.extend(e.errors)
                 continue
 
             result[field.dump_to or k] = serialized
@@ -53,7 +53,7 @@ class Schema(abstract.Schema):
             try:
                 serialized = field.loads(v)
             except ValidationException as e:
-                errors.append(e)
+                errors.extend(e.errors)
                 continue
 
             result[k] = serialized
@@ -93,7 +93,7 @@ class RequestSchema(Schema):
             try:
                 serialized = field.dumps(v)
             except ValidationException as e:
-                errors.append(e)
+                errors.extend(e.errors)
                 continue
 
             k = field.dump_to or k
@@ -131,10 +131,13 @@ class ResponseSchema(Schema):
             try:
                 serialized = field.loads(v)
             except ValidationException as e:
-                errors.append(e)
+                errors.extend(e.errors)
                 continue
 
             result[k] = serialized
+
+        if len(errors) > 0:
+            raise ValidationException(errors)
 
         return result
 
@@ -142,7 +145,5 @@ class ResponseSchema(Schema):
 if __name__ == '__main__':
     import ast
     t = ast.parse('''
-def _send(self, req, **options: dict):
-    pass
     ''')
     print(ast.dump(t))
