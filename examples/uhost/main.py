@@ -6,7 +6,7 @@ from ucloud.client import Client
 from ucloud.helpers import wait, utils
 
 logging.basicConfig()
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('ucloud')
 logger.setLevel(logging.DEBUG)
 
 
