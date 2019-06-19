@@ -2,8 +2,6 @@ import random
 import base64
 import typing
 
-T = typing.TypeVar("T")
-
 _lowercase = "abcdefghijklmnopqrstuvwxyz"
 _uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 _numbers = "0123456789"
@@ -68,7 +66,7 @@ def gen_string(letters: str, length: int):
     return "".join([random.choice(letters) for i in range(length)])
 
 
-def first(l: typing.List[T]) -> T:
+def first(l: typing.List[typing.Any]) -> typing.Any:
     if len(l) == 0:
         return None
     return l[0]
