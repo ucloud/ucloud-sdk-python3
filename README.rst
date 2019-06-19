@@ -7,7 +7,7 @@ This client can run on Linux, macOS and Windows. It requires Python 3.5 and abov
 
 - Website: https://www.ucloud.cn/
 - Free software: Apache 2.0 license
-- `Documentation <https://ucloud-sdk-python3.readthedocs.org>`_
+- `Documentation <https://ucloud.github.io/ucloud-sdk-python3/>`_
 
 .. image:: https://img.shields.io/pypi/v/ucloud-sdk-python3.svg
    :target: https://pypi.python.org/pypi/ucloud-sdk-python3/
