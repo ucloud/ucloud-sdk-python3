@@ -7,7 +7,7 @@ from ucloud.core.exc import ValidationException
 class Schema(abstract.Schema):
     fields = {}
 
-    def dumps(self, d: dict) -> dict:
+    def dumps(self, d: dict, name=None, **kwargs) -> dict:
         result = {}
         errors = []
 
@@ -43,7 +43,7 @@ class Schema(abstract.Schema):
 
         return result
 
-    def loads(self, d: dict) -> dict:
+    def loads(self, d: dict, name=None, **kwargs) -> dict:
         result = {}
         errors = []
 
@@ -67,7 +67,7 @@ class Schema(abstract.Schema):
 class RequestSchema(Schema):
     fields = {}
 
-    def dumps(self, d: dict) -> dict:
+    def dumps(self, d: dict, name=None, **kwargs) -> dict:
         result = {}
         errors = []
 
@@ -121,7 +121,7 @@ class RequestSchema(Schema):
 
 
 class ResponseSchema(Schema):
-    def loads(self, d: dict):
+    def loads(self, d: dict, name=None, **kwargs):
         result = {}
         errors = []
 
@@ -139,10 +139,3 @@ class ResponseSchema(Schema):
             result[k] = serialized
 
         return result
-
-
-if __name__ == '__main__':
-    import ast
-    t = ast.parse('''
-    ''')
-    print(ast.dump(t))
