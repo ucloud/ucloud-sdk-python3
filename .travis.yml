@@ -28,7 +28,6 @@ deploy:
     local_dir: docs/build/html
     on:
       branch: master
-      tags: true
       repo: ucloud/ucloud-sdk-python3
       python: 3.7
   - provider: pypi

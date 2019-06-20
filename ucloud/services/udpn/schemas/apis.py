@@ -18,14 +18,14 @@ class AllocateUDPNRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
-        "Quantity": fields.Int(required=False, dump_to="Quantity"),
-        "CouponId": fields.Str(required=False, dump_to="CouponId"),
         "Region": fields.Str(required=False, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Peer1": fields.Str(required=True, dump_to="Peer1"),
         "Peer2": fields.Str(required=True, dump_to="Peer2"),
         "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
     }
 
 
@@ -48,11 +48,11 @@ class DescribeUDPNRequestSchema(schema.RequestSchema):
     """
 
     fields = {
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "UDPNId": fields.Str(required=False, dump_to="UDPNId"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
-        "Region": fields.Str(required=False, dump_to="Region"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
     }
 
 
@@ -61,10 +61,10 @@ class DescribeUDPNResponseSchema(schema.ResponseSchema):
     """
 
     fields = {
-        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
         "DataSet": fields.List(
             models.UDPNDataSchema(), required=False, load_from="DataSet"
         ),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
     }
 
 
@@ -80,8 +80,8 @@ class GetUDPNLineListRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "Region": fields.Str(required=False, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
     }
 
 
@@ -109,12 +109,12 @@ class GetUDPNPriceRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "Peer1": fields.Str(required=True, dump_to="Peer1"),
-        "Peer2": fields.Str(required=True, dump_to="Peer2"),
-        "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=False, dump_to="Region"),
+        "Peer1": fields.Str(required=True, dump_to="Peer1"),
+        "Peer2": fields.Str(required=True, dump_to="Peer2"),
+        "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
     }
 
 
@@ -123,8 +123,8 @@ class GetUDPNPriceResponseSchema(schema.ResponseSchema):
     """
 
     fields = {
-        "PurchaseValue": fields.Int(required=True, load_from="PurchaseValue"),
         "Price": fields.Float(required=True, load_from="Price"),
+        "PurchaseValue": fields.Int(required=True, load_from="PurchaseValue"),
     }
 
 
@@ -140,10 +140,10 @@ class GetUDPNUpgradePriceRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
         "Region": fields.Str(required=False, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "UDPNId": fields.Str(required=True, dump_to="UDPNId"),
+        "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
     }
 
 
@@ -166,11 +166,11 @@ class ModifyUDPNBandwidthRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "Region": fields.Str(required=False, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "UDPNId": fields.Str(required=True, dump_to="UDPNId"),
         "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
     }
 
 

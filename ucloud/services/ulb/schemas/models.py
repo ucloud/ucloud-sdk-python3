@@ -29,25 +29,9 @@ class ULBSSLSetSchema(schema.ResponseSchema):
     """
 
     fields = {
-        "HashValue": fields.Str(required=False, load_from="HashValue"),
         "SSLId": fields.Str(required=False, load_from="SSLId"),
         "SSLName": fields.Str(required=False, load_from="SSLName"),
-    }
-
-
-class ULBPolicySetSchema(schema.ResponseSchema):
-    """ ULBPolicySet - 内容转发详细列表
-    """
-
-    fields = {
-        "PolicyId": fields.Str(required=False, load_from="PolicyId"),
-        "PolicyType": fields.Str(required=False, load_from="PolicyType"),
-        "Type": fields.Str(required=False, load_from="Type"),
-        "Match": fields.Str(required=False, load_from="Match"),
-        "PolicyPriority": fields.Int(required=False, load_from="PolicyPriority"),
-        "VServerId": fields.Str(required=False, load_from="VServerId"),
-        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
-        "BackendSet": fields.List(PolicyBackendSetSchema()),
+        "HashValue": fields.Str(required=False, load_from="HashValue"),
     }
 
 
@@ -56,19 +40,35 @@ class ULBBackendSetSchema(schema.ResponseSchema):
     """
 
     fields = {
-        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
-        "ResourceName": fields.Str(required=False, load_from="ResourceName"),
         "SubResourceType": fields.Str(required=False, load_from="SubResourceType"),
-        "SubResourceId": fields.Str(required=False, load_from="SubResourceId"),
         "SubResourceName": fields.Str(required=False, load_from="SubResourceName"),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "Weight": fields.Int(required=False, load_from="Weight"),
-        "BackendId": fields.Str(required=False, load_from="BackendId"),
-        "ResourceType": fields.Str(required=False, load_from="ResourceType"),
-        "PrivateIP": fields.Str(required=False, load_from="PrivateIP"),
         "Port": fields.Int(required=False, load_from="Port"),
         "Enabled": fields.Int(required=False, load_from="Enabled"),
         "Status": fields.Int(required=False, load_from="Status"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "BackendId": fields.Str(required=False, load_from="BackendId"),
+        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
+        "ResourceName": fields.Str(required=False, load_from="ResourceName"),
+        "SubResourceId": fields.Str(required=False, load_from="SubResourceId"),
+        "PrivateIP": fields.Str(required=False, load_from="PrivateIP"),
+        "Weight": fields.Int(required=False, load_from="Weight"),
+        "ResourceType": fields.Str(required=False, load_from="ResourceType"),
+    }
+
+
+class ULBPolicySetSchema(schema.ResponseSchema):
+    """ ULBPolicySet - 内容转发详细列表
+    """
+
+    fields = {
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+        "BackendSet": fields.List(PolicyBackendSetSchema()),
+        "PolicyId": fields.Str(required=False, load_from="PolicyId"),
+        "PolicyType": fields.Str(required=False, load_from="PolicyType"),
+        "Type": fields.Str(required=False, load_from="Type"),
+        "Match": fields.Str(required=False, load_from="Match"),
+        "PolicyPriority": fields.Int(required=False, load_from="PolicyPriority"),
+        "VServerId": fields.Str(required=False, load_from="VServerId"),
     }
 
 
@@ -77,22 +77,22 @@ class ULBVServerSetSchema(schema.ResponseSchema):
     """
 
     fields = {
-        "PersistenceInfo": fields.Str(required=False, load_from="PersistenceInfo"),
-        "Status": fields.Int(required=False, load_from="Status"),
-        "BackendSet": fields.List(ULBBackendSetSchema()),
-        "ListenType": fields.Str(required=False, load_from="ListenType"),
-        "FrontendPort": fields.Int(required=False, load_from="FrontendPort"),
-        "PersistenceType": fields.Str(required=False, load_from="PersistenceType"),
-        "Protocol": fields.Str(required=False, load_from="Protocol"),
-        "ClientTimeout": fields.Int(required=False, load_from="ClientTimeout"),
-        "Domain": fields.Str(required=True, load_from="Domain"),
         "PolicySet": fields.List(ULBPolicySetSchema()),
-        "VServerId": fields.Str(required=False, load_from="VServerId"),
-        "VServerName": fields.Str(required=False, load_from="VServerName"),
-        "Method": fields.Str(required=False, load_from="Method"),
-        "SSLSet": fields.List(ULBSSLSetSchema()),
         "MonitorType": fields.Str(required=True, load_from="MonitorType"),
         "Path": fields.Str(required=True, load_from="Path"),
+        "Protocol": fields.Str(required=False, load_from="Protocol"),
+        "ClientTimeout": fields.Int(required=False, load_from="ClientTimeout"),
+        "Status": fields.Int(required=False, load_from="Status"),
+        "Domain": fields.Str(required=True, load_from="Domain"),
+        "VServerId": fields.Str(required=False, load_from="VServerId"),
+        "VServerName": fields.Str(required=False, load_from="VServerName"),
+        "FrontendPort": fields.Int(required=False, load_from="FrontendPort"),
+        "Method": fields.Str(required=False, load_from="Method"),
+        "PersistenceInfo": fields.Str(required=False, load_from="PersistenceInfo"),
+        "BackendSet": fields.List(ULBBackendSetSchema()),
+        "ListenType": fields.Str(required=False, load_from="ListenType"),
+        "PersistenceType": fields.Str(required=False, load_from="PersistenceType"),
+        "SSLSet": fields.List(ULBSSLSetSchema()),
     }
 
 
@@ -114,21 +114,21 @@ class ULBSetSchema(schema.ResponseSchema):
     """
 
     fields = {
-        "Name": fields.Str(required=False, load_from="Name"),
-        "BandwidthType": fields.Int(required=False, load_from="BandwidthType"),
-        "Resource": fields.List(fields.Str()),
-        "ULBType": fields.Str(required=False, load_from="ULBType"),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "PrivateIP": fields.Str(required=False, load_from="PrivateIP"),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-        "IPSet": fields.List(ULBIPSetSchema()),
-        "BusinessId": fields.Str(required=False, load_from="BusinessId"),
+        "PrivateIP": fields.Str(required=False, load_from="PrivateIP"),
         "ULBId": fields.Str(required=False, load_from="ULBId"),
         "ULBName": fields.Str(required=False, load_from="ULBName"),
-        "Tag": fields.Str(required=False, load_from="Tag"),
+        "Name": fields.Str(required=False, load_from="Name"),
         "Remark": fields.Str(required=False, load_from="Remark"),
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "BandwidthType": fields.Int(required=False, load_from="BandwidthType"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "VServerSet": fields.List(ULBVServerSetSchema()),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "IPSet": fields.List(ULBIPSetSchema()),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "Resource": fields.List(fields.Str()),
+        "ULBType": fields.Str(required=False, load_from="ULBType"),
+        "BusinessId": fields.Str(required=False, load_from="BusinessId"),
     }

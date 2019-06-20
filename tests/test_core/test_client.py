@@ -21,11 +21,11 @@ def client():
     )
 
 
-def test_pre_check(client):
-    env.pre_check_env()
-
-
 class TestAccClient:
+    @pytest.mark.skipif(env.is_ut(), reason=env.get_skip_reason())
+    def test_pre_check(self, client):
+        env.pre_check_env()
+
     @pytest.mark.skipif(env.is_ut(), reason=env.get_skip_reason())
     def test_client_invoke(self, client):
         resp = client.invoke("DescribeUHostInstance")

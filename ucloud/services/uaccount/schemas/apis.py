@@ -7,6 +7,51 @@ from ucloud.services.uaccount.schemas import models
 
 
 """
+API: ModifyProject
+
+修改项目
+"""
+
+
+class ModifyProjectRequestSchema(schema.RequestSchema):
+    """ ModifyProject - 修改项目
+    """
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "ProjectName": fields.Str(required=True, dump_to="ProjectName"),
+    }
+
+
+class ModifyProjectResponseSchema(schema.ResponseSchema):
+    """ ModifyProject - 修改项目
+    """
+
+    fields = {}
+
+
+"""
+API: TerminateProject
+
+删除项目
+"""
+
+
+class TerminateProjectRequestSchema(schema.RequestSchema):
+    """ TerminateProject - 删除项目
+    """
+
+    fields = {"ProjectId": fields.Str(required=False, dump_to="ProjectId")}
+
+
+class TerminateProjectResponseSchema(schema.ResponseSchema):
+    """ TerminateProject - 删除项目
+    """
+
+    fields = {}
+
+
+"""
 API: CreateProject
 
 创建项目
@@ -101,48 +146,3 @@ class GetUserInfoResponseSchema(schema.ResponseSchema):
             models.UserInfoSchema(), required=True, load_from="DataSet"
         )
     }
-
-
-"""
-API: ModifyProject
-
-修改项目
-"""
-
-
-class ModifyProjectRequestSchema(schema.RequestSchema):
-    """ ModifyProject - 修改项目
-    """
-
-    fields = {
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
-        "ProjectName": fields.Str(required=True, dump_to="ProjectName"),
-    }
-
-
-class ModifyProjectResponseSchema(schema.ResponseSchema):
-    """ ModifyProject - 修改项目
-    """
-
-    fields = {}
-
-
-"""
-API: TerminateProject
-
-删除项目
-"""
-
-
-class TerminateProjectRequestSchema(schema.RequestSchema):
-    """ TerminateProject - 删除项目
-    """
-
-    fields = {"ProjectId": fields.Str(required=False, dump_to="ProjectId")}
-
-
-class TerminateProjectResponseSchema(schema.ResponseSchema):
-    """ TerminateProject - 删除项目
-    """
-
-    fields = {}

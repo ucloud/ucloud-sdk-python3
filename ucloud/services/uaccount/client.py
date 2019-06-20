@@ -5,8 +5,24 @@ from ucloud.services.uaccount.schemas import apis
 
 
 class UAccountClient(Client):
-    def __init__(self, config: dict, transport=None, middleware=None):
-        super(UAccountClient, self).__init__(config, transport, middleware)
+    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
+        super(UAccountClient, self).__init__(config, transport, middleware, logger)
+
+    def create_project(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateProject - 创建项目
+
+        :param ProjectName: (Required) 项目名称
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.CreateProjectRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateProject", d, **kwargs)
+        return apis.CreateProjectResponseSchema().loads(resp)
 
     def get_project_list(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """ GetProjectList - 获取项目列表
@@ -71,19 +87,3 @@ class UAccountClient(Client):
 
         resp = self.invoke("TerminateProject", d, **kwargs)
         return apis.TerminateProjectResponseSchema().loads(resp)
-
-    def create_project(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ CreateProject - 创建项目
-
-        :param ProjectName: (Required) 项目名称
-        """
-        # build request
-        d = {}
-        req and d.update(req)
-        d = apis.CreateProjectRequestSchema().dumps(d)
-
-        # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
-        resp = self.invoke("CreateProject", d, **kwargs)
-        return apis.CreateProjectResponseSchema().loads(resp)

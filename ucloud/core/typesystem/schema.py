@@ -1,13 +1,12 @@
-import typing
-
 from ucloud.core.typesystem import abstract, fields
 from ucloud.core.exc import ValidationException
+from ucloud.core.utils import compact
 
 
 class Schema(abstract.Schema):
     fields = {}
 
-    def dumps(self, d: dict) -> dict:
+    def dumps(self, d: dict, name=None, **kwargs) -> dict:
         result = {}
         errors = []
 
@@ -25,15 +24,15 @@ class Schema(abstract.Schema):
                 if field.default is None:
                     continue
 
-                if isinstance(field.default, typing.Callable):
+                if isinstance(field.default, compact.Callable):
                     v = field.default()
                 else:
                     v = field.default
 
             try:
-                serialized = field.dumps(v)
+                serialized = field.dumps(v, name=k)
             except ValidationException as e:
-                errors.append(e)
+                errors.extend(e.errors)
                 continue
 
             result[field.dump_to or k] = serialized
@@ -43,7 +42,7 @@ class Schema(abstract.Schema):
 
         return result
 
-    def loads(self, d: dict) -> dict:
+    def loads(self, d: dict, name=None, **kwargs) -> dict:
         result = {}
         errors = []
 
@@ -51,9 +50,9 @@ class Schema(abstract.Schema):
             v = d.get(field.load_from or k)
 
             try:
-                serialized = field.loads(v)
+                serialized = field.loads(v, name=k)
             except ValidationException as e:
-                errors.append(e)
+                errors.extend(e.errors)
                 continue
 
             result[k] = serialized
@@ -67,7 +66,7 @@ class Schema(abstract.Schema):
 class RequestSchema(Schema):
     fields = {}
 
-    def dumps(self, d: dict) -> dict:
+    def dumps(self, d: dict, name=None, **kwargs) -> dict:
         result = {}
         errors = []
 
@@ -85,15 +84,15 @@ class RequestSchema(Schema):
                 if field.default is None:
                     continue
 
-                if isinstance(field.default, typing.Callable):
+                if isinstance(field.default, compact.Callable):
                     v = field.default()
                 else:
                     v = field.default
 
             try:
-                serialized = field.dumps(v)
+                serialized = field.dumps(v, name=k)
             except ValidationException as e:
-                errors.append(e)
+                errors.extend(e.errors)
                 continue
 
             k = field.dump_to or k
@@ -121,17 +120,19 @@ class RequestSchema(Schema):
 
 
 class ResponseSchema(Schema):
-    def loads(self, d: dict):
+    def loads(self, d: dict, name=None, **kwargs):
         result = {}
         errors = []
 
         for k, field in self.fields.items():
             v = d.get(field.load_from or k)
+            if v is None:
+                continue
 
             try:
-                serialized = field.loads(v)
+                serialized = field.loads(v, name=k)
             except ValidationException as e:
-                errors.append(e)
+                errors.extend(e.errors)
                 continue
 
             result[k] = serialized

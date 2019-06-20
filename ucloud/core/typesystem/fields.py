@@ -2,6 +2,7 @@ import base64
 import typing
 import collections
 
+from ucloud.core.utils import compact
 from ucloud.core.typesystem import abstract
 from ucloud.core.exc import ValidationException
 
@@ -23,9 +24,11 @@ class List(abstract.Field):
         super(List, self).__init__(required=required, **kwargs)
         self.item = item
 
-    def dumps(self, value, **kwargs):
+    def dumps(self, value, name=None, **kwargs):
         if not isinstance(value, collections.Iterable):
-            raise ValidationException("invalid list")
+            raise ValidationException(
+                "invalid field {}, expect list, got {}".format(name, type(value))
+            )
 
         errors = []
         values = []
@@ -33,7 +36,7 @@ class List(abstract.Field):
             try:
                 v = self.item.dumps(each)
             except ValidationException as e:
-                errors.append(e)
+                errors.extend(e.errors)
             else:
                 values.append(v)
 
@@ -42,9 +45,11 @@ class List(abstract.Field):
 
         return values
 
-    def loads(self, value, **kwargs):
+    def loads(self, value, name=None, **kwargs):
         if not isinstance(value, collections.Iterable):
-            raise ValidationException("invalid str")
+            raise ValidationException(
+                "invalid field {}, expect list, got {}".format(name, type(value))
+            )
 
         errors = []
         values = []
@@ -52,7 +57,7 @@ class List(abstract.Field):
             try:
                 v = self.item.loads(each)
             except ValidationException as e:
-                errors.append(e)
+                errors.extend(e.errors)
             else:
                 values.append(v)
 
@@ -63,58 +68,74 @@ class List(abstract.Field):
 
 
 class Str(abstract.Field):
-    def dumps(self, value, **kwargs):
-        if not isinstance(value, str):
-            raise ValidationException("invalid str")
-        return str(value)
+    def dumps(self, value, name=None, **kwargs):
+        if not isinstance(value, compact.string_types):
+            raise ValidationException(
+                "invalid field {}, expect str, got {}".format(name, type(value))
+            )
+        return value
 
-    def loads(self, value, **kwargs):
-        if not isinstance(value, str):
-            raise ValidationException("invalid str")
-        return str(value)
+    def loads(self, value, name=None, **kwargs):
+        if not isinstance(value, compact.string_types):
+            raise ValidationException(
+                "invalid field {}, expect str, got {}".format(name, type(value))
+            )
+        return value
 
 
 class Base64(Str):
-    def dumps(self, value, **kwargs):
-        s = super(Base64, self).dumps(value)
+    def dumps(self, value, name=None, **kwargs):
+        s = super(Base64, self).dumps(value, name)
         return base64.b64encode(s.encode()).decode()
 
-    def loads(self, value, **kwargs):
-        s = super(Base64, self).loads(value)
+    def loads(self, value, name=None, **kwargs):
+        s = super(Base64, self).loads(value, name)
         return base64.b64decode(s.encode()).decode()
 
 
 class Int(abstract.Field):
-    def dumps(self, value, **kwargs):
+    def dumps(self, value, name=None, **kwargs):
         if not isinstance(value, int):
-            raise ValidationException("invalid int")
+            raise ValidationException(
+                "invalid field {}, expect int, got {}".format(name, type(value))
+            )
         return int(value)
 
-    def loads(self, value, **kwargs):
+    def loads(self, value, name=None, **kwargs):
         if not isinstance(value, int):
-            raise ValidationException("invalid int")
+            raise ValidationException(
+                "invalid field {}, expect int, got {}".format(name, type(value))
+            )
         return int(value)
 
 
 class Float(abstract.Field):
-    def dumps(self, value, **kwargs):
+    def dumps(self, value, name=None, **kwargs):
         if not isinstance(value, float):
-            raise ValidationException("invalid float")
+            raise ValidationException(
+                "invalid field {}, expect float, got {}".format(name, type(value))
+            )
         return float(value)
 
-    def loads(self, value, **kwargs):
+    def loads(self, value, name=None, **kwargs):
         if not isinstance(value, float):
-            raise ValidationException("invalid float")
+            raise ValidationException(
+                "invalid field {}, expect float, got {}".format(name, type(value))
+            )
         return float(value)
 
 
 class Bool(abstract.Field):
-    def dumps(self, value, **kwargs):
+    def dumps(self, value, name=None, **kwargs):
         if not isinstance(value, bool):
-            raise ValidationException("invalid bool")
+            raise ValidationException(
+                "invalid field {}, expect bool, got {}".format(name, type(value))
+            )
         return bool(value)
 
-    def loads(self, value, **kwargs):
+    def loads(self, value, name=None, **kwargs):
         if not isinstance(value, bool):
-            raise ValidationException("invalid bool")
+            raise ValidationException(
+                "invalid field {}, expect bool, got {}".format(name, type(value))
+            )
         return bool(value)

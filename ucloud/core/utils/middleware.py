@@ -1,10 +1,3 @@
-import typing
-
-
-Request = typing.TypeVar("Request")
-Response = typing.TypeVar("Response")
-
-
 class Middleware:
     """ middleware is the object to store request/response handlers
 
@@ -13,14 +6,14 @@ class Middleware:
     Add a request handler to prepare the request
 
     >>> @middleware.request
-    ... def prepare(req: dict) -> dict:
+    ... def prepare(req):
     ...     req['Region'] = 'cn-bj2'
     ...     return req
 
     Add a response handler to log the response detail
 
     >>> @middleware.response
-    ... def logged(resp: dict) -> dict:
+    ... def logged(resp):
     ...     print(resp)
     ...     return resp
 
@@ -32,7 +25,7 @@ class Middleware:
         self.request_handlers = []
         self.response_handlers = []
 
-    def request(self, handler: typing.Callable[[Request], Request], index=-1):
+    def request(self, handler, index=-1):
         """ request is the request handler register to add request handler.
 
         :param handler: request handler function, receive request object
@@ -44,7 +37,7 @@ class Middleware:
         self.request_handlers.insert(index, handler)
         return handler
 
-    def response(self, handler: typing.Callable[[Response], Response], index=-1):
+    def response(self, handler, index=-1):
         """ response is the response handler register to add response handler.
 
         :param handler: response handler function, receive response object

@@ -91,5 +91,5 @@ class RequestsTransport(http.Transport):
             status_code=r.status_code,
             reason=r.reason,
             headers=r.headers,
-            content=r.content.decode(),
+            content=r.content,
         )

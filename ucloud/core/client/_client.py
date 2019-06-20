@@ -5,10 +5,9 @@ import sys
 from ucloud import version
 from ucloud.core.client._cfg import Config
 from ucloud.core.transport import Transport, RequestsTransport, Request, Response
+from ucloud.core.utils import log
 from ucloud.core.utils.middleware import Middleware
 from ucloud.core import auth, exc
-
-logger = logging.getLogger(__name__)
 
 default_transport = RequestsTransport()
 
@@ -19,18 +18,20 @@ class Client:
         config: dict,
         transport: typing.Optional[Transport] = None,
         middleware: typing.Optional[Middleware] = None,
+        logger: typing.Optional[logging.Logger] = None,
     ):
         cfg, cred = self._parse_dict_config(config)
         self.config = cfg
         self.credential = cred
         self.transport = transport or default_transport
-
+        self.logger = logger or log.default_logger
         if middleware is None:
             middleware = Middleware()
-            middleware.response(Client.logged_response_handler)
+            middleware.response(self.logged_response_handler)
+            middleware.request(self.logged_request_handler)
         self._middleware = middleware
 
-    def invoke(self, action: str, args: dict = None, **options: typing.Any) -> dict:
+    def invoke(self, action: str, args: dict = None, **options) -> dict:
         """ invoke will invoke the action with arguments data and options
 
         :param str action: the api action, like `CreateUHostInstance`
@@ -38,12 +39,11 @@ class Client:
         :return:
         """
         retries = 0
-        req = self._build_request(action, args)
         max_retries = options.get("max_retries") or self.config.max_retries
 
         while retries <= max_retries:
             try:
-                return self._send(req, **options)
+                return self._send(action, args or {}, **options)
             except exc.UCloudException as e:
                 if e.retryable and retries != max_retries:
                     logging.info(
@@ -61,14 +61,12 @@ class Client:
     def middleware(self) -> Middleware:
         return self._middleware
 
-    @staticmethod
-    def logged_response_handler(resp: Response) -> Response:
-        """ logging response data
+    def logged_request_handler(self, req):
+        self.logger.info("[request] {} {}".format(req.get("Action", ""), req))
+        return req
 
-        :param resp:
-        :return:
-        """
-        logger.info(resp)
+    def logged_response_handler(self, resp):
+        self.logger.info("[response] {} {}".format(resp.get("Action", ""), resp))
         return resp
 
     def __enter__(self):
@@ -78,9 +76,11 @@ class Client:
     def _parse_dict_config(config: dict) -> typing.Tuple[Config, auth.Credential]:
         return Config.from_dict(config), auth.Credential.from_dict(config)
 
-    def _send(self, req: Request, **options: dict) -> dict:
+    def _send(self, action: str, args: dict, **options) -> dict:
+        args["Action"] = action
         for handler in self.middleware.request_handlers:
-            req = handler(req)
+            args = handler(args)
+        req = self._build_http_request(args)
 
         max_retries = options.get("max_retries") or self.config.max_retries
         timeout = options.get("timeout") or self.config.timeout
@@ -98,12 +98,9 @@ class Client:
 
         return resp
 
-    def _build_request(self, action: str, data: dict = None) -> Request:
+    def _build_http_request(self, args: dict) -> Request:
         payload = {"Region": self.config.region, "ProjectId": self.config.project_id}
-        payload.update(
-            {k: v for k, v in (data or {}).items() if v is not None}
-        )  # overwrite region and project id
-        payload["Action"] = action  # overwrite action
+        payload.update({k: v for k, v in args.items() if v is not None})
         payload["Signature"] = self.credential.verify_ac(payload)
 
         return Request(
