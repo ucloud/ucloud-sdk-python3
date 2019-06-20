@@ -38,7 +38,7 @@ class UDBClient(Client):
         :param BeginTime: (Optional) 过滤条件:起始时间(时间戳)
         :param DBId: (Optional) DB实例Id，如果指定，则只获取该db的备份信息
         :param EndTime: (Optional) 过滤条件:结束时间(时间戳)
-        :param Type: (Optional) 需要列出的备份文件类型，每种文件的值如下 2 : BINLOG\_BACKUP 3 : SLOW\_QUERY\_BACKUP 4 : ERRORLOG\_BACKUP
+        :param Type: (Optional) 需要列出的备份文件类型，每种文件的值如下 2 : BINLOG_BACKUP 3 : SLOW_QUERY_BACKUP 4 : ERRORLOG_BACKUP
         :param Types: (Optional) Types作为Type的补充，支持多值传入，可以获取多个类型的日志记录，如：Types.0=2&Types.1=3
         :param Zone: (Optional) 可用区。参见 [可用区列表](../summary/regionlist.html)
         """
