@@ -28,6 +28,7 @@ class Client:
         if middleware is None:
             middleware = Middleware()
             middleware.response(Client.logged_response_handler)
+            middleware.request(Client.logged_request_handler)
         self._middleware = middleware
 
     def invoke(self, action: str, args: dict = None, **options) -> dict:
@@ -62,12 +63,12 @@ class Client:
         return self._middleware
 
     @staticmethod
-    def logged_response_handler(resp: Response) -> Response:
-        """ logging response data
+    def logged_request_handler(req):
+        logger.info(req)
+        return req
 
-        :param resp:
-        :return:
-        """
+    @staticmethod
+    def logged_response_handler(resp):
         logger.info(resp)
         return resp
 
