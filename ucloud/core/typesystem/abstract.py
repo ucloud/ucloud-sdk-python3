@@ -45,4 +45,3 @@ class Schema(object):
 
     def loads(self, d: dict) -> dict:
         raise NotImplementedError
-

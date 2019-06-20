@@ -27,8 +27,7 @@ class List(abstract.Field):
     def dumps(self, value, name=None, **kwargs):
         if not isinstance(value, collections.Iterable):
             raise ValidationException(
-                "invalid field {}, expect list, got {}".format(
-                    name, type(value))
+                "invalid field {}, expect list, got {}".format(name, type(value))
             )
 
         errors = []
@@ -49,8 +48,7 @@ class List(abstract.Field):
     def loads(self, value, name=None, **kwargs):
         if not isinstance(value, collections.Iterable):
             raise ValidationException(
-                "invalid field {}, expect list, got {}".format(
-                    name, type(value))
+                "invalid field {}, expect list, got {}".format(name, type(value))
             )
 
         errors = []
@@ -115,16 +113,14 @@ class Float(abstract.Field):
     def dumps(self, value, name=None, **kwargs):
         if not isinstance(value, float):
             raise ValidationException(
-                "invalid field {}, expect float, got {}".format(
-                    name, type(value))
+                "invalid field {}, expect float, got {}".format(name, type(value))
             )
         return float(value)
 
     def loads(self, value, name=None, **kwargs):
         if not isinstance(value, float):
             raise ValidationException(
-                "invalid field {}, expect float, got {}".format(
-                    name, type(value))
+                "invalid field {}, expect float, got {}".format(name, type(value))
             )
         return float(value)
 
@@ -133,15 +129,13 @@ class Bool(abstract.Field):
     def dumps(self, value, name=None, **kwargs):
         if not isinstance(value, bool):
             raise ValidationException(
-                "invalid field {}, expect bool, got {}".format(
-                    name, type(value))
+                "invalid field {}, expect bool, got {}".format(name, type(value))
             )
         return bool(value)
 
     def loads(self, value, name=None, **kwargs):
         if not isinstance(value, bool):
             raise ValidationException(
-                "invalid field {}, expect bool, got {}".format(
-                    name, type(value))
+                "invalid field {}, expect bool, got {}".format(name, type(value))
             )
         return bool(value)

@@ -1,5 +1,3 @@
-
-
 class Middleware:
     """ middleware is the object to store request/response handlers
 

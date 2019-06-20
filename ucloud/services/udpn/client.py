@@ -5,8 +5,8 @@ from ucloud.services.udpn.schemas import apis
 
 
 class UDPNClient(Client):
-    def __init__(self, config: dict, transport=None, middleware=None):
-        super(UDPNClient, self).__init__(config, transport, middleware)
+    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
+        super(UDPNClient, self).__init__(config, transport, middleware, logger)
 
     def describe_udpn(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """ DescribeUDPN - 描述 UDPN

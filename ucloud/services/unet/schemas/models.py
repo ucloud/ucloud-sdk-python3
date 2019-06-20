@@ -1,6 +1,33 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class VIPSetSchema(schema.ResponseSchema):
+    """ VIPSet - VIPSet
+    """
+
+    fields = {
+        "VIP": fields.Str(required=False, load_from="VIP"),
+        "VIPId": fields.Str(required=False, load_from="VIPId"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+    }
+
+
+class ResourceSetSchema(schema.ResponseSchema):
+    """ ResourceSet - 资源信息
+    """
+
+    fields = {
+        "ResourceType": fields.Str(required=False, load_from="ResourceType"),
+        "Status": fields.Int(required=False, load_from="Status"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "Zone": fields.Int(required=False, load_from="Zone"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "PrivateIP": fields.Str(required=False, load_from="PrivateIP"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "ResourceID": fields.Str(required=False, load_from="ResourceID"),
+    }
+
+
 class EIPAddrSetSchema(schema.ResponseSchema):
     """ EIPAddrSet - DescribeShareBandwidth
     """
@@ -11,30 +38,80 @@ class EIPAddrSetSchema(schema.ResponseSchema):
     }
 
 
-class UnetBandwidthPackageSetSchema(schema.ResponseSchema):
-    """ UnetBandwidthPackageSet - DescribeBandwidthPackage
+class EIPSetDataSchema(schema.ResponseSchema):
+    """ EIPSetData - describeShareBandwidth
     """
 
     fields = {
         "EIPId": fields.Str(required=False, load_from="EIPId"),
-        "EIPAddr": fields.List(EIPAddrSetSchema()),
-        "BandwidthPackageId": fields.Str(
-            required=False, load_from="BandwidthPackageId"
-        ),
-        "EnableTime": fields.Int(required=False, load_from="EnableTime"),
-        "DisableTime": fields.Int(required=False, load_from="DisableTime"),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "EIPAddr": fields.List(EIPAddrSetSchema()),
     }
 
 
-class UnetBandwidthUsageEIPSetSchema(schema.ResponseSchema):
-    """ UnetBandwidthUsageEIPSet - DescribeBandwidthUsage
+class UnetShareBandwidthSetSchema(schema.ResponseSchema):
+    """ UnetShareBandwidthSet - DescribeShareBandwidth
     """
 
     fields = {
-        "CurBandwidth": fields.Float(required=False, load_from="CurBandwidth"),
-        "EIPId": fields.Str(required=False, load_from="EIPId"),
+        "ShareBandwidthId": fields.Str(required=False, load_from="ShareBandwidthId"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "EIPSet": fields.List(EIPSetDataSchema()),
+        "BandwidthGuarantee": fields.Int(
+            required=False, load_from="BandwidthGuarantee"
+        ),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "ShareBandwidth": fields.Int(required=False, load_from="ShareBandwidth"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "PostPayStartTime": fields.Int(required=False, load_from="PostPayStartTime"),
+    }
+
+
+class VIPDetailSetSchema(schema.ResponseSchema):
+    """ VIPDetailSet - VIPDetailSet
+    """
+
+    fields = {
+        "RealIp": fields.Str(required=False, load_from="RealIp"),
+        "VIP": fields.Str(required=False, load_from="VIP"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+        "VIPId": fields.Str(required=False, load_from="VIPId"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+    }
+
+
+class FirewallRuleSetSchema(schema.ResponseSchema):
+    """ FirewallRuleSet - DescribeFirewall
+    """
+
+    fields = {
+        "DstPort": fields.Str(required=False, load_from="DstPort"),
+        "RuleAction": fields.Str(required=False, load_from="RuleAction"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "SrcIP": fields.Str(required=False, load_from="SrcIP"),
+        "Priority": fields.Str(required=False, load_from="Priority"),
+        "ProtocolType": fields.Str(required=False, load_from="ProtocolType"),
+    }
+
+
+class FirewallDataSetSchema(schema.ResponseSchema):
+    """ FirewallDataSet - DescribeFirewall
+    """
+
+    fields = {
+        "ResourceCount": fields.Int(required=False, load_from="ResourceCount"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "Type": fields.Str(required=False, load_from="Type"),
+        "Rule": fields.List(FirewallRuleSetSchema()),
+        "FWId": fields.Str(required=True, load_from="FWId"),
+        "GroupId": fields.Str(required=True, load_from="GroupId"),
     }
 
 
@@ -45,6 +122,33 @@ class EIPPayModeSetSchema(schema.ResponseSchema):
     fields = {
         "EIPId": fields.Str(required=False, load_from="EIPId"),
         "EIPPayMode": fields.Str(required=False, load_from="EIPPayMode"),
+    }
+
+
+class UnetBandwidthPackageSetSchema(schema.ResponseSchema):
+    """ UnetBandwidthPackageSet - DescribeBandwidthPackage
+    """
+
+    fields = {
+        "BandwidthPackageId": fields.Str(
+            required=False, load_from="BandwidthPackageId"
+        ),
+        "EnableTime": fields.Int(required=False, load_from="EnableTime"),
+        "DisableTime": fields.Int(required=False, load_from="DisableTime"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "EIPId": fields.Str(required=False, load_from="EIPId"),
+        "EIPAddr": fields.List(EIPAddrSetSchema()),
+    }
+
+
+class UnetBandwidthUsageEIPSetSchema(schema.ResponseSchema):
+    """ UnetBandwidthUsageEIPSet - DescribeBandwidthUsage
+    """
+
+    fields = {
+        "EIPId": fields.Str(required=False, load_from="EIPId"),
+        "CurBandwidth": fields.Float(required=False, load_from="CurBandwidth"),
     }
 
 
@@ -68,75 +172,6 @@ class UnetAllocateEIPSetSchema(schema.ResponseSchema):
     }
 
 
-class VIPDetailSetSchema(schema.ResponseSchema):
-    """ VIPDetailSet - VIPDetailSet
-    """
-
-    fields = {
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Zone": fields.Str(required=False, load_from="Zone"),
-        "VIPId": fields.Str(required=False, load_from="VIPId"),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "RealIp": fields.Str(required=False, load_from="RealIp"),
-        "VIP": fields.Str(required=False, load_from="VIP"),
-    }
-
-
-class ResourceSetSchema(schema.ResponseSchema):
-    """ ResourceSet - 资源信息
-    """
-
-    fields = {
-        "Status": fields.Int(required=False, load_from="Status"),
-        "Tag": fields.Str(required=False, load_from="Tag"),
-        "Zone": fields.Int(required=False, load_from="Zone"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "PrivateIP": fields.Str(required=False, load_from="PrivateIP"),
-        "Remark": fields.Str(required=False, load_from="Remark"),
-        "ResourceID": fields.Str(required=False, load_from="ResourceID"),
-        "ResourceType": fields.Str(required=False, load_from="ResourceType"),
-    }
-
-
-class EIPPriceDetailSetSchema(schema.ResponseSchema):
-    """ EIPPriceDetailSet - GetEIPPrice
-    """
-
-    fields = {
-        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "Price": fields.Float(required=False, load_from="Price"),
-        "PurchaseValue": fields.Int(required=False, load_from="PurchaseValue"),
-    }
-
-
-class VIPSetSchema(schema.ResponseSchema):
-    """ VIPSet - VIPSet
-    """
-
-    fields = {
-        "VIP": fields.Str(required=False, load_from="VIP"),
-        "VIPId": fields.Str(required=False, load_from="VIPId"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-    }
-
-
-class UnetEIPResourceSetSchema(schema.ResponseSchema):
-    """ UnetEIPResourceSet - DescribeEIP
-    """
-
-    fields = {
-        "ResourceName": fields.Str(required=False, load_from="ResourceName"),
-        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
-        "SubResourceType": fields.Str(required=False, load_from="SubResourceType"),
-        "SubResourceName": fields.Str(required=False, load_from="SubResourceName"),
-        "SubResourceId": fields.Str(required=False, load_from="SubResourceId"),
-        "EIPId": fields.Str(required=False, load_from="EIPId"),
-        "ResourceType": fields.Str(required=False, load_from="ResourceType"),
-    }
-
-
 class ShareBandwidthSetSchema(schema.ResponseSchema):
     """ ShareBandwidthSet - DescribeEIP
     """
@@ -150,86 +185,51 @@ class ShareBandwidthSetSchema(schema.ResponseSchema):
     }
 
 
+class UnetEIPResourceSetSchema(schema.ResponseSchema):
+    """ UnetEIPResourceSet - DescribeEIP
+    """
+
+    fields = {
+        "SubResourceName": fields.Str(required=False, load_from="SubResourceName"),
+        "SubResourceId": fields.Str(required=False, load_from="SubResourceId"),
+        "EIPId": fields.Str(required=False, load_from="EIPId"),
+        "ResourceType": fields.Str(required=False, load_from="ResourceType"),
+        "ResourceName": fields.Str(required=False, load_from="ResourceName"),
+        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
+        "SubResourceType": fields.Str(required=False, load_from="SubResourceType"),
+    }
+
+
 class UnetEIPSetSchema(schema.ResponseSchema):
     """ UnetEIPSet - DescribeEIP
     """
 
     fields = {
         "BandwidthType": fields.Int(required=False, load_from="BandwidthType"),
-        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
-        "Resource": UnetEIPResourceSetSchema,
-        "EIPAddr": fields.List(UnetEIPAddrSetSchema()),
-        "Tag": fields.Str(required=False, load_from="Tag"),
-        "PayMode": fields.Str(required=False, load_from="PayMode"),
-        "EIPId": fields.Str(required=False, load_from="EIPId"),
+        "ShareBandwidthSet": ShareBandwidthSetSchema,
         "Expire": fields.Bool(required=False, load_from="Expire"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "EIPAddr": fields.List(UnetEIPAddrSetSchema()),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
         "Weight": fields.Int(required=False, load_from="Weight"),
         "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "Status": fields.Str(required=False, load_from="Status"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Remark": fields.Str(required=False, load_from="Remark"),
-        "ShareBandwidthSet": ShareBandwidthSetSchema,
-    }
-
-
-class FirewallRuleSetSchema(schema.ResponseSchema):
-    """ FirewallRuleSet - DescribeFirewall
-    """
-
-    fields = {
-        "DstPort": fields.Str(required=False, load_from="DstPort"),
-        "RuleAction": fields.Str(required=False, load_from="RuleAction"),
-        "Remark": fields.Str(required=False, load_from="Remark"),
-        "SrcIP": fields.Str(required=False, load_from="SrcIP"),
-        "Priority": fields.Str(required=False, load_from="Priority"),
-        "ProtocolType": fields.Str(required=False, load_from="ProtocolType"),
-    }
-
-
-class FirewallDataSetSchema(schema.ResponseSchema):
-    """ FirewallDataSet - DescribeFirewall
-    """
-
-    fields = {
         "Tag": fields.Str(required=False, load_from="Tag"),
-        "Remark": fields.Str(required=False, load_from="Remark"),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "Rule": fields.List(FirewallRuleSetSchema()),
-        "FWId": fields.Str(required=True, load_from="FWId"),
-        "GroupId": fields.Str(required=True, load_from="GroupId"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "ResourceCount": fields.Int(required=False, load_from="ResourceCount"),
-        "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
-class EIPSetDataSchema(schema.ResponseSchema):
-    """ EIPSetData - describeShareBandwidth
-    """
-
-    fields = {
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "EIPAddr": fields.List(EIPAddrSetSchema()),
         "EIPId": fields.Str(required=False, load_from="EIPId"),
+        "Status": fields.Str(required=False, load_from="Status"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "Resource": UnetEIPResourceSetSchema,
+        "PayMode": fields.Str(required=False, load_from="PayMode"),
     }
 
 
-class UnetShareBandwidthSetSchema(schema.ResponseSchema):
-    """ UnetShareBandwidthSet - DescribeShareBandwidth
+class EIPPriceDetailSetSchema(schema.ResponseSchema):
+    """ EIPPriceDetailSet - GetEIPPrice
     """
 
     fields = {
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
-        "ShareBandwidthId": fields.Str(required=False, load_from="ShareBandwidthId"),
+        "Price": fields.Float(required=False, load_from="Price"),
+        "PurchaseValue": fields.Int(required=False, load_from="PurchaseValue"),
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "BandwidthGuarantee": fields.Int(
-            required=False, load_from="BandwidthGuarantee"
-        ),
-        "PostPayStartTime": fields.Int(required=False, load_from="PostPayStartTime"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "ShareBandwidth": fields.Int(required=False, load_from="ShareBandwidth"),
-        "EIPSet": fields.List(EIPSetDataSchema()),
     }

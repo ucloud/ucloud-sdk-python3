@@ -6,4 +6,5 @@ if PY3:
     string_types = (str,)
 else:
     import types
+
     string_types = types.StringTypes
