@@ -18,6 +18,7 @@ class AllocateUDPNRequestSchema(schema.RequestSchema):
     """
 
     fields = {
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
         "Region": fields.Str(required=False, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Peer1": fields.Str(required=True, dump_to="Peer1"),
@@ -25,7 +26,6 @@ class AllocateUDPNRequestSchema(schema.RequestSchema):
         "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
-        "CouponId": fields.Str(required=False, dump_to="CouponId"),
     }
 
 
@@ -61,10 +61,10 @@ class DescribeUDPNResponseSchema(schema.ResponseSchema):
     """
 
     fields = {
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
         "DataSet": fields.List(
             models.UDPNDataSchema(), required=False, load_from="DataSet"
         ),
-        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
     }
 
 
@@ -80,8 +80,8 @@ class GetUDPNLineListRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=False, dump_to="Region"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
     }
 
 
@@ -109,12 +109,12 @@ class GetUDPNPriceRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
-        "Quantity": fields.Int(required=False, dump_to="Quantity"),
-        "Region": fields.Str(required=False, dump_to="Region"),
         "Peer1": fields.Str(required=True, dump_to="Peer1"),
         "Peer2": fields.Str(required=True, dump_to="Peer2"),
         "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "Region": fields.Str(required=False, dump_to="Region"),
     }
 
 
@@ -123,8 +123,8 @@ class GetUDPNPriceResponseSchema(schema.ResponseSchema):
     """
 
     fields = {
-        "Price": fields.Float(required=True, load_from="Price"),
         "PurchaseValue": fields.Int(required=True, load_from="PurchaseValue"),
+        "Price": fields.Float(required=True, load_from="Price"),
     }
 
 
@@ -140,10 +140,10 @@ class GetUDPNUpgradePriceRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "Region": fields.Str(required=False, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "UDPNId": fields.Str(required=True, dump_to="UDPNId"),
         "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
+        "Region": fields.Str(required=False, dump_to="Region"),
     }
 
 
@@ -166,11 +166,11 @@ class ModifyUDPNBandwidthRequestSchema(schema.RequestSchema):
     """
 
     fields = {
+        "Region": fields.Str(required=False, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "UDPNId": fields.Str(required=True, dump_to="UDPNId"),
         "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
-        "Region": fields.Str(required=False, dump_to="Region"),
     }
 
 

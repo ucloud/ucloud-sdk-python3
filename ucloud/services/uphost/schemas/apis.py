@@ -7,121 +7,6 @@ from ucloud.services.uphost.schemas import models
 
 
 """
-API: ModifyPHostInfo
-
-更改物理机信息
-"""
-
-
-class ModifyPHostInfoRequestSchema(schema.RequestSchema):
-    """ ModifyPHostInfo - 更改物理机信息
-    """
-
-    fields = {
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "PHostId": fields.Str(required=True, dump_to="PHostId"),
-        "Name": fields.Str(required=False, dump_to="Name"),
-        "Remark": fields.Str(required=False, dump_to="Remark"),
-        "Tag": fields.Str(required=False, dump_to="Tag"),
-        "Region": fields.Str(required=True, dump_to="Region"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
-    }
-
-
-class ModifyPHostInfoResponseSchema(schema.ResponseSchema):
-    """ ModifyPHostInfo - 更改物理机信息
-    """
-
-    fields = {"PHostId": fields.Str(required=False, load_from="PHostId")}
-
-
-"""
-API: RebootPHost
-
-重启物理机
-"""
-
-
-class RebootPHostRequestSchema(schema.RequestSchema):
-    """ RebootPHost - 重启物理机
-    """
-
-    fields = {
-        "Region": fields.Str(required=True, dump_to="Region"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
-        "PHostId": fields.Str(required=True, dump_to="PHostId"),
-    }
-
-
-class RebootPHostResponseSchema(schema.ResponseSchema):
-    """ RebootPHost - 重启物理机
-    """
-
-    fields = {"PHostId": fields.Str(required=False, load_from="PHostId")}
-
-
-"""
-API: ReinstallPHost
-
-重装物理机操作系统
-"""
-
-
-class ReinstallPHostRequestSchema(schema.RequestSchema):
-    """ ReinstallPHost - 重装物理机操作系统
-    """
-
-    fields = {
-        "PHostId": fields.Str(required=True, dump_to="PHostId"),
-        "ImageId": fields.Str(required=False, dump_to="ImageId"),
-        "Remark": fields.Str(required=False, dump_to="Remark"),
-        "Raid": fields.Str(required=False, dump_to="Raid"),
-        "Region": fields.Str(required=True, dump_to="Region"),
-        "Zone": fields.Str(required=True, dump_to="Zone"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Password": fields.Str(required=True, dump_to="Password"),
-        "Name": fields.Str(required=False, dump_to="Name"),
-        "Tag": fields.Str(required=False, dump_to="Tag"),
-        "ReserveDisk": fields.Str(required=False, dump_to="ReserveDisk"),
-    }
-
-
-class ReinstallPHostResponseSchema(schema.ResponseSchema):
-    """ ReinstallPHost - 重装物理机操作系统
-    """
-
-    fields = {"PHostId": fields.Str(required=False, load_from="PHostId")}
-
-
-"""
-API: TerminatePHost
-
-删除物理云主机
-"""
-
-
-class TerminatePHostRequestSchema(schema.RequestSchema):
-    """ TerminatePHost - 删除物理云主机
-    """
-
-    fields = {
-        "PHostId": fields.Str(required=True, dump_to="PHostId"),
-        "ReleaseEIP": fields.Bool(required=False, dump_to="ReleaseEIP"),
-        "Region": fields.Str(required=True, dump_to="Region"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
-    }
-
-
-class TerminatePHostResponseSchema(schema.ResponseSchema):
-    """ TerminatePHost - 删除物理云主机
-    """
-
-    fields = {"PHostId": fields.Str(required=False, load_from="PHostId")}
-
-
-"""
 API: CreatePHost
 
 指定数据中心，根据资源使用量创建指定数量的UPHost物理云主机实例。
@@ -133,24 +18,24 @@ class CreatePHostRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "ImageId": fields.Str(required=True, dump_to="ImageId"),
         "Quantity": fields.Str(required=False, dump_to="Quantity"),
-        "Cluster": fields.Str(required=False, dump_to="Cluster"),
-        "CouponId": fields.Str(required=False, dump_to="CouponId"),
-        "Region": fields.Str(required=True, dump_to="Region"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Tag": fields.Str(required=False, dump_to="Tag"),
         "Count": fields.Int(required=False, dump_to="Count"),
-        "Raid": fields.Str(required=False, dump_to="Raid"),
-        "Zone": fields.Str(required=True, dump_to="Zone"),
-        "Remark": fields.Str(required=False, dump_to="Remark"),
-        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
-        "SecurityGroupId": fields.Str(required=False, dump_to="SecurityGroupId"),
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
-        "Password": fields.Str(required=True, dump_to="Password"),
-        "Type": fields.Str(required=False, dump_to="Type"),
-        "Name": fields.Str(required=False, dump_to="Name"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
         "VPCId": fields.Str(required=False, dump_to="VPCId"),
+        "Type": fields.Str(required=False, dump_to="Type"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "Cluster": fields.Str(required=False, dump_to="Cluster"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Password": fields.Str(required=True, dump_to="Password"),
+        "Raid": fields.Str(required=False, dump_to="Raid"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "ImageId": fields.Str(required=True, dump_to="ImageId"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "SecurityGroupId": fields.Str(required=False, dump_to="SecurityGroupId"),
     }
 
 
@@ -159,6 +44,39 @@ class CreatePHostResponseSchema(schema.ResponseSchema):
     """
 
     fields = {"PHostId": fields.List(fields.Str(), required=False, load_from="PHostId")}
+
+
+"""
+API: DescribePHost
+
+获取物理机详细信息
+"""
+
+
+class DescribePHostRequestSchema(schema.RequestSchema):
+    """ DescribePHost - 获取物理机详细信息
+    """
+
+    fields = {
+        "PHostId": fields.List(fields.Str()),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+    }
+
+
+class DescribePHostResponseSchema(schema.ResponseSchema):
+    """ DescribePHost - 获取物理机详细信息
+    """
+
+    fields = {
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+        "PHostSet": fields.List(
+            models.PHostSetSchema(), required=False, load_from="PHostSet"
+        ),
+    }
 
 
 """
@@ -173,13 +91,13 @@ class DescribePHostImageRequestSchema(schema.RequestSchema):
     """
 
     fields = {
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "ImageType": fields.Str(required=False, dump_to="ImageType"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "ImageId": fields.List(fields.Str()),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "Zone": fields.Str(required=True, dump_to="Zone"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "ImageType": fields.Str(required=False, dump_to="ImageType"),
     }
 
 
@@ -237,14 +155,14 @@ class GetPHostPriceRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Count": fields.Int(required=True, dump_to="Count"),
         "ChargeType": fields.Str(required=True, dump_to="ChargeType"),
         "Quantity": fields.Int(required=True, dump_to="Quantity"),
         "Type": fields.Str(required=False, dump_to="Type"),
         "Cluster": fields.Str(required=False, dump_to="Cluster"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Count": fields.Int(required=True, dump_to="Count"),
     }
 
 
@@ -260,6 +178,35 @@ class GetPHostPriceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: ModifyPHostInfo
+
+更改物理机信息
+"""
+
+
+class ModifyPHostInfoRequestSchema(schema.RequestSchema):
+    """ ModifyPHostInfo - 更改物理机信息
+    """
+
+    fields = {
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "PHostId": fields.Str(required=True, dump_to="PHostId"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+    }
+
+
+class ModifyPHostInfoResponseSchema(schema.ResponseSchema):
+    """ ModifyPHostInfo - 更改物理机信息
+    """
+
+    fields = {"PHostId": fields.Str(required=False, load_from="PHostId")}
+
+
+"""
 API: PoweroffPHost
 
 断电物理云主机
@@ -271,15 +218,74 @@ class PoweroffPHostRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "Region": fields.Str(required=True, dump_to="Region"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "PHostId": fields.Str(required=True, dump_to="PHostId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
 
 class PoweroffPHostResponseSchema(schema.ResponseSchema):
     """ PoweroffPHost - 断电物理云主机
+    """
+
+    fields = {"PHostId": fields.Str(required=False, load_from="PHostId")}
+
+
+"""
+API: RebootPHost
+
+重启物理机
+"""
+
+
+class RebootPHostRequestSchema(schema.RequestSchema):
+    """ RebootPHost - 重启物理机
+    """
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "PHostId": fields.Str(required=True, dump_to="PHostId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class RebootPHostResponseSchema(schema.ResponseSchema):
+    """ RebootPHost - 重启物理机
+    """
+
+    fields = {"PHostId": fields.Str(required=False, load_from="PHostId")}
+
+
+"""
+API: ReinstallPHost
+
+重装物理机操作系统
+"""
+
+
+class ReinstallPHostRequestSchema(schema.RequestSchema):
+    """ ReinstallPHost - 重装物理机操作系统
+    """
+
+    fields = {
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "PHostId": fields.Str(required=True, dump_to="PHostId"),
+        "Password": fields.Str(required=True, dump_to="Password"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "ReserveDisk": fields.Str(required=False, dump_to="ReserveDisk"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "ImageId": fields.Str(required=False, dump_to="ImageId"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "Raid": fields.Str(required=False, dump_to="Raid"),
+    }
+
+
+class ReinstallPHostResponseSchema(schema.ResponseSchema):
+    """ ReinstallPHost - 重装物理机操作系统
     """
 
     fields = {"PHostId": fields.Str(required=False, load_from="PHostId")}
@@ -297,10 +303,10 @@ class StartPHostRequestSchema(schema.RequestSchema):
     """
 
     fields = {
+        "PHostId": fields.Str(required=True, dump_to="PHostId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
-        "PHostId": fields.Str(required=True, dump_to="PHostId"),
     }
 
 
@@ -312,33 +318,27 @@ class StartPHostResponseSchema(schema.ResponseSchema):
 
 
 """
-API: DescribePHost
+API: TerminatePHost
 
-获取物理机详细信息
+删除物理云主机
 """
 
 
-class DescribePHostRequestSchema(schema.RequestSchema):
-    """ DescribePHost - 获取物理机详细信息
+class TerminatePHostRequestSchema(schema.RequestSchema):
+    """ TerminatePHost - 删除物理云主机
     """
 
     fields = {
-        "Limit": fields.Int(required=False, dump_to="Limit"),
-        "PHostId": fields.List(fields.Str()),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "PHostId": fields.Str(required=True, dump_to="PHostId"),
+        "ReleaseEIP": fields.Bool(required=False, dump_to="ReleaseEIP"),
     }
 
 
-class DescribePHostResponseSchema(schema.ResponseSchema):
-    """ DescribePHost - 获取物理机详细信息
+class TerminatePHostResponseSchema(schema.ResponseSchema):
+    """ TerminatePHost - 删除物理云主机
     """
 
-    fields = {
-        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
-        "PHostSet": fields.List(
-            models.PHostSetSchema(), required=False, load_from="PHostSet"
-        ),
-    }
+    fields = {"PHostId": fields.Str(required=False, load_from="PHostId")}

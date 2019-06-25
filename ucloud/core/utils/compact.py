@@ -7,6 +7,7 @@ if PY3:
     from collections.abc import Callable
 else:
     import types
+
     string_types = types.StringTypes
 
     from collections import Callable
