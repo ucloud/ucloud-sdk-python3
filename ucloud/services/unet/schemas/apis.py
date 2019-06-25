@@ -7,169 +7,74 @@ from ucloud.services.unet.schemas import models
 
 
 """
-API: ReleaseVIP
+API: AllocateEIP
 
-释放VIP资源
+根据提供信息, 申请弹性IP
 """
 
 
-class ReleaseVIPRequestSchema(schema.RequestSchema):
-    """ ReleaseVIP - 释放VIP资源
-    """
-
-    fields = {
-        "VIPId": fields.Str(required=True, dump_to="VIPId"),
-        "Region": fields.Str(required=True, dump_to="Region"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-    }
-
-
-class ReleaseVIPResponseSchema(schema.ResponseSchema):
-    """ ReleaseVIP - 释放VIP资源
-    """
-
-    fields = {}
-
-
-"""
-API: SetEIPPayMode
-
-设置弹性IP计费模式, 切换时会涉及付费/退费.
-"""
-
-
-class SetEIPPayModeRequestSchema(schema.RequestSchema):
-    """ SetEIPPayMode - 设置弹性IP计费模式, 切换时会涉及付费/退费.
+class AllocateEIPRequestSchema(schema.RequestSchema):
+    """ AllocateEIP - 根据提供信息, 申请弹性IP
     """
 
     fields = {
         "Region": fields.Str(required=True, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "EIPId": fields.Str(required=True, dump_to="EIPId"),
-        "PayMode": fields.Str(required=True, dump_to="PayMode"),
         "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
+        "PayMode": fields.Str(required=False, dump_to="PayMode"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "OperatorName": fields.Str(required=True, dump_to="OperatorName"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "ShareBandwidthId": fields.Str(required=False, dump_to="ShareBandwidthId"),
+        "Name": fields.Str(required=False, dump_to="Name"),
     }
 
 
-class SetEIPPayModeResponseSchema(schema.ResponseSchema):
-    """ SetEIPPayMode - 设置弹性IP计费模式, 切换时会涉及付费/退费.
-    """
-
-    fields = {}
-
-
-"""
-API: DeleteBandwidthPackage
-
-删除弹性IP上已附加带宽包
-"""
-
-
-class DeleteBandwidthPackageRequestSchema(schema.RequestSchema):
-    """ DeleteBandwidthPackage - 删除弹性IP上已附加带宽包
+class AllocateEIPResponseSchema(schema.ResponseSchema):
+    """ AllocateEIP - 根据提供信息, 申请弹性IP
     """
 
     fields = {
-        "Region": fields.Str(required=True, dump_to="Region"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "BandwidthPackageId": fields.Str(required=True, dump_to="BandwidthPackageId"),
-    }
-
-
-class DeleteBandwidthPackageResponseSchema(schema.ResponseSchema):
-    """ DeleteBandwidthPackage - 删除弹性IP上已附加带宽包
-    """
-
-    fields = {}
-
-
-"""
-API: DescribeEIP
-
-获取弹性IP信息
-"""
-
-
-class DescribeEIPRequestSchema(schema.RequestSchema):
-    """ DescribeEIP - 获取弹性IP信息
-    """
-
-    fields = {
-        "Region": fields.Str(required=True, dump_to="Region"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Offset": fields.Int(required=False, dump_to="Offset"),
-        "Limit": fields.Int(required=False, dump_to="Limit"),
-        "EIPIds": fields.List(fields.Str()),
-    }
-
-
-class DescribeEIPResponseSchema(schema.ResponseSchema):
-    """ DescribeEIP - 获取弹性IP信息
-    """
-
-    fields = {
-        "TotalBandwidth": fields.Int(required=False, load_from="TotalBandwidth"),
         "EIPSet": fields.List(
-            models.UnetEIPSetSchema(), required=False, load_from="EIPSet"
-        ),
-        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
-    }
-
-
-"""
-API: GetEIPPayMode
-
-获取弹性IP计费模式
-"""
-
-
-class GetEIPPayModeRequestSchema(schema.RequestSchema):
-    """ GetEIPPayMode - 获取弹性IP计费模式
-    """
-
-    fields = {
-        "Region": fields.Str(required=True, dump_to="Region"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "EIPId": fields.List(fields.Str()),
-    }
-
-
-class GetEIPPayModeResponseSchema(schema.ResponseSchema):
-    """ GetEIPPayMode - 获取弹性IP计费模式
-    """
-
-    fields = {
-        "EIPPayMode": fields.List(
-            models.EIPPayModeSetSchema(), required=False, load_from="EIPPayMode"
+            models.UnetAllocateEIPSetSchema(), required=False, load_from="EIPSet"
         )
     }
 
 
 """
-API: ResizeShareBandwidth
+API: AllocateShareBandwidth
 
-调整共享带宽的带宽值
+开通共享带宽
 """
 
 
-class ResizeShareBandwidthRequestSchema(schema.RequestSchema):
-    """ ResizeShareBandwidth - 调整共享带宽的带宽值
+class AllocateShareBandwidthRequestSchema(schema.RequestSchema):
+    """ AllocateShareBandwidth - 开通共享带宽
     """
 
     fields = {
         "ShareBandwidth": fields.Int(required=True, dump_to="ShareBandwidth"),
-        "ShareBandwidthId": fields.Str(required=True, dump_to="ShareBandwidthId"),
+        "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "ShareBandwidthGuarantee": fields.Int(
+            required=False, dump_to="ShareBandwidthGuarantee"
+        ),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Name": fields.Str(required=True, dump_to="Name"),
+        "ChargeType": fields.Str(required=True, dump_to="ChargeType"),
     }
 
 
-class ResizeShareBandwidthResponseSchema(schema.ResponseSchema):
-    """ ResizeShareBandwidth - 调整共享带宽的带宽值
+class AllocateShareBandwidthResponseSchema(schema.ResponseSchema):
+    """ AllocateShareBandwidth - 开通共享带宽
     """
 
-    fields = {}
+    fields = {
+        "ShareBandwidthId": fields.Str(required=False, load_from="ShareBandwidthId")
+    }
 
 
 """
@@ -184,16 +89,16 @@ class AllocateVIPRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "SubnetId": fields.Str(required=True, dump_to="SubnetId"),
-        "Tag": fields.Str(required=False, dump_to="Tag"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "SubnetId": fields.Str(required=True, dump_to="SubnetId"),
+        "BusinessId": fields.Str(required=False, dump_to="BusinessId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
         "VPCId": fields.Str(required=True, dump_to="VPCId"),
         "Count": fields.Int(required=False, dump_to="Count"),
         "Name": fields.Str(required=False, dump_to="Name"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
         "Remark": fields.Str(required=False, dump_to="Remark"),
-        "BusinessId": fields.Str(required=False, dump_to="BusinessId"),
-        "Region": fields.Str(required=True, dump_to="Region"),
     }
 
 
@@ -210,6 +115,59 @@ class AllocateVIPResponseSchema(schema.ResponseSchema):
 
 
 """
+API: AssociateEIPWithShareBandwidth
+
+将EIP加入共享带宽
+"""
+
+
+class AssociateEIPWithShareBandwidthRequestSchema(schema.RequestSchema):
+    """ AssociateEIPWithShareBandwidth - 将EIP加入共享带宽
+    """
+
+    fields = {
+        "EIPIds": fields.List(fields.Str()),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "ShareBandwidthId": fields.Str(required=True, dump_to="ShareBandwidthId"),
+    }
+
+
+class AssociateEIPWithShareBandwidthResponseSchema(schema.ResponseSchema):
+    """ AssociateEIPWithShareBandwidth - 将EIP加入共享带宽
+    """
+
+    fields = {}
+
+
+"""
+API: BindEIP
+
+将尚未使用的弹性IP绑定到指定的资源
+"""
+
+
+class BindEIPRequestSchema(schema.RequestSchema):
+    """ BindEIP - 将尚未使用的弹性IP绑定到指定的资源
+    """
+
+    fields = {
+        "ResourceType": fields.Str(required=True, dump_to="ResourceType"),
+        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "EIPId": fields.Str(required=True, dump_to="EIPId"),
+    }
+
+
+class BindEIPResponseSchema(schema.ResponseSchema):
+    """ BindEIP - 将尚未使用的弹性IP绑定到指定的资源
+    """
+
+    fields = {}
+
+
+"""
 API: CreateBandwidthPackage
 
 为非共享带宽模式下, 已绑定资源实例的带宽计费弹性IP附加临时带宽包
@@ -221,13 +179,13 @@ class CreateBandwidthPackageRequestSchema(schema.RequestSchema):
     """
 
     fields = {
+        "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
         "EIPId": fields.Str(required=True, dump_to="EIPId"),
         "TimeRange": fields.Int(required=True, dump_to="TimeRange"),
         "EnableTime": fields.Int(required=False, dump_to="EnableTime"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
     }
 
 
@@ -241,139 +199,53 @@ class CreateBandwidthPackageResponseSchema(schema.ResponseSchema):
 
 
 """
-API: UnBindEIP
+API: CreateFirewall
 
-将弹性IP从资源上解绑
+创建防火墙
 """
 
 
-class UnBindEIPRequestSchema(schema.RequestSchema):
-    """ UnBindEIP - 将弹性IP从资源上解绑
+class CreateFirewallRequestSchema(schema.RequestSchema):
+    """ CreateFirewall - 创建防火墙
     """
 
     fields = {
-        "Region": fields.Str(required=True, dump_to="Region"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "EIPId": fields.Str(required=True, dump_to="EIPId"),
-        "ResourceType": fields.Str(required=True, dump_to="ResourceType"),
-        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
-    }
-
-
-class UnBindEIPResponseSchema(schema.ResponseSchema):
-    """ UnBindEIP - 将弹性IP从资源上解绑
-    """
-
-    fields = {}
-
-
-"""
-API: DescribeFirewallResource
-
-获取防火墙组所绑定资源的外网IP
-"""
-
-
-class DescribeFirewallResourceRequestSchema(schema.RequestSchema):
-    """ DescribeFirewallResource - 获取防火墙组所绑定资源的外网IP
-    """
-
-    fields = {
-        "Limit": fields.Int(required=False, dump_to="Limit"),
-        "Offset": fields.Int(required=False, dump_to="Offset"),
-        "Region": fields.Str(required=True, dump_to="Region"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "FWId": fields.Str(required=True, dump_to="FWId"),
-    }
-
-
-class DescribeFirewallResourceResponseSchema(schema.ResponseSchema):
-    """ DescribeFirewallResource - 获取防火墙组所绑定资源的外网IP
-    """
-
-    fields = {
-        "ResourceSet": fields.List(
-            models.ResourceSetSchema(), required=False, load_from="ResourceSet"
-        ),
-        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
-    }
-
-
-"""
-API: ModifyEIPBandwidth
-
-调整弹性IP的外网带宽
-"""
-
-
-class ModifyEIPBandwidthRequestSchema(schema.RequestSchema):
-    """ ModifyEIPBandwidth - 调整弹性IP的外网带宽
-    """
-
-    fields = {
-        "Region": fields.Str(required=True, dump_to="Region"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "EIPId": fields.Str(required=True, dump_to="EIPId"),
-        "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
-    }
-
-
-class ModifyEIPBandwidthResponseSchema(schema.ResponseSchema):
-    """ ModifyEIPBandwidth - 调整弹性IP的外网带宽
-    """
-
-    fields = {}
-
-
-"""
-API: UpdateFirewall
-
-更新防火墙规则
-"""
-
-
-class UpdateFirewallRequestSchema(schema.RequestSchema):
-    """ UpdateFirewall - 更新防火墙规则
-    """
-
-    fields = {
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "FWId": fields.Str(required=True, dump_to="FWId"),
+        "Name": fields.Str(required=True, dump_to="Name"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
         "Rule": fields.List(fields.Str()),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
     }
 
 
-class UpdateFirewallResponseSchema(schema.ResponseSchema):
-    """ UpdateFirewall - 更新防火墙规则
+class CreateFirewallResponseSchema(schema.ResponseSchema):
+    """ CreateFirewall - 创建防火墙
     """
 
     fields = {"FWId": fields.Str(required=False, load_from="FWId")}
 
 
 """
-API: UpdateFirewallAttribute
+API: DeleteBandwidthPackage
 
-更新防火墙规则
+删除弹性IP上已附加带宽包
 """
 
 
-class UpdateFirewallAttributeRequestSchema(schema.RequestSchema):
-    """ UpdateFirewallAttribute - 更新防火墙规则
+class DeleteBandwidthPackageRequestSchema(schema.RequestSchema):
+    """ DeleteBandwidthPackage - 删除弹性IP上已附加带宽包
     """
 
     fields = {
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "FWId": fields.Str(required=True, dump_to="FWId"),
-        "Name": fields.Str(required=False, dump_to="Name"),
-        "Tag": fields.Str(required=False, dump_to="Tag"),
-        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "BandwidthPackageId": fields.Str(required=True, dump_to="BandwidthPackageId"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
     }
 
 
-class UpdateFirewallAttributeResponseSchema(schema.ResponseSchema):
-    """ UpdateFirewallAttribute - 更新防火墙规则
+class DeleteBandwidthPackageResponseSchema(schema.ResponseSchema):
+    """ DeleteBandwidthPackage - 删除弹性IP上已附加带宽包
     """
 
     fields = {}
@@ -399,122 +271,6 @@ class DeleteFirewallRequestSchema(schema.RequestSchema):
 
 class DeleteFirewallResponseSchema(schema.ResponseSchema):
     """ DeleteFirewall - 删除防火墙
-    """
-
-    fields = {}
-
-
-"""
-API: GrantFirewall
-
-将防火墙应用到资源上
-"""
-
-
-class GrantFirewallRequestSchema(schema.RequestSchema):
-    """ GrantFirewall - 将防火墙应用到资源上
-    """
-
-    fields = {
-        "Region": fields.Str(required=True, dump_to="Region"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "FWId": fields.Str(required=True, dump_to="FWId"),
-        "ResourceType": fields.Str(required=True, dump_to="ResourceType"),
-        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
-    }
-
-
-class GrantFirewallResponseSchema(schema.ResponseSchema):
-    """ GrantFirewall - 将防火墙应用到资源上
-    """
-
-    fields = {}
-
-
-"""
-API: DescribeVIP
-
-获取内网VIP详细信息
-"""
-
-
-class DescribeVIPRequestSchema(schema.RequestSchema):
-    """ DescribeVIP - 获取内网VIP详细信息
-    """
-
-    fields = {
-        "BusinessId": fields.Str(required=False, dump_to="BusinessId"),
-        "Region": fields.Str(required=True, dump_to="Region"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "VPCId": fields.Str(required=False, dump_to="VPCId"),
-        "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
-        "Tag": fields.Str(required=False, dump_to="Tag"),
-    }
-
-
-class DescribeVIPResponseSchema(schema.ResponseSchema):
-    """ DescribeVIP - 获取内网VIP详细信息
-    """
-
-    fields = {
-        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
-        "VIPSet": fields.List(
-            models.VIPDetailSetSchema(), required=False, load_from="VIPSet"
-        ),
-        "DataSet": fields.List(fields.Str(), required=False, load_from="DataSet"),
-    }
-
-
-"""
-API: DisassociateEIPWithShareBandwidth
-
-将EIP移出共享带宽
-"""
-
-
-class DisassociateEIPWithShareBandwidthRequestSchema(schema.RequestSchema):
-    """ DisassociateEIPWithShareBandwidth - 将EIP移出共享带宽
-    """
-
-    fields = {
-        "Region": fields.Str(required=True, dump_to="Region"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "ShareBandwidthId": fields.Str(required=True, dump_to="ShareBandwidthId"),
-        "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
-        "PayMode": fields.Str(required=False, dump_to="PayMode"),
-        "EIPIds": fields.List(fields.Str()),
-    }
-
-
-class DisassociateEIPWithShareBandwidthResponseSchema(schema.ResponseSchema):
-    """ DisassociateEIPWithShareBandwidth - 将EIP移出共享带宽
-    """
-
-    fields = {}
-
-
-"""
-API: AssociateEIPWithShareBandwidth
-
-将EIP加入共享带宽
-"""
-
-
-class AssociateEIPWithShareBandwidthRequestSchema(schema.RequestSchema):
-    """ AssociateEIPWithShareBandwidth - 将EIP加入共享带宽
-    """
-
-    fields = {
-        "Region": fields.Str(required=True, dump_to="Region"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "ShareBandwidthId": fields.Str(required=True, dump_to="ShareBandwidthId"),
-        "EIPIds": fields.List(fields.Str()),
-    }
-
-
-class AssociateEIPWithShareBandwidthResponseSchema(schema.ResponseSchema):
-    """ AssociateEIPWithShareBandwidth - 将EIP加入共享带宽
     """
 
     fields = {}
@@ -552,6 +308,71 @@ class DescribeBandwidthPackageResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeBandwidthUsage
+
+获取带宽用量信息
+"""
+
+
+class DescribeBandwidthUsageRequestSchema(schema.RequestSchema):
+    """ DescribeBandwidthUsage - 获取带宽用量信息
+    """
+
+    fields = {
+        "EIPIds": fields.List(fields.Str()),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "OffSet": fields.Int(required=False, dump_to="OffSet"),
+    }
+
+
+class DescribeBandwidthUsageResponseSchema(schema.ResponseSchema):
+    """ DescribeBandwidthUsage - 获取带宽用量信息
+    """
+
+    fields = {
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+        "EIPSet": fields.List(
+            models.UnetBandwidthUsageEIPSetSchema(), required=False, load_from="EIPSet"
+        ),
+    }
+
+
+"""
+API: DescribeEIP
+
+获取弹性IP信息
+"""
+
+
+class DescribeEIPRequestSchema(schema.RequestSchema):
+    """ DescribeEIP - 获取弹性IP信息
+    """
+
+    fields = {
+        "EIPIds": fields.List(fields.Str()),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+    }
+
+
+class DescribeEIPResponseSchema(schema.ResponseSchema):
+    """ DescribeEIP - 获取弹性IP信息
+    """
+
+    fields = {
+        "TotalBandwidth": fields.Int(required=False, load_from="TotalBandwidth"),
+        "EIPSet": fields.List(
+            models.UnetEIPSetSchema(), required=False, load_from="EIPSet"
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
 API: DescribeFirewall
 
 获取防火墙组信息
@@ -563,13 +384,13 @@ class DescribeFirewallRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "Limit": fields.Int(required=False, dump_to="Limit"),
-        "Offset": fields.Int(required=False, dump_to="Offset"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "FWId": fields.Str(required=False, dump_to="FWId"),
         "ResourceType": fields.Str(required=False, dump_to="ResourceType"),
         "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
     }
 
 
@@ -586,6 +407,160 @@ class DescribeFirewallResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeFirewallResource
+
+获取防火墙组所绑定资源的外网IP
+"""
+
+
+class DescribeFirewallResourceRequestSchema(schema.RequestSchema):
+    """ DescribeFirewallResource - 获取防火墙组所绑定资源的外网IP
+    """
+
+    fields = {
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "FWId": fields.Str(required=True, dump_to="FWId"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+    }
+
+
+class DescribeFirewallResourceResponseSchema(schema.ResponseSchema):
+    """ DescribeFirewallResource - 获取防火墙组所绑定资源的外网IP
+    """
+
+    fields = {
+        "ResourceSet": fields.List(
+            models.ResourceSetSchema(), required=False, load_from="ResourceSet"
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
+API: DescribeShareBandwidth
+
+获取共享带宽信息
+"""
+
+
+class DescribeShareBandwidthRequestSchema(schema.RequestSchema):
+    """ DescribeShareBandwidth - 获取共享带宽信息
+    """
+
+    fields = {
+        "ShareBandwidthIds": fields.List(fields.Str()),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+    }
+
+
+class DescribeShareBandwidthResponseSchema(schema.ResponseSchema):
+    """ DescribeShareBandwidth - 获取共享带宽信息
+    """
+
+    fields = {
+        "DataSet": fields.List(
+            models.UnetShareBandwidthSetSchema(), required=False, load_from="DataSet"
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
+API: DescribeVIP
+
+获取内网VIP详细信息
+"""
+
+
+class DescribeVIPRequestSchema(schema.RequestSchema):
+    """ DescribeVIP - 获取内网VIP详细信息
+    """
+
+    fields = {
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "BusinessId": fields.Str(required=False, dump_to="BusinessId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "VPCId": fields.Str(required=False, dump_to="VPCId"),
+        "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
+    }
+
+
+class DescribeVIPResponseSchema(schema.ResponseSchema):
+    """ DescribeVIP - 获取内网VIP详细信息
+    """
+
+    fields = {
+        "VIPSet": fields.List(
+            models.VIPDetailSetSchema(), required=False, load_from="VIPSet"
+        ),
+        "DataSet": fields.List(fields.Str(), required=False, load_from="DataSet"),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
+API: DisassociateEIPWithShareBandwidth
+
+将EIP移出共享带宽
+"""
+
+
+class DisassociateEIPWithShareBandwidthRequestSchema(schema.RequestSchema):
+    """ DisassociateEIPWithShareBandwidth - 将EIP移出共享带宽
+    """
+
+    fields = {
+        "PayMode": fields.Str(required=False, dump_to="PayMode"),
+        "EIPIds": fields.List(fields.Str()),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "ShareBandwidthId": fields.Str(required=True, dump_to="ShareBandwidthId"),
+        "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
+    }
+
+
+class DisassociateEIPWithShareBandwidthResponseSchema(schema.ResponseSchema):
+    """ DisassociateEIPWithShareBandwidth - 将EIP移出共享带宽
+    """
+
+    fields = {}
+
+
+"""
+API: GetEIPPayMode
+
+获取弹性IP计费模式
+"""
+
+
+class GetEIPPayModeRequestSchema(schema.RequestSchema):
+    """ GetEIPPayMode - 获取弹性IP计费模式
+    """
+
+    fields = {
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "EIPId": fields.List(fields.Str()),
+    }
+
+
+class GetEIPPayModeResponseSchema(schema.ResponseSchema):
+    """ GetEIPPayMode - 获取弹性IP计费模式
+    """
+
+    fields = {
+        "EIPPayMode": fields.List(
+            models.EIPPayModeSetSchema(), required=False, load_from="EIPPayMode"
+        )
+    }
+
+
+"""
 API: GetEIPPrice
 
 获取弹性IP价格
@@ -597,13 +572,13 @@ class GetEIPPriceRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
-        "PayMode": fields.Str(required=False, dump_to="PayMode"),
-        "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "OperatorName": fields.Str(required=True, dump_to="OperatorName"),
         "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "PayMode": fields.Str(required=False, dump_to="PayMode"),
+        "Quantity": fields.Int(required=False, dump_to="Quantity"),
     }
 
 
@@ -630,10 +605,10 @@ class GetEIPUpgradePriceRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "EIPId": fields.Str(required=True, dump_to="EIPId"),
         "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "EIPId": fields.Str(required=True, dump_to="EIPId"),
     }
 
 
@@ -645,88 +620,56 @@ class GetEIPUpgradePriceResponseSchema(schema.ResponseSchema):
 
 
 """
-API: BindEIP
+API: GrantFirewall
 
-将尚未使用的弹性IP绑定到指定的资源
+将防火墙应用到资源上
 """
 
 
-class BindEIPRequestSchema(schema.RequestSchema):
-    """ BindEIP - 将尚未使用的弹性IP绑定到指定的资源
+class GrantFirewallRequestSchema(schema.RequestSchema):
+    """ GrantFirewall - 将防火墙应用到资源上
     """
 
     fields = {
-        "ResourceType": fields.Str(required=True, dump_to="ResourceType"),
-        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "EIPId": fields.Str(required=True, dump_to="EIPId"),
+        "FWId": fields.Str(required=True, dump_to="FWId"),
+        "ResourceType": fields.Str(required=True, dump_to="ResourceType"),
+        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
     }
 
 
-class BindEIPResponseSchema(schema.ResponseSchema):
-    """ BindEIP - 将尚未使用的弹性IP绑定到指定的资源
+class GrantFirewallResponseSchema(schema.ResponseSchema):
+    """ GrantFirewall - 将防火墙应用到资源上
     """
 
     fields = {}
 
 
 """
-API: CreateFirewall
+API: ModifyEIPBandwidth
 
-创建防火墙
+调整弹性IP的外网带宽
 """
 
 
-class CreateFirewallRequestSchema(schema.RequestSchema):
-    """ CreateFirewall - 创建防火墙
+class ModifyEIPBandwidthRequestSchema(schema.RequestSchema):
+    """ ModifyEIPBandwidth - 调整弹性IP的外网带宽
     """
 
     fields = {
         "Region": fields.Str(required=True, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Name": fields.Str(required=True, dump_to="Name"),
-        "Tag": fields.Str(required=False, dump_to="Tag"),
-        "Remark": fields.Str(required=False, dump_to="Remark"),
-        "Rule": fields.List(fields.Str()),
+        "EIPId": fields.Str(required=True, dump_to="EIPId"),
+        "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
     }
 
 
-class CreateFirewallResponseSchema(schema.ResponseSchema):
-    """ CreateFirewall - 创建防火墙
+class ModifyEIPBandwidthResponseSchema(schema.ResponseSchema):
+    """ ModifyEIPBandwidth - 调整弹性IP的外网带宽
     """
 
-    fields = {"FWId": fields.Str(required=False, load_from="FWId")}
-
-
-"""
-API: DescribeShareBandwidth
-
-获取共享带宽信息
-"""
-
-
-class DescribeShareBandwidthRequestSchema(schema.RequestSchema):
-    """ DescribeShareBandwidth - 获取共享带宽信息
-    """
-
-    fields = {
-        "Region": fields.Str(required=True, dump_to="Region"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "ShareBandwidthIds": fields.List(fields.Str()),
-    }
-
-
-class DescribeShareBandwidthResponseSchema(schema.ResponseSchema):
-    """ DescribeShareBandwidth - 获取共享带宽信息
-    """
-
-    fields = {
-        "DataSet": fields.List(
-            models.UnetShareBandwidthSetSchema(), required=False, load_from="DataSet"
-        ),
-        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
-    }
+    fields = {}
 
 
 """
@@ -741,10 +684,10 @@ class ModifyEIPWeightRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "EIPId": fields.Str(required=True, dump_to="EIPId"),
-        "Weight": fields.Int(required=True, dump_to="Weight"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "EIPId": fields.Str(required=True, dump_to="EIPId"),
+        "Weight": fields.Int(required=True, dump_to="Weight"),
     }
 
 
@@ -753,38 +696,6 @@ class ModifyEIPWeightResponseSchema(schema.ResponseSchema):
     """
 
     fields = {}
-
-
-"""
-API: DescribeBandwidthUsage
-
-获取带宽用量信息
-"""
-
-
-class DescribeBandwidthUsageRequestSchema(schema.RequestSchema):
-    """ DescribeBandwidthUsage - 获取带宽用量信息
-    """
-
-    fields = {
-        "Region": fields.Str(required=True, dump_to="Region"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Limit": fields.Int(required=False, dump_to="Limit"),
-        "OffSet": fields.Int(required=False, dump_to="OffSet"),
-        "EIPIds": fields.List(fields.Str()),
-    }
-
-
-class DescribeBandwidthUsageResponseSchema(schema.ResponseSchema):
-    """ DescribeBandwidthUsage - 获取带宽用量信息
-    """
-
-    fields = {
-        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
-        "EIPSet": fields.List(
-            models.UnetBandwidthUsageEIPSetSchema(), required=False, load_from="EIPSet"
-        ),
-    }
 
 
 """
@@ -799,9 +710,9 @@ class ReleaseEIPRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "EIPId": fields.Str(required=True, dump_to="EIPId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "EIPId": fields.Str(required=True, dump_to="EIPId"),
     }
 
 
@@ -840,6 +751,112 @@ class ReleaseShareBandwidthResponseSchema(schema.ResponseSchema):
 
 
 """
+API: ReleaseVIP
+
+释放VIP资源
+"""
+
+
+class ReleaseVIPRequestSchema(schema.RequestSchema):
+    """ ReleaseVIP - 释放VIP资源
+    """
+
+    fields = {
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "VIPId": fields.Str(required=True, dump_to="VIPId"),
+    }
+
+
+class ReleaseVIPResponseSchema(schema.ResponseSchema):
+    """ ReleaseVIP - 释放VIP资源
+    """
+
+    fields = {}
+
+
+"""
+API: ResizeShareBandwidth
+
+调整共享带宽的带宽值
+"""
+
+
+class ResizeShareBandwidthRequestSchema(schema.RequestSchema):
+    """ ResizeShareBandwidth - 调整共享带宽的带宽值
+    """
+
+    fields = {
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "ShareBandwidth": fields.Int(required=True, dump_to="ShareBandwidth"),
+        "ShareBandwidthId": fields.Str(required=True, dump_to="ShareBandwidthId"),
+    }
+
+
+class ResizeShareBandwidthResponseSchema(schema.ResponseSchema):
+    """ ResizeShareBandwidth - 调整共享带宽的带宽值
+    """
+
+    fields = {}
+
+
+"""
+API: SetEIPPayMode
+
+设置弹性IP计费模式, 切换时会涉及付费/退费.
+"""
+
+
+class SetEIPPayModeRequestSchema(schema.RequestSchema):
+    """ SetEIPPayMode - 设置弹性IP计费模式, 切换时会涉及付费/退费.
+    """
+
+    fields = {
+        "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "EIPId": fields.Str(required=True, dump_to="EIPId"),
+        "PayMode": fields.Str(required=True, dump_to="PayMode"),
+    }
+
+
+class SetEIPPayModeResponseSchema(schema.ResponseSchema):
+    """ SetEIPPayMode - 设置弹性IP计费模式, 切换时会涉及付费/退费.
+    """
+
+    fields = {}
+
+
+"""
+API: UnBindEIP
+
+将弹性IP从资源上解绑
+"""
+
+
+class UnBindEIPRequestSchema(schema.RequestSchema):
+    """ UnBindEIP - 将弹性IP从资源上解绑
+    """
+
+    fields = {
+        "EIPId": fields.Str(required=True, dump_to="EIPId"),
+        "ResourceType": fields.Str(required=True, dump_to="ResourceType"),
+        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+    }
+
+
+class UnBindEIPResponseSchema(schema.ResponseSchema):
+    """ UnBindEIP - 将弹性IP从资源上解绑
+    """
+
+    fields = {}
+
+
+"""
 API: UpdateEIPAttribute
 
 更新弹性IP名称，业务组，备注等属性字段
@@ -851,12 +868,12 @@ class UpdateEIPAttributeRequestSchema(schema.RequestSchema):
     """
 
     fields = {
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "EIPId": fields.Str(required=True, dump_to="EIPId"),
         "Name": fields.Str(required=False, dump_to="Name"),
-        "Tag": fields.Str(required=False, dump_to="Tag"),
-        "Remark": fields.Str(required=False, dump_to="Remark"),
     }
 
 
@@ -868,71 +885,54 @@ class UpdateEIPAttributeResponseSchema(schema.ResponseSchema):
 
 
 """
-API: AllocateEIP
+API: UpdateFirewall
 
-根据提供信息, 申请弹性IP
+更新防火墙规则
 """
 
 
-class AllocateEIPRequestSchema(schema.RequestSchema):
-    """ AllocateEIP - 根据提供信息, 申请弹性IP
+class UpdateFirewallRequestSchema(schema.RequestSchema):
+    """ UpdateFirewall - 更新防火墙规则
     """
 
     fields = {
-        "PayMode": fields.Str(required=False, dump_to="PayMode"),
+        "Rule": fields.List(fields.Str()),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
-        "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "FWId": fields.Str(required=True, dump_to="FWId"),
+    }
+
+
+class UpdateFirewallResponseSchema(schema.ResponseSchema):
+    """ UpdateFirewall - 更新防火墙规则
+    """
+
+    fields = {"FWId": fields.Str(required=False, load_from="FWId")}
+
+
+"""
+API: UpdateFirewallAttribute
+
+更新防火墙规则
+"""
+
+
+class UpdateFirewallAttributeRequestSchema(schema.RequestSchema):
+    """ UpdateFirewallAttribute - 更新防火墙规则
+    """
+
+    fields = {
+        "FWId": fields.Str(required=True, dump_to="FWId"),
         "Name": fields.Str(required=False, dump_to="Name"),
-        "Remark": fields.Str(required=False, dump_to="Remark"),
-        "CouponId": fields.Str(required=False, dump_to="CouponId"),
-        "OperatorName": fields.Str(required=True, dump_to="OperatorName"),
         "Tag": fields.Str(required=False, dump_to="Tag"),
-        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
-        "ShareBandwidthId": fields.Str(required=False, dump_to="ShareBandwidthId"),
-    }
-
-
-class AllocateEIPResponseSchema(schema.ResponseSchema):
-    """ AllocateEIP - 根据提供信息, 申请弹性IP
-    """
-
-    fields = {
-        "EIPSet": fields.List(
-            models.UnetAllocateEIPSetSchema(), required=False, load_from="EIPSet"
-        )
-    }
-
-
-"""
-API: AllocateShareBandwidth
-
-开通共享带宽
-"""
-
-
-class AllocateShareBandwidthRequestSchema(schema.RequestSchema):
-    """ AllocateShareBandwidth - 开通共享带宽
-    """
-
-    fields = {
+        "Remark": fields.Str(required=False, dump_to="Remark"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Name": fields.Str(required=True, dump_to="Name"),
-        "ChargeType": fields.Str(required=True, dump_to="ChargeType"),
-        "ShareBandwidth": fields.Int(required=True, dump_to="ShareBandwidth"),
-        "Quantity": fields.Int(required=False, dump_to="Quantity"),
-        "ShareBandwidthGuarantee": fields.Int(
-            required=False, dump_to="ShareBandwidthGuarantee"
-        ),
     }
 
 
-class AllocateShareBandwidthResponseSchema(schema.ResponseSchema):
-    """ AllocateShareBandwidth - 开通共享带宽
+class UpdateFirewallAttributeResponseSchema(schema.ResponseSchema):
+    """ UpdateFirewallAttribute - 更新防火墙规则
     """
 
-    fields = {
-        "ShareBandwidthId": fields.Str(required=False, load_from="ShareBandwidthId")
-    }
+    fields = {}

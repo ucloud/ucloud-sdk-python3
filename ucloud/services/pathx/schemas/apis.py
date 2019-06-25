@@ -7,56 +7,6 @@ from ucloud.services.pathx.schemas import models
 
 
 """
-API: ModifyGlobalSSHPort
-
-修改GlobalSSH端口
-"""
-
-
-class ModifyGlobalSSHPortRequestSchema(schema.RequestSchema):
-    """ ModifyGlobalSSHPort - 修改GlobalSSH端口
-    """
-
-    fields = {
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
-        "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
-        "Port": fields.Int(required=True, dump_to="Port"),
-    }
-
-
-class ModifyGlobalSSHPortResponseSchema(schema.ResponseSchema):
-    """ ModifyGlobalSSHPort - 修改GlobalSSH端口
-    """
-
-    fields = {"Message": fields.Str(required=False, load_from="Message")}
-
-
-"""
-API: ModifyGlobalSSHRemark
-
-修改GlobalSSH备注
-"""
-
-
-class ModifyGlobalSSHRemarkRequestSchema(schema.RequestSchema):
-    """ ModifyGlobalSSHRemark - 修改GlobalSSH备注
-    """
-
-    fields = {
-        "Remark": fields.Str(required=False, dump_to="Remark"),
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
-        "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
-    }
-
-
-class ModifyGlobalSSHRemarkResponseSchema(schema.ResponseSchema):
-    """ ModifyGlobalSSHRemark - 修改GlobalSSH备注
-    """
-
-    fields = {"Message": fields.Str(required=False, load_from="Message")}
-
-
-"""
 API: CreateGlobalSSHInstance
 
 创建GlobalSSH实例
@@ -70,13 +20,13 @@ class CreateGlobalSSHInstanceRequestSchema(schema.RequestSchema):
     fields = {
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
-        "Area": fields.Str(required=True, dump_to="Area"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "Port": fields.Int(required=True, dump_to="Port"),
         "AreaCode": fields.Str(required=True, dump_to="AreaCode"),
-        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
-        "TargetIP": fields.Str(required=True, dump_to="TargetIP"),
         "Remark": fields.Str(required=False, dump_to="Remark"),
+        "Area": fields.Str(required=True, dump_to="Area"),
+        "TargetIP": fields.Str(required=True, dump_to="TargetIP"),
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
     }
 
 
@@ -172,3 +122,53 @@ class DescribeGlobalSSHInstanceResponseSchema(schema.ResponseSchema):
             models.GlobalSSHInfoSchema(), required=False, load_from="InstanceSet"
         )
     }
+
+
+"""
+API: ModifyGlobalSSHPort
+
+修改GlobalSSH端口
+"""
+
+
+class ModifyGlobalSSHPortRequestSchema(schema.RequestSchema):
+    """ ModifyGlobalSSHPort - 修改GlobalSSH端口
+    """
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
+        "Port": fields.Int(required=True, dump_to="Port"),
+    }
+
+
+class ModifyGlobalSSHPortResponseSchema(schema.ResponseSchema):
+    """ ModifyGlobalSSHPort - 修改GlobalSSH端口
+    """
+
+    fields = {"Message": fields.Str(required=False, load_from="Message")}
+
+
+"""
+API: ModifyGlobalSSHRemark
+
+修改GlobalSSH备注
+"""
+
+
+class ModifyGlobalSSHRemarkRequestSchema(schema.RequestSchema):
+    """ ModifyGlobalSSHRemark - 修改GlobalSSH备注
+    """
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+    }
+
+
+class ModifyGlobalSSHRemarkResponseSchema(schema.ResponseSchema):
+    """ ModifyGlobalSSHRemark - 修改GlobalSSH备注
+    """
+
+    fields = {"Message": fields.Str(required=False, load_from="Message")}

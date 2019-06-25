@@ -1,20 +1,29 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class UHostDiskSetSchema(schema.ResponseSchema):
-    """ UHostDiskSet - DescribeUHostInstance
+class UHostImageSetSchema(schema.ResponseSchema):
+    """ UHostImageSet - DescribeImage
     """
 
     fields = {
-        "DiskType": fields.Str(required=True, load_from="DiskType"),
-        "IsBoot": fields.Str(required=True, load_from="IsBoot"),
-        "DiskId": fields.Str(required=False, load_from="DiskId"),
-        "Size": fields.Int(required=False, load_from="Size"),
-        "BackupType": fields.Str(required=False, load_from="BackupType"),
-        "Encrypted": fields.Bool(required=False, load_from="Encrypted"),
-        "Type": fields.Str(required=False, load_from="Type"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Drive": fields.Str(required=False, load_from="Drive"),
+        "FuncType": fields.Str(required=False, load_from="FuncType"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "ImageSize": fields.Int(required=False, load_from="ImageSize"),
+        "ImageName": fields.Str(required=False, load_from="ImageName"),
+        "ImageId": fields.Str(required=False, load_from="ImageId"),
+        "OsName": fields.Str(required=False, load_from="OsName"),
+        "Features": fields.List(fields.Str()),
+        "State": fields.Str(required=False, load_from="State"),
+        "MinimalCPU": fields.Str(required=False, load_from="MinimalCPU"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+        "Links": fields.Str(required=False, load_from="Links"),
+        "OsType": fields.Str(required=False, load_from="OsType"),
+        "IntegratedSoftware": fields.Str(
+            required=False, load_from="IntegratedSoftware"
+        ),
+        "Vendor": fields.Str(required=False, load_from="Vendor"),
+        "ImageDescription": fields.Str(required=False, load_from="ImageDescription"),
+        "ImageType": fields.Str(required=False, load_from="ImageType"),
     }
 
 
@@ -23,13 +32,30 @@ class UHostIPSetSchema(schema.ResponseSchema):
     """
 
     fields = {
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "Default": fields.Str(required=False, load_from="Default"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
         "Type": fields.Str(required=False, load_from="Type"),
         "IPId": fields.Str(required=False, load_from="IPId"),
         "IP": fields.Str(required=False, load_from="IP"),
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "Default": fields.Str(required=False, load_from="Default"),
+    }
+
+
+class UHostDiskSetSchema(schema.ResponseSchema):
+    """ UHostDiskSet - DescribeUHostInstance
+    """
+
+    fields = {
+        "DiskId": fields.Str(required=False, load_from="DiskId"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "DiskType": fields.Str(required=True, load_from="DiskType"),
+        "Type": fields.Str(required=False, load_from="Type"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Drive": fields.Str(required=False, load_from="Drive"),
+        "BackupType": fields.Str(required=False, load_from="BackupType"),
+        "IsBoot": fields.Str(required=True, load_from="IsBoot"),
+        "Encrypted": fields.Bool(required=False, load_from="Encrypted"),
     }
 
 
@@ -38,51 +64,41 @@ class UHostInstanceSetSchema(schema.ResponseSchema):
     """
 
     fields = {
-        "HostType": fields.Str(required=False, load_from="HostType"),
-        "GPU": fields.Int(required=False, load_from="GPU"),
-        "UHostType": fields.Str(required=False, load_from="UHostType"),
-        "Memory": fields.Int(required=False, load_from="Memory"),
-        "BootDiskState": fields.Str(required=False, load_from="BootDiskState"),
-        "IsolationGroup": fields.Str(required=False, load_from="IsolationGroup"),
-        "Remark": fields.Str(required=False, load_from="Remark"),
-        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "CPU": fields.Int(required=False, load_from="CPU"),
         "AutoRenew": fields.Str(required=False, load_from="AutoRenew"),
-        "SubnetType": fields.Str(required=False, load_from="SubnetType"),
+        "HotplugFeature": fields.Bool(required=False, load_from="HotplugFeature"),
         "LifeCycle": fields.Str(required=False, load_from="LifeCycle"),
-        "UHostId": fields.Str(required=False, load_from="UHostId"),
+        "IsolationGroup": fields.Str(required=False, load_from="IsolationGroup"),
+        "MachineType": fields.Str(required=False, load_from="MachineType"),
         "ImageId": fields.Str(required=False, load_from="ImageId"),
-        "BasicImageId": fields.Str(required=False, load_from="BasicImageId"),
-        "BasicImageName": fields.Str(required=False, load_from="BasicImageName"),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
-        "NetworkState": fields.Str(required=False, load_from="NetworkState"),
         "TimemachineFeature": fields.Str(
             required=False, load_from="TimemachineFeature"
         ),
-        "OsName": fields.Str(required=False, load_from="OsName"),
-        "TotalDiskSpace": fields.Int(required=False, load_from="TotalDiskSpace"),
-        "Tag": fields.Str(required=False, load_from="Tag"),
-        "DiskSet": fields.List(UHostDiskSetSchema()),
-        "IPSet": fields.List(UHostIPSetSchema()),
-        "NetCapability": fields.Str(required=False, load_from="NetCapability"),
-        "OsType": fields.Str(required=False, load_from="OsType"),
+        "SubnetType": fields.Str(required=False, load_from="SubnetType"),
+        "GPU": fields.Int(required=False, load_from="GPU"),
         "Zone": fields.Str(required=False, load_from="Zone"),
-        "MachineType": fields.Str(required=False, load_from="MachineType"),
-        "StorageType": fields.Str(required=False, load_from="StorageType"),
+        "BasicImageName": fields.Str(required=False, load_from="BasicImageName"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "CPU": fields.Int(required=False, load_from="CPU"),
+        "OsName": fields.Str(required=False, load_from="OsName"),
+        "UHostId": fields.Str(required=False, load_from="UHostId"),
         "State": fields.Str(required=False, load_from="State"),
+        "IPSet": fields.List(UHostIPSetSchema()),
+        "NetworkState": fields.Str(required=False, load_from="NetworkState"),
+        "BootDiskState": fields.Str(required=False, load_from="BootDiskState"),
+        "StorageType": fields.Str(required=False, load_from="StorageType"),
+        "BasicImageId": fields.Str(required=False, load_from="BasicImageId"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "DiskSet": fields.List(UHostDiskSetSchema()),
+        "TotalDiskSpace": fields.Int(required=False, load_from="TotalDiskSpace"),
+        "UHostType": fields.Str(required=False, load_from="UHostType"),
         "Name": fields.Str(required=False, load_from="Name"),
-        "HotplugFeature": fields.Bool(required=False, load_from="HotplugFeature"),
-    }
-
-
-class UHostPriceSetSchema(schema.ResponseSchema):
-    """ UHostPriceSet - 主机价格
-    """
-
-    fields = {
-        "ChargeType": fields.Str(required=True, load_from="ChargeType"),
-        "Price": fields.Float(required=True, load_from="Price"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "NetCapability": fields.Str(required=False, load_from="NetCapability"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "Memory": fields.Int(required=False, load_from="Memory"),
+        "OsType": fields.Str(required=False, load_from="OsType"),
+        "HostType": fields.Str(required=False, load_from="HostType"),
     }
 
 
@@ -97,27 +113,11 @@ class UHostTagSetSchema(schema.ResponseSchema):
     }
 
 
-class UHostImageSetSchema(schema.ResponseSchema):
-    """ UHostImageSet - DescribeImage
+class UHostPriceSetSchema(schema.ResponseSchema):
+    """ UHostPriceSet - 主机价格
     """
 
     fields = {
-        "Zone": fields.Str(required=False, load_from="Zone"),
-        "ImageId": fields.Str(required=False, load_from="ImageId"),
-        "State": fields.Str(required=False, load_from="State"),
-        "MinimalCPU": fields.Str(required=False, load_from="MinimalCPU"),
-        "ImageName": fields.Str(required=False, load_from="ImageName"),
-        "FuncType": fields.Str(required=False, load_from="FuncType"),
-        "IntegratedSoftware": fields.Str(
-            required=False, load_from="IntegratedSoftware"
-        ),
-        "Vendor": fields.Str(required=False, load_from="Vendor"),
-        "OsType": fields.Str(required=False, load_from="OsType"),
-        "OsName": fields.Str(required=False, load_from="OsName"),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "ImageType": fields.Str(required=False, load_from="ImageType"),
-        "Features": fields.List(fields.Str()),
-        "Links": fields.Str(required=False, load_from="Links"),
-        "ImageDescription": fields.Str(required=False, load_from="ImageDescription"),
-        "ImageSize": fields.Int(required=False, load_from="ImageSize"),
+        "ChargeType": fields.Str(required=True, load_from="ChargeType"),
+        "Price": fields.Float(required=True, load_from="Price"),
     }
