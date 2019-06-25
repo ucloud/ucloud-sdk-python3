@@ -62,9 +62,12 @@ class RequestsTransport(http.Transport):
             session.mount("http://", adapter=adapter)
             session.mount("https://", adapter=adapter)
 
-            resp = self.convert_response(
-                session.request(req.method.upper(), url=req.url, json=req.json)
+            session_resp = session.request(
+                method=req.method.upper(), url=req.url,
+                json=req.json, data=req.data, params=req.params,
+                headers=req.headers,
             )
+            resp = self.convert_response(session_resp)
             resp.request = req
             return resp
 
