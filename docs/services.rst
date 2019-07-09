@@ -1,16 +1,22 @@
 UCloud SDK Services
 ===================
 
-ULB
----
+PathX
+-----
 
-.. autoclass:: ucloud.services.ulb.client.ULBClient
+.. autoclass:: ucloud.services.pathx.client.PathXClient
    :members:
 
-UNet
-----
+UAccount
+--------
 
-.. autoclass:: ucloud.services.unet.client.UNetClient
+.. autoclass:: ucloud.services.uaccount.client.UAccountClient
+   :members:
+
+UDB
+---
+
+.. autoclass:: ucloud.services.udb.client.UDBClient
    :members:
 
 UDPN
@@ -25,22 +31,16 @@ UDisk
 .. autoclass:: ucloud.services.udisk.client.UDiskClient
    :members:
 
-UDB
+UHost
+-----
+
+.. autoclass:: ucloud.services.uhost.client.UHostClient
+   :members:
+
+ULB
 ---
 
-.. autoclass:: ucloud.services.udb.client.UDBClient
-   :members:
-
-UPHost
-------
-
-.. autoclass:: ucloud.services.uphost.client.UPHostClient
-   :members:
-
-UAccount
---------
-
-.. autoclass:: ucloud.services.uaccount.client.UAccountClient
+.. autoclass:: ucloud.services.ulb.client.ULBClient
    :members:
 
 UMem
@@ -49,21 +49,21 @@ UMem
 .. autoclass:: ucloud.services.umem.client.UMemClient
    :members:
 
+UNet
+----
+
+.. autoclass:: ucloud.services.unet.client.UNetClient
+   :members:
+
+UPHost
+------
+
+.. autoclass:: ucloud.services.uphost.client.UPHostClient
+   :members:
+
 VPC
 ---
 
 .. autoclass:: ucloud.services.vpc.client.VPCClient
-   :members:
-
-UHost
------
-
-.. autoclass:: ucloud.services.uhost.client.UHostClient
-   :members:
-
-PathX
------
-
-.. autoclass:: ucloud.services.pathx.client.PathXClient
    :members:
 

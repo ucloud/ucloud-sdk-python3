@@ -53,7 +53,7 @@ You can then use your keys to create a new client of uhost service:
                 'Type': 'CLOUD_SSD'
             }],
         })
-    except exc.UCloudException as e
+    except exc.UCloudException as e:
         print(e)
     else:
         print(resp)

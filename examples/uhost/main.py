@@ -37,7 +37,7 @@ def main():
         'Memory': 1024,
         'Disks': [{
             'Size': image["ImageSize"],
-            'Type': 'CLOUD_NORMAL',
+            'Type': 'LOCAL_NORMAL',
             'IsBoot': 'True',
         }],
     })
