@@ -66,6 +66,9 @@ dependencies_test = dependencies + [
     'tox',
     'pytest',
     'pytest-cov',
+    'pytest-rerunfailures',
+    'allure-pytest',
+    'pytest-xdist',
 ]
 
 dependencies_doc = dependencies + ['sphinx']
@@ -92,6 +95,7 @@ def do_setup():
             "doc": dependencies_doc,
             "dev": dependencies_dev,
         },
+        dependencies_test=dependencies_test,
         classifiers=[
             "Development Status :: 3 - Alpha",
             "Environment :: Console",

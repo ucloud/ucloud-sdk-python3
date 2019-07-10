@@ -119,3 +119,6 @@ class Client:
             python_version=python_version, sdk_version=version.version
         ) + (self.config.user_agent or "")
         return user_agent
+
+    def __repr__(self):
+        return "<{}('{}')>".format(self.__class__.__name__, self.config.region)

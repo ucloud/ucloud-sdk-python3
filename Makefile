@@ -38,7 +38,7 @@ test-cov: clean
 	pytest --cov=ucloud
 
 test-acc: clean
-	USDK_ACC=1 pytest --cov=ucloud
+	USDKACC=1 pytest --cov=ucloud
 
 test-all: clean
 	tox

@@ -1,6 +1,6 @@
 import os
 
-ACC_ENV_KEY = "USDK_ACC"
+ACC_ENV_KEY = "USDKACC"
 ACC_SKIP_REASON = "skip test for non-acc environment"
 
 
