@@ -2,7 +2,6 @@
 
 import typing
 
-
 from ucloud.core.client import Client
 from ucloud.services.unet.schemas import apis
 
@@ -998,3 +997,38 @@ class UNetClient(Client):
 
         resp = self.invoke("UpdateFirewallAttribute", d, **kwargs)
         return apis.UpdateFirewallAttributeResponseSchema().loads(resp)
+
+    _deprecated = {
+        "allocate_e_ip": "allocate_eip",
+        "associate_e_ip_with_share_bandwidth": "associate_eip_with_share_bandwidth",
+        "bind_e_ip": "bind_eip",
+        "describe_e_ip": "describe_eip",
+        "disassociate_e_ip_with_share_bandwidth": "disassociate_eip_with_share_bandwidth",
+        "get_e_ip_pay_mode": "get_eip_pay_mode",
+        "get_e_ip_price": "get_eip_price",
+        "get_e_ip_upgrade_price": "get_eip_upgrade_price",
+        "modify_e_ip_bandwidth": "modify_eip_bandwidth",
+        "modify_e_ip_weight": "modify_eip_weight",
+        "release_e_ip": "release_eip",
+        "set_e_ip_pay_mode": "set_eip_pay_mode",
+        "un_bind_e_ip": "un_bind_eip",
+        "update_e_ip_attribute": "update_eip_attribute",
+        "release_v_ip": "release_vip",
+        "allocate_v_ip": "allocate_vip",
+        "describe_v_ip": "describe_vip",
+    }
+
+    def __getattr__(self, item):
+        if item in self._deprecated:
+            instead_of = self._deprecated[item]
+            msg = (
+                "the method {} is deprecated, "
+                "please use {} instead, "
+                "this method will remove after 0.5.0 version"
+            )
+            self.logger.warning(msg.format(item, instead_of))
+            return getattr(self, self._deprecated[item])
+
+        raise AttributeError(
+            ("'{}' object has no attribute '{}'".format(self.__class__.__name__, item))
+        )
