@@ -49,8 +49,6 @@ def allocate_share_bandwidth_00(client, variables):
     except exc.RetCodeException as e:
         resp = e.json()
 
-    assert resp
-
     validators = [("str_eq", "RetCode", 0)]
     utest.validate(resp, validators)
 
@@ -73,8 +71,6 @@ def allocate_eip_01(client, variables):
     except exc.RetCodeException as e:
         resp = e.json()
 
-    assert resp
-
     validators = [("str_eq", "RetCode", 0)]
     utest.validate(resp, validators)
 
@@ -94,8 +90,6 @@ def associate_eip_with_share_bandwidth_02(client, variables):
     except exc.RetCodeException as e:
         resp = e.json()
 
-    assert resp
-
     validators = [("str_eq", "RetCode", 0)]
     utest.validate(resp, validators)
 
@@ -110,11 +104,9 @@ def describe_share_bandwidth_price_03(client, variables):
     }
 
     try:
-        resp = client.unet().describe_share_bandwidth_price(d)
+        resp = client.invoke("DescribeShareBandwidthPrice", d)
     except exc.RetCodeException as e:
         resp = e.json()
-
-    assert resp
 
     validators = [("str_eq", "RetCode", 0), ("gt", "TotalPrice", 0)]
     utest.validate(resp, validators)
@@ -131,8 +123,6 @@ def describe_share_bandwidth_04(client, variables):
         resp = client.unet().describe_share_bandwidth(d)
     except exc.RetCodeException as e:
         resp = e.json()
-
-    assert resp
 
     validators = [
         ("str_eq", "RetCode", 0),
@@ -159,8 +149,6 @@ def resize_share_bandwidth_05(client, variables):
     except exc.RetCodeException as e:
         resp = e.json()
 
-    assert resp
-
     validators = [("str_eq", "RetCode", 0)]
     utest.validate(resp, validators)
 
@@ -176,8 +164,6 @@ def describe_share_bandwidth_06(client, variables):
         resp = client.unet().describe_share_bandwidth(d)
     except exc.RetCodeException as e:
         resp = e.json()
-
-    assert resp
 
     validators = [
         ("str_eq", "RetCode", 0),
@@ -199,8 +185,6 @@ def describe_eip_07(client, variables):
         resp = client.unet().describe_eip(d)
     except exc.RetCodeException as e:
         resp = e.json()
-
-    assert resp
 
     validators = [
         ("str_eq", "RetCode", 0),
@@ -224,8 +208,6 @@ def disassociate_eip_with_share_bandwidth_08(client, variables):
     except exc.RetCodeException as e:
         resp = e.json()
 
-    assert resp
-
     validators = [("str_eq", "RetCode", 0)]
     utest.validate(resp, validators)
 
@@ -244,8 +226,6 @@ def describe_eip_09(client, variables):
     except exc.RetCodeException as e:
         resp = e.json()
 
-    assert resp
-
     validators = [
         ("str_eq", "RetCode", 0),
         ("str_eq", "EIPSet.0.BandwidthType", 0),
@@ -262,8 +242,6 @@ def get_bandwidth_sum_10(client, variables):
         resp = client.invoke("GetBandwidthSum", d)
     except exc.RetCodeException as e:
         resp = e.json()
-
-    assert resp
 
     validators = [
         ("str_eq", "RetCode", 0),
@@ -283,8 +261,6 @@ def release_eip_11(client, variables):
     except exc.RetCodeException as e:
         resp = e.json()
 
-    assert resp
-
 
 @utest.case(max_retries=10, retry_interval=10, startup_delay=3, fast_fail=False)
 def release_share_bandwidth_12(client, variables):
@@ -298,8 +274,6 @@ def release_share_bandwidth_12(client, variables):
         resp = client.unet().release_share_bandwidth(d)
     except exc.RetCodeException as e:
         resp = e.json()
-
-    assert resp
 
     validators = [("str_eq", "RetCode", 0)]
     utest.validate(resp, validators)

@@ -20,4 +20,7 @@ def client() -> Client:
 
 @pytest.fixture(scope="module", autouse=True)
 def variables() -> dict:
-    return {}
+    return {
+        "Region": os.getenv("UCLOUD_REGION"),
+        "ProjectId": os.getenv("UCLOUD_PROJECT_ID"),
+    }

@@ -56,13 +56,13 @@ def timedelta(timestamp, value, typ="days"):
 def get_timestamp(length=13):
     """ get current timestamp string
 
-    >>> len(get_timestamp(10))
+    >>> len(str(int(get_timestamp(10))))
     10
 
     :param length: length of timestamp, can only between 0 and 16
     :return:
     """
     if isinstance(length, int) and 0 < length < 17:
-        return "{:.6f}".format(time.time()).replace(".", "")[:length]
+        return float("{:.6f}".format(time.time()).replace(".", "")[:length])
 
     raise ValueError("timestamp length can only between 0 and 16.")

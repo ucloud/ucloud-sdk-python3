@@ -1,6 +1,9 @@
+import logging
 from ucloud.core.typesystem import abstract, fields
 from ucloud.core.exc import ValidationException
 from ucloud.core.utils import compact
+
+logger = logging.getLogger(__name__)
 
 
 class Schema(abstract.Schema):
@@ -132,6 +135,7 @@ class ResponseSchema(Schema):
             try:
                 serialized = field.loads(v, name=k)
             except ValidationException as e:
+                logger.warning(e)
                 errors.extend(e.errors)
                 continue
 

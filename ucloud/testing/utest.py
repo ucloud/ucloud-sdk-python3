@@ -8,6 +8,62 @@ from ucloud.testing import op
 logger = logging.getLogger(__name__)
 
 
+def case(
+    max_retries=0,
+    retry_interval=0,
+    retry_for=(op.CompareError,),
+    startup_delay=0,
+    fast_fail=False,
+):
+    """ wrap a function as a test case
+
+    :param max_retries: the maximum retry number by the `retry_for` exception,
+                        it will resolve the flaky testing case
+    :param retry_interval: the interval between twice retrying
+    :param retry_for: the exceptions to retrying
+    :param startup_delay: the delay seconds before any action execution
+    :param fast_fail: if fast fail is true, the test will fail when got
+                      unexpected exception
+    :return:
+    """
+
+    def deco(fn):
+        @functools.wraps(fn)
+        def wrapper(*args, **kwargs):
+            # wait for delay before startup
+            if startup_delay:
+                time.sleep(startup_delay)
+
+            for i in range(max_retries + 1):
+                try:
+                    result = fn(*args, **kwargs)
+                except Exception as e:
+                    # retrying for retryable error
+                    if isinstance(e, retry_for) and i != max_retries:
+                        if retry_interval:
+                            time.sleep(retry_interval)
+                        continue
+
+                    if fast_fail:
+                        raise e
+                    else:
+                        logger.exception(e)
+                        return
+                else:
+                    return result
+
+        return wrapper
+
+    return deco
+
+
+def validate(resp: dict, validators: typing.List[typing.Tuple]):
+    """ validate dict by 3-tuple (comparator, value, expected)
+    """
+    for validator in validators:
+        op.check(validator[0], value_at_path(resp, validator[1]), validator[2])
+
+
 def value_at_path(d, path):
     """ access value by object path
 
@@ -94,57 +150,8 @@ def set_array_item(d, index):
         return d[-1]
 
 
-def case(
-    max_retries=0,
-    retry_interval=0,
-    retry_for=(op.CompareError,),
-    startup_delay=0,
-    fast_fail=False,
-):
-    """ wrap a function as a test case
-
-    :param max_retries: the maximum retry number by the `retry_for` exception,
-                        it will resolve the flaky testing case
-    :param retry_interval: the interval between twice retrying
-    :param retry_for: the exceptions to retrying
-    :param startup_delay: the delay seconds before any action execution
-    :param fast_fail: if fast fail is true, the test will fail when got
-                      unexpected exception
-    :return:
-    """
-
-    def deco(fn):
-        @functools.wraps(fn)
-        def wrapper(*args, **kwargs):
-            # wait for delay before startup
-            if startup_delay:
-                time.sleep(startup_delay)
-
-            for i in range(max_retries + 1):
-                try:
-                    result = fn(*args, **kwargs)
-                except Exception as e:
-                    # retrying for retryable error
-                    if isinstance(e, retry_for) and i != max_retries:
-                        if retry_interval:
-                            time.sleep(retry_interval)
-                        continue
-
-                    if fast_fail:
-                        raise e
-                    else:
-                        logger.exception(e)
-                        return
-                else:
-                    return result
-
-        return wrapper
-
-    return deco
-
-
-def validate(resp: dict, validators: typing.List[typing.Tuple]):
-    """ validate dict by 3-tuple (comparator, value, expected)
-    """
-    for validator in validators:
-        op.check(validator[0], value_at_path(resp, validator[1]), validator[2])
+def set_default_response(d: dict, action: str):
+    d = d.copy()
+    d.setdefault('RetCode', 0)
+    d.setdefault('Action', '{}Response'.format(action))
+    return d

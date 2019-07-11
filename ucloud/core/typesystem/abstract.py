@@ -10,8 +10,7 @@ class Field(object):
         default: typing.Any = None,
         dump_to: str = None,
         load_from: str = None,
-        strict: bool = True,
-        case_sensitive: bool = False,
+        strict: bool = None,
         **kwargs
     ):
         self.required = required
@@ -19,8 +18,7 @@ class Field(object):
         self.dump_to = dump_to
         self.load_from = load_from
         self.options = kwargs
-        self.strict = strict
-        self.case_sensitive = case_sensitive
+        self.strict = bool(strict)  # None as False
 
     def dumps(self, value, **kwargs):
         raise NotImplementedError
@@ -43,7 +41,7 @@ class Schema(object):
         default: typing.Any = None,
         dump_to: str = None,
         load_from: str = None,
-        strict: bool = True,
+        strict: bool = False,
         case_sensitive: bool = False,
         **kwargs
     ):
@@ -53,7 +51,14 @@ class Schema(object):
         self.load_from = load_from
         self.options = kwargs
         self.strict = strict
+
         self.case_sensitive = case_sensitive
+        if not self.case_sensitive:
+            self.case_insensitive_fields = {
+                k.lower(): v for k, v in self.fields.items()
+            }
+        else:
+            self.case_insensitive_fields = self.fields
 
     def dumps(self, d: dict) -> dict:
         raise NotImplementedError
