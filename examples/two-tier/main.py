@@ -8,11 +8,13 @@ from ucloud.helpers import wait, utils
 logger = logging.getLogger('ucloud')
 logger.setLevel(logging.DEBUG)
 
+# NOTE: find your public/private key at
+# website `UAPI <https://console.ucloud.cn/uapi/apikey>`_
 client = Client({
     "region": "cn-bj2",
-    "project_id": os.getenv("UCLOUD_PROJECT_ID"),
-    "public_key": os.getenv("UCLOUD_PUBLIC_KEY"),
-    "private_key": os.getenv("UCLOUD_PRIVATE_KEY"),
+    "project_id": "paste your project id at here",
+    "public_key": "paste your public key at here",
+    "private_key": "paste your private key at here",
 })
 
 

@@ -1,6 +1,9 @@
+import logging
 from ucloud.core.typesystem import abstract, fields
 from ucloud.core.exc import ValidationException
 from ucloud.core.utils import compact
+
+logger = logging.getLogger(__name__)
 
 
 class Schema(abstract.Schema):
@@ -46,8 +49,20 @@ class Schema(abstract.Schema):
         result = {}
         errors = []
 
+        if not self.case_sensitive:
+            d = {k.lower(): v for k, v in d.items()}
+
         for k, field in self.fields.items():
-            v = d.get(field.load_from or k)
+            load_key = (field.load_from or k)
+            v = d.get(load_key if self.case_sensitive else load_key.lower())
+            if v is None:
+                if field.default is None:
+                    continue
+
+                if isinstance(field.default, compact.Callable):
+                    v = field.default()
+                else:
+                    v = field.default
 
             try:
                 serialized = field.loads(v, name=k)
@@ -67,6 +82,11 @@ class RequestSchema(Schema):
     fields = {}
 
     def dumps(self, d: dict, name=None, **kwargs) -> dict:
+        if not isinstance(d, dict):
+            raise ValidationException(
+                "invalid field {}, expect dict, got {}".format(name, type(d))
+            )
+
         result = {}
         errors = []
 
@@ -120,21 +140,4 @@ class RequestSchema(Schema):
 
 
 class ResponseSchema(Schema):
-    def loads(self, d: dict, name=None, **kwargs):
-        result = {}
-        errors = []
-
-        for k, field in self.fields.items():
-            v = d.get(field.load_from or k)
-            if v is None:
-                continue
-
-            try:
-                serialized = field.loads(v, name=k)
-            except ValidationException as e:
-                errors.extend(e.errors)
-                continue
-
-            result[k] = serialized
-
-        return result
+    pass

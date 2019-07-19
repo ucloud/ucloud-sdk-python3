@@ -106,10 +106,10 @@ class Client:
         return Request(
             url=self.config.base_url,
             method="post",
-            json=payload,
+            data=payload,
             headers={
                 "User-Agent": self._build_user_agent(),
-                "Content-Type": "application/json",
+                "Content-Type": "application/x-www-form-urlencoded",
             },
         )
 
@@ -119,3 +119,6 @@ class Client:
             python_version=python_version, sdk_version=version.version
         ) + (self.config.user_agent or "")
         return user_agent
+
+    def __repr__(self):
+        return "<{}('{}')>".format(self.__class__.__name__, self.config.region)
