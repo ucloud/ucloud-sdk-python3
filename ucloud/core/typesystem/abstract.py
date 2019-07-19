@@ -38,7 +38,7 @@ class Schema(object):
     def __init__(
         self,
         required: bool = False,
-        default: typing.Any = None,
+        default: typing.Union[typing.Callable, typing.Any] = dict,
         dump_to: str = None,
         load_from: str = None,
         strict: bool = False,
@@ -51,14 +51,7 @@ class Schema(object):
         self.load_from = load_from
         self.options = kwargs
         self.strict = strict
-
         self.case_sensitive = case_sensitive
-        if not self.case_sensitive:
-            self.case_insensitive_fields = {
-                k.lower(): v for k, v in self.fields.items()
-            }
-        else:
-            self.case_insensitive_fields = self.fields
 
     def dumps(self, d: dict) -> dict:
         raise NotImplementedError

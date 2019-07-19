@@ -3,48 +3,24 @@ import re
 
 def eq(value, expected):
     """ value is equal to expected
-
-    >>> eq(1, 1)
-    True
     """
     assert value == expected
 
 
 def ne(value, expected):
     """ value is equal to expected
-
-    >>> eq(1, 1)
-    False
     """
     assert value != expected
 
 
 def gt(value, expected):
     """ value is greater than expected
-
-    >>> gt(1, 1)
-    False
-
-    >>> gt(1, 0)
-    True
-
-    >>> gt(1, 2)
-    False
     """
     assert value > expected
 
 
 def ge(value, expected):
     """ value is greater than or equal to expected
-
-    >>> ge(1, 1)
-    True
-
-    >>> ge(1, 0)
-    True
-
-    >>> ge(1, 2)
-    False
     """
     assert value >= expected
 

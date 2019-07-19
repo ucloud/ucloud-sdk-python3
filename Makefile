@@ -13,8 +13,8 @@ endef
 export BROWSER_PYSCRIPT
 BROWSER := python -c "$$BROWSER_PYSCRIPT"
 
-# UCloud Tools
-GENERATE_TEMPLATE_PATH=../ucloud-api-model-v2/apisdk/lang/python/templates/bash.tpl
+# UCloud Tools Path
+UCLOUD_TEMPLATE_PATH=../ucloud-api-model-v2/apisdk/lang/python/templates
 
 help:
 	@echo "clean - remove all build, test, coverage and Python artifacts"
@@ -79,4 +79,12 @@ clean-test:
 	rm -fr htmlcov/
 
 gen:
-	ucloud-model sdk apis --lang python3 --type=public --template ${GENERATE_TEMPLATE_PATH} --output ./gen.sh
+	ucloud-model sdk apis \
+		--lang python3 \
+		--type=public \
+		--template ${UCLOUD_TEMPLATE_PATH}/scripts-api.tpl \
+		--output ./scripts/gen-services.sh
+	ucloud-model sdk tests \
+		--lang python3 \
+	 	--template ${UCLOUD_TEMPLATE_PATH}/scripts-test.tpl \
+	 	--output ./scripts/gen-tests.sh

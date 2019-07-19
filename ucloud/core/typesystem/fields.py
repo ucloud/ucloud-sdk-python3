@@ -17,9 +17,10 @@ class List(abstract.Field):
     def __init__(
         self,
         item: typing.Union[abstract.Field, abstract.Schema],
+        default=list,
         **kwargs
     ):
-        super(List, self).__init__(**kwargs)
+        super(List, self).__init__(default=default, **kwargs)
         self.item = item
 
     def dumps(self, value, name=None, **kwargs):

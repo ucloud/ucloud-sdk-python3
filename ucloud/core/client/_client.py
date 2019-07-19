@@ -106,10 +106,10 @@ class Client:
         return Request(
             url=self.config.base_url,
             method="post",
-            json=payload,
+            data=payload,
             headers={
                 "User-Agent": self._build_user_agent(),
-                "Content-Type": "application/json",
+                "Content-Type": "application/x-www-form-urlencoded",
             },
         )
 
