@@ -7,6 +7,12 @@ PathX
 .. autoclass:: ucloud.services.pathx.client.PathXClient
    :members:
 
+StepFlow
+--------
+
+.. autoclass:: ucloud.services.stepflow.client.StepFlowClient
+   :members:
+
 UAccount
 --------
 

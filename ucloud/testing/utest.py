@@ -91,7 +91,7 @@ def value_at_path(d, path):
                 return
 
             if len(result) <= int(key):
-                msg = '{} not found'.format('.'.join(indices[:i]))
+                msg = "{} not found".format(".".join(indices[:i]))
                 raise ValueNotFoundError(msg)
 
             result = result[int(key)]
@@ -100,7 +100,7 @@ def value_at_path(d, path):
         if isinstance(result, dict):
             result = result.get(key)
             if result is None:
-                msg = '{} not found'.format('.'.join(indices[:i]))
+                msg = "{} not found".format(".".join(indices[:i]))
                 raise ValueNotFoundError(msg)
             continue
 
@@ -109,6 +109,6 @@ def value_at_path(d, path):
 
 def set_default_response(d: dict, action: str):
     d = d.copy()
-    d.setdefault('RetCode', 0)
-    d.setdefault('Action', '{}Response'.format(action))
+    d.setdefault("RetCode", 0)
+    d.setdefault("Action", "{}Response".format(action))
     return d

@@ -15,6 +15,15 @@ ucloud-model sdk apis --lang python3 --product PathX --type public --template ..
 black ucloud/services/pathx
 python -m ucloud.services.pathx.client
 
+mkdir -p ./ucloud/services/stepflow/schemas
+touch ./ucloud/services/stepflow/__init__.py
+touch ./ucloud/services/stepflow/schemas/__init__.py
+ucloud-model sdk apis --lang python3 --product StepFlow --type public --template ../ucloud-api-model-v2/apisdk/lang/python/templates/schema.tpl --output ./ucloud/services/stepflow/schemas/apis.py
+ucloud-model sdk apis --lang python3 --product StepFlow --type public --template ../ucloud-api-model-v2/apisdk/lang/python/templates/model.tpl --output ./ucloud/services/stepflow/schemas/models.py
+ucloud-model sdk apis --lang python3 --product StepFlow --type public --template ../ucloud-api-model-v2/apisdk/lang/python/templates/client.tpl --output ./ucloud/services/stepflow/client.py
+black ucloud/services/stepflow
+python -m ucloud.services.stepflow.client
+
 mkdir -p ./ucloud/services/uaccount/schemas
 touch ./ucloud/services/uaccount/__init__.py
 touch ./ucloud/services/uaccount/schemas/__init__.py
