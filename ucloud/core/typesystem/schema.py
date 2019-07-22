@@ -53,7 +53,7 @@ class Schema(abstract.Schema):
             d = {k.lower(): v for k, v in d.items()}
 
         for k, field in self.fields.items():
-            load_key = (field.load_from or k)
+            load_key = field.load_from or k
             v = d.get(load_key if self.case_sensitive else load_key.lower())
             if v is None:
                 if field.default is None:

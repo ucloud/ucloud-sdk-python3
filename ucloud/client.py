@@ -13,6 +13,13 @@ class Client(client.Client):
 
         return PathXClient(self._config, self.transport, self.middleware, self.logger)
 
+    def stepflow(self):
+        from ucloud.services.stepflow.client import StepFlowClient
+
+        return StepFlowClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
     def uaccount(self):
         from ucloud.services.uaccount.client import UAccountClient
 

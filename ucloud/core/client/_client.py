@@ -91,7 +91,7 @@ class Client:
 
         if int(resp.get("RetCode", -1)) != 0:
             raise exc.RetCodeException(
-                action=req.json.get("Action"),
+                action=req.data.get("Action"),
                 code=int(resp.get("RetCode")),
                 message=resp.get("Message"),
             )
