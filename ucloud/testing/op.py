@@ -1,5 +1,7 @@
 import re
 
+from ucloud.testing.exc import CompareError
+
 
 def eq(value, expected):
     """ value is equal to expected
@@ -178,10 +180,6 @@ mapper = {
     "object_contains": object_contains,
     "object_not_contains": object_not_contains,
 }
-
-
-class CompareError(Exception):
-    pass
 
 
 def check(name, value, expected):

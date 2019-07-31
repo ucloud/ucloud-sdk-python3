@@ -26,7 +26,9 @@ class List(abstract.Field):
     def dumps(self, value, name=None, **kwargs):
         if not isinstance(value, collections.Iterable):
             raise ValidationException(
-                "invalid field {}, expect list, got {}".format(name, type(value))
+                "invalid field {}, expect list, got {}".format(
+                    name, type(value)
+                )
             )
 
         errors = []
@@ -47,7 +49,9 @@ class List(abstract.Field):
     def loads(self, value, name=None, **kwargs):
         if not isinstance(value, collections.Iterable):
             raise ValidationException(
-                "invalid field {}, expect list, got {}".format(name, type(value))
+                "invalid field {}, expect list, got {}".format(
+                    name, type(value)
+                )
             )
 
         errors = []

@@ -20,7 +20,9 @@ class Schema(abstract.Schema):
             if v is None:
                 if field.required:
                     errors.append(
-                        ValidationException("the field {k} is required".format(k=k))
+                        ValidationException(
+                            "the field {k} is required".format(k=k)
+                        )
                     )
                     continue
 
@@ -97,7 +99,9 @@ class RequestSchema(Schema):
             if v is None:
                 if field.required:
                     errors.append(
-                        ValidationException("the field {k} is required".format(k=k))
+                        ValidationException(
+                            "the field {k} is required".format(k=k)
+                        )
                     )
                     continue
 

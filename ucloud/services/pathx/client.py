@@ -8,7 +8,9 @@ from ucloud.services.pathx.schemas import apis
 
 
 class PathXClient(Client):
-    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
+    def __init__(
+        self, config: dict, transport=None, middleware=None, logger=None
+    ):
         super(PathXClient, self).__init__(config, transport, middleware, logger)
 
     def create_global_ssh_instance(

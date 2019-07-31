@@ -8,7 +8,9 @@ from ucloud.services.udisk.schemas import apis
 
 
 class UDiskClient(Client):
-    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
+    def __init__(
+        self, config: dict, transport=None, middleware=None, logger=None
+    ):
         super(UDiskClient, self).__init__(config, transport, middleware, logger)
 
     def attach_udisk(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
@@ -69,7 +71,9 @@ class UDiskClient(Client):
         resp = self.invoke("CloneUDisk", d, **kwargs)
         return apis.CloneUDiskResponseSchema().loads(resp)
 
-    def clone_udisk_snapshot(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def clone_udisk_snapshot(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ CloneUDiskSnapshot - 从快照创建UDisk克隆
 
         **Request**
@@ -216,7 +220,9 @@ class UDiskClient(Client):
         resp = self.invoke("DeleteUDiskSnapshot", d, **kwargs)
         return apis.DeleteUDiskSnapshotResponseSchema().loads(resp)
 
-    def describe_udisk(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def describe_udisk(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DescribeUDisk - 获取UDisk实例
 
         **Request**
@@ -275,7 +281,9 @@ class UDiskClient(Client):
         resp = self.invoke("DescribeUDisk", d, **kwargs)
         return apis.DescribeUDiskResponseSchema().loads(resp)
 
-    def describe_udisk_price(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def describe_udisk_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DescribeUDiskPrice - 获取UDisk实例价格信息
 
         **Request**
@@ -462,7 +470,9 @@ class UDiskClient(Client):
         resp = self.invoke("ResizeUDisk", d, **kwargs)
         return apis.ResizeUDiskResponseSchema().loads(resp)
 
-    def restore_udisk(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def restore_udisk(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ RestoreUDisk - 从备份恢复数据至UDisk
 
         **Request**

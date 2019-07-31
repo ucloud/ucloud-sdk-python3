@@ -8,10 +8,14 @@ from ucloud.services.ulb.schemas import apis
 
 
 class ULBClient(Client):
-    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
+    def __init__(
+        self, config: dict, transport=None, middleware=None, logger=None
+    ):
         super(ULBClient, self).__init__(config, transport, middleware, logger)
 
-    def allocate_backend(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def allocate_backend(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ AllocateBackend - 添加ULB后端资源实例
 
         **Request**
@@ -96,7 +100,9 @@ class ULBClient(Client):
         resp = self.invoke("BindSSL", d, **kwargs)
         return apis.BindSSLResponseSchema().loads(resp)
 
-    def create_policy(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def create_policy(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ CreatePolicy - 创建VServer内容转发策略
 
         **Request**
@@ -191,7 +197,9 @@ class ULBClient(Client):
         resp = self.invoke("CreateULB", d, **kwargs)
         return apis.CreateULBResponseSchema().loads(resp)
 
-    def create_vserver(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def create_vserver(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ CreateVServer - 创建VServer实例，定义监听的协议和端口以及负载均衡算法
 
         **Request**
@@ -227,7 +235,9 @@ class ULBClient(Client):
         resp = self.invoke("CreateVServer", d, **kwargs)
         return apis.CreateVServerResponseSchema().loads(resp)
 
-    def delete_policy(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def delete_policy(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DeletePolicy - 删除内容转发策略
 
         **Request**
@@ -293,7 +303,9 @@ class ULBClient(Client):
         resp = self.invoke("DeleteULB", d, **kwargs)
         return apis.DeleteULBResponseSchema().loads(resp)
 
-    def delete_vserver(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def delete_vserver(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DeleteVServer - 删除VServer实例
 
         **Request**
@@ -466,7 +478,9 @@ class ULBClient(Client):
         resp = self.invoke("DescribeULB", d, **kwargs)
         return apis.DescribeULBResponseSchema().loads(resp)
 
-    def describe_vserver(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def describe_vserver(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DescribeVServer - 获取ULB下的VServer的详细信息
 
         **Request**
@@ -554,7 +568,9 @@ class ULBClient(Client):
         resp = self.invoke("DescribeVServer", d, **kwargs)
         return apis.DescribeVServerResponseSchema().loads(resp)
 
-    def release_backend(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def release_backend(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ ReleaseBackend - 从VServer释放后端资源实例
 
         **Request**
@@ -626,7 +642,9 @@ class ULBClient(Client):
         resp = self.invoke("UpdateBackendAttribute", d, **kwargs)
         return apis.UpdateBackendAttributeResponseSchema().loads(resp)
 
-    def update_policy(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def update_policy(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ UpdatePolicy - 更新内容转发规则，包括转发规则后的服务节点
 
         **Request**
@@ -653,7 +671,9 @@ class ULBClient(Client):
         resp = self.invoke("UpdatePolicy", d, **kwargs)
         return apis.UpdatePolicyResponseSchema().loads(resp)
 
-    def update_ulb_attribute(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def update_ulb_attribute(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ UpdateULBAttribute - 更新ULB名字业务组备注等属性字段
 
         **Request**

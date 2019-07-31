@@ -74,7 +74,9 @@ class RequestsTransport(http.Transport):
             resp.request = req
             return resp
 
-    def _load_adapter(self, max_retries: typing.Optional[int] = None) -> HTTPAdapter:
+    def _load_adapter(
+        self, max_retries: typing.Optional[int] = None
+    ) -> HTTPAdapter:
         if max_retries is None and self._adapter is not None:
             return self._adapter
 

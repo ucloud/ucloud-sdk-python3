@@ -47,7 +47,7 @@ lint:
 	black --check ucloud/
 
 fmt:
-	@black ./ucloud
+	@black -l 80 ./ucloud ./tests
 
 dev:
 	@pip install -e .[dev]

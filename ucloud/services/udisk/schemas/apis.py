@@ -68,7 +68,11 @@ class CloneUDiskResponseSchema(schema.ResponseSchema):
     """ CloneUDisk - 从UDisk创建UDisk克隆
     """
 
-    fields = {"UDiskId": fields.List(fields.Str(), required=False, load_from="UDiskId")}
+    fields = {
+        "UDiskId": fields.List(
+            fields.Str(), required=False, load_from="UDiskId"
+        )
+    }
 
 
 """
@@ -101,7 +105,11 @@ class CloneUDiskSnapshotResponseSchema(schema.ResponseSchema):
     """ CloneUDiskSnapshot - 从快照创建UDisk克隆
     """
 
-    fields = {"UDiskId": fields.List(fields.Str(), required=False, load_from="UDiskId")}
+    fields = {
+        "UDiskId": fields.List(
+            fields.Str(), required=False, load_from="UDiskId"
+        )
+    }
 
 
 """
@@ -136,7 +144,11 @@ class CreateUDiskResponseSchema(schema.ResponseSchema):
     """ CreateUDisk - 创建UDisk磁盘
     """
 
-    fields = {"UDiskId": fields.List(fields.Str(), required=False, load_from="UDiskId")}
+    fields = {
+        "UDiskId": fields.List(
+            fields.Str(), required=False, load_from="UDiskId"
+        )
+    }
 
 
 """
@@ -167,7 +179,9 @@ class CreateUDiskSnapshotResponseSchema(schema.ResponseSchema):
     """
 
     fields = {
-        "SnapshotId": fields.List(fields.Str(), required=True, load_from="SnapshotId")
+        "SnapshotId": fields.List(
+            fields.Str(), required=True, load_from="SnapshotId"
+        )
     }
 
 
@@ -287,7 +301,9 @@ class DescribeUDiskPriceResponseSchema(schema.ResponseSchema):
 
     fields = {
         "DataSet": fields.List(
-            models.UDiskPriceDataSetSchema(), required=False, load_from="DataSet"
+            models.UDiskPriceDataSetSchema(),
+            required=False,
+            load_from="DataSet",
         )
     }
 

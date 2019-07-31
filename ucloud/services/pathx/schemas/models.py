@@ -19,7 +19,9 @@ class GlobalSSHInfoSchema(schema.ResponseSchema):
     """
 
     fields = {
-        "AcceleratingDomain": fields.Str(required=True, load_from="AcceleratingDomain"),
+        "AcceleratingDomain": fields.Str(
+            required=True, load_from="AcceleratingDomain"
+        ),
         "Area": fields.Str(required=True, load_from="Area"),
         "ChargeType": fields.Str(required=True, load_from="ChargeType"),
         "CreateTime": fields.Int(required=True, load_from="CreateTime"),

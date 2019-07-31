@@ -8,8 +8,12 @@ from ucloud.services.stepflow.schemas import apis
 
 
 class StepFlowClient(Client):
-    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
-        super(StepFlowClient, self).__init__(config, transport, middleware, logger)
+    def __init__(
+        self, config: dict, transport=None, middleware=None, logger=None
+    ):
+        super(StepFlowClient, self).__init__(
+            config, transport, middleware, logger
+        )
 
     def create_sf_workflow_from_template(
         self, req: typing.Optional[dict] = None, **kwargs

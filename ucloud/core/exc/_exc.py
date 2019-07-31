@@ -26,7 +26,11 @@ class RetCodeException(UCloudException):
         return "{self.action} - {self.code}: {self.message}".format(self=self)
 
     def json(self):
-        return {"RetCode": self.code, "Message": self.message, "Action": self.action}
+        return {
+            "RetCode": self.code,
+            "Message": self.message,
+            "Action": self.action,
+        }
 
 
 class RetryTimeoutException(UCloudException):

@@ -11,7 +11,9 @@ class UHostImageSetSchema(schema.ResponseSchema):
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "Features": fields.List(fields.Str()),
         "FuncType": fields.Str(required=False, load_from="FuncType"),
-        "ImageDescription": fields.Str(required=False, load_from="ImageDescription"),
+        "ImageDescription": fields.Str(
+            required=False, load_from="ImageDescription"
+        ),
         "ImageId": fields.Str(required=False, load_from="ImageId"),
         "ImageName": fields.Str(required=False, load_from="ImageName"),
         "ImageSize": fields.Int(required=False, load_from="ImageSize"),
@@ -68,7 +70,9 @@ class UHostInstanceSetSchema(schema.ResponseSchema):
     fields = {
         "AutoRenew": fields.Str(required=False, load_from="AutoRenew"),
         "BasicImageId": fields.Str(required=False, load_from="BasicImageId"),
-        "BasicImageName": fields.Str(required=False, load_from="BasicImageName"),
+        "BasicImageName": fields.Str(
+            required=False, load_from="BasicImageName"
+        ),
         "BootDiskState": fields.Str(required=False, load_from="BootDiskState"),
         "CPU": fields.Int(required=False, load_from="CPU"),
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
@@ -77,10 +81,14 @@ class UHostInstanceSetSchema(schema.ResponseSchema):
         "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
         "GPU": fields.Int(required=False, load_from="GPU"),
         "HostType": fields.Str(required=False, load_from="HostType"),
-        "HotplugFeature": fields.Bool(required=False, load_from="HotplugFeature"),
+        "HotplugFeature": fields.Bool(
+            required=False, load_from="HotplugFeature"
+        ),
         "IPSet": fields.List(UHostIPSetSchema()),
         "ImageId": fields.Str(required=False, load_from="ImageId"),
-        "IsolationGroup": fields.Str(required=False, load_from="IsolationGroup"),
+        "IsolationGroup": fields.Str(
+            required=False, load_from="IsolationGroup"
+        ),
         "LifeCycle": fields.Str(required=False, load_from="LifeCycle"),
         "MachineType": fields.Str(required=False, load_from="MachineType"),
         "Memory": fields.Int(required=False, load_from="Memory"),
@@ -97,7 +105,9 @@ class UHostInstanceSetSchema(schema.ResponseSchema):
         "TimemachineFeature": fields.Str(
             required=False, load_from="TimemachineFeature"
         ),
-        "TotalDiskSpace": fields.Int(required=False, load_from="TotalDiskSpace"),
+        "TotalDiskSpace": fields.Int(
+            required=False, load_from="TotalDiskSpace"
+        ),
         "UHostId": fields.Str(required=False, load_from="UHostId"),
         "UHostType": fields.Str(required=False, load_from="UHostType"),
         "Zone": fields.Str(required=False, load_from="Zone"),

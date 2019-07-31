@@ -8,10 +8,14 @@ from ucloud.services.udb.schemas import apis
 
 
 class UDBClient(Client):
-    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
+    def __init__(
+        self, config: dict, transport=None, middleware=None, logger=None
+    ):
         super(UDBClient, self).__init__(config, transport, middleware, logger)
 
-    def backup_udb_instance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def backup_udb_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ BackupUDBInstance - 备份UDB实例
 
         **Request**
@@ -167,7 +171,9 @@ class UDBClient(Client):
         resp = self.invoke("CheckUDBInstanceToHAAllowance", d, **kwargs)
         return apis.CheckUDBInstanceToHAAllowanceResponseSchema().loads(resp)
 
-    def clear_udb_log(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def clear_udb_log(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ ClearUDBLog - 清除UDB实例的log
 
         **Request**
@@ -191,7 +197,9 @@ class UDBClient(Client):
         resp = self.invoke("ClearUDBLog", d, **kwargs)
         return apis.ClearUDBLogResponseSchema().loads(resp)
 
-    def create_udb_instance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def create_udb_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ CreateUDBInstance - 创建UDB实例（包括创建mysql master节点、mongodb primary/configsvr节点和从备份恢复实例）
 
         **Request**
@@ -384,7 +392,9 @@ class UDBClient(Client):
         resp = self.invoke("CreateUDBRouteInstance", d, **kwargs)
         return apis.CreateUDBRouteInstanceResponseSchema().loads(resp)
 
-    def create_udb_slave(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def create_udb_slave(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ CreateUDBSlave - 创建UDB实例的slave
 
         **Request**
@@ -420,7 +430,9 @@ class UDBClient(Client):
         resp = self.invoke("CreateUDBSlave", d, **kwargs)
         return apis.CreateUDBSlaveResponseSchema().loads(resp)
 
-    def delete_udb_backup(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def delete_udb_backup(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DeleteUDBBackup - 删除UDB实例备份
 
         **Request**
@@ -443,7 +455,9 @@ class UDBClient(Client):
         resp = self.invoke("DeleteUDBBackup", d, **kwargs)
         return apis.DeleteUDBBackupResponseSchema().loads(resp)
 
-    def delete_udb_instance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def delete_udb_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DeleteUDBInstance - 删除UDB实例
 
         **Request**
@@ -516,7 +530,9 @@ class UDBClient(Client):
         resp = self.invoke("DeleteUDBParamGroup", d, **kwargs)
         return apis.DeleteUDBParamGroupResponseSchema().loads(resp)
 
-    def describe_udb_backup(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def describe_udb_backup(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DescribeUDBBackup - 列表UDB实例备份信息.Zone不填表示多可用区，填代表单可用区
 
         **Request**
@@ -845,7 +861,9 @@ class UDBClient(Client):
         d = apis.DescribeUDBInstanceBinlogBackupStateRequestSchema().dumps(d)
 
         resp = self.invoke("DescribeUDBInstanceBinlogBackupState", d, **kwargs)
-        return apis.DescribeUDBInstanceBinlogBackupStateResponseSchema().loads(resp)
+        return apis.DescribeUDBInstanceBinlogBackupStateResponseSchema().loads(
+            resp
+        )
 
     def describe_udb_instance_price(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1067,7 +1085,9 @@ class UDBClient(Client):
         resp = self.invoke("DescribeUDBParamGroup", d, **kwargs)
         return apis.DescribeUDBParamGroupResponseSchema().loads(resp)
 
-    def describe_udb_type(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def describe_udb_type(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DescribeUDBType - 获取UDB支持的类型信息
 
         **Request**
@@ -1145,7 +1165,9 @@ class UDBClient(Client):
         d = apis.FetchUDBInstanceEarliestRecoverTimeRequestSchema().dumps(d)
 
         resp = self.invoke("FetchUDBInstanceEarliestRecoverTime", d, **kwargs)
-        return apis.FetchUDBInstanceEarliestRecoverTimeResponseSchema().loads(resp)
+        return apis.FetchUDBInstanceEarliestRecoverTimeResponseSchema().loads(
+            resp
+        )
 
     def modify_udb_instance_name(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1221,7 +1243,9 @@ class UDBClient(Client):
         resp = self.invoke("PromoteUDBInstanceToHA", d, **kwargs)
         return apis.PromoteUDBInstanceToHAResponseSchema().loads(resp)
 
-    def promote_udb_slave(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def promote_udb_slave(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ PromoteUDBSlave - 从库提升为独立库
 
         **Request**
@@ -1244,7 +1268,9 @@ class UDBClient(Client):
         resp = self.invoke("PromoteUDBSlave", d, **kwargs)
         return apis.PromoteUDBSlaveResponseSchema().loads(resp)
 
-    def resize_udb_instance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def resize_udb_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ ResizeUDBInstance - 修改（升级和降级）UDB实例的配置，包括内存和磁盘的配置，对于内存升级无需关闭实例，其他场景需要事先关闭实例。两套参数可以配置升降机：1.配置UseSSD和SSDType  2.配置InstanceType，不需要配置InstanceMode。这两套第二套参数的优先级更高
 
         **Request**
@@ -1275,7 +1301,9 @@ class UDBClient(Client):
         resp = self.invoke("ResizeUDBInstance", d, **kwargs)
         return apis.ResizeUDBInstanceResponseSchema().loads(resp)
 
-    def restart_udb_instance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def restart_udb_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ RestartUDBInstance - 重启UDB实例
 
         **Request**
@@ -1297,7 +1325,9 @@ class UDBClient(Client):
         resp = self.invoke("RestartUDBInstance", d, **kwargs)
         return apis.RestartUDBInstanceResponseSchema().loads(resp)
 
-    def start_udb_instance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def start_udb_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ StartUDBInstance - 启动UDB实例
 
         **Request**
@@ -1319,7 +1349,9 @@ class UDBClient(Client):
         resp = self.invoke("StartUDBInstance", d, **kwargs)
         return apis.StartUDBInstanceResponseSchema().loads(resp)
 
-    def stop_udb_instance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def stop_udb_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ StopUDBInstance - 关闭UDB实例
 
         **Request**
@@ -1421,7 +1453,9 @@ class UDBClient(Client):
         d = apis.UpdateUDBInstanceSlaveBackupSwitchRequestSchema().dumps(d)
 
         resp = self.invoke("UpdateUDBInstanceSlaveBackupSwitch", d, **kwargs)
-        return apis.UpdateUDBInstanceSlaveBackupSwitchResponseSchema().loads(resp)
+        return apis.UpdateUDBInstanceSlaveBackupSwitchResponseSchema().loads(
+            resp
+        )
 
     def update_udb_param_group(
         self, req: typing.Optional[dict] = None, **kwargs

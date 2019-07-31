@@ -8,10 +8,14 @@ from ucloud.services.umem.schemas import apis
 
 
 class UMemClient(Client):
-    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
+    def __init__(
+        self, config: dict, transport=None, middleware=None, logger=None
+    ):
         super(UMemClient, self).__init__(config, transport, middleware, logger)
 
-    def create_umem_space(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def create_umem_space(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ CreateUMemSpace - 创建UMem内存空间
 
         **Request**
@@ -85,7 +89,9 @@ class UMemClient(Client):
         resp = self.invoke("CreateUMemcacheGroup", d, **kwargs)
         return apis.CreateUMemcacheGroupResponseSchema().loads(resp)
 
-    def create_uredis_group(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def create_uredis_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ CreateURedisGroup - 创建主备redis
 
         **Request**
@@ -127,7 +133,9 @@ class UMemClient(Client):
         resp = self.invoke("CreateURedisGroup", d, **kwargs)
         return apis.CreateURedisGroupResponseSchema().loads(resp)
 
-    def delete_umem_space(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def delete_umem_space(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DeleteUMemSpace - 删除UMem内存空间
 
         **Request**
@@ -173,7 +181,9 @@ class UMemClient(Client):
         resp = self.invoke("DeleteUMemcacheGroup", d, **kwargs)
         return apis.DeleteUMemcacheGroupResponseSchema().loads(resp)
 
-    def delete_uredis_group(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def delete_uredis_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DeleteURedisGroup - 删除主备redis
 
         **Request**
@@ -194,7 +204,9 @@ class UMemClient(Client):
         resp = self.invoke("DeleteURedisGroup", d, **kwargs)
         return apis.DeleteURedisGroupResponseSchema().loads(resp)
 
-    def describe_umem_price(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def describe_umem_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DescribeUMemPrice - 获取UMem实例价格信息
 
         **Request**
@@ -228,7 +240,9 @@ class UMemClient(Client):
         resp = self.invoke("DescribeUMemPrice", d, **kwargs)
         return apis.DescribeUMemPriceResponseSchema().loads(resp)
 
-    def describe_umem_space(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def describe_umem_space(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DescribeUMemSpace - 获取UMem内存空间列表
 
         **Request**
@@ -610,7 +624,9 @@ class UMemClient(Client):
         resp = self.invoke("DescribeURedisUpgradePrice", d, **kwargs)
         return apis.DescribeURedisUpgradePriceResponseSchema().loads(resp)
 
-    def get_umem_space_state(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def get_umem_space_state(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ GetUMemSpaceState - 获取UMem内存空间列表
 
         **Request**
@@ -683,7 +699,9 @@ class UMemClient(Client):
         resp = self.invoke("ModifyURedisGroupName", d, **kwargs)
         return apis.ModifyURedisGroupNameResponseSchema().loads(resp)
 
-    def resize_udredis_space(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def resize_udredis_space(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ ResizeUDredisSpace - 调整内存空间容量
 
         **Request**
@@ -707,7 +725,9 @@ class UMemClient(Client):
         resp = self.invoke("ResizeUDredisSpace", d, **kwargs)
         return apis.ResizeUDredisSpaceResponseSchema().loads(resp)
 
-    def resize_umem_space(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def resize_umem_space(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ ResizeUMemSpace - 调整内存空间容量
 
         **Request**
@@ -733,7 +753,9 @@ class UMemClient(Client):
         resp = self.invoke("ResizeUMemSpace", d, **kwargs)
         return apis.ResizeUMemSpaceResponseSchema().loads(resp)
 
-    def resize_uredis_group(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def resize_uredis_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ ResizeURedisGroup - 调整主备redis容量
 
         **Request**

@@ -98,7 +98,9 @@ class CreateURedisGroupRequestSchema(schema.RequestSchema):
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "ConfigId": fields.Str(required=False, dump_to="ConfigId"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
-        "HighAvailability": fields.Str(required=True, dump_to="HighAvailability"),
+        "HighAvailability": fields.Str(
+            required=True, dump_to="HighAvailability"
+        ),
         "MasterGroupId": fields.Str(required=False, dump_to="MasterGroupId"),
         "Name": fields.Str(required=True, dump_to="Name"),
         "Password": fields.Base64(required=False, dump_to="Password"),
@@ -321,7 +323,9 @@ class DescribeUMemcacheGroupResponseSchema(schema.ResponseSchema):
 
     fields = {
         "DataSet": fields.List(
-            models.UMemcacheGroupSetSchema(), required=False, load_from="DataSet"
+            models.UMemcacheGroupSetSchema(),
+            required=False,
+            load_from="DataSet",
         ),
         "TotalCount": fields.Int(required=False, load_from="TotalCount"),
     }
@@ -355,7 +359,9 @@ class DescribeUMemcachePriceResponseSchema(schema.ResponseSchema):
 
     fields = {
         "DataSet": fields.List(
-            models.UMemcachePriceSetSchema(), required=False, load_from="DataSet"
+            models.UMemcachePriceSetSchema(),
+            required=False,
+            load_from="DataSet",
         )
     }
 
@@ -447,7 +453,9 @@ class DescribeURedisBackupURLResponseSchema(schema.ResponseSchema):
     fields = {
         "BackupPath": fields.Str(required=False, load_from="BackupPath"),
         "BackupURL": fields.Str(required=False, load_from="BackupURL"),
-        "InnerBackupPath": fields.Str(required=False, load_from="InnerBackupPath"),
+        "InnerBackupPath": fields.Str(
+            required=False, load_from="InnerBackupPath"
+        ),
     }
 
 

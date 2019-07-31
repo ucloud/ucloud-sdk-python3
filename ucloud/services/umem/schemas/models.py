@@ -111,7 +111,9 @@ class URedisGroupSetSchema(schema.ResponseSchema):
         "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
         "GroupId": fields.Str(required=False, load_from="GroupId"),
         "GroupName": fields.Str(required=False, load_from="GroupName"),
-        "HighAvailability": fields.Str(required=False, load_from="HighAvailability"),
+        "HighAvailability": fields.Str(
+            required=False, load_from="HighAvailability"
+        ),
         "MemorySize": fields.Int(required=False, load_from="MemorySize"),
         "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
         "Name": fields.Str(required=False, load_from="Name"),

@@ -2,10 +2,11 @@ import os
 import pytest
 
 from ucloud.client import Client
+from ucloud.testing import utest
 
 
-@pytest.fixture(scope="session", autouse=True)
-def client() -> Client:
+@pytest.fixture(scope="session", autouse=True, name="client")
+def client_factory() -> Client:
     return Client(
         {
             "region": os.getenv("UCLOUD_REGION"),
@@ -18,10 +19,15 @@ def client() -> Client:
     )
 
 
-@pytest.fixture(scope="module", autouse=True)
-def variables() -> dict:
+@pytest.fixture(scope="module", autouse=True, name="variables")
+def variables_factory() -> dict:
     return {
         "Region": "cn-bj2",
         "Zone": "cn-bj2-05",
         "ProjectId": os.getenv("UCLOUD_PROJECT_ID"),
     }
+
+
+@pytest.fixture(scope="module", autouse=True, name="test_set")
+def test_set_factory(client, variables):
+    return utest.TestSet(client, variables)

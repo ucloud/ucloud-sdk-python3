@@ -8,10 +8,14 @@ from ucloud.services.vpc.schemas import apis
 
 
 class VPCClient(Client):
-    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
+    def __init__(
+        self, config: dict, transport=None, middleware=None, logger=None
+    ):
         super(VPCClient, self).__init__(config, transport, middleware, logger)
 
-    def add_vpc_network(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def add_vpc_network(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ AddVPCNetwork - 添加VPC网段
 
         **Request**
@@ -60,7 +64,9 @@ class VPCClient(Client):
         resp = self.invoke("AssociateRouteTable", d, **kwargs)
         return apis.AssociateRouteTableResponseSchema().loads(resp)
 
-    def clone_route_table(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def clone_route_table(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ CloneRouteTable - 根据一张现有路由表复制一张新的路由表
 
         **Request**
@@ -84,7 +90,9 @@ class VPCClient(Client):
         resp = self.invoke("CloneRouteTable", d, **kwargs)
         return apis.CloneRouteTableResponseSchema().loads(resp)
 
-    def create_route_table(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def create_route_table(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ CreateRouteTable - 创建路由表
 
         **Request**
@@ -112,7 +120,9 @@ class VPCClient(Client):
         resp = self.invoke("CreateRouteTable", d, **kwargs)
         return apis.CreateRouteTableResponseSchema().loads(resp)
 
-    def create_subnet(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def create_subnet(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ CreateSubnet - 创建子网
 
         **Request**
@@ -171,7 +181,9 @@ class VPCClient(Client):
         resp = self.invoke("CreateVPC", d, **kwargs)
         return apis.CreateVPCResponseSchema().loads(resp)
 
-    def create_vpc_intercom(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def create_vpc_intercom(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ CreateVPCIntercom - 新建VPC互通关系
 
         **Request**
@@ -198,7 +210,9 @@ class VPCClient(Client):
         resp = self.invoke("CreateVPCIntercom", d, **kwargs)
         return apis.CreateVPCIntercomResponseSchema().loads(resp)
 
-    def delete_route_table(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def delete_route_table(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DeleteRouteTable - 删除自定义路由表
 
         **Request**
@@ -219,7 +233,9 @@ class VPCClient(Client):
         resp = self.invoke("DeleteRouteTable", d, **kwargs)
         return apis.DeleteRouteTableResponseSchema().loads(resp)
 
-    def delete_subnet(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def delete_subnet(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DeleteSubnet - 删除子网
 
         **Request**
@@ -261,7 +277,9 @@ class VPCClient(Client):
         resp = self.invoke("DeleteVPC", d, **kwargs)
         return apis.DeleteVPCResponseSchema().loads(resp)
 
-    def delete_vpc_intercom(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def delete_vpc_intercom(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DeleteVPCIntercom - 删除VPC互通关系
 
         **Request**
@@ -285,7 +303,9 @@ class VPCClient(Client):
         resp = self.invoke("DeleteVPCIntercom", d, **kwargs)
         return apis.DeleteVPCIntercomResponseSchema().loads(resp)
 
-    def describe_route_table(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def describe_route_table(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DescribeRouteTable - 获取路由表详细信息(包括路由策略)
 
         **Request**
@@ -335,7 +355,9 @@ class VPCClient(Client):
         resp = self.invoke("DescribeRouteTable", d, **kwargs)
         return apis.DescribeRouteTableResponseSchema().loads(resp)
 
-    def describe_subnet(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def describe_subnet(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DescribeSubnet - 获取子网信息
 
         **Request**
@@ -509,7 +531,9 @@ class VPCClient(Client):
         resp = self.invoke("DescribeVPCIntercom", d, **kwargs)
         return apis.DescribeVPCIntercomResponseSchema().loads(resp)
 
-    def modify_route_rule(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def modify_route_rule(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ ModifyRouteRule - 路由策略增、删、改
 
         **Request**
@@ -582,7 +606,9 @@ class VPCClient(Client):
         resp = self.invoke("UpdateSubnetAttribute", d, **kwargs)
         return apis.UpdateSubnetAttributeResponseSchema().loads(resp)
 
-    def update_vpc_network(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def update_vpc_network(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ UpdateVPCNetwork - 更新VPC网段
 
         **Request**

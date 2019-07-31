@@ -1,74 +1,126 @@
-import functools
 import logging
 import time
 import typing
 
-from ucloud.testing import op
+from ucloud.client import Client
+from ucloud.testing.exc import ValueNotFoundError, CompareError
 
 logger = logging.getLogger(__name__)
 
 
-class ValueNotFoundError(Exception):
-    pass
+class Step:
+    def __init__(
+        self,
+        invoker: typing.Callable[[Client, dict], dict],
+        max_retries: int = 0,
+        retry_interval: int = 0,
+        startup_delay: int = 0,
+        retry_for: typing.Tuple = (CompareError, ValueNotFoundError),
+        fast_fail: bool = False,
+    ):
+        """ Step is the test step in a test scenario
+
+        :param invoker: invoker is a callable function
+        :param max_retries: the maximum retry number by the `retry_for` exception,
+                            it will resolve the flaky testing case
+        :param retry_interval: the interval between twice retrying
+        :param retry_for: the exceptions to retrying
+        :param startup_delay: the delay seconds before any action execution
+        :param fast_fail: if fast fail is true, the test will fail when got
+                          unexpected exception
+        :return:
+        """
+        self.invoker = invoker
+        self.max_retries = max_retries
+        self.retry_interval = retry_interval
+        self.startup_delay = startup_delay
+        self.retry_for = retry_for
+        self.fast_fail = fast_fail
+
+    def run(self, client: Client, variables: dict):
+        # wait for delay before startup
+        if self.startup_delay:
+            time.sleep(self.startup_delay)
+
+        for i in range(self.max_retries + 1):
+            try:
+                result = self.invoker(client, variables)
+            except Exception as e:
+                # retrying for retryable error
+                if isinstance(e, self.retry_for) and i != self.max_retries:
+                    if self.retry_interval:
+                        time.sleep(self.retry_interval)
+                    continue
+
+                raise e
+
+            return result
+
+    @staticmethod
+    def set_default_response(action: str, resp: dict):
+        resp = resp.copy()
+        resp.setdefault("RetCode", 0)
+        resp["Action"] = "{}Response".format(action)
+        return resp
 
 
-def case(
-    max_retries=0,
-    retry_interval=0,
-    retry_for=(op.CompareError, ValueNotFoundError),
-    startup_delay=0,
-    fast_fail=False,
-):
-    """ wrap a function as a test case
+class Scenario:
+    def __init__(self, id_):
+        self.id = id_
+        self.variables = {}
+        self.errors = []
+        self.steps = []
 
-    :param max_retries: the maximum retry number by the `retry_for` exception,
-                        it will resolve the flaky testing case
-    :param retry_interval: the interval between twice retrying
-    :param retry_for: the exceptions to retrying
-    :param startup_delay: the delay seconds before any action execution
-    :param fast_fail: if fast fail is true, the test will fail when got
-                      unexpected exception
-    :return:
-    """
+    def summary(self):
+        logger.info("=" * 42)
+        logger.info("TEST SET {}".format(self.id))
+        logger.info("=" * 42)
 
-    def deco(fn):
-        @functools.wraps(fn)
-        def wrapper(*args, **kwargs):
-            # wait for delay before startup
-            if startup_delay:
-                time.sleep(startup_delay)
+        logger.info("-" * 42)
+        logger.info("ERRORS")
+        logger.info("-" * 42)
 
-            for i in range(max_retries + 1):
-                try:
-                    result = fn(*args, **kwargs)
-                except Exception as e:
-                    # retrying for retryable error
-                    if isinstance(e, retry_for) and i != max_retries:
-                        if retry_interval:
-                            time.sleep(retry_interval)
-                        continue
+        if self.errors:
+            for err in self.errors:
+                logger.error(err)
+            logger.info("Errors!")
+        else:
+            logger.info("Success!")
 
-                    if fast_fail:
-                        raise e
-                    else:
-                        logger.exception(e)
-                        return
-                else:
-                    return result
+    def step(
+        self,
+        max_retries: int = 0,
+        retry_interval: int = 0,
+        startup_delay: int = 0,
+        retry_for: typing.Tuple = (CompareError, ValueNotFoundError),
+        fast_fail: bool = False,
+    ):
+        def deco(fn: typing.Callable[[Client, dict], dict]):
+            step = Step(
+                invoker=fn,
+                max_retries=max_retries,
+                retry_interval=retry_interval,
+                startup_delay=startup_delay,
+                retry_for=retry_for,
+                fast_fail=fast_fail,
+            )
+            self.steps.append(step)
+            return fn
 
-        return wrapper
+        return deco
 
-    return deco
+    def run(self, client):
+        for step in self.steps:
+            try:
+                return step.run(client, self.variables)
+            except CompareError as e:
+                self.errors.append(e)
+                if step.fast_fail:
+                    raise e
+                logger.error(e)
 
 
-def validate(resp: dict, validators: typing.List[typing.Tuple]):
-    """ validate dict by 3-tuple (comparator, value, expected)
-    """
-    for validator in validators:
-        op.check(validator[0], value_at_path(resp, validator[1]), validator[2])
-
-
-def value_at_path(d, path):
+def value_at_path(d: dict, path: str):
     """ access value by object path
 
     >>> d = {"Data": [{"UHostId": "foo"}, {"UHostId": "bar"}]}
@@ -105,10 +157,3 @@ def value_at_path(d, path):
             continue
 
     return result
-
-
-def set_default_response(d: dict, action: str):
-    d = d.copy()
-    d.setdefault("RetCode", 0)
-    d.setdefault("Action", "{}Response".format(action))
-    return d

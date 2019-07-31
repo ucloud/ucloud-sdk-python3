@@ -8,10 +8,14 @@ from ucloud.services.uhost.schemas import apis
 
 
 class UHostClient(Client):
-    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
+    def __init__(
+        self, config: dict, transport=None, middleware=None, logger=None
+    ):
         super(UHostClient, self).__init__(config, transport, middleware, logger)
 
-    def copy_custom_image(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def copy_custom_image(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ CopyCustomImage - 复制自制镜像
 
         **Request**
@@ -41,7 +45,9 @@ class UHostClient(Client):
         resp = self.invoke("CopyCustomImage", d, **kwargs)
         return apis.CopyCustomImageResponseSchema().loads(resp)
 
-    def create_custom_image(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def create_custom_image(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ CreateCustomImage - 从指定UHost实例，生成自定义镜像。
 
         **Request**
@@ -167,7 +173,9 @@ class UHostClient(Client):
         resp = self.invoke("CreateUHostInstance", d, **kwargs)
         return apis.CreateUHostInstanceResponseSchema().loads(resp)
 
-    def describe_image(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def describe_image(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DescribeImage - 获取指定数据中心镜像列表，用户可通过指定操作系统类型，镜像Id进行过滤。
 
         **Request**
@@ -310,7 +318,9 @@ class UHostClient(Client):
         resp = self.invoke("DescribeUHostInstance", d, **kwargs)
         return apis.DescribeUHostInstanceResponseSchema().loads(resp)
 
-    def describe_uhost_tags(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def describe_uhost_tags(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DescribeUHostTags - 获取指定数据中心的业务组列表。
 
         **Request**
@@ -457,7 +467,9 @@ class UHostClient(Client):
         resp = self.invoke("GetUHostUpgradePrice", d, **kwargs)
         return apis.GetUHostUpgradePriceResponseSchema().loads(resp)
 
-    def import_custom_image(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def import_custom_image(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ ImportCustomImage - 把UFile的镜像文件导入到UHost，生成自定义镜像
 
         **Request**
@@ -674,7 +686,9 @@ class UHostClient(Client):
         resp = self.invoke("ResetUHostInstancePassword", d, **kwargs)
         return apis.ResetUHostInstancePasswordResponseSchema().loads(resp)
 
-    def resize_attached_disk(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def resize_attached_disk(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ ResizeAttachedDisk - 修改挂载的磁盘大小，包含系统盘和数据盘
 
         **Request**
@@ -729,7 +743,9 @@ class UHostClient(Client):
         resp = self.invoke("ResizeUHostInstance", d, **kwargs)
         return apis.ResizeUHostInstanceResponseSchema().loads(resp)
 
-    def start_uhost_instance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def start_uhost_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ StartUHostInstance - 启动处于关闭状态的UHost实例，需要指定数据中心及UHostID两个参数的值。
 
         **Request**
@@ -753,7 +769,9 @@ class UHostClient(Client):
         resp = self.invoke("StartUHostInstance", d, **kwargs)
         return apis.StartUHostInstanceResponseSchema().loads(resp)
 
-    def stop_uhost_instance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def stop_uhost_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ StopUHostInstance - 指停止处于运行状态的UHost实例，需指定数据中心及UhostID。
 
         **Request**

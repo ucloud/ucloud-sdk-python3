@@ -8,10 +8,16 @@ from ucloud.services.uaccount.schemas import apis
 
 
 class UAccountClient(Client):
-    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
-        super(UAccountClient, self).__init__(config, transport, middleware, logger)
+    def __init__(
+        self, config: dict, transport=None, middleware=None, logger=None
+    ):
+        super(UAccountClient, self).__init__(
+            config, transport, middleware, logger
+        )
 
-    def create_project(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def create_project(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ CreateProject - 创建项目
 
         **Request**
@@ -34,7 +40,9 @@ class UAccountClient(Client):
         resp = self.invoke("CreateProject", d, **kwargs)
         return apis.CreateProjectResponseSchema().loads(resp)
 
-    def get_project_list(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def get_project_list(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ GetProjectList - 获取项目列表
 
         **Request**
@@ -98,7 +106,9 @@ class UAccountClient(Client):
         resp = self.invoke("GetRegion", d, **kwargs)
         return apis.GetRegionResponseSchema().loads(resp)
 
-    def get_user_info(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def get_user_info(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ GetUserInfo - 获取用户信息
 
         **Request**
@@ -138,7 +148,9 @@ class UAccountClient(Client):
         resp = self.invoke("GetUserInfo", d, **kwargs)
         return apis.GetUserInfoResponseSchema().loads(resp)
 
-    def modify_project(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def modify_project(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ ModifyProject - 修改项目
 
         **Request**
@@ -158,7 +170,9 @@ class UAccountClient(Client):
         resp = self.invoke("ModifyProject", d, **kwargs)
         return apis.ModifyProjectResponseSchema().loads(resp)
 
-    def terminate_project(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def terminate_project(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ TerminateProject - 删除项目
 
         **Request**
