@@ -1,7 +1,7 @@
 import logging
 
 DEFAULT_LOGGER_NAME = "ucloud"
-DEFAULT_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+DEFAULT_FORMAT = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s %(name)s)"
 DEFAULT_LEVEL = logging.INFO
 
 
