@@ -28,8 +28,8 @@ class RetCodeException(UCloudException):
     def json(self):
         return {
             "RetCode": self.code,
-            "Message": self.message or '',
-            "Action": self.action or '',
+            "Message": self.message or "",
+            "Action": self.action or "",
         }
 
 

@@ -44,10 +44,11 @@ test-all: clean
 	tox
 
 lint:
-	black --check ucloud/
+	@flake8 --exclude=ucloud/services ucloud --ignore=E501,F401
+	@black --check -l 80 ucloud tests
 
 fmt:
-	@black -l 80 ./ucloud ./tests
+	@black -l 80 ucloud tests
 
 dev:
 	@pip install -e .[dev]

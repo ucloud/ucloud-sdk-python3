@@ -12,17 +12,17 @@ def test_request_basic():
     class Schema(schema.RequestSchema):
         fields = {
             "Foo": fields.Int(required=True),
-            "Bar": fields.Int(required=False)
+            "Bar": fields.Int(required=False),
         }
 
-    assert Schema().dumps({'Foo': "42"}) == {'Foo': 42}
-    assert Schema().dumps({'Foo': "42"}) == {'Foo': 42}
+    assert Schema().dumps({"Foo": "42"}) == {"Foo": 42}
+    assert Schema().dumps({"Foo": "42"}) == {"Foo": 42}
 
     with pytest.raises(exc.ValidationException):
         Schema().dumps({})
 
     with pytest.raises(exc.ValidationException):
-        Schema().dumps({'Foo': "bar"})
+        Schema().dumps({"Foo": "bar"})
 
 
 def test_request_array():
@@ -104,27 +104,31 @@ def test_response_basic():
             "Foo": fields.Int(required=True),
             "Bar": fields.Int(required=False),
             "Default": fields.Int(default=42),
-            "Call": fields.List(fields.Int(), default=list)
+            "Call": fields.List(fields.Int(), default=list),
         }
 
-    assert Schema().dumps({'Foo': "42"}) == {
-        'Foo': 42, 'Default': 42, 'Call': []
+    assert Schema().dumps({"Foo": "42"}) == {
+        "Foo": 42,
+        "Default": 42,
+        "Call": [],
     }
-    assert Schema().loads({'Foo': "42"}) == {
-        'Foo': 42, 'Default': 42, 'Call': []
+    assert Schema().loads({"Foo": "42"}) == {
+        "Foo": 42,
+        "Default": 42,
+        "Call": [],
     }
 
     with pytest.raises(exc.ValidationException):
         Schema().dumps({})
 
     with pytest.raises(exc.ValidationException):
-        Schema().dumps({'Foo': "bar"})
+        Schema().dumps({"Foo": "bar"})
 
     with pytest.raises(exc.ValidationException):
         Schema().dumps({})
 
     with pytest.raises(exc.ValidationException):
-        Schema().dumps({'Foo': "bar"})
+        Schema().dumps({"Foo": "bar"})
 
 
 def test_response_array():

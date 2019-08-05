@@ -19,7 +19,7 @@ def client():
             "public_key": "foo",
             "private_key": "foo",
             "timeout": 10,
-            'max_retries': 3,
+            "max_retries": 3,
         }
     )
 
@@ -37,13 +37,13 @@ class TestAccClient:
         env.pre_check_env()
 
     def test_client_invoke(self, client, transport):
-        transport.mock_data(lambda _: {'RetCode': 0, 'Action': 'Foo'})
+        transport.mock_data(lambda _: {"RetCode": 0, "Action": "Foo"})
         client.transport = transport
 
-        assert client.invoke("Foo") == {'RetCode': 0, 'Action': 'Foo'}
+        assert client.invoke("Foo") == {"RetCode": 0, "Action": "Foo"}
 
     def test_client_invoke_code_error(self, client, transport):
-        transport.mock_data(lambda _: {'RetCode': 171, 'Action': 'Foo'})
+        transport.mock_data(lambda _: {"RetCode": 171, "Action": "Foo"})
         client.transport = transport
 
         with pytest.raises(exc.RetCodeException):
@@ -51,13 +51,13 @@ class TestAccClient:
                 client.invoke("Foo")
             except exc.RetCodeException as e:
                 assert str(e)
-                expected = {'RetCode': 171, 'Action': 'Foo', 'Message': ''}
+                expected = {"RetCode": 171, "Action": "Foo", "Message": ""}
                 assert e.json() == expected
                 raise e
 
     def test_client_invoke_with_retryable_error(self, client, transport):
         # RetCodeError is retryable when code is greater than 2000
-        transport.mock_data(lambda _: {'RetCode': 10000, 'Action': 'Foo'})
+        transport.mock_data(lambda _: {"RetCode": 10000, "Action": "Foo"})
         client.transport = transport
 
         with pytest.raises(exc.RetCodeException):
@@ -65,7 +65,8 @@ class TestAccClient:
 
     def test_client_invoke_with_unexpected_error(self, client, transport):
         def raise_error(_):
-            raise ValueError('temporary error')
+            raise ValueError("temporary error")
+
         transport.mock_data(raise_error)
         client.transport = transport
 
