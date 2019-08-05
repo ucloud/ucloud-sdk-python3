@@ -35,7 +35,7 @@ test: clean
 	pytest
 
 test-cov: clean
-	pytest --cov=ucloud
+	pytest --cov=ucloud/core tests/test_core
 
 test-acc: clean
 	USDKACC=1 pytest --cov=ucloud
@@ -44,10 +44,10 @@ test-all: clean
 	tox
 
 lint:
-	black --check ucloud/
+	@flake8 --exclude=ucloud/services ucloud --ignore=E501,F401
 
 fmt:
-	@black ./ucloud
+	@black -l 80 ucloud tests
 
 dev:
 	@pip install -e .[dev]

@@ -7,7 +7,9 @@ from ucloud.services.unet.schemas import apis
 
 
 class UNetClient(Client):
-    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
+    def __init__(
+        self, config: dict, transport=None, middleware=None, logger=None
+    ):
         super(UNetClient, self).__init__(config, transport, middleware, logger)
 
     def allocate_eip(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
@@ -208,7 +210,9 @@ class UNetClient(Client):
         resp = self.invoke("CreateBandwidthPackage", d, **kwargs)
         return apis.CreateBandwidthPackageResponseSchema().loads(resp)
 
-    def create_firewall(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def create_firewall(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ CreateFirewall - 创建防火墙
 
         **Request**
@@ -259,7 +263,9 @@ class UNetClient(Client):
         resp = self.invoke("DeleteBandwidthPackage", d, **kwargs)
         return apis.DeleteBandwidthPackageResponseSchema().loads(resp)
 
-    def delete_firewall(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def delete_firewall(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DeleteFirewall - 删除防火墙
 
         **Request**
@@ -425,7 +431,9 @@ class UNetClient(Client):
         resp = self.invoke("DescribeEIP", d, **kwargs)
         return apis.DescribeEIPResponseSchema().loads(resp)
 
-    def describe_firewall(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def describe_firewall(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DescribeFirewall - 获取防火墙组信息
 
         **Request**
@@ -630,9 +638,13 @@ class UNetClient(Client):
         d = apis.DisassociateEIPWithShareBandwidthRequestSchema().dumps(d)
 
         resp = self.invoke("DisassociateEIPWithShareBandwidth", d, **kwargs)
-        return apis.DisassociateEIPWithShareBandwidthResponseSchema().loads(resp)
+        return apis.DisassociateEIPWithShareBandwidthResponseSchema().loads(
+            resp
+        )
 
-    def get_eip_pay_mode(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def get_eip_pay_mode(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ GetEIPPayMode - 获取弹性IP计费模式
 
         **Request**
@@ -661,7 +673,9 @@ class UNetClient(Client):
         resp = self.invoke("GetEIPPayMode", d, **kwargs)
         return apis.GetEIPPayModeResponseSchema().loads(resp)
 
-    def get_eip_price(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def get_eip_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ GetEIPPrice - 获取弹性IP价格
 
         **Request**
@@ -720,7 +734,9 @@ class UNetClient(Client):
         resp = self.invoke("GetEIPUpgradePrice", d, **kwargs)
         return apis.GetEIPUpgradePriceResponseSchema().loads(resp)
 
-    def grant_firewall(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def grant_firewall(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ GrantFirewall - 将防火墙应用到资源上
 
         **Request**
@@ -743,7 +759,9 @@ class UNetClient(Client):
         resp = self.invoke("GrantFirewall", d, **kwargs)
         return apis.GrantFirewallResponseSchema().loads(resp)
 
-    def modify_eip_bandwidth(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def modify_eip_bandwidth(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ ModifyEIPBandwidth - 调整弹性IP的外网带宽
 
         **Request**
@@ -765,7 +783,9 @@ class UNetClient(Client):
         resp = self.invoke("ModifyEIPBandwidth", d, **kwargs)
         return apis.ModifyEIPBandwidthResponseSchema().loads(resp)
 
-    def modify_eip_weight(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def modify_eip_weight(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ ModifyEIPWeight - 修改弹性IP的外网出口权重
 
         **Request**
@@ -879,7 +899,9 @@ class UNetClient(Client):
         resp = self.invoke("ResizeShareBandwidth", d, **kwargs)
         return apis.ResizeShareBandwidthResponseSchema().loads(resp)
 
-    def set_eip_pay_mode(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def set_eip_pay_mode(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ SetEIPPayMode - 设置弹性IP计费模式, 切换时会涉及付费/退费.
 
         **Request**
@@ -925,7 +947,9 @@ class UNetClient(Client):
         resp = self.invoke("UnBindEIP", d, **kwargs)
         return apis.UnBindEIPResponseSchema().loads(resp)
 
-    def update_eip_attribute(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def update_eip_attribute(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ UpdateEIPAttribute - 更新弹性IP名称，业务组，备注等属性字段
 
         **Request**
@@ -949,7 +973,9 @@ class UNetClient(Client):
         resp = self.invoke("UpdateEIPAttribute", d, **kwargs)
         return apis.UpdateEIPAttributeResponseSchema().loads(resp)
 
-    def update_firewall(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def update_firewall(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ UpdateFirewall - 更新防火墙规则
 
         **Request**
@@ -1030,5 +1056,9 @@ class UNetClient(Client):
             return getattr(self, self._deprecated[item])
 
         raise AttributeError(
-            ("'{}' object has no attribute '{}'".format(self.__class__.__name__, item))
+            (
+                "'{}' object has no attribute '{}'".format(
+                    self.__class__.__name__, item
+                )
+            )
         )

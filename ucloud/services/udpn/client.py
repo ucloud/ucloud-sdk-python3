@@ -8,10 +8,14 @@ from ucloud.services.udpn.schemas import apis
 
 
 class UDPNClient(Client):
-    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
+    def __init__(
+        self, config: dict, transport=None, middleware=None, logger=None
+    ):
         super(UDPNClient, self).__init__(config, transport, middleware, logger)
 
-    def allocate_udpn(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def allocate_udpn(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ AllocateUDPN - 分配一条 UDPN 专线
 
         **Request**
@@ -41,7 +45,9 @@ class UDPNClient(Client):
         resp = self.invoke("AllocateUDPN", d, **kwargs)
         return apis.AllocateUDPNResponseSchema().loads(resp)
 
-    def describe_udpn(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def describe_udpn(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ DescribeUDPN - 描述 UDPN
 
         **Request**
@@ -78,7 +84,9 @@ class UDPNClient(Client):
         resp = self.invoke("DescribeUDPN", d, **kwargs)
         return apis.DescribeUDPNResponseSchema().loads(resp)
 
-    def get_udpn_line_list(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def get_udpn_line_list(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ GetUDPNLineList - 获取当前支持的专线线路列表
 
         **Request**
@@ -108,7 +116,9 @@ class UDPNClient(Client):
         resp = self.invoke("GetUDPNLineList", d, **kwargs)
         return apis.GetUDPNLineListResponseSchema().loads(resp)
 
-    def get_udpn_price(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+    def get_udpn_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
         """ GetUDPNPrice - 获取 UDPN 价格
 
         **Request**

@@ -121,7 +121,9 @@ class DescribeGlobalSSHInstanceResponseSchema(schema.ResponseSchema):
 
     fields = {
         "InstanceSet": fields.List(
-            models.GlobalSSHInfoSchema(), required=False, load_from="InstanceSet"
+            models.GlobalSSHInfoSchema(),
+            required=False,
+            load_from="InstanceSet",
         )
     }
 

@@ -9,13 +9,17 @@ dist: xenial
 sudo: true
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -U tox-travis
+install: pip install -e .[ci]
 
 # command to run tests, e.g. python setup.py test
-script: tox
+script:
+    - make lint
+    - make test-cov
+
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
 
 before_deploy:
-    - pip install -e .[doc]
     - make docs
     - touch docs/build/html/.nojekyll
 

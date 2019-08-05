@@ -145,7 +145,9 @@ class CheckRecoverUDBInstanceResponseSchema(schema.ResponseSchema):
     """ CheckRecoverUDBInstance - 核查db是否可以使用回档功能
     """
 
-    fields = {"LastestTime": fields.Int(required=False, load_from="LastestTime")}
+    fields = {
+        "LastestTime": fields.Int(required=False, load_from="LastestTime")
+    }
 
 
 """
@@ -225,7 +227,9 @@ class CreateUDBInstanceRequestSchema(schema.RequestSchema):
         "ClusterRole": fields.Str(required=False, dump_to="ClusterRole"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
         "DBTypeId": fields.Str(required=True, dump_to="DBTypeId"),
-        "DisableSemisync": fields.Bool(required=False, dump_to="DisableSemisync"),
+        "DisableSemisync": fields.Bool(
+            required=False, dump_to="DisableSemisync"
+        ),
         "DiskSpace": fields.Int(required=True, dump_to="DiskSpace"),
         "HAArch": fields.Str(required=False, dump_to="HAArch"),
         "InstanceMode": fields.Str(required=False, dump_to="InstanceMode"),
@@ -619,7 +623,9 @@ class DescribeUDBBinlogBackupURLResponseSchema(schema.ResponseSchema):
 
     fields = {
         "BackupPath": fields.Str(required=False, load_from="BackupPath"),
-        "InnerBackupPath": fields.Str(required=False, load_from="InnerBackupPath"),
+        "InnerBackupPath": fields.Str(
+            required=False, load_from="InnerBackupPath"
+        ),
     }
 
 
@@ -717,7 +723,9 @@ class DescribeUDBInstanceBackupURLResponseSchema(schema.ResponseSchema):
 
     fields = {
         "BackupPath": fields.Str(required=False, load_from="BackupPath"),
-        "InnerBackupPath": fields.Str(required=False, load_from="InnerBackupPath"),
+        "InnerBackupPath": fields.Str(
+            required=False, load_from="InnerBackupPath"
+        ),
     }
 
 
@@ -748,7 +756,9 @@ class DescribeUDBInstanceBinlogResponseSchema(schema.ResponseSchema):
 
     fields = {
         "DataSet": fields.List(
-            models.UDBInstanceBinlogSetSchema(), required=False, load_from="DataSet"
+            models.UDBInstanceBinlogSetSchema(),
+            required=False,
+            load_from="DataSet",
         )
     }
 
@@ -815,7 +825,9 @@ class DescribeUDBInstancePriceResponseSchema(schema.ResponseSchema):
 
     fields = {
         "DataSet": fields.List(
-            models.UDBInstancePriceSetSchema(), required=False, load_from="DataSet"
+            models.UDBInstancePriceSetSchema(),
+            required=False,
+            load_from="DataSet",
         )
     }
 
@@ -936,7 +948,9 @@ class DescribeUDBLogPackageResponseSchema(schema.ResponseSchema):
 
     fields = {
         "DataSet": fields.List(
-            models.LogPackageDataSetSchema(), required=False, load_from="DataSet"
+            models.LogPackageDataSetSchema(),
+            required=False,
+            load_from="DataSet",
         ),
         "TotalCount": fields.Int(required=False, load_from="TotalCount"),
     }
@@ -1059,7 +1073,9 @@ class FetchUDBInstanceEarliestRecoverTimeResponseSchema(schema.ResponseSchema):
     """ FetchUDBInstanceEarliestRecoverTime - 获取UDB最早可回档的时间点
     """
 
-    fields = {"EarliestTime": fields.Int(required=False, load_from="EarliestTime")}
+    fields = {
+        "EarliestTime": fields.Int(required=False, load_from="EarliestTime")
+    }
 
 
 """
@@ -1190,7 +1206,9 @@ class ResizeUDBInstanceRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Int(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SSDType": fields.Str(required=False, dump_to="SSDType"),
-        "StartAfterUpgrade": fields.Bool(required=False, dump_to="StartAfterUpgrade"),
+        "StartAfterUpgrade": fields.Bool(
+            required=False, dump_to="StartAfterUpgrade"
+        ),
         "UDBCId": fields.Str(required=False, dump_to="UDBCId"),
         "UseSSD": fields.Bool(required=False, dump_to="UseSSD"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
@@ -1416,7 +1434,9 @@ class UploadUDBParamGroupRequestSchema(schema.RequestSchema):
         "DBTypeId": fields.Str(required=True, dump_to="DBTypeId"),
         "Description": fields.Str(required=True, dump_to="Description"),
         "GroupName": fields.Str(required=True, dump_to="GroupName"),
-        "ParamGroupTypeId": fields.Int(required=False, dump_to="ParamGroupTypeId"),
+        "ParamGroupTypeId": fields.Int(
+            required=False, dump_to="ParamGroupTypeId"
+        ),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "RegionFlag": fields.Bool(required=False, dump_to="RegionFlag"),

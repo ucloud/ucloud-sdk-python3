@@ -1,5 +1,8 @@
+import typing
 import logging
 import json as json_mod
+
+from ucloud.core.transport import utils
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +25,12 @@ class Request:
         self.json = json
         self.headers = headers
 
+    def payload(self):
+        payload = (self.params or {}).copy()
+        payload.update(self.data or {})
+        payload.update(self.json or {})
+        return payload
+
 
 class Response:
     def __init__(
@@ -32,7 +41,8 @@ class Response:
         status_code: int = None,
         reason: str = None,
         headers: dict = None,
-        content: str = None,
+        content: bytes = None,
+        encoding: str = None,
         **kwargs
     ):
         self.url = url
@@ -42,9 +52,37 @@ class Response:
         self.reason = reason
         self.headers = headers
         self.content = content
+        self.encoding = encoding
 
-    def json(self) -> dict:
-        return json_mod.loads(self.content)
+    def json(self, **kwargs) -> typing.Optional[dict]:
+        """ json will return the bytes of content
+        """
+        if not self.content:
+            return None
+
+        encoding = utils.guess_json_utf(self.content)
+        if encoding is not None:
+            try:
+                return json_mod.loads(self.content.decode(encoding), **kwargs)
+            except UnicodeDecodeError:
+                pass
+        return json_mod.loads(self.text, **kwargs)
+
+    @property
+    def text(self):
+        """ text will return the unicode string of content,
+        see `requests.Response.text`
+        """
+        if not self.content:
+            return str("")
+
+        # Decode unicode from given encoding.
+        try:
+            content = str(self.content, self.encoding, errors="replace")
+        except (LookupError, TypeError):
+            content = str(self.content, errors="replace")
+
+        return content
 
 
 class Transport:

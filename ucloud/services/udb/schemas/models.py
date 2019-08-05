@@ -29,11 +29,17 @@ class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
 
     fields = {
         "AdminUser": fields.Str(required=False, load_from="AdminUser"),
-        "BackupBeginTime": fields.Int(required=False, load_from="BackupBeginTime"),
-        "BackupBlacklist": fields.Str(required=False, load_from="BackupBlacklist"),
+        "BackupBeginTime": fields.Int(
+            required=False, load_from="BackupBeginTime"
+        ),
+        "BackupBlacklist": fields.Str(
+            required=False, load_from="BackupBlacklist"
+        ),
         "BackupCount": fields.Int(required=False, load_from="BackupCount"),
         "BackupDate": fields.Str(required=False, load_from="BackupDate"),
-        "BackupDuration": fields.Int(required=False, load_from="BackupDuration"),
+        "BackupDuration": fields.Int(
+            required=False, load_from="BackupDuration"
+        ),
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
         "ClusterRole": fields.Str(required=False, load_from="ClusterRole"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
@@ -45,7 +51,9 @@ class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
         "ExpiredTime": fields.Int(required=False, load_from="ExpiredTime"),
         "InstanceMode": fields.Str(required=False, load_from="InstanceMode"),
         "InstanceType": fields.Str(required=False, load_from="InstanceType"),
-        "InstanceTypeId": fields.Int(required=False, load_from="InstanceTypeId"),
+        "InstanceTypeId": fields.Int(
+            required=False, load_from="InstanceTypeId"
+        ),
         "LogFileSize": fields.Float(required=False, load_from="LogFileSize"),
         "MemoryLimit": fields.Int(required=False, load_from="MemoryLimit"),
         "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
@@ -57,7 +65,9 @@ class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
         "SrcDBId": fields.Str(required=False, load_from="SrcDBId"),
         "State": fields.Str(required=False, load_from="State"),
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "SystemFileSize": fields.Float(required=False, load_from="SystemFileSize"),
+        "SystemFileSize": fields.Float(
+            required=False, load_from="SystemFileSize"
+        ),
         "Tag": fields.Str(required=False, load_from="Tag"),
         "UseSSD": fields.Bool(required=False, load_from="UseSSD"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
@@ -73,11 +83,17 @@ class UDBInstanceSetSchema(schema.ResponseSchema):
 
     fields = {
         "AdminUser": fields.Str(required=False, load_from="AdminUser"),
-        "BackupBeginTime": fields.Int(required=False, load_from="BackupBeginTime"),
-        "BackupBlacklist": fields.Str(required=False, load_from="BackupBlacklist"),
+        "BackupBeginTime": fields.Int(
+            required=False, load_from="BackupBeginTime"
+        ),
+        "BackupBlacklist": fields.Str(
+            required=False, load_from="BackupBlacklist"
+        ),
         "BackupCount": fields.Int(required=False, load_from="BackupCount"),
         "BackupDate": fields.Str(required=False, load_from="BackupDate"),
-        "BackupDuration": fields.Int(required=False, load_from="BackupDuration"),
+        "BackupDuration": fields.Int(
+            required=False, load_from="BackupDuration"
+        ),
         "BackupZone": fields.Str(required=False, load_from="BackupZone"),
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
         "CluserRole": fields.Str(required=False, load_from="CluserRole"),
@@ -91,7 +107,9 @@ class UDBInstanceSetSchema(schema.ResponseSchema):
         "ExpiredTime": fields.Int(required=False, load_from="ExpiredTime"),
         "InstanceMode": fields.Str(required=False, load_from="InstanceMode"),
         "InstanceType": fields.Str(required=False, load_from="InstanceType"),
-        "InstanceTypeId": fields.Int(required=False, load_from="InstanceTypeId"),
+        "InstanceTypeId": fields.Int(
+            required=False, load_from="InstanceTypeId"
+        ),
         "LogFileSize": fields.Float(required=False, load_from="LogFileSize"),
         "MemoryLimit": fields.Int(required=False, load_from="MemoryLimit"),
         "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
@@ -103,7 +121,9 @@ class UDBInstanceSetSchema(schema.ResponseSchema):
         "SrcDBId": fields.Str(required=False, load_from="SrcDBId"),
         "State": fields.Str(required=False, load_from="State"),
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "SystemFileSize": fields.Float(required=False, load_from="SystemFileSize"),
+        "SystemFileSize": fields.Float(
+            required=False, load_from="SystemFileSize"
+        ),
         "Tag": fields.Str(required=False, load_from="Tag"),
         "UseSSD": fields.Bool(required=False, load_from="UseSSD"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),

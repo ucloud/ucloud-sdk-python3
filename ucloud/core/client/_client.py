@@ -4,7 +4,7 @@ import sys
 
 from ucloud import version
 from ucloud.core.client._cfg import Config
-from ucloud.core.transport import Transport, RequestsTransport, Request, Response
+from ucloud.core.transport import Transport, RequestsTransport, Request
 from ucloud.core.utils import log
 from ucloud.core.utils.middleware import Middleware
 from ucloud.core import auth, exc
@@ -47,15 +47,15 @@ class Client:
             except exc.UCloudException as e:
                 if e.retryable and retries != max_retries:
                     logging.info(
-                        "Retrying {action}: {args}".format(action=action, args=args)
+                        "Retrying {action}: {args}".format(
+                            action=action, args=args
+                        )
                     )
                     retries += 1
                     continue
                 raise e
             except Exception as e:
                 raise e
-
-        raise exc.RetryTimeoutException("max retries is reached")
 
     @property
     def middleware(self) -> Middleware:
@@ -66,14 +66,15 @@ class Client:
         return req
 
     def logged_response_handler(self, resp):
-        self.logger.info("[response] {} {}".format(resp.get("Action", ""), resp))
+        self.logger.info(
+            "[response] {} {}".format(resp.get("Action", ""), resp)
+        )
         return resp
 
-    def __enter__(self):
-        yield self
-
     @staticmethod
-    def _parse_dict_config(config: dict) -> typing.Tuple[Config, auth.Credential]:
+    def _parse_dict_config(
+        config: dict
+    ) -> typing.Tuple[Config, auth.Credential]:
         return Config.from_dict(config), auth.Credential.from_dict(config)
 
     def _send(self, action: str, args: dict, **options) -> dict:
@@ -84,7 +85,9 @@ class Client:
 
         max_retries = options.get("max_retries") or self.config.max_retries
         timeout = options.get("timeout") or self.config.timeout
-        resp = self.transport.send(req, timeout=timeout, max_retries=max_retries).json()
+        resp = self.transport.send(
+            req, timeout=timeout, max_retries=max_retries
+        ).json()
 
         for handler in self.middleware.response_handlers:
             resp = handler(resp)
@@ -99,7 +102,10 @@ class Client:
         return resp
 
     def _build_http_request(self, args: dict) -> Request:
-        payload = {"Region": self.config.region, "ProjectId": self.config.project_id}
+        payload = {
+            "Region": self.config.region,
+            "ProjectId": self.config.project_id,
+        }
         payload.update({k: v for k, v in args.items() if v is not None})
         payload["Signature"] = self.credential.verify_ac(payload)
 
@@ -121,4 +127,4 @@ class Client:
         return user_agent
 
     def __repr__(self):
-        return "<{}('{}')>".format(self.__class__.__name__, self.config.region)
+        return '<{}("{}")>'.format(self.__class__.__name__, self.config.region)

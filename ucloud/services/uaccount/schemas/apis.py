@@ -50,7 +50,9 @@ class GetProjectListResponseSchema(schema.ResponseSchema):
     fields = {
         "ProjectCount": fields.Int(required=True, load_from="ProjectCount"),
         "ProjectSet": fields.List(
-            models.ProjectListInfoSchema(), required=True, load_from="ProjectSet"
+            models.ProjectListInfoSchema(),
+            required=True,
+            load_from="ProjectSet",
         ),
     }
 

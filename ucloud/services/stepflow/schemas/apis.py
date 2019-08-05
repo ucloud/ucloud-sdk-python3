@@ -53,7 +53,9 @@ class GetSFWorkflowTemplateRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "WorkflowId": fields.Str(required=True, dump_to="WorkflowId"),
-        "WorkflowVersion": fields.Int(required=False, dump_to="WorkflowVersion"),
+        "WorkflowVersion": fields.Int(
+            required=False, dump_to="WorkflowVersion"
+        ),
     }
 
 

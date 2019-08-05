@@ -61,18 +61,16 @@ def load_requirements(requirements_file):
 dependencies = load_requirements("requirements.txt")
 
 dependencies_test = dependencies + [
-    'mypy',
     'flake8>=3.6.0',
-    'tox',
     'pytest',
     'pytest-cov',
 ]
 
 dependencies_doc = dependencies + ['sphinx']
 
-dependencies_dev = list(set(
-    dependencies_doc + dependencies_test + ['black']
-))
+dependencies_ci = list(set(dependencies_test + dependencies_doc))
+
+dependencies_dev = list(set(dependencies_ci + ['black']))
 
 
 def do_setup():
@@ -91,6 +89,7 @@ def do_setup():
             "test": dependencies_test,
             "doc": dependencies_doc,
             "dev": dependencies_dev,
+            "ci": dependencies_ci,
         },
         dependencies_test=dependencies_test,
         classifiers=[
