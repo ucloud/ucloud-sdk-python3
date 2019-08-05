@@ -9,7 +9,7 @@ dist: xenial
 sudo: true
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -e .[dev]
+install: pip install -e .[ci]
 
 # command to run tests, e.g. python setup.py test
 script:
