@@ -64,7 +64,6 @@ dependencies_test = dependencies + [
     'flake8>=3.6.0',
     'pytest',
     'pytest-cov',
-    'pytest-xdist'
 ]
 
 dependencies_doc = dependencies + ['sphinx']
