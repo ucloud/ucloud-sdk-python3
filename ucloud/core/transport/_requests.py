@@ -100,4 +100,5 @@ class RequestsTransport(http.Transport):
             reason=r.reason,
             headers=r.headers,
             content=r.content,
+            encoding=r.encoding or r.apparent_encoding,
         )
