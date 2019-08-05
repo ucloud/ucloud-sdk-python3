@@ -11,7 +11,7 @@ class MockedTransport(Transport):
         self.client_handler = []
 
     def send(self, req: Request, **options: dict) -> Response:
-        resp: typing.Optional[Response] = Response(req.url, req.method)
+        resp = Response(req.url, req.method)
         for handler in self.transport_handlers:
             resp = handler(req)
 
