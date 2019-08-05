@@ -8,6 +8,23 @@ from ucloud.core.typesystem import fields, schema
 logger = logging.getLogger(__name__)
 
 
+def test_request_basic():
+    class Schema(schema.RequestSchema):
+        fields = {
+            "Foo": fields.Int(required=True),
+            "Bar": fields.Int(required=False)
+        }
+
+    assert Schema().dumps({'Foo': "42"}) == {'Foo': 42}
+    assert Schema().dumps({'Foo': "42"}) == {'Foo': 42}
+
+    with pytest.raises(exc.ValidationException):
+        Schema().dumps({})
+
+    with pytest.raises(exc.ValidationException):
+        Schema().dumps({'Foo': "bar"})
+
+
 def test_request_array():
     class Schema(schema.RequestSchema):
         fields = {"IP": fields.List(fields.Str())}
@@ -79,6 +96,35 @@ def test_request_array_model_with_default():
         "Interface.0.IP.1": "192.168.0.1",
         "Interface.1.IP.0": "172.16.0.1",
     }
+
+
+def test_response_basic():
+    class Schema(schema.ResponseSchema):
+        fields = {
+            "Foo": fields.Int(required=True),
+            "Bar": fields.Int(required=False),
+            "Default": fields.Int(default=42),
+            "Call": fields.List(fields.Int(), default=list)
+        }
+
+    assert Schema().dumps({'Foo': "42"}) == {
+        'Foo': 42, 'Default': 42, 'Call': []
+    }
+    assert Schema().loads({'Foo': "42"}) == {
+        'Foo': 42, 'Default': 42, 'Call': []
+    }
+
+    with pytest.raises(exc.ValidationException):
+        Schema().dumps({})
+
+    with pytest.raises(exc.ValidationException):
+        Schema().dumps({'Foo': "bar"})
+
+    with pytest.raises(exc.ValidationException):
+        Schema().dumps({})
+
+    with pytest.raises(exc.ValidationException):
+        Schema().dumps({'Foo': "bar"})
 
 
 def test_response_array():

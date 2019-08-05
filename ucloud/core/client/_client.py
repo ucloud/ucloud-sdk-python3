@@ -62,8 +62,6 @@ class Client:
             except Exception as e:
                 raise e
 
-        raise exc.RetryTimeoutException("max retries is reached")
-
     @property
     def middleware(self) -> Middleware:
         return self._middleware
@@ -77,9 +75,6 @@ class Client:
             "[response] {} {}".format(resp.get("Action", ""), resp)
         )
         return resp
-
-    def __enter__(self):
-        yield self
 
     @staticmethod
     def _parse_dict_config(
@@ -137,4 +132,4 @@ class Client:
         return user_agent
 
     def __repr__(self):
-        return "<{}('{}')>".format(self.__class__.__name__, self.config.region)
+        return '<{}("{}")>'.format(self.__class__.__name__, self.config.region)

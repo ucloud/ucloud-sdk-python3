@@ -22,6 +22,12 @@ class Request:
         self.json = json
         self.headers = headers
 
+    def payload(self):
+        payload = (self.params or {}).copy()
+        payload.update(self.data or {})
+        payload.update(self.json or {})
+        return payload
+
 
 class Response:
     def __init__(

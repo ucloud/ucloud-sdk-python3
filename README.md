@@ -1,5 +1,8 @@
-UCloud SDK Python 3
-===================
+<p align="center">
+    <img src="https://ucloud-sdk.dl.ufileos.com/logos%2Flogo-mini.png" />
+</p>
+
+<h1 align="center">UCloud Go Python3</h1>
 
 UCloud SDK is a Python client library for accessing the UCloud API.
 

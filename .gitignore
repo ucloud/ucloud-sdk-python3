@@ -107,3 +107,6 @@ venv.bak/
 .idea/
 .vscode/
 ~*
+
+# Debug
+*.stackdump

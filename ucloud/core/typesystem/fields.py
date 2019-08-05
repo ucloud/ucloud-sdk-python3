@@ -81,10 +81,7 @@ class Str(abstract.Field):
         if self.strict and not isinstance(value, str):
             self.fail(name, "str", type(value))
 
-        try:
-            return str(value)
-        except ValueError:
-            self.fail(name, "str", type(value))
+        return str(value)
 
 
 class Base64(Str):
@@ -142,7 +139,10 @@ class Bool(abstract.Field):
         if self.strict and not isinstance(value, bool):
             self.fail(name, "bool", type(value))
 
-        try:
-            return bool(value)
-        except ValueError:
-            self.fail(name, "bool", type(value))
+        if value == "true" or value is True:
+            return True
+
+        if value == "false" or value is False:
+            return False
+
+        self.fail(name, "bool", type(value))

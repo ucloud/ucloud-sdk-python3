@@ -35,7 +35,7 @@ test: clean
 	pytest
 
 test-cov: clean
-	pytest --cov=ucloud
+	pytest --cov=ucloud/core tests/test_core
 
 test-acc: clean
 	USDKACC=1 pytest --cov=ucloud

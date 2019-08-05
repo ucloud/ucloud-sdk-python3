@@ -19,6 +19,9 @@ before_deploy:
     - make docs
     - touch docs/build/html/.nojekyll
 
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
+
 # deploy new versions to PyPI / GithubIO
 deploy:
   - provider: pages
