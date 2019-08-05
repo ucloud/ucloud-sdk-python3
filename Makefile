@@ -45,7 +45,6 @@ test-all: clean
 
 lint:
 	@flake8 --exclude=ucloud/services ucloud --ignore=E501,F401
-	@black --check -l 80 ucloud tests
 
 fmt:
 	@black -l 80 ucloud tests
