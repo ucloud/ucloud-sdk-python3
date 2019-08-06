@@ -1,11 +1,26 @@
 import logging
-
 import pytest
 
 from ucloud.core import exc
-from ucloud.core.typesystem import fields, schema
+from ucloud.core.typesystem import fields, schema, params
 
 logger = logging.getLogger(__name__)
+
+
+@pytest.mark.parametrize(
+    "input_vector,expected",
+    [
+        ({'foo': "bar"}, {'foo': "bar"}),
+        ({'foo': 42}, {'foo': 42}),
+        ({'foo': 42.42}, {'foo': 42.42}),
+        ({'IP': ['127.0.0.1']}, {'IP.0': "127.0.0.1"}),
+        ({'IP': ["foo", "bar"]}, {'IP.0': "foo", 'IP.1': "bar"}),
+        ({'IP': [{"foo": "bar"}]}, {'IP.0.foo': "bar"}),
+    ]
+)
+def test_params_encode(input_vector, expected):
+    result = params.encode(input_vector)
+    assert result == expected
 
 
 def test_request_basic():

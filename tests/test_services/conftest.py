@@ -12,7 +12,7 @@ def client_factory() -> Client:
             "project_id": os.getenv("UCLOUD_PROJECT_ID"),
             "public_key": os.getenv("UCLOUD_PUBLIC_KEY"),
             "private_key": os.getenv("UCLOUD_PRIVATE_KEY"),
-            "max_retries": 3,
+            "max_retries": 10,
             "timeout": 60,
         }
     )
