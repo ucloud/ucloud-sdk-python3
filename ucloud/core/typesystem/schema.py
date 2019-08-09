@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 class Schema(abstract.Schema):
-    fields = {}
+    fields = {}  # noqa: F811
 
     def dumps(self, d: dict, name=None, **kwargs) -> dict:
         result = {}
@@ -81,7 +81,7 @@ class Schema(abstract.Schema):
 
 
 class RequestSchema(Schema):
-    fields = {}
+    fields = {}  # noqa: F811
 
     def dumps(self, d: dict, name=None, **kwargs) -> dict:
         if not isinstance(d, dict):
