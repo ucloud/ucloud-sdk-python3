@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Helpers &#8212; ucloud-sdk-python3  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Core" href="core.html" />
+    <link rel="prev" title="UCloud SDK Services" href="services.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="helpers">
+<h1>Helpers<a class="headerlink" href="#helpers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="wait-resource-state">
+<h2>Wait Resource State<a class="headerlink" href="#wait-resource-state" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="ucloud.helpers.wait.wait_for_state">
+<code class="sig-prename descclassname">ucloud.helpers.wait.</code><code class="sig-name descname">wait_for_state</code><span class="sig-paren">(</span><em class="sig-param">pending: List[str], target: List[str], refresh: Callable, timeout: float, startup_delay: float = 0, min_backoff_interval: float = 0.1, max_backoff_interval: float = 10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/helpers/wait.html#wait_for_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.helpers.wait.wait_for_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>wait_for_state is a utilities function to wait the state return by refresh function achieve the specific state,
+the generally usage is wait the cloud resource, such as uhost, udb … is
+ready after created.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wait_for_state</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">pending</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;pending&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">target</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;running&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">refresh</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="s2">&quot;running&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">timeout</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pending</strong> – pending is the list of pending state, the state is returned by refresh function</p></li>
+<li><p><strong>target</strong> – target is the list of target state, it is usually the terminate state, eg. running and fail</p></li>
+<li><p><strong>refresh</strong> – the customized refresh function, expect no arguments and return a state</p></li>
+<li><p><strong>timeout</strong> – timeout is the total time to wait state is achieved</p></li>
+<li><p><strong>startup_delay</strong> – the time to wait before first refresh function is called</p></li>
+<li><p><strong>min_backoff_interval</strong> – the backoff time for first refresh interval</p></li>
+<li><p><strong>max_backoff_interval</strong> – the max backoff time for refresh interval</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ucloud.helpers.utils">
+<span id="utilities"></span><h2>Utilities<a class="headerlink" href="#module-ucloud.helpers.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="ucloud.helpers.utils.b64decode">
+<code class="sig-prename descclassname">ucloud.helpers.utils.</code><code class="sig-name descname">b64decode</code><span class="sig-paren">(</span><em class="sig-param">s: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/ucloud/helpers/utils.html#b64decode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.helpers.utils.b64decode" title="Permalink to this definition">¶</a></dt>
+<dd><p>base64 decode</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>s</strong> (<em>str</em>) – base64 string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>output string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="ucloud.helpers.utils.b64encode">
+<code class="sig-prename descclassname">ucloud.helpers.utils.</code><code class="sig-name descname">b64encode</code><span class="sig-paren">(</span><em class="sig-param">s: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/ucloud/helpers/utils.html#b64encode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.helpers.utils.b64encode" title="Permalink to this definition">¶</a></dt>
+<dd><p>base64 encode</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>s</strong> (<em>str</em>) – input string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>base64 string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="ucloud.helpers.utils.gen_password">
+<code class="sig-prename descclassname">ucloud.helpers.utils.</code><code class="sig-name descname">gen_password</code><span class="sig-paren">(</span><em class="sig-param">n: int</em>, <em class="sig-param">lower_letters: str = 'abcdefghijklmnopqrstuvwxyz'</em>, <em class="sig-param">upper_letters: str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'</em>, <em class="sig-param">number_letters: str = '0123456789'</em>, <em class="sig-param">special_letters: str = '_'</em>, <em class="sig-param">min_lower: int = 1</em>, <em class="sig-param">min_upper: int = 1</em>, <em class="sig-param">min_number: int = 1</em>, <em class="sig-param">min_specials: int = 1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/helpers/utils.html#gen_password"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.helpers.utils.gen_password" title="Permalink to this definition">¶</a></dt>
+<dd><p>generate password for any resource</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">gen_password</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
+<span class="go">20</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – password total length</p></li>
+<li><p><strong>lower_letters</strong> (<em>str</em>) – all lowercase letters</p></li>
+<li><p><strong>upper_letters</strong> (<em>str</em>) – all uppercase letters</p></li>
+<li><p><strong>number_letters</strong> (<em>str</em>) – all number letters</p></li>
+<li><p><strong>special_letters</strong> (<em>str</em>) – all special letters</p></li>
+<li><p><strong>min_lower</strong> (<em>int</em>) – minimal number of lowercase letters</p></li>
+<li><p><strong>min_upper</strong> (<em>int</em>) – minimal number of uppercase letters</p></li>
+<li><p><strong>min_number</strong> (<em>int</em>) – minimal number of number letters</p></li>
+<li><p><strong>min_specials</strong> (<em>int</em>) – minimal number of special letters</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ucloud-sdk-python3</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">QuickStart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="services.html">UCloud SDK Services</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Helpers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#wait-resource-state">Wait Resource State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-ucloud.helpers.utils">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="services.html" title="previous chapter">UCloud SDK Services</a></li>
+      <li>Next: <a href="core.html" title="next chapter">Core</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, ucloud.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/helpers.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

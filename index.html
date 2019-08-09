@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>UCloud SDK Python 3 &#8212; ucloud-sdk-python3  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="QuickStart" href="quick_start.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="ucloud-sdk-python-3">
+<h1>UCloud SDK Python 3<a class="headerlink" href="#ucloud-sdk-python-3" title="Permalink to this headline">¶</a></h1>
+<p>UCloud SDK is a Python client library for accessing the UCloud API.</p>
+<p>This client can run on Linux, macOS and Windows. It requires Python 3.5 and above.</p>
+<ul class="simple">
+<li><p>Website: <a class="reference external" href="https://www.ucloud.cn/">https://www.ucloud.cn/</a></p></li>
+<li><p>Free software: Apache 2.0 license</p></li>
+<li><p><a class="reference external" href="https://ucloud.github.io/ucloud-sdk-python3/">Documentation</a></p></li>
+</ul>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/ucloud-sdk-python3/"><img alt="Latest Version" src="https://img.shields.io/pypi/v/ucloud-sdk-python3.svg" /></a>
+<a class="reference external image-reference" href="https://travis-ci.org/ucloud/ucloud-sdk-python3"><img alt="Travis CI Status" src="https://travis-ci.org/ucloud/ucloud-sdk-python3.svg?branch=master" /></a>
+<a class="reference external image-reference" href="https://codecov.io/github/ucloud/ucloud-sdk-python3?branch=master"><img alt="Codecov Status" src="https://codecov.io/github/ucloud/ucloud-sdk-python3/coverage.svg?branch=master" /></a>
+<a class="reference external image-reference" href="https://ucloud.github.io/ucloud-sdk-python3/"><img alt="Doc Status" src="https://img.shields.io/badge/docs-passing-brightgreen.svg" /></a>
+<div class="section" id="guide">
+<h2>Guide<a class="headerlink" href="#guide" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">QuickStart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quick_start.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick_start.html#id1">QuickStart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#type-system">Type System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#wait-state-changed">Wait State Changed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#client-transport-middleware">Client/Transport Middleware</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="quickstart">
+<h1>QuickStart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Install with pip:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip install ucloud-sdk-python3
+</pre></div>
+</div>
+<p>Install with source code:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>clone https://github.com/ucloud/ucloud-sdk-python3.git
+<span class="nb">cd</span> ucloud-sdk-python3
+python setup.py install
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h2>QuickStart<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Currently, user public key &amp; private key is the only method of authenticating with the API. You could get your keys here:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://console.ucloud.cn/uapi/apikey">Key Generation</a></p></li>
+</ul>
+<p>You can then use your keys to create a new client of uhost service:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ucloud.core</span> <span class="kn">import</span> <span class="n">exc</span>
+<span class="kn">from</span> <span class="nn">ucloud.client</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">({</span>
+    <span class="s2">&quot;region&quot;</span><span class="p">:</span> <span class="s2">&quot;cn-bj2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;project_id&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;public_key&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;private_key&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">uhost</span><span class="p">()</span><span class="o">.</span><span class="n">create_uhost_instance</span><span class="p">({</span>
+        <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="s1">&#39;sdk-python-quickstart&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Zone&#39;</span><span class="p">:</span> <span class="n">image</span><span class="p">[</span><span class="s2">&quot;zone&quot;</span><span class="p">],</span>
+        <span class="s1">&#39;ImageId&#39;</span><span class="p">:</span> <span class="n">image</span><span class="p">[</span><span class="s2">&quot;image_id&quot;</span><span class="p">],</span>
+        <span class="s1">&#39;LoginMode&#39;</span><span class="p">:</span> <span class="s2">&quot;Password&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;Password&#39;</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">gen_password</span><span class="p">(</span><span class="mi">20</span><span class="p">)),</span>
+        <span class="s1">&#39;CPU&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;Memory&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;Disks&#39;</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="s1">&#39;Size&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="s1">&#39;Type&#39;</span><span class="p">:</span> <span class="s1">&#39;CLOUD_SSD&#39;</span>
+        <span class="p">}],</span>
+    <span class="p">})</span>
+<span class="k">except</span> <span class="n">exc</span><span class="o">.</span><span class="n">UCloudException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>UHost created above cannot be accessed via Internet unless an EIP is created and bind to the UHost.</p>
+</div>
+</div>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="services.html">UCloud SDK Services</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="services.html#pathx">PathX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services.html#stepflow">StepFlow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services.html#uaccount">UAccount</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services.html#udb">UDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services.html#udpn">UDPN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services.html#udisk">UDisk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services.html#uhost">UHost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services.html#ulb">ULB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services.html#umem">UMem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services.html#unet">UNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services.html#uphost">UPHost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services.html#vpc">VPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html">Helpers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html#wait-resource-state">Wait Resource State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html#module-ucloud.helpers.utils">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core.html#config">Config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#client">Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#transport">Transport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#middleware">Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#testing">Testing</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+<div class="section" id="feedback-contribution">
+<h2>Feedback &amp; Contribution<a class="headerlink" href="#feedback-contribution" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ucloud/ucloud-sdk-python3/issues">Issue</a></p></li>
+<li><p><a class="reference external" href="https://github.com/ucloud/ucloud-sdk-python3/pulls">Pull Request</a></p></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">ucloud-sdk-python3</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">QuickStart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="services.html">UCloud SDK Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html">Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="quick_start.html" title="next chapter">QuickStart</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, ucloud.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

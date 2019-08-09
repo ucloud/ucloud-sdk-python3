@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>ucloud.core.client._cfg &#8212; ucloud-sdk-python3  documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ucloud.core.client._cfg</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">ucloud.core.typesystem</span> <span class="k">import</span> <span class="n">schema</span><span class="p">,</span> <span class="n">fields</span>
+
+
+<span class="k">class</span> <span class="nc">ConfigSchema</span><span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">Schema</span><span class="p">):</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;region&quot;</span><span class="p">:</span> <span class="n">fields</span><span class="o">.</span><span class="n">Str</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="s2">&quot;project_id&quot;</span><span class="p">:</span> <span class="n">fields</span><span class="o">.</span><span class="n">Str</span><span class="p">(),</span>
+        <span class="s2">&quot;base_url&quot;</span><span class="p">:</span> <span class="n">fields</span><span class="o">.</span><span class="n">Str</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">&quot;https://api.ucloud.cn&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;user_agent&quot;</span><span class="p">:</span> <span class="n">fields</span><span class="o">.</span><span class="n">Str</span><span class="p">(),</span>
+        <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="n">fields</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span>
+        <span class="s2">&quot;max_retries&quot;</span><span class="p">:</span> <span class="n">fields</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
+        <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="n">fields</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">),</span>
+        <span class="s2">&quot;validate_request&quot;</span><span class="p">:</span> <span class="n">fields</span><span class="o">.</span><span class="n">Bool</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="p">}</span>
+
+
+<div class="viewcode-block" id="Config"><a class="viewcode-back" href="../../../../core.html#ucloud.core.client.Config">[docs]</a><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Config is the config of ucloud sdk, use for setting up</span>
+
+<span class="sd">    :type region: str</span>
+<span class="sd">    :param region: Region is the region of backend service,</span>
+<span class="sd">        See also `Region list Documentation &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">    :type project_id: str</span>
+<span class="sd">    :param project_id: ProjectId is the unique identify of project, used for organize resources,</span>
+<span class="sd">                       Most of resources should belong to a project. Sub-Account must have an project id.</span>
+<span class="sd">                       See also `Project list Documentation &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">    :type base_url: str</span>
+<span class="sd">    :param base_url: BaseUrl is the url of backend api</span>
+<span class="sd">    :param user_agent: UserAgent is an attribute for sdk client, used for distinguish who is using sdk.</span>
+<span class="sd">                       See also `User Agent &lt;https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent&gt;`_</span>
+<span class="sd">                       It will be appended to the end of sdk user-agent.</span>
+<span class="sd">                       eg. &quot;MyAPP/0.10.1&quot; -&gt; &quot;Python/3.7.0 Python-SDK/0.1.0 MyAPP/0.10.1&quot;</span>
+<span class="sd">    :type timeout: int</span>
+<span class="sd">    :param timeout: Timeout is timeout for every request.</span>
+<span class="sd">    :type max_retries: int</span>
+<span class="sd">    :param max_retries: MaxRetries is the number of max retry times.</span>
+<span class="sd">                        Set MaxRetries more than 0 to enable auto-retry for network and service availability problem</span>
+<span class="sd">                        if auto-retry is enabled, it will enable default retry policy using exponential backoff.</span>
+<span class="sd">    :type log_level: int</span>
+<span class="sd">    :param log_level:  LogLevel is equal to builtin logging level,</span>
+<span class="sd">        if logLevel not be set, use INFO level as default.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;https://api.ucloud.cn&quot;</span><span class="p">,</span>
+        <span class="n">user_agent</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="n">log_level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">region</span> <span class="o">=</span> <span class="n">region</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="n">project_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="n">base_url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_agent</span> <span class="o">=</span> <span class="n">user_agent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span> <span class="o">=</span> <span class="n">max_retries</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="n">log_level</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">parsed</span> <span class="o">=</span> <span class="n">ConfigSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">parsed</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+            <span class="s2">&quot;project_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;base_url&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">,</span>
+            <span class="s2">&quot;user_agent&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_agent</span><span class="p">,</span>
+            <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="s2">&quot;max_retries&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span><span class="p">,</span>
+            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_level</span><span class="p">,</span>
+        <span class="p">}</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">ucloud-sdk-python3</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quick_start.html">QuickStart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage.html">Usage</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../services.html">UCloud SDK Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../helpers.html">Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core.html">Core</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, ucloud.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
