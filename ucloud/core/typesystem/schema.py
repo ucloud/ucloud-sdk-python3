@@ -84,6 +84,11 @@ class RequestSchema(Schema):
     fields = {}
 
     def dumps(self, d: dict, name=None, **kwargs) -> dict:
+        if not isinstance(d, dict):
+            raise ValidationException(
+                "invalid field {}, expect dict, got {}".format(name, type(d))
+            )
+
         result = super(RequestSchema, self).dumps(d, name=name, **kwargs)
         return params.encode(result)
 
