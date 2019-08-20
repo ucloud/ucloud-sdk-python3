@@ -52,15 +52,22 @@ class TestTransport:
 class TestResponse:
     def test_guess_json_utf(self):
         import json
+
         encodings = [
-            "utf-32", "utf-8-sig", "utf-16", "utf-8", "utf-16-be",
-            "utf-16-le", "utf-32-be", "utf-32-le"
+            "utf-32",
+            "utf-8-sig",
+            "utf-16",
+            "utf-8",
+            "utf-16-be",
+            "utf-16-le",
+            "utf-32-be",
+            "utf-32-le",
         ]
         for e in encodings:
-            s = json.dumps('表意字符').encode(e)
+            s = json.dumps("表意字符").encode(e)
             assert utils.guess_json_utf(s) == e
 
     def test_response_empty_content(self):
-        r = Response('http://foo.bar', 'post')
+        r = Response("http://foo.bar", "post")
         assert not r.text
         assert r.json() is None

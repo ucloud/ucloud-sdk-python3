@@ -1203,7 +1203,6 @@ class ResizeUDBInstanceRequestSchema(schema.RequestSchema):
         "InstanceMode": fields.Str(required=False, dump_to="InstanceMode"),
         "InstanceType": fields.Str(required=False, dump_to="InstanceType"),
         "MemoryLimit": fields.Int(required=True, dump_to="MemoryLimit"),
-        "ProjectId": fields.Int(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SSDType": fields.Str(required=False, dump_to="SSDType"),
         "StartAfterUpgrade": fields.Bool(

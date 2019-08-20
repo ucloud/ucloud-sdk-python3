@@ -82,7 +82,10 @@ def create_vserver_01(client: utest.Client, variables: dict):
     action="DescribeVServer",
 )
 def describe_vserver_02(client: utest.Client, variables: dict):
-    d = {"ULBId": variables.get("ULBId_outer"), "Region": variables.get("Region")}
+    d = {
+        "ULBId": variables.get("ULBId_outer"),
+        "Region": variables.get("Region"),
+    }
 
     try:
         resp = client.ulb().describe_vserver(d)
@@ -131,7 +134,10 @@ def create_vserver_03(client: utest.Client, variables: dict):
     action="DescribeVServer",
 )
 def describe_vserver_04(client: utest.Client, variables: dict):
-    d = {"ULBId": variables.get("ULBId_outer"), "Region": variables.get("Region")}
+    d = {
+        "ULBId": variables.get("ULBId_outer"),
+        "Region": variables.get("Region"),
+    }
 
     try:
         resp = client.ulb().describe_vserver(d)
@@ -178,7 +184,10 @@ def create_vserver_05(client: utest.Client, variables: dict):
     action="DescribeVServer",
 )
 def describe_vserver_06(client: utest.Client, variables: dict):
-    d = {"ULBId": variables.get("ULBId_outer"), "Region": variables.get("Region")}
+    d = {
+        "ULBId": variables.get("ULBId_outer"),
+        "Region": variables.get("Region"),
+    }
 
     try:
         resp = client.ulb().describe_vserver(d)
@@ -196,7 +205,10 @@ def describe_vserver_06(client: utest.Client, variables: dict):
     action="DeleteULB",
 )
 def delete_ulb_07(client: utest.Client, variables: dict):
-    d = {"ULBId": variables.get("ULBId_outer"), "Region": variables.get("Region")}
+    d = {
+        "ULBId": variables.get("ULBId_outer"),
+        "Region": variables.get("Region"),
+    }
 
     try:
         resp = client.ulb().delete_ulb(d)

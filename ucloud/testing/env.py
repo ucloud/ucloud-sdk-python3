@@ -25,4 +25,4 @@ def pre_check_env():
     """
     assert os.getenv("UCLOUD_PUBLIC_KEY"), "invalid public key"
     assert os.getenv("UCLOUD_PRIVATE_KEY"), "invalid private key"
-    assert os.getenv("UCLOUD_REGION"), "invalid region"
+    assert os.getenv("UCLOUD_PROJECT_ID"), "invalid region"

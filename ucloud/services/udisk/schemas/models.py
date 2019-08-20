@@ -21,6 +21,7 @@ class UDiskDataSetSchema(schema.ResponseSchema):
         "DeviceName": fields.Str(required=False, load_from="DeviceName"),
         "DiskType": fields.Str(required=False, load_from="DiskType"),
         "ExpiredTime": fields.Int(required=False, load_from="ExpiredTime"),
+        "IsBoot": fields.Str(required=False, load_from="IsBoot"),
         "IsExpire": fields.Str(required=False, load_from="IsExpire"),
         "Name": fields.Str(required=False, load_from="Name"),
         "Size": fields.Int(required=False, load_from="Size"),
@@ -47,7 +48,8 @@ class UDiskPriceDataSetSchema(schema.ResponseSchema):
     fields = {
         "ChargeName": fields.Str(required=False, load_from="ChargeName"),
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "Price": fields.Float(required=False, load_from="Price"),
+        "OriginalPrice": fields.Int(required=False, load_from="OriginalPrice"),
+        "Price": fields.Int(required=False, load_from="Price"),
     }
 
 

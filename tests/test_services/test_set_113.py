@@ -31,7 +31,11 @@ def test_set_113(client: utest.Client, variables: dict):
     action="CreateUFSVolume",
 )
 def create_ufs_volume_00(client: utest.Client, variables: dict):
-    d = {"Zone": variables.get("Zone"), "Size": 1024, "Region": variables.get("Region")}
+    d = {
+        "Zone": variables.get("Zone"),
+        "Size": 1024,
+        "Region": variables.get("Region"),
+    }
 
     try:
         resp = client.invoke("CreateUFSVolume", d)
@@ -117,7 +121,10 @@ def describe_ufs_volume_03(client: utest.Client, variables: dict):
     action="ClearUFSVolumeWhiteList",
 )
 def clear_ufs_volume_white_list_04(client: utest.Client, variables: dict):
-    d = {"VolumeId": variables.get("Volume_Id"), "Region": variables.get("Region")}
+    d = {
+        "VolumeId": variables.get("Volume_Id"),
+        "Region": variables.get("Region"),
+    }
 
     try:
         resp = client.invoke("ClearUFSVolumeWhiteList", d)
@@ -205,7 +212,10 @@ def describe_ufs_volume_07(client: utest.Client, variables: dict):
     action="RemoveUFSVolume",
 )
 def remove_ufs_volume_08(client: utest.Client, variables: dict):
-    d = {"VolumeId": variables.get("Volume_Id"), "Region": variables.get("Region")}
+    d = {
+        "VolumeId": variables.get("Volume_Id"),
+        "Region": variables.get("Region"),
+    }
 
     try:
         resp = client.invoke("RemoveUFSVolume", d)

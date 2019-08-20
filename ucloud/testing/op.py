@@ -18,13 +18,13 @@ def ne(value, expected):
 def gt(value, expected):
     """ value is greater than expected
     """
-    assert value > expected
+    assert float(value) > float(expected)
 
 
 def ge(value, expected):
     """ value is greater than or equal to expected
     """
-    assert value >= expected
+    assert float(value) >= float(expected)
 
 
 def abs_eq(value, expected):
@@ -36,13 +36,13 @@ def abs_eq(value, expected):
 def lt(value, expected):
     """ value is less than excepted
     """
-    assert value < expected
+    assert float(value) < float(expected)
 
 
 def le(value, expected):
     """ value is less than or equal to excepted
     """
-    assert value <= expected
+    assert float(value) <= float(expected)
 
 
 def str_eq(value, expected):
@@ -95,14 +95,12 @@ def len_le(value, expected):
 def contains(value, expected):
     """ value is contains expected
     """
-    assert isinstance(value, list)
     assert expected in value
 
 
 def contained_by(value, expected):
     """ value is contained by expected
     """
-    assert isinstance(expected, list)
     assert value in expected
 
 

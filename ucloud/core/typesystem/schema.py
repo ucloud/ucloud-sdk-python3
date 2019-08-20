@@ -1,5 +1,5 @@
 import logging
-from ucloud.core.typesystem import abstract, fields, params
+from ucloud.core.typesystem import abstract
 from ucloud.core.exc import ValidationException
 from ucloud.core.utils import compact
 
@@ -90,7 +90,7 @@ class RequestSchema(Schema):
             )
 
         result = super(RequestSchema, self).dumps(d, name=name, **kwargs)
-        return params.encode(result)
+        return result
 
 
 class ResponseSchema(Schema):
