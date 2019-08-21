@@ -9,7 +9,7 @@ if PY3:
 else:
     import types
 
-    str = unicode
+    str = unicode  # noqa: F821
     string_types = types.StringTypes
 
     from collections import Callable
