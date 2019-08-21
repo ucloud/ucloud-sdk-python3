@@ -125,7 +125,9 @@ def create_udb_instance_03(client: utest.Client, variables: dict):
             variables.get("GroupName"),
             "GroupId",
         ),
-        "Name": funcs.concat(variables.get("DBName"), variables.get("DBTypeId")),
+        "Name": funcs.concat(
+            variables.get("DBName"), variables.get("DBTypeId")
+        ),
         "MemoryLimit": variables.get("MemoryLimit"),
         "InstanceType": variables.get("InstanceType"),
         "InstanceMode": variables.get("InstanceMode"),

@@ -3,7 +3,7 @@ UCloud SDK Python 3
 
 UCloud SDK is a Python client library for accessing the UCloud API.
 
-This client can run on Linux, macOS and Windows. It requires Python 3.5 and above.
+This client can run on Linux, macOS and Windows.
 
 - Website: https://www.ucloud.cn/
 - Free software: Apache 2.0 license

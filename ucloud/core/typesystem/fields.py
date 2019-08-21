@@ -4,6 +4,7 @@ import collections
 
 from ucloud.core.typesystem import abstract
 from ucloud.core.exc import ValidationException
+from ucloud.core.utils.compat import str
 
 
 class List(abstract.Field):

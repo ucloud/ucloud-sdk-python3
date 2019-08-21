@@ -9,7 +9,8 @@ class UMemPriceSetSchema(schema.ResponseSchema):
 
     fields = {
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "Price": fields.Float(required=False, load_from="Price"),
+        "OriginalPrice": fields.Int(required=False, load_from="OriginalPrice"),
+        "Price": fields.Int(required=False, load_from="Price"),
     }
 
 
@@ -47,6 +48,17 @@ class UMemSpaceSetSchema(schema.ResponseSchema):
     }
 
 
+class PriceDataSetSchema(schema.ResponseSchema):
+    """ PriceDataSet - 升降级价格
+    """
+
+    fields = {
+        "CustomPrice": fields.Int(required=False, load_from="CustomPrice"),
+        "PurchaseValue": fields.Int(required=False, load_from="PurchaseValue"),
+        "TotalPrice": fields.Int(required=False, load_from="TotalPrice"),
+    }
+
+
 class UMemcacheGroupSetSchema(schema.ResponseSchema):
     """ UMemcacheGroupSet - DescribeUMemcacheGroup
     """
@@ -77,7 +89,8 @@ class UMemcachePriceSetSchema(schema.ResponseSchema):
 
     fields = {
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "Price": fields.Float(required=False, load_from="Price"),
+        "OriginalPrice": fields.Int(required=False, load_from="OriginalPrice"),
+        "Price": fields.Int(required=False, load_from="Price"),
     }
 
 
@@ -140,5 +153,6 @@ class URedisPriceSetSchema(schema.ResponseSchema):
 
     fields = {
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "Price": fields.Float(required=False, load_from="Price"),
+        "OriginalPrice": fields.Int(required=True, load_from="OriginalPrice"),
+        "Price": fields.Int(required=False, load_from="Price"),
     }

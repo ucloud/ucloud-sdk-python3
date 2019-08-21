@@ -641,12 +641,12 @@ class DescribeUDBInstanceRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "ClassType": fields.Str(required=True, dump_to="ClassType"),
+        "ClassType": fields.Str(required=False, dump_to="ClassType"),
         "DBId": fields.Str(required=False, dump_to="DBId"),
         "IncludeSlaves": fields.Bool(required=False, dump_to="IncludeSlaves"),
         "IsInUDBC": fields.Bool(required=False, dump_to="IsInUDBC"),
-        "Limit": fields.Int(required=True, dump_to="Limit"),
-        "Offset": fields.Int(required=True, dump_to="Offset"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "UDBCId": fields.Str(required=False, dump_to="UDBCId"),
@@ -814,7 +814,7 @@ class DescribeUDBInstancePriceRequestSchema(schema.RequestSchema):
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SSDType": fields.Str(required=False, dump_to="SSDType"),
-        "UseSSD": fields.Bool(required=False, dump_to="UseSSD"),
+        "UseSSD": fields.Str(required=False, dump_to="UseSSD"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
@@ -885,7 +885,7 @@ class DescribeUDBInstanceUpgradePriceResponseSchema(schema.ResponseSchema):
     """ DescribeUDBInstanceUpgradePrice - 获取UDB实例升降级价格信息
     """
 
-    fields = {"Price": fields.Float(required=False, load_from="Price")}
+    fields = {"Price": fields.Int(required=False, load_from="Price")}
 
 
 """
@@ -1004,6 +1004,7 @@ class DescribeUDBTypeRequestSchema(schema.RequestSchema):
     """
 
     fields = {
+        "BackupZone": fields.Str(required=False, dump_to="BackupZone"),
         "DBClusterType": fields.Str(required=False, dump_to="DBClusterType"),
         "DiskType": fields.Str(required=False, dump_to="DiskType"),
         "InstanceMode": fields.Str(required=False, dump_to="InstanceMode"),
@@ -1017,9 +1018,11 @@ class DescribeUDBTypeResponseSchema(schema.ResponseSchema):
     """
 
     fields = {
+        "Action": fields.Str(required=True, load_from="Action"),
         "DataSet": fields.List(
             models.UDBTypeSetSchema(), required=False, load_from="DataSet"
-        )
+        ),
+        "RetCode": fields.Int(required=True, load_from="RetCode"),
     }
 
 
@@ -1203,7 +1206,7 @@ class ResizeUDBInstanceRequestSchema(schema.RequestSchema):
         "InstanceMode": fields.Str(required=False, dump_to="InstanceMode"),
         "InstanceType": fields.Str(required=False, dump_to="InstanceType"),
         "MemoryLimit": fields.Int(required=True, dump_to="MemoryLimit"),
-        "ProjectId": fields.Int(required=False, dump_to="ProjectId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SSDType": fields.Str(required=False, dump_to="SSDType"),
         "StartAfterUpgrade": fields.Bool(

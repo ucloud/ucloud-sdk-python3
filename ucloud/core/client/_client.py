@@ -5,6 +5,7 @@ import sys
 from ucloud import version
 from ucloud.core.client._cfg import Config
 from ucloud.core.transport import Transport, RequestsTransport, Request
+from ucloud.core.typesystem import encoder
 from ucloud.core.utils import log
 from ucloud.core.utils.middleware import Middleware
 from ucloud.core import auth, exc
@@ -102,11 +103,13 @@ class Client:
         return resp
 
     def _build_http_request(self, args: dict) -> Request:
-        payload = {
+        config = {
             "Region": self.config.region,
             "ProjectId": self.config.project_id,
         }
+        payload = {k: v for k, v in config.items() if v is not None}
         payload.update({k: v for k, v in args.items() if v is not None})
+        payload = encoder.encode(payload)
         payload["Signature"] = self.credential.verify_ac(payload)
 
         return Request(

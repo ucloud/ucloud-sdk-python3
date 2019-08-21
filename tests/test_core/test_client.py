@@ -4,7 +4,6 @@ import logging
 
 from ucloud.client import Client
 from ucloud.core import exc
-from ucloud.testing import env
 from ucloud.testing.mock import MockedTransport
 
 logger = logging.getLogger(__name__)
@@ -14,8 +13,7 @@ logger = logging.getLogger(__name__)
 def client():
     return Client(
         {
-            "region": os.getenv("UCLOUD_REGION"),
-            "project_id": os.getenv("UCLOUD_PROJECT_ID"),
+            "region": "cn-bj2",
             "public_key": "foo",
             "private_key": "foo",
             "timeout": 10,
@@ -29,13 +27,7 @@ def transport():
     return MockedTransport()
 
 
-class TestAccClient:
-    def test_pre_check(self, client):
-        assert str(client)
-        assert client.config.to_dict()
-        assert client.credential.to_dict()
-        env.pre_check_env()
-
+class TestClient:
     def test_client_invoke(self, client, transport):
         transport.mock_data(lambda _: {"RetCode": 0, "Action": "Foo"})
         client.transport = transport

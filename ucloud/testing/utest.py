@@ -22,7 +22,6 @@ class Step:
         **kwargs
     ):
         """ Step is the test step in a test scenario
-
         :param invoker: invoker is a callable function
         :param max_retries: the maximum retry number by the `retry_for` exception,
                             it will resolve the flaky testing case
@@ -141,8 +140,12 @@ class Scenario:
         return deco
 
     def run(self, client):
-        for step in self.steps:
+        for i, step in enumerate(self.steps):
             try:
+                action = step.extras.get("action", "unknown")
+                client.logger.info(
+                    "running {} step {} {}".format(self.id, i + 1, action)
+                )
                 step.run(client, self.variables)
             except CompareError as e:
                 self.errors.append(e)
@@ -160,10 +163,6 @@ class Scenario:
 def value_at_path(d: dict, path: str):
     """ access value by object path
 
-    >>> d = {"Data": [{"UHostId": "foo"}, {"UHostId": "bar"}]}
-    >>> value_at_path(d, "Data.1.UHostId")
-    'bar'
-
     :param d: dict or list of dict
     :param path: object path like `Data.1.UHostId`
     :return: any value access by path
@@ -180,16 +179,16 @@ def value_at_path(d: dict, path: str):
                 return
 
             if len(result) <= int(key):
-                msg = "{} not found".format(".".join(indices[:i]))
+                msg = "{} not found".format(".".join(indices[: i + 1]))
                 raise ValueNotFoundError(msg)
 
             result = result[int(key)]
             continue
 
         if isinstance(result, dict):
-            result = result.get(key)
+            result = {k.lower(): v for k, v in result.items()}.get(key.lower())
             if result is None:
-                msg = "{} not found".format(".".join(indices[:i]))
+                msg = "{} not found".format(".".join(indices[: i + 1]))
                 raise ValueNotFoundError(msg)
             continue
 

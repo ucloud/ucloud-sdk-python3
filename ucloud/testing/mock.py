@@ -17,7 +17,7 @@ class MockedTransport(Transport):
 
         for handler in self.client_handler:
             payload = handler(req.payload())
-            resp.content = json.dumps(payload).encode('utf-8')
+            resp.content = json.dumps(payload).encode("utf-8")
 
         return resp
 

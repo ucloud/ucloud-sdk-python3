@@ -1,7 +1,7 @@
 import logging
-from ucloud.core.typesystem import abstract, fields, params
+from ucloud.core.typesystem import abstract
 from ucloud.core.exc import ValidationException
-from ucloud.core.utils import compact
+from ucloud.core.utils import compat
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +29,7 @@ class Schema(abstract.Schema):
                 if field.default is None:
                     continue
 
-                if isinstance(field.default, compact.Callable):
+                if isinstance(field.default, compat.Callable):
                     v = field.default()
                 else:
                     v = field.default
@@ -61,7 +61,7 @@ class Schema(abstract.Schema):
                 if field.default is None:
                     continue
 
-                if isinstance(field.default, compact.Callable):
+                if isinstance(field.default, compat.Callable):
                     v = field.default()
                 else:
                     v = field.default
@@ -90,7 +90,7 @@ class RequestSchema(Schema):
             )
 
         result = super(RequestSchema, self).dumps(d, name=name, **kwargs)
-        return params.encode(result)
+        return result
 
 
 class ResponseSchema(Schema):

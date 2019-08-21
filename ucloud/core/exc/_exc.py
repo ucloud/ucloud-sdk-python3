@@ -1,6 +1,6 @@
 import collections
 
-from ucloud.core.utils import compact
+from ucloud.core.utils import compat
 
 
 class UCloudException(Exception):
@@ -39,7 +39,7 @@ class RetryTimeoutException(UCloudException):
 
 class ValidationException(UCloudException):
     def __init__(self, e=None):
-        if isinstance(e, compact.string_types):
+        if isinstance(e, compat.string_types):
             self.errors = [e]
         elif isinstance(e, collections.Iterable):
             self.errors = e or []

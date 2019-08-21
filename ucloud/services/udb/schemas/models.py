@@ -151,7 +151,7 @@ class UDBInstancePriceSetSchema(schema.ResponseSchema):
 
     fields = {
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "Price": fields.Float(required=False, load_from="Price"),
+        "Price": fields.Int(required=False, load_from="Price"),
     }
 
 

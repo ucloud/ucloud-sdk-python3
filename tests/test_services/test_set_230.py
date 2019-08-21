@@ -87,7 +87,9 @@ def allocate_eip_01(client: utest.Client, variables: dict):
     validators=lambda variables: [("str_eq", "RetCode", 0)],
     action="AssociateEIPWithShareBandwidth",
 )
-def associate_eip_with_share_bandwidth_02(client: utest.Client, variables: dict):
+def associate_eip_with_share_bandwidth_02(
+    client: utest.Client, variables: dict
+):
     d = {
         "ShareBandwidthId": variables.get("sbw_id"),
         "Region": variables.get("Region"),
@@ -107,7 +109,10 @@ def associate_eip_with_share_bandwidth_02(client: utest.Client, variables: dict)
     retry_interval=10,
     startup_delay=0,
     fast_fail=False,
-    validators=lambda variables: [("str_eq", "RetCode", 0), ("gt", "TotalPrice", 0)],
+    validators=lambda variables: [
+        ("str_eq", "RetCode", 0),
+        ("gt", "TotalPrice", 0),
+    ],
     action="DescribeShareBandwidthPrice",
 )
 def describe_share_bandwidth_price_03(client: utest.Client, variables: dict):
@@ -240,7 +245,9 @@ def describe_eip_07(client: utest.Client, variables: dict):
     validators=lambda variables: [("str_eq", "RetCode", 0)],
     action="DisassociateEIPWithShareBandwidth",
 )
-def disassociate_eip_with_share_bandwidth_08(client: utest.Client, variables: dict):
+def disassociate_eip_with_share_bandwidth_08(
+    client: utest.Client, variables: dict
+):
     d = {
         "ShareBandwidthId": variables.get("sbw_id"),
         "Region": variables.get("Region"),

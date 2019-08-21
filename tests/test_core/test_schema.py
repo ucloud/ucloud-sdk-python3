@@ -2,25 +2,9 @@ import logging
 import pytest
 
 from ucloud.core import exc
-from ucloud.core.typesystem import fields, schema, params
+from ucloud.core.typesystem import fields, schema
 
 logger = logging.getLogger(__name__)
-
-
-@pytest.mark.parametrize(
-    "input_vector,expected",
-    [
-        ({'foo': "bar"}, {'foo': "bar"}),
-        ({'foo': 42}, {'foo': 42}),
-        ({'foo': 42.42}, {'foo': 42.42}),
-        ({'IP': ['127.0.0.1']}, {'IP.0': "127.0.0.1"}),
-        ({'IP': ["foo", "bar"]}, {'IP.0': "foo", 'IP.1': "bar"}),
-        ({'IP': [{"foo": "bar"}]}, {'IP.0.foo': "bar"}),
-    ]
-)
-def test_params_encode(input_vector, expected):
-    result = params.encode(input_vector)
-    assert result == expected
 
 
 def test_request_basic():
@@ -46,11 +30,11 @@ def test_request_array():
 
     # basic
     d = Schema().dumps({"IP": ["127.0.0.1"]})
-    assert d == {"IP.0": "127.0.0.1"}
+    assert d == {"IP": ["127.0.0.1"]}
 
     # default by zero value
     d = Schema().dumps({})
-    assert d == {}
+    assert d == {"IP": []}
 
 
 def test_request_array_with_default():
@@ -59,11 +43,11 @@ def test_request_array_with_default():
 
     # basic
     d = Schema().dumps({"IP": ["192.168.0.1"]})
-    assert d == {"IP.0": "192.168.0.1"}
+    assert d == {"IP": ["192.168.0.1"]}
 
     # default by default value
     d = Schema().dumps({})
-    assert d == {"IP.0": "127.0.0.1"}
+    assert d == {"IP": ["127.0.0.1"]}
 
 
 def test_request_object_model():
@@ -75,7 +59,7 @@ def test_request_object_model():
 
     # success
     d = NestedObjectSchema().dumps({"Interface": {"IP": ["127.0.0.1"]}})
-    assert d == {"Interface.IP.0": "127.0.0.1"}
+    assert d == {"Interface": {"IP": ["127.0.0.1"]}}
 
     # dumps
     with pytest.raises(exc.ValidationException):
@@ -96,7 +80,7 @@ def test_request_array_model_with_default():
 
     # the top-level default value will overwrite nested default value
     d = NestedArraySchema().dumps({})
-    assert d == {"Interface.0.IP.0": "192.168.1.1"}
+    assert d == {"Interface": [{"IP": ["192.168.1.1"]}]}
 
     # nested value
     d = {
@@ -107,9 +91,10 @@ def test_request_array_model_with_default():
     }
     d = NestedArraySchema().dumps(d)
     assert d == {
-        "Interface.0.IP.0": "127.0.0.1",
-        "Interface.0.IP.1": "192.168.0.1",
-        "Interface.1.IP.0": "172.16.0.1",
+        "Interface": [
+            {"IP": ["127.0.0.1", "192.168.0.1"]},
+            {"IP": ["172.16.0.1"]},
+        ]
     }
 
 

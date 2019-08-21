@@ -293,7 +293,10 @@ class DescribeUMemUpgradePriceResponseSchema(schema.ResponseSchema):
     """ DescribeUMemUpgradePrice - 获取UMem升级价格信息
     """
 
-    fields = {"Price": fields.Float(required=False, load_from="Price")}
+    fields = {
+        "DataSet": models.PriceDataSetSchema(),
+        "Price": fields.Int(required=False, load_from="Price"),
+    }
 
 
 """
@@ -390,7 +393,10 @@ class DescribeUMemcacheUpgradePriceResponseSchema(schema.ResponseSchema):
     """ DescribeUMemcacheUpgradePrice - 获取umemcache升级价格信息
     """
 
-    fields = {"Price": fields.Float(required=False, load_from="Price")}
+    fields = {
+        "DataSet": models.PriceDataSetSchema(),
+        "Price": fields.Int(required=False, load_from="Price"),
+    }
 
 
 """
@@ -438,7 +444,7 @@ class DescribeURedisBackupURLRequestSchema(schema.RequestSchema):
 
     fields = {
         "BackupId": fields.Str(required=True, dump_to="BackupId"),
-        "GroupId": fields.Str(required=True, dump_to="GroupId"),
+        "GroupId": fields.Str(required=False, dump_to="GroupId"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "RegionFlag": fields.Bool(required=False, dump_to="RegionFlag"),
@@ -552,7 +558,10 @@ class DescribeURedisUpgradePriceResponseSchema(schema.ResponseSchema):
     """ DescribeURedisUpgradePrice - 获取uredis升级价格信息
     """
 
-    fields = {"Price": fields.Float(required=False, load_from="Price")}
+    fields = {
+        "DataSet": models.PriceDataSetSchema(),
+        "Price": fields.Int(required=False, load_from="Price"),
+    }
 
 
 """

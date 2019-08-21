@@ -3,6 +3,7 @@ import logging
 import json as json_mod
 
 from ucloud.core.transport import utils
+from ucloud.core.utils.compat import str
 
 logger = logging.getLogger(__name__)
 
