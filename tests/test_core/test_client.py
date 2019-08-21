@@ -14,7 +14,6 @@ def client():
     return Client(
         {
             "region": "cn-bj2",
-            "project_id": os.getenv("UCLOUD_PROJECT_ID"),
             "public_key": "foo",
             "private_key": "foo",
             "timeout": 10,

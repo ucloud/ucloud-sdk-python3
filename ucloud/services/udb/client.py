@@ -231,7 +231,7 @@ class UDBClient(Client):
         - **Quantity** (int) - 购买时长，默认值1
         - **SSDType** (str) - SSD类型，可选值为"SATA"、"PCI-E"，如果UseSSD为true ，则必选
         - **SubnetId** (str) - 子网ID
-        - **Tag** (str) - 
+        - **Tag** (str) - 实例所在的业务组名称
         - **UDBCId** (str) - 专区ID信息（如果这个参数存在这说明是在专区中创建DB）
         - **UseSSD** (bool) - 是否使用SSD，默认为false。目前主要可用区、海外机房、新机房只提供SSD资源，非SSD资源不再提供。
         - **VPCId** (str) - VPC的ID
@@ -613,7 +613,7 @@ class UDBClient(Client):
         **Request**
 
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
-        - **BackupId** (int) - (Required) DB实例备份ID
+        - **BackupId** (int) - (Required) DB实例binlog备份ID，可以从DescribeUDBLogPackage结果当中获得
         - **DBId** (str) - (Required) DB实例Id
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         
@@ -640,14 +640,14 @@ class UDBClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
-        - **ClassType** (str) - (Required) DB种类，如果是列表操作，则需要指定,不区分大小写，其取值如下：mysql: SQL；mongo: NOSQL；postgresql: postgresql
-        - **Limit** (int) - (Required) 分页显示数量，列表操作则指定
-        - **Offset** (int) - (Required) 分页显示起始偏移位置，列表操作则指定
-        - **DBId** (str) - DB实例id，如果指定则获取描述，否则为列表操作， 指定Offset/Limit/ClassType DBId可通过DescribeUDBInstance获取
+        - **ClassType** (str) - DB种类，如果是列表操作，则需要指定,不区分大小写，其取值如下：mysql: SQL；mongo: NOSQL；postgresql: postgresql
+        - **DBId** (str) - DB实例id，如果指定则获取单个db实例的描述，否则为列表操作。 指定DBId时无需填写ClassType、Offset、Limit
         - **IncludeSlaves** (bool) - 当只获取这个特定DBId的信息时，如果有该选项，那么把这个DBId实例的所有从库信息一起拉取并返回
         - **IsInUDBC** (bool) - 是否查看专区里面DB
+        - **Limit** (int) - 分页显示数量，列表操作时必填
+        - **Offset** (int) - 分页显示起始偏移位置，列表操作时必填
         - **UDBCId** (str) - IsInUDBC为True,UDBCId为空，说明查看整个可用区的专区的db，如果UDBId不为空则只查看此专区下面的db
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **Zone** (str) - 可用区，不填时默认全部可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         
         **Response**
 
@@ -882,7 +882,7 @@ class UDBClient(Client):
         - **InstanceMode** (str) - 实例的部署类型。可选值为：Normal: 普通单点实例，Slave: 从库实例,HA: 高可用部署实例，默认是Normal
         - **Quantity** (int) - DB购买多少个"计费时间单位"，默认值为1。比如：买2个月，Quantity就是2。如果计费单位是“按月”，并且Quantity为0，表示“购买到月底”
         - **SSDType** (str) - SSD类型，可选值为"SATA"、"PCI-E"，如果UseSSD为true ，则必填
-        - **UseSSD** (bool) - 是否使用SSD，默认为false
+        - **UseSSD** (str) - 是否使用SSD，只能填true或false，默认为false
         
         **Response**
 
@@ -893,7 +893,7 @@ class UDBClient(Client):
         **UDBInstancePriceSet** 
         
         - **ChargeType** (str) - Year， Month， Dynamic，Trial
-        - **Price** (float) - 价格，单位为分，保留小数点后两位
+        - **Price** (int) - 价格，单位为分
 
         """
         # build request
@@ -947,7 +947,7 @@ class UDBClient(Client):
         
         **Response**
 
-        - **Price** (float) - 价格，单位分
+        - **Price** (int) - 价格，单位为分
         
         """
         # build request
@@ -1094,13 +1094,16 @@ class UDBClient(Client):
 
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **BackupZone** (str) - 跨可用区高可用DB的备库所在区域，仅当该可用区支持跨可用区高可用时填入。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **DBClusterType** (str) - DB实例类型，如mysql，sqlserver，mongo，postgresql
         - **DiskType** (str) - 返回支持某种磁盘类型的DB类型。如果没传，则表示任何磁盘类型均可。
         - **InstanceMode** (str) - 返回支持某种实例类型的DB类型。如果没传，则表示任何实例类型均可。normal:单点,ha:高可用,sharded_cluster:分片集群
         
         **Response**
 
+        - **Action** (str) - 操作名称
         - **DataSet** (list) - 见 **UDBTypeSet** 模型定义
+        - **RetCode** (int) - 返回码
         
         **Response Model**
         
@@ -1275,7 +1278,7 @@ class UDBClient(Client):
 
         **Request**
 
-        - **ProjectId** (int) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **DBId** (str) - (Required) 实例的Id
         - **DiskSpace** (int) - (Required) 磁盘空间(GB), 暂时支持20G-3000G
@@ -1468,9 +1471,9 @@ class UDBClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **GroupId** (int) - (Required) 配置参数组id，使用DescribeUDBParamGroup获得
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
-        - **Description** (str) - 参数组的描述
+        - **Description** (str) - 配置文件的描述，不传时认为不修改
         - **Key** (str) - 参数名称（与Value配合使用）
-        - **Name** (str) - 参数组的名字
+        - **Name** (str) - 配置文件的名字，不传时认为不修改名字，传了则不能为空
         - **RegionFlag** (bool) - 该配置文件是否是地域级别配置文件，默认是false
         - **Value** (str) - 参数值（与Key配合使用）
         

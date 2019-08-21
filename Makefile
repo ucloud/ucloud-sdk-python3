@@ -47,7 +47,7 @@ lint:
 	@flake8 --exclude=ucloud/services ucloud --ignore=E501,F401
 
 fmt:
-	@black -l 80 ucloud tests
+	@black -l 80 ucloud tests examples
 
 dev:
 	@pip install -e .[dev]

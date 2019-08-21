@@ -162,9 +162,7 @@ class Scenario:
 
 def value_at_path(d: dict, path: str):
     """ access value by object path
-    >>> d = {"Data": [{"UHostId": "foo"}, {"UHostId": "bar"}]}
-    >>> value_at_path(d, "Data.1.UHostId")
-    'bar'
+
     :param d: dict or list of dict
     :param path: object path like `Data.1.UHostId`
     :return: any value access by path
