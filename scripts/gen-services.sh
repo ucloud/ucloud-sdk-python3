@@ -114,3 +114,11 @@ ucloud-model sdk apis --lang python3 --product VPC --type public --template ../u
 black ucloud/services/vpc
 python -m ucloud.services.vpc.client
 
+mkdir -p ./ucloud/services/usms/schemas
+touch ./ucloud/services/usms/__init__.py
+touch ./ucloud/services/usms/schemas/__init__.py
+ucloud-model sdk apis --lang python3 --product USMS --type public --template ../ucloud-api-model-v2/apisdk/lang/python/templates/schema.tpl --output ./ucloud/services/usms/schemas/apis.py
+ucloud-model sdk apis --lang python3 --product USMS --type public --template ../ucloud-api-model-v2/apisdk/lang/python/templates/model.tpl --output ./ucloud/services/usms/schemas/models.py
+ucloud-model sdk apis --lang python3 --product USMS --type public --template ../ucloud-api-model-v2/apisdk/lang/python/templates/client.tpl --output ./ucloud/services/usms/client.py
+black ucloud/services/usms
+python -m ucloud.services.usms.client

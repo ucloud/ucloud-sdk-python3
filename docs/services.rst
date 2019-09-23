@@ -67,6 +67,12 @@ UPHost
 .. autoclass:: ucloud.services.uphost.client.UPHostClient
    :members:
 
+USMS
+----
+
+.. autoclass:: ucloud.services.usms.client.USMSClient
+   :members:
+
 VPC
 ---
 

@@ -85,6 +85,13 @@ class Client(client.Client):
             self._config, self.transport, self.middleware, self.logger
         )
 
+    def usms(self):
+        from ucloud.services.usms.client import USMSClient
+
+        return USMSClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
     def vpc(self):
         from ucloud.services.vpc.client import VPCClient
 
