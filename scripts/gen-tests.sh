@@ -244,4 +244,10 @@ ucloud-model sdk test \
     --name 3279
 
 
+ucloud-model sdk test \
+    --lang python3 \
+    --template ../ucloud-api-model-v2/apisdk/lang/python/templates/testing.tpl \
+    --output tests/test_services/test_set_4079.py \
+    --name 4079
+
 black tests/test_services/*
