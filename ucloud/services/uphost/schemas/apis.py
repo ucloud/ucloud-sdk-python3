@@ -32,9 +32,7 @@ class CreatePHostRequestSchema(schema.RequestSchema):
         "Raid": fields.Str(required=False, dump_to="Raid"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Remark": fields.Str(required=False, dump_to="Remark"),
-        "SecurityGroupId": fields.Str(
-            required=False, dump_to="SecurityGroupId"
-        ),
+        "SecurityGroupId": fields.Str(required=False, dump_to="SecurityGroupId"),
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
         "Tag": fields.Str(required=False, dump_to="Tag"),
         "Type": fields.Str(required=False, dump_to="Type"),
@@ -47,11 +45,7 @@ class CreatePHostResponseSchema(schema.ResponseSchema):
     """ CreatePHost - 指定数据中心，根据资源使用量创建指定数量的UPHost物理云主机实例。
     """
 
-    fields = {
-        "PHostId": fields.List(
-            fields.Str(), required=False, load_from="PHostId"
-        )
-    }
+    fields = {"PHostId": fields.List(fields.Str(), required=False, load_from="PHostId")}
 
 
 """

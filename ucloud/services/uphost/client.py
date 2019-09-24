@@ -8,12 +8,8 @@ from ucloud.services.uphost.schemas import apis
 
 
 class UPHostClient(Client):
-    def __init__(
-        self, config: dict, transport=None, middleware=None, logger=None
-    ):
-        super(UPHostClient, self).__init__(
-            config, transport, middleware, logger
-        )
+    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
+        super(UPHostClient, self).__init__(config, transport, middleware, logger)
 
     def create_phost(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """ CreatePHost - 指定数据中心，根据资源使用量创建指定数量的UPHost物理云主机实例。
@@ -52,9 +48,7 @@ class UPHostClient(Client):
         resp = self.invoke("CreatePHost", d, **kwargs)
         return apis.CreatePHostResponseSchema().loads(resp)
 
-    def describe_phost(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
+    def describe_phost(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """ DescribePHost - 获取物理机详细信息
 
         **Request**
@@ -73,6 +67,13 @@ class UPHostClient(Client):
         
         **Response Model**
         
+        **PHostCPUSet** 
+        
+        - **CoreCount** (int) - CPU核数
+        - **Count** (int) - CPU个数
+        - **Frequence** (float) - CPU主频
+        - **Model** (str) - CPU型号
+
         **PHostDiskSet** 
         
         - **Count** (int) - 磁盘数量
@@ -80,13 +81,6 @@ class UPHostClient(Client):
         - **Name** (str) - 磁盘名称，sys/data
         - **Space** (int) - 单盘大小，单位GB
         - **Type** (str) - 磁盘属性
-
-        **PHostCPUSet** 
-        
-        - **CoreCount** (int) - CPU核数
-        - **Count** (int) - CPU个数
-        - **Frequence** (float) - CPU主频
-        - **Model** (str) - CPU型号
 
         **PHostIPSet** 
         
@@ -101,7 +95,7 @@ class UPHostClient(Client):
         **PHostSet** 
         
         - **AutoRenew** (str) - 自动续费
-        - **CPUSet** (list) - 见 **PHostCPUSet** 模型定义
+        - **CPUSet** (dict) - 见 **PHostCPUSet** 模型定义
         - **ChargeType** (str) - 计费模式，枚举值为： Year，按年付费； Month，按月付费； Dynamic，按需付费（需开启权限）； Trial，试用（需开启权限）默认为月付
         - **Cluster** (str) - 网络环境。枚举值：千兆：1G ，万兆：10G
         - **Components** (str) - 组件信息（暂不支持）
@@ -134,9 +128,7 @@ class UPHostClient(Client):
         resp = self.invoke("DescribePHost", d, **kwargs)
         return apis.DescribePHostResponseSchema().loads(resp)
 
-    def describe_phost_image(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
+    def describe_phost_image(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """ DescribePHostImage - 获取物理云主机镜像列表
 
         **Request**
@@ -172,9 +164,7 @@ class UPHostClient(Client):
         resp = self.invoke("DescribePHostImage", d, **kwargs)
         return apis.DescribePHostImageResponseSchema().loads(resp)
 
-    def describe_phost_tags(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
+    def describe_phost_tags(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """ DescribePHostTags - 获取物理机tag列表（业务组）
 
         **Request**
@@ -204,9 +194,7 @@ class UPHostClient(Client):
         resp = self.invoke("DescribePHostTags", d, **kwargs)
         return apis.DescribePHostTagsResponseSchema().loads(resp)
 
-    def get_phost_price(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
+    def get_phost_price(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """ GetPHostPrice - 获取物理机价格列表
 
         **Request**
@@ -240,9 +228,7 @@ class UPHostClient(Client):
         resp = self.invoke("GetPHostPrice", d, **kwargs)
         return apis.GetPHostPriceResponseSchema().loads(resp)
 
-    def modify_phost_info(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
+    def modify_phost_info(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """ ModifyPHostInfo - 更改物理机信息
 
         **Request**
@@ -268,9 +254,7 @@ class UPHostClient(Client):
         resp = self.invoke("ModifyPHostInfo", d, **kwargs)
         return apis.ModifyPHostInfoResponseSchema().loads(resp)
 
-    def poweroff_phost(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
+    def poweroff_phost(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """ PoweroffPHost - 断电物理云主机
 
         **Request**
@@ -316,9 +300,7 @@ class UPHostClient(Client):
         resp = self.invoke("RebootPHost", d, **kwargs)
         return apis.RebootPHostResponseSchema().loads(resp)
 
-    def reinstall_phost(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
+    def reinstall_phost(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """ ReinstallPHost - 重装物理机操作系统
 
         **Request**
@@ -371,9 +353,7 @@ class UPHostClient(Client):
         resp = self.invoke("StartPHost", d, **kwargs)
         return apis.StartPHostResponseSchema().loads(resp)
 
-    def terminate_phost(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
+    def terminate_phost(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """ TerminatePHost - 删除物理云主机
 
         **Request**
