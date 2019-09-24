@@ -4525,6 +4525,13 @@
 <li><p><strong>TotalCount</strong> (int) - 满足条件的PHost总数</p></li>
 </ul>
 <p><strong>Response Model</strong></p>
+<p><strong>PHostCPUSet</strong></p>
+<ul class="simple">
+<li><p><strong>CoreCount</strong> (int) - CPU核数</p></li>
+<li><p><strong>Count</strong> (int) - CPU个数</p></li>
+<li><p><strong>Frequence</strong> (float) - CPU主频</p></li>
+<li><p><strong>Model</strong> (str) - CPU型号</p></li>
+</ul>
 <p><strong>PHostDiskSet</strong></p>
 <ul class="simple">
 <li><p><strong>Count</strong> (int) - 磁盘数量</p></li>
@@ -4532,13 +4539,6 @@
 <li><p><strong>Name</strong> (str) - 磁盘名称，sys/data</p></li>
 <li><p><strong>Space</strong> (int) - 单盘大小，单位GB</p></li>
 <li><p><strong>Type</strong> (str) - 磁盘属性</p></li>
-</ul>
-<p><strong>PHostCPUSet</strong></p>
-<ul class="simple">
-<li><p><strong>CoreCount</strong> (int) - CPU核数</p></li>
-<li><p><strong>Count</strong> (int) - CPU个数</p></li>
-<li><p><strong>Frequence</strong> (float) - CPU主频</p></li>
-<li><p><strong>Model</strong> (str) - CPU型号</p></li>
 </ul>
 <p><strong>PHostIPSet</strong></p>
 <ul class="simple">
@@ -4553,7 +4553,7 @@
 <p><strong>PHostSet</strong></p>
 <ul class="simple">
 <li><p><strong>AutoRenew</strong> (str) - 自动续费</p></li>
-<li><p><strong>CPUSet</strong> (list) - 见 <strong>PHostCPUSet</strong> 模型定义</p></li>
+<li><p><strong>CPUSet</strong> (dict) - 见 <strong>PHostCPUSet</strong> 模型定义</p></li>
 <li><p><strong>ChargeType</strong> (str) - 计费模式，枚举值为： Year，按年付费； Month，按月付费； Dynamic，按需付费（需开启权限）； Trial，试用（需开启权限）默认为月付</p></li>
 <li><p><strong>Cluster</strong> (str) - 网络环境。枚举值：千兆：1G ，万兆：10G</p></li>
 <li><p><strong>Components</strong> (str) - 组件信息（暂不支持）</p></li>

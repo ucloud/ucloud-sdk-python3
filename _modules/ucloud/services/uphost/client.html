@@ -41,12 +41,8 @@
 
 
 <div class="viewcode-block" id="UPHostClient"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient">[docs]</a><span class="k">class</span> <span class="nc">UPHostClient</span><span class="p">(</span><span class="n">Client</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">transport</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">middleware</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span>
-    <span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">UPHostClient</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">config</span><span class="p">,</span> <span class="n">transport</span><span class="p">,</span> <span class="n">middleware</span><span class="p">,</span> <span class="n">logger</span>
-        <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">transport</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">middleware</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">UPHostClient</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">transport</span><span class="p">,</span> <span class="n">middleware</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span>
 
 <div class="viewcode-block" id="UPHostClient.create_phost"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.create_phost">[docs]</a>    <span class="k">def</span> <span class="nf">create_phost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; CreatePHost - 指定数据中心，根据资源使用量创建指定数量的UPHost物理云主机实例。</span>
@@ -85,9 +81,7 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;CreatePHost&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreatePHostResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="UPHostClient.describe_phost"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.describe_phost">[docs]</a>    <span class="k">def</span> <span class="nf">describe_phost</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<div class="viewcode-block" id="UPHostClient.describe_phost"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.describe_phost">[docs]</a>    <span class="k">def</span> <span class="nf">describe_phost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; DescribePHost - 获取物理机详细信息</span>
 
 <span class="sd">        **Request**</span>
@@ -106,6 +100,13 @@
 <span class="sd">        </span>
 <span class="sd">        **Response Model**</span>
 <span class="sd">        </span>
+<span class="sd">        **PHostCPUSet** </span>
+<span class="sd">        </span>
+<span class="sd">        - **CoreCount** (int) - CPU核数</span>
+<span class="sd">        - **Count** (int) - CPU个数</span>
+<span class="sd">        - **Frequence** (float) - CPU主频</span>
+<span class="sd">        - **Model** (str) - CPU型号</span>
+
 <span class="sd">        **PHostDiskSet** </span>
 <span class="sd">        </span>
 <span class="sd">        - **Count** (int) - 磁盘数量</span>
@@ -113,13 +114,6 @@
 <span class="sd">        - **Name** (str) - 磁盘名称，sys/data</span>
 <span class="sd">        - **Space** (int) - 单盘大小，单位GB</span>
 <span class="sd">        - **Type** (str) - 磁盘属性</span>
-
-<span class="sd">        **PHostCPUSet** </span>
-<span class="sd">        </span>
-<span class="sd">        - **CoreCount** (int) - CPU核数</span>
-<span class="sd">        - **Count** (int) - CPU个数</span>
-<span class="sd">        - **Frequence** (float) - CPU主频</span>
-<span class="sd">        - **Model** (str) - CPU型号</span>
 
 <span class="sd">        **PHostIPSet** </span>
 <span class="sd">        </span>
@@ -134,7 +128,7 @@
 <span class="sd">        **PHostSet** </span>
 <span class="sd">        </span>
 <span class="sd">        - **AutoRenew** (str) - 自动续费</span>
-<span class="sd">        - **CPUSet** (list) - 见 **PHostCPUSet** 模型定义</span>
+<span class="sd">        - **CPUSet** (dict) - 见 **PHostCPUSet** 模型定义</span>
 <span class="sd">        - **ChargeType** (str) - 计费模式，枚举值为： Year，按年付费； Month，按月付费； Dynamic，按需付费（需开启权限）； Trial，试用（需开启权限）默认为月付</span>
 <span class="sd">        - **Cluster** (str) - 网络环境。枚举值：千兆：1G ，万兆：10G</span>
 <span class="sd">        - **Components** (str) - 组件信息（暂不支持）</span>
@@ -167,9 +161,7 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribePHost&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribePHostResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="UPHostClient.describe_phost_image"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.describe_phost_image">[docs]</a>    <span class="k">def</span> <span class="nf">describe_phost_image</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<div class="viewcode-block" id="UPHostClient.describe_phost_image"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.describe_phost_image">[docs]</a>    <span class="k">def</span> <span class="nf">describe_phost_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; DescribePHostImage - 获取物理云主机镜像列表</span>
 
 <span class="sd">        **Request**</span>
@@ -205,9 +197,7 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribePHostImage&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribePHostImageResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="UPHostClient.describe_phost_tags"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.describe_phost_tags">[docs]</a>    <span class="k">def</span> <span class="nf">describe_phost_tags</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<div class="viewcode-block" id="UPHostClient.describe_phost_tags"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.describe_phost_tags">[docs]</a>    <span class="k">def</span> <span class="nf">describe_phost_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; DescribePHostTags - 获取物理机tag列表（业务组）</span>
 
 <span class="sd">        **Request**</span>
@@ -237,9 +227,7 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribePHostTags&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribePHostTagsResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="UPHostClient.get_phost_price"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.get_phost_price">[docs]</a>    <span class="k">def</span> <span class="nf">get_phost_price</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<div class="viewcode-block" id="UPHostClient.get_phost_price"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.get_phost_price">[docs]</a>    <span class="k">def</span> <span class="nf">get_phost_price</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; GetPHostPrice - 获取物理机价格列表</span>
 
 <span class="sd">        **Request**</span>
@@ -273,9 +261,7 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetPHostPrice&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetPHostPriceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="UPHostClient.modify_phost_info"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.modify_phost_info">[docs]</a>    <span class="k">def</span> <span class="nf">modify_phost_info</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<div class="viewcode-block" id="UPHostClient.modify_phost_info"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.modify_phost_info">[docs]</a>    <span class="k">def</span> <span class="nf">modify_phost_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; ModifyPHostInfo - 更改物理机信息</span>
 
 <span class="sd">        **Request**</span>
@@ -301,9 +287,7 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ModifyPHostInfo&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyPHostInfoResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="UPHostClient.poweroff_phost"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.poweroff_phost">[docs]</a>    <span class="k">def</span> <span class="nf">poweroff_phost</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<div class="viewcode-block" id="UPHostClient.poweroff_phost"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.poweroff_phost">[docs]</a>    <span class="k">def</span> <span class="nf">poweroff_phost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; PoweroffPHost - 断电物理云主机</span>
 
 <span class="sd">        **Request**</span>
@@ -349,9 +333,7 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;RebootPHost&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">RebootPHostResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="UPHostClient.reinstall_phost"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.reinstall_phost">[docs]</a>    <span class="k">def</span> <span class="nf">reinstall_phost</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<div class="viewcode-block" id="UPHostClient.reinstall_phost"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.reinstall_phost">[docs]</a>    <span class="k">def</span> <span class="nf">reinstall_phost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; ReinstallPHost - 重装物理机操作系统</span>
 
 <span class="sd">        **Request**</span>
@@ -404,9 +386,7 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;StartPHost&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">StartPHostResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="UPHostClient.terminate_phost"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.terminate_phost">[docs]</a>    <span class="k">def</span> <span class="nf">terminate_phost</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<div class="viewcode-block" id="UPHostClient.terminate_phost"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.terminate_phost">[docs]</a>    <span class="k">def</span> <span class="nf">terminate_phost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; TerminatePHost - 删除物理云主机</span>
 
 <span class="sd">        **Request**</span>
