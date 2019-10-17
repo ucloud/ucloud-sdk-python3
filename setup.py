@@ -30,10 +30,9 @@ logger = logging.getLogger(__name__)
 PY3 = sys.version_info[0] == 3 and sys.version_info[1] >= 5
 
 if not PY3:
-    raise NotImplementedError((
-        "ucloud-sdk-python3 should be used in 3.5 "
-        "and above of python interpreter"
-    ))
+    raise NotImplementedError(
+        ("ucloud-sdk-python3 should be used in 3.5 " "and above of python interpreter")
+    )
 
 
 def load_version():
@@ -60,17 +59,13 @@ def load_requirements(requirements_file):
 
 dependencies = load_requirements("requirements.txt")
 
-dependencies_test = dependencies + [
-    'flake8>=3.6.0',
-    'pytest',
-    'pytest-cov',
-]
+dependencies_test = dependencies + ["flake8>=3.6.0", "pytest", "pytest-cov"]
 
-dependencies_doc = dependencies + ['sphinx']
+dependencies_doc = dependencies + ["sphinx"]
 
 dependencies_ci = list(set(dependencies_test + dependencies_doc))
 
-dependencies_dev = list(set(dependencies_ci + ['black']))
+dependencies_dev = list(set(dependencies_ci + ["black"]))
 
 
 def do_setup():
@@ -78,7 +73,7 @@ def do_setup():
         name="ucloud-sdk-python3",
         description="UCloud Service Development Kit - Python",
         long_description=load_long_description(),
-        long_description_content_type='text/markdown',
+        long_description_content_type="text/markdown",
         license="Apache License 2.0",
         version=load_version(),
         packages=find_packages(exclude=["tests*"]),

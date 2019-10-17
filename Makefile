@@ -88,3 +88,6 @@ gen:
 		--lang python3 \
 	 	--template ${UCLOUD_TEMPLATE_PATH}/scripts-test.tpl \
 	 	--output ./scripts/gen-tests.sh
+
+version:
+	@python -c 'from ucloud.version import version; print(version)'
