@@ -63,6 +63,6 @@ def get_timestamp(length=13):
     :return:
     """
     if isinstance(length, int) and 0 < length < 17:
-        return float("{:.6f}".format(time.time()).replace(".", "")[:length])
+        return int("{:.6f}".format(time.time()).replace(".", "")[:length])
 
     raise ValueError("timestamp length can only between 0 and 16.")

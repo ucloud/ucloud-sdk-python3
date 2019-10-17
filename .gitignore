@@ -112,3 +112,5 @@ venv.bak/
 # Debug
 *.stackdump
 examples/debug
+bdd/
+.version

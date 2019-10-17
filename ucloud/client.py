@@ -29,6 +29,13 @@ class Client(client.Client):
             self._config, self.transport, self.middleware, self.logger
         )
 
+    def ucdn(self):
+        from ucloud.services.ucdn.client import UCDNClient
+
+        return UCDNClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
     def udb(self):
         from ucloud.services.udb.client import UDBClient
 
