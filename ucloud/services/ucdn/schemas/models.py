@@ -97,87 +97,26 @@ class TaskInfoSchema(schema.ResponseSchema):
     }
 
 
-class PrefetchCacheTaskSetSchema(schema.ResponseSchema):
-    """ PrefetchCacheTaskSet - DescribePrefetchCacheTask
+class BandwidthInfoSchema(schema.ResponseSchema):
+    """ BandwidthInfo - BandwidthInfo
     """
 
     fields = {
-        "CheckTime": fields.Int(required=False, load_from="CheckTime"),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "Domain": fields.Str(required=False, load_from="Domain"),
-        "ErrorCode": fields.Int(required=False, load_from="ErrorCode"),
-        "Percent": fields.Int(required=False, load_from="Percent"),
-        "Status": fields.Str(required=False, load_from="Status"),
-        "TaskId": fields.Str(required=False, load_from="TaskId"),
-        "UrlLists": fields.List(fields.Str()),
+        "CdnBandwidth": fields.Str(required=False, load_from="CdnBandwidth"),
+        "Time": fields.Int(required=False, load_from="Time"),
     }
 
 
-class RefreshCacheTaskSetSchema(schema.ResponseSchema):
-    """ RefreshCacheTaskSet - DescribeRefreshCacheTask
+class HitRateInfoSchema(schema.ResponseSchema):
+    """ HitRateInfo - HitRateInfo
     """
 
     fields = {
-        "CheckTime": fields.Str(required=False, load_from="CheckTime"),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "Domain": fields.Str(required=False, load_from="Domain"),
-        "Percent": fields.Int(required=False, load_from="Percent"),
-        "Status": fields.Str(required=False, load_from="Status"),
-        "TaskId": fields.Str(required=False, load_from="TaskId"),
-        "UrlLists": fields.List(fields.Str()),
-    }
-
-
-class UcdnDomainCacheConfSetSchema(schema.ResponseSchema):
-    """ UcdnDomainCacheConfSet - DescribeUcdnDomain
-    """
-
-    fields = {
-        "CacheBehavior": fields.Bool(required=False, load_from="CacheBehavior"),
-        "CacheTTL": fields.Int(required=False, load_from="CacheTTL"),
-        "CacheUnit": fields.Str(required=False, load_from="CacheUnit"),
-        "Description": fields.Str(required=False, load_from="Description"),
-        "PathPattern": fields.Str(required=False, load_from="PathPattern"),
-    }
-
-
-class UcdnDomainSetSchema(schema.ResponseSchema):
-    """ UcdnDomainSet - DescribeUcdnDomain
-    """
-
-    fields = {
-        "Areacode": fields.List(fields.Str()),
-        "CacheConf": fields.List(UcdnDomainCacheConfSetSchema()),
-        "CdnType": fields.Str(required=False, load_from="CdnType"),
-        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "Cname": fields.Str(required=False, load_from="Cname"),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "Domain": fields.Str(required=False, load_from="Domain"),
-        "DomainId": fields.Str(required=False, load_from="DomainId"),
-        "SourceIp": fields.List(fields.Str()),
-        "Status": fields.Str(required=False, load_from="Status"),
-        "TestUrl": fields.Str(required=False, load_from="TestUrl"),
-        "VaildTime": fields.Int(required=False, load_from="VaildTime"),
-    }
-
-
-class UcdnLiveAccessDomainSetSchema(schema.ResponseSchema):
-    """ UcdnLiveAccessDomainSet - DescribeUcdnLiveAccess
-    """
-
-    fields = {
-        "AccessPoint": fields.Str(required=False, load_from="AccessPoint"),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "DomainId": fields.Str(required=False, load_from="DomainId"),
-        "HlsPlayCname": fields.Str(required=False, load_from="HlsPlayCname"),
-        "HlsPlayDomain": fields.Str(required=False, load_from="HlsPlayDomain"),
-        "PublishCname": fields.Str(required=False, load_from="PublishCname"),
-        "PublishDomain": fields.Str(required=False, load_from="PublishDomain"),
-        "RtmpPlayCname": fields.Str(required=False, load_from="RtmpPlayCname"),
-        "RtmpPlayDomain": fields.Str(
-            required=False, load_from="RtmpPlayDomain"
+        "FlowHitRate": fields.Float(required=False, load_from="FlowHitRate"),
+        "RequestHitRate": fields.Float(
+            required=False, load_from="RequestHitRate"
         ),
-        "Status": fields.Str(required=False, load_from="Status"),
+        "Time": fields.Int(required=False, load_from="Time"),
     }
 
 
@@ -260,14 +199,16 @@ class HttpCodeV2DetailSchema(schema.ResponseSchema):
     }
 
 
-class CDNBandwidthSetSchema(schema.ResponseSchema):
-    """ CDNBandwidthSet - GetUcdnDomainBandwidth
+class RequestInfoSchema(schema.ResponseSchema):
+    """ RequestInfo - RequestInfo
     """
 
     fields = {
+        "CdnRequest": fields.Float(required=False, load_from="CdnRequest"),
+        "OriginRequest": fields.Float(
+            required=False, load_from="OriginRequest"
+        ),
         "Time": fields.Int(required=False, load_from="Time"),
-        "TopFluxTime": fields.Int(required=False, load_from="TopFluxTime"),
-        "Value": fields.Float(required=False, load_from="Value"),
     }
 
 
@@ -302,14 +243,13 @@ class UcdnDomainTrafficSetSchema(schema.ResponseSchema):
     }
 
 
-class UcdnLiveAccessBandwidthSetSchema(schema.ResponseSchema):
-    """ UcdnLiveAccessBandwidthSet - GetUcdnLiveAccessBandwidth
+class BandwidthInfoDetailSchema(schema.ResponseSchema):
+    """ BandwidthInfoDetail - 带宽值信息模型(时间-带宽)
     """
 
     fields = {
-        "Time": fields.Int(required=False, load_from="Time"),
-        "TopFluxTime": fields.Int(required=False, load_from="TopFluxTime"),
-        "Value": fields.Float(required=False, load_from="Value"),
+        "Bandwidth": fields.Float(required=True, load_from="Bandwidth"),
+        "Time": fields.Int(required=True, load_from="Time"),
     }
 
 

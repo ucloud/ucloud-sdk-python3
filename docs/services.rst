@@ -73,8 +73,3 @@ USMS
 .. autoclass:: ucloud.services.usms.client.USMSClient
    :members:
 
-VPC
----
-
-.. autoclass:: ucloud.services.vpc.client.VPCClient
-   :members:

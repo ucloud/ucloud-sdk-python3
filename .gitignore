@@ -114,3 +114,5 @@ venv.bak/
 examples/debug
 bdd/
 .version
+
+scripts/gen-apis.sh

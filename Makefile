@@ -78,16 +78,14 @@ clean-test:
 	rm -f .coverage
 	rm -fr htmlcov/
 
-gen:
-	ucloud-model sdk apis \
-		--lang python3 \
-		--type=public \
-		--template ${UCLOUD_TEMPLATE_PATH}/scripts-api.tpl \
-		--output ./scripts/gen-services.sh
-	ucloud-model sdk tests \
-		--lang python3 \
-	 	--template ${UCLOUD_TEMPLATE_PATH}/scripts-test.tpl \
-	 	--output ./scripts/gen-tests.sh
-
 version:
 	@python -c 'from ucloud.version import version; print(version)'
+
+codegen:
+	@bash ./scripts/codegen.sh
+
+release-check:
+	@python scripts/release.py --dry-run
+
+release:
+	@python scripts/release.py

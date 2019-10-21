@@ -100,7 +100,7 @@ def describe_ucdn_domain_02(client: utest.Client, variables: dict):
     d = {"DomainId": [variables.get("domainId")]}
 
     try:
-        resp = client.ucdn().describe_ucdn_domain(d)
+        resp = client.invoke("DescribeUcdnDomain", d)
     except exc.RetCodeException as e:
         resp = e.json()
 
@@ -132,7 +132,7 @@ def describe_ucdn_domain_03(client: utest.Client, variables: dict):
     d = {"DomainId": [variables.get("domainId")]}
 
     try:
-        resp = client.ucdn().describe_ucdn_domain(d)
+        resp = client.invoke("DescribeUcdnDomain", d)
     except exc.RetCodeException as e:
         resp = e.json()
 
@@ -155,7 +155,7 @@ def batch_describe_new_ucdn_domain_04(client: utest.Client, variables: dict):
     d = {}
 
     try:
-        resp = client.ucdn().batch_describe_new_ucdn_domain(d)
+        resp = client.invoke("BatchDescribeNewUcdnDomain", d)
     except exc.RetCodeException as e:
         resp = e.json()
 
@@ -181,7 +181,7 @@ def get_new_ucdn_domain_http_code_v2_05(client: utest.Client, variables: dict):
     }
 
     try:
-        resp = client.ucdn().get_new_ucdn_domain_http_code_v2(d)
+        resp = client.invoke("GetNewUcdnDomainHttpCodeV2", d)
     except exc.RetCodeException as e:
         resp = e.json()
 
@@ -233,7 +233,7 @@ def get_new_ucdn_domain_http_code_07(client: utest.Client, variables: dict):
     }
 
     try:
-        resp = client.ucdn().get_new_ucdn_domain_http_code(d)
+        resp = client.invoke("GetNewUcdnDomainHttpCode", d)
     except exc.RetCodeException as e:
         resp = e.json()
 
@@ -255,7 +255,7 @@ def prefetch_new_ucdn_domain_cache_08(client: utest.Client, variables: dict):
     d = {"UrlList": [funcs.concat("http://", variables.get("domain"), "/")]}
 
     try:
-        resp = client.ucdn().prefetch_new_ucdn_domain_cache(d)
+        resp = client.invoke("PrefetchNewUcdnDomainCache", d)
     except exc.RetCodeException as e:
         resp = e.json()
 
@@ -280,7 +280,7 @@ def describe_new_ucdn_prefetch_cache_task_09(
     d = {"TaskId": [variables.get("PrefetchCache_TaskId")]}
 
     try:
-        resp = client.ucdn().describe_new_ucdn_prefetch_cache_task(d)
+        resp = client.invoke("DescribeNewUcdnPrefetchCacheTask", d)
     except exc.RetCodeException as e:
         resp = e.json()
 
@@ -304,7 +304,7 @@ def describe_new_ucdn_refresh_cache_task_10(
     d = {"TaskId": [variables.get("PrefetchCache_TaskId")]}
 
     try:
-        resp = client.ucdn().describe_new_ucdn_refresh_cache_task(d)
+        resp = client.invoke("DescribeNewUcdnRefreshCacheTask", d)
     except exc.RetCodeException as e:
         resp = e.json()
 
@@ -329,7 +329,7 @@ def refresh_new_ucdn_domain_cache_11(client: utest.Client, variables: dict):
     }
 
     try:
-        resp = client.ucdn().refresh_new_ucdn_domain_cache(d)
+        resp = client.invoke("RefreshNewUcdnDomainCache", d)
     except exc.RetCodeException as e:
         resp = e.json()
 
@@ -425,7 +425,7 @@ def get_ucdn_domain_log_15(client: utest.Client, variables: dict):
     }
 
     try:
-        resp = client.ucdn().get_ucdn_domain_log(d)
+        resp = client.invoke("GetUcdnDomainLog", d)
     except exc.RetCodeException as e:
         resp = e.json()
 
@@ -447,7 +447,7 @@ def get_ucdn_traffic_16(client: utest.Client, variables: dict):
     d = {}
 
     try:
-        resp = client.ucdn().get_ucdn_traffic(d)
+        resp = client.invoke("GetUcdnTraffic", d)
     except exc.RetCodeException as e:
         resp = e.json()
 
@@ -469,7 +469,7 @@ def get_ucdn_domain_traffic_17(client: utest.Client, variables: dict):
     d = {"AccountType": "top"}
 
     try:
-        resp = client.ucdn().get_ucdn_domain_traffic(d)
+        resp = client.invoke("GetUcdnDomainTraffic", d)
     except exc.RetCodeException as e:
         resp = e.json()
 
@@ -492,7 +492,7 @@ def get_ucdn_domain_prefetch_enable_18(client: utest.Client, variables: dict):
     d = {"DomainId": variables.get("domainId")}
 
     try:
-        resp = client.ucdn().get_ucdn_domain_prefetch_enable(d)
+        resp = client.invoke("GetUcdnDomainPrefetchEnable", d)
     except exc.RetCodeException as e:
         resp = e.json()
 
@@ -514,7 +514,7 @@ def switch_ucdn_charge_type_19(client: utest.Client, variables: dict):
     d = {"ChargeType": "traffic"}
 
     try:
-        resp = client.ucdn().switch_ucdn_charge_type(d)
+        resp = client.invoke("SwitchUcdnChargeType", d)
     except exc.RetCodeException as e:
         resp = e.json()
 
@@ -571,7 +571,7 @@ def describe_ucdn_domain_21(client: utest.Client, variables: dict):
     d = {"DomainId": [variables.get("domainId")]}
 
     try:
-        resp = client.ucdn().describe_ucdn_domain(d)
+        resp = client.invoke("DescribeUcdnDomain", d)
     except exc.RetCodeException as e:
         resp = e.json()
 

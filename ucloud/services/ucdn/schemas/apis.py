@@ -118,140 +118,69 @@ class DescribeNewUcdnRefreshCacheTaskResponseSchema(schema.ResponseSchema):
 
 
 """
-API: DescribePrefetchCacheTask
+API: GetNewUcdnDomainBandwidth
 
-获取域名预取任务状态
+获取域名带宽数据
 """
 
 
-class DescribePrefetchCacheTaskRequestSchema(schema.RequestSchema):
-    """ DescribePrefetchCacheTask - 获取域名预取任务状态
+class GetNewUcdnDomainBandwidthRequestSchema(schema.RequestSchema):
+    """ GetNewUcdnDomainBandwidth - 获取域名带宽数据
     """
 
     fields = {
+        "Areacode": fields.Str(required=False, dump_to="Areacode"),
         "BeginTime": fields.Int(required=False, dump_to="BeginTime"),
-        "DomainId": fields.Str(required=True, dump_to="DomainId"),
-        "EndTime": fields.Int(required=False, dump_to="EndTime"),
-        "Limit": fields.Int(required=False, dump_to="Limit"),
-        "Offset": fields.Int(required=False, dump_to="Offset"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Status": fields.Str(required=False, dump_to="Status"),
-        "TaskId": fields.Str(required=False, dump_to="TaskId"),
-    }
-
-
-class DescribePrefetchCacheTaskResponseSchema(schema.ResponseSchema):
-    """ DescribePrefetchCacheTask - 获取域名预取任务状态
-    """
-
-    fields = {
-        "TaskSet": fields.List(
-            models.PrefetchCacheTaskSetSchema(),
-            required=False,
-            load_from="TaskSet",
-        ),
-        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
-    }
-
-
-"""
-API: DescribeRefreshCacheTask
-
-获取域名刷新任务状态
-"""
-
-
-class DescribeRefreshCacheTaskRequestSchema(schema.RequestSchema):
-    """ DescribeRefreshCacheTask - 获取域名刷新任务状态
-    """
-
-    fields = {
-        "BeginTime": fields.Int(required=False, dump_to="BeginTime"),
-        "DomainId": fields.Str(required=True, dump_to="DomainId"),
-        "EndTime": fields.Int(required=False, dump_to="EndTime"),
-        "Limit": fields.Int(required=False, dump_to="Limit"),
-        "Offset": fields.Int(required=False, dump_to="Offset"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Status": fields.Str(required=False, dump_to="Status"),
-        "TaskId": fields.Str(required=False, dump_to="TaskId"),
-    }
-
-
-class DescribeRefreshCacheTaskResponseSchema(schema.ResponseSchema):
-    """ DescribeRefreshCacheTask - 获取域名刷新任务状态
-    """
-
-    fields = {
-        "TaskSet": fields.List(
-            models.RefreshCacheTaskSetSchema(),
-            required=False,
-            load_from="TaskSet",
-        ),
-        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
-    }
-
-
-"""
-API: DescribeUcdnDomain
-
-获取加速域名详细信息
-"""
-
-
-class DescribeUcdnDomainRequestSchema(schema.RequestSchema):
-    """ DescribeUcdnDomain - 获取加速域名详细信息
-    """
-
-    fields = {
         "DomainId": fields.List(fields.Str()),
-        "Limit": fields.Str(required=False, dump_to="Limit"),
-        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "EndTime": fields.Int(required=False, dump_to="EndTime"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Type": fields.Int(required=True, dump_to="Type"),
     }
 
 
-class DescribeUcdnDomainResponseSchema(schema.ResponseSchema):
-    """ DescribeUcdnDomain - 获取加速域名详细信息
+class GetNewUcdnDomainBandwidthResponseSchema(schema.ResponseSchema):
+    """ GetNewUcdnDomainBandwidth - 获取域名带宽数据
     """
 
     fields = {
-        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "DomainSet": fields.List(
-            models.UcdnDomainSetSchema(), required=False, load_from="DomainSet"
-        ),
-        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
-    }
-
-
-"""
-API: DescribeUcdnLiveAccess
-
-获取直播加速
-"""
-
-
-class DescribeUcdnLiveAccessRequestSchema(schema.RequestSchema):
-    """ DescribeUcdnLiveAccess - 获取直播加速
-    """
-
-    fields = {"DomainId": fields.Str(required=False, dump_to="DomainId")}
-
-
-class DescribeUcdnLiveAccessResponseSchema(schema.ResponseSchema):
-    """ DescribeUcdnLiveAccess - 获取直播加速
-    """
-
-    fields = {
-        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "DomainSet": fields.List(
-            models.UcdnLiveAccessDomainSetSchema(),
+        "BandwidthList": fields.List(
+            models.BandwidthInfoSchema(),
             required=False,
-            load_from="DomainSet",
+            load_from="BandwidthList",
         ),
-        "LastChargeType": fields.Str(
-            required=False, load_from="LastChargeType"
-        ),
-        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+        "Traffic": fields.Str(required=False, load_from="Traffic"),
+    }
+
+
+"""
+API: GetNewUcdnDomainHitRate
+
+获取域名命中率
+"""
+
+
+class GetNewUcdnDomainHitRateRequestSchema(schema.RequestSchema):
+    """ GetNewUcdnDomainHitRate - 获取域名命中率
+    """
+
+    fields = {
+        "Areacode": fields.Str(required=False, dump_to="Areacode"),
+        "BeginTime": fields.Int(required=False, dump_to="BeginTime"),
+        "DomainId": fields.List(fields.Str()),
+        "EndTime": fields.Int(required=False, dump_to="EndTime"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Type": fields.Int(required=True, dump_to="Type"),
+    }
+
+
+class GetNewUcdnDomainHitRateResponseSchema(schema.ResponseSchema):
+    """ GetNewUcdnDomainHitRate - 获取域名命中率
+    """
+
+    fields = {
+        "HitRateList": fields.List(
+            models.HitRateInfoSchema(), required=False, load_from="HitRateList"
+        )
     }
 
 
@@ -324,14 +253,14 @@ class GetNewUcdnDomainHttpCodeV2ResponseSchema(schema.ResponseSchema):
 
 
 """
-API: GetUcdnDomainBandwidth
+API: GetNewUcdnDomainRequestNum
 
-获取加速域名带宽使用信息
+获取域名请求数
 """
 
 
-class GetUcdnDomainBandwidthRequestSchema(schema.RequestSchema):
-    """ GetUcdnDomainBandwidth - 获取加速域名带宽使用信息
+class GetNewUcdnDomainRequestNumRequestSchema(schema.RequestSchema):
+    """ GetNewUcdnDomainRequestNum - 获取域名请求数
     """
 
     fields = {
@@ -340,21 +269,18 @@ class GetUcdnDomainBandwidthRequestSchema(schema.RequestSchema):
         "DomainId": fields.List(fields.Str()),
         "EndTime": fields.Int(required=False, dump_to="EndTime"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Type": fields.Int(required=False, dump_to="Type"),
+        "Type": fields.Int(required=True, dump_to="Type"),
     }
 
 
-class GetUcdnDomainBandwidthResponseSchema(schema.ResponseSchema):
-    """ GetUcdnDomainBandwidth - 获取加速域名带宽使用信息
+class GetNewUcdnDomainRequestNumResponseSchema(schema.ResponseSchema):
+    """ GetNewUcdnDomainRequestNum - 获取域名请求数
     """
 
     fields = {
-        "BandWidthSet": fields.List(
-            models.CDNBandwidthSetSchema(),
-            required=False,
-            load_from="BandWidthSet",
-        ),
-        "Traffic": fields.Float(required=False, load_from="Traffic"),
+        "RequestList": fields.List(
+            models.RequestInfoSchema(), required=False, load_from="RequestList"
+        )
     }
 
 
@@ -414,6 +340,38 @@ class GetUcdnDomainPrefetchEnableResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetUcdnDomainRequestNumV2
+
+获取域名请求数
+"""
+
+
+class GetUcdnDomainRequestNumV2RequestSchema(schema.RequestSchema):
+    """ GetUcdnDomainRequestNumV2 - 获取域名请求数
+    """
+
+    fields = {
+        "Areacode": fields.Str(required=False, dump_to="Areacode"),
+        "BeginTime": fields.Int(required=True, dump_to="BeginTime"),
+        "DomainId": fields.List(fields.Str()),
+        "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Type": fields.Int(required=True, dump_to="Type"),
+    }
+
+
+class GetUcdnDomainRequestNumV2ResponseSchema(schema.ResponseSchema):
+    """ GetUcdnDomainRequestNumV2 - 获取域名请求数
+    """
+
+    fields = {
+        "RequestList": fields.List(
+            models.RequestInfoSchema(), required=False, load_from="RequestList"
+        )
+    }
+
+
+"""
 API: GetUcdnDomainTraffic
 
 获取加速域名流量使用信息
@@ -447,36 +405,36 @@ class GetUcdnDomainTrafficResponseSchema(schema.ResponseSchema):
 
 
 """
-API: GetUcdnLiveAccessBandwidth
+API: GetUcdnPassBandwidth
 
-获取直播加速带宽
+获取回源带宽数据（cdn回客户源站部分）
 """
 
 
-class GetUcdnLiveAccessBandwidthRequestSchema(schema.RequestSchema):
-    """ GetUcdnLiveAccessBandwidth - 获取直播加速带宽
+class GetUcdnPassBandwidthRequestSchema(schema.RequestSchema):
+    """ GetUcdnPassBandwidth - 获取回源带宽数据（cdn回客户源站部分）
     """
 
     fields = {
+        "Areacode": fields.Str(required=False, dump_to="Areacode"),
         "BeginTime": fields.Int(required=False, dump_to="BeginTime"),
         "DomainId": fields.List(fields.Str()),
         "EndTime": fields.Int(required=False, dump_to="EndTime"),
-        "Protocol": fields.Str(required=False, dump_to="Protocol"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Type": fields.Int(required=True, dump_to="Type"),
     }
 
 
-class GetUcdnLiveAccessBandwidthResponseSchema(schema.ResponseSchema):
-    """ GetUcdnLiveAccessBandwidth - 获取直播加速带宽
+class GetUcdnPassBandwidthResponseSchema(schema.ResponseSchema):
+    """ GetUcdnPassBandwidth - 获取回源带宽数据（cdn回客户源站部分）
     """
 
     fields = {
-        "BandwidthSet": fields.List(
-            models.UcdnLiveAccessBandwidthSetSchema(),
+        "BandwidthDetail": fields.List(
+            models.BandwidthInfoDetailSchema(),
             required=False,
-            load_from="BandwidthSet",
-        ),
-        "Traffic": fields.Float(required=False, load_from="Traffic"),
+            load_from="BandwidthDetail",
+        )
     }
 
 
@@ -503,31 +461,6 @@ class GetUcdnTrafficResponseSchema(schema.ResponseSchema):
             models.TrafficSetSchema(), required=False, load_from="TrafficSet"
         )
     }
-
-
-"""
-API: PrefetchDomainCache
-
-预取文件
-"""
-
-
-class PrefetchDomainCacheRequestSchema(schema.RequestSchema):
-    """ PrefetchDomainCache - 预取文件
-    """
-
-    fields = {
-        "DomainId": fields.Str(required=True, dump_to="DomainId"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "UrlList": fields.List(fields.Str()),
-    }
-
-
-class PrefetchDomainCacheResponseSchema(schema.ResponseSchema):
-    """ PrefetchDomainCache - 预取文件
-    """
-
-    fields = {"TaskId": fields.Str(required=False, load_from="TaskId")}
 
 
 """
@@ -580,32 +513,6 @@ class RefreshNewUcdnDomainCacheResponseSchema(schema.ResponseSchema):
 
 
 """
-API: RefreshUcdnDomainCache
-
-刷新加速缓存
-"""
-
-
-class RefreshUcdnDomainCacheRequestSchema(schema.RequestSchema):
-    """ RefreshUcdnDomainCache - 刷新加速缓存
-    """
-
-    fields = {
-        "DomainId": fields.Str(required=True, dump_to="DomainId"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Type": fields.Str(required=True, dump_to="Type"),
-        "UrlList": fields.List(fields.Str()),
-    }
-
-
-class RefreshUcdnDomainCacheResponseSchema(schema.ResponseSchema):
-    """ RefreshUcdnDomainCache - 刷新加速缓存
-    """
-
-    fields = {"TaskId": fields.Str(required=False, load_from="TaskId")}
-
-
-"""
 API: SwitchUcdnChargeType
 
 切换账号计费方式
@@ -624,71 +531,6 @@ class SwitchUcdnChargeTypeRequestSchema(schema.RequestSchema):
 
 class SwitchUcdnChargeTypeResponseSchema(schema.ResponseSchema):
     """ SwitchUcdnChargeType - 切换账号计费方式
-    """
-
-    fields = {}
-
-
-"""
-API: UpdateUcdnDomain
-
-更新加速域名配置
-"""
-
-
-class UpdateUcdnDomainParamCacheConfSchema(schema.RequestSchema):
-    """ UpdateUcdnDomainParamCacheConf - 
-    """
-
-    fields = {
-        "CacheBehavior": fields.Int(required=False, dump_to="CacheBehavior"),
-        "CacheTTL": fields.Int(required=False, dump_to="CacheTTL"),
-        "CacheUnit": fields.Str(required=False, dump_to="CacheUnit"),
-        "Description": fields.Str(required=False, dump_to="Description"),
-        "PathPattern": fields.Str(required=False, dump_to="PathPattern"),
-    }
-
-
-class UpdateUcdnDomainRequestSchema(schema.RequestSchema):
-    """ UpdateUcdnDomain - 更新加速域名配置
-    """
-
-    fields = {
-        "CacheConf": fields.List(UpdateUcdnDomainParamCacheConfSchema()),
-        "DomainId": fields.Str(required=True, dump_to="DomainId"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "SourceIp": fields.List(fields.Str()),
-        "TestUrl": fields.Str(required=False, dump_to="TestUrl"),
-    }
-
-
-class UpdateUcdnDomainResponseSchema(schema.ResponseSchema):
-    """ UpdateUcdnDomain - 更新加速域名配置
-    """
-
-    fields = {}
-
-
-"""
-API: UpdateUcdnDomainStatus
-
-更新加速域名状态
-"""
-
-
-class UpdateUcdnDomainStatusRequestSchema(schema.RequestSchema):
-    """ UpdateUcdnDomainStatus - 更新加速域名状态
-    """
-
-    fields = {
-        "DomainId": fields.Str(required=True, dump_to="DomainId"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Status": fields.Str(required=True, dump_to="Status"),
-    }
-
-
-class UpdateUcdnDomainStatusResponseSchema(schema.ResponseSchema):
-    """ UpdateUcdnDomainStatus - 更新加速域名状态
     """
 
     fields = {}
