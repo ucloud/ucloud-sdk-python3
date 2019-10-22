@@ -116,8 +116,9 @@ class StepWriteChangelog:
 
         if not self.is_dry_run:
             # insert change logs at the begin of changelog file
-            with open('CHANGELOG.md', 'rw') as f:
+            with open('CHANGELOG.md', 'r+') as f:
                 content = f.read()
+                f.seek(0)
                 f.write('\n\n'.join([
                     '## {} ({})'.format(bumper.version, datetime.now().date().isoformat()),
                     '\n'.join(buffer_lines),
