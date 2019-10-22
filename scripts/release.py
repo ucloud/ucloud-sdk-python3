@@ -134,7 +134,7 @@ class StepWriteChangelog:
             return
 
         with open('./ucloud/version.py', 'w') as f:
-            f.write(version_code)
+            f.write(version_code + '\n')
 
 
 def main():
