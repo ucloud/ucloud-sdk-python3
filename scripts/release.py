@@ -99,7 +99,8 @@ class StepWriteChangelog:
                 should_bump = i
 
         if should_bump is None:
-            raise ValueError('no content should be release')
+            logger.warning('no content should be release')
+            # raise ValueError('no content should be release')
 
         # auto increase version number
         bumper = Bumper(ucloud.version.version)
