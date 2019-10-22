@@ -4,7 +4,7 @@ from ucloud.core import client
 from ucloud._compat import CompactClient
 
 
-class Client(client.Client, CompactClient):
+class Client(CompactClient):
     def __init__(self, config: dict, transport=None, middleware=None):
         self._config = config
         super(Client, self).__init__(config, transport, middleware)
