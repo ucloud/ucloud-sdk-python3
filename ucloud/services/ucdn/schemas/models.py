@@ -3,15 +3,6 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class AccessConfSchema(schema.ResponseSchema):
-    """ AccessConf - 访问控制
-    """
-
-    fields = {
-        "IpBlacklist": fields.Str(required=False, load_from="IpBlacklist")
-    }
-
-
 class CacheConfSchema(schema.ResponseSchema):
     """ CacheConf - 缓存配置
     """
@@ -31,6 +22,15 @@ class CacheConfSchema(schema.ResponseSchema):
             required=False, load_from="IgnoreQueryString"
         ),
         "PathPattern": fields.Str(required=False, load_from="PathPattern"),
+    }
+
+
+class AccessConfSchema(schema.ResponseSchema):
+    """ AccessConf - 访问控制
+    """
+
+    fields = {
+        "IpBlacklist": fields.Str(required=False, load_from="IpBlacklist")
     }
 
 

@@ -38,6 +38,10 @@ class UCDNClient(Client):
         
         **Response Model**
         
+        **AccessConf** 
+        
+        - **IpBlacklist** (str) - 多个ip用逗号隔开
+
         **CacheConf** 
         
         - **CacheBehavior** (bool) - 是否缓存，true为缓存，false为不缓存。为false的情况下，CacheTTL和CacheUnit强制不生效
@@ -48,10 +52,6 @@ class UCDNClient(Client):
         - **HttpCodePattern** (str) - 状态码默认情况只缓存200类状态码，支持正则
         - **IgnoreQueryString** (bool) - 是否忽略参数缓存（false为不忽略，true为忽略，默认为false）
         - **PathPattern** (str) - 路径模式，支持正则
-
-        **AccessConf** 
-        
-        - **IpBlacklist** (str) - 多个ip用逗号隔开
 
         **DomainInfo** 
         
