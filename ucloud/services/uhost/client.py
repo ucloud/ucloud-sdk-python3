@@ -91,37 +91,39 @@ class UHostClient(Client):
         - **AlarmTemplateId** (int) - 告警模板id，如果传了告警模板id，且告警模板id正确，则绑定告警模板。绑定告警模板失败只会在后台有日志，不会影响创建主机流程，也不会在前端报错。
         - **BootDiskSpace** (int) - 【待废弃，不建议调用】系统盘大小。 单位：GB， 范围[20,100]， 步长：10
         - **CPU** (int) - 虚拟CPU核数。可选参数：1-64（具体机型与CPU的对应关系参照控制台）。默认值: 4。
-        - **ChargeType** (str) - 计费模式。枚举值为： \\ > Year，按年付费； \\ > Month，按月付费；\\ > Dynamic，按小时付费 \\ 默认为月付
+        - **ChargeType** (str) - 计费模式。枚举值为： \\ > Year，按年付费； \\ > Month，按月付费；\\ > Dynamic，按小时预付费 \\ > Postpay，按小时后付费（支持关机不收费，目前仅部分可用区支持，请联系您的客户经理） \\ 默认为月付
         - **CouponId** (str) - 主机代金券ID。请通过DescribeCoupon接口查询，或登录用户中心查看
         - **DiskPassword** (str) - 【待废弃，不建议调用】加密盘的密码。若输入此字段，自动选择加密盘。加密盘需要权限位。
         - **DiskSpace** (int) - 【待废弃，不建议调用】数据盘大小。 单位：GB， 范围[0,8000]， 步长：10， 默认值：20，云盘支持0-8000；本地普通盘支持0-2000；本地SSD盘（包括所有GPU机型）支持100-1000
         - **Disks** (list) - 见 **CreateUHostInstanceParamDisks** 模型定义
-        - **GPU** (int) - GPU卡核心数。仅GPU机型支持此字段（可选范围与UHostType相关）
-        - **GpuType** (str) - GPU类型，枚举值["K80", "P40", "V100"]
+        - **GPU** (int) - GPU卡核心数。仅GPU机型支持此字段（可选范围与MachineType+GpuType相关）
+        - **GpuType** (str) - GPU类型，枚举值["K80", "P40", "V100"]，MachineType为G时必填
+        - **HostIp** (str) - 指定宿主机创建，此时SetId为必填
         - **HostType** (str) - 【已废弃】宿主机类型，N2，N1
-        - **HotplugFeature** (bool) - 是否开启热升级特性。True为开启，False为未开启，默认False。
+        - **HotplugFeature** (bool) - 热升级特性。True为开启，False为未开启，默认False。
         - **InstallAgent** (str) - 【暂不支持】是否安装UGA。'yes': 安装；其他或者不填：不安装。
         - **IsolationGroup** (str) - 硬件隔离组id。可通过DescribeIsolationGroup获取。
         - **KeyPair** (str) - 【暂不支持】Keypair公钥，LoginMode为KeyPair时此项必须
-        - **MachineType** (str) - 云主机机型（V2.0），枚举值["N", "C", "G", "O"]。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
-        - **MaxCount** (int) - 【批量创建主机时必填】最大创建主机数量，取值范围是[1,100];
+        - **MachineType** (str) - 云主机机型（V2.0），在本字段和字段UHostType中，仅需要其中1个字段即可；当填写了MachineType时，必须填写MinimalCpuPlatform字段。枚举值["N", "C", "G", "O"]。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
+        - **MaxCount** (int) - 本次最大创建主机数量，取值范围是[1,100]，默认值为1。
         - **Memory** (int) - 内存大小。单位：MB。范围 ：[1024, 262144]，取值为1024的倍数（可选范围参考控制台）。默认值：8192
         - **MinimalCpuPlatform** (str) - 最低cpu平台，枚举值["Intel/Auto", "Intel/IvyBridge", "Intel/Haswell", "Intel/Broadwell", "Intel/Skylake", "Intel/Cascadelake"。
         - **Name** (str) - UHost实例名称。默认：UHost。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定实例名称。
-        - **NetCapability** (str) - 网络增强。枚举值：Normal（默认），不开启;  Super，开启网络增强1.0； Ultra，开启网络增强2.0（仅支持部分可用区，请参考控制台）
+        - **NetCapability** (str) - 网络增强特性。枚举值：Normal（默认），不开启;  Super，开启网络增强1.0； Ultra，开启网络增强2.0（仅支持部分可用区，请参考控制台）
         - **NetworkId** (str) - 【已废弃】网络ID（VPC2.0情况下无需填写）。VPC1.0情况下，若不填写，代表优先选择基础网络； 若填写，代表选择子网。参见DescribeSubnet。
         - **NetworkInterface** (list) - 见 **CreateUHostInstanceParamNetworkInterface** 模型定义
         - **PrivateIp** (list) - 【数组】创建云主机时指定内网IP。若不传值，则随机分配当前子网下的IP。调用方式举例：PrivateIp.0=x.x.x.x。当前只支持一个内网IP。
         - **PrivateMac** (str) - 【批量创建该参数无效】【内部字段】创建云主机时指定Mac。调用方式举例：PrivateMac="xx:xx:xx:xx:xx:xx"。
-        - **Quantity** (int) - 购买时长。默认:值 1。按小时购买(Dynamic)时无需此参数。 月付时，此参数传0，代表购买至月末。
+        - **Quantity** (int) - 购买时长。默认:值 1。按小时购买（Dynamic/Postpay）时无需此参数。 月付时，此参数传0，代表购买至月末。
         - **ResourceType** (int) - 【内部参数】资源类型
-        - **SecurityGroupId** (str) - 防火墙Id，默认：Web推荐防火墙。如何查询SecurityGroupId请参见  `DescribeSecurityGroup <https://docs.ucloud.cn/api/unet-api/describe_security_group.html>`_ 。
-        - **SetId** (int) - 
+        - **SecurityGroupId** (str) - 防火墙ID，默认：Web推荐防火墙。如何查询SecurityGroupId请参见  `DescribeFirewall <https://docs.ucloud.cn/api/unet-api/describe_firewall.html>`_ 。
+        - **SetId** (int) - 指定set创建
         - **StorageType** (str) - 【待废弃，不建议调用】磁盘类型，同时设定系统盘和数据盘的磁盘类型。枚举值为：LocalDisk，本地磁盘; UDisk，云硬盘；默认为LocalDisk。仅部分可用区支持云硬盘方式的主机存储方式，具体请查询控制台。
         - **SubnetId** (str) - 子网 ID。默认为当前地域的默认子网。
         - **Tag** (str) - 业务组。默认：Default（Default即为未分组）。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定业务组。
         - **TimemachineFeature** (str) - 【待废弃，不建议调用】是否开启方舟特性。Yes为开启方舟，No为关闭方舟。目前仅选择普通本地盘+普通本地盘 或 SSD云盘+普通云盘的组合支持开启方舟。
-        - **UHostType** (str) - 【建议后续不再使用】云主机机型V1.0。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
+        - **UHostType** (str) - 【建议后续不再使用】云主机机型（V1.0），在本字段和字段MachineType中，仅需要其中1个字段即可。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
+        - **UserData** (str) - 【即将支持】用户自定义数据。当镜像支持Cloud-init Feature时可填写此字段。注意：1、总数据量大小不超多16K；2、使用base64编码
         - **UserDataScript** (str) - 【暂不支持】cloudinit方式下，用户初始化脚本
         - **VPCId** (str) - VPC ID。默认为当前地域的默认VPC。
         
@@ -134,18 +136,28 @@ class UHostClient(Client):
         
         **CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSH** 
         
-        - **Area** (str) - 填写支持SSH访问IP的地区名称，如“洛杉矶”，“新加坡”，“香港”，“东京”，“华盛顿”，“法兰克福”。Area和AreaCode两者必填一个
-        - **AreaCode** (str) - GlobalSSH的。AreaCode, 区域航空港国际通用代码。Area和AreaCode两者必填一个
+        - **Area** (str) - 填写支持SSH访问IP的地区名称，如“洛杉矶”，“新加坡”，“香港”，“东京”，“华盛顿”，“法兰克福”。Area和AreaCode两者必填其中之一。
+        - **AreaCode** (str) - GlobalSSH的地区编码，格式为区域航空港国际通用代码。Area和AreaCode两者必填其中之一。
         - **Port** (int) - SSH端口，1-65535且不能使用80，443端口
+
+        **CreateUHostInstanceParamNetworkInterfaceIPv6** 
+        
+        - **Adress** (str) - 第N个网卡对应的IPv6地址，默认不分配IPv6，“Auto”自动分配，不为空的其他字符串为实际要分配的IPv6地址
+        - **ShareBandwidthId** (str) - 第N块网卡中IPv6对应的共享带宽id，默认不带外网
 
         **CreateUHostInstanceParamNetworkInterfaceEIP** 
         
-        - **Bandwidth** (int) - 【如果绑定EIP这个参数必填】弹性IP的外网带宽, 单位为Mbps. 共享带宽模式必须指定0M带宽, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-800]
-        - **CouponId** (str) - 当前EIP代金券id。请通过DescribeCoupon接口查询，或登录用户中心查看
+        - **Bandwidth** (int) - 【若绑定EIP，此参数必填】弹性IP的外网带宽, 单位为Mbps. 共享带宽模式必须指定0M带宽, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-800]
+        - **CouponId** (str) - 当前EIP代金券id。请通过DescribeCoupon接口查询，或登录用户中心查看。
         - **GlobalSSH** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSH** 模型定义
-        - **OperatorName** (str) - 【如果绑定EIP这个参数必填】弹性IP的线路如下: 国际: International BGP: Bgp 各地域允许的线路参数如下: cn-sh1: Bgp cn-sh2: Bgp cn-gd: Bgp cn-bj1: Bgp cn-bj2: Bgp hk: International us-ca: International th-bkk: International kr-seoul:International us-ws:International ge-fra:International sg:International tw-kh:International.其他海外线路均为 International
+        - **OperatorName** (str) - 【若绑定EIP，此参数必填】弹性IP的线路。枚举值: 国际: International BGP: Bgp 各地域允许的线路参数如下: cn-sh1: Bgp cn-sh2: Bgp cn-gd: Bgp cn-bj1: Bgp cn-bj2: Bgp hk: International us-ca: International th-bkk: International kr-seoul:International us-ws:International ge-fra:International sg:International tw-kh:International.其他海外线路均为 International
         - **PayMode** (str) - 弹性IP的计费模式. 枚举值: "Traffic", 流量计费; "Bandwidth", 带宽计费; "ShareBandwidth",共享带宽模式. "Free":免费带宽模式.默认为 "Bandwidth".
         - **ShareBandwidthId** (str) - 绑定的共享带宽Id，仅当PayMode为ShareBandwidth时有效
+
+        **CreateUHostInstanceParamNetworkInterface** 
+        
+        - **EIP** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceEIP** 模型定义
+        - **IPv6** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceIPv6** 模型定义
 
         **CreateUHostInstanceParamDisks** 
         
@@ -154,12 +166,8 @@ class UHostClient(Client):
         - **Encrypted** (bool) - 【功能仅部分可用区开放，详询技术支持】磁盘是否加密。加密：true, 不加密: false加密必须传入对应的的KmsKeyId
         - **IsBoot** (str) - 是否是系统盘。枚举值：\\ > True，是系统盘 \\ > False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
         - **KmsKeyId** (str) - 【功能仅部分可用区开放，详询技术支持】kms key id。选择加密盘时必填。
-        - **Size** (int) - 磁盘大小，单位GB。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
+        - **Size** (int) - 磁盘大小，单位GB，必须是10GB的整数倍。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
         - **Type** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
-
-        **CreateUHostInstanceParamNetworkInterface** 
-        
-        - **EIP** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceEIP** 模型定义
 
         """
         # build request
@@ -200,7 +208,7 @@ class UHostClient(Client):
         **UHostImageSet** 
         
         - **CreateTime** (int) - 创建时间，格式为Unix时间戳
-        - **Features** (list) - 特殊状态标识， 目前包含NetEnhnced（网络增强1.0）, NetEnhanced_Ultra]（网络增强2.0）
+        - **Features** (list) - 特殊状态标识， 目前包含NetEnhnced（网络增强1.0）, NetEnhanced_Ultra]（网络增强2.0）,HotPlug(热升级),CloudInit
         - **FuncType** (str) - 行业镜像类型（仅行业镜像将返回这个值）
         - **ImageDescription** (str) - 镜像描述
         - **ImageId** (str) - 镜像ID
@@ -214,7 +222,7 @@ class UHostClient(Client):
         - **OsType** (str) - 操作系统类型：Liunx，Windows
         - **State** (str) - 镜像状态， 可用：Available，制作中：Making， 不可用：Unavailable
         - **Vendor** (str) - 供应商（仅行业镜像将返回这个值）
-        - **Zone** (str) - 可用区，参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_  |
+        - **Zone** (str) - 可用区，参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
 
         """
         # build request
@@ -224,6 +232,46 @@ class UHostClient(Client):
 
         resp = self.invoke("DescribeImage", d, **kwargs)
         return apis.DescribeImageResponseSchema().loads(resp)
+
+    def describe_isolation_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ DescribeIsolationGroup - 查询硬件隔离组列表。
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目id
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **GroupId** (str) - 待查的硬件隔离组id
+        - **Limit** (int) - 返回数据长度，默认为20，最大100
+        - **Offset** (int) - 列表起始位置偏移量，默认为0
+        
+        **Response**
+
+        - **IsolationGroupSet** (list) - 见 **IsolationGroup** 模型定义
+        
+        **Response Model**
+        
+        **SpreadInfo** 
+        
+        - **UHostCount** (int) - 可用区中硬件隔离组中云主机的数量，不超过7。
+        - **Zone** (str) - 可用区信息
+
+        **IsolationGroup** 
+        
+        - **GroupId** (str) - 硬件隔离组id
+        - **GroupName** (str) - 硬件隔离组名称
+        - **Remark** (str) - 备注
+        - **SpreadInfoSet** (list) - 见 **SpreadInfo** 模型定义
+
+        """
+        # build request
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.DescribeIsolationGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeIsolationGroup", d, **kwargs)
+        return apis.DescribeIsolationGroupResponseSchema().loads(resp)
 
     def describe_uhost_instance(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -246,6 +294,8 @@ class UHostClient(Client):
         
         **Response**
 
+        - **Action** (str) - 操作名称
+        - **RetCode** (int) - 返回码
         - **TotalCount** (int) - UHostInstance总数
         - **UHostSet** (list) - 见 **UHostInstanceSet** 模型定义
         
@@ -265,13 +315,15 @@ class UHostClient(Client):
 
         **UHostIPSet** 
         
-        - **Bandwidth** (int) - IP对应的带宽, 单位: Mb (内网IP不显示带宽信息)
-        - **Default** (str) - 是否默认的弹性网卡的信息。true: 是默认弹性网卡；其他值：不是。
+        - **Bandwidth** (int) - IP对应的带宽, 单位: Mb  (内网IP不显示带宽信息)
+        - **Default** (str) - 【暂未支持】是否为默认网卡。True: 是默认网卡；其他值：不是。
         - **IP** (str) - IP地址
-        - **IPId** (str) - IP资源ID (内网IP无对应的资源ID)
-        - **SubnetId** (str) - IP地址对应的子网 ID（北京一当前字段为空）
+        - **IPId** (str) - 外网IP资源ID 。(内网IP无对应的资源ID)
+        - **Mac** (str) - 当前网卡的Mac。
+        - **SubnetId** (str) - IP地址对应的子网 ID。（北京一不支持，字段返回为空）
         - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
-        - **VPCId** (str) - IP地址对应的VPC ID（北京一当前字段为空）
+        - **VPCId** (str) - IP地址对应的VPC ID。（北京一不支持，字段返回为空）
+        - **Weight** (int) - 当前EIP的权重。权重最大的为当前的出口IP。
 
         **UHostInstanceSet** 
         
@@ -317,6 +369,40 @@ class UHostClient(Client):
 
         resp = self.invoke("DescribeUHostInstance", d, **kwargs)
         return apis.DescribeUHostInstanceResponseSchema().loads(resp)
+
+    def describe_uhost_instance_snapshot(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ DescribeUHostInstanceSnapshot - 获取已经存在的UHost实例的存储快照列表。
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance <https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html>`_ 
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        
+        **Response**
+
+        - **SnapshotSet** (list) - 见 **UHostSnapshotSet** 模型定义
+        - **UhostId** (str) - UHost实例ID
+        
+        **Response Model**
+        
+        **UHostSnapshotSet** 
+        
+        - **SnapshotName** (str) - 快照名称
+        - **SnapshotState** (str) - 快照状态, 制作中:Capturing 制作成功:Success 制作失败:Fail
+        - **SnapshotTime** (str) - 快照制作时间
+
+        """
+        # build request
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.DescribeUHostInstanceSnapshotRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeUHostInstanceSnapshot", d, **kwargs)
+        return apis.DescribeUHostInstanceSnapshotResponseSchema().loads(resp)
 
     def describe_uhost_tags(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -639,11 +725,10 @@ class UHostClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **UHostId** (str) - (Required) UHost实例资源ID 参见  `DescribeUHostInstance <https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html>`_ 
-        - **BootDiskSpace** (int) - 系统盘大小。 单位：GB， 范围[20,100]， 步长：10
         - **DNSServers** (list) - 针对非私有子网主机，可自定义DNS。n可为0-2
         - **ImageId** (str) - 镜像Id，默认使用原镜像 参见  `DescribeImage <https://docs.ucloud.cn/api/uhost-api/describe_image.html>`_ 
         - **Password** (str) - 如果创建UHost实例时LoginMode为Password，则必须填写，如果LoginMode为KeyPair，不需要填写 （密码格式使用BASE64编码；LoginMode不可变更）
-        - **ReserveDisk** (str) - 是否保留数据盘，保留：Yes，不报留：No， 默认：Yes；如果是从Windows重装为Linux或反之，则无法保留数据盘
+        - **ReserveDisk** (str) - 是否保留数据盘，保留：Yes，不报留：No， 默认：Yes
         - **ResourceType** (int) - 云灾备指明191
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         
@@ -686,47 +771,20 @@ class UHostClient(Client):
         resp = self.invoke("ResetUHostInstancePassword", d, **kwargs)
         return apis.ResetUHostInstancePasswordResponseSchema().loads(resp)
 
-    def resize_attached_disk(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """ ResizeAttachedDisk - 修改挂载的磁盘大小，包含系统盘和数据盘
-
-        **Request**
-
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
-        - **DiskId** (str) - (Required) 磁盘ID。参见  `DescribeUHostInstance <https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html>`_ 返回值中的DiskSet。
-        - **DiskSpace** (int) - (Required) 磁盘大小，单位GB，步长为10。取值范围需大于当前磁盘大小，最大值请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
-        - **UHostId** (str) - (Required) UHost实例ID。 参见  `DescribeUHostInstance <https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html>`_ 。
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
-        
-        **Response**
-
-        - **DiskId** (str) - 改配成功的磁盘id
-        
-        """
-        # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
-        req and d.update(req)
-        d = apis.ResizeAttachedDiskRequestSchema().dumps(d)
-
-        resp = self.invoke("ResizeAttachedDisk", d, **kwargs)
-        return apis.ResizeAttachedDiskResponseSchema().loads(resp)
-
     def resize_uhost_instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ ResizeUHostInstance - 修改指定UHost实例的资源配置，如CPU核心数，内存容量大小，网络增强等。可选配置范围请参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
+        """ ResizeUHostInstance - 修改指定UHost实例的资源配置，如CPU核心数，内存容量大小，磁盘空间大小,网络增强等。
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance <https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html>`_ 
-        - **BootDiskSpace** (int) - 【待废弃】系统盘大小，单位：GB，范围[20,100]，步长：10，系统盘不支持缩容，因此不允许输入比当前实例系统盘小的值
-        - **CPU** (int) - 虚拟CPU核数。可选参数：1-32（可选范围与UHostType相关）。默认值为当前实例的CPU核数
-        - **DiskSpace** (int) - 【待废弃】数据盘大小，单位：GB，范围[10,1000]； SSD机型，单位：GB，范围[100,500]；步长：10，默认值为当前实例的数据盘大小，数据盘不支持缩容，因此不允许输入比当前实例数据盘大小的值
-        - **Memory** (int) - 内存大小。单位：MB。范围 ：[1024, 262144]，取值为1024的倍数（可选范围与UHostType相关）。默认值为当前实例的内存大小。
+        - **BootDiskSpace** (int) - 系统盘大小，单位：GB，范围[20,100]，步长：10，系统盘不支持缩容，因此不允许输入比当前实例系统盘小的值
+        - **CPU** (int) - 虚拟CPU核数，单位：个，范围：[1,16]，最小值为1，其他值是2的倍数，默认值为当前实例的CPU核数（*windows CPU>=2）
+        - **DiskSpace** (int) - 数据盘大小，单位：GB，范围[10,1000]； SSD机型，单位：GB，范围[100,500]；步长：10，默认值为当前实例的数据盘大小，数据盘不支持缩容，因此不允许输入比当前实例数据盘大小的值
+        - **Memory** (int) - 内存大小，单位：MB，范围[2048,65536]，步长：2048，默认值为当前实例的内存大小（BGP-C数据中心最小支持1024，限Linux系统）
         - **NetCapValue** (int) - 网卡升降级（1，表示升级，2表示降级，0表示不变）
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         
@@ -804,6 +862,7 @@ class UHostClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **ImageId** (str) - (Required) 自制镜像ID 参见  `DescribeImage <https://docs.ucloud.cn/api/uhost-api/describe_image.html>`_ 
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         
         **Response**
 

@@ -31,6 +31,45 @@ class UHostImageSetSchema(schema.ResponseSchema):
     }
 
 
+class SpreadInfoSchema(schema.ResponseSchema):
+    """ SpreadInfo - 每个可用区中硬件隔离组信息
+    """
+
+    fields = {
+        "UHostCount": fields.Int(required=False, load_from="UHostCount"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+    }
+
+
+class IsolationGroupSchema(schema.ResponseSchema):
+    """ IsolationGroup - 硬件隔离组信息
+    """
+
+    fields = {
+        "GroupId": fields.Str(required=False, load_from="GroupId"),
+        "GroupName": fields.Str(required=False, load_from="GroupName"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "SpreadInfoSet": fields.List(SpreadInfoSchema()),
+    }
+
+
+class UHostIPSetSchema(schema.ResponseSchema):
+    """ UHostIPSet - DescribeUHostInstance
+    """
+
+    fields = {
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "Default": fields.Str(required=True, load_from="Default"),
+        "IP": fields.Str(required=False, load_from="IP"),
+        "IPId": fields.Str(required=False, load_from="IPId"),
+        "Mac": fields.Str(required=True, load_from="Mac"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "Type": fields.Str(required=False, load_from="Type"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "Weight": fields.Int(required=True, load_from="Weight"),
+    }
+
+
 class UHostDiskSetSchema(schema.ResponseSchema):
     """ UHostDiskSet - DescribeUHostInstance
     """
@@ -45,21 +84,6 @@ class UHostDiskSetSchema(schema.ResponseSchema):
         "Name": fields.Str(required=False, load_from="Name"),
         "Size": fields.Int(required=False, load_from="Size"),
         "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
-class UHostIPSetSchema(schema.ResponseSchema):
-    """ UHostIPSet - DescribeUHostInstance
-    """
-
-    fields = {
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "Default": fields.Str(required=False, load_from="Default"),
-        "IP": fields.Str(required=False, load_from="IP"),
-        "IPId": fields.Str(required=False, load_from="IPId"),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "Type": fields.Str(required=False, load_from="Type"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
     }
 
 
@@ -111,6 +135,17 @@ class UHostInstanceSetSchema(schema.ResponseSchema):
         "UHostId": fields.Str(required=False, load_from="UHostId"),
         "UHostType": fields.Str(required=False, load_from="UHostType"),
         "Zone": fields.Str(required=False, load_from="Zone"),
+    }
+
+
+class UHostSnapshotSetSchema(schema.ResponseSchema):
+    """ UHostSnapshotSet - DescribeUHostInstanceSnapshot
+    """
+
+    fields = {
+        "SnapshotName": fields.Str(required=False, load_from="SnapshotName"),
+        "SnapshotState": fields.Str(required=False, load_from="SnapshotState"),
+        "SnapshotTime": fields.Str(required=False, load_from="SnapshotTime"),
     }
 
 
