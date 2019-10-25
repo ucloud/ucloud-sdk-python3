@@ -9,47 +9,6 @@ from ucloud.services.ucdn.schemas import models
 
 
 """
-API: BatchDescribeNewUcdnDomain
-
-批量获取加速域名配置
-"""
-
-
-class BatchDescribeNewUcdnDomainRequestSchema(schema.RequestSchema):
-    """ BatchDescribeNewUcdnDomain - 批量获取加速域名配置
-    """
-
-    fields = {
-        "ChannelType": fields.Str(required=False, dump_to="ChannelType"),
-        "DomainId": fields.List(fields.Str()),
-        "Limit": fields.Int(required=False, dump_to="Limit"),
-        "Offset": fields.Int(required=False, dump_to="Offset"),
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-    }
-
-
-class BatchDescribeNewUcdnDomainResponseSchema(schema.ResponseSchema):
-    """ BatchDescribeNewUcdnDomain - 批量获取加速域名配置
-    """
-
-    fields = {
-        "Arrearage": fields.List(
-            fields.Str(), required=False, load_from="Arrearage"
-        ),
-        "ChargeType": fields.Int(required=False, load_from="ChargeType"),
-        "DomainList": fields.List(
-            models.DomainInfoSchema(), required=False, load_from="DomainList"
-        ),
-        "LastChargeType": fields.Int(
-            required=False, load_from="LastChargeType"
-        ),
-        "MaxDomainNum": fields.Int(required=False, load_from="MaxDomainNum"),
-        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
-        "Vip": fields.Str(required=False, load_from="Vip"),
-    }
-
-
-"""
 API: DescribeNewUcdnPrefetchCacheTask
 
 获取预取任务状态

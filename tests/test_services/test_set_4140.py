@@ -155,7 +155,7 @@ def batch_describe_new_ucdn_domain_04(client: utest.Client, variables: dict):
     d = {}
 
     try:
-        resp = client.ucdn().batch_describe_new_ucdn_domain(d)
+        resp = client.invoke("BatchDescribeNewUcdnDomain", d)
     except exc.RetCodeException as e:
         resp = e.json()
 
