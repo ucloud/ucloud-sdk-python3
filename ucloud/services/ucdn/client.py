@@ -30,7 +30,7 @@ class UCDNClient(Client):
 
         - **Arrearage** (list) - 标识欠费的数组，数组含有下列元素值， 1=国内流量有欠费 2=国外流量有欠费  3=国内带宽有欠费 4=国外带宽有欠费
         - **ChargeType** (int) - 当前计费方式，10=流量付费 20=带宽日峰值  30=按月后付费
-        - **DomainList** (list) - 见 **DomainInfo** 模型定义
+        - **DomainSet** (list) - 见 **DomainInfo** 模型定义
         - **LastChargeType** (int) - 表示最后一次切换的计费方式，10=流量付费 20=带宽日峰值  30=按月后付费  40=未选择计费方式
         - **MaxDomainNum** (int) - 最大域名数量，默认20
         - **TotalCount** (int) - 满足条件的域名个数
