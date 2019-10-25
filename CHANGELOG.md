@@ -1,3 +1,15 @@
+## 0.6.2 (2019-10-25)
+
+ENHANCEMENTS:
+
+- Update fields of `UHost` api
+- Add `DescribeIsolationGroup ` of `UHost`
+- Add `DescribeUHostInstanceSnapshot` of `UHost`
+
+BUG FIXES:
+
+- Fix fields of `BatchDescribeNewUcdnDomain`
+
 ## 0.6.1 (2019-10-25)
 
 BUG FIXES:
