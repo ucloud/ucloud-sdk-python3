@@ -34,6 +34,136 @@
             
   <div class="section" id="ucloud-sdk-services">
 <h1>UCloud SDK Services<a class="headerlink" href="#ucloud-sdk-services" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="pathx">
+<h2>PathX<a class="headerlink" href="#pathx" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ucloud.services.pathx.client.PathXClient">
+<em class="property">class </em><code class="sig-prename descclassname">ucloud.services.pathx.client.</code><code class="sig-name descname">PathXClient</code><span class="sig-paren">(</span><em class="sig-param">config: dict</em>, <em class="sig-param">transport=None</em>, <em class="sig-param">middleware=None</em>, <em class="sig-param">logger=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/services/pathx/client.html#PathXClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.services.pathx.client.PathXClient" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="ucloud.services.pathx.client.PathXClient.create_global_ssh_instance">
+<code class="sig-name descname">create_global_ssh_instance</code><span class="sig-paren">(</span><em class="sig-param">req: Optional[dict] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/ucloud/services/pathx/client.html#PathXClient.create_global_ssh_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.services.pathx.client.PathXClient.create_global_ssh_instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>CreateGlobalSSHInstance - 创建GlobalSSH实例</p>
+<p><strong>Request</strong></p>
+<ul class="simple">
+<li><p><strong>ProjectId</strong> (str) - (Config) 项目ID,如org-xxxx。请参考 <a class="reference external" href="https://docs.ucloud.cn/api/summary/get_project_list.html">GetProjectList接口</a></p></li>
+<li><p><strong>Area</strong> (str) - (Required) 填写支持SSH访问IP的地区名称，如“洛杉矶”，“新加坡”，“香港”，“东京”，“华盛顿”，“法兰克福”。Area和AreaCode两者必填一个</p></li>
+<li><p><strong>AreaCode</strong> (str) - (Required) AreaCode, 区域航空港国际通用代码。Area和AreaCode两者必填一个</p></li>
+<li><p><strong>Port</strong> (int) - (Required) SSH端口，1-65535且不能使用80，443端口</p></li>
+<li><p><strong>TargetIP</strong> (str) - (Required) 被SSH访问的IP</p></li>
+<li><p><strong>ChargeType</strong> (str) - 支付方式，如按月、按年、按时</p></li>
+<li><p><strong>CouponId</strong> (str) - 使用代金券可冲抵部分费用</p></li>
+<li><p><strong>Quantity</strong> (int) - 购买数量</p></li>
+<li><p><strong>Remark</strong> (str) - 备注信息</p></li>
+</ul>
+<p><strong>Response</strong></p>
+<ul class="simple">
+<li><p><strong>AcceleratingDomain</strong> (str) - 加速域名，访问该域名可就近接入</p></li>
+<li><p><strong>InstanceId</strong> (str) - 实例ID，资源唯一标识</p></li>
+<li><p><strong>Message</strong> (str) - 提示信息</p></li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="ucloud.services.pathx.client.PathXClient.delete_global_ssh_instance">
+<code class="sig-name descname">delete_global_ssh_instance</code><span class="sig-paren">(</span><em class="sig-param">req: Optional[dict] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/ucloud/services/pathx/client.html#PathXClient.delete_global_ssh_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.services.pathx.client.PathXClient.delete_global_ssh_instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>DeleteGlobalSSHInstance - 删除GlobalSSH实例</p>
+<p><strong>Request</strong></p>
+<ul class="simple">
+<li><p><strong>ProjectId</strong> (str) - (Config) 项目ID,如org-xxxx。请参考 <a class="reference external" href="https://docs.ucloud.cn/api/summary/get_project_list.html">GetProjectList接口</a></p></li>
+<li><p><strong>InstanceId</strong> (str) - (Required) 实例Id,资源的唯一标识</p></li>
+</ul>
+<p><strong>Response</strong></p>
+<ul class="simple">
+<li><p><strong>Message</strong> (str) - 提示信息</p></li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="ucloud.services.pathx.client.PathXClient.describe_global_ssh_area">
+<code class="sig-name descname">describe_global_ssh_area</code><span class="sig-paren">(</span><em class="sig-param">req: Optional[dict] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/ucloud/services/pathx/client.html#PathXClient.describe_global_ssh_area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.services.pathx.client.PathXClient.describe_global_ssh_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>DescribeGlobalSSHArea - 获取GlobalSSH覆盖的地区列表 用于控制显示哪些机房地域可以使用SSH特性</p>
+<p><strong>Request</strong></p>
+<ul class="simple">
+<li><p><strong>ProjectId</strong> (str) - (Config) 项目ID,如org-xxxx。请参考 <a class="reference external" href="https://docs.ucloud.cn/api/summary/get_project_list.html">GetProjectList接口</a></p></li>
+<li><p><strong>Region</strong> (str) - (Config) 机房地域代号，如hk、 us-ca、 us-ws等。不填默认为空，返回所有支持地区。</p></li>
+</ul>
+<p><strong>Response</strong></p>
+<ul class="simple">
+<li><p><strong>AreaSet</strong> (list) - 见 <strong>GlobalSSHArea</strong> 模型定义</p></li>
+<li><p><strong>Message</strong> (str) - 提示信息</p></li>
+</ul>
+<p><strong>Response Model</strong></p>
+<p><strong>GlobalSSHArea</strong></p>
+<ul class="simple">
+<li><p><strong>Area</strong> (str) - GlobalSSH覆盖的地区,如香港、东京、洛杉矶等</p></li>
+<li><p><strong>AreaCode</strong> (str) - 地区代号,以地区AirPort Code</p></li>
+<li><p><strong>RegionSet</strong> (list) - ucloud机房代号构成的数组，如[“hk”,”us-ca”]</p></li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="ucloud.services.pathx.client.PathXClient.describe_global_ssh_instance">
+<code class="sig-name descname">describe_global_ssh_instance</code><span class="sig-paren">(</span><em class="sig-param">req: Optional[dict] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/ucloud/services/pathx/client.html#PathXClient.describe_global_ssh_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.services.pathx.client.PathXClient.describe_global_ssh_instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>DescribeGlobalSSHInstance - 获取GlobalSSH实例列表（传实例ID获取单个实例信息，不传获取项目下全部实例）</p>
+<p><strong>Request</strong></p>
+<ul class="simple">
+<li><p><strong>ProjectId</strong> (str) - (Config) 项目ID，如org-xxxx。请参考 <a class="reference external" href="https://docs.ucloud.cn/api/summary/get_project_list.html">GetProjectList接口</a></p></li>
+<li><p><strong>InstanceId</strong> (str) - 实例ID，资源唯一标识</p></li>
+</ul>
+<p><strong>Response</strong></p>
+<ul class="simple">
+<li><p><strong>InstanceSet</strong> (list) - 见 <strong>GlobalSSHInfo</strong> 模型定义</p></li>
+</ul>
+<p><strong>Response Model</strong></p>
+<p><strong>GlobalSSHInfo</strong></p>
+<ul class="simple">
+<li><p><strong>AcceleratingDomain</strong> (str) - 加速域名</p></li>
+<li><p><strong>Area</strong> (str) - 被SSH访问的IP所在地区</p></li>
+<li><p><strong>ChargeType</strong> (str) - 支付周期，如Month,Year等</p></li>
+<li><p><strong>CreateTime</strong> (int) - 资源创建时间戳</p></li>
+<li><p><strong>ExpireTime</strong> (int) - 资源过期时间戳</p></li>
+<li><p><strong>InstanceId</strong> (str) - 实例ID，资源唯一标识</p></li>
+<li><p><strong>Port</strong> (int) - SSH登陆端口</p></li>
+<li><p><strong>Remark</strong> (str) - 备注信息</p></li>
+<li><p><strong>TargetIP</strong> (str) - 被SSH访问的EIP</p></li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="ucloud.services.pathx.client.PathXClient.modify_global_ssh_port">
+<code class="sig-name descname">modify_global_ssh_port</code><span class="sig-paren">(</span><em class="sig-param">req: Optional[dict] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/ucloud/services/pathx/client.html#PathXClient.modify_global_ssh_port"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.services.pathx.client.PathXClient.modify_global_ssh_port" title="Permalink to this definition">¶</a></dt>
+<dd><p>ModifyGlobalSSHPort - 修改GlobalSSH端口</p>
+<p><strong>Request</strong></p>
+<ul class="simple">
+<li><p><strong>ProjectId</strong> (str) - (Config) 项目ID，如org-xxxx。请参考 <a class="reference external" href="https://docs.ucloud.cn/api/summary/get_project_list.html">GetProjectList接口</a></p></li>
+<li><p><strong>InstanceId</strong> (str) - (Required) 实例ID,资源唯一标识</p></li>
+<li><p><strong>Port</strong> (int) - (Required) 调整后的SSH登陆端口</p></li>
+</ul>
+<p><strong>Response</strong></p>
+<ul class="simple">
+<li><p><strong>Message</strong> (str) - 提示信息</p></li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="ucloud.services.pathx.client.PathXClient.modify_global_ssh_remark">
+<code class="sig-name descname">modify_global_ssh_remark</code><span class="sig-paren">(</span><em class="sig-param">req: Optional[dict] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/ucloud/services/pathx/client.html#PathXClient.modify_global_ssh_remark"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.services.pathx.client.PathXClient.modify_global_ssh_remark" title="Permalink to this definition">¶</a></dt>
+<dd><p>ModifyGlobalSSHRemark - 修改GlobalSSH备注</p>
+<p><strong>Request</strong></p>
+<ul class="simple">
+<li><p><strong>ProjectId</strong> (str) - (Config) 项目ID，如org-xxxx。请参考 <a class="reference external" href="https://docs.ucloud.cn/api/summary/get_project_list.html">GetProjectList接口</a></p></li>
+<li><p><strong>InstanceId</strong> (str) - (Required) 实例ID,资源唯一标识</p></li>
+<li><p><strong>Remark</strong> (str) - 备注信息，不填默认为空字符串</p></li>
+</ul>
+<p><strong>Response</strong></p>
+<ul class="simple">
+<li><p><strong>Message</strong> (str) - 接口返回消息</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="stepflow">
 <h2>StepFlow<a class="headerlink" href="#stepflow" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -249,7 +379,7 @@
 <ul class="simple">
 <li><p><strong>Arrearage</strong> (list) - 标识欠费的数组，数组含有下列元素值， 1=国内流量有欠费 2=国外流量有欠费  3=国内带宽有欠费 4=国外带宽有欠费</p></li>
 <li><p><strong>ChargeType</strong> (int) - 当前计费方式，10=流量付费 20=带宽日峰值  30=按月后付费</p></li>
-<li><p><strong>DomainList</strong> (list) - 见 <strong>DomainInfo</strong> 模型定义</p></li>
+<li><p><strong>DomainSet</strong> (list) - 见 <strong>DomainInfo</strong> 模型定义</p></li>
 <li><p><strong>LastChargeType</strong> (int) - 表示最后一次切换的计费方式，10=流量付费 20=带宽日峰值  30=按月后付费  40=未选择计费方式</p></li>
 <li><p><strong>MaxDomainNum</strong> (int) - 最大域名数量，默认20</p></li>
 <li><p><strong>TotalCount</strong> (int) - 满足条件的域名个数</p></li>
@@ -3611,7 +3741,7 @@
 <li><p><strong>ProjectId</strong> (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 <a class="reference external" href="https://docs.ucloud.cn/api/summary/get_project_list.html">GetProjectList接口</a></p></li>
 <li><p><strong>Region</strong> (str) - (Config) 地域。 参见  <a class="reference external" href="https://docs.ucloud.cn/api/summary/regionlist.html">地域和可用区列表</a></p></li>
 <li><p><strong>HighAvailability</strong> (str) - (Required) 是否开启高可用,enable或disable</p></li>
-<li><p><strong>Name</strong> (str) - (Required) 请求创建组的名称 (范围[6-63],只能包含英文、<a href="#id534"><span class="problematic" id="id535">数字以及符号-和_</span></a>)</p></li>
+<li><p><strong>Name</strong> (str) - (Required) 请求创建组的名称 (范围[6-63],只能包含英文、<a href="#id540"><span class="problematic" id="id541">数字以及符号-和_</span></a>)</p></li>
 <li><p><strong>Zone</strong> (str) - (Required) 可用区。参见  <a class="reference external" href="https://docs.ucloud.cn/api/summary/regionlist.html">可用区列表</a></p></li>
 <li><p><strong>AutoBackup</strong> (str) - 是否自动备份,enable或disable，默认disable</p></li>
 <li><p><strong>BackupId</strong> (str) - 有此项代表从备份中创建，无代表正常创建</p></li>
@@ -4069,7 +4199,7 @@
 <li><p><strong>ProjectId</strong> (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 <a class="reference external" href="https://docs.ucloud.cn/api/summary/get_project_list.html">GetProjectList接口</a></p></li>
 <li><p><strong>Region</strong> (str) - (Config) 地域。 参见  <a class="reference external" href="https://docs.ucloud.cn/api/summary/regionlist.html">地域和可用区列表</a></p></li>
 <li><p><strong>GroupId</strong> (str) - (Required) 组的ID</p></li>
-<li><p><strong>Name</strong> (str) - (Required) Redis组名称 (范围[6-63],只能包含英文、<a href="#id536"><span class="problematic" id="id537">数字以及符号-和_</span></a>)</p></li>
+<li><p><strong>Name</strong> (str) - (Required) Redis组名称 (范围[6-63],只能包含英文、<a href="#id542"><span class="problematic" id="id543">数字以及符号-和_</span></a>)</p></li>
 <li><p><strong>Zone</strong> (str) - 可用区。参见  <a class="reference external" href="https://docs.ucloud.cn/api/summary/regionlist.html">可用区列表</a></p></li>
 </ul>
 <p><strong>Response</strong></p>
@@ -5429,6 +5559,7 @@
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">UCloud SDK Services</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pathx">PathX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#stepflow">StepFlow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#uaccount">UAccount</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ucdn">UCDN</a></li>
