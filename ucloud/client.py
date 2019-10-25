@@ -8,6 +8,13 @@ class Client(CompactClient):
         self._config = config
         super(Client, self).__init__(config, transport, middleware)
 
+    def pathx(self):
+        from ucloud.services.pathx.client import PathXClient
+
+        return PathXClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
     def stepflow(self):
         from ucloud.services.stepflow.client import StepFlowClient
 

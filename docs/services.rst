@@ -1,6 +1,12 @@
 UCloud SDK Services
 ===================
 
+PathX
+-----
+
+.. autoclass:: ucloud.services.pathx.client.PathXClient
+   :members:
+
 StepFlow
 --------
 

@@ -37,8 +37,8 @@ class BatchDescribeNewUcdnDomainResponseSchema(schema.ResponseSchema):
             fields.Str(), required=False, load_from="Arrearage"
         ),
         "ChargeType": fields.Int(required=False, load_from="ChargeType"),
-        "DomainList": fields.List(
-            models.DomainInfoSchema(), required=False, load_from="DomainList"
+        "DomainSet": fields.List(
+            models.DomainInfoSchema(), required=False, load_from="DomainSet"
         ),
         "LastChargeType": fields.Int(
             required=False, load_from="LastChargeType"
