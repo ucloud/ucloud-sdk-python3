@@ -3,34 +3,34 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class CacheConfSchema(schema.ResponseSchema):
+    """ CacheConf - 缓存配置
+    """
+
+    fields = {
+        "CacheBehavior": fields.Int(required=False, load_from="CacheBehavior"),
+        "CacheTTL": fields.Int(required=False, load_from="CacheTTL"),
+        "CacheUnit": fields.Str(required=False, load_from="CacheUnit"),
+        "Description": fields.Str(required=False, load_from="Description"),
+        "FollowOriginRule": fields.Int(
+            required=False, load_from="FollowOriginRule"
+        ),
+        "HttpCodePattern": fields.Str(
+            required=False, load_from="HttpCodePattern"
+        ),
+        "IgnoreQueryString": fields.Int(
+            required=False, load_from="IgnoreQueryString"
+        ),
+        "PathPattern": fields.Str(required=False, load_from="PathPattern"),
+    }
+
+
 class AccessConfSchema(schema.ResponseSchema):
     """ AccessConf - 访问控制
     """
 
     fields = {
         "IpBlacklist": fields.Str(required=False, load_from="IpBlacklist")
-    }
-
-
-class CacheConfSchema(schema.ResponseSchema):
-    """ CacheConf - 缓存配置
-    """
-
-    fields = {
-        "CacheBehavior": fields.Bool(required=False, load_from="CacheBehavior"),
-        "CacheTTL": fields.Int(required=False, load_from="CacheTTL"),
-        "CacheUnit": fields.Str(required=False, load_from="CacheUnit"),
-        "Description": fields.Str(required=False, load_from="Description"),
-        "FollowOriginRule": fields.Bool(
-            required=False, load_from="FollowOriginRule"
-        ),
-        "HttpCodePattern": fields.Str(
-            required=False, load_from="HttpCodePattern"
-        ),
-        "IgnoreQueryString": fields.Bool(
-            required=False, load_from="IgnoreQueryString"
-        ),
-        "PathPattern": fields.Str(required=False, load_from="PathPattern"),
     }
 
 
