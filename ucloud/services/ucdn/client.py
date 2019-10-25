@@ -38,20 +38,20 @@ class UCDNClient(Client):
         
         **Response Model**
         
-        **AccessConf** 
-        
-        - **IpBlacklist** (str) - 多个ip用逗号隔开
-
         **CacheConf** 
         
-        - **CacheBehavior** (bool) - 是否缓存，true为缓存，false为不缓存。为false的情况下，CacheTTL和CacheUnit强制不生效
+        - **CacheBehavior** (int) - 是否缓存，1为缓存，0为不缓存。为0的情况下，CacheTTL和CacheUnit强制不生效
         - **CacheTTL** (int) - 缓存时间
         - **CacheUnit** (str) - 缓存时间的单位。sec（秒），min（分钟），hour（小时），day（天）
         - **Description** (str) - 缓存规则描述
-        - **FollowOriginRule** (bool) - 是否优先遵循源站头部缓存策略，false为不优先遵循源站，true为优先遵循源站缓存头部。默认为false
+        - **FollowOriginRule** (int) - 是否优先遵循源站头部缓存策略，0为不优先遵循源站，1为优先遵循源站缓存头部。默认为0
         - **HttpCodePattern** (str) - 状态码默认情况只缓存200类状态码，支持正则
-        - **IgnoreQueryString** (bool) - 是否忽略参数缓存（false为不忽略，true为忽略，默认为false）
+        - **IgnoreQueryString** (int) - 是否忽略参数缓存（0为不忽略，1为忽略，默认为0）
         - **PathPattern** (str) - 路径模式，支持正则
+
+        **AccessConf** 
+        
+        - **IpBlacklist** (str) - 多个ip用逗号隔开
 
         **DomainInfo** 
         
