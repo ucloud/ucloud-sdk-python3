@@ -94,6 +94,18 @@ class CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSHSchema(
     }
 
 
+class CreateUHostInstanceParamNetworkInterfaceIPv6Schema(schema.RequestSchema):
+    """ CreateUHostInstanceParamNetworkInterfaceIPv6 - 
+    """
+
+    fields = {
+        "Adress": fields.Str(required=False, dump_to="Adress"),
+        "ShareBandwidthId": fields.Str(
+            required=False, dump_to="ShareBandwidthId"
+        ),
+    }
+
+
 class CreateUHostInstanceParamNetworkInterfaceEIPSchema(schema.RequestSchema):
     """ CreateUHostInstanceParamNetworkInterfaceEIP - 
     """
@@ -112,6 +124,20 @@ class CreateUHostInstanceParamNetworkInterfaceEIPSchema(schema.RequestSchema):
     }
 
 
+class CreateUHostInstanceParamNetworkInterfaceSchema(schema.RequestSchema):
+    """ CreateUHostInstanceParamNetworkInterface - 
+    """
+
+    fields = {
+        "EIP": CreateUHostInstanceParamNetworkInterfaceEIPSchema(
+            required=False, dump_to="EIP"
+        ),
+        "IPv6": CreateUHostInstanceParamNetworkInterfaceIPv6Schema(
+            required=False, dump_to="IPv6"
+        ),
+    }
+
+
 class CreateUHostInstanceParamDisksSchema(schema.RequestSchema):
     """ CreateUHostInstanceParamDisks - 
     """
@@ -124,17 +150,6 @@ class CreateUHostInstanceParamDisksSchema(schema.RequestSchema):
         "KmsKeyId": fields.Str(required=False, dump_to="KmsKeyId"),
         "Size": fields.Int(required=True, dump_to="Size"),
         "Type": fields.Str(required=True, dump_to="Type"),
-    }
-
-
-class CreateUHostInstanceParamNetworkInterfaceSchema(schema.RequestSchema):
-    """ CreateUHostInstanceParamNetworkInterface - 
-    """
-
-    fields = {
-        "EIP": CreateUHostInstanceParamNetworkInterfaceEIPSchema(
-            required=False, dump_to="EIP"
-        )
     }
 
 
@@ -155,6 +170,7 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
         "Disks": fields.List(CreateUHostInstanceParamDisksSchema()),
         "GPU": fields.Int(required=False, dump_to="GPU"),
         "GpuType": fields.Str(required=False, dump_to="GpuType"),
+        "HostIp": fields.Str(required=False, dump_to="HostIp"),
         "HostType": fields.Str(required=False, dump_to="HostType"),
         "HotplugFeature": fields.Bool(required=False, dump_to="HotplugFeature"),
         "ImageId": fields.Str(required=True, dump_to="ImageId"),
@@ -192,6 +208,7 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
             required=False, dump_to="TimemachineFeature"
         ),
         "UHostType": fields.Str(required=False, dump_to="UHostType"),
+        "UserData": fields.Str(required=False, dump_to="UserData"),
         "UserDataScript": fields.Str(required=False, dump_to="UserDataScript"),
         "VPCId": fields.Str(required=False, dump_to="VPCId"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
@@ -247,6 +264,39 @@ class DescribeImageResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeIsolationGroup
+
+查询硬件隔离组列表。
+"""
+
+
+class DescribeIsolationGroupRequestSchema(schema.RequestSchema):
+    """ DescribeIsolationGroup - 查询硬件隔离组列表。
+    """
+
+    fields = {
+        "GroupId": fields.Str(required=False, dump_to="GroupId"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DescribeIsolationGroupResponseSchema(schema.ResponseSchema):
+    """ DescribeIsolationGroup - 查询硬件隔离组列表。
+    """
+
+    fields = {
+        "IsolationGroupSet": fields.List(
+            models.IsolationGroupSchema(),
+            required=False,
+            load_from="IsolationGroupSet",
+        )
+    }
+
+
+"""
 API: DescribeUHostInstance
 
 获取主机或主机列表信息，并可根据数据中心，主机ID等参数进行过滤。
@@ -277,12 +327,47 @@ class DescribeUHostInstanceResponseSchema(schema.ResponseSchema):
     """
 
     fields = {
+        "Action": fields.Str(required=True, load_from="Action"),
+        "RetCode": fields.Int(required=True, load_from="RetCode"),
         "TotalCount": fields.Int(required=False, load_from="TotalCount"),
         "UHostSet": fields.List(
             models.UHostInstanceSetSchema(),
             required=False,
             load_from="UHostSet",
         ),
+    }
+
+
+"""
+API: DescribeUHostInstanceSnapshot
+
+获取已经存在的UHost实例的存储快照列表。
+"""
+
+
+class DescribeUHostInstanceSnapshotRequestSchema(schema.RequestSchema):
+    """ DescribeUHostInstanceSnapshot - 获取已经存在的UHost实例的存储快照列表。
+    """
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UHostId": fields.Str(required=True, dump_to="UHostId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DescribeUHostInstanceSnapshotResponseSchema(schema.ResponseSchema):
+    """ DescribeUHostInstanceSnapshot - 获取已经存在的UHost实例的存储快照列表。
+    """
+
+    fields = {
+        "SnapshotSet": fields.List(
+            models.UHostSnapshotSetSchema(),
+            required=False,
+            load_from="SnapshotSet",
+        ),
+        "UhostId": fields.Str(required=False, load_from="UhostId"),
     }
 
 
@@ -620,7 +705,6 @@ class ReinstallUHostInstanceRequestSchema(schema.RequestSchema):
     """
 
     fields = {
-        "BootDiskSpace": fields.Int(required=False, dump_to="BootDiskSpace"),
         "DNSServers": fields.List(fields.Str()),
         "ImageId": fields.Str(required=False, dump_to="ImageId"),
         "Password": fields.Base64(required=False, dump_to="Password"),
@@ -698,12 +782,12 @@ class ResizeAttachedDiskResponseSchema(schema.ResponseSchema):
 """
 API: ResizeUHostInstance
 
-修改指定UHost实例的资源配置，如CPU核心数，内存容量大小，网络增强等。可选配置范围请参考[[api:uhost-api:uhost_type|云主机机型说明]]。
+修改指定UHost实例的资源配置，如CPU核心数，内存容量大小，磁盘空间大小,网络增强等。
 """
 
 
 class ResizeUHostInstanceRequestSchema(schema.RequestSchema):
-    """ ResizeUHostInstance - 修改指定UHost实例的资源配置，如CPU核心数，内存容量大小，网络增强等。可选配置范围请参考[[api:uhost-api:uhost_type|云主机机型说明]]。
+    """ ResizeUHostInstance - 修改指定UHost实例的资源配置，如CPU核心数，内存容量大小，磁盘空间大小,网络增强等。
     """
 
     fields = {
@@ -720,7 +804,7 @@ class ResizeUHostInstanceRequestSchema(schema.RequestSchema):
 
 
 class ResizeUHostInstanceResponseSchema(schema.ResponseSchema):
-    """ ResizeUHostInstance - 修改指定UHost实例的资源配置，如CPU核心数，内存容量大小，网络增强等。可选配置范围请参考[[api:uhost-api:uhost_type|云主机机型说明]]。
+    """ ResizeUHostInstance - 修改指定UHost实例的资源配置，如CPU核心数，内存容量大小，磁盘空间大小,网络增强等。
     """
 
     fields = {"UhostId": fields.Str(required=False, load_from="UhostId")}
@@ -794,6 +878,7 @@ class TerminateCustomImageRequestSchema(schema.RequestSchema):
         "ImageId": fields.Str(required=True, dump_to="ImageId"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
 
