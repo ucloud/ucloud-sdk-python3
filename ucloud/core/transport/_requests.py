@@ -41,7 +41,12 @@ class RequestsTransport(http.Transport):
         for handler in self.middleware.request_handlers:
             req = handler(req)
 
-        resp = self._send(req, **options)
+        try:
+            resp = self._send(req, **options)
+        except Exception as e:
+            for handler in self.middleware.exception_handlers:
+                handler(e)
+            raise e
 
         for handler in self.middleware.response_handlers:
             resp = handler(resp)
