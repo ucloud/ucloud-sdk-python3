@@ -99,6 +99,8 @@ class Step:
         return resp
 
     def _set_default_response(self, result):
+        if result is None:
+            return result
         result.setdefault("RetCode", 0)
         if "action" in self.extras:
             result["Action"] = "{}Response".format(self.extras["action"])
@@ -122,29 +124,28 @@ class Step:
             time.sleep(self.startup_delay)
 
         for i in range(self.max_retries + 1):
+            self.errors.clear()
+
             # invoke function to load result
             try:
                 result = self.invoker(self, *args, **kwargs)
-            except self.retry_for as e:
-                if i == self.max_retries:
-                    raise e
-
-                if self.retry_interval:
-                    time.sleep(self.retry_interval)
-                continue
+            except Exception as e:
+                result = None
+                self.errors.append(e)
             else:
                 invoke_callback and invoke_callback(result)
 
-            # validate result
-            for validator in self.validators(self.store):
-                try:
-                    op.check(
-                        validator[0],
-                        utest.value_at_path(result, validator[1]),
-                        validator[2],
-                    )
-                except self.retry_for as e:
-                    self.errors.append(e)
+                for validator in self.validators(self.store):
+                    try:
+                        op.check(
+                            validator[0],
+                            utest.value_at_path(result, validator[1]),
+                            validator[2],
+                        )
+                    except self.retry_for as e:
+                        self.errors.append(e)
+                    except Exception as e:
+                        self.errors.append(e)
 
             # if got error, retrying or raise it
             if self.errors:
@@ -157,4 +158,4 @@ class Step:
                 continue
 
             self.status = "passed"
-            return result
+            return result or None
