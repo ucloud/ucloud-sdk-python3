@@ -43,9 +43,9 @@ class Step:
         self.startup_delay = startup_delay
         self.fast_fail = fast_fail
 
-        self.start_time: int = 0
-        self.end_time: int = 0
-        self.status: str = "skipped"
+        self.start_time = 0
+        self.end_time = 0
+        self.status = "skipped"
 
         self.title = title
         self.type = "api"
@@ -54,7 +54,7 @@ class Step:
         self.extras = kwargs
         self.scenario = scenario
         self.store = scenario.store
-        self.retries = []
+        self.api_retries = []
 
     def run_api(self, client, *args, **kwargs):
         client.transport.middleware.response(self._handle_response, 0)
@@ -83,7 +83,7 @@ class Step:
                 "start_time": self.start_time,
                 "end_time": self.end_time,
             },
-            "retries": self.retries,
+            "api_retries": self.api_retries,
             "errors": list(set([str(e) for e in self.errors])),
         }
 
@@ -91,11 +91,11 @@ class Step:
         req = resp.request.payload()
         req.pop('Signature', None)
 
-        self.retries.append({
+        self.api_retries.append({
             'request': req,
             'response': resp.json(),
             'request_uuid': resp.headers.get('X-UCLOUD-REQUEST-UUID'),
-            'request_time': req.request_time,
+            'request_time': resp.request.request_time,
         })
         return resp
 
