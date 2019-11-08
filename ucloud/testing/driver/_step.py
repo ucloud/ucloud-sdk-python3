@@ -95,6 +95,7 @@ class Step:
             'request': req,
             'response': resp.json(),
             'request_uuid': resp.headers.get('X-UCLOUD-REQUEST-UUID'),
+            'request_time': req.request_time,
         })
         return resp
 

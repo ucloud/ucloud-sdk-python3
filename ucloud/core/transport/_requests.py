@@ -1,3 +1,4 @@
+import time
 import typing
 import requests
 from urllib3.util.retry import Retry
@@ -67,6 +68,7 @@ class RequestsTransport(http.Transport):
             session.mount("http://", adapter=adapter)
             session.mount("https://", adapter=adapter)
 
+            req.request_time = time.time()
             session_resp = session.request(
                 method=req.method.upper(),
                 url=req.url,
@@ -77,6 +79,7 @@ class RequestsTransport(http.Transport):
             )
             resp = self.convert_response(session_resp)
             resp.request = req
+            resp.response_time = time.time()
             return resp
 
     def _load_adapter(

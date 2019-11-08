@@ -25,6 +25,7 @@ class Request:
         self.data = data
         self.json = json
         self.headers = headers
+        self.request_time = 0
 
     def payload(self):
         payload = (self.params or {}).copy()
@@ -54,6 +55,7 @@ class Response:
         self.headers = headers
         self.content = content
         self.encoding = encoding
+        self.response_time = 0
 
     def json(self, **kwargs) -> typing.Optional[dict]:
         """ json will return the bytes of content
