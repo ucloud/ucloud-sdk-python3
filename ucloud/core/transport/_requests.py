@@ -69,6 +69,8 @@ class RequestsTransport(http.Transport):
                 data=req.data,
                 params=req.params,
                 headers=req.headers,
+                verify=req.verify_ssl,
+                cert=req.cert,
             )
             resp = self.convert_response(session_resp)
             resp.request = req
