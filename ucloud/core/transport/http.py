@@ -86,6 +86,20 @@ class Response:
         return content
 
 
+class SSLOption:
+    def __init__(
+        self,
+        ssl_verify: bool = True,
+        ssl_cacert: str = None,
+        ssl_cert: str = None,
+        ssl_key: str = None
+    ):
+        self.ssl_verify = ssl_verify
+        self.ssl_cacert = ssl_cacert
+        self.ssl_cert = ssl_cert
+        self.ssl_key = ssl_key
+
+
 class Transport:
     """ the abstract class of transport implementation """
 

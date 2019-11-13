@@ -86,8 +86,11 @@ class Client:
 
         max_retries = options.get("max_retries") or self.config.max_retries
         timeout = options.get("timeout") or self.config.timeout
+
         resp = self.transport.send(
-            req, timeout=timeout, max_retries=max_retries
+            req, ssl_verify=self.config.ssl_verify, ssl_cacert=self.config.ssl_cacert,
+            ssl_cert=self.config.ssl_cert, ssl_key=self.config.ssl_key,
+            timeout=timeout, max_retries=max_retries
         ).json()
 
         for handler in self.middleware.response_handlers:

@@ -3,7 +3,7 @@ import requests
 from urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
 from ucloud.core.transport import http
-from ucloud.core.transport.http import Request, Response
+from ucloud.core.transport.http import Request, Response, SSLOption
 from ucloud.core.utils.middleware import Middleware
 
 
@@ -41,7 +41,9 @@ class RequestsTransport(http.Transport):
         for handler in self.middleware.request_handlers:
             req = handler(req)
 
-        resp = self._send(req, **options)
+        ssl_option = SSLOption(options.get("ssl_verify"), options.get("ssl_cacert"),
+                               options.get("ssl_cert"), options.get("ssl_key"))
+        resp = self._send(req, ssl_option=ssl_option, **options)
 
         for handler in self.middleware.response_handlers:
             resp = handler(resp)
@@ -56,22 +58,33 @@ class RequestsTransport(http.Transport):
         """
         return self._middleware
 
-    def _send(self, req: Request, **options: dict) -> requests.Response:
+    def _send(self, req: Request, ssl_option: SSLOption, **options: dict) -> requests.Response:
         with requests.Session() as session:
             adapter = self._load_adapter(options.get("max_retries"))
             session.mount("http://", adapter=adapter)
             session.mount("https://", adapter=adapter)
 
-            session_resp = session.request(
-                method=req.method.upper(),
-                url=req.url,
-                json=req.json,
-                data=req.data,
-                params=req.params,
-                headers=req.headers,
-                verify=req.verify_ssl,
-                cert=req.cert,
-            )
+            if ssl_option.ssl_cert:
+                session_resp = session.request(
+                    method=req.method.upper(),
+                    url=req.url,
+                    json=req.json,
+                    data=req.data,
+                    params=req.params,
+                    headers=req.headers,
+                    verify=ssl_option.ssl_verify and ssl_option.ssl_cacert,
+                    cert=(ssl_option.ssl_cert, ssl_option.ssl_key) if ssl_option.ssl_key else ssl_option.ssl_cert,
+                )
+            else:
+                session_resp = session.request(
+                    method=req.method.upper(),
+                    url=req.url,
+                    json=req.json,
+                    data=req.data,
+                    params=req.params,
+                    headers=req.headers,
+                    verify=ssl_option.ssl_verify and ssl_option.ssl_cacert,
+                )
             resp = self.convert_response(session_resp)
             resp.request = req
             return resp
