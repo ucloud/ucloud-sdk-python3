@@ -63,31 +63,32 @@ class RequestsTransport(http.Transport):
             session.mount("http://", adapter=adapter)
             session.mount("https://", adapter=adapter)
 
-            verify = ssl_option.ssl_verify and ssl_option.ssl_cacert
-            if ssl_option.ssl_cert:
-                session_resp = session.request(
-                    method=req.method.upper(),
-                    url=req.url,
-                    json=req.json,
-                    data=req.data,
-                    params=req.params,
-                    headers=req.headers,
-                    verify=verify,
-                    cert=(ssl_option.ssl_cert, ssl_option.ssl_key) if ssl_option.ssl_key else ssl_option.ssl_cert,
-                )
-            else:
-                session_resp = session.request(
-                    method=req.method.upper(),
-                    url=req.url,
-                    json=req.json,
-                    data=req.data,
-                    params=req.params,
-                    headers=req.headers,
-                    verify=verify,
-                )
+            kwargs = self._build_ssl_option(ssl_option) if ssl_option else {}
+
+            session_resp = session.request(
+                method=req.method.upper(),
+                url=req.url,
+                json=req.json,
+                data=req.data,
+                params=req.params,
+                headers=req.headers,
+                **kwargs
+            )
             resp = self.convert_response(session_resp)
             resp.request = req
             return resp
+
+    @staticmethod
+    def _build_ssl_option(ssl_option):
+        kwargs = {'verify': ssl_option.ssl_verify and ssl_option.ssl_cacert}
+        if not ssl_option.ssl_cert:
+            return kwargs
+
+        if ssl_option.ssl_key:
+            kwargs['cert'] = (ssl_option.ssl_cert, ssl_option.ssl_key)
+        else:
+            kwargs['cert'] = ssl_option.ssl_cert
+        return kwargs
 
     def _load_adapter(
         self, max_retries: typing.Optional[int] = None
