@@ -103,5 +103,5 @@ class SSLOption:
 class Transport:
     """ the abstract class of transport implementation """
 
-    def send(self, req: Request, **options: dict) -> Response:
+    def send(self, req: Request, **options: typing.Any) -> Response:
         raise NotImplementedError

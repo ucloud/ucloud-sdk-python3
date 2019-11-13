@@ -32,7 +32,7 @@ class RequestsTransport(http.Transport):
         self._adapter = self._load_adapter(max_retries)
         self._middleware = Middleware()
 
-    def send(self, req: Request, **options: dict) -> http.Response:
+    def send(self, req: Request, **options: typing.Any) -> http.Response:
         """ send request and return the response
 
         :param req: the full http request descriptor
@@ -41,8 +41,7 @@ class RequestsTransport(http.Transport):
         for handler in self.middleware.request_handlers:
             req = handler(req)
 
-        ssl_option = SSLOption(options.get("ssl_verify"), options.get("ssl_cacert"),
-                               options.get("ssl_cert"), options.get("ssl_key"))
+        ssl_option = options.get("ssl_option")
         resp = self._send(req, ssl_option=ssl_option, **options)
 
         for handler in self.middleware.response_handlers:
@@ -64,6 +63,7 @@ class RequestsTransport(http.Transport):
             session.mount("http://", adapter=adapter)
             session.mount("https://", adapter=adapter)
 
+            verify = ssl_option.ssl_verify and ssl_option.ssl_cacert
             if ssl_option.ssl_cert:
                 session_resp = session.request(
                     method=req.method.upper(),
@@ -72,7 +72,7 @@ class RequestsTransport(http.Transport):
                     data=req.data,
                     params=req.params,
                     headers=req.headers,
-                    verify=ssl_option.ssl_verify and ssl_option.ssl_cacert,
+                    verify=verify,
                     cert=(ssl_option.ssl_cert, ssl_option.ssl_key) if ssl_option.ssl_key else ssl_option.ssl_cert,
                 )
             else:
@@ -83,7 +83,7 @@ class RequestsTransport(http.Transport):
                     data=req.data,
                     params=req.params,
                     headers=req.headers,
-                    verify=ssl_option.ssl_verify and ssl_option.ssl_cacert,
+                    verify=verify,
                 )
             resp = self.convert_response(session_resp)
             resp.request = req

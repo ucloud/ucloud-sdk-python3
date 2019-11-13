@@ -4,7 +4,7 @@ import sys
 
 from ucloud import version
 from ucloud.core.client._cfg import Config
-from ucloud.core.transport import Transport, RequestsTransport, Request
+from ucloud.core.transport import Transport, RequestsTransport, Request, SSLOption
 from ucloud.core.typesystem import encoder
 from ucloud.core.utils import log
 from ucloud.core.utils.middleware import Middleware
@@ -88,8 +88,8 @@ class Client:
         timeout = options.get("timeout") or self.config.timeout
 
         resp = self.transport.send(
-            req, ssl_verify=self.config.ssl_verify, ssl_cacert=self.config.ssl_cacert,
-            ssl_cert=self.config.ssl_cert, ssl_key=self.config.ssl_key,
+            req, ssl_option=SSLOption(self.config.ssl_verify, self.config.ssl_cacert,
+                                      self.config.ssl_cert, self.config.ssl_key),
             timeout=timeout, max_retries=max_retries
         ).json()
 
