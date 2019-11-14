@@ -41,8 +41,7 @@ class RequestsTransport(http.Transport):
         for handler in self.middleware.request_handlers:
             req = handler(req)
 
-        ssl_option = options.get("ssl_option")
-        resp = self._send(req, ssl_option, **options)
+        resp = self._send(req, **options)
 
         for handler in self.middleware.response_handlers:
             resp = handler(resp)
@@ -57,12 +56,13 @@ class RequestsTransport(http.Transport):
         """
         return self._middleware
 
-    def _send(self, req: Request, ssl_option: SSLOption, **options: typing.Any) -> requests.Response:
+    def _send(self, req: Request, **options: typing.Any) -> requests.Response:
         with requests.Session() as session:
             adapter = self._load_adapter(options.get("max_retries"))
             session.mount("http://", adapter=adapter)
             session.mount("https://", adapter=adapter)
 
+            ssl_option = options.get('ssl_option')
             kwargs = self._build_ssl_option(ssl_option) if ssl_option else {}
 
             session_resp = session.request(
