@@ -73,13 +73,13 @@ class Scenario:
                 "start_time": self.start_time,
                 "end_time": self.end_time,
             },
-            "passedCount": len(
+            "passed_count": len(
                 [1 for item in self.steps if item.status == "passed"]
             ),
-            "failedCount": len(
+            "failed_count": len(
                 [1 for item in self.steps if item.status == "failed"]
             ),
-            "skippedCount": len(
+            "skipped_count": len(
                 [1 for item in self.steps if item.status == "skipped"]
             ),
         }

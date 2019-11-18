@@ -39,13 +39,13 @@ class Specification:
                 "end_time": self.end_time,
             },
             "scenarios": [item.json() for item in self.scenarios],
-            "passedCount": len(
+            "passed_count": len(
                 [1 for item in self.scenarios if item.status == "passed"]
             ),
-            "failedCount": len(
+            "failed_count": len(
                 [1 for item in self.scenarios if item.status == "failed"]
             ),
-            "skippedCount": len(
+            "skipped_count": len(
                 [1 for item in self.scenarios if item.status == "skipped"]
             ),
         }
