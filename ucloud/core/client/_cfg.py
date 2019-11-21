@@ -13,6 +13,10 @@ class ConfigSchema(schema.Schema):
         "max_retries": fields.Int(default=3),
         "log_level": fields.Int(default=logging.INFO),
         "validate_request": fields.Bool(default=True),
+        "ssl_verify": fields.Bool(default=True),
+        "ssl_cacert": fields.Str(),
+        "ssl_cert": fields.Str(),
+        "ssl_key": fields.Str(),
     }
 
 
@@ -53,6 +57,10 @@ class Config:
         timeout: int = 30,
         max_retries: int = 3,
         log_level: int = logging.INFO,
+        ssl_verify: bool = True,
+        ssl_cacert: str = None,
+        ssl_cert: str = None,
+        ssl_key: str = None,
         **kwargs
     ):
         self.region = region
@@ -62,6 +70,10 @@ class Config:
         self.timeout = timeout
         self.max_retries = max_retries
         self.log_level = log_level
+        self.ssl_verify = ssl_verify
+        self.ssl_cacert = ssl_cacert
+        self.ssl_cert = ssl_cert
+        self.ssl_key = ssl_key
 
     @classmethod
     def from_dict(cls, d: dict):
@@ -77,4 +89,8 @@ class Config:
             "timeout": self.timeout,
             "max_retries": self.max_retries,
             "log_level": self.log_level,
+            "ssl_verify": self.ssl_verify,
+            "ssl_cacert": self.ssl_cacert,
+            "ssl_cert": self.ssl_cert,
+            "ssl_key": self.ssl_key,
         }
