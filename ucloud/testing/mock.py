@@ -10,7 +10,7 @@ class MockedTransport(Transport):
         self.transport_handlers = []
         self.client_handler = []
 
-    def send(self, req: Request, **options: dict) -> Response:
+    def send(self, req: Request, **options: typing.Any) -> Response:
         resp = Response(req.url, req.method)
         for handler in self.transport_handlers:
             resp = handler(req)

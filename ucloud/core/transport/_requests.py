@@ -3,7 +3,7 @@ import requests
 from urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
 from ucloud.core.transport import http
-from ucloud.core.transport.http import Request, Response
+from ucloud.core.transport.http import Request, Response, SSLOption
 from ucloud.core.utils.middleware import Middleware
 
 
@@ -32,7 +32,7 @@ class RequestsTransport(http.Transport):
         self._adapter = self._load_adapter(max_retries)
         self._middleware = Middleware()
 
-    def send(self, req: Request, **options: dict) -> http.Response:
+    def send(self, req: Request, **options: typing.Any) -> http.Response:
         """ send request and return the response
 
         :param req: the full http request descriptor
@@ -56,11 +56,14 @@ class RequestsTransport(http.Transport):
         """
         return self._middleware
 
-    def _send(self, req: Request, **options: dict) -> requests.Response:
+    def _send(self, req: Request, **options: typing.Any) -> requests.Response:
         with requests.Session() as session:
             adapter = self._load_adapter(options.get("max_retries"))
             session.mount("http://", adapter=adapter)
             session.mount("https://", adapter=adapter)
+
+            ssl_option = options.get('ssl_option')
+            kwargs = self._build_ssl_option(ssl_option) if ssl_option else {}
 
             session_resp = session.request(
                 method=req.method.upper(),
@@ -69,10 +72,23 @@ class RequestsTransport(http.Transport):
                 data=req.data,
                 params=req.params,
                 headers=req.headers,
+                **kwargs
             )
             resp = self.convert_response(session_resp)
             resp.request = req
             return resp
+
+    @staticmethod
+    def _build_ssl_option(ssl_option):
+        kwargs = {'verify': ssl_option.ssl_verify and ssl_option.ssl_cacert}
+        if not ssl_option.ssl_cert:
+            return kwargs
+
+        if ssl_option.ssl_key:
+            kwargs['cert'] = (ssl_option.ssl_cert, ssl_option.ssl_key)
+        else:
+            kwargs['cert'] = ssl_option.ssl_cert
+        return kwargs
 
     def _load_adapter(
         self, max_retries: typing.Optional[int] = None

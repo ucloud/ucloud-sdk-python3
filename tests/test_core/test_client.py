@@ -18,6 +18,7 @@ def client():
             "private_key": "foo",
             "timeout": 10,
             "max_retries": 3,
+            "ssl_verify": False,
         }
     )
 
