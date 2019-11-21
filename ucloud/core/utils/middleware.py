@@ -24,6 +24,7 @@ class Middleware:
     def __init__(self):
         self.request_handlers = []
         self.response_handlers = []
+        self.exception_handlers = []
 
     def request(self, handler, index=-1):
         """ request is the request handler register to add request handler.
@@ -47,4 +48,16 @@ class Middleware:
         :return:
         """
         self.response_handlers.insert(index, handler)
+        return handler
+
+    def exception(self, handler, index=-1):
+        """ exception is the exception handler register to add exception handler.
+
+        :param handler: exception handler function, receive exception object
+                        and raise a new exception or ignore it
+        :param int index: the position of handler in the handler list,
+                          default is append it to end
+        :return:
+        """
+        self.exception_handlers.insert(index, handler)
         return handler

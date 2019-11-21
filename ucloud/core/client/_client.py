@@ -46,6 +46,9 @@ class Client:
             try:
                 return self._send(action, args or {}, **options)
             except exc.UCloudException as e:
+                for handler in self.middleware.exception_handlers:
+                    handler(e)
+
                 if e.retryable and retries != max_retries:
                     logging.info(
                         "Retrying {action}: {args}".format(
@@ -54,8 +57,11 @@ class Client:
                     )
                     retries += 1
                     continue
+
                 raise e
             except Exception as e:
+                for handler in self.middleware.exception_handlers:
+                    handler(e)
                 raise e
 
     @property

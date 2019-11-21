@@ -1,3 +1,4 @@
+import time
 import typing
 import requests
 from urllib3.util.retry import Retry
@@ -41,7 +42,12 @@ class RequestsTransport(http.Transport):
         for handler in self.middleware.request_handlers:
             req = handler(req)
 
-        resp = self._send(req, **options)
+        try:
+            resp = self._send(req, **options)
+        except Exception as e:
+            for handler in self.middleware.exception_handlers:
+                handler(e)
+            raise e
 
         for handler in self.middleware.response_handlers:
             resp = handler(resp)
@@ -65,6 +71,7 @@ class RequestsTransport(http.Transport):
             ssl_option = options.get('ssl_option')
             kwargs = self._build_ssl_option(ssl_option) if ssl_option else {}
 
+            req.request_time = time.time()
             session_resp = session.request(
                 method=req.method.upper(),
                 url=req.url,
@@ -76,6 +83,7 @@ class RequestsTransport(http.Transport):
             )
             resp = self.convert_response(session_resp)
             resp.request = req
+            resp.response_time = time.time()
             return resp
 
     @staticmethod
