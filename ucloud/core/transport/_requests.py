@@ -68,7 +68,7 @@ class RequestsTransport(http.Transport):
             session.mount("http://", adapter=adapter)
             session.mount("https://", adapter=adapter)
 
-            ssl_option = options.get('ssl_option')
+            ssl_option = options.get("ssl_option")
             kwargs = self._build_ssl_option(ssl_option) if ssl_option else {}
 
             req.request_time = time.time()
@@ -88,14 +88,14 @@ class RequestsTransport(http.Transport):
 
     @staticmethod
     def _build_ssl_option(ssl_option):
-        kwargs = {'verify': ssl_option.ssl_verify and ssl_option.ssl_cacert}
+        kwargs = {"verify": ssl_option.ssl_verify and ssl_option.ssl_cacert}
         if not ssl_option.ssl_cert:
             return kwargs
 
         if ssl_option.ssl_key:
-            kwargs['cert'] = (ssl_option.ssl_cert, ssl_option.ssl_key)
+            kwargs["cert"] = (ssl_option.ssl_cert, ssl_option.ssl_key)
         else:
-            kwargs['cert'] = ssl_option.ssl_cert
+            kwargs["cert"] = ssl_option.ssl_cert
         return kwargs
 
     def _load_adapter(
