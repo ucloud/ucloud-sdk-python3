@@ -1,3 +1,13 @@
+## 0.7.0 (2019-11-21)
+
+FEATURES:
+
+- Add ssl options of client (#37)
+
+ENHANCEMENTS:
+
+- Add testing report use ucloud test framework (#38)
+
 ## 0.6.2 (2019-10-25)
 
 ENHANCEMENTS:

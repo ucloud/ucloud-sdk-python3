@@ -94,7 +94,7 @@ class SSLOption:
         ssl_verify: bool = True,
         ssl_cacert: str = None,
         ssl_cert: str = None,
-        ssl_key: str = None
+        ssl_key: str = None,
     ):
         self.ssl_verify = ssl_verify
         self.ssl_cacert = ssl_cacert

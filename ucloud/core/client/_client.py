@@ -4,7 +4,12 @@ import sys
 
 from ucloud import version
 from ucloud.core.client._cfg import Config
-from ucloud.core.transport import Transport, RequestsTransport, Request, SSLOption
+from ucloud.core.transport import (
+    Transport,
+    RequestsTransport,
+    Request,
+    SSLOption,
+)
 from ucloud.core.typesystem import encoder
 from ucloud.core.utils import log
 from ucloud.core.utils.middleware import Middleware
@@ -80,7 +85,7 @@ class Client:
 
     @staticmethod
     def _parse_dict_config(
-        config: dict
+        config: dict,
     ) -> typing.Tuple[Config, auth.Credential]:
         return Config.from_dict(config), auth.Credential.from_dict(config)
 
@@ -94,9 +99,15 @@ class Client:
         timeout = options.get("timeout") or self.config.timeout
 
         resp = self.transport.send(
-            req, ssl_option=SSLOption(self.config.ssl_verify, self.config.ssl_cacert,
-                                      self.config.ssl_cert, self.config.ssl_key),
-            timeout=timeout, max_retries=max_retries
+            req,
+            ssl_option=SSLOption(
+                self.config.ssl_verify,
+                self.config.ssl_cacert,
+                self.config.ssl_cert,
+                self.config.ssl_key,
+            ),
+            timeout=timeout,
+            max_retries=max_retries,
         ).json()
 
         for handler in self.middleware.response_handlers:
