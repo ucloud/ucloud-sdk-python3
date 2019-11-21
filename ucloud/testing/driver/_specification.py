@@ -22,12 +22,18 @@ class Specification:
 
     @property
     def start_time(self):
-        times = [item.start_time for item in self.scenarios if item.status != 'skipped']
+        times = [
+            item.start_time
+            for item in self.scenarios
+            if item.status != "skipped"
+        ]
         return min(times) if times else 0
 
     @property
     def end_time(self):
-        times = [item.end_time for item in self.scenarios if item.status != 'skipped']
+        times = [
+            item.end_time for item in self.scenarios if item.status != "skipped"
+        ]
         return max(times) if times else 0
 
     def json(self):

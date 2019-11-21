@@ -54,12 +54,16 @@ class Scenario:
 
     @property
     def start_time(self):
-        times = [item.start_time for item in self.steps if item.status != 'skipped']
+        times = [
+            item.start_time for item in self.steps if item.status != "skipped"
+        ]
         return min(times) if times else 0
 
     @property
     def end_time(self):
-        times = [item.end_time for item in self.steps if item.status != 'skipped']
+        times = [
+            item.end_time for item in self.steps if item.status != "skipped"
+        ]
         return max(times) if times else 0
 
     def json(self):
@@ -67,7 +71,7 @@ class Scenario:
             "title": self.title,
             "status": self.status,
             "steps": [item.json() for item in self.steps],
-            'owners': self.owners,
+            "owners": self.owners,
             "execution": {
                 "duration": self.end_time - self.start_time,
                 "start_time": self.start_time,

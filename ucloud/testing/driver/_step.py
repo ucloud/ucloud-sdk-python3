@@ -59,7 +59,9 @@ class Step:
     def run_api(self, client, *args, **kwargs):
         client.transport.middleware.response(self._handle_response, 0)
         try:
-            result = self._run(self._set_default_response, client, *args, **kwargs)
+            result = self._run(
+                self._set_default_response, client, *args, **kwargs
+            )
         except Exception as e:
             raise e
         finally:
@@ -89,14 +91,16 @@ class Step:
 
     def _handle_response(self, resp: http.Response):
         req = resp.request.payload()
-        req.pop('Signature', None)
+        req.pop("Signature", None)
 
-        self.api_retries.append({
-            'request': req,
-            'response': resp.json(),
-            'request_uuid': resp.headers.get('X-UCLOUD-REQUEST-UUID'),
-            'request_time': resp.request.request_time,
-        })
+        self.api_retries.append(
+            {
+                "request": req,
+                "response": resp.json(),
+                "request_uuid": resp.headers.get("X-UCLOUD-REQUEST-UUID"),
+                "request_time": resp.request.request_time,
+            }
+        )
         return resp
 
     def _set_default_response(self, result):
