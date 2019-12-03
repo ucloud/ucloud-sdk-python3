@@ -1,3 +1,9 @@
+## 0.8.0 (2019-12-03)
+
+FEATURES:
+
+- Add `ufs` product (#42)
+
 ## 0.7.0 (2019-11-21)
 
 FEATURES:
