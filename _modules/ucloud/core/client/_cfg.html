@@ -33,7 +33,7 @@
   <h1>Source code for ucloud.core.client._cfg</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">ucloud.core.typesystem</span> <span class="k">import</span> <span class="n">schema</span><span class="p">,</span> <span class="n">fields</span>
+<span class="kn">from</span> <span class="nn">ucloud.core.typesystem</span> <span class="kn">import</span> <span class="n">schema</span><span class="p">,</span> <span class="n">fields</span>
 
 
 <span class="k">class</span> <span class="nc">ConfigSchema</span><span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">Schema</span><span class="p">):</span>
@@ -46,6 +46,10 @@
         <span class="s2">&quot;max_retries&quot;</span><span class="p">:</span> <span class="n">fields</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
         <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="n">fields</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">),</span>
         <span class="s2">&quot;validate_request&quot;</span><span class="p">:</span> <span class="n">fields</span><span class="o">.</span><span class="n">Bool</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="s2">&quot;ssl_verify&quot;</span><span class="p">:</span> <span class="n">fields</span><span class="o">.</span><span class="n">Bool</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="s2">&quot;ssl_cacert&quot;</span><span class="p">:</span> <span class="n">fields</span><span class="o">.</span><span class="n">Str</span><span class="p">(),</span>
+        <span class="s2">&quot;ssl_cert&quot;</span><span class="p">:</span> <span class="n">fields</span><span class="o">.</span><span class="n">Str</span><span class="p">(),</span>
+        <span class="s2">&quot;ssl_key&quot;</span><span class="p">:</span> <span class="n">fields</span><span class="o">.</span><span class="n">Str</span><span class="p">(),</span>
     <span class="p">}</span>
 
 
@@ -77,7 +81,7 @@
 <span class="sd">        if logLevel not be set, use INFO level as default.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">region</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -86,6 +90,10 @@
         <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
         <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
         <span class="n">log_level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+        <span class="n">ssl_verify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">ssl_cacert</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ssl_cert</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ssl_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">region</span> <span class="o">=</span> <span class="n">region</span>
@@ -95,6 +103,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span> <span class="o">=</span> <span class="n">max_retries</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="n">log_level</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssl_verify</span> <span class="o">=</span> <span class="n">ssl_verify</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssl_cacert</span> <span class="o">=</span> <span class="n">ssl_cacert</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssl_cert</span> <span class="o">=</span> <span class="n">ssl_cert</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssl_key</span> <span class="o">=</span> <span class="n">ssl_key</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
@@ -110,6 +122,10 @@
             <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
             <span class="s2">&quot;max_retries&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span><span class="p">,</span>
             <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_level</span><span class="p">,</span>
+            <span class="s2">&quot;ssl_verify&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssl_verify</span><span class="p">,</span>
+            <span class="s2">&quot;ssl_cacert&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssl_cacert</span><span class="p">,</span>
+            <span class="s2">&quot;ssl_cert&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssl_cert</span><span class="p">,</span>
+            <span class="s2">&quot;ssl_key&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssl_key</span><span class="p">,</span>
         <span class="p">}</span></div>
 </pre></div>
 
@@ -174,7 +190,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

@@ -31,13 +31,14 @@
           <div class="body" role="main">
             
   <h1>Source code for ucloud.core.transport._requests</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">typing</span>
+<span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">urllib3.util.retry</span> <span class="k">import</span> <span class="n">Retry</span>
-<span class="kn">from</span> <span class="nn">requests.adapters</span> <span class="k">import</span> <span class="n">HTTPAdapter</span>
-<span class="kn">from</span> <span class="nn">ucloud.core.transport</span> <span class="k">import</span> <span class="n">http</span>
-<span class="kn">from</span> <span class="nn">ucloud.core.transport.http</span> <span class="k">import</span> <span class="n">Request</span><span class="p">,</span> <span class="n">Response</span>
-<span class="kn">from</span> <span class="nn">ucloud.core.utils.middleware</span> <span class="k">import</span> <span class="n">Middleware</span>
+<span class="kn">from</span> <span class="nn">urllib3.util.retry</span> <span class="kn">import</span> <span class="n">Retry</span>
+<span class="kn">from</span> <span class="nn">requests.adapters</span> <span class="kn">import</span> <span class="n">HTTPAdapter</span>
+<span class="kn">from</span> <span class="nn">ucloud.core.transport</span> <span class="kn">import</span> <span class="n">http</span>
+<span class="kn">from</span> <span class="nn">ucloud.core.transport.http</span> <span class="kn">import</span> <span class="n">Request</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">SSLOption</span>
+<span class="kn">from</span> <span class="nn">ucloud.core.utils.middleware</span> <span class="kn">import</span> <span class="n">Middleware</span>
 
 
 <div class="viewcode-block" id="RequestsTransport"><a class="viewcode-back" href="../../../../core.html#ucloud.core.transport.RequestsTransport">[docs]</a><span class="k">class</span> <span class="nc">RequestsTransport</span><span class="p">(</span><span class="n">http</span><span class="o">.</span><span class="n">Transport</span><span class="p">):</span>
@@ -52,7 +53,7 @@
 <span class="sd">    :param status_forcelist: the status code list that could be retried</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
         <span class="n">backoff_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
@@ -65,7 +66,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_adapter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_adapter</span><span class="p">(</span><span class="n">max_retries</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_middleware</span> <span class="o">=</span> <span class="n">Middleware</span><span class="p">()</span>
 
-<div class="viewcode-block" id="RequestsTransport.send"><a class="viewcode-back" href="../../../../core.html#ucloud.core.transport.RequestsTransport.send">[docs]</a>    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">http</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+<div class="viewcode-block" id="RequestsTransport.send"><a class="viewcode-back" href="../../../../core.html#ucloud.core.transport.RequestsTransport.send">[docs]</a>    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">http</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; send request and return the response</span>
 
 <span class="sd">        :param req: the full http request descriptor</span>
@@ -74,7 +75,12 @@
         <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">request_handlers</span><span class="p">:</span>
             <span class="n">req</span> <span class="o">=</span> <span class="n">handler</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
 
-        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">exception_handlers</span><span class="p">:</span>
+                <span class="n">handler</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">e</span>
 
         <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">response_handlers</span><span class="p">:</span>
             <span class="n">resp</span> <span class="o">=</span> <span class="n">handler</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
@@ -89,12 +95,16 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_middleware</span>
 
-    <span class="k">def</span> <span class="nf">_send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
         <span class="k">with</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
             <span class="n">adapter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_adapter</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_retries&quot;</span><span class="p">))</span>
             <span class="n">session</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;http://&quot;</span><span class="p">,</span> <span class="n">adapter</span><span class="o">=</span><span class="n">adapter</span><span class="p">)</span>
             <span class="n">session</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;https://&quot;</span><span class="p">,</span> <span class="n">adapter</span><span class="o">=</span><span class="n">adapter</span><span class="p">)</span>
 
+            <span class="n">ssl_option</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ssl_option&quot;</span><span class="p">)</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_ssl_option</span><span class="p">(</span><span class="n">ssl_option</span><span class="p">)</span> <span class="k">if</span> <span class="n">ssl_option</span> <span class="k">else</span> <span class="p">{}</span>
+
+            <span class="n">req</span><span class="o">.</span><span class="n">request_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
             <span class="n">session_resp</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
                 <span class="n">method</span><span class="o">=</span><span class="n">req</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
                 <span class="n">url</span><span class="o">=</span><span class="n">req</span><span class="o">.</span><span class="n">url</span><span class="p">,</span>
@@ -102,10 +112,24 @@
                 <span class="n">data</span><span class="o">=</span><span class="n">req</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
                 <span class="n">params</span><span class="o">=</span><span class="n">req</span><span class="o">.</span><span class="n">params</span><span class="p">,</span>
                 <span class="n">headers</span><span class="o">=</span><span class="n">req</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span>
             <span class="p">)</span>
             <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_response</span><span class="p">(</span><span class="n">session_resp</span><span class="p">)</span>
             <span class="n">resp</span><span class="o">.</span><span class="n">request</span> <span class="o">=</span> <span class="n">req</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">response_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">resp</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_build_ssl_option</span><span class="p">(</span><span class="n">ssl_option</span><span class="p">):</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;verify&quot;</span><span class="p">:</span> <span class="n">ssl_option</span><span class="o">.</span><span class="n">ssl_verify</span> <span class="ow">and</span> <span class="n">ssl_option</span><span class="o">.</span><span class="n">ssl_cacert</span><span class="p">}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ssl_option</span><span class="o">.</span><span class="n">ssl_cert</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">kwargs</span>
+
+        <span class="k">if</span> <span class="n">ssl_option</span><span class="o">.</span><span class="n">ssl_key</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;cert&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ssl_option</span><span class="o">.</span><span class="n">ssl_cert</span><span class="p">,</span> <span class="n">ssl_option</span><span class="o">.</span><span class="n">ssl_key</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;cert&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ssl_option</span><span class="o">.</span><span class="n">ssl_cert</span>
+        <span class="k">return</span> <span class="n">kwargs</span>
 
     <span class="k">def</span> <span class="nf">_load_adapter</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">max_retries</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -198,7 +222,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

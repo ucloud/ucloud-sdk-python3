@@ -58,7 +58,7 @@
 
 <dl class="class">
 <dt id="ucloud.core.client.Config">
-<em class="property">class </em><code class="sig-prename descclassname">ucloud.core.client.</code><code class="sig-name descname">Config</code><span class="sig-paren">(</span><em class="sig-param">region: str = None</em>, <em class="sig-param">project_id: str = None</em>, <em class="sig-param">base_url: str = 'https://api.ucloud.cn'</em>, <em class="sig-param">user_agent: str = None</em>, <em class="sig-param">timeout: int = 30</em>, <em class="sig-param">max_retries: int = 3</em>, <em class="sig-param">log_level: int = 20</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/core/client/_cfg.html#Config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.client.Config" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ucloud.core.client.</code><code class="sig-name descname">Config</code><span class="sig-paren">(</span><em class="sig-param">region: str = None</em>, <em class="sig-param">project_id: str = None</em>, <em class="sig-param">base_url: str = 'https://api.ucloud.cn'</em>, <em class="sig-param">user_agent: str = None</em>, <em class="sig-param">timeout: int = 30</em>, <em class="sig-param">max_retries: int = 3</em>, <em class="sig-param">log_level: int = 20</em>, <em class="sig-param">ssl_verify: bool = True</em>, <em class="sig-param">ssl_cacert: str = None</em>, <em class="sig-param">ssl_cert: str = None</em>, <em class="sig-param">ssl_key: str = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/core/client/_cfg.html#Config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.client.Config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Config is the config of ucloud sdk, use for setting up</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -139,7 +139,7 @@ the backoff delay = {backoff factor} * (2 ^ ({number of total retries} - 1))</p>
 
 <dl class="method">
 <dt id="ucloud.core.transport.RequestsTransport.send">
-<code class="sig-name descname">send</code><span class="sig-paren">(</span><em class="sig-param">req: ucloud.core.transport.http.Request</em>, <em class="sig-param">**options: dict</em><span class="sig-paren">)</span> &#x2192; ucloud.core.transport.http.Response<a class="reference internal" href="_modules/ucloud/core/transport/_requests.html#RequestsTransport.send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.transport.RequestsTransport.send" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">send</code><span class="sig-paren">(</span><em class="sig-param">req: ucloud.core.transport.http.Request</em>, <em class="sig-param">**options: Any</em><span class="sig-paren">)</span> &#x2192; ucloud.core.transport.http.Response<a class="reference internal" href="_modules/ucloud/core/transport/_requests.html#RequestsTransport.send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.transport.RequestsTransport.send" title="Permalink to this definition">¶</a></dt>
 <dd><p>send request and return the response</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -181,6 +181,25 @@ the backoff delay = {backoff factor} * (2 ^ ({number of total retries} - 1))</p>
 <span class="go">(1, 1)</span>
 </pre></div>
 </div>
+<dl class="method">
+<dt id="ucloud.core.utils.middleware.Middleware.exception">
+<code class="sig-name descname">exception</code><span class="sig-paren">(</span><em class="sig-param">handler</em>, <em class="sig-param">index=-1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/core/utils/middleware.html#Middleware.exception"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.utils.middleware.Middleware.exception" title="Permalink to this definition">¶</a></dt>
+<dd><p>exception is the exception handler register to add exception handler.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handler</strong> – exception handler function, receive exception object
+and raise a new exception or ignore it</p></li>
+<li><p><strong>index</strong> (<em>int</em>) – the position of handler in the handler list,
+default is append it to end</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="method">
 <dt id="ucloud.core.utils.middleware.Middleware.request">
 <code class="sig-name descname">request</code><span class="sig-paren">(</span><em class="sig-param">handler</em>, <em class="sig-param">index=-1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/core/utils/middleware.html#Middleware.request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.utils.middleware.Middleware.request" title="Permalink to this definition">¶</a></dt>
@@ -295,7 +314,7 @@ default is append it to end</p></li>
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

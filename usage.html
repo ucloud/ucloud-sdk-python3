@@ -86,13 +86,13 @@ it will raise <code class="xref py py-class docutils literal notranslate"><span 
 <p>UCloud SDK provide middleware feature to client or transport level request.</p>
 <p>It allowed to add custom logic into the lifecycle of request/response.</p>
 <p>For example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@client.middleware.request</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@client</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">request</span>
 <span class="k">def</span> <span class="nf">log_params</span><span class="p">(</span><span class="n">req</span><span class="p">):</span>
-    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;[REQ]&#39;</span><span class="p">,</span> <span class="n">req</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[REQ]&#39;</span><span class="p">,</span> <span class="n">req</span><span class="p">)</span>
 
-<span class="nd">@client.middleware.response</span>
+<span class="nd">@client</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">response</span>
 <span class="k">def</span> <span class="nf">log_response</span><span class="p">(</span><span class="n">resp</span><span class="p">):</span>
-    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;[RESP]&#39;</span><span class="p">,</span> <span class="n">resp</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[RESP]&#39;</span><span class="p">,</span> <span class="n">resp</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>or transport:</p>
@@ -100,13 +100,13 @@ it will raise <code class="xref py py-class docutils literal notranslate"><span 
 
 <span class="n">transport</span> <span class="o">=</span> <span class="n">RequestsTransport</span><span class="p">()</span>
 
-<span class="nd">@transport.middleware.request</span>
+<span class="nd">@transport</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">request</span>
 <span class="k">def</span> <span class="nf">log_request</span><span class="p">(</span><span class="n">req</span><span class="p">):</span>
-    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;[REQ]&#39;</span><span class="p">,</span> <span class="n">req</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[REQ]&#39;</span><span class="p">,</span> <span class="n">req</span><span class="p">)</span>
 
-<span class="nd">@transport.middleware.response</span>
+<span class="nd">@transport</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">response</span>
 <span class="k">def</span> <span class="nf">log_response</span><span class="p">(</span><span class="n">resp</span><span class="p">):</span>
-    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;[RESP]&#39;</span><span class="p">,</span> <span class="n">resp</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[RESP]&#39;</span><span class="p">,</span> <span class="n">resp</span><span class="p">)</span>
 
 <span class="n">Client</span><span class="p">({</span><span class="s1">&#39;Region&#39;</span><span class="p">:</span> <span class="s1">&#39;cn-bj2&#39;</span><span class="p">},</span> <span class="n">transport</span><span class="o">=</span><span class="n">transport</span><span class="p">)</span>
 </pre></div>
@@ -181,7 +181,7 @@ it will raise <code class="xref py py-class docutils literal notranslate"><span 
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

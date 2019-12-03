@@ -3809,7 +3809,7 @@
 <li><p><strong>ProjectId</strong> (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 <a class="reference external" href="https://docs.ucloud.cn/api/summary/get_project_list.html">GetProjectList接口</a></p></li>
 <li><p><strong>Region</strong> (str) - (Config) 地域。 参见  <a class="reference external" href="https://docs.ucloud.cn/api/summary/regionlist.html">地域和可用区列表</a></p></li>
 <li><p><strong>HighAvailability</strong> (str) - (Required) 是否开启高可用,enable或disable</p></li>
-<li><p><strong>Name</strong> (str) - (Required) 请求创建组的名称 (范围[6-63],只能包含英文、<a href="#id546"><span class="problematic" id="id547">数字以及符号-和_</span></a>)</p></li>
+<li><p><strong>Name</strong> (str) - (Required) 请求创建组的名称 (范围[6-63],只能包含英文、<a href="#id554"><span class="problematic" id="id555">数字以及符号-和_</span></a>)</p></li>
 <li><p><strong>Zone</strong> (str) - (Required) 可用区。参见  <a class="reference external" href="https://docs.ucloud.cn/api/summary/regionlist.html">可用区列表</a></p></li>
 <li><p><strong>AutoBackup</strong> (str) - 是否自动备份,enable或disable，默认disable</p></li>
 <li><p><strong>BackupId</strong> (str) - 有此项代表从备份中创建，无代表正常创建</p></li>
@@ -4267,7 +4267,7 @@
 <li><p><strong>ProjectId</strong> (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 <a class="reference external" href="https://docs.ucloud.cn/api/summary/get_project_list.html">GetProjectList接口</a></p></li>
 <li><p><strong>Region</strong> (str) - (Config) 地域。 参见  <a class="reference external" href="https://docs.ucloud.cn/api/summary/regionlist.html">地域和可用区列表</a></p></li>
 <li><p><strong>GroupId</strong> (str) - (Required) 组的ID</p></li>
-<li><p><strong>Name</strong> (str) - (Required) Redis组名称 (范围[6-63],只能包含英文、<a href="#id548"><span class="problematic" id="id549">数字以及符号-和_</span></a>)</p></li>
+<li><p><strong>Name</strong> (str) - (Required) Redis组名称 (范围[6-63],只能包含英文、<a href="#id556"><span class="problematic" id="id557">数字以及符号-和_</span></a>)</p></li>
 <li><p><strong>Zone</strong> (str) - 可用区。参见  <a class="reference external" href="https://docs.ucloud.cn/api/summary/regionlist.html">可用区列表</a></p></li>
 </ul>
 <p><strong>Response</strong></p>
@@ -5602,6 +5602,103 @@
 </dd></dl>
 
 </div>
+<div class="section" id="ufs">
+<h2>UFS<a class="headerlink" href="#ufs" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ucloud.services.ufs.client.UFSClient">
+<em class="property">class </em><code class="sig-prename descclassname">ucloud.services.ufs.client.</code><code class="sig-name descname">UFSClient</code><span class="sig-paren">(</span><em class="sig-param">config: dict</em>, <em class="sig-param">transport=None</em>, <em class="sig-param">middleware=None</em>, <em class="sig-param">logger=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/services/ufs/client.html#UFSClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.services.ufs.client.UFSClient" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="ucloud.services.ufs.client.UFSClient.create_ufs_volume">
+<code class="sig-name descname">create_ufs_volume</code><span class="sig-paren">(</span><em class="sig-param">req: Optional[dict] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/ucloud/services/ufs/client.html#UFSClient.create_ufs_volume"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.services.ufs.client.UFSClient.create_ufs_volume" title="Permalink to this definition">¶</a></dt>
+<dd><p>CreateUFSVolume - 创建文件系统</p>
+<p><strong>Request</strong></p>
+<ul class="simple">
+<li><p><strong>ProjectId</strong> (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 <a class="reference external" href="https://docs.ucloud.cn/api/summary/get_project_list.html">GetProjectList接口</a></p></li>
+<li><p><strong>Region</strong> (str) - (Config) 地域。 参见  <a class="reference external" href="https://docs.ucloud.cn/api/summary/regionlist.html">地域和可用区列表</a></p></li>
+<li><p><strong>ProtocolType</strong> (str) - (Required) 文件系统协议，枚举值，NFSv3表示NFS V3协议，NFSv4表示NFS V4协议</p></li>
+<li><p><strong>Size</strong> (int) - (Required) 文件系统大小，单位为GB，最大不超过20T，香港容量型必须为100的整数倍，Size最小为500GB，北京，上海，广州的容量型必须为1024的整数倍，Size最小为1024GB。性能型文件系统Size最小为100GB</p></li>
+<li><p><strong>StorageType</strong> (str) - (Required) 文件系统存储类型，枚举值，Basic表示容量型，Advanced表示性能型</p></li>
+<li><p><strong>ChargeType</strong> (str) - 计费模式，枚举值为： Year，按年付费； Month，按月付费； Dynamic，按需付费（需开启权限）； Trial，试用（需开启权限） 默认为Dynamic</p></li>
+<li><p><strong>CouponId</strong> (str) - 使用的代金券id</p></li>
+<li><p><strong>Quantity</strong> (int) - 购买时长 默认: 1</p></li>
+<li><p><strong>Remark</strong> (str) - 备注</p></li>
+<li><p><strong>Tag</strong> (str) - 文件系统所属业务组</p></li>
+<li><p><strong>VolumeName</strong> (str) - 文件系统名称</p></li>
+</ul>
+<p><strong>Response</strong></p>
+<ul class="simple">
+<li><p><strong>VolumeId</strong> (str) - 文件系统ID</p></li>
+<li><p><strong>VolumeName</strong> (str) - 文件系统名称</p></li>
+<li><p><strong>VolumeStatus</strong> (str) - 文件系统挂载点状态</p></li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="ucloud.services.ufs.client.UFSClient.describe_ufs_volume_2">
+<code class="sig-name descname">describe_ufs_volume_2</code><span class="sig-paren">(</span><em class="sig-param">req: Optional[dict] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/ucloud/services/ufs/client.html#UFSClient.describe_ufs_volume_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.services.ufs.client.UFSClient.describe_ufs_volume_2" title="Permalink to this definition">¶</a></dt>
+<dd><p>DescribeUFSVolume2 - 获取文件系统列表</p>
+<p><strong>Request</strong></p>
+<ul class="simple">
+<li><p><strong>ProjectId</strong> (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 <a class="reference external" href="https://docs.ucloud.cn/api/summary/get_project_list.html">GetProjectList接口</a></p></li>
+<li><p><strong>Region</strong> (str) - (Config) 地域。 参见  <a class="reference external" href="https://docs.ucloud.cn/api/summary/regionlist.html">地域和可用区列表</a></p></li>
+<li><p><strong>Limit</strong> (int) - 文件列表长度</p></li>
+<li><p><strong>Offset</strong> (int) - 文件列表起始</p></li>
+<li><p><strong>VolumeId</strong> (str) - 文件系统ID</p></li>
+</ul>
+<p><strong>Response</strong></p>
+<ul class="simple">
+<li><p><strong>DataSet</strong> (list) - 见 <strong>UFSVolumeInfo2</strong> 模型定义</p></li>
+<li><p><strong>TotalCount</strong> (int) - 文件系统总数</p></li>
+</ul>
+<p><strong>Response Model</strong></p>
+<p><strong>UFSVolumeInfo2</strong></p>
+<ul class="simple">
+<li><p><strong>CreateTime</strong> (int) - 文件系统创建时间（unix时间戳）</p></li>
+<li><p><strong>ExpiredTime</strong> (int) - 文件系统过期时间（unix时间戳）</p></li>
+<li><p><strong>IsExpired</strong> (str) - 是否过期</p></li>
+<li><p><strong>MaxMountPointNum</strong> (int) - 文件系统允许创建的最大挂载点数目</p></li>
+<li><p><strong>ProtocolType</strong> (str) - 文件系统协议，枚举值，NFSv3表示NFS V3协议，NFSv4表示NFS V4协议</p></li>
+<li><p><strong>Remark</strong> (str) - 文件系统备注信息</p></li>
+<li><p><strong>Size</strong> (int) - 文件系统大小，单位GB</p></li>
+<li><p><strong>StorageType</strong> (str) - 文件系统存储类型，枚举值，Basic表示容量型，Advanced表示性能型</p></li>
+<li><p><strong>Tag</strong> (str) - 文件系统所属业务组</p></li>
+<li><p><strong>TotalMountPointNum</strong> (int) - 当前文件系统已创建的挂载点数目</p></li>
+<li><p><strong>UsedSize</strong> (int) - 文件系统当前使用容量，单位GB</p></li>
+<li><p><strong>VolumeId</strong> (str) - 文件系统ID</p></li>
+<li><p><strong>VolumeName</strong> (str) - 文件系统名称</p></li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="ucloud.services.ufs.client.UFSClient.extend_ufs_volume">
+<code class="sig-name descname">extend_ufs_volume</code><span class="sig-paren">(</span><em class="sig-param">req: Optional[dict] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/ucloud/services/ufs/client.html#UFSClient.extend_ufs_volume"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.services.ufs.client.UFSClient.extend_ufs_volume" title="Permalink to this definition">¶</a></dt>
+<dd><p>ExtendUFSVolume - 文件系统扩容</p>
+<p><strong>Request</strong></p>
+<ul class="simple">
+<li><p><strong>ProjectId</strong> (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 <a class="reference external" href="https://docs.ucloud.cn/api/summary/get_project_list.html">GetProjectList接口</a></p></li>
+<li><p><strong>Region</strong> (str) - (Config) 地域。 参见  <a class="reference external" href="https://docs.ucloud.cn/api/summary/regionlist.html">地域和可用区列表</a></p></li>
+<li><p><strong>Size</strong> (int) - (Required) 文件系统大小，单位为GB，最大不超过20T，香港容量型必须为100的整数倍，Size最小为500GB，北京，上海，广州的容量型必须为1024的整数倍，Size最小为1024GB。性能型文件系统Size最小为100GB</p></li>
+<li><p><strong>VolumeId</strong> (str) - (Required) 文件系统ID</p></li>
+</ul>
+<p><strong>Response</strong></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ucloud.services.ufs.client.UFSClient.remove_ufs_volume">
+<code class="sig-name descname">remove_ufs_volume</code><span class="sig-paren">(</span><em class="sig-param">req: Optional[dict] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/ucloud/services/ufs/client.html#UFSClient.remove_ufs_volume"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.services.ufs.client.UFSClient.remove_ufs_volume" title="Permalink to this definition">¶</a></dt>
+<dd><p>RemoveUFSVolume - 删除UFS文件系统</p>
+<p><strong>Request</strong></p>
+<ul class="simple">
+<li><p><strong>ProjectId</strong> (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 <a class="reference external" href="https://docs.ucloud.cn/api/summary/get_project_list.html">GetProjectList接口</a></p></li>
+<li><p><strong>Region</strong> (str) - (Config) 地域。 参见  <a class="reference external" href="https://docs.ucloud.cn/api/summary/regionlist.html">地域和可用区列表</a></p></li>
+<li><p><strong>VolumeId</strong> (str) - (Required) 文件系统ID</p></li>
+</ul>
+<p><strong>Response</strong></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -5640,6 +5737,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#unet">UNet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#uphost">UPHost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#usms">USMS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ufs">UFS</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="helpers.html">Helpers</a></li>
@@ -5681,7 +5779,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -54,9 +54,10 @@
 <span class="sd">    (1, 1)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">request_handlers</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">response_handlers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exception_handlers</span> <span class="o">=</span> <span class="p">[]</span>
 
 <div class="viewcode-block" id="Middleware.request"><a class="viewcode-back" href="../../../../core.html#ucloud.core.utils.middleware.Middleware.request">[docs]</a>    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">index</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; request is the request handler register to add request handler.</span>
@@ -80,6 +81,18 @@
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">response_handlers</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">handler</span></div>
+
+<div class="viewcode-block" id="Middleware.exception"><a class="viewcode-back" href="../../../../core.html#ucloud.core.utils.middleware.Middleware.exception">[docs]</a>    <span class="k">def</span> <span class="nf">exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">index</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; exception is the exception handler register to add exception handler.</span>
+
+<span class="sd">        :param handler: exception handler function, receive exception object</span>
+<span class="sd">                        and raise a new exception or ignore it</span>
+<span class="sd">        :param int index: the position of handler in the handler list,</span>
+<span class="sd">                          default is append it to end</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exception_handlers</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">handler</span></div></div>
 </pre></div>
 
@@ -144,7 +157,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
