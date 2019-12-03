@@ -98,3 +98,10 @@ class Client(CompactClient):
         return USMSClient(
             self._config, self.transport, self.middleware, self.logger
         )
+
+    def ufs(self):
+        from ucloud.services.ufs.client import UFSClient
+
+        return UFSClient(
+            self._config, self.transport, self.middleware, self.logger
+        )

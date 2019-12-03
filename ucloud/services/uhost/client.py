@@ -35,7 +35,10 @@ class UHostClient(Client):
         
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.CopyCustomImageRequestSchema().dumps(d)
 
@@ -65,7 +68,10 @@ class UHostClient(Client):
         
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.CreateCustomImageRequestSchema().dumps(d)
 
@@ -140,6 +146,11 @@ class UHostClient(Client):
         - **AreaCode** (str) - GlobalSSH的地区编码，格式为区域航空港国际通用代码。Area和AreaCode两者必填其中之一。
         - **Port** (int) - SSH端口，1-65535且不能使用80，443端口
 
+        **CreateUHostInstanceParamNetworkInterfaceIPv6** 
+        
+        - **Adress** (str) - 第N个网卡对应的IPv6地址，默认不分配IPv6，“Auto”自动分配，不为空的其他字符串为实际要分配的IPv6地址
+        - **ShareBandwidthId** (str) - 第N块网卡中IPv6对应的共享带宽id，默认不带外网
+
         **CreateUHostInstanceParamNetworkInterfaceEIP** 
         
         - **Bandwidth** (int) - 【若绑定EIP，此参数必填】弹性IP的外网带宽, 单位为Mbps. 共享带宽模式必须指定0M带宽, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-800]
@@ -149,10 +160,10 @@ class UHostClient(Client):
         - **PayMode** (str) - 弹性IP的计费模式. 枚举值: "Traffic", 流量计费; "Bandwidth", 带宽计费; "ShareBandwidth",共享带宽模式. "Free":免费带宽模式.默认为 "Bandwidth".
         - **ShareBandwidthId** (str) - 绑定的共享带宽Id，仅当PayMode为ShareBandwidth时有效
 
-        **CreateUHostInstanceParamNetworkInterfaceIPv6** 
+        **CreateUHostInstanceParamNetworkInterface** 
         
-        - **Adress** (str) - 第N个网卡对应的IPv6地址，默认不分配IPv6，“Auto”自动分配，不为空的其他字符串为实际要分配的IPv6地址
-        - **ShareBandwidthId** (str) - 第N块网卡中IPv6对应的共享带宽id，默认不带外网
+        - **EIP** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceEIP** 模型定义
+        - **IPv6** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceIPv6** 模型定义
 
         **CreateUHostInstanceParamDisks** 
         
@@ -164,14 +175,12 @@ class UHostClient(Client):
         - **Size** (int) - 磁盘大小，单位GB，必须是10GB的整数倍。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
         - **Type** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
 
-        **CreateUHostInstanceParamNetworkInterface** 
-        
-        - **EIP** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceEIP** 模型定义
-        - **IPv6** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceIPv6** 模型定义
-
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.CreateUHostInstanceRequestSchema().dumps(d)
 
@@ -226,7 +235,10 @@ class UHostClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeImageRequestSchema().dumps(d)
 
@@ -266,7 +278,10 @@ class UHostClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeIsolationGroupRequestSchema().dumps(d)
 
@@ -301,18 +316,6 @@ class UHostClient(Client):
         
         **Response Model**
         
-        **UHostDiskSet** 
-        
-        - **BackupType** (str) - 备份方案。若开通了数据方舟，则为DataArk
-        - **DiskId** (str) - 磁盘ID
-        - **DiskType** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
-        - **Drive** (str) - 磁盘盘符
-        - **Encrypted** (bool) - true: 加密盘 false：非加密盘
-        - **IsBoot** (str) - 是否是系统盘。枚举值：\\ > True，是系统盘 \\ > False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
-        - **Name** (str) - UDisk名字（仅当磁盘是UDisk时返回）
-        - **Size** (int) - 磁盘大小，单位: GB
-        - **Type** (str) - 【建议不再使用】磁盘类型。系统盘: Boot，数据盘: Data,网络盘：Udisk
-
         **UHostIPSet** 
         
         - **Bandwidth** (int) - IP对应的带宽, 单位: Mb  (内网IP不显示带宽信息)
@@ -324,6 +327,18 @@ class UHostClient(Client):
         - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
         - **VPCId** (str) - IP地址对应的VPC ID。（北京一不支持，字段返回为空）
         - **Weight** (int) - 当前EIP的权重。权重最大的为当前的出口IP。
+
+        **UHostDiskSet** 
+        
+        - **BackupType** (str) - 备份方案。若开通了数据方舟，则为DataArk
+        - **DiskId** (str) - 磁盘ID
+        - **DiskType** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
+        - **Drive** (str) - 磁盘盘符
+        - **Encrypted** (bool) - true: 加密盘 false：非加密盘
+        - **IsBoot** (str) - 是否是系统盘。枚举值：\\ > True，是系统盘 \\ > False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
+        - **Name** (str) - UDisk名字（仅当磁盘是UDisk时返回）
+        - **Size** (int) - 磁盘大小，单位: GB
+        - **Type** (str) - 【建议不再使用】磁盘类型。系统盘: Boot，数据盘: Data,网络盘：Udisk
 
         **UHostInstanceSet** 
         
@@ -363,7 +378,10 @@ class UHostClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeUHostInstanceRequestSchema().dumps(d)
 
@@ -397,7 +415,10 @@ class UHostClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeUHostInstanceSnapshotRequestSchema().dumps(d)
 
@@ -430,7 +451,10 @@ class UHostClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeUHostTagsRequestSchema().dumps(d)
 
@@ -486,7 +510,10 @@ class UHostClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.GetUHostInstancePriceRequestSchema().dumps(d)
 
@@ -514,7 +541,10 @@ class UHostClient(Client):
         
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.GetUHostInstanceVncInfoRequestSchema().dumps(d)
 
@@ -546,7 +576,10 @@ class UHostClient(Client):
         
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.GetUHostUpgradePriceRequestSchema().dumps(d)
 
@@ -576,7 +609,10 @@ class UHostClient(Client):
         
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.ImportCustomImageRequestSchema().dumps(d)
 
@@ -605,7 +641,10 @@ class UHostClient(Client):
         
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.ModifyUHostInstanceNameRequestSchema().dumps(d)
 
@@ -631,7 +670,10 @@ class UHostClient(Client):
         
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.ModifyUHostInstanceRemarkRequestSchema().dumps(d)
 
@@ -657,7 +699,10 @@ class UHostClient(Client):
         
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.ModifyUHostInstanceTagRequestSchema().dumps(d)
 
@@ -682,7 +727,10 @@ class UHostClient(Client):
         
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.PoweroffUHostInstanceRequestSchema().dumps(d)
 
@@ -708,7 +756,10 @@ class UHostClient(Client):
         
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.RebootUHostInstanceRequestSchema().dumps(d)
 
@@ -738,7 +789,10 @@ class UHostClient(Client):
         
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.ReinstallUHostInstanceRequestSchema().dumps(d)
 
@@ -764,7 +818,10 @@ class UHostClient(Client):
         
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.ResetUHostInstancePasswordRequestSchema().dumps(d)
 
@@ -791,7 +848,10 @@ class UHostClient(Client):
         
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.ResizeAttachedDiskRequestSchema().dumps(d)
 
@@ -821,7 +881,10 @@ class UHostClient(Client):
         
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.ResizeUHostInstanceRequestSchema().dumps(d)
 
@@ -847,7 +910,10 @@ class UHostClient(Client):
         
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.StartUHostInstanceRequestSchema().dumps(d)
 
@@ -872,7 +938,10 @@ class UHostClient(Client):
         
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.StopUHostInstanceRequestSchema().dumps(d)
 
@@ -897,7 +966,10 @@ class UHostClient(Client):
         
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.TerminateCustomImageRequestSchema().dumps(d)
 
@@ -926,7 +998,10 @@ class UHostClient(Client):
         
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.TerminateUHostInstanceRequestSchema().dumps(d)
 
@@ -951,7 +1026,9 @@ class UHostClient(Client):
         
         """
         # build request
-        d = {"Region": self.config.region}
+        d = {
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.UpgradeToArkUHostInstanceRequestSchema().dumps(d)
 
