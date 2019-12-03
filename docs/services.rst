@@ -79,3 +79,11 @@ USMS
 .. autoclass:: ucloud.services.usms.client.USMSClient
    :members:
 
+
+
+UFS
+---
+
+.. autoclass:: ucloud.services.ufs.client.UFSClient
+   :members:
+
