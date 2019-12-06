@@ -81,14 +81,16 @@ USMS
 
 
 
+IPSecVPN
+--------
+
+.. autoclass:: ucloud.services.ipsecvpn.client.IPSecVPNClient
+   :members:
+
+
 UFS
 ---
 
 .. autoclass:: ucloud.services.ufs.client.UFSClient
    :members:
 
-VPC
----
-
-.. autoclass:: ucloud.services.vpc.client.VPCClient
-   :members:
