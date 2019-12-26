@@ -112,3 +112,10 @@ class Client(CompactClient):
         return UFSClient(
             self._config, self.transport, self.middleware, self.logger
         )
+
+    def uhub(self):
+        from ucloud.services.uhub.client import UHubClient
+
+        return UHubClient(
+            self._config, self.transport, self.middleware, self.logger
+        )

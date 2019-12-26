@@ -94,3 +94,10 @@ UFS
 .. autoclass:: ucloud.services.ufs.client.UFSClient
    :members:
 
+
+UHub
+----
+
+.. autoclass:: ucloud.services.uhub.client.UHubClient
+   :members:
+
