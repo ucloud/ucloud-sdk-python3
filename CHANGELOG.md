@@ -1,3 +1,9 @@
+## 0.8.1 (2020-03-11)
+
+ENHANCEMENTS:
+
+- Update `DescribeSubnet` api
+
 ## 0.8.0 (2019-12-03)
 
 FEATURES:
