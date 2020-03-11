@@ -7,11 +7,11 @@
     <title>Core &#8212; ucloud-sdk-python3  documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Helpers" href="helpers.html" />
@@ -41,7 +41,7 @@
 <dd><p>credential is the object to store credential information</p>
 <p>the keys can be found on <a class="reference external" href="https://console.ucloud.cn/uapi/apikey">APIKey documentation</a></p>
 <p>it can calculate signature for OpenAPI:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cred</span> <span class="o">=</span> <span class="n">Credential</span><span class="p">(</span><span class="s1">&#39;my_public_key&#39;</span><span class="p">,</span> <span class="s1">&#39;my_private_key&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cred</span> <span class="o">=</span> <span class="n">Credential</span><span class="p">(</span><span class="s1">&#39;my_public_key&#39;</span><span class="p">,</span> <span class="s1">&#39;my_private_key&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cred</span><span class="o">.</span><span class="n">verify_ac</span><span class="p">({</span><span class="s2">&quot;foo&quot;</span><span class="p">:</span> <span class="s2">&quot;bar&quot;</span><span class="p">})</span>
 <span class="go">&#39;d4411ab30953fb0bbcb1e7313081f05e4e91a394&#39;</span>
 </pre></div>
@@ -160,24 +160,24 @@ the backoff delay = {backoff factor} * (2 ^ ({number of total retries} - 1))</p>
 <dt id="ucloud.core.utils.middleware.Middleware">
 <em class="property">class </em><code class="sig-prename descclassname">ucloud.core.utils.middleware.</code><code class="sig-name descname">Middleware</code><a class="reference internal" href="_modules/ucloud/core/utils/middleware.html#Middleware"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.utils.middleware.Middleware" title="Permalink to this definition">¶</a></dt>
 <dd><p>middleware is the object to store request/response handlers</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">middleware</span> <span class="o">=</span> <span class="n">Middleware</span><span class="p">()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">middleware</span> <span class="o">=</span> <span class="n">Middleware</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Add a request handler to prepare the request</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@middleware</span><span class="o">.</span><span class="n">request</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@middleware</span><span class="o">.</span><span class="n">request</span>
 <span class="gp">... </span><span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="n">req</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">req</span><span class="p">[</span><span class="s1">&#39;Region&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;cn-bj2&#39;</span>
 <span class="gp">... </span>    <span class="k">return</span> <span class="n">req</span>
 </pre></div>
 </div>
 <p>Add a response handler to log the response detail</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@middleware</span><span class="o">.</span><span class="n">response</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@middleware</span><span class="o">.</span><span class="n">response</span>
 <span class="gp">... </span><span class="k">def</span> <span class="nf">logged</span><span class="p">(</span><span class="n">resp</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">return</span> <span class="n">resp</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">middleware</span><span class="o">.</span><span class="n">request_handlers</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">middleware</span><span class="o">.</span><span class="n">response_handlers</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">middleware</span><span class="o">.</span><span class="n">request_handlers</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">middleware</span><span class="o">.</span><span class="n">response_handlers</span><span class="p">)</span>
 <span class="go">(1, 1)</span>
 </pre></div>
 </div>
@@ -297,7 +297,7 @@ default is append it to end</p></li>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -314,7 +314,7 @@ default is append it to end</p></li>
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

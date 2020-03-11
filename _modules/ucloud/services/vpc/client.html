@@ -7,11 +7,11 @@
     <title>ucloud.services.vpc.client &#8212; ucloud-sdk-python3  documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
    
@@ -53,14 +53,14 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **Network** (list) - (Required) 增加网段</span>
 <span class="sd">        - **VPCId** (str) - (Required) 源VPC短ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -80,14 +80,14 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **RouteTableId** (str) - (Required) 路由表ID，仅限自定义路由表</span>
 <span class="sd">        - **SubnetId** (str) - (Required) 子网ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -104,13 +104,13 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **RouteTableId** (str) - (Required) 被克隆的路由表ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -130,17 +130,17 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **VPCId** (str) - (Required) VPC ID</span>
 <span class="sd">        - **Name** (str) - 路由表名称 Default RouteTable</span>
 <span class="sd">        - **Remark** (str) - 备注</span>
 <span class="sd">        - **Tag** (str) - 业务组</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **RouteTableId** (str) - 路由表ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -160,19 +160,19 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **Subnet** (str) - (Required) 子网网络地址，例如192.168.0.0</span>
 <span class="sd">        - **VPCId** (str) - (Required) VPC资源ID</span>
 <span class="sd">        - **Netmask** (int) - 子网网络号位数，默认为24</span>
 <span class="sd">        - **Remark** (str) - 备注</span>
 <span class="sd">        - **SubnetName** (str) - 子网名称，默认为Subnet</span>
 <span class="sd">        - **Tag** (str) - 业务组名称，默认为Default</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **SubnetId** (str) - 子网ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -190,18 +190,18 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **Name** (str) - (Required) VPC名称</span>
 <span class="sd">        - **Network** (list) - (Required) VPC网段</span>
 <span class="sd">        - **Remark** (str) - 备注</span>
 <span class="sd">        - **Tag** (str) - 业务组名称</span>
 <span class="sd">        - **Type** (int) - VPC类型</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **VPCId** (str) - VPC资源Id</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -221,16 +221,16 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 源VPC所在项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 源VPC所在地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 源VPC所在项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 源VPC所在地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **DstVPCId** (str) - (Required) 目的VPC短ID</span>
 <span class="sd">        - **VPCId** (str) - (Required) 源VPC短ID</span>
 <span class="sd">        - **DstProjectId** (str) - 目的VPC项目ID。默认与源VPC同项目。</span>
 <span class="sd">        - **DstRegion** (str) - 目的VPC所在地域，默认与源VPC同地域。</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -250,13 +250,13 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **RouteTableId** (str) - (Required) 路由ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -273,13 +273,13 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **SubnetId** (str) - (Required) 子网ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -294,13 +294,13 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **VPCId** (str) - (Required) VPC资源Id</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -317,16 +317,16 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 源VPC所在项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 源VPC所在地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 源VPC所在项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 源VPC所在地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **DstVPCId** (str) - (Required) 目的VPC短ID</span>
 <span class="sd">        - **VPCId** (str) - (Required) 源VPC短ID</span>
 <span class="sd">        - **DstProjectId** (str) - 目的VPC所在项目ID，默认为源VPC所在项目ID</span>
 <span class="sd">        - **DstRegion** (str) - 目的VPC所在地域，默认为源VPC所在地域</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -343,23 +343,23 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **BusinessId** (str) - 业务组ID</span>
 <span class="sd">        - **Limit** (int) - Limit</span>
 <span class="sd">        - **OffSet** (int) - OffSet</span>
 <span class="sd">        - **RouteTableId** (str) - 路由表ID</span>
 <span class="sd">        - **VPCId** (str) - VPC ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **RouteTables** (list) - 见 **RouteTableInfo** 模型定义</span>
 <span class="sd">        - **TotalCount** (int) - RouteTables字段的数量</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **RouteRuleInfo** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **RouteRuleInfo**</span>
+
 <span class="sd">        - **DstAddr** (str) - 目的地址，比如10.10.8/24</span>
 <span class="sd">        - **NexthopId** (str) - 路由下一跳ID，比如uvnet-3eljvj</span>
 <span class="sd">        - **NexthopType** (str) - 下一跳类型，比如local、vnet</span>
@@ -367,8 +367,8 @@
 <span class="sd">        - **RouteRuleId** (str) - 规则ID</span>
 <span class="sd">        - **RuleType** (int) - 路由规则类型（0表示系统路由，1表示自定义路由）</span>
 
-<span class="sd">        **RouteTableInfo** </span>
-<span class="sd">        </span>
+<span class="sd">        **RouteTableInfo**</span>
+
 <span class="sd">        - **CreateTime** (int) - 创建时间戳</span>
 <span class="sd">        - **Remark** (str) - 路由表备注</span>
 <span class="sd">        - **RouteRules** (list) - 见 **RouteRuleInfo** 模型定义</span>
@@ -395,32 +395,33 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **BusinessId** (str) - 业务组</span>
 <span class="sd">        - **Limit** (int) - 列表长度，默认为20</span>
 <span class="sd">        - **Offset** (int) - 偏移量，默认为0</span>
 <span class="sd">        - **RouteTableId** (str) - 路由表Id</span>
+<span class="sd">        - **ShowAvailableIPs** (bool) - 是否返回子网的可用IP数，true为是，false为否，默认不返回</span>
 <span class="sd">        - **SubnetId** (str) - 子网id，适用于一次查询一个子网信息</span>
 <span class="sd">        - **SubnetIds** (list) - 子网id数组，适用于一次查询多个子网信息</span>
 <span class="sd">        - **Tag** (str) - 业务组名称，默认为Default</span>
 <span class="sd">        - **VPCId** (str) - VPC资源id</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **DataSet** (list) - 见 **SubnetInfo** 模型定义</span>
 <span class="sd">        - **TotalCount** (int) - 子网总数量</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **SubnetInfo** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **SubnetInfo**</span>
+
+<span class="sd">        - **AvailableIPs** (int) - 可用IP数量</span>
 <span class="sd">        - **CreateTime** (int) - 创建时间</span>
 <span class="sd">        - **Gateway** (str) - 子网网关</span>
 <span class="sd">        - **HasNATGW** (bool) - 是否有natgw</span>
 <span class="sd">        - **IPv6Network** (str) - 子网关联的IPv6网段</span>
-<span class="sd">        - **Netmask** (int) - 子网掩码</span>
-<span class="sd">        - **OperatorName** (str) - 子网关联的IPv6网段所属运营商</span>
+<span class="sd">        - **Netmask** (str) - 子网掩码</span>
 <span class="sd">        - **Remark** (str) - 备注</span>
 <span class="sd">        - **RouteTableId** (str) - 路由表Id</span>
 <span class="sd">        - **Subnet** (str) - 子网网段</span>
@@ -434,88 +435,50 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeSubnetRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeSubnet&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeSubnetResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="VPCClient.describe_subnet_resource"><a class="viewcode-back" href="../../../../services.html#ucloud.services.vpc.client.VPCClient.describe_subnet_resource">[docs]</a>    <span class="k">def</span> <span class="nf">describe_subnet_resource</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; DescribeSubnetResource - 展示子网资源</span>
-
-<span class="sd">        **Request**</span>
-
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        - **SubnetId** (str) - (Required) 子网id</span>
-<span class="sd">        - **Limit** (int) - 单页返回数据长度，默认为20</span>
-<span class="sd">        - **Offset** (int) - 列表起始位置偏移量，默认为0</span>
-<span class="sd">        - **ResourceType** (str) - 资源类型，默认为全部资源类型。枚举值为：UHOST，云主机；PHOST，物理云主机；ULB，负载均衡；UHADOOP_HOST，hadoop节点；UFORTRESS_HOST，堡垒机；UNATGW，NAT网关；UKAFKA，Kafka消息队列；UMEM，内存存储；DOCKER，容器集群；UDB，数据库；UDW，数据仓库；VIP，内网VIP.</span>
-<span class="sd">        </span>
-<span class="sd">        **Response**</span>
-
-<span class="sd">        - **DataSet** (list) - 见 **SubnetResource** 模型定义</span>
-<span class="sd">        - **TotalCount** (int) - 总数</span>
-<span class="sd">        </span>
-<span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **SubnetResource** </span>
-<span class="sd">        </span>
-<span class="sd">        - **IP** (str) - 资源ip</span>
-<span class="sd">        - **IPv6Address** (str) - 资源的IPv6地址</span>
-<span class="sd">        - **Name** (str) - 资源名称</span>
-<span class="sd">        - **ResourceId** (str) - 资源Id</span>
-<span class="sd">        - **ResourceType** (str) - 资源类型。对应的资源类型：UHOST，云主机；PHOST，物理云主机；ULB，负载均衡；UHADOOP_HOST，hadoop节点；UFORTRESS_HOST，堡垒机；UNATGW，NAT网关；UKAFKA，Kafka消息队列；UMEM，内存存储；DOCKER，容器集群；UDB，数据库；UDW，数据仓库；VIP，内网VIP.</span>
-<span class="sd">        - **SubResourceId** (str) - 资源绑定的虚拟网卡的实例ID</span>
-<span class="sd">        - **SubResourceName** (str) - 资源绑定的虚拟网卡的实例名称</span>
-<span class="sd">        - **SubResourceType** (str) - 资源绑定的虚拟网卡的类型</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
-        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeSubnetResourceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-
-        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeSubnetResource&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeSubnetResourceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="VPCClient.describe_vpc"><a class="viewcode-back" href="../../../../services.html#ucloud.services.vpc.client.VPCClient.describe_vpc">[docs]</a>    <span class="k">def</span> <span class="nf">describe_vpc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; DescribeVPC - 获取VPC信息</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        - **Limit** (int) - </span>
-<span class="sd">        - **Offset** (int) - </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Limit** (int) -</span>
+<span class="sd">        - **Offset** (int) -</span>
 <span class="sd">        - **Tag** (str) - 业务组名称</span>
 <span class="sd">        - **VPCIds** (list) - VPCId</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **DataSet** (list) - 见 **VPCInfo** 模型定义</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **VPCNetworkInfo** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **VPCNetworkInfo**</span>
+
 <span class="sd">        - **Network** (str) - vpc地址空间</span>
 <span class="sd">        - **SubnetCount** (int) - 地址空间中子网数量</span>
 
-<span class="sd">        **VPCInfo** </span>
-<span class="sd">        </span>
-<span class="sd">        - **CreateTime** (int) - </span>
+<span class="sd">        **VPCInfo**</span>
+
+<span class="sd">        - **CreateTime** (int) -</span>
 <span class="sd">        - **IPv6Network** (str) - VPC关联的IPv6网段</span>
-<span class="sd">        - **Name** (str) - </span>
-<span class="sd">        - **Network** (list) - </span>
+<span class="sd">        - **Name** (str) -</span>
+<span class="sd">        - **Network** (list) -</span>
 <span class="sd">        - **NetworkInfo** (list) - 见 **VPCNetworkInfo** 模型定义</span>
 <span class="sd">        - **OperatorName** (str) - VPC关联的IPv6网段所属运营商</span>
-<span class="sd">        - **SubnetCount** (int) - </span>
-<span class="sd">        - **Tag** (str) - </span>
-<span class="sd">        - **UpdateTime** (int) - </span>
+<span class="sd">        - **SubnetCount** (int) -</span>
+<span class="sd">        - **Tag** (str) -</span>
+<span class="sd">        - **UpdateTime** (int) -</span>
 <span class="sd">        - **VPCId** (str) - VPCId</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -534,20 +497,20 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 源VPC所在项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 源VPC所在地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 源VPC所在项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 源VPC所在地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **VPCId** (str) - (Required) VPC短ID</span>
 <span class="sd">        - **DstProjectId** (str) - 目的项目ID，默认为全部项目</span>
 <span class="sd">        - **DstRegion** (str) - 目的VPC所在地域，默认为全部地域</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **DataSet** (list) - 见 **VPCIntercomInfo** 模型定义</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **VPCIntercomInfo** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **VPCIntercomInfo**</span>
+
 <span class="sd">        - **DstRegion** (str) - 所属地域</span>
 <span class="sd">        - **Name** (str) - VPC名字</span>
 <span class="sd">        - **Network** (list) - VPC的地址空间</span>
@@ -571,14 +534,14 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **RouteRule** (list) - (Required) 格式: RouteRuleId | 目的网段 | 下一跳类型 | 下一跳 |优先级| 备注 | 增、删、改标志  (下一跳类型为instance或者vip，下一跳为云主机id或者vip的id，优先级使用0，动作标志为add/delete/update)   。&quot;添加&quot;示例: test_id | 10.8.0.0/16 | instance | uhost-xd8ja | 0 | Default Route Rule| add (添加的RouteRuleId填任意非空字符串)     。&quot;删除&quot;示例: routerule-xk3jxa | 10.8.0.0/16 | instance | uhost-xd8ja | 0 | Default Route Rule| delete (RouteRuleId来自DescribeRouteTable中)     。“修改”示例: routerule-xk3jxa | 10.8.0.0/16 | instance | uhost-cjksa2 | 0 | Default Route Rule| update (RouteRuleId来自DescribeRouteTable中)</span>
 <span class="sd">        - **RouteTableId** (str) - (Required) 通过DescribeRouteTable拿到</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -595,16 +558,16 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **RouteTableId** (str) - (Required) 路由表ID</span>
 <span class="sd">        - **Name** (str) - 名称</span>
 <span class="sd">        - **Remark** (str) - 备注</span>
 <span class="sd">        - **Tag** (str) - 业务组名称</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -621,15 +584,15 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **SubnetId** (str) - (Required) 子网ID</span>
 <span class="sd">        - **Name** (str) - 子网名称(如果Name不填写，Tag必须填写)</span>
 <span class="sd">        - **Tag** (str) - 业务组名称(如果Tag不填写，Name必须填写)</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -646,15 +609,15 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        - **Network** (list) - (Required) 需要保留的VPC网段。当前仅支持删除VPC网段，添加网段请参考 `AddVPCNetwork &lt;https://docs.ucloud.cn/api/vpc2.0-api/add_vpc_network&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Network** (list) - (Required) 需要保留的VPC网段。当前仅支持删除VPC网段，添加网段请参考 `AddVPCNetwork &lt;https://docs.ucloud.cn/api/vpc2.0-api/add_vpc_network&gt;`_</span>
 <span class="sd">        - **VPCId** (str) - (Required) VPC的ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **Message** (str) - 错误信息</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -709,7 +672,7 @@
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -726,7 +689,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
