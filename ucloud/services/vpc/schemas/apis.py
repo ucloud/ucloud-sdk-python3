@@ -359,6 +359,9 @@ class DescribeSubnetRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "RouteTableId": fields.Str(required=False, dump_to="RouteTableId"),
+        "ShowAvailableIPs": fields.Bool(
+            required=False, dump_to="ShowAvailableIPs"
+        ),
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
         "SubnetIds": fields.List(fields.Str()),
         "Tag": fields.Str(required=False, dump_to="Tag"),
