@@ -41,12 +41,12 @@ class SubnetInfoSchema(schema.ResponseSchema):
     """
 
     fields = {
+        "AvailableIPs": fields.Int(required=False, load_from="AvailableIPs"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "Gateway": fields.Str(required=False, load_from="Gateway"),
         "HasNATGW": fields.Bool(required=False, load_from="HasNATGW"),
         "IPv6Network": fields.Str(required=False, load_from="IPv6Network"),
-        "Netmask": fields.Int(required=False, load_from="Netmask"),
-        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
+        "Netmask": fields.Str(required=False, load_from="Netmask"),
         "Remark": fields.Str(required=False, load_from="Remark"),
         "RouteTableId": fields.Str(required=False, load_from="RouteTableId"),
         "Subnet": fields.Str(required=False, load_from="Subnet"),
@@ -109,7 +109,7 @@ class VPCInfoSchema(schema.ResponseSchema):
 
 
 class VPCIntercomInfoSchema(schema.ResponseSchema):
-    """ VPCIntercomInfo - 
+    """ VPCIntercomInfo -
     """
 
     fields = {
