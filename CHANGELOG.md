@@ -1,3 +1,9 @@
+## 0.8.2 (2020-03-12)
+
+BUG FIXES:
+
+- Fix `DescribeSubnetResource`
+
 ## 0.8.1 (2020-03-11)
 
 ENHANCEMENTS:
