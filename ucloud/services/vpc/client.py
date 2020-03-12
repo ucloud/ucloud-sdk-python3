@@ -412,6 +412,43 @@ class VPCClient(Client):
         resp = self.invoke("DescribeSubnet", d, **kwargs)
         return apis.DescribeSubnetResponseSchema().loads(resp)
 
+    def describe_subnet_resource(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ DescribeSubnetResource - 展示子网资源
+        **Request**
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **SubnetId** (str) - (Required) 子网id
+        - **Limit** (int) - 单页返回数据长度，默认为20
+        - **Offset** (int) - 列表起始位置偏移量，默认为0
+        - **ResourceType** (str) - 资源类型，默认为全部资源类型。枚举值为：UHOST，云主机；PHOST，物理云主机；ULB，负载均衡；UHADOOP_HOST，hadoop节点；UFORTRESS_HOST，堡垒机；UNATGW，NAT网关；UKAFKA，Kafka消息队列；UMEM，内存存储；DOCKER，容器集群；UDB，数据库；UDW，数据仓库；VIP，内网VIP.
+
+        **Response**
+        - **DataSet** (list) - 见 **SubnetResource** 模型定义
+        - **TotalCount** (int) - 总数
+
+        **Response Model**
+
+        **SubnetResource**
+
+        - **IP** (str) - 资源ip
+        - **IPv6Address** (str) - 资源的IPv6地址
+        - **Name** (str) - 资源名称
+        - **ResourceId** (str) - 资源Id
+        - **ResourceType** (str) - 资源类型。对应的资源类型：UHOST，云主机；PHOST，物理云主机；ULB，负载均衡；UHADOOP_HOST，hadoop节点；UFORTRESS_HOST，堡垒机；UNATGW，NAT网关；UKAFKA，Kafka消息队列；UMEM，内存存储；DOCKER，容器集群；UDB，数据库；UDW，数据仓库；VIP，内网VIP.
+        - **SubResourceId** (str) - 资源绑定的虚拟网卡的实例ID
+        - **SubResourceName** (str) - 资源绑定的虚拟网卡的实例名称
+        - **SubResourceType** (str) - 资源绑定的虚拟网卡的类型
+        """
+        # build request
+        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        req and d.update(req)
+        d = apis.DescribeSubnetResourceRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeSubnetResource", d, **kwargs)
+        return apis.DescribeSubnetResourceResponseSchema().loads(resp)
+
     def describe_vpc(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """ DescribeVPC - 获取VPC信息
 
