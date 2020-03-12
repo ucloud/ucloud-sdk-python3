@@ -3809,7 +3809,7 @@
 <li><p><strong>ProjectId</strong> (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 <a class="reference external" href="https://docs.ucloud.cn/api/summary/get_project_list.html">GetProjectList接口</a></p></li>
 <li><p><strong>Region</strong> (str) - (Config) 地域。 参见  <a class="reference external" href="https://docs.ucloud.cn/api/summary/regionlist.html">地域和可用区列表</a></p></li>
 <li><p><strong>HighAvailability</strong> (str) - (Required) 是否开启高可用,enable或disable</p></li>
-<li><p><strong>Name</strong> (str) - (Required) 请求创建组的名称 (范围[6-63],只能包含英文、<a href="#id605"><span class="problematic" id="id606">数字以及符号-和_</span></a>)</p></li>
+<li><p><strong>Name</strong> (str) - (Required) 请求创建组的名称 (范围[6-63],只能包含英文、<a href="#id607"><span class="problematic" id="id608">数字以及符号-和_</span></a>)</p></li>
 <li><p><strong>Zone</strong> (str) - (Required) 可用区。参见  <a class="reference external" href="https://docs.ucloud.cn/api/summary/regionlist.html">可用区列表</a></p></li>
 <li><p><strong>AutoBackup</strong> (str) - 是否自动备份,enable或disable，默认disable</p></li>
 <li><p><strong>BackupId</strong> (str) - 有此项代表从备份中创建，无代表正常创建</p></li>
@@ -4267,7 +4267,7 @@
 <li><p><strong>ProjectId</strong> (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 <a class="reference external" href="https://docs.ucloud.cn/api/summary/get_project_list.html">GetProjectList接口</a></p></li>
 <li><p><strong>Region</strong> (str) - (Config) 地域。 参见  <a class="reference external" href="https://docs.ucloud.cn/api/summary/regionlist.html">地域和可用区列表</a></p></li>
 <li><p><strong>GroupId</strong> (str) - (Required) 组的ID</p></li>
-<li><p><strong>Name</strong> (str) - (Required) Redis组名称 (范围[6-63],只能包含英文、<a href="#id607"><span class="problematic" id="id608">数字以及符号-和_</span></a>)</p></li>
+<li><p><strong>Name</strong> (str) - (Required) Redis组名称 (范围[6-63],只能包含英文、<a href="#id609"><span class="problematic" id="id610">数字以及符号-和_</span></a>)</p></li>
 <li><p><strong>Zone</strong> (str) - 可用区。参见  <a class="reference external" href="https://docs.ucloud.cn/api/summary/regionlist.html">可用区列表</a></p></li>
 </ul>
 <p><strong>Response</strong></p>
@@ -6215,6 +6215,34 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="ucloud.services.vpc.client.VPCClient.describe_subnet_resource">
+<code class="sig-name descname">describe_subnet_resource</code><span class="sig-paren">(</span><em class="sig-param">req: Optional[dict] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/ucloud/services/vpc/client.html#VPCClient.describe_subnet_resource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.services.vpc.client.VPCClient.describe_subnet_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>DescribeSubnetResource - 展示子网资源
+<strong>Request</strong>
+- <strong>ProjectId</strong> (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 <a class="reference external" href="https://docs.ucloud.cn/api/summary/get_project_list.html">GetProjectList接口</a>
+- <strong>Region</strong> (str) - (Config) 地域。 参见  <a class="reference external" href="https://docs.ucloud.cn/api/summary/regionlist.html">地域和可用区列表</a>
+- <strong>SubnetId</strong> (str) - (Required) 子网id
+- <strong>Limit</strong> (int) - 单页返回数据长度，默认为20
+- <strong>Offset</strong> (int) - 列表起始位置偏移量，默认为0
+- <strong>ResourceType</strong> (str) - 资源类型，默认为全部资源类型。枚举值为：UHOST，云主机；PHOST，物理云主机；ULB，负载均衡；UHADOOP_HOST，hadoop节点；UFORTRESS_HOST，堡垒机；UNATGW，NAT网关；UKAFKA，Kafka消息队列；UMEM，内存存储；DOCKER，容器集群；UDB，数据库；UDW，数据仓库；VIP，内网VIP.</p>
+<p><strong>Response</strong>
+- <strong>DataSet</strong> (list) - 见 <strong>SubnetResource</strong> 模型定义
+- <strong>TotalCount</strong> (int) - 总数</p>
+<p><strong>Response Model</strong></p>
+<p><strong>SubnetResource</strong></p>
+<ul class="simple">
+<li><p><strong>IP</strong> (str) - 资源ip</p></li>
+<li><p><strong>IPv6Address</strong> (str) - 资源的IPv6地址</p></li>
+<li><p><strong>Name</strong> (str) - 资源名称</p></li>
+<li><p><strong>ResourceId</strong> (str) - 资源Id</p></li>
+<li><p><strong>ResourceType</strong> (str) - 资源类型。对应的资源类型：UHOST，云主机；PHOST，物理云主机；ULB，负载均衡；UHADOOP_HOST，hadoop节点；UFORTRESS_HOST，堡垒机；UNATGW，NAT网关；UKAFKA，Kafka消息队列；UMEM，内存存储；DOCKER，容器集群；UDB，数据库；UDW，数据仓库；VIP，内网VIP.</p></li>
+<li><p><strong>SubResourceId</strong> (str) - 资源绑定的虚拟网卡的实例ID</p></li>
+<li><p><strong>SubResourceName</strong> (str) - 资源绑定的虚拟网卡的实例名称</p></li>
+<li><p><strong>SubResourceType</strong> (str) - 资源绑定的虚拟网卡的类型</p></li>
+</ul>
+</dd></dl>
+
+<dl class="method">
 <dt id="ucloud.services.vpc.client.VPCClient.describe_vpc">
 <code class="sig-name descname">describe_vpc</code><span class="sig-paren">(</span><em class="sig-param">req: Optional[dict] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/ucloud/services/vpc/client.html#VPCClient.describe_vpc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.services.vpc.client.VPCClient.describe_vpc" title="Permalink to this definition">¶</a></dt>
 <dd><p>DescribeVPC - 获取VPC信息</p>
@@ -6288,7 +6316,7 @@
 <ul class="simple">
 <li><p><strong>ProjectId</strong> (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 <a class="reference external" href="https://docs.ucloud.cn/api/summary/get_project_list.html">GetProjectList接口</a></p></li>
 <li><p><strong>Region</strong> (str) - (Config) 地域。 参见  <a class="reference external" href="https://docs.ucloud.cn/api/summary/regionlist.html">地域和可用区列表</a></p></li>
-<li><p><strong>RouteRule</strong> (list) - (Required) 格式: RouteRuleId | 目的网段 | 下一跳类型 | 下一跳 <a href="#id603"><span class="problematic" id="id604">|优先级|</span></a> 备注 | 增、删、改标志  (下一跳类型为instance或者vip，下一跳为云主机id或者vip的id，优先级使用0，动作标志为add/delete/update)   。”添加”示例: test_id | 10.8.0.0/16 | instance | uhost-xd8ja | 0 | Default Route Rule| add (添加的RouteRuleId填任意非空字符串)     。”删除”示例: routerule-xk3jxa | 10.8.0.0/16 | instance | uhost-xd8ja | 0 | Default Route Rule| delete (RouteRuleId来自DescribeRouteTable中)     。“修改”示例: routerule-xk3jxa | 10.8.0.0/16 | instance | uhost-cjksa2 | 0 | Default Route Rule| update (RouteRuleId来自DescribeRouteTable中)</p></li>
+<li><p><strong>RouteRule</strong> (list) - (Required) 格式: RouteRuleId | 目的网段 | 下一跳类型 | 下一跳 <a href="#id605"><span class="problematic" id="id606">|优先级|</span></a> 备注 | 增、删、改标志  (下一跳类型为instance或者vip，下一跳为云主机id或者vip的id，优先级使用0，动作标志为add/delete/update)   。”添加”示例: test_id | 10.8.0.0/16 | instance | uhost-xd8ja | 0 | Default Route Rule| add (添加的RouteRuleId填任意非空字符串)     。”删除”示例: routerule-xk3jxa | 10.8.0.0/16 | instance | uhost-xd8ja | 0 | Default Route Rule| delete (RouteRuleId来自DescribeRouteTable中)     。“修改”示例: routerule-xk3jxa | 10.8.0.0/16 | instance | uhost-cjksa2 | 0 | Default Route Rule| update (RouteRuleId来自DescribeRouteTable中)</p></li>
 <li><p><strong>RouteTableId</strong> (str) - (Required) 通过DescribeRouteTable拿到</p></li>
 </ul>
 <p><strong>Response</strong></p>
