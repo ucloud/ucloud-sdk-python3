@@ -18,7 +18,7 @@ def deprecated(instead_of="", message=""):
         def wrapper(*args, **kwargs):
             msg = ["this function/method {} is deprecated"]
             instead_of and msg.append(
-                "please use {} instead".format(fn.__name__, instead_of)
+                "please use {} instead".format(instead_of, fn.__name__)
             )
             message and msg.append(message)
             logger.warning(",".join(msg))

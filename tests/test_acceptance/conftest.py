@@ -6,8 +6,22 @@ from ucloud.testing.driver import spec
 from ucloud.client import Client
 
 
-@pytest.fixture(scope="session", autouse=True, name="client")
-def client_factory() -> Client:
+@pytest.fixture(scope="session", autouse=True)
+def ustack_client() -> Client:
+    return Client(
+        {
+            "base_url": "http://192.168.179.2/api",
+            "region": "cn",
+            "public_key": os.getenv("UCLOUDSTACK_PUBLIC_KEY"),
+            "private_key": os.getenv("UCLOUDSTACK_PRIVATE_KEY"),
+            "max_retries": 10,
+            "timeout": 60,
+        }
+    )
+
+
+@pytest.fixture(scope="session", autouse=True)
+def client() -> Client:
     return Client(
         {
             "region": "cn-bj2",

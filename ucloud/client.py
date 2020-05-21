@@ -106,6 +106,13 @@ class Client(CompactClient):
             self._config, self.transport, self.middleware, self.logger
         )
 
+    def ucloudstack(self):
+        from ucloud.services.ucloudstack.client import UCloudStackClient
+
+        return UCloudStackClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
     def ufs(self):
         from ucloud.services.ufs.client import UFSClient
 
