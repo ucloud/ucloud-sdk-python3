@@ -1,3 +1,13 @@
+## 0.9.0 (2020-05-21)
+
+FEATURES:
+
+- Add `ucloudstack` product
+
+ENHANCEMENTS:
+
+- Add `deprecated` decorator
+
 ## 0.8.2 (2020-03-12)
 
 BUG FIXES:

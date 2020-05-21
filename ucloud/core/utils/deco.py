@@ -16,8 +16,12 @@ def deprecated(instead_of="", message=""):
     def deco(fn):
         @functools.wraps(fn)
         def wrapper(*args, **kwargs):
-            msg = ["this function/method `{}` is deprecated".format(fn.__name__)]
-            instead_of and msg.append("please use `{}` instead".format(instead_of))
+            msg = [
+                "this function/method `{}` is deprecated".format(fn.__name__)
+            ]
+            instead_of and msg.append(
+                "please use `{}` instead".format(instead_of)
+            )
             message and msg.append(message)
             logger.warning(", ".join(msg))
             return fn(*args, **kwargs)
