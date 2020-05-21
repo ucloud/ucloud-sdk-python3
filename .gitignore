@@ -116,3 +116,4 @@ bdd/
 .version
 
 scripts/gen-apis.sh
+report.json

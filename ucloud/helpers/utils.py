@@ -66,10 +66,10 @@ def gen_string(letters: str, length: int):
     return "".join([random.choice(letters) for i in range(length)])
 
 
-def first(l: typing.List[typing.Any]) -> typing.Any:
-    if len(l) == 0:
+def first(arr: typing.List[typing.Any]) -> typing.Any:
+    if len(arr) == 0:
         return None
-    return l[0]
+    return arr[0]
 
 
 def b64encode(s: str) -> str:
