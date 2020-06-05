@@ -1,3 +1,14 @@
+## 0.9.1 (2020-06-05)
+
+ENHANCEMENTS:
+
+- Add `CreateCertificate` api
+- Add `DescribeCertificate` api
+- Add `DeleteCertificate` api
+- Add `DescribeOPLogs` api
+- Update `DescribeVMInstance` api
+- Update `CreateVS` api
+
 ## 0.9.0 (2020-05-21)
 
 FEATURES:
