@@ -208,6 +208,37 @@ class UCloudStackClient(Client):
         resp = self.invoke("CloneDisk", d, **kwargs)
         return apis.CloneDiskResponseSchema().loads(resp)
 
+    def create_certificate(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ CreateCertificate - 创建证书
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **Certificate** (str) - (Required) 证书内容
+        - **CertificateType** (str) - (Required) 证书类型，枚举值["ServerCrt","CACrt"]。分别表示服务器证书和CA证书。只有在双向认证的时候才需要CA证书
+        - **Name** (str) - (Required) 证书名称
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **PrivateKey** (str) - 私钥内容,服务器证书必传,CA证书不用传递
+        - **Remark** (str) - 证书描述
+        
+        **Response**
+
+        - **CertificateID** (str) - 证书ID
+        - **Message** (str) - 错误描述
+        
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateCertificateRequestSchema().dumps(d)
+
+        resp = self.invoke("CreateCertificate", d, **kwargs)
+        return apis.CreateCertificateResponseSchema().loads(resp)
+
     def create_custom_image(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -579,16 +610,22 @@ class UCloudStackClient(Client):
         - **VPCID** (str) - (Required) VPC ID。
         - **WANSGID** (str) - (Required) 外网安全组 ID。输入“有效”状态的安全组的ID。
         - **Zone** (str) - (Required) 可用区。枚举值：zone-01，表示中国；
+        - **Bandwidth** (str) - 带宽
         - **DataDiskSpace** (int) - 数据盘大小，单位 GB。默认值为0。范围：【0，8000】，步长10。
         - **GPU** (int) - GPU 卡核心的占用个数。枚举值：【1,2,4】。GPU与CPU、内存大小关系：CPU个数>=4*GPU个数，同时内存与CPU规格匹配.
+        - **IPVersion** (str) - 外网IP版本，默认IPv4
         - **InternalIP** (str) - 指定内网IP。输入有效的指定内网 IP。默认为系统自动分配内网 IP。
+        - **InternetIP** (str) - 指定外网IP
         - **LANSGID** (str) - 内网安全组 ID。输入“有效”状态的安全组的ID。
+        - **OperatorName** (str) - 线路
         - **Quantity** (int) - 购买时长。默认值1。小时不生效，月范围【1，11】，年范围【1，5】。
         
         **Response**
 
+        - **DiskID** (str) - 返回创建数据盘的 ID
+        - **EIPID** (str) - 返回创建外网IP的 ID
         - **Message** (str) - 返回信息描述。
-        - **VMID** (str) - 返回创建虚拟机的 ID 数组。
+        - **VMID** (str) - 返回创建虚拟机的 ID
         
         """
         # build request
@@ -637,14 +674,17 @@ class UCloudStackClient(Client):
         - **HealthcheckType** (str) - (Required) 健康检查类型，枚举值，Port:端口,Path:域名。TCP和UDP协议只支持Port类型。
         - **LBID** (str) - (Required) 负载均衡ID
         - **Port** (int) - (Required) VServer 的监听端口。端口范围为 1~65535 ，其中 323、9102、9103、9104、9105、60909、60910 被系统占用。
-        - **Protocol** (str) - (Required) VServer 的监听协议。枚举值：支持 TCP、UDP、HTTP 三种协议转发。
-        - **Scheduler** (str) - (Required) 负载均衡的调度算法。枚举值：wrr:加权轮训；lc:最小连接数；hash:原地址。
+        - **Protocol** (str) - (Required) VServer 的监听协议。枚举值：支持 TCP、UDP、HTTP、HTTPS 四种协议转发。
+        - **Scheduler** (str) - (Required) 负载均衡的调度算法。枚举值：wrr:加权轮训；least_conn:最小连接数；hash:原地址,四层lb使用。ip_hash:七层lb使用
         - **Zone** (str) - (Required) 可用区。枚举值：zone-01，表示中国；
+        - **CACertificateID** (str) - CA证书ID，用于验证客户端证书的签名，仅当VServer监听协议为 HTTPS 且 SSLMode 为双向认证时有效。
         - **Domain** (str) - HTTP 健康检查时校验请求的 HOST 字段中的域名。当健康检查类型为端口检查时，该值为空。
         - **KeepaliveTimeout** (int) - 负载均衡的连接空闲超时时间，单位为秒，默认值为 60s 。
         - **Path** (str) - HTTP 健康检查的路径，健康检查类型为 HTTP 检查时为必填项。当健康检查类型为端口检查时，该值为空。
         - **PersistenceKey** (str) - 会话保持KEY，会话保持类型为Manual时为必填项，仅当 VServer 协议为 HTTP 时有效。
         - **PersistenceType** (str) - 会话保持类型。枚举值：None:关闭；Auto:自动生成；Manual:手动生成 。当协议为 TCP 时，该值不生效，会话保持和选择的调度算法相关；当协议为 UDP 时 Auto 表示开启会话保持 。
+        - **SSLMode** (str) - SSL认证模式,HTTPS协议下必传,取值范围["simplex","duplex"]分别表示单向认证和双向认证。
+        - **ServerCertificateID** (str) - 服务器证书ID，用于证明服务器的身份，仅当 VServer监听协议为 HTTPS时有效。
         
         **Response**
 
@@ -692,6 +732,32 @@ class UCloudStackClient(Client):
 
         resp = self.invoke("CreateVSPolicy", d, **kwargs)
         return apis.CreateVSPolicyResponseSchema().loads(resp)
+
+    def delete_certificate(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ DeleteCertificate - 删除证书
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **CertificateID** (str) - (Required) 证书ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        
+        **Response**
+
+        - **Message** (str) - 返回信息描述
+        
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteCertificateRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteCertificate", d, **kwargs)
+        return apis.DeleteCertificateResponseSchema().loads(resp)
 
     def delete_custom_image(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1065,9 +1131,7 @@ class UCloudStackClient(Client):
         
         **Response**
 
-        - **Action** (str) - 操作名称
         - **Message** (str) - 返回信息描述。
-        - **RetCode** (int) - 返回码
         
         """
         # build request
@@ -1079,6 +1143,64 @@ class UCloudStackClient(Client):
 
         resp = self.invoke("DeleteVSPolicy", d, **kwargs)
         return apis.DeleteVSPolicyResponseSchema().loads(resp)
+
+    def describe_certificate(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ DescribeCertificate - 查询证书
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **CertificateIDs** (list) - 证书ID列表
+        - **CertificateType** (str) - 证书类型，枚举值["ServerCrt","CACrt"]。分别表示服务器证书和CA证书。
+        - **Limit** (int) - 返回数据长度，默认为20，最大100
+        - **Offset** (int) - 列表起始位置偏移量，默认为0
+        
+        **Response**
+
+        - **Infos** (list) - 见 **CertificateInfo** 模型定义
+        - **Message** (str) - 返回信息描述
+        - **TotalCount** (int) - 证书总个数
+        
+        **Response Model**
+        
+        **BindVSInfo** 
+        
+        - **LBID** (str) - LB ID
+        - **LBName** (str) - LB名称
+        - **Port** (int) - VS的端口
+        - **Protocol** (str) - VS的协议
+        - **VSID** (str) - VS ID
+
+        **CertificateInfo** 
+        
+        - **CertificateContent** (str) - 证书内容
+        - **CertificateID** (str) - 证书ID
+        - **CertificateType** (str) - 证书类型，枚举值["ServerCrt","CACrt"]
+        - **CommonName** (str) - 主域名
+        - **CreateTime** (int) - 创建时间（平台创建时间）
+        - **ExpireTime** (int) - 证书内容的过期时间
+        - **Fingerprint** (str) - 证书指纹
+        - **Name** (str) - 证书名
+        - **Privatekey** (str) - 私钥内容
+        - **Region** (str) - 地域
+        - **Remark** (str) - 证书描述
+        - **SubjectAlternativeNames** (list) - 备域名
+        - **VSInfos** (list) - 见 **BindVSInfo** 模型定义
+        - **Zone** (str) - 可用区
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeCertificateRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeCertificate", d, **kwargs)
+        return apis.DescribeCertificateResponseSchema().loads(resp)
 
     def describe_disk(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1190,8 +1312,10 @@ class UCloudStackClient(Client):
         
         **Response**
 
+        - **Action** (str) - 操作名称
         - **Infos** (list) - 见 **ImageInfo** 模型定义
         - **Message** (str) - 返回信息描述。
+        - **RetCode** (int) - 返回码
         - **TotalCount** (int) - 返回镜像的总个数。
         
         **Response Model**
@@ -1200,7 +1324,7 @@ class UCloudStackClient(Client):
         
         - **CreateTime** (int) - 创建时间。时间戳。
         - **ImageID** (str) - 镜像ID
-        - **ImageStatus** (str) - 镜像状态。枚举类型：Making（创建中）,Available（可用）,Unavailable（不可用）,Terminating（销毁中）,Used（被使用中）,Deleting（删除中）,Deleted（已删除）
+        - **ImageStatus** (str) - 镜像状态。枚举类型：Making（创建中）,Available（可用）,Unavailable（不可用）,Terminating（销毁中）,Used（被使用中）,Deleting（删除中）,Deleted（已删除）, Uploading（导入中）
         - **ImageType** (str) - 镜像类型。枚举类型：Base(基础镜像),Custom（自制镜像）。
         - **Name** (str) - 镜像名称
         - **OSDistribution** (str) - 镜像系统发行版本。例如：Centos, Ubuntu, Windows等
@@ -1412,6 +1536,57 @@ class UCloudStackClient(Client):
 
         resp = self.invoke("DescribeNATGWRule", d, **kwargs)
         return apis.DescribeNATGWRuleResponseSchema().loads(resp)
+
+    def describe_op_logs(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ DescribeOPLogs - 查询操作日志
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **BeginTime** (int) - (Required) 开始时间
+        - **EndTime** (int) - (Required) 结束时间
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **IsSuccess** (str) - 是否操作成功
+        - **Limit** (int) - 
+        - **Offset** (int) - 
+        - **ResourceID** (str) - 资源ID
+        - **ResourceType** (str) - 资源类型
+        
+        **Response**
+
+        - **Infos** (list) - 见 **OPLogInfo** 模型定义
+        - **Message** (str) - 错误信息
+        - **TotalCount** (int) - 总数
+        
+        **Response Model**
+        
+        **OPLogInfo** 
+        
+        - **CreateTime** (int) - 创建时间
+        - **IsSuccess** (str) - 是否操作成功， Yes, No
+        - **OPLogsID** (str) - 日志ID
+        - **OPName** (str) - API
+        - **OPTime** (int) - 操作时间
+        - **OpMessage** (str) - 错误信息
+        - **Region** (str) - 
+        - **ResourceID** (str) - 资源ID
+        - **ResourceType** (int) - 资源类型
+        - **RetCode** (int) - 状态码
+        - **UserEmail** (str) - 账号邮箱
+        - **Zone** (str) - 
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeOPLogsRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeOPLogs", d, **kwargs)
+        return apis.DescribeOPLogsResponseSchema().loads(resp)
 
     def describe_physical_ip(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1756,6 +1931,7 @@ class UCloudStackClient(Client):
         **VMIPInfo** 
         
         - **IP** (str) - IP 值
+        - **IPVersion** (str) - IP版本,支持值：IPv4\IPv6
         - **InterfaceID** (str) - 网卡 ID
         - **IsElastic** (str) - 是否是弹性网卡。枚举值：Y，表示是；N，表示否；
         - **MAC** (str) - MAC 地址值
@@ -1792,7 +1968,7 @@ class UCloudStackClient(Client):
         - **Region** (str) - Region
         - **RegionAlias** (str) - Region 别名
         - **Remark** (str) - 备注
-        - **State** (str) - 虚拟机状态。枚举值：Initializing，表示初始化；Starting，表示启动中；Restarting，表示重启中；Running，表示运行；Stopping，表示关机中；Stopped，表示关机；Deleted，表示已删除；Resizing，表示修改配置中；Terminating，表示销毁中；Terminated，表示已销毁；Migrating，表示迁移中；WaitReinstall，表示重装中；Reinstalling，表示重装中；Poweroffing，表示断电中；ChangeSGing，表示修改防火墙中；
+        - **State** (str) - 虚拟机状态。枚举值：Initializing，表示初始化；Starting，表示启动中；Restarting，表示重启中；Running，表示运行；Stopping，表示关机中；Stopped，表示关机；Deleted，表示已删除；Resizing，表示修改配置中；Terminating，表示销毁中；Terminated，表示已销毁；Migrating，表示迁移中；WaitReinstall，表示等待重装系统；Reinstalling，表示重装中；Poweroffing，表示断电中；ChangeSGing，表示修改防火墙中；
         - **SubnetID** (str) - 子网 ID
         - **SubnetName** (str) - 子网 名称
         - **VMID** (str) - 虚拟机 ID
@@ -1927,6 +2103,18 @@ class UCloudStackClient(Client):
         
         **Response Model**
         
+        **VSPolicyInfo** 
+        
+        - **CreateTime** (int) - 创建时间，时间戳
+        - **Domain** (str) - 内容转发规则关联的请求域名，值可为空，即代表仅匹配路径。
+        - **LBID** (str) - 负载均衡ID
+        - **Path** (str) - 内容转发规则关联的请求访问路径，如 "/" 。
+        - **PolicyID** (str) - 内容转发规则ID
+        - **PolicyStatus** (str) - 状态，枚举值，Available:有效,Deleted:已删除
+        - **RSInfos** (list) - 见 **RSInfo** 模型定义
+        - **UpdateTime** (int) - 更新时间，时间戳
+        - **VSID** (str) - VServerID
+
         **RSInfo** 
         
         - **BindResourceID** (str) - 绑定的资源ID
@@ -1941,18 +2129,6 @@ class UCloudStackClient(Client):
         - **UpdateTime** (int) - 更新时间，时间戳
         - **VSID** (str) - 服务节点所属的 VServer ID
         - **Weight** (int) - 服务节点的权重
-
-        **VSPolicyInfo** 
-        
-        - **CreateTime** (int) - 创建时间，时间戳
-        - **Domain** (str) - 内容转发规则关联的请求域名，值可为空，即代表仅匹配路径。
-        - **LBID** (str) - 负载均衡ID
-        - **Path** (str) - 内容转发规则关联的请求访问路径，如 "/" 。
-        - **PolicyID** (str) - 内容转发规则ID
-        - **PolicyStatus** (str) - 状态，枚举值，Available:有效,Deleted:已删除
-        - **RSInfos** (list) - 见 **RSInfo** 模型定义
-        - **UpdateTime** (int) - 更新时间，时间戳
-        - **VSID** (str) - VServerID
 
         **VSInfo** 
         
@@ -2794,9 +2970,7 @@ class UCloudStackClient(Client):
         
         **Response**
 
-        - **Action** (str) - 操作名称
         - **Message** (str) - 返回信息描述。
-        - **RetCode** (int) - 返回码
         
         """
         # build request
@@ -2853,15 +3027,13 @@ class UCloudStackClient(Client):
         - **PersistenceKey** (str) - 会话保持KEY，会话保持类型为Manual时为必填项，仅当 VServer 协议为 HTTP 时有效。
         - **PersistenceType** (str) - 会话保持类型。枚举值：None:关闭；Auto:自动生成；Manual:手动生成 。当协议为 TCP 时，该值不生效，会话保持和选择的调度算法相关；当协议为 UDP 时 Auto 表示开启会话保持 。
         - **Port** (int) - VServer 监听端口
-        - **SSLMode** (str) - HTTPS SSL 认证解析模式。玫举值：UNIDIRECTIONAL:单向认证，MUTUAL:双向认证 。仅当VServer监听协议为 HTTPS 时有效。
+        - **SSLMode** (str) - SSL认证模式,HTTPS协议下必传,取值范围["simplex","duplex"]分别表示单向认证和双向认证。
         - **Scheduler** (str) - 负载均衡的调度算法。枚举值：wrr:加权轮训；least_conn:最小连接数；hash:原地址,四层lb使用。ip_hash:七层lb使用
         - **ServerCertificateID** (str) - 服务器证书ID，用于证明服务器的身份，仅当 VServer监听协议为 HTTPS 时有效。
         
         **Response**
 
-        - **Action** (str) - 操作名称
         - **Message** (str) - 返回信息描述。
-        - **RetCode** (int) - 返回码
         
         """
         # build request

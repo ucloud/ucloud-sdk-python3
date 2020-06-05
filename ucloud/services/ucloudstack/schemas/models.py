@@ -3,6 +3,45 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class BindVSInfoSchema(schema.ResponseSchema):
+    """ BindVSInfo - 证书绑定的vs信息
+    """
+
+    fields = {
+        "LBID": fields.Str(required=False, load_from="LBID"),
+        "LBName": fields.Str(required=False, load_from="LBName"),
+        "Port": fields.Int(required=False, load_from="Port"),
+        "Protocol": fields.Str(required=False, load_from="Protocol"),
+        "VSID": fields.Str(required=False, load_from="VSID"),
+    }
+
+
+class CertificateInfoSchema(schema.ResponseSchema):
+    """ CertificateInfo - 证书信息
+    """
+
+    fields = {
+        "CertificateContent": fields.Str(
+            required=False, load_from="CertificateContent"
+        ),
+        "CertificateID": fields.Str(required=False, load_from="CertificateID"),
+        "CertificateType": fields.Str(
+            required=False, load_from="CertificateType"
+        ),
+        "CommonName": fields.Str(required=False, load_from="CommonName"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "Fingerprint": fields.Str(required=False, load_from="Fingerprint"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Privatekey": fields.Str(required=False, load_from="Privatekey"),
+        "Region": fields.Str(required=False, load_from="Region"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "SubjectAlternativeNames": fields.List(fields.Str()),
+        "VSInfos": fields.List(BindVSInfoSchema()),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+    }
+
+
 class DiskInfoSchema(schema.ResponseSchema):
     """ DiskInfo - 磁盘信息
     """
@@ -160,6 +199,26 @@ class NATGWRuleInfoSchema(schema.ResponseSchema):
     }
 
 
+class OPLogInfoSchema(schema.ResponseSchema):
+    """ OPLogInfo - 操作日志
+    """
+
+    fields = {
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "IsSuccess": fields.Str(required=False, load_from="IsSuccess"),
+        "OPLogsID": fields.Str(required=False, load_from="OPLogsID"),
+        "OPName": fields.Str(required=False, load_from="OPName"),
+        "OPTime": fields.Int(required=False, load_from="OPTime"),
+        "OpMessage": fields.Str(required=False, load_from="OpMessage"),
+        "Region": fields.Str(required=False, load_from="Region"),
+        "ResourceID": fields.Str(required=False, load_from="ResourceID"),
+        "ResourceType": fields.Int(required=False, load_from="ResourceType"),
+        "RetCode": fields.Int(required=False, load_from="RetCode"),
+        "UserEmail": fields.Str(required=False, load_from="UserEmail"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+    }
+
+
 class PhysicalIPInfoSchema(schema.ResponseSchema):
     """ PhysicalIPInfo - 物理IP信息
     """
@@ -308,25 +367,6 @@ class UserInfoSchema(schema.ResponseSchema):
     }
 
 
-class VMIPInfoSchema(schema.ResponseSchema):
-    """ VMIPInfo - UCloudStack虚拟机IP信息
-    """
-
-    fields = {
-        "IP": fields.Str(required=False, load_from="IP"),
-        "InterfaceID": fields.Str(required=False, load_from="InterfaceID"),
-        "IsElastic": fields.Str(required=False, load_from="IsElastic"),
-        "MAC": fields.Str(required=False, load_from="MAC"),
-        "SGID": fields.Str(required=False, load_from="SGID"),
-        "SGName": fields.Str(required=False, load_from="SGName"),
-        "SubnetID": fields.Str(required=False, load_from="SubnetID"),
-        "SubnetName": fields.Str(required=False, load_from="SubnetName"),
-        "Type": fields.Str(required=False, load_from="Type"),
-        "VPCID": fields.Str(required=False, load_from="VPCID"),
-        "VPCName": fields.Str(required=False, load_from="VPCName"),
-    }
-
-
 class VMDiskInfoSchema(schema.ResponseSchema):
     """ VMDiskInfo - UCloudStack虚拟机磁盘信息
     """
@@ -338,6 +378,26 @@ class VMDiskInfoSchema(schema.ResponseSchema):
         "Name": fields.Str(required=False, load_from="Name"),
         "Size": fields.Int(required=False, load_from="Size"),
         "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
+class VMIPInfoSchema(schema.ResponseSchema):
+    """ VMIPInfo - UCloudStack虚拟机IP信息
+    """
+
+    fields = {
+        "IP": fields.Str(required=False, load_from="IP"),
+        "IPVersion": fields.Str(required=False, load_from="IPVersion"),
+        "InterfaceID": fields.Str(required=False, load_from="InterfaceID"),
+        "IsElastic": fields.Str(required=False, load_from="IsElastic"),
+        "MAC": fields.Str(required=False, load_from="MAC"),
+        "SGID": fields.Str(required=False, load_from="SGID"),
+        "SGName": fields.Str(required=False, load_from="SGName"),
+        "SubnetID": fields.Str(required=False, load_from="SubnetID"),
+        "SubnetName": fields.Str(required=False, load_from="SubnetName"),
+        "Type": fields.Str(required=False, load_from="Type"),
+        "VPCID": fields.Str(required=False, load_from="VPCID"),
+        "VPCName": fields.Str(required=False, load_from="VPCName"),
     }
 
 
