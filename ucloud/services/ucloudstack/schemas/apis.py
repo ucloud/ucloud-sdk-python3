@@ -217,6 +217,38 @@ class CloneDiskResponseSchema(schema.ResponseSchema):
 
 
 """
+API: CreateCertificate
+
+创建证书
+"""
+
+
+class CreateCertificateRequestSchema(schema.RequestSchema):
+    """ CreateCertificate - 创建证书
+    """
+
+    fields = {
+        "Certificate": fields.Str(required=True, dump_to="Certificate"),
+        "CertificateType": fields.Str(required=True, dump_to="CertificateType"),
+        "Name": fields.Str(required=True, dump_to="Name"),
+        "PrivateKey": fields.Str(required=False, dump_to="PrivateKey"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class CreateCertificateResponseSchema(schema.ResponseSchema):
+    """ CreateCertificate - 创建证书
+    """
+
+    fields = {
+        "CertificateID": fields.Str(required=True, load_from="CertificateID"),
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
 API: CreateCustomImage
 
 创建自制镜像
@@ -604,17 +636,21 @@ class CreateVMInstanceRequestSchema(schema.RequestSchema):
     """
 
     fields = {
+        "Bandwidth": fields.Str(required=False, dump_to="Bandwidth"),
         "BootDiskSetType": fields.Str(required=True, dump_to="BootDiskSetType"),
         "CPU": fields.Int(required=True, dump_to="CPU"),
         "ChargeType": fields.Str(required=True, dump_to="ChargeType"),
         "DataDiskSetType": fields.Str(required=True, dump_to="DataDiskSetType"),
         "DataDiskSpace": fields.Int(required=False, dump_to="DataDiskSpace"),
         "GPU": fields.Int(required=False, dump_to="GPU"),
+        "IPVersion": fields.Str(required=False, dump_to="IPVersion"),
         "ImageID": fields.Str(required=True, dump_to="ImageID"),
         "InternalIP": fields.Str(required=False, dump_to="InternalIP"),
+        "InternetIP": fields.Str(required=False, dump_to="InternetIP"),
         "LANSGID": fields.Str(required=False, dump_to="LANSGID"),
         "Memory": fields.Int(required=True, dump_to="Memory"),
         "Name": fields.Str(required=True, dump_to="Name"),
+        "OperatorName": fields.Str(required=False, dump_to="OperatorName"),
         "Password": fields.Str(required=True, dump_to="Password"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
@@ -631,6 +667,8 @@ class CreateVMInstanceResponseSchema(schema.ResponseSchema):
     """
 
     fields = {
+        "DiskID": fields.Str(required=False, load_from="DiskID"),
+        "EIPID": fields.Str(required=False, load_from="EIPID"),
         "Message": fields.Str(required=False, load_from="Message"),
         "VMID": fields.Str(required=False, load_from="VMID"),
     }
@@ -678,6 +716,9 @@ class CreateVSRequestSchema(schema.RequestSchema):
     """
 
     fields = {
+        "CACertificateID": fields.Str(
+            required=False, dump_to="CACertificateID"
+        ),
         "Domain": fields.Str(required=False, dump_to="Domain"),
         "HealthcheckType": fields.Str(required=True, dump_to="HealthcheckType"),
         "KeepaliveTimeout": fields.Int(
@@ -692,7 +733,11 @@ class CreateVSRequestSchema(schema.RequestSchema):
         "Port": fields.Int(required=True, dump_to="Port"),
         "Protocol": fields.Str(required=True, dump_to="Protocol"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "SSLMode": fields.Str(required=False, dump_to="SSLMode"),
         "Scheduler": fields.Str(required=True, dump_to="Scheduler"),
+        "ServerCertificateID": fields.Str(
+            required=False, dump_to="ServerCertificateID"
+        ),
         "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
@@ -736,6 +781,33 @@ class CreateVSPolicyResponseSchema(schema.ResponseSchema):
     fields = {
         "Message": fields.Str(required=False, load_from="Message"),
         "PolicyID": fields.Str(required=False, load_from="PolicyID"),
+    }
+
+
+"""
+API: DeleteCertificate
+
+删除证书
+"""
+
+
+class DeleteCertificateRequestSchema(schema.RequestSchema):
+    """ DeleteCertificate - 删除证书
+    """
+
+    fields = {
+        "CertificateID": fields.Str(required=True, dump_to="CertificateID"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DeleteCertificateResponseSchema(schema.ResponseSchema):
+    """ DeleteCertificate - 删除证书
+    """
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
     }
 
 
@@ -1147,9 +1219,43 @@ class DeleteVSPolicyResponseSchema(schema.ResponseSchema):
     """
 
     fields = {
-        "Action": fields.Str(required=True, load_from="Action"),
         "Message": fields.Str(required=False, load_from="Message"),
-        "RetCode": fields.Int(required=True, load_from="RetCode"),
+    }
+
+
+"""
+API: DescribeCertificate
+
+查询证书
+"""
+
+
+class DescribeCertificateRequestSchema(schema.RequestSchema):
+    """ DescribeCertificate - 查询证书
+    """
+
+    fields = {
+        "CertificateIDs": fields.List(fields.Str()),
+        "CertificateType": fields.Str(
+            required=False, dump_to="CertificateType"
+        ),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DescribeCertificateResponseSchema(schema.ResponseSchema):
+    """ DescribeCertificate - 查询证书
+    """
+
+    fields = {
+        "Infos": fields.List(
+            models.CertificateInfoSchema(), required=False, load_from="Infos"
+        ),
+        "Message": fields.Str(required=True, load_from="Message"),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
     }
 
 
@@ -1245,10 +1351,12 @@ class DescribeImageResponseSchema(schema.ResponseSchema):
     """
 
     fields = {
+        "Action": fields.Str(required=True, load_from="Action"),
         "Infos": fields.List(
             models.ImageInfoSchema(), required=True, load_from="Infos"
         ),
         "Message": fields.Str(required=True, load_from="Message"),
+        "RetCode": fields.Int(required=True, load_from="RetCode"),
         "TotalCount": fields.Int(required=True, load_from="TotalCount"),
     }
 
@@ -1386,6 +1494,43 @@ class DescribeNATGWRuleResponseSchema(schema.ResponseSchema):
     fields = {
         "Infos": fields.List(
             models.NATGWRuleInfoSchema(), required=True, load_from="Infos"
+        ),
+        "Message": fields.Str(required=True, load_from="Message"),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
+API: DescribeOPLogs
+
+查询操作日志
+"""
+
+
+class DescribeOPLogsRequestSchema(schema.RequestSchema):
+    """ DescribeOPLogs - 查询操作日志
+    """
+
+    fields = {
+        "BeginTime": fields.Int(required=True, dump_to="BeginTime"),
+        "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "IsSuccess": fields.Str(required=False, dump_to="IsSuccess"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ResourceID": fields.Str(required=False, dump_to="ResourceID"),
+        "ResourceType": fields.Str(required=False, dump_to="ResourceType"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DescribeOPLogsResponseSchema(schema.ResponseSchema):
+    """ DescribeOPLogs - 查询操作日志
+    """
+
+    fields = {
+        "Infos": fields.List(
+            models.OPLogInfoSchema(), required=True, load_from="Infos"
         ),
         "Message": fields.Str(required=True, load_from="Message"),
         "TotalCount": fields.Int(required=True, load_from="TotalCount"),
@@ -2576,9 +2721,7 @@ class UpdateRSResponseSchema(schema.ResponseSchema):
     """
 
     fields = {
-        "Action": fields.Str(required=True, load_from="Action"),
         "Message": fields.Str(required=False, load_from="Message"),
-        "RetCode": fields.Int(required=True, load_from="RetCode"),
     }
 
 
@@ -2655,9 +2798,7 @@ class UpdateVSResponseSchema(schema.ResponseSchema):
     """
 
     fields = {
-        "Action": fields.Str(required=True, load_from="Action"),
         "Message": fields.Str(required=False, load_from="Message"),
-        "RetCode": fields.Int(required=True, load_from="RetCode"),
     }
 
 
