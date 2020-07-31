@@ -37,6 +37,10 @@ test: clean
 test-cov: clean
 	pytest --cov=ucloud/core tests
 
+test-cov-html:
+	pytest --cov=ucloud/core tests --cov-report html
+	$(BROWSER) htmlcov/index.html
+
 test-acc: clean
 	USDKACC=1 pytest --cov=ucloud
 
