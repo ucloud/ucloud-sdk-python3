@@ -26,6 +26,8 @@ class UCloudStackClient(Client):
         - **Name** (str) - (Required) 名称
         - **OperatorName** (str) - (Required) 线路。目前支持Bgp
         - **Zone** (str) - (Required) 可用区。枚举值：zone-01，表示中国；
+        - **IP** (str) - 指定IP
+        - **IPVersion** (str) - IP版本，默认值IPv4，支持值：IPv4\IPv6
         - **Quantity** (int) - 购买时长。默认值1。小时不生效，月范围【1，11】，年范围【1，5】。
         
         **Response**
@@ -70,6 +72,31 @@ class UCloudStackClient(Client):
         resp = self.invoke("AttachDisk", d, **kwargs)
         return apis.AttachDiskResponseSchema().loads(resp)
 
+    def attach_nic(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ AttachNIC - 绑定UCloudStack网卡
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。枚举值：cn,表示中国；
+        - **NICID** (str) - (Required) 网卡ID
+        - **ResourceID** (str) - (Required) 绑定的资源ID
+        - **Zone** (str) - (Required) 可用区。枚举值：zone-01，表示中国；
+        
+        **Response**
+
+        - **Message** (str) - 返回信息描述。
+        
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.AttachNICRequestSchema().dumps(d)
+
+        resp = self.invoke("AttachNIC", d, **kwargs)
+        return apis.AttachNICResponseSchema().loads(resp)
+
     def bind_alarm_template(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -99,7 +126,7 @@ class UCloudStackClient(Client):
         return apis.BindAlarmTemplateResponseSchema().loads(resp)
 
     def bind_eip(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ BindEIP - 绑定UCoudStack外网IP
+        """ BindEIP - 绑定外网 IP
 
         **Request**
 
@@ -163,7 +190,7 @@ class UCloudStackClient(Client):
         - **ResourceID** (str) - (Required) 绑定的资源ID。调用方式举例：ResourceID=“one-id”。
         - **SGID** (str) - (Required) 安全组ID
         - **Zone** (str) - (Required) 可用区。枚举值：zone-01，表示中国；
-        - **NICID** (str) - 网卡ID
+        - **NICType** (str) - 网卡类型，玫举值：WAN，外网；LAN，内网，默认为WAN
         
         **Response**
 
@@ -393,6 +420,35 @@ class UCloudStackClient(Client):
         resp = self.invoke("CreateNATGWRule", d, **kwargs)
         return apis.CreateNATGWRuleResponseSchema().loads(resp)
 
+    def create_nic(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateNIC - 创建网卡
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。枚举值：cn,表示中国；
+        - **Name** (str) - (Required) 名称
+        - **SubnetID** (str) - (Required) Subnet ID
+        - **VPCID** (str) - (Required) VPC ID
+        - **Zone** (str) - (Required) 可用区。枚举值：zone-01，表示中国；
+        - **IP** (str) - 指定IP
+        - **SGID** (str) - 安全组 ID
+        
+        **Response**
+
+        - **Message** (str) - 返回信息描述。
+        - **NICID** (str) - 创建的网卡 ID
+        
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateNICRequestSchema().dumps(d)
+
+        resp = self.invoke("CreateNIC", d, **kwargs)
+        return apis.CreateNICResponseSchema().loads(resp)
+
     def create_physical_ip(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -596,7 +652,7 @@ class UCloudStackClient(Client):
 
         **Request**
 
-        - **Region** (str) - (Config) 地域。枚举值：cn,表示中国；
+        - **Region** (str) - (Config) 地域或数据中心。枚举值：cn,表示中国；
         - **BootDiskSetType** (str) - (Required) 系统盘类型。枚举值：Normal，表示普通；SSD，表示SSD；
         - **CPU** (int) - (Required) CPU个数，如1，2，4，8，16，32，64等。
         - **ChargeType** (str) - (Required) 计费模式。枚举值：Dynamic，表示小时；Month，表示月；Year，表示年；
@@ -605,27 +661,27 @@ class UCloudStackClient(Client):
         - **Memory** (int) - (Required) 内存容量，如1024，2048，4096，8192，16384，32768，65535等。
         - **Name** (str) - (Required) 虚拟机名称。可输入如：myVM。名称只能包含中英文、数字以及- _ .且1-30个字符。
         - **Password** (str) - (Required) 密码。可输入如：ucloud.cn。密码长度限6-30个字符；需要同时包含两项或以上（大写字母/小写字母/数字/特殊符号)；windows不能包含用户名（administrator）中超过2个连续字符的部分。
-        - **SubnetID** (str) - (Required) 子网 ID。
-        - **VMType** (str) - (Required) 机型。枚举值：Normal，表示普通；SSD，表示SSD；
-        - **VPCID** (str) - (Required) VPC ID。
+        - **SubnetID** (str) - (Required) 虚拟机所属子网 ID。
+        - **VMType** (str) - (Required) 虚拟机所在宿主机的集群类型，代表不同架构、不同型号的 CPU 或硬件特征。枚举值：Normal，表示普通；SSD，表示SSD。
+        - **VPCID** (str) - (Required) 虚拟机所属 VPC ID。
         - **WANSGID** (str) - (Required) 外网安全组 ID。输入“有效”状态的安全组的ID。
         - **Zone** (str) - (Required) 可用区。枚举值：zone-01，表示中国；
-        - **Bandwidth** (str) - 带宽
+        - **Bandwidth** (str) - 创建虚拟机同时绑定外网 IP 的带宽。
         - **DataDiskSpace** (int) - 数据盘大小，单位 GB。默认值为0。范围：【0，8000】，步长10。
         - **GPU** (int) - GPU 卡核心的占用个数。枚举值：【1,2,4】。GPU与CPU、内存大小关系：CPU个数>=4*GPU个数，同时内存与CPU规格匹配.
-        - **IPVersion** (str) - 外网IP版本，默认IPv4
-        - **InternalIP** (str) - 指定内网IP。输入有效的指定内网 IP。默认为系统自动分配内网 IP。
-        - **InternetIP** (str) - 指定外网IP
+        - **IPVersion** (str) - 创建虚拟机同时绑定外网 IP 的 IP 版本。枚举值：IPv4 & IPv6，默认为 IPv4
+        - **InternalIP** (str) - 指定内网IP。输入有效的指定内网 IP，不指定时系统将自动从子网分配 IP 地址。
+        - **InternetIP** (str) - 手动指定虚拟机绑定外网 IP 的地址，IP地址必须包含在网段内。
         - **LANSGID** (str) - 内网安全组 ID。输入“有效”状态的安全组的ID。
-        - **OperatorName** (str) - 线路
+        - **OperatorName** (str) - 创建虚拟机同时绑定外网 IP 的网段，可由管理员自定义。
         - **Quantity** (int) - 购买时长。默认值1。小时不生效，月范围【1，11】，年范围【1，5】。
         
         **Response**
 
-        - **DiskID** (str) - 返回创建数据盘的 ID
-        - **EIPID** (str) - 返回创建外网IP的 ID
+        - **DiskID** (str) - 返回同时创建的数据盘 ID
+        - **EIPID** (str) - 返回同时创建的外网IP ID
         - **Message** (str) - 返回信息描述。
-        - **VMID** (str) - 返回创建虚拟机的 ID
+        - **VMID** (str) - 返回创建的虚拟机 ID
         
         """
         # build request
@@ -688,7 +744,9 @@ class UCloudStackClient(Client):
         
         **Response**
 
+        - **Action** (str) - 操作名称
         - **Message** (str) - 返回信息描述。
+        - **RetCode** (int) - 返回码
         - **VSID** (str) - 返回创建的VSID
         
         """
@@ -883,6 +941,30 @@ class UCloudStackClient(Client):
 
         resp = self.invoke("DeleteNATGWRule", d, **kwargs)
         return apis.DeleteNATGWRuleResponseSchema().loads(resp)
+
+    def delete_nic(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeleteNIC - 删除网卡
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。枚举值：cn,表示中国；
+        - **NICID** (str) - (Required) 被删除的网卡 ID
+        - **Zone** (str) - (Required) 可用区。枚举值：zone-01，表示中国；
+        
+        **Response**
+
+        - **Message** (str) - 返回信息描述。
+        
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteNICRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteNIC", d, **kwargs)
+        return apis.DeleteNICResponseSchema().loads(resp)
 
     def delete_physical_ip(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1212,6 +1294,7 @@ class UCloudStackClient(Client):
         - **Region** (str) - (Config) 地域。枚举值： cn，表示中国；
         - **Zone** (str) - (Required) 可用区。枚举值：zone-01，表示中国；
         - **DiskIDs** (list) - 【数组】磁盘的 ID。输入有效的 ID。调用方式举例：DiskIDs.0=“one-id”、DiskIDs.1=“two-id”。
+        - **DiskType** (str) - 硬盘用途类型，默认空返回虚拟机所有硬盘，支持值：Boot（系统盘）、Data（数据盘）
         - **Limit** (int) - 返回数据长度，默认为20，最大100。
         - **Offset** (int) - 列表起始位置偏移量，默认为0。
         
@@ -1229,7 +1312,8 @@ class UCloudStackClient(Client):
         - **ChargeType** (str) - 硬盘计费模式。枚举值：Dynamic，表示小时；Month，表示月；Year，表示年；
         - **CreateTime** (int) - 创建时间。时间戳
         - **DiskID** (str) - 硬盘ID
-        - **DiskStatus** (str) - 硬盘状态。Creating：创建中,BeingCloned：正在被克隆中,Unbound：已解绑,Unbounding：解绑中,Bounding：绑定中,Bound：已绑定,Upgrading：升级中,Deleting：删除中,Deleted：已删除,Releasing：销毁中,Released：已销毁
+        - **DiskStatus** (str) - 硬盘状态。Creating：创建中,BeingCloned：正在被克隆中,Unbound：已解绑,Unbounding：解绑中,Bounding：绑定中,Bound：已绑定,Upgrading：升级中,Deleting：删除中,Deleted：已删除,Releasing：销毁中,Released：已销毁；Snapshoting（快照中）；Rollbacking（回滚中）
+        - **DiskType** (str) - 硬盘用途类型，Boot（系统盘）、Data（数据盘）
         - **ExpireTime** (int) - 过期时间。时间戳
         - **Name** (str) - 名称
         - **Region** (str) - 地域
@@ -1256,7 +1340,9 @@ class UCloudStackClient(Client):
 
         - **Region** (str) - (Config) 地域。枚举值：cn,表示中国；
         - **Zone** (str) - (Required) 可用区。枚举值：zone-01，表示中国；
+        - **BindResourceID** (str) - 绑定资源ID，查询该资源绑定的所有 EIP
         - **EIPIDs** (list) - 【数组】外网的 ID。输入有效的 ID。调用方式举例：EIPIDs.0=“one-id”、EIPIDs.1=“two-id”
+        - **IPVersion** (str) - 版本，支持IPv4、IPv6
         - **Limit** (str) - 返回数据长度，默认为20，最大100。
         - **Offset** (str) - 列表起始位置偏移量，默认为0。
         
@@ -1273,11 +1359,14 @@ class UCloudStackClient(Client):
         - **Bandwidth** (int) - 带宽大小
         - **BindResourceID** (str) - 绑定资源ID
         - **BindResourceType** (str) - 绑定资源类型
+        - **CanDefaultGW** (int) - 所处线路是否为默认路由，1代表所处线路是默认路由；默认路由的可以设置成出口
         - **ChargeType** (str) - 计费模式。枚举值：Dynamic，表示小时；Month，表示月；Year，表示年；
         - **CreateTime** (int) - 创建时间。时间戳
         - **EIPID** (str) - ID
         - **ExpireTime** (int) - 过期时间。时间戳
         - **IP** (str) - 外网IP
+        - **IPVersion** (str) - IP版本,支持值：IPv4\IPv6
+        - **ISDefaultGW** (int) - 是否为默认出口，1代表该IP地址为默认出口
         - **Name** (str) - 名称
         - **OperatorName** (str) - 线路
         - **Region** (str) - 地域
@@ -1324,7 +1413,7 @@ class UCloudStackClient(Client):
         
         - **CreateTime** (int) - 创建时间。时间戳。
         - **ImageID** (str) - 镜像ID
-        - **ImageStatus** (str) - 镜像状态。枚举类型：Making（创建中）,Available（可用）,Unavailable（不可用）,Terminating（销毁中）,Used（被使用中）,Deleting（删除中）,Deleted（已删除）, Uploading（导入中）
+        - **ImageStatus** (str) - 镜像状态。枚举类型：Making（创建中）,Terminating（销毁中）,Used（可用）,Deleting（删除中）,Deleted（已删除）, Uploading（导入中）, Failed（导入失败）
         - **ImageType** (str) - 镜像类型。枚举类型：Base(基础镜像),Custom（自制镜像）。
         - **Name** (str) - 镜像名称
         - **OSDistribution** (str) - 镜像系统发行版本。例如：Centos, Ubuntu, Windows等
@@ -1536,6 +1625,52 @@ class UCloudStackClient(Client):
 
         resp = self.invoke("DescribeNATGWRule", d, **kwargs)
         return apis.DescribeNATGWRuleResponseSchema().loads(resp)
+
+    def describe_nic(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeNIC - 获取网卡信息
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。枚举值： cn，表示中国；
+        - **Zone** (str) - (Required) 可用区。枚举值：zone-01，表示中国；
+        - **Limit** (int) - 返回数据长度，默认为20，最大100。
+        - **NICIDs** (list) - 【数组】网卡的 ID。输入有效的 ID。调用方式举例：NICIDs.0=“one-id”、NICIDs.1=“two-id”。
+        - **Offset** (int) - 列表起始位置偏移量，默认为0。
+        
+        **Response**
+
+        - **Infos** (list) - 见 **NICInfo** 模型定义
+        - **Message** (str) - 返回信息描述。
+        - **TotalCount** (int) - 返回网卡总个数。
+        
+        **Response Model**
+        
+        **NICInfo** 
+        
+        - **BindResourceID** (str) - 绑定资源ID
+        - **CreateTime** (int) - 创建时间。时间戳
+        - **IP** (str) - IP
+        - **MAC** (str) - mac 地址
+        - **NICID** (str) - 网卡ID
+        - **NICStatus** (str) - 网卡状态。枚举值。Creating：创建中,Free：未绑定,Unbounding：解绑中,Bounding：绑定中,Bound：已绑定,BindSGing：绑定安全组中,UnbindSGing：解绑安全组中,UpdateSGing：更新安全组中,Deleting：删除中,Deleted：已删除,Releasing：销毁中,Released：已销毁
+        - **Name** (str) - 名称
+        - **Region** (str) - 地域
+        - **Remark** (str) - 备注
+        - **SGID** (str) - 安全组ID
+        - **SubnetID** (str) - Subnet ID
+        - **VPCID** (str) - VPC ID
+        - **Zone** (str) - 可用区
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeNICRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeNIC", d, **kwargs)
+        return apis.DescribeNICResponseSchema().loads(resp)
 
     def describe_op_logs(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1784,6 +1919,91 @@ class UCloudStackClient(Client):
         resp = self.invoke("DescribeSecurityGroup", d, **kwargs)
         return apis.DescribeSecurityGroupResponseSchema().loads(resp)
 
+    def describe_security_group_resource(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ DescribeSecurityGroupResource - 查询安全组绑定的资源信息
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。枚举值： cn，表示中国；
+        - **SGID** (str) - (Required) 安全组ID
+        - **Zone** (str) - (Required) 可用区。枚举值：zone-01，表示中国；
+        - **Limit** (int) - 返回数据长度，默认为20，最大100。
+        - **Offset** (int) - 列表起始位置偏移量，默认为0。
+        
+        **Response**
+
+        - **Infos** (list) - 见 **SGResourceInfo** 模型定义
+        - **Message** (str) - 返回信息描述。
+        - **TotalCount** (int) - 返回资源总个数。
+        
+        **Response Model**
+        
+        **SGResourceInfo** 
+        
+        - **Name** (str) - 资源名称
+        - **Region** (str) - 地域
+        - **ResourceID** (str) - 资源ID
+        - **ResourceType** (str) - 资源类型
+        - **Zone** (str) - 可用区
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeSecurityGroupResourceRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeSecurityGroupResource", d, **kwargs)
+        return apis.DescribeSecurityGroupResourceResponseSchema().loads(resp)
+
+    def describe_snapshot(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ DescribeSnapshot - 查询硬盘快照信息
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。枚举值： cn，表示中国；
+        - **Zone** (str) - (Required) 可用区。枚举值：zone-01，表示中国；
+        - **DiskID** (str) - 硬盘ID，输入“有效”状态的ID
+        - **Limit** (int) - 返回数据长度，默认为20，最大100。
+        - **Offset** (int) - 列表起始位置偏移量，默认为0。
+        - **SnapshotIDs** (list) - 【数组】快照ID，输入“有效”的ID。调用方式举例：SnapshotIDs.0=“one-id”、SnapshotIDs.1=“two-id”。
+        
+        **Response**
+
+        - **Infos** (list) - 见 **SnapshotInfo** 模型定义
+        - **Message** (str) - 返回信息描述
+        - **TotalCount** (int) - 返回快照总个数
+        
+        **Response Model**
+        
+        **SnapshotInfo** 
+        
+        - **CreateTime** (int) - 快照创建时间
+        - **DiskID** (str) - 快照对应的硬盘 ID
+        - **DiskType** (str) - 硬盘类型。枚举值：Boot，表示系统盘；Data，表示数据盘；
+        - **Name** (str) - 快照名称
+        - **Region** (str) - 地域。枚举值： cn，表示中国；
+        - **Remark** (str) - 描述
+        - **SnapshotID** (str) - 快照ID
+        - **SnapshotStatus** (str) - 快照状态。枚举值：Createing，表示制作中；Normal，表示正常；RollBacking，表示回滚中；Deleting，表示删除中；Deleted，表示已删除；
+        - **Zone** (str) - 可用区。枚举值：zone-01，表示中国；
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeSnapshotRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeSnapshot", d, **kwargs)
+        return apis.DescribeSnapshotResponseSchema().loads(resp)
+
     def describe_storage_type(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1912,10 +2132,10 @@ class UCloudStackClient(Client):
 
         **Request**
 
-        - **Region** (str) - (Config) 地域。枚举值： cn，表示中国；
+        - **Region** (str) - (Config) 地域或数据中心。枚举值： cn，表示中国；
         - **Zone** (str) - (Required) 可用区。枚举值：zone-01，表示中国；
         - **Limit** (int) - 返回数据长度，默认为20，最大100。
-        - **Offset** (str) - 列表起始位置偏移量，默认为0。
+        - **Offset** (int) - 列表起始位置偏移量，默认为0。
         - **SubnetID** (str) - 子网 ID。输入“有效”状态的子网 ID。
         - **VMIDs** (list) - 【数组】虚拟机的 ID。输入有效的 ID。调用方式举例：PrivateIp.0=“one-id”、PrivateIp.1=“two-id”。
         - **VPCID** (str) - VPC ID。输入“有效”状态的VPC ID。
@@ -1928,21 +2148,6 @@ class UCloudStackClient(Client):
         
         **Response Model**
         
-        **VMIPInfo** 
-        
-        - **IP** (str) - IP 值
-        - **IPVersion** (str) - IP版本,支持值：IPv4\IPv6
-        - **InterfaceID** (str) - 网卡 ID
-        - **IsElastic** (str) - 是否是弹性网卡。枚举值：Y，表示是；N，表示否；
-        - **MAC** (str) - MAC 地址值
-        - **SGID** (str) - 安全组 ID
-        - **SGName** (str) - 安全组名称
-        - **SubnetID** (str) - 子网 ID
-        - **SubnetName** (str) - 子网名称
-        - **Type** (str) - IP 类型。枚举值：Private，表示内网；Public，表示外网；Physical，表示物理网；
-        - **VPCID** (str) - VPC ID
-        - **VPCName** (str) - VPC 名称
-
         **VMDiskInfo** 
         
         - **DiskID** (str) - 磁盘 ID
@@ -1951,6 +2156,21 @@ class UCloudStackClient(Client):
         - **Name** (str) - 磁盘名称
         - **Size** (int) - 磁盘大小，单位 GB
         - **Type** (str) - 磁盘类型。枚举值：Boot，表示系统盘；Data，表示数据盘；
+
+        **VMIPInfo** 
+        
+        - **IP** (str) - IP 值
+        - **IPVersion** (str) - IP版本,支持值：IPv4\IPv6
+        - **InterfaceID** (str) - 网卡 ID，IP 地址绑定的网卡 ID
+        - **IsElastic** (str) - 是否是弹性网卡。枚举值：Y，表示是；N，表示否；
+        - **MAC** (str) - MAC 地址值
+        - **SGID** (str) - 安全组 ID
+        - **SGName** (str) - 安全组名称
+        - **SubnetID** (str) - 子网 ID，IP 为外网 IP 时为空；
+        - **SubnetName** (str) - 子网名称，IP 为外网 IP 时为空；
+        - **Type** (str) - IP 类型。枚举值：Private，表示内网；Public，表示外网。
+        - **VPCID** (str) - VPC ID，IP 为外网 IP 时为空；
+        - **VPCName** (str) - VPC 名称，IP 为外网 IP 时为空；
 
         **VMInstanceInfo** 
         
@@ -1966,18 +2186,16 @@ class UCloudStackClient(Client):
         - **OSName** (str) - 操作系统名称
         - **OSType** (str) - 操作系统类型
         - **Region** (str) - Region
-        - **RegionAlias** (str) - Region 别名
         - **Remark** (str) - 备注
         - **State** (str) - 虚拟机状态。枚举值：Initializing，表示初始化；Starting，表示启动中；Restarting，表示重启中；Running，表示运行；Stopping，表示关机中；Stopped，表示关机；Deleted，表示已删除；Resizing，表示修改配置中；Terminating，表示销毁中；Terminated，表示已销毁；Migrating，表示迁移中；WaitReinstall，表示等待重装系统；Reinstalling，表示重装中；Poweroffing，表示断电中；ChangeSGing，表示修改防火墙中；
         - **SubnetID** (str) - 子网 ID
         - **SubnetName** (str) - 子网 名称
         - **VMID** (str) - 虚拟机 ID
-        - **VMType** (str) - 虚拟机类型
-        - **VMTypeAlias** (str) - 虚拟机类型别名
+        - **VMType** (str) - 虚拟机所在宿主机的集群类型 ID
+        - **VMTypeAlias** (str) - 虚拟机所在宿主机的集群类型名称
         - **VPCID** (str) - VPC ID
         - **VPCName** (str) - VPC 名称
         - **Zone** (str) - Zone
-        - **ZoneAlias** (str) - Zone 别名
 
         """
         # build request
@@ -2133,6 +2351,7 @@ class UCloudStackClient(Client):
         **VSInfo** 
         
         - **AlarmTemplateID** (str) - 告警模板ID
+        - **CACertificateID** (str) - CA证书ID，用于验证客户端证书的签名。仅当VServer监听协议为 HTTPS 且 SSLMode 为双向认证时有效。
         - **CreateTime** (int) - 创建时间，时间戳
         - **Domain** (str) - HTTP 健康检查时校验请求的 HOST 字段中的域名。当健康检查类型为端口检查时，该值为空。
         - **HealthcheckType** (str) - 负载均衡的健康检查类型。枚举值：Port:端口检查；Path: HTTP检查 。
@@ -2145,6 +2364,9 @@ class UCloudStackClient(Client):
         - **Protocol** (str) - 协议
         - **RSHealthStatus** (str) - 健康检查状态，枚举值，Empty:全部异常,Parts:部分异常,All:正常
         - **RSInfos** (list) - 见 **RSInfo** 模型定义
+        - **SSLMode** (str) - SSL认证模式,取值范围["simplex","duplex"]分别表示单向认证和双向认证。
+        - **Scheduler** (str) - 负载均衡的调度算法。枚举值：wrr:加权轮训；least_conn:最小连接数；hash:原地址,四层lb使用。ip_hash:七层lb使用
+        - **ServerCertificateID** (str) - 服务器证书ID，用于证明服务器的身份。仅当 VServer监听协议为 HTTPS 时有效。
         - **UpdateTime** (int) - 更新时间，时间戳
         - **VSID** (str) - VServer的ID
         - **VSPolicyInfos** (list) - 见 **VSPolicyInfo** 模型定义
@@ -2223,7 +2445,7 @@ class UCloudStackClient(Client):
         return apis.DescribeVSPolicyResponseSchema().loads(resp)
 
     def detach_disk(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DetachDisk - 解绑UClouStack硬盘
+        """ DetachDisk - 解绑硬盘
 
         **Request**
 
@@ -2246,6 +2468,31 @@ class UCloudStackClient(Client):
 
         resp = self.invoke("DetachDisk", d, **kwargs)
         return apis.DetachDiskResponseSchema().loads(resp)
+
+    def detach_nic(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DetachNIC - 解绑UClouStack网卡
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。枚举值：cn,表示中国；
+        - **NICID** (str) - (Required) 网卡ID
+        - **ResourceID** (str) - (Required) 绑定的资源ID
+        - **Zone** (str) - (Required) 可用区。枚举值：zone-01，表示中国；
+        
+        **Response**
+
+        - **Message** (str) - 返回信息描述。
+        
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DetachNICRequestSchema().dumps(d)
+
+        resp = self.invoke("DetachNIC", d, **kwargs)
+        return apis.DetachNICResponseSchema().loads(resp)
 
     def disable_rs(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """ DisableRS - 禁用负载均衡的单个服务节点
@@ -2991,7 +3238,7 @@ class UCloudStackClient(Client):
         **Request**
 
         - **Region** (str) - (Config) 地域。枚举值： cn，表示中国；
-        - **Rules** (list) - (Required) 【数组】规则。输入有效的 规则。调用方式举例：Rules.0=“TCP|23|0.0.0.0/0|ACCEPT|HIGH|1”、Rules.1=“TCP|55|0.0.0.0/0|ACCEPT|HIGH|1”
+        - **Rules** (list) - (Required) 【数组】规则。输入有效的 规则。调用方式举例：Rules.0=“TCP|23|0.0.0.0/0|ACCEPT|HIGH|1|sg_rule-wefvg34f”、Rules.1=“TCP|55|0.0.0.0/0|ACCEPT|HIGH|1|sg_rule-wefvggf”
         - **SGID** (str) - (Required) 安全组ID
         - **Zone** (str) - (Required) 可用区。枚举值：zone-01，表示中国；
         
@@ -3078,7 +3325,7 @@ class UCloudStackClient(Client):
         return apis.UpdateVSPolicyResponseSchema().loads(resp)
 
     def upgrade_disk(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ UpgradeDisk - 升级硬盘
+        """ UpgradeDisk - 扩容硬盘，为保证数据完整性，容量扩容前建议暂停对当前硬盘的所有文件系统读写操作，并进入操作系统进行 `umount ` 或`脱机` 操作。
 
         **Request**
 
@@ -3089,7 +3336,9 @@ class UCloudStackClient(Client):
         
         **Response**
 
+        - **Action** (str) - 操作名称
         - **Message** (str) - 返回信息描述。
+        - **RetCode** (int) - 返回码
         
         """
         # build request

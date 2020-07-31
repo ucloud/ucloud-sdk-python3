@@ -48,19 +48,20 @@ class DiskInfoSchema(schema.ResponseSchema):
 
     fields = {
         "AttachResourceID": fields.Str(
-            required=False, load_from="AttachResourceID"
+            required=True, load_from="AttachResourceID"
         ),
-        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "DiskID": fields.Str(required=False, load_from="DiskID"),
-        "DiskStatus": fields.Str(required=False, load_from="DiskStatus"),
-        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Region": fields.Str(required=False, load_from="Region"),
+        "ChargeType": fields.Str(required=True, load_from="ChargeType"),
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "DiskID": fields.Str(required=True, load_from="DiskID"),
+        "DiskStatus": fields.Str(required=True, load_from="DiskStatus"),
+        "DiskType": fields.Str(required=True, load_from="DiskType"),
+        "ExpireTime": fields.Int(required=True, load_from="ExpireTime"),
+        "Name": fields.Str(required=True, load_from="Name"),
+        "Region": fields.Str(required=True, load_from="Region"),
         "Remark": fields.Str(required=False, load_from="Remark"),
-        "SetType": fields.Str(required=False, load_from="SetType"),
-        "Size": fields.Int(required=False, load_from="Size"),
-        "Zone": fields.Str(required=False, load_from="Zone"),
+        "SetType": fields.Str(required=True, load_from="SetType"),
+        "Size": fields.Int(required=True, load_from="Size"),
+        "Zone": fields.Str(required=True, load_from="Zone"),
     }
 
 
@@ -76,11 +77,14 @@ class EIPInfoSchema(schema.ResponseSchema):
         "BindResourceType": fields.Str(
             required=False, load_from="BindResourceType"
         ),
+        "CanDefaultGW": fields.Int(required=False, load_from="CanDefaultGW"),
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "EIPID": fields.Str(required=False, load_from="EIPID"),
         "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
         "IP": fields.Str(required=False, load_from="IP"),
+        "IPVersion": fields.Str(required=False, load_from="IPVersion"),
+        "ISDefaultGW": fields.Int(required=False, load_from="ISDefaultGW"),
         "Name": fields.Str(required=False, load_from="Name"),
         "OperatorName": fields.Str(required=False, load_from="OperatorName"),
         "Region": fields.Str(required=False, load_from="Region"),
@@ -196,6 +200,27 @@ class NATGWRuleInfoSchema(schema.ResponseSchema):
         "Name": fields.Str(required=True, load_from="Name"),
         "RuleID": fields.Str(required=True, load_from="RuleID"),
         "RuleStatus": fields.Str(required=True, load_from="RuleStatus"),
+    }
+
+
+class NICInfoSchema(schema.ResponseSchema):
+    """ NICInfo - 网卡信息
+    """
+
+    fields = {
+        "BindResourceID": fields.Str(required=True, load_from="BindResourceID"),
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "IP": fields.Str(required=True, load_from="IP"),
+        "MAC": fields.Str(required=True, load_from="MAC"),
+        "NICID": fields.Str(required=True, load_from="NICID"),
+        "NICStatus": fields.Str(required=True, load_from="NICStatus"),
+        "Name": fields.Str(required=True, load_from="Name"),
+        "Region": fields.Str(required=True, load_from="Region"),
+        "Remark": fields.Str(required=True, load_from="Remark"),
+        "SGID": fields.Str(required=True, load_from="SGID"),
+        "SubnetID": fields.Str(required=True, load_from="SubnetID"),
+        "VPCID": fields.Str(required=True, load_from="VPCID"),
+        "Zone": fields.Str(required=True, load_from="Zone"),
     }
 
 
@@ -319,6 +344,38 @@ class SGInfoSchema(schema.ResponseSchema):
     }
 
 
+class SGResourceInfoSchema(schema.ResponseSchema):
+    """ SGResourceInfo - 安全组绑定的资源信息
+    """
+
+    fields = {
+        "Name": fields.Str(required=True, load_from="Name"),
+        "Region": fields.Str(required=True, load_from="Region"),
+        "ResourceID": fields.Str(required=True, load_from="ResourceID"),
+        "ResourceType": fields.Str(required=True, load_from="ResourceType"),
+        "Zone": fields.Str(required=True, load_from="Zone"),
+    }
+
+
+class SnapshotInfoSchema(schema.ResponseSchema):
+    """ SnapshotInfo - 快照的详细信息
+    """
+
+    fields = {
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "DiskID": fields.Str(required=False, load_from="DiskID"),
+        "DiskType": fields.Str(required=False, load_from="DiskType"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Region": fields.Str(required=False, load_from="Region"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "SnapshotID": fields.Str(required=False, load_from="SnapshotID"),
+        "SnapshotStatus": fields.Str(
+            required=False, load_from="SnapshotStatus"
+        ),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+    }
+
+
 class StorageTypeInfoSchema(schema.ResponseSchema):
     """ StorageTypeInfo - 存储类型信息
     """
@@ -368,7 +425,7 @@ class UserInfoSchema(schema.ResponseSchema):
 
 
 class VMDiskInfoSchema(schema.ResponseSchema):
-    """ VMDiskInfo - UCloudStack虚拟机磁盘信息
+    """ VMDiskInfo - 虚拟机磁盘信息
     """
 
     fields = {
@@ -382,7 +439,7 @@ class VMDiskInfoSchema(schema.ResponseSchema):
 
 
 class VMIPInfoSchema(schema.ResponseSchema):
-    """ VMIPInfo - UCloudStack虚拟机IP信息
+    """ VMIPInfo - 虚拟机IP信息
     """
 
     fields = {
@@ -418,7 +475,6 @@ class VMInstanceInfoSchema(schema.ResponseSchema):
         "OSName": fields.Str(required=False, load_from="OSName"),
         "OSType": fields.Str(required=False, load_from="OSType"),
         "Region": fields.Str(required=False, load_from="Region"),
-        "RegionAlias": fields.Str(required=False, load_from="RegionAlias"),
         "Remark": fields.Str(required=False, load_from="Remark"),
         "State": fields.Str(required=False, load_from="State"),
         "SubnetID": fields.Str(required=False, load_from="SubnetID"),
@@ -429,7 +485,6 @@ class VMInstanceInfoSchema(schema.ResponseSchema):
         "VPCID": fields.Str(required=False, load_from="VPCID"),
         "VPCName": fields.Str(required=False, load_from="VPCName"),
         "Zone": fields.Str(required=False, load_from="Zone"),
-        "ZoneAlias": fields.Str(required=False, load_from="ZoneAlias"),
     }
 
 
@@ -483,12 +538,15 @@ class VSPolicyInfoSchema(schema.ResponseSchema):
 
 
 class VSInfoSchema(schema.ResponseSchema):
-    """ VSInfo - RServer信息
+    """ VSInfo - VServer信息
     """
 
     fields = {
         "AlarmTemplateID": fields.Str(
             required=True, load_from="AlarmTemplateID"
+        ),
+        "CACertificateID": fields.Str(
+            required=False, load_from="CACertificateID"
         ),
         "CreateTime": fields.Int(required=True, load_from="CreateTime"),
         "Domain": fields.Str(required=False, load_from="Domain"),
@@ -510,6 +568,11 @@ class VSInfoSchema(schema.ResponseSchema):
         "Protocol": fields.Str(required=True, load_from="Protocol"),
         "RSHealthStatus": fields.Str(required=True, load_from="RSHealthStatus"),
         "RSInfos": fields.List(RSInfoSchema()),
+        "SSLMode": fields.Str(required=False, load_from="SSLMode"),
+        "Scheduler": fields.Str(required=True, load_from="Scheduler"),
+        "ServerCertificateID": fields.Str(
+            required=False, load_from="ServerCertificateID"
+        ),
         "UpdateTime": fields.Int(required=True, load_from="UpdateTime"),
         "VSID": fields.Str(required=True, load_from="VSID"),
         "VSPolicyInfos": fields.List(VSPolicyInfoSchema()),
