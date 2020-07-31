@@ -8,7 +8,13 @@ from collections import Counter
 
 from tests.test_unit.test_core.consts import TEST_URL
 from ucloud.core import exc
-from ucloud.core.transport import RequestsTransport, Request, Response, utils, http
+from ucloud.core.transport import (
+    RequestsTransport,
+    Request,
+    Response,
+    utils,
+    http,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -78,8 +84,12 @@ def test_transport_handler(transport):
 
     with requests_mock.Mocker() as m:
         request_uuid = str(uuid.uuid4())
-        m.post(TEST_URL, text=json.dumps(expect), status_code=200,
-               headers={http.REQUEST_UUID_HEADER_KEY: request_uuid})
+        m.post(
+            TEST_URL,
+            text=json.dumps(expect),
+            status_code=200,
+            headers={http.REQUEST_UUID_HEADER_KEY: request_uuid},
+        )
         resp = transport.send(req)
         assert resp.text
         assert resp.json() == expect

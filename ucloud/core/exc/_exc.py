@@ -27,7 +27,7 @@ class HTTPStatusException(TransportException):
 
     def __str__(self):
         return "[{uuid}] {self.status_code} http status error".format(
-            self=self, uuid=self.request_uuid or '*'
+            self=self, uuid=self.request_uuid or "*"
         )
 
 
@@ -42,7 +42,9 @@ class InvalidResponseException(TransportException):
         return False
 
     def __str__(self):
-        return "[{uuid}] {self.message}: {self.content}".format(self=self, uuid=self.request_uuid or '*')
+        return "[{uuid}] {self.message}: {self.content}".format(
+            self=self, uuid=self.request_uuid or "*"
+        )
 
 
 class RetCodeException(UCloudException):
@@ -59,7 +61,9 @@ class RetCodeException(UCloudException):
         return self.code > MAX_COMMON_RET_CODE
 
     def __str__(self):
-        return "[{uuid}] {self.action} - {self.code}: {self.message}".format(self=self, uuid=self.request_uuid or '*')
+        return "[{uuid}] {self.action} - {self.code}: {self.message}".format(
+            self=self, uuid=self.request_uuid or "*"
+        )
 
     def json(self):
         return {

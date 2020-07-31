@@ -1,3 +1,18 @@
+## 0.9.2 (2020-07-31)
+
+ENHANCEMENTS:
+
+- Improve testing with `requests_mock`
+- Add `InvalidResponseException` and `HTTPStatusException`
+- Add `request_uuid` to response and exception logging
+- Add default exception middileware
+- Change documentation url
+- Update all APIs of `UCloudStack`
+
+BUG FIXES:
+
+- Fix `pytest` version compatible
+
 ## 0.9.1 (2020-06-05)
 
 ENHANCEMENTS:

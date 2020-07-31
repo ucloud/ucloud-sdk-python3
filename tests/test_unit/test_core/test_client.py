@@ -38,7 +38,11 @@ def transport():
 def test_client_invoke(client):
     expected = {"RetCode": 0, "Action": "Foo"}
     with requests_mock.Mocker() as m:
-        m.post(consts.TEST_URL, text=json.dumps(expected), headers={http.REQUEST_UUID_HEADER_KEY: str(uuid.uuid4())})
+        m.post(
+            consts.TEST_URL,
+            text=json.dumps(expected),
+            headers={http.REQUEST_UUID_HEADER_KEY: str(uuid.uuid4())},
+        )
         assert client.invoke("Foo") == expected
 
 
@@ -46,14 +50,22 @@ def test_client_invoke_code_error(client):
     expected = {"RetCode": 171, "Action": "Foo", "Message": "签名错误"}
 
     with requests_mock.Mocker() as m:
-        m.post(consts.TEST_URL, text=json.dumps(expected), headers={http.REQUEST_UUID_HEADER_KEY: str(uuid.uuid4())})
+        m.post(
+            consts.TEST_URL,
+            text=json.dumps(expected),
+            headers={http.REQUEST_UUID_HEADER_KEY: str(uuid.uuid4())},
+        )
 
         with pytest.raises(exc.RetCodeException):
             try:
                 client.invoke("Foo")
             except exc.RetCodeException as e:
                 assert e.retryable is False
-                assert e.json() == {"RetCode": 171, "Action": "Foo", "Message": "签名错误"}
+                assert e.json() == {
+                    "RetCode": 171,
+                    "Action": "Foo",
+                    "Message": "签名错误",
+                }
                 raise e
 
 
