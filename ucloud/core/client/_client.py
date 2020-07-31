@@ -77,7 +77,7 @@ class Client:
         action = resp.get("Action", "")
         request_uuid = http_resp and http_resp.request_uuid
         self.logger.info(
-            "[response] [{}] {} {}".format(request_uuid or '*', action, resp)
+            "[response] [{}] {} {}".format(request_uuid or "*", action, resp)
         )
         return resp
 
