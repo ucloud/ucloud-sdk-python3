@@ -22,3 +22,7 @@ def test_verify_ac():
         "46f09bb9fab4f12dfc160dae12273d5332b5debe",
     )
     assert cred.verify_ac(d) == "4f9ef5df2abab2c6fccd1e9515cb7e2df8c6bb65"
+    assert cred.to_dict() == {
+        "public_key": "ucloudsomeone@example.com1296235120854146120",
+        "private_key": "46f09bb9fab4f12dfc160dae12273d5332b5debe",
+    }

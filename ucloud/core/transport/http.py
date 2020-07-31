@@ -2,6 +2,7 @@ import typing
 import logging
 import json as json_mod
 
+from ucloud.core import exc
 from ucloud.core.transport import utils
 from ucloud.core.utils.compat import str
 
@@ -34,6 +35,9 @@ class Request:
         return payload
 
 
+REQUEST_UUID_HEADER_KEY = "X-UCLOUD-REQUEST-UUID"
+
+
 class Response:
     def __init__(
         self,
@@ -52,10 +56,11 @@ class Response:
         self.request = request
         self.status_code = status_code
         self.reason = reason
-        self.headers = headers
         self.content = content
         self.encoding = encoding
         self.response_time = 0
+        self.headers = headers or {}
+        self.request_uuid = self.headers.get(REQUEST_UUID_HEADER_KEY)
 
     def json(self, **kwargs) -> typing.Optional[dict]:
         """ json will return the bytes of content
@@ -63,13 +68,12 @@ class Response:
         if not self.content:
             return None
 
-        encoding = utils.guess_json_utf(self.content)
-        if encoding is not None:
-            try:
-                return json_mod.loads(self.content.decode(encoding), **kwargs)
-            except UnicodeDecodeError:
-                pass
-        return json_mod.loads(self.text, **kwargs)
+        try:
+            return self._decode_json(**kwargs)
+        except Exception as e:
+            raise exc.InvalidResponseException(
+                self.content, str(e), request_uuid=self.request_uuid
+            )
 
     @property
     def text(self):
@@ -84,8 +88,16 @@ class Response:
             content = str(self.content, self.encoding, errors="replace")
         except (LookupError, TypeError):
             content = str(self.content, errors="replace")
-
         return content
+
+    def _decode_json(self, **kwargs):
+        encoding = utils.guess_json_utf(self.content)
+        if encoding is not None:
+            try:
+                return json_mod.loads(self.content.decode(encoding), **kwargs)
+            except UnicodeDecodeError:
+                pass
+        return json_mod.loads(self.text, **kwargs)
 
 
 class SSLOption:

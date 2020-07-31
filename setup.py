@@ -59,7 +59,7 @@ def load_requirements(requirements_file):
 
 dependencies = load_requirements("requirements.txt")
 
-dependencies_test = dependencies + ["flake8>=3.6.0", "pytest", "pytest-cov"]
+dependencies_test = dependencies + ["flake8>=3.6.0", "pytest>=4.6", "pytest-cov", "requests_mock"]
 
 dependencies_doc = dependencies + ["sphinx"]
 
