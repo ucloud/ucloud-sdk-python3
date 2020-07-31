@@ -126,10 +126,3 @@ class Client(CompactClient):
         return UHubClient(
             self._config, self.transport, self.middleware, self.logger
         )
-
-    def vpc(self):
-        from ucloud.services.vpc.client import VPCClient
-
-        return VPCClient(
-            self._config, self.transport, self.middleware, self.logger
-        )
