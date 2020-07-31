@@ -9,13 +9,12 @@ from ucloud.core.transport import (
     RequestsTransport,
     Request,
     SSLOption,
+    http,
 )
 from ucloud.core.typesystem import encoder
 from ucloud.core.utils import log
 from ucloud.core.utils.middleware import Middleware
 from ucloud.core import auth, exc
-
-default_transport = RequestsTransport()
 
 
 class Client:
@@ -29,12 +28,13 @@ class Client:
         cfg, cred = self._parse_dict_config(config)
         self.config = cfg
         self.credential = cred
-        self.transport = transport or default_transport
+        self.transport = transport or RequestsTransport()
         self.logger = logger or log.default_logger
         if middleware is None:
             middleware = Middleware()
             middleware.response(self.logged_response_handler)
             middleware.request(self.logged_request_handler)
+            middleware.exception(self.logged_exception_handler)
         self._middleware = middleware
 
     def invoke(self, action: str, args: dict = None, **options) -> dict:
@@ -46,14 +46,14 @@ class Client:
         """
         retries = 0
         max_retries = options.get("max_retries") or self.config.max_retries
+        timeout = options.get("timeout") or self.config.timeout
 
         while retries <= max_retries:
             try:
-                return self._send(action, args or {}, **options)
+                return self._send(
+                    action, args or {}, max_retries=max_retries, timeout=timeout
+                )
             except exc.UCloudException as e:
-                for handler in self.middleware.exception_handlers:
-                    handler(e)
-
                 if e.retryable and retries != max_retries:
                     logging.info(
                         "Retrying {action}: {args}".format(
@@ -62,11 +62,6 @@ class Client:
                     )
                     retries += 1
                     continue
-
-                raise e
-            except Exception as e:
-                for handler in self.middleware.exception_handlers:
-                    handler(e)
                 raise e
 
     @property
@@ -74,14 +69,24 @@ class Client:
         return self._middleware
 
     def logged_request_handler(self, req):
-        self.logger.info("[request] {} {}".format(req.get("Action", ""), req))
+        action = req.get("Action", "")
+        self.logger.info("[request] {} {}".format(action, req))
         return req
 
-    def logged_response_handler(self, resp):
+    def logged_response_handler(self, resp, http_resp: http.Response = None):
+        action = resp.get("Action", "")
+        request_uuid = http_resp and http_resp.request_uuid
         self.logger.info(
-            "[response] {} {}".format(resp.get("Action", ""), resp)
+            "[response] [{}] {} {}".format(request_uuid or '*', action, resp)
         )
         return resp
+
+    def logged_exception_handler(self, e: Exception):
+        if isinstance(e, exc.RetCodeException):
+            self.logger.warning(e)
+        else:
+            self.logger.exception(e)
+        return e
 
     @staticmethod
     def _parse_dict_config(
@@ -89,38 +94,52 @@ class Client:
     ) -> typing.Tuple[Config, auth.Credential]:
         return Config.from_dict(config), auth.Credential.from_dict(config)
 
-    def _send(self, action: str, args: dict, **options) -> dict:
+    def _send(self, action: str, args: dict, max_retries, timeout) -> dict:
         args["Action"] = action
+
+        # inject request middleware
         for handler in self.middleware.request_handlers:
             args = handler(args)
-        req = self._build_http_request(args)
 
-        max_retries = options.get("max_retries") or self.config.max_retries
-        timeout = options.get("timeout") or self.config.timeout
+        # send http request
+        try:
+            req = self._build_http_request(args)
 
-        resp = self.transport.send(
-            req,
-            ssl_option=SSLOption(
-                self.config.ssl_verify,
-                self.config.ssl_cacert,
-                self.config.ssl_cert,
-                self.config.ssl_key,
-            ),
-            timeout=timeout,
-            max_retries=max_retries,
-        ).json()
-
-        for handler in self.middleware.response_handlers:
-            resp = handler(resp)
-
-        if int(resp.get("RetCode", -1)) != 0:
-            raise exc.RetCodeException(
-                action=req.data.get("Action"),
-                code=int(resp.get("RetCode")),
-                message=resp.get("Message"),
+            resp = self.transport.send(
+                req,
+                ssl_option=SSLOption(
+                    self.config.ssl_verify,
+                    self.config.ssl_cacert,
+                    self.config.ssl_cert,
+                    self.config.ssl_key,
+                ),
+                timeout=timeout,
+                max_retries=max_retries,
             )
+            data = resp.json()
+        except Exception as e:
+            for handler in self.middleware.exception_handlers:
+                handler(e)
+            raise e
 
-        return resp
+        # inject response middleware
+        for handler in self.middleware.response_handlers:
+            data = handler(data, resp)
+
+        # return when successful
+        if int(data.get("RetCode", -1)) == 0:
+            return data
+
+        # inject exception middleware
+        ret_code_exc = exc.RetCodeException(
+            action=req.data.get("Action", ""),
+            code=int(data.get("RetCode", 0)),
+            message=data.get("Message", ""),
+            request_uuid=resp.request_uuid,
+        )
+        for handler in self.middleware.exception_handlers:
+            handler(ret_code_exc)
+        raise ret_code_exc
 
     def _build_http_request(self, args: dict) -> Request:
         config = {
