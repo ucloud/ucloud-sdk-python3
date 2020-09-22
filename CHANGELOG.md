@@ -1,3 +1,9 @@
+## 0.9.3 (2020-09-22)
+
+BUG FIXES:
+
+- Fix python 2 compatible helpers for nested CJK charset
+
 ## 0.9.2 (2020-07-31)
 
 ENHANCEMENTS:
