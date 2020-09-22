@@ -13,6 +13,7 @@ from ucloud.core.typesystem import encoder
         ({"foo": True}, {"foo": "true"}),
         ({"foo": False}, {"foo": "false"}),
         ({"IP": ["127.0.0.1"]}, {"IP.0": "127.0.0.1"}),
+        ({"TemplateParams": [u"中文"]}, {"TemplateParams.0": u"中文"}),
         ({"IP": ["foo", "bar"]}, {"IP.0": "foo", "IP.1": "bar"}),
         ({"IP": [{"foo": "bar"}]}, {"IP.0.foo": "bar"}),
     ],

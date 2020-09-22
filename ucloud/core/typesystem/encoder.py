@@ -1,3 +1,6 @@
+from ucloud.core.utils.compat import str
+
+
 def encode(d: dict) -> dict:
     result = {}
 
