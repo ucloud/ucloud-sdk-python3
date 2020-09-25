@@ -10,7 +10,7 @@ from ucloud.core import exc
 
 
 class RequestsTransport(http.Transport):
-    """ transport is the implementation of http client, use for send a request and return a http response
+    """transport is the implementation of http client, use for send a request and return a http response
 
     :type max_retries: int
     :param max_retries: max retries is the max number of transport request when occur http error
@@ -35,7 +35,7 @@ class RequestsTransport(http.Transport):
         self._middleware = Middleware()
 
     def send(self, req: Request, **options: typing.Any) -> http.Response:
-        """ send request and return the response
+        """send request and return the response
 
         :param req: the full http request descriptor
         :return: the response of http request
@@ -57,7 +57,7 @@ class RequestsTransport(http.Transport):
 
     @property
     def middleware(self) -> Middleware:
-        """ the middleware object, see :mod:
+        """the middleware object, see :mod:
 
         :return: the transport middleware
         """

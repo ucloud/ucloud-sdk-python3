@@ -19,7 +19,7 @@ def gen_password(
     min_number: int = 1,
     min_specials: int = 1,
 ):
-    """ generate password for any resource
+    """generate password for any resource
 
     >>> len(gen_password(20))
     20
@@ -73,7 +73,7 @@ def first(arr: typing.List[typing.Any]) -> typing.Any:
 
 
 def b64encode(s: str) -> str:
-    """ base64 encode
+    """base64 encode
 
     :param str s: input string
     :return: base64 string
@@ -82,7 +82,7 @@ def b64encode(s: str) -> str:
 
 
 def b64decode(s: str) -> str:
-    """ base64 decode
+    """base64 decode
 
     :param str s: base64 string
     :return: output string

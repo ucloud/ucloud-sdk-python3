@@ -16,8 +16,7 @@ API: AllocateBackend
 
 
 class AllocateBackendRequestSchema(schema.RequestSchema):
-    """ AllocateBackend - 添加ULB后端资源实例
-    """
+    """AllocateBackend - 添加ULB后端资源实例"""
 
     fields = {
         "Enabled": fields.Int(required=False, dump_to="Enabled"),
@@ -33,8 +32,7 @@ class AllocateBackendRequestSchema(schema.RequestSchema):
 
 
 class AllocateBackendResponseSchema(schema.ResponseSchema):
-    """ AllocateBackend - 添加ULB后端资源实例
-    """
+    """AllocateBackend - 添加ULB后端资源实例"""
 
     fields = {"BackendId": fields.Str(required=False, load_from="BackendId")}
 
@@ -47,8 +45,7 @@ API: AllocateBackendBatch
 
 
 class AllocateBackendBatchRequestSchema(schema.RequestSchema):
-    """ AllocateBackendBatch - 批量添加VServer后端节点
-    """
+    """AllocateBackendBatch - 批量添加VServer后端节点"""
 
     fields = {
         "ApiVersion": fields.Int(required=False, dump_to="ApiVersion"),
@@ -61,8 +58,7 @@ class AllocateBackendBatchRequestSchema(schema.RequestSchema):
 
 
 class AllocateBackendBatchResponseSchema(schema.ResponseSchema):
-    """ AllocateBackendBatch - 批量添加VServer后端节点
-    """
+    """AllocateBackendBatch - 批量添加VServer后端节点"""
 
     fields = {
         "BackendSet": fields.List(
@@ -79,8 +75,7 @@ API: BindSSL
 
 
 class BindSSLRequestSchema(schema.RequestSchema):
-    """ BindSSL - 将SSL证书绑定到VServer
-    """
+    """BindSSL - 将SSL证书绑定到VServer"""
 
     fields = {
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
@@ -92,8 +87,7 @@ class BindSSLRequestSchema(schema.RequestSchema):
 
 
 class BindSSLResponseSchema(schema.ResponseSchema):
-    """ BindSSL - 将SSL证书绑定到VServer
-    """
+    """BindSSL - 将SSL证书绑定到VServer"""
 
     fields = {}
 
@@ -106,8 +100,7 @@ API: CreatePolicy
 
 
 class CreatePolicyRequestSchema(schema.RequestSchema):
-    """ CreatePolicy - 创建VServer内容转发策略
-    """
+    """CreatePolicy - 创建VServer内容转发策略"""
 
     fields = {
         "BackendId": fields.List(fields.Str()),
@@ -121,8 +114,7 @@ class CreatePolicyRequestSchema(schema.RequestSchema):
 
 
 class CreatePolicyResponseSchema(schema.ResponseSchema):
-    """ CreatePolicy - 创建VServer内容转发策略
-    """
+    """CreatePolicy - 创建VServer内容转发策略"""
 
     fields = {"PolicyId": fields.Str(required=False, load_from="PolicyId")}
 
@@ -135,8 +127,7 @@ API: CreateSSL
 
 
 class CreateSSLRequestSchema(schema.RequestSchema):
-    """ CreateSSL - 创建SSL证书，可以把整个 Pem 证书内容传过来，或者把证书、私钥、CA证书分别传过来
-    """
+    """CreateSSL - 创建SSL证书，可以把整个 Pem 证书内容传过来，或者把证书、私钥、CA证书分别传过来"""
 
     fields = {
         "CaCert": fields.Str(required=False, dump_to="CaCert"),
@@ -151,8 +142,7 @@ class CreateSSLRequestSchema(schema.RequestSchema):
 
 
 class CreateSSLResponseSchema(schema.ResponseSchema):
-    """ CreateSSL - 创建SSL证书，可以把整个 Pem 证书内容传过来，或者把证书、私钥、CA证书分别传过来
-    """
+    """CreateSSL - 创建SSL证书，可以把整个 Pem 证书内容传过来，或者把证书、私钥、CA证书分别传过来"""
 
     fields = {"SSLId": fields.Str(required=False, load_from="SSLId")}
 
@@ -165,8 +155,7 @@ API: CreateULB
 
 
 class CreateULBRequestSchema(schema.RequestSchema):
-    """ CreateULB - 创建负载均衡实例，可以选择内网或者外网
-    """
+    """CreateULB - 创建负载均衡实例，可以选择内网或者外网"""
 
     fields = {
         "BusinessId": fields.Str(required=False, dump_to="BusinessId"),
@@ -187,8 +176,7 @@ class CreateULBRequestSchema(schema.RequestSchema):
 
 
 class CreateULBResponseSchema(schema.ResponseSchema):
-    """ CreateULB - 创建负载均衡实例，可以选择内网或者外网
-    """
+    """CreateULB - 创建负载均衡实例，可以选择内网或者外网"""
 
     fields = {"ULBId": fields.Str(required=False, load_from="ULBId")}
 
@@ -201,8 +189,7 @@ API: CreateVServer
 
 
 class CreateVServerRequestSchema(schema.RequestSchema):
-    """ CreateVServer - 创建VServer实例，定义监听的协议和端口以及负载均衡算法
-    """
+    """CreateVServer - 创建VServer实例，定义监听的协议和端口以及负载均衡算法"""
 
     fields = {
         "ClientTimeout": fields.Int(required=False, dump_to="ClientTimeout"),
@@ -227,8 +214,7 @@ class CreateVServerRequestSchema(schema.RequestSchema):
 
 
 class CreateVServerResponseSchema(schema.ResponseSchema):
-    """ CreateVServer - 创建VServer实例，定义监听的协议和端口以及负载均衡算法
-    """
+    """CreateVServer - 创建VServer实例，定义监听的协议和端口以及负载均衡算法"""
 
     fields = {"VServerId": fields.Str(required=False, load_from="VServerId")}
 
@@ -241,8 +227,7 @@ API: DeletePolicy
 
 
 class DeletePolicyRequestSchema(schema.RequestSchema):
-    """ DeletePolicy - 删除内容转发策略
-    """
+    """DeletePolicy - 删除内容转发策略"""
 
     fields = {
         "GroupId": fields.Str(required=False, dump_to="GroupId"),
@@ -254,8 +239,7 @@ class DeletePolicyRequestSchema(schema.RequestSchema):
 
 
 class DeletePolicyResponseSchema(schema.ResponseSchema):
-    """ DeletePolicy - 删除内容转发策略
-    """
+    """DeletePolicy - 删除内容转发策略"""
 
     fields = {}
 
@@ -268,8 +252,7 @@ API: DeleteSSL
 
 
 class DeleteSSLRequestSchema(schema.RequestSchema):
-    """ DeleteSSL - 删除SSL证书
-    """
+    """DeleteSSL - 删除SSL证书"""
 
     fields = {
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
@@ -279,8 +262,7 @@ class DeleteSSLRequestSchema(schema.RequestSchema):
 
 
 class DeleteSSLResponseSchema(schema.ResponseSchema):
-    """ DeleteSSL - 删除SSL证书
-    """
+    """DeleteSSL - 删除SSL证书"""
 
     fields = {}
 
@@ -293,8 +275,7 @@ API: DeleteULB
 
 
 class DeleteULBRequestSchema(schema.RequestSchema):
-    """ DeleteULB - 删除负载均衡实例
-    """
+    """DeleteULB - 删除负载均衡实例"""
 
     fields = {
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
@@ -305,8 +286,7 @@ class DeleteULBRequestSchema(schema.RequestSchema):
 
 
 class DeleteULBResponseSchema(schema.ResponseSchema):
-    """ DeleteULB - 删除负载均衡实例
-    """
+    """DeleteULB - 删除负载均衡实例"""
 
     fields = {}
 
@@ -319,8 +299,7 @@ API: DeleteVServer
 
 
 class DeleteVServerRequestSchema(schema.RequestSchema):
-    """ DeleteVServer - 删除VServer实例
-    """
+    """DeleteVServer - 删除VServer实例"""
 
     fields = {
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
@@ -331,8 +310,7 @@ class DeleteVServerRequestSchema(schema.RequestSchema):
 
 
 class DeleteVServerResponseSchema(schema.ResponseSchema):
-    """ DeleteVServer - 删除VServer实例
-    """
+    """DeleteVServer - 删除VServer实例"""
 
     fields = {}
 
@@ -345,8 +323,7 @@ API: DescribeSSL
 
 
 class DescribeSSLRequestSchema(schema.RequestSchema):
-    """ DescribeSSL - 获取SSL证书信息
-    """
+    """DescribeSSL - 获取SSL证书信息"""
 
     fields = {
         "Limit": fields.Int(required=False, dump_to="Limit"),
@@ -358,8 +335,7 @@ class DescribeSSLRequestSchema(schema.RequestSchema):
 
 
 class DescribeSSLResponseSchema(schema.ResponseSchema):
-    """ DescribeSSL - 获取SSL证书信息
-    """
+    """DescribeSSL - 获取SSL证书信息"""
 
     fields = {
         "DataSet": fields.List(
@@ -377,8 +353,7 @@ API: DescribeULB
 
 
 class DescribeULBRequestSchema(schema.RequestSchema):
-    """ DescribeULB - 获取ULB详细信息
-    """
+    """DescribeULB - 获取ULB详细信息"""
 
     fields = {
         "BusinessId": fields.Str(required=False, dump_to="BusinessId"),
@@ -393,8 +368,7 @@ class DescribeULBRequestSchema(schema.RequestSchema):
 
 
 class DescribeULBResponseSchema(schema.ResponseSchema):
-    """ DescribeULB - 获取ULB详细信息
-    """
+    """DescribeULB - 获取ULB详细信息"""
 
     fields = {
         "DataSet": fields.List(
@@ -412,8 +386,7 @@ API: DescribeVServer
 
 
 class DescribeVServerRequestSchema(schema.RequestSchema):
-    """ DescribeVServer - 获取ULB下的VServer的详细信息
-    """
+    """DescribeVServer - 获取ULB下的VServer的详细信息"""
 
     fields = {
         "Limit": fields.Int(required=False, dump_to="Limit"),
@@ -426,8 +399,7 @@ class DescribeVServerRequestSchema(schema.RequestSchema):
 
 
 class DescribeVServerResponseSchema(schema.ResponseSchema):
-    """ DescribeVServer - 获取ULB下的VServer的详细信息
-    """
+    """DescribeVServer - 获取ULB下的VServer的详细信息"""
 
     fields = {
         "DataSet": fields.List(
@@ -445,8 +417,7 @@ API: ReleaseBackend
 
 
 class ReleaseBackendRequestSchema(schema.RequestSchema):
-    """ ReleaseBackend - 从VServer释放后端资源实例
-    """
+    """ReleaseBackend - 从VServer释放后端资源实例"""
 
     fields = {
         "BackendId": fields.Str(required=True, dump_to="BackendId"),
@@ -457,8 +428,7 @@ class ReleaseBackendRequestSchema(schema.RequestSchema):
 
 
 class ReleaseBackendResponseSchema(schema.ResponseSchema):
-    """ ReleaseBackend - 从VServer释放后端资源实例
-    """
+    """ReleaseBackend - 从VServer释放后端资源实例"""
 
     fields = {}
 
@@ -471,8 +441,7 @@ API: UnbindSSL
 
 
 class UnbindSSLRequestSchema(schema.RequestSchema):
-    """ UnbindSSL - 从VServer解绑SSL证书
-    """
+    """UnbindSSL - 从VServer解绑SSL证书"""
 
     fields = {
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
@@ -484,8 +453,7 @@ class UnbindSSLRequestSchema(schema.RequestSchema):
 
 
 class UnbindSSLResponseSchema(schema.ResponseSchema):
-    """ UnbindSSL - 从VServer解绑SSL证书
-    """
+    """UnbindSSL - 从VServer解绑SSL证书"""
 
     fields = {}
 
@@ -498,8 +466,7 @@ API: UpdateBackendAttribute
 
 
 class UpdateBackendAttributeRequestSchema(schema.RequestSchema):
-    """ UpdateBackendAttribute - 更新ULB后端资源实例(服务节点)属性
-    """
+    """UpdateBackendAttribute - 更新ULB后端资源实例(服务节点)属性"""
 
     fields = {
         "BackendId": fields.Str(required=True, dump_to="BackendId"),
@@ -513,8 +480,7 @@ class UpdateBackendAttributeRequestSchema(schema.RequestSchema):
 
 
 class UpdateBackendAttributeResponseSchema(schema.ResponseSchema):
-    """ UpdateBackendAttribute - 更新ULB后端资源实例(服务节点)属性
-    """
+    """UpdateBackendAttribute - 更新ULB后端资源实例(服务节点)属性"""
 
     fields = {}
 
@@ -527,8 +493,7 @@ API: UpdatePolicy
 
 
 class UpdatePolicyRequestSchema(schema.RequestSchema):
-    """ UpdatePolicy - 更新内容转发规则，包括转发规则后的服务节点
-    """
+    """UpdatePolicy - 更新内容转发规则，包括转发规则后的服务节点"""
 
     fields = {
         "BackendId": fields.List(fields.Str()),
@@ -543,8 +508,7 @@ class UpdatePolicyRequestSchema(schema.RequestSchema):
 
 
 class UpdatePolicyResponseSchema(schema.ResponseSchema):
-    """ UpdatePolicy - 更新内容转发规则，包括转发规则后的服务节点
-    """
+    """UpdatePolicy - 更新内容转发规则，包括转发规则后的服务节点"""
 
     fields = {"PolicyId": fields.Str(required=False, load_from="PolicyId")}
 
@@ -557,8 +521,7 @@ API: UpdateULBAttribute
 
 
 class UpdateULBAttributeRequestSchema(schema.RequestSchema):
-    """ UpdateULBAttribute - 更新ULB名字业务组备注等属性字段
-    """
+    """UpdateULBAttribute - 更新ULB名字业务组备注等属性字段"""
 
     fields = {
         "Name": fields.Str(required=False, dump_to="Name"),
@@ -571,8 +534,7 @@ class UpdateULBAttributeRequestSchema(schema.RequestSchema):
 
 
 class UpdateULBAttributeResponseSchema(schema.ResponseSchema):
-    """ UpdateULBAttribute - 更新ULB名字业务组备注等属性字段
-    """
+    """UpdateULBAttribute - 更新ULB名字业务组备注等属性字段"""
 
     fields = {}
 
@@ -585,8 +547,7 @@ API: UpdateVServerAttribute
 
 
 class UpdateVServerAttributeRequestSchema(schema.RequestSchema):
-    """ UpdateVServerAttribute - 更新VServer实例属性
-    """
+    """UpdateVServerAttribute - 更新VServer实例属性"""
 
     fields = {
         "ClientTimeout": fields.Int(required=False, dump_to="ClientTimeout"),
@@ -610,7 +571,6 @@ class UpdateVServerAttributeRequestSchema(schema.RequestSchema):
 
 
 class UpdateVServerAttributeResponseSchema(schema.ResponseSchema):
-    """ UpdateVServerAttribute - 更新VServer实例属性
-    """
+    """UpdateVServerAttribute - 更新VServer实例属性"""
 
     fields = {}

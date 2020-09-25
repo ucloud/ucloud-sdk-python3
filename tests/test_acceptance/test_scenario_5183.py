@@ -17,8 +17,15 @@ def test_scenario_5183(ustack_client, variables):
 
     scenario.store["Region"] = "cn"
     scenario.store["Zone"] = "zone-01"
-    scenario.store["BeginTime"] = funcs.get_timestamp(10,) - 3600
-    scenario.store["EndTime"] = funcs.get_timestamp(10,)
+    scenario.store["BeginTime"] = (
+        funcs.get_timestamp(
+            10,
+        )
+        - 3600
+    )
+    scenario.store["EndTime"] = funcs.get_timestamp(
+        10,
+    )
 
     # 查询VPC信息
     describe_vpc_00(ustack_client)
@@ -351,7 +358,9 @@ def describe_vm_instance_07(step, client):
 
     d = {
         "Zone": variables.get("Zone"),
-        "VMIDs": [variables.get("VMID"),],
+        "VMIDs": [
+            variables.get("VMID"),
+        ],
         "Region": variables.get("Region"),
     }
 
@@ -458,7 +467,9 @@ def describe_lb_10(step, client):
     d = {
         "Zone": variables.get("Zone"),
         "Region": variables.get("Region"),
-        "LBIDs": [variables.get("LBID"),],
+        "LBIDs": [
+            variables.get("LBID"),
+        ],
     }
 
     try:
@@ -682,7 +693,9 @@ def describe_rs_17(step, client):
         "Zone": variables.get("Zone"),
         "VSID": variables.get("VSID"),
         "Region": variables.get("Region"),
-        "RSIDs": [variables.get("RSID"),],
+        "RSIDs": [
+            variables.get("RSID"),
+        ],
         "LBID": variables.get("LBID"),
     }
 
@@ -745,7 +758,9 @@ def describe_rs_19(step, client):
         "Zone": variables.get("Zone"),
         "VSID": variables.get("VSID"),
         "Region": variables.get("Region"),
-        "RSIDs": [variables.get("RSID"),],
+        "RSIDs": [
+            variables.get("RSID"),
+        ],
         "LBID": variables.get("LBID"),
     }
 
@@ -776,7 +791,9 @@ def create_vs_policy_20(step, client):
         "Zone": variables.get("Zone"),
         "VSID": variables.get("VSID"),
         "Region": variables.get("Region"),
-        "RSIDs": [variables.get("RSID"),],
+        "RSIDs": [
+            variables.get("RSID"),
+        ],
         "Path": "/test12321",
         "LBID": variables.get("LBID"),
         "Domain": "test.com11",
@@ -810,7 +827,9 @@ def describe_vs_policy_21(step, client):
         "Zone": variables.get("Zone"),
         "VSID": variables.get("VSID"),
         "Region": variables.get("Region"),
-        "PolicyIDs": [variables.get("PolicyID"),],
+        "PolicyIDs": [
+            variables.get("PolicyID"),
+        ],
         "LBID": variables.get("LBID"),
     }
 

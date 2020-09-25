@@ -18,26 +18,26 @@ class IPSecVPNClient(Client):
     def describe_remote_vpn_gateway(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ DescribeRemoteVPNGateway - 获取客户VPN网关信息
+        """DescribeRemoteVPNGateway - 获取客户VPN网关信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Limit** (int) - 数据分页值, 默认为20
         - **Offset** (int) - 数据偏移量, 默认为0
         - **RemoteVPNGatewayIds** (list) - 客户VPN网关的资源ID，例如RemoteVPNGatewayIds.0代表希望获取客户VPN网关1的信息，RemoteVPNGatewayIds.1代表客户VPN网关2，如果为空，则返回当前Region中所有客户VPN网关实例的信息
         - **Tag** (str) - 业务组名称，若指定则返回业务组下所有客户VPN网关信息
-        
+
         **Response**
 
         - **DataSet** (list) - 见 **RemoteVPNGatewayDataSet** 模型定义
         - **TotalCount** (int) - 符合条件的客户VPN网关总数
-        
+
         **Response Model**
-        
-        **RemoteVPNGatewayDataSet** 
-        
+
+        **RemoteVPNGatewayDataSet**
+
         - **ActiveTunnels** (str) - 活跃的隧道id
         - **CreateTime** (int) - 创建时间
         - **Remark** (str) - 备注
@@ -62,26 +62,26 @@ class IPSecVPNClient(Client):
     def describe_vpn_tunnel(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ DescribeVPNTunnel - 获取VPN隧道信息
+        """DescribeVPNTunnel - 获取VPN隧道信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Limit** (int) - 数据分页值, 默认为20
         - **Offset** (int) - 数据偏移量, 默认为0
         - **Tag** (str) - 业务组名称，若指定则返回指定的业务组下的所有VPN网关的信息
         - **VPNTunnelIds** (list) - VPN隧道的资源ID，例如VPNTunnelIds.0代表希望获取信息的VPN隧道1，VPNTunneIds.1代表VPN隧道2，如果为空，则返回当前Region中所有的VPN隧道实例
-        
+
         **Response**
 
         - **DataSet** (list) - 见 **VPNTunnelDataSet** 模型定义
         - **TotalCount** (int) - VPN隧道总数
-        
+
         **Response Model**
-        
-        **IPSecData** 
-        
+
+        **IPSecData**
+
         - **IPSecAuthenticationAlgorithm** (str) - IPSec通道中使用的认证算法
         - **IPSecEncryptionAlgorithm** (str) - IPSec通道中使用的加密算法
         - **IPSecLocalSubnetIds** (list) - 指定VPN连接的本地子网，用逗号分隔
@@ -91,8 +91,8 @@ class IPSecVPNClient(Client):
         - **IPSecSALifetime** (str) - IPSec中SA的生存时间
         - **IPSecSALifetimeBytes** (str) - IPSec中SA的生存时间（以字节计）
 
-        **IKEData** 
-        
+        **IKEData**
+
         - **IKEAuthenticationAlgorithm** (str) - IKE认证算法
         - **IKEDhGroup** (str) - IKEDH组
         - **IKEEncryptionAlgorithm** (str) - IKE加密算法
@@ -103,8 +103,8 @@ class IPSecVPNClient(Client):
         - **IKESALifetime** (str) - IKE秘钥生存时间
         - **IKEVersion** (str) - IKE版本
 
-        **VPNTunnelDataSet** 
-        
+        **VPNTunnelDataSet**
+
         - **CreateTime** (int) - 创建时间
         - **IKEData** (dict) - 见 **IKEData** 模型定义
         - **IPSecData** (dict) - 见 **IPSecData** 模型定义

@@ -16,8 +16,7 @@ API: DescribeRemoteVPNGateway
 
 
 class DescribeRemoteVPNGatewayRequestSchema(schema.RequestSchema):
-    """ DescribeRemoteVPNGateway - 获取客户VPN网关信息
-    """
+    """DescribeRemoteVPNGateway - 获取客户VPN网关信息"""
 
     fields = {
         "Limit": fields.Int(required=False, dump_to="Limit"),
@@ -30,8 +29,7 @@ class DescribeRemoteVPNGatewayRequestSchema(schema.RequestSchema):
 
 
 class DescribeRemoteVPNGatewayResponseSchema(schema.ResponseSchema):
-    """ DescribeRemoteVPNGateway - 获取客户VPN网关信息
-    """
+    """DescribeRemoteVPNGateway - 获取客户VPN网关信息"""
 
     fields = {
         "DataSet": fields.List(
@@ -51,8 +49,7 @@ API: DescribeVPNTunnel
 
 
 class DescribeVPNTunnelRequestSchema(schema.RequestSchema):
-    """ DescribeVPNTunnel - 获取VPN隧道信息
-    """
+    """DescribeVPNTunnel - 获取VPN隧道信息"""
 
     fields = {
         "Limit": fields.Int(required=False, dump_to="Limit"),
@@ -65,8 +62,7 @@ class DescribeVPNTunnelRequestSchema(schema.RequestSchema):
 
 
 class DescribeVPNTunnelResponseSchema(schema.ResponseSchema):
-    """ DescribeVPNTunnel - 获取VPN隧道信息
-    """
+    """DescribeVPNTunnel - 获取VPN隧道信息"""
 
     fields = {
         "DataSet": fields.List(

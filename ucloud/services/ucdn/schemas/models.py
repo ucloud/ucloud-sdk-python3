@@ -4,8 +4,7 @@ from ucloud.core.typesystem import schema, fields
 
 
 class CacheConfSchema(schema.ResponseSchema):
-    """ CacheConf - 缓存配置
-    """
+    """CacheConf - 缓存配置"""
 
     fields = {
         "CacheBehavior": fields.Int(required=False, load_from="CacheBehavior"),
@@ -26,8 +25,7 @@ class CacheConfSchema(schema.ResponseSchema):
 
 
 class AccessConfSchema(schema.ResponseSchema):
-    """ AccessConf - 访问控制
-    """
+    """AccessConf - 访问控制"""
 
     fields = {
         "IpBlacklist": fields.Str(required=False, load_from="IpBlacklist")
@@ -35,8 +33,7 @@ class AccessConfSchema(schema.ResponseSchema):
 
 
 class DomainInfoSchema(schema.ResponseSchema):
-    """ DomainInfo - 域名配置
-    """
+    """DomainInfo - 域名配置"""
 
     fields = {
         "AccessConf": AccessConfSchema(),
@@ -72,8 +69,7 @@ class DomainInfoSchema(schema.ResponseSchema):
 
 
 class UrlProgressInfoSchema(schema.ResponseSchema):
-    """ UrlProgressInfo - UrlProgressInfo
-    """
+    """UrlProgressInfo - UrlProgressInfo"""
 
     fields = {
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
@@ -85,8 +81,7 @@ class UrlProgressInfoSchema(schema.ResponseSchema):
 
 
 class TaskInfoSchema(schema.ResponseSchema):
-    """ TaskInfo - 预取刷新的任务信息
-    """
+    """TaskInfo - 预取刷新的任务信息"""
 
     fields = {
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
@@ -98,8 +93,7 @@ class TaskInfoSchema(schema.ResponseSchema):
 
 
 class BandwidthInfoSchema(schema.ResponseSchema):
-    """ BandwidthInfo - BandwidthInfo
-    """
+    """BandwidthInfo - BandwidthInfo"""
 
     fields = {
         "CdnBandwidth": fields.Str(required=False, load_from="CdnBandwidth"),
@@ -108,8 +102,7 @@ class BandwidthInfoSchema(schema.ResponseSchema):
 
 
 class HitRateInfoSchema(schema.ResponseSchema):
-    """ HitRateInfo - HitRateInfo
-    """
+    """HitRateInfo - HitRateInfo"""
 
     fields = {
         "FlowHitRate": fields.Float(required=False, load_from="FlowHitRate"),
@@ -121,8 +114,7 @@ class HitRateInfoSchema(schema.ResponseSchema):
 
 
 class HttpCodeInfoSchema(schema.ResponseSchema):
-    """ HttpCodeInfo - HttpCodeInfo
-    """
+    """HttpCodeInfo - HttpCodeInfo"""
 
     fields = {
         "HttpFiveXX": fields.Int(required=False, load_from="HttpFiveXX"),
@@ -135,8 +127,7 @@ class HttpCodeInfoSchema(schema.ResponseSchema):
 
 
 class HttpCodeV2DetailSchema(schema.ResponseSchema):
-    """ HttpCodeV2Detail - HTTP状态码详细信息
-    """
+    """HttpCodeV2Detail - HTTP状态码详细信息"""
 
     fields = {
         "Http100": fields.Int(required=False, load_from="Http100"),
@@ -200,8 +191,7 @@ class HttpCodeV2DetailSchema(schema.ResponseSchema):
 
 
 class RequestInfoSchema(schema.ResponseSchema):
-    """ RequestInfo - RequestInfo
-    """
+    """RequestInfo - RequestInfo"""
 
     fields = {
         "CdnRequest": fields.Float(required=False, load_from="CdnRequest"),
@@ -213,8 +203,7 @@ class RequestInfoSchema(schema.ResponseSchema):
 
 
 class LogSetInfoSchema(schema.ResponseSchema):
-    """ LogSetInfo - 日志信息
-    """
+    """LogSetInfo - 日志信息"""
 
     fields = {
         "AbroadLog": fields.List(fields.Str()),
@@ -224,8 +213,7 @@ class LogSetInfoSchema(schema.ResponseSchema):
 
 
 class LogSetListSchema(schema.ResponseSchema):
-    """ LogSetList - 日志信息列表
-    """
+    """LogSetList - 日志信息列表"""
 
     fields = {
         "Domain": fields.Str(required=False, load_from="Domain"),
@@ -234,8 +222,7 @@ class LogSetListSchema(schema.ResponseSchema):
 
 
 class UcdnDomainTrafficSetSchema(schema.ResponseSchema):
-    """ UcdnDomainTrafficSet - GetUcdnDomainTraffic
-    """
+    """UcdnDomainTrafficSet - GetUcdnDomainTraffic"""
 
     fields = {
         "Time": fields.Int(required=False, load_from="Time"),
@@ -244,8 +231,7 @@ class UcdnDomainTrafficSetSchema(schema.ResponseSchema):
 
 
 class BandwidthInfoDetailSchema(schema.ResponseSchema):
-    """ BandwidthInfoDetail - 带宽值信息模型(时间-带宽)
-    """
+    """BandwidthInfoDetail - 带宽值信息模型(时间-带宽)"""
 
     fields = {
         "Bandwidth": fields.Float(required=True, load_from="Bandwidth"),
@@ -254,8 +240,7 @@ class BandwidthInfoDetailSchema(schema.ResponseSchema):
 
 
 class TrafficSetSchema(schema.ResponseSchema):
-    """ TrafficSet - GetUcdnTraffic
-    """
+    """TrafficSet - GetUcdnTraffic"""
 
     fields = {
         "Areacode": fields.Str(required=False, load_from="Areacode"),

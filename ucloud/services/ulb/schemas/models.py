@@ -4,8 +4,7 @@ from ucloud.core.typesystem import schema, fields
 
 
 class BackendSetSchema(schema.ResponseSchema):
-    """ BackendSet - ulb添加rs时返回的信息
-    """
+    """BackendSet - ulb添加rs时返回的信息"""
 
     fields = {
         "BackendId": fields.Str(required=True, load_from="BackendId"),
@@ -14,8 +13,7 @@ class BackendSetSchema(schema.ResponseSchema):
 
 
 class ULBSSLSetSchema(schema.ResponseSchema):
-    """ ULBSSLSet - DescribeULB
-    """
+    """ULBSSLSet - DescribeULB"""
 
     fields = {
         "HashValue": fields.Str(required=False, load_from="HashValue"),
@@ -25,8 +23,7 @@ class ULBSSLSetSchema(schema.ResponseSchema):
 
 
 class PolicyBackendSetSchema(schema.ResponseSchema):
-    """ PolicyBackendSet - 内容转发下rs详细信息
-    """
+    """PolicyBackendSet - 内容转发下rs详细信息"""
 
     fields = {
         "BackendId": fields.Str(required=False, load_from="BackendId"),
@@ -38,8 +35,7 @@ class PolicyBackendSetSchema(schema.ResponseSchema):
 
 
 class ULBBackendSetSchema(schema.ResponseSchema):
-    """ ULBBackendSet - DescribeULB
-    """
+    """ULBBackendSet - DescribeULB"""
 
     fields = {
         "BackendId": fields.Str(required=False, load_from="BackendId"),
@@ -63,8 +59,7 @@ class ULBBackendSetSchema(schema.ResponseSchema):
 
 
 class ULBPolicySetSchema(schema.ResponseSchema):
-    """ ULBPolicySet - 内容转发详细列表
-    """
+    """ULBPolicySet - 内容转发详细列表"""
 
     fields = {
         "BackendSet": fields.List(PolicyBackendSetSchema()),
@@ -81,8 +76,7 @@ class ULBPolicySetSchema(schema.ResponseSchema):
 
 
 class ULBVServerSetSchema(schema.ResponseSchema):
-    """ ULBVServerSet - DescribeULB
-    """
+    """ULBVServerSet - DescribeULB"""
 
     fields = {
         "BackendSet": fields.List(ULBBackendSetSchema()),
@@ -109,8 +103,7 @@ class ULBVServerSetSchema(schema.ResponseSchema):
 
 
 class ULBIPSetSchema(schema.ResponseSchema):
-    """ ULBIPSet - DescribeULB
-    """
+    """ULBIPSet - DescribeULB"""
 
     fields = {
         "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
@@ -122,8 +115,7 @@ class ULBIPSetSchema(schema.ResponseSchema):
 
 
 class ULBSetSchema(schema.ResponseSchema):
-    """ ULBSet - DescribeULB
-    """
+    """ULBSet - DescribeULB"""
 
     fields = {
         "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),

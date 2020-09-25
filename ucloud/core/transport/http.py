@@ -63,8 +63,7 @@ class Response:
         self.request_uuid = self.headers.get(REQUEST_UUID_HEADER_KEY)
 
     def json(self, **kwargs) -> typing.Optional[dict]:
-        """ json will return the bytes of content
-        """
+        """json will return the bytes of content"""
         if not self.content:
             return None
 
@@ -77,7 +76,7 @@ class Response:
 
     @property
     def text(self):
-        """ text will return the unicode string of content,
+        """text will return the unicode string of content,
         see `requests.Response.text`
         """
         if not self.content:

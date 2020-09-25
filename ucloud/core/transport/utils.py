@@ -7,7 +7,7 @@ _null3 = _null * 3
 
 
 def guess_json_utf(data):
-    """ guess_json_utf will detect the encoding of bytes,
+    """guess_json_utf will detect the encoding of bytes,
     see `requests.utils.guess_json_utf`
 
     :rtype: str
