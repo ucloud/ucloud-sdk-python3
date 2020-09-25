@@ -4,8 +4,7 @@ from ucloud.core.typesystem import schema, fields
 
 
 class ReceiptPerPhoneSchema(schema.ResponseSchema):
-    """ ReceiptPerPhone - 每个目的手机号的发送回执信息
-    """
+    """ReceiptPerPhone - 每个目的手机号的发送回执信息"""
 
     fields = {
         "CostCount": fields.Int(required=True, load_from="CostCount"),
@@ -17,8 +16,7 @@ class ReceiptPerPhoneSchema(schema.ResponseSchema):
 
 
 class ReceiptPerSessionSchema(schema.ResponseSchema):
-    """ ReceiptPerSession - 每个提交的回执结果集合
-    """
+    """ReceiptPerSession - 每个提交的回执结果集合"""
 
     fields = {
         "ReceiptSet": fields.List(ReceiptPerPhoneSchema()),
@@ -27,8 +25,7 @@ class ReceiptPerSessionSchema(schema.ResponseSchema):
 
 
 class OutSignatureSchema(schema.ResponseSchema):
-    """ OutSignature - 短信签名
-    """
+    """OutSignature - 短信签名"""
 
     fields = {
         "ErrDesc": fields.Str(required=True, load_from="ErrDesc"),
@@ -39,8 +36,7 @@ class OutSignatureSchema(schema.ResponseSchema):
 
 
 class OutTemplateSchema(schema.ResponseSchema):
-    """ OutTemplate - 短信模板
-    """
+    """OutTemplate - 短信模板"""
 
     fields = {
         "CreateTime": fields.Int(required=True, load_from="CreateTime"),

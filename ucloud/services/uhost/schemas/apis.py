@@ -16,8 +16,7 @@ API: CopyCustomImage
 
 
 class CopyCustomImageRequestSchema(schema.RequestSchema):
-    """ CopyCustomImage - 复制自制镜像
-    """
+    """CopyCustomImage - 复制自制镜像"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -36,8 +35,7 @@ class CopyCustomImageRequestSchema(schema.RequestSchema):
 
 
 class CopyCustomImageResponseSchema(schema.ResponseSchema):
-    """ CopyCustomImage - 复制自制镜像
-    """
+    """CopyCustomImage - 复制自制镜像"""
 
     fields = {
         "TargetImageId": fields.Str(required=False, load_from="TargetImageId")
@@ -52,8 +50,7 @@ API: CreateCustomImage
 
 
 class CreateCustomImageRequestSchema(schema.RequestSchema):
-    """ CreateCustomImage - 从指定UHost实例，生成自定义镜像。
-    """
+    """CreateCustomImage - 从指定UHost实例，生成自定义镜像。"""
 
     fields = {
         "ImageDescription": fields.Str(
@@ -68,8 +65,7 @@ class CreateCustomImageRequestSchema(schema.RequestSchema):
 
 
 class CreateCustomImageResponseSchema(schema.ResponseSchema):
-    """ CreateCustomImage - 从指定UHost实例，生成自定义镜像。
-    """
+    """CreateCustomImage - 从指定UHost实例，生成自定义镜像。"""
 
     fields = {"ImageId": fields.Str(required=False, load_from="ImageId")}
 
@@ -84,8 +80,7 @@ API: CreateUHostInstance
 class CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSHSchema(
     schema.RequestSchema
 ):
-    """ CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSH - 
-    """
+    """CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSH -"""
 
     fields = {
         "Area": fields.Str(required=False, dump_to="Area"),
@@ -95,8 +90,7 @@ class CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSHSchema(
 
 
 class CreateUHostInstanceParamNetworkInterfaceIPv6Schema(schema.RequestSchema):
-    """ CreateUHostInstanceParamNetworkInterfaceIPv6 - 
-    """
+    """CreateUHostInstanceParamNetworkInterfaceIPv6 -"""
 
     fields = {
         "Adress": fields.Str(required=False, dump_to="Adress"),
@@ -107,8 +101,7 @@ class CreateUHostInstanceParamNetworkInterfaceIPv6Schema(schema.RequestSchema):
 
 
 class CreateUHostInstanceParamNetworkInterfaceEIPSchema(schema.RequestSchema):
-    """ CreateUHostInstanceParamNetworkInterfaceEIP - 
-    """
+    """CreateUHostInstanceParamNetworkInterfaceEIP -"""
 
     fields = {
         "Bandwidth": fields.Int(required=False, dump_to="Bandwidth"),
@@ -125,8 +118,7 @@ class CreateUHostInstanceParamNetworkInterfaceEIPSchema(schema.RequestSchema):
 
 
 class CreateUHostInstanceParamNetworkInterfaceSchema(schema.RequestSchema):
-    """ CreateUHostInstanceParamNetworkInterface - 
-    """
+    """CreateUHostInstanceParamNetworkInterface -"""
 
     fields = {
         "EIP": CreateUHostInstanceParamNetworkInterfaceEIPSchema(
@@ -139,8 +131,7 @@ class CreateUHostInstanceParamNetworkInterfaceSchema(schema.RequestSchema):
 
 
 class CreateUHostInstanceParamDisksSchema(schema.RequestSchema):
-    """ CreateUHostInstanceParamDisks - 
-    """
+    """CreateUHostInstanceParamDisks -"""
 
     fields = {
         "BackupType": fields.Str(required=False, dump_to="BackupType"),
@@ -154,8 +145,7 @@ class CreateUHostInstanceParamDisksSchema(schema.RequestSchema):
 
 
 class CreateUHostInstanceRequestSchema(schema.RequestSchema):
-    """ CreateUHostInstance - 创建UHost实例。
-    """
+    """CreateUHostInstance - 创建UHost实例。"""
 
     fields = {
         "AlarmTemplateId": fields.Int(
@@ -216,8 +206,7 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
 
 
 class CreateUHostInstanceResponseSchema(schema.ResponseSchema):
-    """ CreateUHostInstance - 创建UHost实例。
-    """
+    """CreateUHostInstance - 创建UHost实例。"""
 
     fields = {
         "IPs": fields.List(fields.Str(), required=False, load_from="IPs"),
@@ -235,8 +224,7 @@ API: DescribeImage
 
 
 class DescribeImageRequestSchema(schema.RequestSchema):
-    """ DescribeImage - 获取指定数据中心镜像列表，用户可通过指定操作系统类型，镜像Id进行过滤。
-    """
+    """DescribeImage - 获取指定数据中心镜像列表，用户可通过指定操作系统类型，镜像Id进行过滤。"""
 
     fields = {
         "ImageId": fields.Str(required=False, dump_to="ImageId"),
@@ -252,8 +240,7 @@ class DescribeImageRequestSchema(schema.RequestSchema):
 
 
 class DescribeImageResponseSchema(schema.ResponseSchema):
-    """ DescribeImage - 获取指定数据中心镜像列表，用户可通过指定操作系统类型，镜像Id进行过滤。
-    """
+    """DescribeImage - 获取指定数据中心镜像列表，用户可通过指定操作系统类型，镜像Id进行过滤。"""
 
     fields = {
         "ImageSet": fields.List(
@@ -271,8 +258,7 @@ API: DescribeIsolationGroup
 
 
 class DescribeIsolationGroupRequestSchema(schema.RequestSchema):
-    """ DescribeIsolationGroup - 查询硬件隔离组列表。
-    """
+    """DescribeIsolationGroup - 查询硬件隔离组列表。"""
 
     fields = {
         "GroupId": fields.Str(required=False, dump_to="GroupId"),
@@ -284,8 +270,7 @@ class DescribeIsolationGroupRequestSchema(schema.RequestSchema):
 
 
 class DescribeIsolationGroupResponseSchema(schema.ResponseSchema):
-    """ DescribeIsolationGroup - 查询硬件隔离组列表。
-    """
+    """DescribeIsolationGroup - 查询硬件隔离组列表。"""
 
     fields = {
         "IsolationGroupSet": fields.List(
@@ -304,8 +289,7 @@ API: DescribeUHostInstance
 
 
 class DescribeUHostInstanceRequestSchema(schema.RequestSchema):
-    """ DescribeUHostInstance - 获取主机或主机列表信息，并可根据数据中心，主机ID等参数进行过滤。
-    """
+    """DescribeUHostInstance - 获取主机或主机列表信息，并可根据数据中心，主机ID等参数进行过滤。"""
 
     fields = {
         "IsolationGroup": fields.Str(required=False, dump_to="IsolationGroup"),
@@ -323,8 +307,7 @@ class DescribeUHostInstanceRequestSchema(schema.RequestSchema):
 
 
 class DescribeUHostInstanceResponseSchema(schema.ResponseSchema):
-    """ DescribeUHostInstance - 获取主机或主机列表信息，并可根据数据中心，主机ID等参数进行过滤。
-    """
+    """DescribeUHostInstance - 获取主机或主机列表信息，并可根据数据中心，主机ID等参数进行过滤。"""
 
     fields = {
         "Action": fields.Str(required=True, load_from="Action"),
@@ -346,8 +329,7 @@ API: DescribeUHostInstanceSnapshot
 
 
 class DescribeUHostInstanceSnapshotRequestSchema(schema.RequestSchema):
-    """ DescribeUHostInstanceSnapshot - 获取已经存在的UHost实例的存储快照列表。
-    """
+    """DescribeUHostInstanceSnapshot - 获取已经存在的UHost实例的存储快照列表。"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -358,8 +340,7 @@ class DescribeUHostInstanceSnapshotRequestSchema(schema.RequestSchema):
 
 
 class DescribeUHostInstanceSnapshotResponseSchema(schema.ResponseSchema):
-    """ DescribeUHostInstanceSnapshot - 获取已经存在的UHost实例的存储快照列表。
-    """
+    """DescribeUHostInstanceSnapshot - 获取已经存在的UHost实例的存储快照列表。"""
 
     fields = {
         "SnapshotSet": fields.List(
@@ -379,8 +360,7 @@ API: DescribeUHostTags
 
 
 class DescribeUHostTagsRequestSchema(schema.RequestSchema):
-    """ DescribeUHostTags - 获取指定数据中心的业务组列表。
-    """
+    """DescribeUHostTags - 获取指定数据中心的业务组列表。"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -390,8 +370,7 @@ class DescribeUHostTagsRequestSchema(schema.RequestSchema):
 
 
 class DescribeUHostTagsResponseSchema(schema.ResponseSchema):
-    """ DescribeUHostTags - 获取指定数据中心的业务组列表。
-    """
+    """DescribeUHostTags - 获取指定数据中心的业务组列表。"""
 
     fields = {
         "TagSet": fields.List(
@@ -409,8 +388,7 @@ API: GetUHostInstancePrice
 
 
 class GetUHostInstancePriceParamDisksSchema(schema.RequestSchema):
-    """ GetUHostInstancePriceParamDisks - 
-    """
+    """GetUHostInstancePriceParamDisks -"""
 
     fields = {
         "BackupType": fields.Str(required=False, dump_to="BackupType"),
@@ -421,8 +399,7 @@ class GetUHostInstancePriceParamDisksSchema(schema.RequestSchema):
 
 
 class GetUHostInstancePriceRequestSchema(schema.RequestSchema):
-    """ GetUHostInstancePrice - 根据UHost实例配置，获取UHost实例的价格。
-    """
+    """GetUHostInstancePrice - 根据UHost实例配置，获取UHost实例的价格。"""
 
     fields = {
         "CPU": fields.Int(required=True, dump_to="CPU"),
@@ -450,8 +427,7 @@ class GetUHostInstancePriceRequestSchema(schema.RequestSchema):
 
 
 class GetUHostInstancePriceResponseSchema(schema.ResponseSchema):
-    """ GetUHostInstancePrice - 根据UHost实例配置，获取UHost实例的价格。
-    """
+    """GetUHostInstancePrice - 根据UHost实例配置，获取UHost实例的价格。"""
 
     fields = {
         "PriceSet": fields.List(
@@ -468,8 +444,7 @@ API: GetUHostInstanceVncInfo
 
 
 class GetUHostInstanceVncInfoRequestSchema(schema.RequestSchema):
-    """ GetUHostInstanceVncInfo - 获取指定UHost实例的管理VNC配置详细信息。
-    """
+    """GetUHostInstanceVncInfo - 获取指定UHost实例的管理VNC配置详细信息。"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -480,8 +455,7 @@ class GetUHostInstanceVncInfoRequestSchema(schema.RequestSchema):
 
 
 class GetUHostInstanceVncInfoResponseSchema(schema.ResponseSchema):
-    """ GetUHostInstanceVncInfo - 获取指定UHost实例的管理VNC配置详细信息。
-    """
+    """GetUHostInstanceVncInfo - 获取指定UHost实例的管理VNC配置详细信息。"""
 
     fields = {
         "UhostId": fields.Str(required=False, load_from="UhostId"),
@@ -499,8 +473,7 @@ API: GetUHostUpgradePrice
 
 
 class GetUHostUpgradePriceRequestSchema(schema.RequestSchema):
-    """ GetUHostUpgradePrice - 获取UHost实例升级配置的价格。可选配置范围请参考[[api:uhost-api:uhost_type|云主机机型说明]]。
-    """
+    """GetUHostUpgradePrice - 获取UHost实例升级配置的价格。可选配置范围请参考[[api:uhost-api:uhost_type|云主机机型说明]]。"""
 
     fields = {
         "BootDiskSpace": fields.Int(required=False, dump_to="BootDiskSpace"),
@@ -520,8 +493,7 @@ class GetUHostUpgradePriceRequestSchema(schema.RequestSchema):
 
 
 class GetUHostUpgradePriceResponseSchema(schema.ResponseSchema):
-    """ GetUHostUpgradePrice - 获取UHost实例升级配置的价格。可选配置范围请参考[[api:uhost-api:uhost_type|云主机机型说明]]。
-    """
+    """GetUHostUpgradePrice - 获取UHost实例升级配置的价格。可选配置范围请参考[[api:uhost-api:uhost_type|云主机机型说明]]。"""
 
     fields = {"Price": fields.Float(required=False, load_from="Price")}
 
@@ -534,8 +506,7 @@ API: ImportCustomImage
 
 
 class ImportCustomImageRequestSchema(schema.RequestSchema):
-    """ ImportCustomImage - 把UFile的镜像文件导入到UHost，生成自定义镜像
-    """
+    """ImportCustomImage - 把UFile的镜像文件导入到UHost，生成自定义镜像"""
 
     fields = {
         "Auth": fields.Bool(required=True, dump_to="Auth"),
@@ -553,8 +524,7 @@ class ImportCustomImageRequestSchema(schema.RequestSchema):
 
 
 class ImportCustomImageResponseSchema(schema.ResponseSchema):
-    """ ImportCustomImage - 把UFile的镜像文件导入到UHost，生成自定义镜像
-    """
+    """ImportCustomImage - 把UFile的镜像文件导入到UHost，生成自定义镜像"""
 
     fields = {"ImageId": fields.Str(required=False, load_from="ImageId")}
 
@@ -567,8 +537,7 @@ API: ModifyUHostInstanceName
 
 
 class ModifyUHostInstanceNameRequestSchema(schema.RequestSchema):
-    """ ModifyUHostInstanceName - 修改指定UHost实例名称，需要给出数据中心，UHostId，及新的实例名称。
-    """
+    """ModifyUHostInstanceName - 修改指定UHost实例名称，需要给出数据中心，UHostId，及新的实例名称。"""
 
     fields = {
         "Name": fields.Str(required=False, dump_to="Name"),
@@ -580,8 +549,7 @@ class ModifyUHostInstanceNameRequestSchema(schema.RequestSchema):
 
 
 class ModifyUHostInstanceNameResponseSchema(schema.ResponseSchema):
-    """ ModifyUHostInstanceName - 修改指定UHost实例名称，需要给出数据中心，UHostId，及新的实例名称。
-    """
+    """ModifyUHostInstanceName - 修改指定UHost实例名称，需要给出数据中心，UHostId，及新的实例名称。"""
 
     fields = {"UhostId": fields.Str(required=False, load_from="UhostId")}
 
@@ -594,8 +562,7 @@ API: ModifyUHostInstanceRemark
 
 
 class ModifyUHostInstanceRemarkRequestSchema(schema.RequestSchema):
-    """ ModifyUHostInstanceRemark - 修改指定UHost实例备注信息。
-    """
+    """ModifyUHostInstanceRemark - 修改指定UHost实例备注信息。"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -607,8 +574,7 @@ class ModifyUHostInstanceRemarkRequestSchema(schema.RequestSchema):
 
 
 class ModifyUHostInstanceRemarkResponseSchema(schema.ResponseSchema):
-    """ ModifyUHostInstanceRemark - 修改指定UHost实例备注信息。
-    """
+    """ModifyUHostInstanceRemark - 修改指定UHost实例备注信息。"""
 
     fields = {"UhostId": fields.Str(required=False, load_from="UhostId")}
 
@@ -621,8 +587,7 @@ API: ModifyUHostInstanceTag
 
 
 class ModifyUHostInstanceTagRequestSchema(schema.RequestSchema):
-    """ ModifyUHostInstanceTag - 修改指定UHost实例业务组标识。
-    """
+    """ModifyUHostInstanceTag - 修改指定UHost实例业务组标识。"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -634,8 +599,7 @@ class ModifyUHostInstanceTagRequestSchema(schema.RequestSchema):
 
 
 class ModifyUHostInstanceTagResponseSchema(schema.ResponseSchema):
-    """ ModifyUHostInstanceTag - 修改指定UHost实例业务组标识。
-    """
+    """ModifyUHostInstanceTag - 修改指定UHost实例业务组标识。"""
 
     fields = {"UhostId": fields.Str(required=False, load_from="UhostId")}
 
@@ -648,8 +612,7 @@ API: PoweroffUHostInstance
 
 
 class PoweroffUHostInstanceRequestSchema(schema.RequestSchema):
-    """ PoweroffUHostInstance - 直接关闭UHost实例电源，无需等待实例正常关闭。
-    """
+    """PoweroffUHostInstance - 直接关闭UHost实例电源，无需等待实例正常关闭。"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -660,8 +623,7 @@ class PoweroffUHostInstanceRequestSchema(schema.RequestSchema):
 
 
 class PoweroffUHostInstanceResponseSchema(schema.ResponseSchema):
-    """ PoweroffUHostInstance - 直接关闭UHost实例电源，无需等待实例正常关闭。
-    """
+    """PoweroffUHostInstance - 直接关闭UHost实例电源，无需等待实例正常关闭。"""
 
     fields = {"UhostId": fields.Str(required=False, load_from="UhostId")}
 
@@ -674,8 +636,7 @@ API: RebootUHostInstance
 
 
 class RebootUHostInstanceRequestSchema(schema.RequestSchema):
-    """ RebootUHostInstance - 重新启动UHost实例，需要指定数据中心及UHostID两个参数的值。
-    """
+    """RebootUHostInstance - 重新启动UHost实例，需要指定数据中心及UHostID两个参数的值。"""
 
     fields = {
         "DiskPassword": fields.Str(required=False, dump_to="DiskPassword"),
@@ -687,8 +648,7 @@ class RebootUHostInstanceRequestSchema(schema.RequestSchema):
 
 
 class RebootUHostInstanceResponseSchema(schema.ResponseSchema):
-    """ RebootUHostInstance - 重新启动UHost实例，需要指定数据中心及UHostID两个参数的值。
-    """
+    """RebootUHostInstance - 重新启动UHost实例，需要指定数据中心及UHostID两个参数的值。"""
 
     fields = {"UhostId": fields.Str(required=False, load_from="UhostId")}
 
@@ -701,8 +661,7 @@ API: ReinstallUHostInstance
 
 
 class ReinstallUHostInstanceRequestSchema(schema.RequestSchema):
-    """ ReinstallUHostInstance - 重新安装指定UHost实例的操作系统
-    """
+    """ReinstallUHostInstance - 重新安装指定UHost实例的操作系统"""
 
     fields = {
         "DNSServers": fields.List(fields.Str()),
@@ -718,8 +677,7 @@ class ReinstallUHostInstanceRequestSchema(schema.RequestSchema):
 
 
 class ReinstallUHostInstanceResponseSchema(schema.ResponseSchema):
-    """ ReinstallUHostInstance - 重新安装指定UHost实例的操作系统
-    """
+    """ReinstallUHostInstance - 重新安装指定UHost实例的操作系统"""
 
     fields = {"UhostId": fields.Str(required=False, load_from="UhostId")}
 
@@ -732,8 +690,7 @@ API: ResetUHostInstancePassword
 
 
 class ResetUHostInstancePasswordRequestSchema(schema.RequestSchema):
-    """ ResetUHostInstancePassword - 重置UHost实例的管理员密码。
-    """
+    """ResetUHostInstancePassword - 重置UHost实例的管理员密码。"""
 
     fields = {
         "Password": fields.Base64(required=True, dump_to="Password"),
@@ -745,8 +702,7 @@ class ResetUHostInstancePasswordRequestSchema(schema.RequestSchema):
 
 
 class ResetUHostInstancePasswordResponseSchema(schema.ResponseSchema):
-    """ ResetUHostInstancePassword - 重置UHost实例的管理员密码。
-    """
+    """ResetUHostInstancePassword - 重置UHost实例的管理员密码。"""
 
     fields = {"UhostId": fields.Str(required=False, load_from="UhostId")}
 
@@ -759,8 +715,7 @@ API: ResizeAttachedDisk
 
 
 class ResizeAttachedDiskRequestSchema(schema.RequestSchema):
-    """ ResizeAttachedDisk - 修改挂载的磁盘大小，包含系统盘和数据盘
-    """
+    """ResizeAttachedDisk - 修改挂载的磁盘大小，包含系统盘和数据盘"""
 
     fields = {
         "DiskId": fields.Str(required=True, dump_to="DiskId"),
@@ -773,8 +728,7 @@ class ResizeAttachedDiskRequestSchema(schema.RequestSchema):
 
 
 class ResizeAttachedDiskResponseSchema(schema.ResponseSchema):
-    """ ResizeAttachedDisk - 修改挂载的磁盘大小，包含系统盘和数据盘
-    """
+    """ResizeAttachedDisk - 修改挂载的磁盘大小，包含系统盘和数据盘"""
 
     fields = {"DiskId": fields.Str(required=False, load_from="DiskId")}
 
@@ -787,8 +741,7 @@ API: ResizeUHostInstance
 
 
 class ResizeUHostInstanceRequestSchema(schema.RequestSchema):
-    """ ResizeUHostInstance - 修改指定UHost实例的资源配置，如CPU核心数，内存容量大小，磁盘空间大小,网络增强等。
-    """
+    """ResizeUHostInstance - 修改指定UHost实例的资源配置，如CPU核心数，内存容量大小，磁盘空间大小,网络增强等。"""
 
     fields = {
         "BootDiskSpace": fields.Int(required=False, dump_to="BootDiskSpace"),
@@ -804,8 +757,7 @@ class ResizeUHostInstanceRequestSchema(schema.RequestSchema):
 
 
 class ResizeUHostInstanceResponseSchema(schema.ResponseSchema):
-    """ ResizeUHostInstance - 修改指定UHost实例的资源配置，如CPU核心数，内存容量大小，磁盘空间大小,网络增强等。
-    """
+    """ResizeUHostInstance - 修改指定UHost实例的资源配置，如CPU核心数，内存容量大小，磁盘空间大小,网络增强等。"""
 
     fields = {"UhostId": fields.Str(required=False, load_from="UhostId")}
 
@@ -818,8 +770,7 @@ API: StartUHostInstance
 
 
 class StartUHostInstanceRequestSchema(schema.RequestSchema):
-    """ StartUHostInstance - 启动处于关闭状态的UHost实例，需要指定数据中心及UHostID两个参数的值。
-    """
+    """StartUHostInstance - 启动处于关闭状态的UHost实例，需要指定数据中心及UHostID两个参数的值。"""
 
     fields = {
         "DiskPassword": fields.Str(required=False, dump_to="DiskPassword"),
@@ -831,8 +782,7 @@ class StartUHostInstanceRequestSchema(schema.RequestSchema):
 
 
 class StartUHostInstanceResponseSchema(schema.ResponseSchema):
-    """ StartUHostInstance - 启动处于关闭状态的UHost实例，需要指定数据中心及UHostID两个参数的值。
-    """
+    """StartUHostInstance - 启动处于关闭状态的UHost实例，需要指定数据中心及UHostID两个参数的值。"""
 
     fields = {"UhostId": fields.Str(required=False, load_from="UhostId")}
 
@@ -845,8 +795,7 @@ API: StopUHostInstance
 
 
 class StopUHostInstanceRequestSchema(schema.RequestSchema):
-    """ StopUHostInstance - 指停止处于运行状态的UHost实例，需指定数据中心及UhostID。
-    """
+    """StopUHostInstance - 指停止处于运行状态的UHost实例，需指定数据中心及UhostID。"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -857,8 +806,7 @@ class StopUHostInstanceRequestSchema(schema.RequestSchema):
 
 
 class StopUHostInstanceResponseSchema(schema.ResponseSchema):
-    """ StopUHostInstance - 指停止处于运行状态的UHost实例，需指定数据中心及UhostID。
-    """
+    """StopUHostInstance - 指停止处于运行状态的UHost实例，需指定数据中心及UhostID。"""
 
     fields = {"UhostId": fields.Str(required=False, load_from="UhostId")}
 
@@ -871,8 +819,7 @@ API: TerminateCustomImage
 
 
 class TerminateCustomImageRequestSchema(schema.RequestSchema):
-    """ TerminateCustomImage - 删除用户自定义镜像
-    """
+    """TerminateCustomImage - 删除用户自定义镜像"""
 
     fields = {
         "ImageId": fields.Str(required=True, dump_to="ImageId"),
@@ -883,8 +830,7 @@ class TerminateCustomImageRequestSchema(schema.RequestSchema):
 
 
 class TerminateCustomImageResponseSchema(schema.ResponseSchema):
-    """ TerminateCustomImage - 删除用户自定义镜像
-    """
+    """TerminateCustomImage - 删除用户自定义镜像"""
 
     fields = {"ImageId": fields.Str(required=False, load_from="ImageId")}
 
@@ -897,8 +843,7 @@ API: TerminateUHostInstance
 
 
 class TerminateUHostInstanceRequestSchema(schema.RequestSchema):
-    """ TerminateUHostInstance - 删除指定数据中心的UHost实例。
-    """
+    """TerminateUHostInstance - 删除指定数据中心的UHost实例。"""
 
     fields = {
         "Destroy": fields.Int(required=False, dump_to="Destroy"),
@@ -912,8 +857,7 @@ class TerminateUHostInstanceRequestSchema(schema.RequestSchema):
 
 
 class TerminateUHostInstanceResponseSchema(schema.ResponseSchema):
-    """ TerminateUHostInstance - 删除指定数据中心的UHost实例。
-    """
+    """TerminateUHostInstance - 删除指定数据中心的UHost实例。"""
 
     fields = {
         "InRecycle": fields.Str(required=True, load_from="InRecycle"),
@@ -929,8 +873,7 @@ API: UpgradeToArkUHostInstance
 
 
 class UpgradeToArkUHostInstanceRequestSchema(schema.RequestSchema):
-    """ UpgradeToArkUHostInstance - 普通升级为方舟机型
-    """
+    """UpgradeToArkUHostInstance - 普通升级为方舟机型"""
 
     fields = {
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
@@ -941,8 +884,7 @@ class UpgradeToArkUHostInstanceRequestSchema(schema.RequestSchema):
 
 
 class UpgradeToArkUHostInstanceResponseSchema(schema.ResponseSchema):
-    """ UpgradeToArkUHostInstance - 普通升级为方舟机型
-    """
+    """UpgradeToArkUHostInstance - 普通升级为方舟机型"""
 
     fields = {
         "UHostSet": fields.List(

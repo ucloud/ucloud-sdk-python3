@@ -4,103 +4,87 @@ from ucloud.testing.exc import CompareError
 
 
 def eq(value, expected):
-    """ value is equal to expected
-    """
+    """value is equal to expected"""
     assert value == expected
 
 
 def ne(value, expected):
-    """ value is equal to expected
-    """
+    """value is equal to expected"""
     assert value != expected
 
 
 def gt(value, expected):
-    """ value is greater than expected
-    """
+    """value is greater than expected"""
     assert float(value) > float(expected)
 
 
 def ge(value, expected):
-    """ value is greater than or equal to expected
-    """
+    """value is greater than or equal to expected"""
     assert float(value) >= float(expected)
 
 
 def abs_eq(value, expected):
-    """ value is approx equal to expected
-    """
+    """value is approx equal to expected"""
     assert round(float(value), 2) == round(float(expected), 2)
 
 
 def lt(value, expected):
-    """ value is less than excepted
-    """
+    """value is less than excepted"""
     assert float(value) < float(expected)
 
 
 def le(value, expected):
-    """ value is less than or equal to excepted
-    """
+    """value is less than or equal to excepted"""
     assert float(value) <= float(expected)
 
 
 def str_eq(value, expected):
-    """ value is equal to excepted as string
-    """
+    """value is equal to excepted as string"""
     assert str(value) == str(expected)
 
 
 def float_eq(value, expected):
-    """ value is equal to excepted as float
-    """
+    """value is equal to excepted as float"""
     assert round(float(value), 2) == round(float(expected), 2)
 
 
 def len_eq(value, expected):
-    """ length of value is equal to excepted
-    """
+    """length of value is equal to excepted"""
     assert isinstance(expected, int)
     assert len(value) == expected
 
 
 def len_gt(value, expected):
-    """ length of value is greater than excepted
-    """
+    """length of value is greater than excepted"""
     assert isinstance(expected, int)
     assert len(value) > expected
 
 
 def len_ge(value, expected):
-    """ length of value is greater than or equal to excepted
-    """
+    """length of value is greater than or equal to excepted"""
     assert isinstance(expected, int)
     assert len(value) >= expected
 
 
 def len_lt(value, expected):
-    """ length of value is less than excepted
-    """
+    """length of value is less than excepted"""
     assert isinstance(expected, int)
     assert len(value) < expected
 
 
 def len_le(value, expected):
-    """ length of value is less than or equal to excepted
-    """
+    """length of value is less than or equal to excepted"""
     assert isinstance(expected, int)
     assert len(value) <= expected
 
 
 def contains(value, expected):
-    """ value is contains expected
-    """
+    """value is contains expected"""
     assert expected in value
 
 
 def contained_by(value, expected):
-    """ value is contained by expected
-    """
+    """value is contained by expected"""
     assert value in expected
 
 

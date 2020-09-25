@@ -16,8 +16,7 @@ API: AddVPCNetwork
 
 
 class AddVPCNetworkRequestSchema(schema.RequestSchema):
-    """ AddVPCNetwork - 添加VPC网段
-    """
+    """AddVPCNetwork - 添加VPC网段"""
 
     fields = {
         "Network": fields.List(fields.Str()),
@@ -28,8 +27,7 @@ class AddVPCNetworkRequestSchema(schema.RequestSchema):
 
 
 class AddVPCNetworkResponseSchema(schema.ResponseSchema):
-    """ AddVPCNetwork - 添加VPC网段
-    """
+    """AddVPCNetwork - 添加VPC网段"""
 
     fields = {}
 
@@ -42,8 +40,7 @@ API: AssociateRouteTable
 
 
 class AssociateRouteTableRequestSchema(schema.RequestSchema):
-    """ AssociateRouteTable - 绑定子网的路由表
-    """
+    """AssociateRouteTable - 绑定子网的路由表"""
 
     fields = {
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
@@ -54,8 +51,7 @@ class AssociateRouteTableRequestSchema(schema.RequestSchema):
 
 
 class AssociateRouteTableResponseSchema(schema.ResponseSchema):
-    """ AssociateRouteTable - 绑定子网的路由表
-    """
+    """AssociateRouteTable - 绑定子网的路由表"""
 
     fields = {}
 
@@ -68,8 +64,7 @@ API: CloneRouteTable
 
 
 class CloneRouteTableRequestSchema(schema.RequestSchema):
-    """ CloneRouteTable - 根据一张现有路由表复制一张新的路由表
-    """
+    """CloneRouteTable - 根据一张现有路由表复制一张新的路由表"""
 
     fields = {
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
@@ -79,8 +74,7 @@ class CloneRouteTableRequestSchema(schema.RequestSchema):
 
 
 class CloneRouteTableResponseSchema(schema.ResponseSchema):
-    """ CloneRouteTable - 根据一张现有路由表复制一张新的路由表
-    """
+    """CloneRouteTable - 根据一张现有路由表复制一张新的路由表"""
 
     fields = {}
 
@@ -93,8 +87,7 @@ API: CreateRouteTable
 
 
 class CreateRouteTableRequestSchema(schema.RequestSchema):
-    """ CreateRouteTable - 创建路由表
-    """
+    """CreateRouteTable - 创建路由表"""
 
     fields = {
         "Name": fields.Str(required=False, dump_to="Name"),
@@ -107,8 +100,7 @@ class CreateRouteTableRequestSchema(schema.RequestSchema):
 
 
 class CreateRouteTableResponseSchema(schema.ResponseSchema):
-    """ CreateRouteTable - 创建路由表
-    """
+    """CreateRouteTable - 创建路由表"""
 
     fields = {
         "RouteTableId": fields.Str(required=False, load_from="RouteTableId")
@@ -123,8 +115,7 @@ API: CreateSubnet
 
 
 class CreateSubnetRequestSchema(schema.RequestSchema):
-    """ CreateSubnet - 创建子网
-    """
+    """CreateSubnet - 创建子网"""
 
     fields = {
         "Netmask": fields.Int(required=False, dump_to="Netmask"),
@@ -139,8 +130,7 @@ class CreateSubnetRequestSchema(schema.RequestSchema):
 
 
 class CreateSubnetResponseSchema(schema.ResponseSchema):
-    """ CreateSubnet - 创建子网
-    """
+    """CreateSubnet - 创建子网"""
 
     fields = {"SubnetId": fields.Str(required=False, load_from="SubnetId")}
 
@@ -153,8 +143,7 @@ API: CreateVPC
 
 
 class CreateVPCRequestSchema(schema.RequestSchema):
-    """ CreateVPC - 创建VPC
-    """
+    """CreateVPC - 创建VPC"""
 
     fields = {
         "Name": fields.Str(required=True, dump_to="Name"),
@@ -168,8 +157,7 @@ class CreateVPCRequestSchema(schema.RequestSchema):
 
 
 class CreateVPCResponseSchema(schema.ResponseSchema):
-    """ CreateVPC - 创建VPC
-    """
+    """CreateVPC - 创建VPC"""
 
     fields = {"VPCId": fields.Str(required=False, load_from="VPCId")}
 
@@ -182,8 +170,7 @@ API: CreateVPCIntercom
 
 
 class CreateVPCIntercomRequestSchema(schema.RequestSchema):
-    """ CreateVPCIntercom - 新建VPC互通关系
-    """
+    """CreateVPCIntercom - 新建VPC互通关系"""
 
     fields = {
         "DstProjectId": fields.Str(required=False, dump_to="DstProjectId"),
@@ -196,8 +183,7 @@ class CreateVPCIntercomRequestSchema(schema.RequestSchema):
 
 
 class CreateVPCIntercomResponseSchema(schema.ResponseSchema):
-    """ CreateVPCIntercom - 新建VPC互通关系
-    """
+    """CreateVPCIntercom - 新建VPC互通关系"""
 
     fields = {}
 
@@ -210,8 +196,7 @@ API: DeleteRouteTable
 
 
 class DeleteRouteTableRequestSchema(schema.RequestSchema):
-    """ DeleteRouteTable - 删除自定义路由表
-    """
+    """DeleteRouteTable - 删除自定义路由表"""
 
     fields = {
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
@@ -221,8 +206,7 @@ class DeleteRouteTableRequestSchema(schema.RequestSchema):
 
 
 class DeleteRouteTableResponseSchema(schema.ResponseSchema):
-    """ DeleteRouteTable - 删除自定义路由表
-    """
+    """DeleteRouteTable - 删除自定义路由表"""
 
     fields = {}
 
@@ -235,8 +219,7 @@ API: DeleteSubnet
 
 
 class DeleteSubnetRequestSchema(schema.RequestSchema):
-    """ DeleteSubnet - 删除子网
-    """
+    """DeleteSubnet - 删除子网"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -246,8 +229,7 @@ class DeleteSubnetRequestSchema(schema.RequestSchema):
 
 
 class DeleteSubnetResponseSchema(schema.ResponseSchema):
-    """ DeleteSubnet - 删除子网
-    """
+    """DeleteSubnet - 删除子网"""
 
     fields = {}
 
@@ -260,8 +242,7 @@ API: DeleteVPC
 
 
 class DeleteVPCRequestSchema(schema.RequestSchema):
-    """ DeleteVPC - 删除VPC
-    """
+    """DeleteVPC - 删除VPC"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -271,8 +252,7 @@ class DeleteVPCRequestSchema(schema.RequestSchema):
 
 
 class DeleteVPCResponseSchema(schema.ResponseSchema):
-    """ DeleteVPC - 删除VPC
-    """
+    """DeleteVPC - 删除VPC"""
 
     fields = {}
 
@@ -285,8 +265,7 @@ API: DeleteVPCIntercom
 
 
 class DeleteVPCIntercomRequestSchema(schema.RequestSchema):
-    """ DeleteVPCIntercom - 删除VPC互通关系
-    """
+    """DeleteVPCIntercom - 删除VPC互通关系"""
 
     fields = {
         "DstProjectId": fields.Str(required=False, dump_to="DstProjectId"),
@@ -299,8 +278,7 @@ class DeleteVPCIntercomRequestSchema(schema.RequestSchema):
 
 
 class DeleteVPCIntercomResponseSchema(schema.ResponseSchema):
-    """ DeleteVPCIntercom - 删除VPC互通关系
-    """
+    """DeleteVPCIntercom - 删除VPC互通关系"""
 
     fields = {}
 
@@ -313,8 +291,7 @@ API: DescribeRouteTable
 
 
 class DescribeRouteTableRequestSchema(schema.RequestSchema):
-    """ DescribeRouteTable - 获取路由表详细信息(包括路由策略)
-    """
+    """DescribeRouteTable - 获取路由表详细信息(包括路由策略)"""
 
     fields = {
         "BusinessId": fields.Str(required=False, dump_to="BusinessId"),
@@ -328,8 +305,7 @@ class DescribeRouteTableRequestSchema(schema.RequestSchema):
 
 
 class DescribeRouteTableResponseSchema(schema.ResponseSchema):
-    """ DescribeRouteTable - 获取路由表详细信息(包括路由策略)
-    """
+    """DescribeRouteTable - 获取路由表详细信息(包括路由策略)"""
 
     fields = {
         "RouteTables": fields.List(
@@ -349,8 +325,7 @@ API: DescribeSubnet
 
 
 class DescribeSubnetRequestSchema(schema.RequestSchema):
-    """ DescribeSubnet - 获取子网信息
-    """
+    """DescribeSubnet - 获取子网信息"""
 
     fields = {
         "BusinessId": fields.Str(required=False, dump_to="BusinessId"),
@@ -370,8 +345,7 @@ class DescribeSubnetRequestSchema(schema.RequestSchema):
 
 
 class DescribeSubnetResponseSchema(schema.ResponseSchema):
-    """ DescribeSubnet - 获取子网信息
-    """
+    """DescribeSubnet - 获取子网信息"""
 
     fields = {
         "DataSet": fields.List(
@@ -389,8 +363,7 @@ API: DescribeSubnetResource
 
 
 class DescribeSubnetResourceRequestSchema(schema.RequestSchema):
-    """ DescribeSubnetResource - 展示子网资源
-    """
+    """DescribeSubnetResource - 展示子网资源"""
 
     fields = {
         "Limit": fields.Int(required=False, dump_to="Limit"),
@@ -403,8 +376,7 @@ class DescribeSubnetResourceRequestSchema(schema.RequestSchema):
 
 
 class DescribeSubnetResourceResponseSchema(schema.ResponseSchema):
-    """ DescribeSubnetResource - 展示子网资源
-    """
+    """DescribeSubnetResource - 展示子网资源"""
 
     fields = {
         "DataSet": fields.List(
@@ -422,8 +394,7 @@ API: DescribeVPC
 
 
 class DescribeVPCRequestSchema(schema.RequestSchema):
-    """ DescribeVPC - 获取VPC信息
-    """
+    """DescribeVPC - 获取VPC信息"""
 
     fields = {
         "Limit": fields.Int(required=False, dump_to="Limit"),
@@ -436,8 +407,7 @@ class DescribeVPCRequestSchema(schema.RequestSchema):
 
 
 class DescribeVPCResponseSchema(schema.ResponseSchema):
-    """ DescribeVPC - 获取VPC信息
-    """
+    """DescribeVPC - 获取VPC信息"""
 
     fields = {
         "DataSet": fields.List(
@@ -454,8 +424,7 @@ API: DescribeVPCIntercom
 
 
 class DescribeVPCIntercomRequestSchema(schema.RequestSchema):
-    """ DescribeVPCIntercom - 获取VPC互通信息
-    """
+    """DescribeVPCIntercom - 获取VPC互通信息"""
 
     fields = {
         "DstProjectId": fields.Str(required=False, dump_to="DstProjectId"),
@@ -467,8 +436,7 @@ class DescribeVPCIntercomRequestSchema(schema.RequestSchema):
 
 
 class DescribeVPCIntercomResponseSchema(schema.ResponseSchema):
-    """ DescribeVPCIntercom - 获取VPC互通信息
-    """
+    """DescribeVPCIntercom - 获取VPC互通信息"""
 
     fields = {
         "DataSet": fields.List(
@@ -485,8 +453,7 @@ API: ModifyRouteRule
 
 
 class ModifyRouteRuleRequestSchema(schema.RequestSchema):
-    """ ModifyRouteRule - 路由策略增、删、改
-    """
+    """ModifyRouteRule - 路由策略增、删、改"""
 
     fields = {
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
@@ -497,8 +464,7 @@ class ModifyRouteRuleRequestSchema(schema.RequestSchema):
 
 
 class ModifyRouteRuleResponseSchema(schema.ResponseSchema):
-    """ ModifyRouteRule - 路由策略增、删、改
-    """
+    """ModifyRouteRule - 路由策略增、删、改"""
 
     fields = {}
 
@@ -511,8 +477,7 @@ API: UpdateRouteTableAttribute
 
 
 class UpdateRouteTableAttributeRequestSchema(schema.RequestSchema):
-    """ UpdateRouteTableAttribute - 更新路由表基本信息
-    """
+    """UpdateRouteTableAttribute - 更新路由表基本信息"""
 
     fields = {
         "Name": fields.Str(required=False, dump_to="Name"),
@@ -525,8 +490,7 @@ class UpdateRouteTableAttributeRequestSchema(schema.RequestSchema):
 
 
 class UpdateRouteTableAttributeResponseSchema(schema.ResponseSchema):
-    """ UpdateRouteTableAttribute - 更新路由表基本信息
-    """
+    """UpdateRouteTableAttribute - 更新路由表基本信息"""
 
     fields = {}
 
@@ -539,8 +503,7 @@ API: UpdateSubnetAttribute
 
 
 class UpdateSubnetAttributeRequestSchema(schema.RequestSchema):
-    """ UpdateSubnetAttribute - 更新子网信息
-    """
+    """UpdateSubnetAttribute - 更新子网信息"""
 
     fields = {
         "Name": fields.Str(required=False, dump_to="Name"),
@@ -552,8 +515,7 @@ class UpdateSubnetAttributeRequestSchema(schema.RequestSchema):
 
 
 class UpdateSubnetAttributeResponseSchema(schema.ResponseSchema):
-    """ UpdateSubnetAttribute - 更新子网信息
-    """
+    """UpdateSubnetAttribute - 更新子网信息"""
 
     fields = {}
 
@@ -566,8 +528,7 @@ API: UpdateVPCNetwork
 
 
 class UpdateVPCNetworkRequestSchema(schema.RequestSchema):
-    """ UpdateVPCNetwork - 更新VPC网段
-    """
+    """UpdateVPCNetwork - 更新VPC网段"""
 
     fields = {
         "Network": fields.List(fields.Str()),
@@ -578,7 +539,6 @@ class UpdateVPCNetworkRequestSchema(schema.RequestSchema):
 
 
 class UpdateVPCNetworkResponseSchema(schema.ResponseSchema):
-    """ UpdateVPCNetwork - 更新VPC网段
-    """
+    """UpdateVPCNetwork - 更新VPC网段"""
 
     fields = {"Message": fields.Str(required=True, load_from="Message")}

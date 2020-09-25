@@ -4,8 +4,7 @@ from ucloud.core.typesystem import schema, fields
 
 
 class UDBBackupSetSchema(schema.ResponseSchema):
-    """ UDBBackupSet - DescribeUDBBackup
-    """
+    """UDBBackupSet - DescribeUDBBackup"""
 
     fields = {
         "BackupEndTime": fields.Int(required=False, load_from="BackupEndTime"),
@@ -24,8 +23,7 @@ class UDBBackupSetSchema(schema.ResponseSchema):
 
 
 class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
-    """ UDBSlaveInstanceSet - DescribeUDBSlaveInstance
-    """
+    """UDBSlaveInstanceSet - DescribeUDBSlaveInstance"""
 
     fields = {
         "AdminUser": fields.Str(required=False, load_from="AdminUser"),
@@ -78,8 +76,7 @@ class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
 
 
 class UDBInstanceSetSchema(schema.ResponseSchema):
-    """ UDBInstanceSet - DescribeUDBInstance
-    """
+    """UDBInstanceSet - DescribeUDBInstance"""
 
     fields = {
         "AdminUser": fields.Str(required=False, load_from="AdminUser"),
@@ -134,8 +131,7 @@ class UDBInstanceSetSchema(schema.ResponseSchema):
 
 
 class UDBInstanceBinlogSetSchema(schema.ResponseSchema):
-    """ UDBInstanceBinlogSet - DescribeUDBInstanceBinlog
-    """
+    """UDBInstanceBinlogSet - DescribeUDBInstanceBinlog"""
 
     fields = {
         "BeginTime": fields.Int(required=False, load_from="BeginTime"),
@@ -146,8 +142,7 @@ class UDBInstanceBinlogSetSchema(schema.ResponseSchema):
 
 
 class UDBInstancePriceSetSchema(schema.ResponseSchema):
-    """ UDBInstancePriceSet - DescribeUDBInstancePrice
-    """
+    """UDBInstancePriceSet - DescribeUDBInstancePrice"""
 
     fields = {
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
@@ -156,8 +151,7 @@ class UDBInstancePriceSetSchema(schema.ResponseSchema):
 
 
 class LogPackageDataSetSchema(schema.ResponseSchema):
-    """ LogPackageDataSet - DescribeUDBLogPackage
-    """
+    """LogPackageDataSet - DescribeUDBLogPackage"""
 
     fields = {
         "BackupId": fields.Int(required=False, load_from="BackupId"),
@@ -174,8 +168,7 @@ class LogPackageDataSetSchema(schema.ResponseSchema):
 
 
 class UDBParamMemberSetSchema(schema.ResponseSchema):
-    """ UDBParamMemberSet - DescribeUDBParamGroup
-    """
+    """UDBParamMemberSet - DescribeUDBParamGroup"""
 
     fields = {
         "AllowedVal": fields.Str(required=False, load_from="AllowedVal"),
@@ -189,8 +182,7 @@ class UDBParamMemberSetSchema(schema.ResponseSchema):
 
 
 class UDBParamGroupSetSchema(schema.ResponseSchema):
-    """ UDBParamGroupSet - DescribeUDBParamGroup
-    """
+    """UDBParamGroupSet - DescribeUDBParamGroup"""
 
     fields = {
         "DBTypeId": fields.Str(required=False, load_from="DBTypeId"),
@@ -205,7 +197,6 @@ class UDBParamGroupSetSchema(schema.ResponseSchema):
 
 
 class UDBTypeSetSchema(schema.ResponseSchema):
-    """ UDBTypeSet - DescribeUDBType
-    """
+    """UDBTypeSet - DescribeUDBType"""
 
     fields = {"DBTypeId": fields.Str(required=False, load_from="DBTypeId")}

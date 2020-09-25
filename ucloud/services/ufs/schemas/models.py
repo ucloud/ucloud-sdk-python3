@@ -4,8 +4,7 @@ from ucloud.core.typesystem import schema, fields
 
 
 class UFSVolumeInfo2Schema(schema.ResponseSchema):
-    """ UFSVolumeInfo2 - 文件系统信息
-    """
+    """UFSVolumeInfo2 - 文件系统信息"""
 
     fields = {
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),

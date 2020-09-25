@@ -17,8 +17,15 @@ def test_scenario_5292(ustack_client, variables):
 
     scenario.store["Region"] = "cn"
     scenario.store["Zone"] = "zone-01"
-    scenario.store["BeginTime"] = funcs.get_timestamp(10,) - 3600
-    scenario.store["EndTime"] = funcs.get_timestamp(10,)
+    scenario.store["BeginTime"] = (
+        funcs.get_timestamp(
+            10,
+        )
+        - 3600
+    )
+    scenario.store["EndTime"] = funcs.get_timestamp(
+        10,
+    )
 
     # 查询VPC信息
     describe_vpc_00(ustack_client)
@@ -358,7 +365,9 @@ def describe_vm_instance_07(step, client):
 
     d = {
         "Zone": variables.get("Zone"),
-        "VMIDs": [variables.get("VMID"),],
+        "VMIDs": [
+            variables.get("VMID"),
+        ],
         "Region": variables.get("Region"),
     }
 
@@ -388,7 +397,9 @@ def describe_vm_instance_08(step, client):
 
     d = {
         "Zone": variables.get("Zone"),
-        "VMIDs": [variables.get("VMID_1"),],
+        "VMIDs": [
+            variables.get("VMID_1"),
+        ],
         "Region": variables.get("Region"),
     }
 
@@ -488,7 +499,9 @@ def describe_certificate_11(step, client):
         "Zone": variables.get("Zone"),
         "Region": variables.get("Region"),
         "CertificateType": "ServerCrt",
-        "CertificateIDs": [variables.get("CertificateID_server"),],
+        "CertificateIDs": [
+            variables.get("CertificateID_server"),
+        ],
     }
 
     try:
@@ -519,7 +532,9 @@ def describe_certificate_12(step, client):
         "Zone": variables.get("Zone"),
         "Region": variables.get("Region"),
         "CertificateType": "CACrt",
-        "CertificateIDs": [variables.get("CertificateID_client"),],
+        "CertificateIDs": [
+            variables.get("CertificateID_client"),
+        ],
     }
 
     try:

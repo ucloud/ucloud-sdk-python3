@@ -18,16 +18,16 @@ class UAccountClient(Client):
     def create_project(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ CreateProject - 创建项目
+        """CreateProject - 创建项目
 
         **Request**
 
         - **ProjectName** (str) - (Required) 项目名称
-        
+
         **Response**
 
         - **ProjectId** (str) - 所创建项目的Id
-        
+
         """
         # build request
         d = {}
@@ -43,21 +43,21 @@ class UAccountClient(Client):
     def get_project_list(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ GetProjectList - 获取项目列表
+        """GetProjectList - 获取项目列表
 
         **Request**
 
         - **IsFinance** (str) - 是否是财务账号
-        
+
         **Response**
 
         - **ProjectCount** (int) - 项目总数
         - **ProjectSet** (list) - 见 **ProjectListInfo** 模型定义
-        
+
         **Response Model**
-        
-        **ProjectListInfo** 
-        
+
+        **ProjectListInfo**
+
         - **CreateTime** (int) - 创建时间(Unix时间戳)
         - **IsDefault** (bool) - 是否为默认项目
         - **MemberCount** (int) - 项目下成员数量
@@ -77,19 +77,19 @@ class UAccountClient(Client):
         return apis.GetProjectListResponseSchema().loads(resp)
 
     def get_region(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ GetRegion - 获取用户在各数据中心的权限等信息
+        """GetRegion - 获取用户在各数据中心的权限等信息
 
         **Request**
 
-        
+
         **Response**
 
         - **Regions** (list) - 见 **RegionInfo** 模型定义
-        
+
         **Response Model**
-        
-        **RegionInfo** 
-        
+
+        **RegionInfo**
+
         - **BitMaps** (str) - 用户在此数据中心的权限位
         - **IsDefault** (bool) - 是否用户当前默认数据中心
         - **Region** (str) - 地域名字，如cn-bj
@@ -109,19 +109,19 @@ class UAccountClient(Client):
     def get_user_info(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ GetUserInfo - 获取用户信息
+        """GetUserInfo - 获取用户信息
 
         **Request**
 
-        
+
         **Response**
 
         - **DataSet** (list) - 见 **UserInfo** 模型定义
-        
+
         **Response Model**
-        
-        **UserInfo** 
-        
+
+        **UserInfo**
+
         - **Admin** (int) - 是否超级管理员 0:否 1:是
         - **Administrator** (str) - 管理员
         - **AuthState** (str) - 实名认证状态
@@ -151,16 +151,16 @@ class UAccountClient(Client):
     def modify_project(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ ModifyProject - 修改项目
+        """ModifyProject - 修改项目
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **ProjectName** (str) - (Required) 新的项目名称
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {"ProjectId": self.config.project_id}
@@ -173,15 +173,15 @@ class UAccountClient(Client):
     def terminate_project(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ TerminateProject - 删除项目
+        """TerminateProject - 删除项目
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID，不填写为默认项目，子帐号必须填写。
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {"ProjectId": self.config.project_id}

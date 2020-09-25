@@ -4,8 +4,7 @@ from ucloud.core.typesystem import schema, fields
 
 
 class ProjectListInfoSchema(schema.ResponseSchema):
-    """ ProjectListInfo - 项目信息
-    """
+    """ProjectListInfo - 项目信息"""
 
     fields = {
         "CreateTime": fields.Int(required=True, load_from="CreateTime"),
@@ -20,8 +19,7 @@ class ProjectListInfoSchema(schema.ResponseSchema):
 
 
 class RegionInfoSchema(schema.ResponseSchema):
-    """ RegionInfo - 数据中心信息
-    """
+    """RegionInfo - 数据中心信息"""
 
     fields = {
         "BitMaps": fields.Str(required=True, load_from="BitMaps"),
@@ -34,8 +32,7 @@ class RegionInfoSchema(schema.ResponseSchema):
 
 
 class UserInfoSchema(schema.ResponseSchema):
-    """ UserInfo - 用户信息
-    """
+    """UserInfo - 用户信息"""
 
     fields = {
         "Admin": fields.Int(required=True, load_from="Admin"),

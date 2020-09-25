@@ -4,8 +4,7 @@ from ucloud.core.typesystem import schema, fields
 
 
 class UHostImageSetSchema(schema.ResponseSchema):
-    """ UHostImageSet - DescribeImage
-    """
+    """UHostImageSet - DescribeImage"""
 
     fields = {
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
@@ -32,8 +31,7 @@ class UHostImageSetSchema(schema.ResponseSchema):
 
 
 class SpreadInfoSchema(schema.ResponseSchema):
-    """ SpreadInfo - 每个可用区中硬件隔离组信息
-    """
+    """SpreadInfo - 每个可用区中硬件隔离组信息"""
 
     fields = {
         "UHostCount": fields.Int(required=False, load_from="UHostCount"),
@@ -42,8 +40,7 @@ class SpreadInfoSchema(schema.ResponseSchema):
 
 
 class IsolationGroupSchema(schema.ResponseSchema):
-    """ IsolationGroup - 硬件隔离组信息
-    """
+    """IsolationGroup - 硬件隔离组信息"""
 
     fields = {
         "GroupId": fields.Str(required=False, load_from="GroupId"),
@@ -54,8 +51,7 @@ class IsolationGroupSchema(schema.ResponseSchema):
 
 
 class UHostDiskSetSchema(schema.ResponseSchema):
-    """ UHostDiskSet - DescribeUHostInstance
-    """
+    """UHostDiskSet - DescribeUHostInstance"""
 
     fields = {
         "BackupType": fields.Str(required=False, load_from="BackupType"),
@@ -71,8 +67,7 @@ class UHostDiskSetSchema(schema.ResponseSchema):
 
 
 class UHostIPSetSchema(schema.ResponseSchema):
-    """ UHostIPSet - DescribeUHostInstance
-    """
+    """UHostIPSet - DescribeUHostInstance"""
 
     fields = {
         "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
@@ -88,8 +83,7 @@ class UHostIPSetSchema(schema.ResponseSchema):
 
 
 class UHostInstanceSetSchema(schema.ResponseSchema):
-    """ UHostInstanceSet - DescribeUHostInstance
-    """
+    """UHostInstanceSet - DescribeUHostInstance"""
 
     fields = {
         "AutoRenew": fields.Str(required=False, load_from="AutoRenew"),
@@ -139,8 +133,7 @@ class UHostInstanceSetSchema(schema.ResponseSchema):
 
 
 class UHostSnapshotSetSchema(schema.ResponseSchema):
-    """ UHostSnapshotSet - DescribeUHostInstanceSnapshot
-    """
+    """UHostSnapshotSet - DescribeUHostInstanceSnapshot"""
 
     fields = {
         "SnapshotName": fields.Str(required=False, load_from="SnapshotName"),
@@ -150,8 +143,7 @@ class UHostSnapshotSetSchema(schema.ResponseSchema):
 
 
 class UHostTagSetSchema(schema.ResponseSchema):
-    """ UHostTagSet - DescribeUHostTags
-    """
+    """UHostTagSet - DescribeUHostTags"""
 
     fields = {
         "Tag": fields.Str(required=False, load_from="Tag"),
@@ -161,8 +153,7 @@ class UHostTagSetSchema(schema.ResponseSchema):
 
 
 class UHostPriceSetSchema(schema.ResponseSchema):
-    """ UHostPriceSet - 主机价格
-    """
+    """UHostPriceSet - 主机价格"""
 
     fields = {
         "ChargeType": fields.Str(required=True, load_from="ChargeType"),
