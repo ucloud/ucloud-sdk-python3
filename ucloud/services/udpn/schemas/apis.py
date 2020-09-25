@@ -16,8 +16,7 @@ API: AllocateUDPN
 
 
 class AllocateUDPNRequestSchema(schema.RequestSchema):
-    """ AllocateUDPN - 分配一条 UDPN 专线
-    """
+    """AllocateUDPN - 分配一条 UDPN 专线"""
 
     fields = {
         "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
@@ -32,8 +31,7 @@ class AllocateUDPNRequestSchema(schema.RequestSchema):
 
 
 class AllocateUDPNResponseSchema(schema.ResponseSchema):
-    """ AllocateUDPN - 分配一条 UDPN 专线
-    """
+    """AllocateUDPN - 分配一条 UDPN 专线"""
 
     fields = {"UDPNId": fields.Str(required=True, load_from="UDPNId")}
 
@@ -46,8 +44,7 @@ API: DescribeUDPN
 
 
 class DescribeUDPNRequestSchema(schema.RequestSchema):
-    """ DescribeUDPN - 描述 UDPN
-    """
+    """DescribeUDPN - 描述 UDPN"""
 
     fields = {
         "Limit": fields.Int(required=False, dump_to="Limit"),
@@ -59,8 +56,7 @@ class DescribeUDPNRequestSchema(schema.RequestSchema):
 
 
 class DescribeUDPNResponseSchema(schema.ResponseSchema):
-    """ DescribeUDPN - 描述 UDPN
-    """
+    """DescribeUDPN - 描述 UDPN"""
 
     fields = {
         "DataSet": fields.List(
@@ -78,8 +74,7 @@ API: GetUDPNLineList
 
 
 class GetUDPNLineListRequestSchema(schema.RequestSchema):
-    """ GetUDPNLineList - 获取当前支持的专线线路列表
-    """
+    """GetUDPNLineList - 获取当前支持的专线线路列表"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -88,8 +83,7 @@ class GetUDPNLineListRequestSchema(schema.RequestSchema):
 
 
 class GetUDPNLineListResponseSchema(schema.ResponseSchema):
-    """ GetUDPNLineList - 获取当前支持的专线线路列表
-    """
+    """GetUDPNLineList - 获取当前支持的专线线路列表"""
 
     fields = {
         "DataSet": fields.List(
@@ -107,8 +101,7 @@ API: GetUDPNPrice
 
 
 class GetUDPNPriceRequestSchema(schema.RequestSchema):
-    """ GetUDPNPrice - 获取 UDPN 价格
-    """
+    """GetUDPNPrice - 获取 UDPN 价格"""
 
     fields = {
         "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
@@ -121,8 +114,7 @@ class GetUDPNPriceRequestSchema(schema.RequestSchema):
 
 
 class GetUDPNPriceResponseSchema(schema.ResponseSchema):
-    """ GetUDPNPrice - 获取 UDPN 价格
-    """
+    """GetUDPNPrice - 获取 UDPN 价格"""
 
     fields = {
         "Price": fields.Float(required=True, load_from="Price"),
@@ -138,8 +130,7 @@ API: GetUDPNUpgradePrice
 
 
 class GetUDPNUpgradePriceRequestSchema(schema.RequestSchema):
-    """ GetUDPNUpgradePrice - 获取专线升级价格
-    """
+    """GetUDPNUpgradePrice - 获取专线升级价格"""
 
     fields = {
         "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
@@ -150,8 +141,7 @@ class GetUDPNUpgradePriceRequestSchema(schema.RequestSchema):
 
 
 class GetUDPNUpgradePriceResponseSchema(schema.ResponseSchema):
-    """ GetUDPNUpgradePrice - 获取专线升级价格
-    """
+    """GetUDPNUpgradePrice - 获取专线升级价格"""
 
     fields = {"Price": fields.Float(required=True, load_from="Price")}
 
@@ -164,8 +154,7 @@ API: ModifyUDPNBandwidth
 
 
 class ModifyUDPNBandwidthRequestSchema(schema.RequestSchema):
-    """ ModifyUDPNBandwidth - 修改带宽值
-    """
+    """ModifyUDPNBandwidth - 修改带宽值"""
 
     fields = {
         "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
@@ -177,8 +166,7 @@ class ModifyUDPNBandwidthRequestSchema(schema.RequestSchema):
 
 
 class ModifyUDPNBandwidthResponseSchema(schema.ResponseSchema):
-    """ ModifyUDPNBandwidth - 修改带宽值
-    """
+    """ModifyUDPNBandwidth - 修改带宽值"""
 
     fields = {}
 
@@ -191,8 +179,7 @@ API: ReleaseUDPN
 
 
 class ReleaseUDPNRequestSchema(schema.RequestSchema):
-    """ ReleaseUDPN - 释放 UDPN
-    """
+    """ReleaseUDPN - 释放 UDPN"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -202,7 +189,6 @@ class ReleaseUDPNRequestSchema(schema.RequestSchema):
 
 
 class ReleaseUDPNResponseSchema(schema.ResponseSchema):
-    """ ReleaseUDPN - 释放 UDPN
-    """
+    """ReleaseUDPN - 释放 UDPN"""
 
     fields = {}

@@ -16,8 +16,7 @@ API: CreateGlobalSSHInstance
 
 
 class CreateGlobalSSHInstanceRequestSchema(schema.RequestSchema):
-    """ CreateGlobalSSHInstance - 创建GlobalSSH实例
-    """
+    """CreateGlobalSSHInstance - 创建GlobalSSH实例"""
 
     fields = {
         "Area": fields.Str(required=True, dump_to="Area"),
@@ -33,8 +32,7 @@ class CreateGlobalSSHInstanceRequestSchema(schema.RequestSchema):
 
 
 class CreateGlobalSSHInstanceResponseSchema(schema.ResponseSchema):
-    """ CreateGlobalSSHInstance - 创建GlobalSSH实例
-    """
+    """CreateGlobalSSHInstance - 创建GlobalSSH实例"""
 
     fields = {
         "AcceleratingDomain": fields.Str(
@@ -53,8 +51,7 @@ API: DeleteGlobalSSHInstance
 
 
 class DeleteGlobalSSHInstanceRequestSchema(schema.RequestSchema):
-    """ DeleteGlobalSSHInstance - 删除GlobalSSH实例
-    """
+    """DeleteGlobalSSHInstance - 删除GlobalSSH实例"""
 
     fields = {
         "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
@@ -63,8 +60,7 @@ class DeleteGlobalSSHInstanceRequestSchema(schema.RequestSchema):
 
 
 class DeleteGlobalSSHInstanceResponseSchema(schema.ResponseSchema):
-    """ DeleteGlobalSSHInstance - 删除GlobalSSH实例
-    """
+    """DeleteGlobalSSHInstance - 删除GlobalSSH实例"""
 
     fields = {"Message": fields.Str(required=False, load_from="Message")}
 
@@ -77,8 +73,7 @@ API: DescribeGlobalSSHArea
 
 
 class DescribeGlobalSSHAreaRequestSchema(schema.RequestSchema):
-    """ DescribeGlobalSSHArea - 获取GlobalSSH覆盖的地区列表 用于控制显示哪些机房地域可以使用SSH特性
-    """
+    """DescribeGlobalSSHArea - 获取GlobalSSH覆盖的地区列表 用于控制显示哪些机房地域可以使用SSH特性"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -87,8 +82,7 @@ class DescribeGlobalSSHAreaRequestSchema(schema.RequestSchema):
 
 
 class DescribeGlobalSSHAreaResponseSchema(schema.ResponseSchema):
-    """ DescribeGlobalSSHArea - 获取GlobalSSH覆盖的地区列表 用于控制显示哪些机房地域可以使用SSH特性
-    """
+    """DescribeGlobalSSHArea - 获取GlobalSSH覆盖的地区列表 用于控制显示哪些机房地域可以使用SSH特性"""
 
     fields = {
         "AreaSet": fields.List(
@@ -106,8 +100,7 @@ API: DescribeGlobalSSHInstance
 
 
 class DescribeGlobalSSHInstanceRequestSchema(schema.RequestSchema):
-    """ DescribeGlobalSSHInstance - 获取GlobalSSH实例列表（传实例ID获取单个实例信息，不传获取项目下全部实例）
-    """
+    """DescribeGlobalSSHInstance - 获取GlobalSSH实例列表（传实例ID获取单个实例信息，不传获取项目下全部实例）"""
 
     fields = {
         "InstanceId": fields.Str(required=False, dump_to="InstanceId"),
@@ -116,8 +109,7 @@ class DescribeGlobalSSHInstanceRequestSchema(schema.RequestSchema):
 
 
 class DescribeGlobalSSHInstanceResponseSchema(schema.ResponseSchema):
-    """ DescribeGlobalSSHInstance - 获取GlobalSSH实例列表（传实例ID获取单个实例信息，不传获取项目下全部实例）
-    """
+    """DescribeGlobalSSHInstance - 获取GlobalSSH实例列表（传实例ID获取单个实例信息，不传获取项目下全部实例）"""
 
     fields = {
         "InstanceSet": fields.List(
@@ -136,8 +128,7 @@ API: ModifyGlobalSSHPort
 
 
 class ModifyGlobalSSHPortRequestSchema(schema.RequestSchema):
-    """ ModifyGlobalSSHPort - 修改GlobalSSH端口
-    """
+    """ModifyGlobalSSHPort - 修改GlobalSSH端口"""
 
     fields = {
         "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
@@ -147,8 +138,7 @@ class ModifyGlobalSSHPortRequestSchema(schema.RequestSchema):
 
 
 class ModifyGlobalSSHPortResponseSchema(schema.ResponseSchema):
-    """ ModifyGlobalSSHPort - 修改GlobalSSH端口
-    """
+    """ModifyGlobalSSHPort - 修改GlobalSSH端口"""
 
     fields = {"Message": fields.Str(required=False, load_from="Message")}
 
@@ -161,8 +151,7 @@ API: ModifyGlobalSSHRemark
 
 
 class ModifyGlobalSSHRemarkRequestSchema(schema.RequestSchema):
-    """ ModifyGlobalSSHRemark - 修改GlobalSSH备注
-    """
+    """ModifyGlobalSSHRemark - 修改GlobalSSH备注"""
 
     fields = {
         "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
@@ -172,7 +161,6 @@ class ModifyGlobalSSHRemarkRequestSchema(schema.RequestSchema):
 
 
 class ModifyGlobalSSHRemarkResponseSchema(schema.ResponseSchema):
-    """ ModifyGlobalSSHRemark - 修改GlobalSSH备注
-    """
+    """ModifyGlobalSSHRemark - 修改GlobalSSH备注"""
 
     fields = {"Message": fields.Str(required=False, load_from="Message")}

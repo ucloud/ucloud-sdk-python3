@@ -4,8 +4,7 @@ from ucloud.core.typesystem import schema, fields
 
 
 class UDPNDataSchema(schema.ResponseSchema):
-    """ UDPNData - UDPN 详细信息
-    """
+    """UDPNData - UDPN 详细信息"""
 
     fields = {
         "Bandwidth": fields.Int(required=True, load_from="Bandwidth"),
@@ -19,8 +18,7 @@ class UDPNDataSchema(schema.ResponseSchema):
 
 
 class UDPNLineSetSchema(schema.ResponseSchema):
-    """ UDPNLineSet - GetUDPNLineList
-    """
+    """UDPNLineSet - GetUDPNLineList"""
 
     fields = {
         "BandwidthUpperLimit": fields.Int(

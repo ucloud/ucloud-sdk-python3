@@ -16,8 +16,7 @@ API: CreateUFSVolume
 
 
 class CreateUFSVolumeRequestSchema(schema.RequestSchema):
-    """ CreateUFSVolume - 创建文件系统
-    """
+    """CreateUFSVolume - 创建文件系统"""
 
     fields = {
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
@@ -35,8 +34,7 @@ class CreateUFSVolumeRequestSchema(schema.RequestSchema):
 
 
 class CreateUFSVolumeResponseSchema(schema.ResponseSchema):
-    """ CreateUFSVolume - 创建文件系统
-    """
+    """CreateUFSVolume - 创建文件系统"""
 
     fields = {
         "VolumeId": fields.Str(required=True, load_from="VolumeId"),
@@ -53,8 +51,7 @@ API: DescribeUFSVolume2
 
 
 class DescribeUFSVolume2RequestSchema(schema.RequestSchema):
-    """ DescribeUFSVolume2 - 获取文件系统列表
-    """
+    """DescribeUFSVolume2 - 获取文件系统列表"""
 
     fields = {
         "Limit": fields.Int(required=False, dump_to="Limit"),
@@ -66,8 +63,7 @@ class DescribeUFSVolume2RequestSchema(schema.RequestSchema):
 
 
 class DescribeUFSVolume2ResponseSchema(schema.ResponseSchema):
-    """ DescribeUFSVolume2 - 获取文件系统列表
-    """
+    """DescribeUFSVolume2 - 获取文件系统列表"""
 
     fields = {
         "DataSet": fields.List(
@@ -85,8 +81,7 @@ API: ExtendUFSVolume
 
 
 class ExtendUFSVolumeRequestSchema(schema.RequestSchema):
-    """ ExtendUFSVolume - 文件系统扩容
-    """
+    """ExtendUFSVolume - 文件系统扩容"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -97,8 +92,7 @@ class ExtendUFSVolumeRequestSchema(schema.RequestSchema):
 
 
 class ExtendUFSVolumeResponseSchema(schema.ResponseSchema):
-    """ ExtendUFSVolume - 文件系统扩容
-    """
+    """ExtendUFSVolume - 文件系统扩容"""
 
     fields = {}
 
@@ -111,8 +105,7 @@ API: RemoveUFSVolume
 
 
 class RemoveUFSVolumeRequestSchema(schema.RequestSchema):
-    """ RemoveUFSVolume - 删除UFS文件系统
-    """
+    """RemoveUFSVolume - 删除UFS文件系统"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -122,7 +115,6 @@ class RemoveUFSVolumeRequestSchema(schema.RequestSchema):
 
 
 class RemoveUFSVolumeResponseSchema(schema.ResponseSchema):
-    """ RemoveUFSVolume - 删除UFS文件系统
-    """
+    """RemoveUFSVolume - 删除UFS文件系统"""
 
     fields = {}

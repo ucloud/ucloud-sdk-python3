@@ -1,5 +1,5 @@
 class Middleware:
-    """ middleware is the object to store request/response handlers
+    """middleware is the object to store request/response handlers
 
     >>> middleware = Middleware()
 
@@ -27,7 +27,7 @@ class Middleware:
         self.exception_handlers = []
 
     def request(self, handler, index=-1):
-        """ request is the request handler register to add request handler.
+        """request is the request handler register to add request handler.
 
         :param handler: request handler function, receive request object
                         and return a new request
@@ -39,7 +39,7 @@ class Middleware:
         return handler
 
     def response(self, handler, index=-1):
-        """ response is the response handler register to add response handler.
+        """response is the response handler register to add response handler.
 
         :param handler: response handler function, receive response object
                         and return a new response
@@ -51,7 +51,7 @@ class Middleware:
         return handler
 
     def exception(self, handler, index=-1):
-        """ exception is the exception handler register to add exception handler.
+        """exception is the exception handler register to add exception handler.
 
         :param handler: exception handler function, receive exception object
                         and raise a new exception or ignore it

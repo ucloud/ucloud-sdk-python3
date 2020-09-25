@@ -18,21 +18,21 @@ class StepFlowClient(Client):
     def create_sf_workflow_from_template(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ CreateSFWorkflowFromTemplate - 导入工作流定义
+        """CreateSFWorkflowFromTemplate - 导入工作流定义
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Namespace** (str) - (Required) 需要创建的工作流namespace
         - **Workflow** (str) - (Required) 描述工作流定义的base64字符串
         - **WorkflowName** (str) - (Required) 需要创建的工作流名称
-        
+
         **Response**
 
         - **Message** (str) - 返回消息
         - **Version** (int) - 创建的工作流版本号
-        
+
         """
         # build request
         d = {"ProjectId": self.config.project_id, "Region": self.config.region}
@@ -48,32 +48,32 @@ class StepFlowClient(Client):
     def get_sf_workflow_template(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ GetSFWorkflowTemplate - 导出工作流定义
+        """GetSFWorkflowTemplate - 导出工作流定义
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **WorkflowId** (str) - (Required) 被导出工作流的Id
         - **WorkflowVersion** (int) - 被导出工作流的版本号。取值范围：WorkflowVersion >= 1；默认会获取发布版本对应的workflow；超过最大版本会返回错误
-        
+
         **Response**
 
         - **Message** (str) - 返回消息
         - **Version** (int) - 导出工作流的版本号
         - **Workflow** (dict) - 见 **WorkflowTemplate** 模型定义
         - **WorkflowId** (str) - 导出工作流的Id
-        
+
         **Response Model**
-        
-        **Param** 
-        
+
+        **Param**
+
         - **Name** (str) - 参数名称
         - **Type** (str) - 参数类型
         - **Value** (str) - 参数值
 
-        **ActivityTemplate** 
-        
+        **ActivityTemplate**
+
         - **Input** (dict) - Activity的输入
         - **Name** (str) - Activity的名字
         - **Next** (str) - 下一个Activity的名字
@@ -82,8 +82,8 @@ class StepFlowClient(Client):
         - **Timeout** (str) - Activity的超时时间
         - **Type** (str) - Activity的类型
 
-        **WorkflowTemplate** 
-        
+        **WorkflowTemplate**
+
         - **Activites** (list) - 见 **ActivityTemplate** 模型定义
         - **Input** (list) - 见 **Param** 模型定义
         - **Output** (list) - 见 **Param** 模型定义

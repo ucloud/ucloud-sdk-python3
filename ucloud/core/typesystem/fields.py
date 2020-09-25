@@ -8,7 +8,7 @@ from ucloud.core.utils.compat import str
 
 
 class List(abstract.Field):
-    """ array param is the custom field to parse custom param such as:
+    """array param is the custom field to parse custom param such as:
 
     - IP.N
     - UDisk.N.Size

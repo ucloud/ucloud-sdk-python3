@@ -4,8 +4,7 @@ from ucloud.core.typesystem import schema, fields
 
 
 class RemoteVPNGatewayDataSetSchema(schema.ResponseSchema):
-    """ RemoteVPNGatewayDataSet - DescribeRemoteVPNGateway返回参数
-    """
+    """RemoteVPNGatewayDataSet - DescribeRemoteVPNGateway返回参数"""
 
     fields = {
         "ActiveTunnels": fields.Str(required=False, load_from="ActiveTunnels"),
@@ -26,8 +25,7 @@ class RemoteVPNGatewayDataSetSchema(schema.ResponseSchema):
 
 
 class IPSecDataSchema(schema.ResponseSchema):
-    """ IPSecData - IPSec参数
-    """
+    """IPSecData - IPSec参数"""
 
     fields = {
         "IPSecAuthenticationAlgorithm": fields.Str(
@@ -52,8 +50,7 @@ class IPSecDataSchema(schema.ResponseSchema):
 
 
 class IKEDataSchema(schema.ResponseSchema):
-    """ IKEData - IKE信息
-    """
+    """IKEData - IKE信息"""
 
     fields = {
         "IKEAuthenticationAlgorithm": fields.Str(
@@ -77,8 +74,7 @@ class IKEDataSchema(schema.ResponseSchema):
 
 
 class VPNTunnelDataSetSchema(schema.ResponseSchema):
-    """ VPNTunnelDataSet - DescribeVPNTunnel信息
-    """
+    """VPNTunnelDataSet - DescribeVPNTunnel信息"""
 
     fields = {
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),

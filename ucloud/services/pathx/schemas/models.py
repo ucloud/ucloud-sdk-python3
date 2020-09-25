@@ -4,8 +4,7 @@ from ucloud.core.typesystem import schema, fields
 
 
 class GlobalSSHAreaSchema(schema.ResponseSchema):
-    """ GlobalSSHArea - GlobalSSH覆盖地区,包括关联的UCloud机房信息
-    """
+    """GlobalSSHArea - GlobalSSH覆盖地区,包括关联的UCloud机房信息"""
 
     fields = {
         "Area": fields.Str(required=True, load_from="Area"),
@@ -15,8 +14,7 @@ class GlobalSSHAreaSchema(schema.ResponseSchema):
 
 
 class GlobalSSHInfoSchema(schema.ResponseSchema):
-    """ GlobalSSHInfo - GlobalSSH实例信息
-    """
+    """GlobalSSHInfo - GlobalSSH实例信息"""
 
     fields = {
         "AcceleratingDomain": fields.Str(

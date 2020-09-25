@@ -23,7 +23,7 @@ class Step:
         title: str = "",
         **kwargs
     ):
-        """ Step is the test step in a test scenario
+        """Step is the test step in a test scenario
         :param invoker: invoker is a callable function
         :param max_retries: the maximum retry number by the `retry_for` exception,
                             it will resolve the flaky testing case

@@ -5,7 +5,7 @@ logger = logging.getLogger("ucloud")
 
 
 def deprecated(instead_of="", message=""):
-    """ deprecated is a decorator to mark a function is deprecated.
+    """deprecated is a decorator to mark a function is deprecated.
     it will logging warning when this function called
 
     >>> @deprecated(instead_of="new_function")

@@ -4,8 +4,7 @@ from ucloud.core.typesystem import schema, fields
 
 
 class TagSetSchema(schema.ResponseSchema):
-    """ TagSet - Tag详细信息
-    """
+    """TagSet - Tag详细信息"""
 
     fields = {
         "TagName": fields.Str(required=True, load_from="TagName"),
@@ -14,8 +13,7 @@ class TagSetSchema(schema.ResponseSchema):
 
 
 class RepoSetSchema(schema.ResponseSchema):
-    """ RepoSet - 镜像仓库
-    """
+    """RepoSet - 镜像仓库"""
 
     fields = {
         "CreateTime": fields.Str(required=True, load_from="CreateTime"),
@@ -28,8 +26,7 @@ class RepoSetSchema(schema.ResponseSchema):
 
 
 class ImageSetSchema(schema.ResponseSchema):
-    """ ImageSet - 镜像信息
-    """
+    """ImageSet - 镜像信息"""
 
     fields = {
         "CreateTime": fields.Str(required=True, load_from="CreateTime"),

@@ -16,8 +16,7 @@ API: AttachUDisk
 
 
 class AttachUDiskRequestSchema(schema.RequestSchema):
-    """ AttachUDisk - 将一个可用的UDisk挂载到某台主机上，当UDisk挂载成功后，还需要在主机内部进行文件系统操作
-    """
+    """AttachUDisk - 将一个可用的UDisk挂载到某台主机上，当UDisk挂载成功后，还需要在主机内部进行文件系统操作"""
 
     fields = {
         "MultiAttach": fields.Str(required=False, dump_to="MultiAttach"),
@@ -30,8 +29,7 @@ class AttachUDiskRequestSchema(schema.RequestSchema):
 
 
 class AttachUDiskResponseSchema(schema.ResponseSchema):
-    """ AttachUDisk - 将一个可用的UDisk挂载到某台主机上，当UDisk挂载成功后，还需要在主机内部进行文件系统操作
-    """
+    """AttachUDisk - 将一个可用的UDisk挂载到某台主机上，当UDisk挂载成功后，还需要在主机内部进行文件系统操作"""
 
     fields = {
         "UDiskId": fields.Str(required=False, load_from="UDiskId"),
@@ -47,8 +45,7 @@ API: CloneUDisk
 
 
 class CloneUDiskRequestSchema(schema.RequestSchema):
-    """ CloneUDisk - 从UDisk创建UDisk克隆
-    """
+    """CloneUDisk - 从UDisk创建UDisk克隆"""
 
     fields = {
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
@@ -65,8 +62,7 @@ class CloneUDiskRequestSchema(schema.RequestSchema):
 
 
 class CloneUDiskResponseSchema(schema.ResponseSchema):
-    """ CloneUDisk - 从UDisk创建UDisk克隆
-    """
+    """CloneUDisk - 从UDisk创建UDisk克隆"""
 
     fields = {
         "UDiskId": fields.List(
@@ -83,8 +79,7 @@ API: CloneUDiskSnapshot
 
 
 class CloneUDiskSnapshotRequestSchema(schema.RequestSchema):
-    """ CloneUDiskSnapshot - 从快照创建UDisk克隆
-    """
+    """CloneUDiskSnapshot - 从快照创建UDisk克隆"""
 
     fields = {
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
@@ -102,8 +97,7 @@ class CloneUDiskSnapshotRequestSchema(schema.RequestSchema):
 
 
 class CloneUDiskSnapshotResponseSchema(schema.ResponseSchema):
-    """ CloneUDiskSnapshot - 从快照创建UDisk克隆
-    """
+    """CloneUDiskSnapshot - 从快照创建UDisk克隆"""
 
     fields = {
         "UDiskId": fields.List(
@@ -120,8 +114,7 @@ API: CreateUDisk
 
 
 class CreateUDiskRequestSchema(schema.RequestSchema):
-    """ CreateUDisk - 创建UDisk磁盘
-    """
+    """CreateUDisk - 创建UDisk磁盘"""
 
     fields = {
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
@@ -141,8 +134,7 @@ class CreateUDiskRequestSchema(schema.RequestSchema):
 
 
 class CreateUDiskResponseSchema(schema.ResponseSchema):
-    """ CreateUDisk - 创建UDisk磁盘
-    """
+    """CreateUDisk - 创建UDisk磁盘"""
 
     fields = {
         "UDiskId": fields.List(
@@ -159,8 +151,7 @@ API: CreateUDiskSnapshot
 
 
 class CreateUDiskSnapshotRequestSchema(schema.RequestSchema):
-    """ CreateUDiskSnapshot - 创建snapshot快照
-    """
+    """CreateUDiskSnapshot - 创建snapshot快照"""
 
     fields = {
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
@@ -175,8 +166,7 @@ class CreateUDiskSnapshotRequestSchema(schema.RequestSchema):
 
 
 class CreateUDiskSnapshotResponseSchema(schema.ResponseSchema):
-    """ CreateUDiskSnapshot - 创建snapshot快照
-    """
+    """CreateUDiskSnapshot - 创建snapshot快照"""
 
     fields = {
         "SnapshotId": fields.List(
@@ -193,8 +183,7 @@ API: DeleteUDisk
 
 
 class DeleteUDiskRequestSchema(schema.RequestSchema):
-    """ DeleteUDisk - 删除UDisk
-    """
+    """DeleteUDisk - 删除UDisk"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -205,8 +194,7 @@ class DeleteUDiskRequestSchema(schema.RequestSchema):
 
 
 class DeleteUDiskResponseSchema(schema.ResponseSchema):
-    """ DeleteUDisk - 删除UDisk
-    """
+    """DeleteUDisk - 删除UDisk"""
 
     fields = {}
 
@@ -219,8 +207,7 @@ API: DeleteUDiskSnapshot
 
 
 class DeleteUDiskSnapshotRequestSchema(schema.RequestSchema):
-    """ DeleteUDiskSnapshot - 删除Snapshot
-    """
+    """DeleteUDiskSnapshot - 删除Snapshot"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -232,8 +219,7 @@ class DeleteUDiskSnapshotRequestSchema(schema.RequestSchema):
 
 
 class DeleteUDiskSnapshotResponseSchema(schema.ResponseSchema):
-    """ DeleteUDiskSnapshot - 删除Snapshot
-    """
+    """DeleteUDiskSnapshot - 删除Snapshot"""
 
     fields = {}
 
@@ -246,8 +232,7 @@ API: DescribeUDisk
 
 
 class DescribeUDiskRequestSchema(schema.RequestSchema):
-    """ DescribeUDisk - 获取UDisk实例
-    """
+    """DescribeUDisk - 获取UDisk实例"""
 
     fields = {
         "DiskType": fields.Str(required=False, dump_to="DiskType"),
@@ -265,8 +250,7 @@ class DescribeUDiskRequestSchema(schema.RequestSchema):
 
 
 class DescribeUDiskResponseSchema(schema.ResponseSchema):
-    """ DescribeUDisk - 获取UDisk实例
-    """
+    """DescribeUDisk - 获取UDisk实例"""
 
     fields = {
         "DataSet": fields.List(
@@ -284,8 +268,7 @@ API: DescribeUDiskPrice
 
 
 class DescribeUDiskPriceRequestSchema(schema.RequestSchema):
-    """ DescribeUDiskPrice - 获取UDisk实例价格信息
-    """
+    """DescribeUDiskPrice - 获取UDisk实例价格信息"""
 
     fields = {
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
@@ -300,8 +283,7 @@ class DescribeUDiskPriceRequestSchema(schema.RequestSchema):
 
 
 class DescribeUDiskPriceResponseSchema(schema.ResponseSchema):
-    """ DescribeUDiskPrice - 获取UDisk实例价格信息
-    """
+    """DescribeUDiskPrice - 获取UDisk实例价格信息"""
 
     fields = {
         "DataSet": fields.List(
@@ -320,8 +302,7 @@ API: DescribeUDiskSnapshot
 
 
 class DescribeUDiskSnapshotRequestSchema(schema.RequestSchema):
-    """ DescribeUDiskSnapshot - 获取UDisk快照
-    """
+    """DescribeUDiskSnapshot - 获取UDisk快照"""
 
     fields = {
         "Limit": fields.Int(required=False, dump_to="Limit"),
@@ -335,8 +316,7 @@ class DescribeUDiskSnapshotRequestSchema(schema.RequestSchema):
 
 
 class DescribeUDiskSnapshotResponseSchema(schema.ResponseSchema):
-    """ DescribeUDiskSnapshot - 获取UDisk快照
-    """
+    """DescribeUDiskSnapshot - 获取UDisk快照"""
 
     fields = {
         "DataSet": fields.List(
@@ -354,8 +334,7 @@ API: DescribeUDiskUpgradePrice
 
 
 class DescribeUDiskUpgradePriceRequestSchema(schema.RequestSchema):
-    """ DescribeUDiskUpgradePrice - 获取UDisk升级价格信息
-    """
+    """DescribeUDiskUpgradePrice - 获取UDisk升级价格信息"""
 
     fields = {
         "DiskType": fields.Str(required=False, dump_to="DiskType"),
@@ -369,8 +348,7 @@ class DescribeUDiskUpgradePriceRequestSchema(schema.RequestSchema):
 
 
 class DescribeUDiskUpgradePriceResponseSchema(schema.ResponseSchema):
-    """ DescribeUDiskUpgradePrice - 获取UDisk升级价格信息
-    """
+    """DescribeUDiskUpgradePrice - 获取UDisk升级价格信息"""
 
     fields = {
         "OriginalPrice": fields.Int(required=False, load_from="OriginalPrice"),
@@ -386,8 +364,7 @@ API: DetachUDisk
 
 
 class DetachUDiskRequestSchema(schema.RequestSchema):
-    """ DetachUDisk - 卸载某个已经挂载在指定UHost实例上的UDisk
-    """
+    """DetachUDisk - 卸载某个已经挂载在指定UHost实例上的UDisk"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -399,8 +376,7 @@ class DetachUDiskRequestSchema(schema.RequestSchema):
 
 
 class DetachUDiskResponseSchema(schema.ResponseSchema):
-    """ DetachUDisk - 卸载某个已经挂载在指定UHost实例上的UDisk
-    """
+    """DetachUDisk - 卸载某个已经挂载在指定UHost实例上的UDisk"""
 
     fields = {
         "UDiskId": fields.Str(required=False, load_from="UDiskId"),
@@ -416,8 +392,7 @@ API: RenameUDisk
 
 
 class RenameUDiskRequestSchema(schema.RequestSchema):
-    """ RenameUDisk - 重命名UDisk
-    """
+    """RenameUDisk - 重命名UDisk"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -429,8 +404,7 @@ class RenameUDiskRequestSchema(schema.RequestSchema):
 
 
 class RenameUDiskResponseSchema(schema.ResponseSchema):
-    """ RenameUDisk - 重命名UDisk
-    """
+    """RenameUDisk - 重命名UDisk"""
 
     fields = {}
 
@@ -443,8 +417,7 @@ API: ResizeUDisk
 
 
 class ResizeUDiskRequestSchema(schema.RequestSchema):
-    """ ResizeUDisk - 调整UDisk容量
-    """
+    """ResizeUDisk - 调整UDisk容量"""
 
     fields = {
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
@@ -457,8 +430,7 @@ class ResizeUDiskRequestSchema(schema.RequestSchema):
 
 
 class ResizeUDiskResponseSchema(schema.ResponseSchema):
-    """ ResizeUDisk - 调整UDisk容量
-    """
+    """ResizeUDisk - 调整UDisk容量"""
 
     fields = {}
 
@@ -471,8 +443,7 @@ API: RestoreUDisk
 
 
 class RestoreUDiskRequestSchema(schema.RequestSchema):
-    """ RestoreUDisk - 从备份恢复数据至UDisk
-    """
+    """RestoreUDisk - 从备份恢复数据至UDisk"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -485,8 +456,7 @@ class RestoreUDiskRequestSchema(schema.RequestSchema):
 
 
 class RestoreUDiskResponseSchema(schema.ResponseSchema):
-    """ RestoreUDisk - 从备份恢复数据至UDisk
-    """
+    """RestoreUDisk - 从备份恢复数据至UDisk"""
 
     fields = {}
 
@@ -499,8 +469,7 @@ API: SetUDiskUDataArkMode
 
 
 class SetUDiskUDataArkModeRequestSchema(schema.RequestSchema):
-    """ SetUDiskUDataArkMode - 设置UDisk数据方舟的状态
-    """
+    """SetUDiskUDataArkMode - 设置UDisk数据方舟的状态"""
 
     fields = {
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
@@ -512,7 +481,6 @@ class SetUDiskUDataArkModeRequestSchema(schema.RequestSchema):
 
 
 class SetUDiskUDataArkModeResponseSchema(schema.ResponseSchema):
-    """ SetUDiskUDataArkMode - 设置UDisk数据方舟的状态
-    """
+    """SetUDiskUDataArkMode - 设置UDisk数据方舟的状态"""
 
     fields = {}

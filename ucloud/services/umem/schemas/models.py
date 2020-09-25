@@ -3,20 +3,47 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class UMemBackupSetSchema(schema.ResponseSchema):
+    """UMemBackupSet - DescribeUMemBackup"""
+
+    fields = {
+        "BackupId": fields.Str(required=True, load_from="BackupId"),
+        "BackupName": fields.Str(required=True, load_from="BackupName"),
+        "BackupType": fields.Str(required=True, load_from="BackupType"),
+        "BlockCount": fields.Int(required=True, load_from="BlockCount"),
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "State": fields.Str(required=True, load_from="State"),
+    }
+
+
+class UMemBlockInfoSchema(schema.ResponseSchema):
+    """UMemBlockInfo - 分布式redis 分片信息"""
+
+    fields = {
+        "BlockId": fields.Str(required=True, load_from="BlockId"),
+        "BlockPort": fields.Int(required=True, load_from="BlockPort"),
+        "BlockSize": fields.Int(required=True, load_from="BlockSize"),
+        "BlockSlotBegin": fields.Int(required=True, load_from="BlockSlotBegin"),
+        "BlockSlotEnd": fields.Int(required=True, load_from="BlockSlotEnd"),
+        "BlockState": fields.Str(required=True, load_from="BlockState"),
+        "BlockUsedSize": fields.Int(required=True, load_from="BlockUsedSize"),
+        "BlockVip": fields.Str(required=True, load_from="BlockVip"),
+    }
+
+
 class UMemPriceSetSchema(schema.ResponseSchema):
-    """ UMemPriceSet - DescribeUMemPrice
-    """
+    """UMemPriceSet - DescribeUMemPrice"""
 
     fields = {
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "ListPrice": fields.Int(required=False, load_from="ListPrice"),
         "OriginalPrice": fields.Int(required=False, load_from="OriginalPrice"),
         "Price": fields.Int(required=False, load_from="Price"),
     }
 
 
 class UMemSpaceAddressSetSchema(schema.ResponseSchema):
-    """ UMemSpaceAddressSet - DescribeUMemSpace
-    """
+    """UMemSpaceAddressSet - DescribeUMemSpace"""
 
     fields = {
         "IP": fields.Str(required=False, load_from="IP"),
@@ -25,8 +52,7 @@ class UMemSpaceAddressSetSchema(schema.ResponseSchema):
 
 
 class UMemSpaceSetSchema(schema.ResponseSchema):
-    """ UMemSpaceSet - DescribeUMemSpace
-    """
+    """UMemSpaceSet - DescribeUMemSpace"""
 
     fields = {
         "Address": fields.List(UMemSpaceAddressSetSchema()),
@@ -49,8 +75,7 @@ class UMemSpaceSetSchema(schema.ResponseSchema):
 
 
 class PriceDataSetSchema(schema.ResponseSchema):
-    """ PriceDataSet - 升降级价格
-    """
+    """PriceDataSet - 升降级价格"""
 
     fields = {
         "CustomPrice": fields.Int(required=False, load_from="CustomPrice"),
@@ -60,8 +85,7 @@ class PriceDataSetSchema(schema.ResponseSchema):
 
 
 class UMemcacheGroupSetSchema(schema.ResponseSchema):
-    """ UMemcacheGroupSet - DescribeUMemcacheGroup
-    """
+    """UMemcacheGroupSet - DescribeUMemcacheGroup"""
 
     fields = {
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
@@ -84,19 +108,18 @@ class UMemcacheGroupSetSchema(schema.ResponseSchema):
 
 
 class UMemcachePriceSetSchema(schema.ResponseSchema):
-    """ UMemcachePriceSet - DescribeUMemcachePrice
-    """
+    """UMemcachePriceSet - DescribeUMemcachePrice"""
 
     fields = {
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "ListPrice": fields.Int(required=False, load_from="ListPrice"),
         "OriginalPrice": fields.Int(required=False, load_from="OriginalPrice"),
         "Price": fields.Int(required=False, load_from="Price"),
     }
 
 
 class URedisBackupSetSchema(schema.ResponseSchema):
-    """ URedisBackupSet - DescribeURedisBackup
-    """
+    """URedisBackupSet - DescribeURedisBackup"""
 
     fields = {
         "BackupId": fields.Str(required=False, load_from="BackupId"),
@@ -111,9 +134,25 @@ class URedisBackupSetSchema(schema.ResponseSchema):
     }
 
 
+class URedisConfigSetSchema(schema.ResponseSchema):
+    """URedisConfigSet - 主备Redis配置文件信息"""
+
+    fields = {
+        "ConfigId": fields.Str(required=False, load_from="ConfigId"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "Description": fields.Str(required=False, load_from="Description"),
+        "IsModify": fields.Str(required=False, load_from="IsModify"),
+        "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "RegionFlag": fields.Bool(required=False, load_from="RegionFlag"),
+        "State": fields.Str(required=False, load_from="State"),
+        "Version": fields.Str(required=False, load_from="Version"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+    }
+
+
 class URedisGroupSetSchema(schema.ResponseSchema):
-    """ URedisGroupSet - DescribeURedisGroup
-    """
+    """URedisGroupSet - DescribeURedisGroup"""
 
     fields = {
         "AutoBackup": fields.Str(required=False, load_from="AutoBackup"),
@@ -133,6 +172,7 @@ class URedisGroupSetSchema(schema.ResponseSchema):
         "Port": fields.Int(required=False, load_from="Port"),
         "Protocol": fields.Str(required=False, load_from="Protocol"),
         "RewriteTime": fields.Int(required=True, load_from="RewriteTime"),
+        "Role": fields.Str(required=True, load_from="Role"),
         "Size": fields.Int(required=False, load_from="Size"),
         "SlaveZone": fields.Str(required=False, load_from="SlaveZone"),
         "State": fields.Str(required=False, load_from="State"),
@@ -148,11 +188,29 @@ class URedisGroupSetSchema(schema.ResponseSchema):
 
 
 class URedisPriceSetSchema(schema.ResponseSchema):
-    """ URedisPriceSet - 主备Redis价格
-    """
+    """URedisPriceSet - 主备Redis价格"""
 
     fields = {
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "ListPrice": fields.Int(required=False, load_from="ListPrice"),
         "OriginalPrice": fields.Int(required=True, load_from="OriginalPrice"),
         "Price": fields.Int(required=False, load_from="Price"),
+    }
+
+
+class URedisSlowlogSetSchema(schema.ResponseSchema):
+    """URedisSlowlogSet - DescribeURedisSlowlog"""
+
+    fields = {
+        "Command": fields.Str(required=False, load_from="Command"),
+        "SpendTime": fields.Int(required=False, load_from="SpendTime"),
+        "StartTime": fields.Int(required=False, load_from="StartTime"),
+    }
+
+
+class URedisVersionSetSchema(schema.ResponseSchema):
+    """URedisVersionSet - DescribeURedisVersion"""
+
+    fields = {
+        "Version": fields.Str(required=False, load_from="Version"),
     }

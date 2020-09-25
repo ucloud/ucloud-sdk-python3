@@ -11,7 +11,7 @@ class CredentialSchema(schema.Schema):
 
 
 def verify_ac(private_key: str, params: dict) -> str:
-    """ calculate signature by private_key/public_key
+    """calculate signature by private_key/public_key
 
     the keys can be found on `APIKey documentation <https://console.ucloud.cn/uapi/apikey>`__
 
@@ -39,7 +39,7 @@ def verify_ac(private_key: str, params: dict) -> str:
 
 
 class Credential:
-    """ credential is the object to store credential information
+    """credential is the object to store credential information
 
     the keys can be found on `APIKey documentation <https://console.ucloud.cn/uapi/apikey>`__
 

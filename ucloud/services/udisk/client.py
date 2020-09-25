@@ -14,22 +14,22 @@ class UDiskClient(Client):
         super(UDiskClient, self).__init__(config, transport, middleware, logger)
 
     def attach_udisk(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ AttachUDisk - 将一个可用的UDisk挂载到某台主机上，当UDisk挂载成功后，还需要在主机内部进行文件系统操作
+        """AttachUDisk - 将一个可用的UDisk挂载到某台主机上，当UDisk挂载成功后，还需要在主机内部进行文件系统操作
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **UDiskId** (str) - (Required) 需要挂载的UDisk实例ID.
         - **UHostId** (str) - (Required) UHost实例ID
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **MultiAttach** (str) - 是否允许多点挂载（Yes: 允许多点挂载， No: 不允许多点挂载， 不填默认Yes ）
-        
+
         **Response**
 
         - **UDiskId** (str) - 挂载的UDisk实例ID
         - **UHostId** (str) - 挂载的UHost实例ID
-        
+
         """
         # build request
         d = {"ProjectId": self.config.project_id, "Region": self.config.region}
@@ -40,25 +40,25 @@ class UDiskClient(Client):
         return apis.AttachUDiskResponseSchema().loads(resp)
 
     def clone_udisk(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ CloneUDisk - 从UDisk创建UDisk克隆
+        """CloneUDisk - 从UDisk创建UDisk克隆
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Name** (str) - (Required) 实例名称
         - **SourceId** (str) - (Required) 克隆父Disk的Id
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **ChargeType** (str) - Year , Month, Dynamic，Postpay 默认: Dynamic
         - **Comment** (str) - Disk注释
         - **CouponId** (str) - 使用的代金券id
         - **Quantity** (int) - 购买时长 默认: 1
         - **UDataArkMode** (str) - 方舟是否开启，"Yes":开启，"No":关闭；默认为"No"
-        
+
         **Response**
 
         - **UDiskId** (list) - 创建UDisk Id
-        
+
         """
         # build request
         d = {"ProjectId": self.config.project_id, "Region": self.config.region}
@@ -74,26 +74,26 @@ class UDiskClient(Client):
     def clone_udisk_snapshot(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ CloneUDiskSnapshot - 从快照创建UDisk克隆
+        """CloneUDiskSnapshot - 从快照创建UDisk克隆
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Name** (str) - (Required) 实例名称
         - **Size** (int) - (Required) 购买UDisk大小,单位:GB,范围[1~2000], 权限位控制可达8T,若需要请申请开通相关权限。
         - **SourceId** (str) - (Required) 克隆父Snapshot的Id
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **ChargeType** (str) - Year , Month, Dynamic，Postpay 默认: Dynamic
         - **Comment** (str) - Disk注释
         - **CouponId** (str) - 使用的代金券id
         - **Quantity** (int) - 购买时长 默认: 1
         - **UDataArkMode** (str) - 是否开启数据方舟   默认:No
-        
+
         **Response**
 
         - **UDiskId** (list) - 创建UDisk Id
-        
+
         """
         # build request
         d = {"ProjectId": self.config.project_id, "Region": self.config.region}
@@ -107,15 +107,15 @@ class UDiskClient(Client):
         return apis.CloneUDiskSnapshotResponseSchema().loads(resp)
 
     def create_udisk(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ CreateUDisk - 创建UDisk磁盘
+        """CreateUDisk - 创建UDisk磁盘
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Name** (str) - (Required) 实例名称
         - **Size** (int) - (Required) 购买UDisk大小,单位:GB,普通盘: 范围[1~2000], 权限位控制可达8T,若需要请申请开通相关权限;SSD盘： 范围[1~4000]。
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **ChargeType** (str) - Year , Month, Dynamic, Postpay, Trial 默认: Dynamic
         - **CmkId** (str) - 加密需要的cmk id，UKmsMode为Yes时，必填
         - **CouponId** (str) - 使用的代金券id
@@ -124,11 +124,11 @@ class UDiskClient(Client):
         - **Tag** (str) - 业务组 默认：Default
         - **UDataArkMode** (str) - 是否开启数据方舟
         - **UKmsMode** (str) - 是否加密。Yes：加密，No：不加密，默认值（No）
-        
+
         **Response**
 
         - **UDiskId** (list) - UDisk实例Id
-        
+
         """
         # build request
         d = {"ProjectId": self.config.project_id, "Region": self.config.region}
@@ -144,23 +144,23 @@ class UDiskClient(Client):
     def create_udisk_snapshot(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ CreateUDiskSnapshot - 创建snapshot快照
+        """CreateUDiskSnapshot - 创建snapshot快照
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Name** (str) - (Required) 快照名称
         - **UDiskId** (str) - (Required) 快照的UDisk的Id
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **ChargeType** (str) - Year , Month, Dynamic 默认: Dynamic
         - **Comment** (str) - 快照描述
         - **Quantity** (int) - 购买时长 默认: 1
-        
+
         **Response**
 
         - **SnapshotId** (list) - 快照Id
-        
+
         """
         # build request
         d = {"ProjectId": self.config.project_id, "Region": self.config.region}
@@ -174,18 +174,18 @@ class UDiskClient(Client):
         return apis.CreateUDiskSnapshotResponseSchema().loads(resp)
 
     def delete_udisk(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DeleteUDisk - 删除UDisk
+        """DeleteUDisk - 删除UDisk
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **UDiskId** (str) - (Required) 要删除的UDisk的Id
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
-        
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
         **Response**
 
-        
+
         """
         # build request
         d = {"ProjectId": self.config.project_id, "Region": self.config.region}
@@ -198,19 +198,19 @@ class UDiskClient(Client):
     def delete_udisk_snapshot(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ DeleteUDiskSnapshot - 删除Snapshot
+        """DeleteUDiskSnapshot - 删除Snapshot
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **SnapshotId** (str) - 快照Id(填写后不能填写UDisk Id)
         - **UDiskId** (str) - UDisk Id,删除该盘所创建出来的所有快照(填写后不能填写SnapshotId)
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {"ProjectId": self.config.project_id, "Region": self.config.region}
@@ -223,29 +223,29 @@ class UDiskClient(Client):
     def describe_udisk(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ DescribeUDisk - 获取UDisk实例
+        """DescribeUDisk - 获取UDisk实例
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **DiskType** (str) - ProtocolVersion字段为1时，需结合IsBoot确定具体磁盘类型:普通数据盘：DiskType:"CLOUD_NORMAL",IsBoot:"False"； 普通系统盘：DiskType:"CLOUD_NORMAL",IsBoot:"True"；SSD数据盘：DiskType:"CLOUD_SSD",IsBoot:"False"；SSD系统盘：DiskType:"CLOUD_SSD",IsBoot:"True"；RSSD数据盘：DiskType:"CLOUD_RSSD",IsBoot:"False"；为空拉取所有。ProtocolVersion字段为0或没有该字段时，可设为以下几个值:普通数据盘：DataDisk；普通系统盘；SystemDisk；SSD数据盘：SSDDataDisk；SSD系统盘：SSDSystemDisk；RSSD数据盘：RSSDDataDisk；为空拉取所有。
         - **IsBoot** (str) - ProtocolVersion字段为1且DiskType不为空时，必须设置，设置规则请参照DiskType；ProtocolVersion字段为1且DiskType为空时，该字段无效。ProtocolVersion字段为0或没有该字段时，该字段无效。
         - **Limit** (int) - 返回数据长度, 默认为20
         - **Offset** (int) - 数据偏移量, 默认为0
         - **ProtocolVersion** (int) - 请求协议版本，建议升级为1，为1时DiskType与UHost磁盘类型定义一致；默认为0
         - **UDiskId** (str) - UDisk Id(留空返回全部)
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
-        
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
         **Response**
 
         - **DataSet** (list) - 见 **UDiskDataSet** 模型定义
         - **TotalCount** (int) - 根据过滤条件得到的总数
-        
+
         **Response Model**
-        
-        **UDiskDataSet** 
-        
+
+        **UDiskDataSet**
+
         - **ArkSwitchEnable** (int) - 是否支持开启方舟，1支持 ，0不支持
         - **ChargeType** (str) - Year,Month,Dynamic,Trial,Postpay
         - **CloneEnable** (int) - 是否支持克隆，1支持 ，0不支持
@@ -287,27 +287,27 @@ class UDiskClient(Client):
     def describe_udisk_price(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ DescribeUDiskPrice - 获取UDisk实例价格信息
+        """DescribeUDiskPrice - 获取UDisk实例价格信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Size** (int) - (Required) 购买UDisk大小,单位:GB,范围[1~1000]
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **ChargeType** (str) - Year， Month， Dynamic，Trial，默认: Dynamic
         - **DiskType** (str) - UDisk 类型: DataDisk（普通数据盘），SSDDataDisk（SSD数据盘），SystemDisk（普通系统盘），SSDSystemDisk（SSD系统盘），RSSDDataDisk（RSSD数据盘），默认值（DataDisk）
         - **Quantity** (int) - 购买UDisk的时长，默认值为1
         - **UDataArkMode** (str) - 是否打开数据方舟, 打开"Yes",关闭"No", 默认关闭
-        
+
         **Response**
 
         - **DataSet** (list) - 见 **UDiskPriceDataSet** 模型定义
-        
+
         **Response Model**
-        
-        **UDiskPriceDataSet** 
-        
+
+        **UDiskPriceDataSet**
+
         - **ChargeName** (str) - "UDataArk","UDisk"
         - **ChargeType** (str) - Year， Month， Dynamic，Trial
         - **OriginalPrice** (int) - 用户折后价
@@ -325,27 +325,27 @@ class UDiskClient(Client):
     def describe_udisk_snapshot(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ DescribeUDiskSnapshot - 获取UDisk快照
+        """DescribeUDiskSnapshot - 获取UDisk快照
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Limit** (int) - 返回数据长度, 默认为20
         - **Offset** (int) - 数据偏移量, 默认为0
         - **SnapshotId** (str) - 快照id，SnapshotId , UDiskId 同时传SnapshotId优先
         - **UDiskId** (str) - UDiskId,返回该盘所做快照.(必须同时传Zone)
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
-        
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
         **Response**
 
         - **DataSet** (list) - 见 **UDiskSnapshotSet** 模型定义
         - **TotalCount** (int) - 根据过滤条件得到的总数
-        
+
         **Response Model**
-        
-        **UDiskSnapshotSet** 
-        
+
+        **UDiskSnapshotSet**
+
         - **CmkId** (str) - 该快照的cmk id
         - **CmkIdAlias** (str) - cmk id 别名
         - **CmkIdStatus** (str) - 该快照cmk的状态, Enabled(正常)，Disabled(失效)，Deleted(删除)，NoCmkId(非加密盘)
@@ -377,23 +377,23 @@ class UDiskClient(Client):
     def describe_udisk_upgrade_price(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ DescribeUDiskUpgradePrice - 获取UDisk升级价格信息
+        """DescribeUDiskUpgradePrice - 获取UDisk升级价格信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Size** (int) - (Required) 购买UDisk大小,单位:GB,范围[1~2000], 权限位控制可达8T,若需要请申请开通相关权限。
         - **SourceId** (str) - (Required) 升级目标UDisk ID
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **DiskType** (str) - 磁盘类型，SSDDataDisk:ssd数据盘,DataDisk:普通数据盘,SystemDisk:普通系统盘,SSDSystemDisk:ssd系统盘。默认为DataDisk
         - **UDataArkMode** (str) - 是否打开数据方舟, 打开"Yes",关闭"No", 默认关闭
-        
+
         **Response**
 
         - **OriginalPrice** (int) - 用户折后价
         - **Price** (int) - 价格
-        
+
         """
         # build request
         d = {"ProjectId": self.config.project_id, "Region": self.config.region}
@@ -404,21 +404,21 @@ class UDiskClient(Client):
         return apis.DescribeUDiskUpgradePriceResponseSchema().loads(resp)
 
     def detach_udisk(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DetachUDisk - 卸载某个已经挂载在指定UHost实例上的UDisk
+        """DetachUDisk - 卸载某个已经挂载在指定UHost实例上的UDisk
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **UDiskId** (str) - (Required) 需要卸载的UDisk实例ID
         - **UHostId** (str) - (Required) UHost实例ID
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
-        
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
         **Response**
 
         - **UDiskId** (str) - 卸载的UDisk实例ID
         - **UHostId** (str) - 卸载的UHost实例ID
-        
+
         """
         # build request
         d = {"ProjectId": self.config.project_id, "Region": self.config.region}
@@ -429,19 +429,19 @@ class UDiskClient(Client):
         return apis.DetachUDiskResponseSchema().loads(resp)
 
     def rename_udisk(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ RenameUDisk - 重命名UDisk
+        """RenameUDisk - 重命名UDisk
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **UDiskId** (str) - (Required) 重命名的UDisk的Id
         - **UDiskName** (str) - (Required) 重命名UDisk的name
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
-        
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
         **Response**
 
-        
+
         """
         # build request
         d = {"ProjectId": self.config.project_id, "Region": self.config.region}
@@ -452,20 +452,20 @@ class UDiskClient(Client):
         return apis.RenameUDiskResponseSchema().loads(resp)
 
     def resize_udisk(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ ResizeUDisk - 调整UDisk容量
+        """ResizeUDisk - 调整UDisk容量
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Size** (int) - (Required) 调整后大小, 单位:GB, 范围[1~2000],权限位控制可达8000,若需要请申请开通相关权限。
         - **UDiskId** (str) - (Required) UDisk Id
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **CouponId** (str) - 使用的代金券id
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {"ProjectId": self.config.project_id, "Region": self.config.region}
@@ -478,20 +478,20 @@ class UDiskClient(Client):
     def restore_udisk(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ RestoreUDisk - 从备份恢复数据至UDisk
+        """RestoreUDisk - 从备份恢复数据至UDisk
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **UDiskId** (str) - (Required) 需要恢复的盘id
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **SnapshotId** (str) - 从指定的快照恢复
         - **SnapshotTime** (int) - 指定从方舟恢复的备份时间点
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {"ProjectId": self.config.project_id, "Region": self.config.region}
@@ -504,19 +504,19 @@ class UDiskClient(Client):
     def set_udisk__udataark_mode(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ SetUDiskUDataArkMode - 设置UDisk数据方舟的状态
+        """SetUDiskUDataArkMode - 设置UDisk数据方舟的状态
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **UDataArkMode** (str) - (Required) 是否开启数据方舟，开启:"Yes", 不支持:"No"
         - **UDiskId** (str) - (Required) 需要设置数据方舟的UDisk的Id
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
-        
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
         **Response**
 
-        
+
         """
         # build request
         d = {"ProjectId": self.config.project_id, "Region": self.config.region}

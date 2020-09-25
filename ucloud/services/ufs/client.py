@@ -16,12 +16,12 @@ class UFSClient(Client):
     def create_ufs_volume(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ CreateUFSVolume - 创建文件系统
+        """CreateUFSVolume - 创建文件系统
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **ProtocolType** (str) - (Required) 文件系统协议，枚举值，NFSv3表示NFS V3协议，NFSv4表示NFS V4协议
         - **Size** (int) - (Required) 文件系统大小，单位为GB，最大不超过20T，香港容量型必须为100的整数倍，Size最小为500GB，北京，上海，广州的容量型必须为1024的整数倍，Size最小为1024GB。性能型文件系统Size最小为100GB
         - **StorageType** (str) - (Required) 文件系统存储类型，枚举值，Basic表示容量型，Advanced表示性能型
@@ -31,13 +31,13 @@ class UFSClient(Client):
         - **Remark** (str) - 备注
         - **Tag** (str) - 文件系统所属业务组
         - **VolumeName** (str) - 文件系统名称
-        
+
         **Response**
 
         - **VolumeId** (str) - 文件系统ID
         - **VolumeName** (str) - 文件系统名称
         - **VolumeStatus** (str) - 文件系统挂载点状态
-        
+
         """
         # build request
         d = {
@@ -56,25 +56,25 @@ class UFSClient(Client):
     def describe_ufs_volume_2(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ DescribeUFSVolume2 - 获取文件系统列表
+        """DescribeUFSVolume2 - 获取文件系统列表
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Limit** (int) - 文件列表长度
         - **Offset** (int) - 文件列表起始
         - **VolumeId** (str) - 文件系统ID
-        
+
         **Response**
 
         - **DataSet** (list) - 见 **UFSVolumeInfo2** 模型定义
         - **TotalCount** (int) - 文件系统总数
-        
+
         **Response Model**
-        
-        **UFSVolumeInfo2** 
-        
+
+        **UFSVolumeInfo2**
+
         - **CreateTime** (int) - 文件系统创建时间（unix时间戳）
         - **ExpiredTime** (int) - 文件系统过期时间（unix时间戳）
         - **IsExpired** (str) - 是否过期
@@ -104,18 +104,18 @@ class UFSClient(Client):
     def extend_ufs_volume(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ ExtendUFSVolume - 文件系统扩容
+        """ExtendUFSVolume - 文件系统扩容
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Size** (int) - (Required) 文件系统大小，单位为GB，最大不超过20T，香港容量型必须为100的整数倍，Size最小为500GB，北京，上海，广州的容量型必须为1024的整数倍，Size最小为1024GB。性能型文件系统Size最小为100GB
         - **VolumeId** (str) - (Required) 文件系统ID
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
@@ -131,17 +131,17 @@ class UFSClient(Client):
     def remove_ufs_volume(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ RemoveUFSVolume - 删除UFS文件系统
+        """RemoveUFSVolume - 删除UFS文件系统
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **VolumeId** (str) - (Required) 文件系统ID
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
