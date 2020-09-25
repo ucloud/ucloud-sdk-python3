@@ -1,3 +1,9 @@
+## 0.9.4 (2020-09-25)
+
+ENHANCEMENTS:
+
+- Update all APIs of `UMem` (#195)
+
 ## 0.9.3 (2020-09-22)
 
 BUG FIXES:
