@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Helpers &#8212; ucloud-sdk-python3  documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -36,9 +37,9 @@
 <h1>Helpers<a class="headerlink" href="#helpers" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="wait-resource-state">
 <h2>Wait Resource State<a class="headerlink" href="#wait-resource-state" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
+<dl class="py function">
 <dt id="ucloud.helpers.wait.wait_for_state">
-<code class="sig-prename descclassname">ucloud.helpers.wait.</code><code class="sig-name descname">wait_for_state</code><span class="sig-paren">(</span><em class="sig-param">pending: List[str], target: List[str], refresh: Callable, timeout: float, startup_delay: float = 0, min_backoff_interval: float = 0.1, max_backoff_interval: float = 10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/helpers/wait.html#wait_for_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.helpers.wait.wait_for_state" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">ucloud.helpers.wait.</code><code class="sig-name descname">wait_for_state</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pending</span><span class="p">:</span> <span class="n">List<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">target</span><span class="p">:</span> <span class="n">List<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">refresh</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">startup_delay</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">min_backoff_interval</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">max_backoff_interval</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">10</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/helpers/wait.html#wait_for_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.helpers.wait.wait_for_state" title="Permalink to this definition">¶</a></dt>
 <dd><p>wait_for_state is a utilities function to wait the state return by refresh function achieve the specific state,
 the generally usage is wait the cloud resource, such as uhost, udb … is
 ready after created.</p>
@@ -68,9 +69,9 @@ ready after created.</p>
 </div>
 <div class="section" id="module-ucloud.helpers.utils">
 <span id="utilities"></span><h2>Utilities<a class="headerlink" href="#module-ucloud.helpers.utils" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
+<dl class="py function">
 <dt id="ucloud.helpers.utils.b64decode">
-<code class="sig-prename descclassname">ucloud.helpers.utils.</code><code class="sig-name descname">b64decode</code><span class="sig-paren">(</span><em class="sig-param">s: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/ucloud/helpers/utils.html#b64decode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.helpers.utils.b64decode" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">ucloud.helpers.utils.</code><code class="sig-name descname">b64decode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/ucloud/helpers/utils.html#b64decode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.helpers.utils.b64decode" title="Permalink to this definition">¶</a></dt>
 <dd><p>base64 decode</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -82,9 +83,9 @@ ready after created.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ucloud.helpers.utils.b64encode">
-<code class="sig-prename descclassname">ucloud.helpers.utils.</code><code class="sig-name descname">b64encode</code><span class="sig-paren">(</span><em class="sig-param">s: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/ucloud/helpers/utils.html#b64encode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.helpers.utils.b64encode" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">ucloud.helpers.utils.</code><code class="sig-name descname">b64encode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/ucloud/helpers/utils.html#b64encode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.helpers.utils.b64encode" title="Permalink to this definition">¶</a></dt>
 <dd><p>base64 encode</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -96,9 +97,9 @@ ready after created.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ucloud.helpers.utils.gen_password">
-<code class="sig-prename descclassname">ucloud.helpers.utils.</code><code class="sig-name descname">gen_password</code><span class="sig-paren">(</span><em class="sig-param">n: int</em>, <em class="sig-param">lower_letters: str = 'abcdefghijklmnopqrstuvwxyz'</em>, <em class="sig-param">upper_letters: str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'</em>, <em class="sig-param">number_letters: str = '0123456789'</em>, <em class="sig-param">special_letters: str = '_'</em>, <em class="sig-param">min_lower: int = 1</em>, <em class="sig-param">min_upper: int = 1</em>, <em class="sig-param">min_number: int = 1</em>, <em class="sig-param">min_specials: int = 1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/helpers/utils.html#gen_password"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.helpers.utils.gen_password" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">ucloud.helpers.utils.</code><code class="sig-name descname">gen_password</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">lower_letters</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'abcdefghijklmnopqrstuvwxyz'</span></em>, <em class="sig-param"><span class="n">upper_letters</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ABCDEFGHIJKLMNOPQRSTUVWXYZ'</span></em>, <em class="sig-param"><span class="n">number_letters</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'0123456789'</span></em>, <em class="sig-param"><span class="n">special_letters</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'_'</span></em>, <em class="sig-param"><span class="n">min_lower</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">min_upper</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">min_number</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">min_specials</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/helpers/utils.html#gen_password"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.helpers.utils.gen_password" title="Permalink to this definition">¶</a></dt>
 <dd><p>generate password for any resource</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">gen_password</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
 <span class="go">20</span>
@@ -193,7 +194,7 @@ ready after created.</p>
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

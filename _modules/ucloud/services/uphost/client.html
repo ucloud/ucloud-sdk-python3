@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ucloud.services.uphost.client &#8212; ucloud-sdk-python3  documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -49,15 +50,15 @@
         <span class="p">)</span>
 
 <div class="viewcode-block" id="UPHostClient.create_phost"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.create_phost">[docs]</a>    <span class="k">def</span> <span class="nf">create_phost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; CreatePHost - 指定数据中心，根据资源使用量创建指定数量的UPHost物理云主机实例。</span>
+        <span class="sd">&quot;&quot;&quot;CreatePHost - 指定数据中心，根据资源使用量创建指定数量的UPHost物理云主机实例。</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **ImageId** (str) - (Required) 镜像ID。 请通过 [DescribePHostImage]获取</span>
 <span class="sd">        - **Password** (str) - (Required) 密码（密码需使用base64进行编码）</span>
-<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **ChargeType** (str) - 计费模式，枚举值为：year, 按年付费； month,按月付费；dynamic，按需付费，（需开启权限） trial, 试用（需开启权限）。默认为按月付费</span>
 <span class="sd">        - **Cluster** (str) - 网络环境，可选千兆：1G ，万兆：10G， 默认1G</span>
 <span class="sd">        - **Count** (int) - 购买数量，默认为1，（暂不支持）</span>
@@ -66,16 +67,16 @@
 <span class="sd">        - **Quantity** (str) - 购买时长，默认为1，范围[1-10]</span>
 <span class="sd">        - **Raid** (str) - Raid配置，默认Raid10  支持:Raid0、Raid1、Raid5、Raid10，NoRaid</span>
 <span class="sd">        - **Remark** (str) - 物理机备注，默认为空</span>
-<span class="sd">        - **SecurityGroupId** (str) - 防火墙Id，默认：Web推荐防火墙。如何查询SecurityGroupId请参见  `DescribeSecurityGroup &lt;https://docs.ucloud.cn/api/unet-api/describe_security_group.html&gt;`_ </span>
+<span class="sd">        - **SecurityGroupId** (str) - 防火墙Id，默认：Web推荐防火墙。如何查询SecurityGroupId请参见  `DescribeSecurityGroup &lt;https://docs.ucloud.cn/api/unet-api/describe_security_group.html&gt;`_</span>
 <span class="sd">        - **SubnetId** (str) - 子网ID，不填为默认，VPC2.0下需要填写此字段。</span>
 <span class="sd">        - **Tag** (str) - 业务组，默认为default</span>
 <span class="sd">        - **Type** (str) - 物理机类型，默认为：db-2(基础型-SAS-V3)</span>
 <span class="sd">        - **VPCId** (str) - VPC ID，不填为默认，VPC2.0下需要填写此字段。</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **PHostId** (list) - PHost的资源ID数组</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -88,41 +89,41 @@
 <div class="viewcode-block" id="UPHostClient.describe_phost"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.describe_phost">[docs]</a>    <span class="k">def</span> <span class="nf">describe_phost</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; DescribePHost - 获取物理机详细信息</span>
+        <span class="sd">&quot;&quot;&quot;DescribePHost - 获取物理机详细信息</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **Limit** (int) - 返回数据长度，默认为20</span>
 <span class="sd">        - **Offset** (int) - 数据偏移量，默认为0</span>
 <span class="sd">        - **PHostId** (list) - PHost资源ID，若为空，则返回当前Region所有PHost。</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **PHostSet** (list) - 见 **PHostSet** 模型定义</span>
 <span class="sd">        - **TotalCount** (int) - 满足条件的PHost总数</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **PHostCPUSet** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **PHostCPUSet**</span>
+
 <span class="sd">        - **CoreCount** (int) - CPU核数</span>
 <span class="sd">        - **Count** (int) - CPU个数</span>
 <span class="sd">        - **Frequence** (float) - CPU主频</span>
 <span class="sd">        - **Model** (str) - CPU型号</span>
 
-<span class="sd">        **PHostDiskSet** </span>
-<span class="sd">        </span>
+<span class="sd">        **PHostDiskSet**</span>
+
 <span class="sd">        - **Count** (int) - 磁盘数量</span>
 <span class="sd">        - **IOCap** (int) - 磁盘IO性能，单位MB/s（待废弃）</span>
 <span class="sd">        - **Name** (str) - 磁盘名称，sys/data</span>
 <span class="sd">        - **Space** (int) - 单盘大小，单位GB</span>
 <span class="sd">        - **Type** (str) - 磁盘属性</span>
 
-<span class="sd">        **PHostIPSet** </span>
-<span class="sd">        </span>
+<span class="sd">        **PHostIPSet**</span>
+
 <span class="sd">        - **Bandwidth** (int) - IP对应带宽，单位Mb，内网IP不显示带宽信息</span>
 <span class="sd">        - **IPAddr** (str) - IP地址，</span>
 <span class="sd">        - **IPId** (str) - IP资源ID(内网IP无资源ID)（待废弃）</span>
@@ -131,8 +132,8 @@
 <span class="sd">        - **SubnetId** (str) - 子网ID</span>
 <span class="sd">        - **VPCId** (str) - VPC ID</span>
 
-<span class="sd">        **PHostSet** </span>
-<span class="sd">        </span>
+<span class="sd">        **PHostSet**</span>
+
 <span class="sd">        - **AutoRenew** (str) - 自动续费</span>
 <span class="sd">        - **CPUSet** (dict) - 见 **PHostCPUSet** 模型定义</span>
 <span class="sd">        - **ChargeType** (str) - 计费模式，枚举值为： Year，按年付费； Month，按月付费； Dynamic，按需付费（需开启权限）； Trial，试用（需开启权限）默认为月付</span>
@@ -156,7 +157,7 @@
 <span class="sd">        - **Remark** (str) - 物理机备注</span>
 <span class="sd">        - **SN** (str) - 物理机序列号</span>
 <span class="sd">        - **Tag** (str) - 业务组</span>
-<span class="sd">        - **Zone** (str) - 可用区，参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **Zone** (str) - 可用区，参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -170,27 +171,27 @@
 <div class="viewcode-block" id="UPHostClient.describe_phost_image"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.describe_phost_image">[docs]</a>    <span class="k">def</span> <span class="nf">describe_phost_image</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; DescribePHostImage - 获取物理云主机镜像列表</span>
+        <span class="sd">&quot;&quot;&quot;DescribePHostImage - 获取物理云主机镜像列表</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **ImageId** (list) - 镜像ID</span>
 <span class="sd">        - **ImageType** (str) - 镜像类别，枚举为：Base,标准镜像；默认为标准镜像。</span>
 <span class="sd">        - **Limit** (int) - 返回数据长度，默认为20</span>
 <span class="sd">        - **Offset** (int) - 数据偏移量，默认为0</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **ImageSet** (list) - 见 **PHostImageSet** 模型定义</span>
 <span class="sd">        - **TotalCount** (int) - 满足条件的镜像总数</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **PHostImageSet** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **PHostImageSet**</span>
+
 <span class="sd">        - **ImageId** (str) - 镜像ID</span>
 <span class="sd">        - **ImageName** (str) - 镜像名称</span>
 <span class="sd">        - **OsName** (str) - 操作系统名称</span>
@@ -208,23 +209,23 @@
 <div class="viewcode-block" id="UPHostClient.describe_phost_tags"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.describe_phost_tags">[docs]</a>    <span class="k">def</span> <span class="nf">describe_phost_tags</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; DescribePHostTags - 获取物理机tag列表（业务组）</span>
+        <span class="sd">&quot;&quot;&quot;DescribePHostTags - 获取物理机tag列表（业务组）</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **TagSet** (list) - 见 **PHostTagSet** 模型定义</span>
 <span class="sd">        - **TotalCount** (int) - Tag的个数</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **PHostTagSet** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **PHostTagSet**</span>
+
 <span class="sd">        - **Tag** (str) - 业务组名称</span>
 <span class="sd">        - **TotalCount** (int) - 该业务组中包含的主机个数</span>
 
@@ -240,27 +241,27 @@
 <div class="viewcode-block" id="UPHostClient.get_phost_price"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.get_phost_price">[docs]</a>    <span class="k">def</span> <span class="nf">get_phost_price</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; GetPHostPrice - 获取物理机价格列表</span>
+        <span class="sd">&quot;&quot;&quot;GetPHostPrice - 获取物理机价格列表</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **ChargeType** (str) - (Required) 计费模式，枚举值为： Year/Month/Trial/Dynamic</span>
 <span class="sd">        - **Count** (int) - (Required) 购买数量，范围[1-5]</span>
 <span class="sd">        - **Quantity** (int) - (Required) 购买时长，1-10个月或1-10年</span>
 <span class="sd">        - **Cluster** (str) - 网络环境，可选千兆：1G ，万兆：10G</span>
 <span class="sd">        - **Type** (str) - 默认为：DB(数据库型)</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **PriceSet** (list) - 见 **PHostPriceSet** 模型定义</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **PHostPriceSet** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **PHostPriceSet**</span>
+
 <span class="sd">        - **ChargeType** (str) - Year/Month/Trial/Dynamic</span>
 <span class="sd">        - **Price** (float) - 价格, 单位:元, 保留小数点后两位有效数字</span>
 
@@ -276,22 +277,22 @@
 <div class="viewcode-block" id="UPHostClient.modify_phost_info"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.modify_phost_info">[docs]</a>    <span class="k">def</span> <span class="nf">modify_phost_info</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; ModifyPHostInfo - 更改物理机信息</span>
+        <span class="sd">&quot;&quot;&quot;ModifyPHostInfo - 更改物理机信息</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **PHostId** (str) - (Required) 物理机资源ID</span>
 <span class="sd">        - **Name** (str) - 物理机名称，默认不更改</span>
 <span class="sd">        - **Remark** (str) - 物理机备注，默认不更改</span>
 <span class="sd">        - **Tag** (str) - 业务组，默认不更改</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **PHostId** (str) - PHost 的资源ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -304,19 +305,19 @@
 <div class="viewcode-block" id="UPHostClient.poweroff_phost"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.poweroff_phost">[docs]</a>    <span class="k">def</span> <span class="nf">poweroff_phost</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; PoweroffPHost - 断电物理云主机</span>
+        <span class="sd">&quot;&quot;&quot;PoweroffPHost - 断电物理云主机</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **PHostId** (str) - (Required) PHost资源ID</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **PHostId** (str) - PHost 的资源ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -327,19 +328,19 @@
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">PoweroffPHostResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UPHostClient.reboot_phost"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.reboot_phost">[docs]</a>    <span class="k">def</span> <span class="nf">reboot_phost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; RebootPHost - 重启物理机</span>
+        <span class="sd">&quot;&quot;&quot;RebootPHost - 重启物理机</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **PHostId** (str) - (Required) PHost资源ID</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **PHostId** (str) - PHost 的资源ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -352,26 +353,26 @@
 <div class="viewcode-block" id="UPHostClient.reinstall_phost"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.reinstall_phost">[docs]</a>    <span class="k">def</span> <span class="nf">reinstall_phost</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; ReinstallPHost - 重装物理机操作系统</span>
+        <span class="sd">&quot;&quot;&quot;ReinstallPHost - 重装物理机操作系统</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **PHostId** (str) - (Required) PHost资源ID</span>
 <span class="sd">        - **Password** (str) - (Required) 密码</span>
-<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **ImageId** (str) - 镜像Id，参考镜像列表，默认使用原镜像</span>
 <span class="sd">        - **Name** (str) - 物理机名称，默认不更改</span>
 <span class="sd">        - **Raid** (str) - 不保留数据盘重装，可选Raid</span>
 <span class="sd">        - **Remark** (str) - 物理机备注，默认为不更改。</span>
 <span class="sd">        - **ReserveDisk** (str) - 是否保留数据盘，保留：Yes，不报留：No， 默认：Yes</span>
 <span class="sd">        - **Tag** (str) - 业务组，默认不更改。</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **PHostId** (str) - PHost 的资源ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -382,19 +383,19 @@
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ReinstallPHostResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UPHostClient.start_phost"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.start_phost">[docs]</a>    <span class="k">def</span> <span class="nf">start_phost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; StartPHost - 启动物理机</span>
+        <span class="sd">&quot;&quot;&quot;StartPHost - 启动物理机</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **PHostId** (str) - (Required) PHost资源ID</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **PHostId** (str) - PHost 的资源ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -407,20 +408,20 @@
 <div class="viewcode-block" id="UPHostClient.terminate_phost"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.terminate_phost">[docs]</a>    <span class="k">def</span> <span class="nf">terminate_phost</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; TerminatePHost - 删除物理云主机</span>
+        <span class="sd">&quot;&quot;&quot;TerminatePHost - 删除物理云主机</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **PHostId** (str) - (Required) PHost资源ID</span>
 <span class="sd">        - **ReleaseEIP** (bool) - 是否释放绑定的EIP。true: 解绑EIP后，并释放；其他值或不填：解绑EIP。</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **PHostId** (str) - PHost 的资源ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -492,7 +493,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

@@ -79,12 +79,25 @@ USMS
 .. autoclass:: ucloud.services.usms.client.USMSClient
    :members:
 
+VPC
+---
+
+.. autoclass:: ucloud.services.vpc.client.VPCClient
+   :members:
+
 
 
 IPSecVPN
 --------
 
 .. autoclass:: ucloud.services.ipsecvpn.client.IPSecVPNClient
+   :members:
+
+
+UCloudStack
+-----------
+
+.. autoclass:: ucloud.services.ucloudstack.client.UCloudStackClient
    :members:
 
 
@@ -99,12 +112,5 @@ UHub
 ----
 
 .. autoclass:: ucloud.services.uhub.client.UHubClient
-   :members:
-
-
-VPC
----
-
-.. autoclass:: ucloud.services.vpc.client.VPCClient
    :members:
 

@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Core &#8212; ucloud-sdk-python3  documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -35,9 +36,9 @@
 <h1>Core<a class="headerlink" href="#core" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="config">
 <h2>Config<a class="headerlink" href="#config" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="ucloud.core.auth.Credential">
-<em class="property">class </em><code class="sig-prename descclassname">ucloud.core.auth.</code><code class="sig-name descname">Credential</code><span class="sig-paren">(</span><em class="sig-param">public_key: str</em>, <em class="sig-param">private_key: str</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/core/auth/_cfg.html#Credential"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.auth.Credential" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ucloud.core.auth.</code><code class="sig-name descname">Credential</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">public_key</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">private_key</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/core/auth/_cfg.html#Credential"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.auth.Credential" title="Permalink to this definition">¶</a></dt>
 <dd><p>credential is the object to store credential information</p>
 <p>the keys can be found on <a class="reference external" href="https://console.ucloud.cn/uapi/apikey">APIKey documentation</a></p>
 <p>it can calculate signature for OpenAPI:</p>
@@ -56,9 +57,9 @@
 </dl>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ucloud.core.client.Config">
-<em class="property">class </em><code class="sig-prename descclassname">ucloud.core.client.</code><code class="sig-name descname">Config</code><span class="sig-paren">(</span><em class="sig-param">region: str = None</em>, <em class="sig-param">project_id: str = None</em>, <em class="sig-param">base_url: str = 'https://api.ucloud.cn'</em>, <em class="sig-param">user_agent: str = None</em>, <em class="sig-param">timeout: int = 30</em>, <em class="sig-param">max_retries: int = 3</em>, <em class="sig-param">log_level: int = 20</em>, <em class="sig-param">ssl_verify: bool = True</em>, <em class="sig-param">ssl_cacert: str = None</em>, <em class="sig-param">ssl_cert: str = None</em>, <em class="sig-param">ssl_key: str = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/core/client/_cfg.html#Config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.client.Config" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ucloud.core.client.</code><code class="sig-name descname">Config</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">region</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">project_id</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">base_url</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'https://api.ucloud.cn'</span></em>, <em class="sig-param"><span class="n">user_agent</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">30</span></em>, <em class="sig-param"><span class="n">max_retries</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">3</span></em>, <em class="sig-param"><span class="n">log_level</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">20</span></em>, <em class="sig-param"><span class="n">ssl_verify</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">ssl_cacert</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ssl_cert</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ssl_key</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/core/client/_cfg.html#Config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.client.Config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Config is the config of ucloud sdk, use for setting up</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -87,12 +88,12 @@ if logLevel not be set, use INFO level as default.</p></li>
 </div>
 <div class="section" id="client">
 <h2>Client<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="ucloud.core.client.Client">
-<em class="property">class </em><code class="sig-prename descclassname">ucloud.core.client.</code><code class="sig-name descname">Client</code><span class="sig-paren">(</span><em class="sig-param">config: dict</em>, <em class="sig-param">transport: Optional[ucloud.core.transport.http.Transport] = None</em>, <em class="sig-param">middleware: Optional[ucloud.core.utils.middleware.Middleware] = None</em>, <em class="sig-param">logger: Optional[logging.Logger] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/core/client/_client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.client.Client" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<em class="property">class </em><code class="sig-prename descclassname">ucloud.core.client.</code><code class="sig-name descname">Client</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">transport</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>ucloud.core.transport.http.Transport<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">middleware</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference internal" href="#ucloud.core.utils.middleware.Middleware" title="ucloud.core.utils.middleware.Middleware">ucloud.core.utils.middleware.Middleware</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">logger</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>logging.Logger<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/core/client/_client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.client.Client" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
 <dt id="ucloud.core.client.Client.invoke">
-<code class="sig-name descname">invoke</code><span class="sig-paren">(</span><em class="sig-param">action: str</em>, <em class="sig-param">args: dict = None</em>, <em class="sig-param">**options</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/ucloud/core/client/_client.html#Client.invoke"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.client.Client.invoke" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">invoke</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">action</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">args</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">options</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/ucloud/core/client/_client.html#Client.invoke"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.client.Client.invoke" title="Permalink to this definition">¶</a></dt>
 <dd><p>invoke will invoke the action with arguments data and options</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -112,9 +113,9 @@ if logLevel not be set, use INFO level as default.</p></li>
 </div>
 <div class="section" id="transport">
 <h2>Transport<a class="headerlink" href="#transport" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="ucloud.core.transport.RequestsTransport">
-<em class="property">class </em><code class="sig-prename descclassname">ucloud.core.transport.</code><code class="sig-name descname">RequestsTransport</code><span class="sig-paren">(</span><em class="sig-param">max_retries: int = 3</em>, <em class="sig-param">backoff_factor: float = 0.3</em>, <em class="sig-param">status_forcelist: Tuple[int] = (500</em>, <em class="sig-param">502</em>, <em class="sig-param">504)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/core/transport/_requests.html#RequestsTransport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.transport.RequestsTransport" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ucloud.core.transport.</code><code class="sig-name descname">RequestsTransport</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">max_retries</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">3</span></em>, <em class="sig-param"><span class="n">backoff_factor</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">status_forcelist</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">500, 502, 504</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/core/transport/_requests.html#RequestsTransport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.transport.RequestsTransport" title="Permalink to this definition">¶</a></dt>
 <dd><p>transport is the implementation of http client, use for send a request and return a http response</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -126,7 +127,7 @@ the backoff delay = {backoff factor} * (2 ^ ({number of total retries} - 1))</p>
 </ul>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="ucloud.core.transport.RequestsTransport.middleware">
 <em class="property">property </em><code class="sig-name descname">middleware</code><a class="headerlink" href="#ucloud.core.transport.RequestsTransport.middleware" title="Permalink to this definition">¶</a></dt>
 <dd><p>the middleware object, see :mod:</p>
@@ -137,9 +138,9 @@ the backoff delay = {backoff factor} * (2 ^ ({number of total retries} - 1))</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ucloud.core.transport.RequestsTransport.send">
-<code class="sig-name descname">send</code><span class="sig-paren">(</span><em class="sig-param">req: ucloud.core.transport.http.Request</em>, <em class="sig-param">**options: Any</em><span class="sig-paren">)</span> &#x2192; ucloud.core.transport.http.Response<a class="reference internal" href="_modules/ucloud/core/transport/_requests.html#RequestsTransport.send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.transport.RequestsTransport.send" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">send</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">req</span><span class="p">:</span> <span class="n">ucloud.core.transport.http.Request</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; ucloud.core.transport.http.Response<a class="reference internal" href="_modules/ucloud/core/transport/_requests.html#RequestsTransport.send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.transport.RequestsTransport.send" title="Permalink to this definition">¶</a></dt>
 <dd><p>send request and return the response</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -156,7 +157,7 @@ the backoff delay = {backoff factor} * (2 ^ ({number of total retries} - 1))</p>
 </div>
 <div class="section" id="middleware">
 <h2>Middleware<a class="headerlink" href="#middleware" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="ucloud.core.utils.middleware.Middleware">
 <em class="property">class </em><code class="sig-prename descclassname">ucloud.core.utils.middleware.</code><code class="sig-name descname">Middleware</code><a class="reference internal" href="_modules/ucloud/core/utils/middleware.html#Middleware"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.utils.middleware.Middleware" title="Permalink to this definition">¶</a></dt>
 <dd><p>middleware is the object to store request/response handlers</p>
@@ -181,9 +182,9 @@ the backoff delay = {backoff factor} * (2 ^ ({number of total retries} - 1))</p>
 <span class="go">(1, 1)</span>
 </pre></div>
 </div>
-<dl class="method">
+<dl class="py method">
 <dt id="ucloud.core.utils.middleware.Middleware.exception">
-<code class="sig-name descname">exception</code><span class="sig-paren">(</span><em class="sig-param">handler</em>, <em class="sig-param">index=-1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/core/utils/middleware.html#Middleware.exception"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.utils.middleware.Middleware.exception" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">exception</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handler</span></em>, <em class="sig-param"><span class="n">index</span><span class="o">=</span><span class="default_value">- 1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/core/utils/middleware.html#Middleware.exception"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.utils.middleware.Middleware.exception" title="Permalink to this definition">¶</a></dt>
 <dd><p>exception is the exception handler register to add exception handler.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -200,9 +201,9 @@ default is append it to end</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ucloud.core.utils.middleware.Middleware.request">
-<code class="sig-name descname">request</code><span class="sig-paren">(</span><em class="sig-param">handler</em>, <em class="sig-param">index=-1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/core/utils/middleware.html#Middleware.request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.utils.middleware.Middleware.request" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">request</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handler</span></em>, <em class="sig-param"><span class="n">index</span><span class="o">=</span><span class="default_value">- 1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/core/utils/middleware.html#Middleware.request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.utils.middleware.Middleware.request" title="Permalink to this definition">¶</a></dt>
 <dd><p>request is the request handler register to add request handler.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -219,9 +220,9 @@ default is append it to end</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ucloud.core.utils.middleware.Middleware.response">
-<code class="sig-name descname">response</code><span class="sig-paren">(</span><em class="sig-param">handler</em>, <em class="sig-param">index=-1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/core/utils/middleware.html#Middleware.response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.utils.middleware.Middleware.response" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">response</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handler</span></em>, <em class="sig-param"><span class="n">index</span><span class="o">=</span><span class="default_value">- 1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ucloud/core/utils/middleware.html#Middleware.response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ucloud.core.utils.middleware.Middleware.response" title="Permalink to this definition">¶</a></dt>
 <dd><p>response is the response handler register to add response handler.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -314,7 +315,7 @@ default is append it to end</p></li>
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

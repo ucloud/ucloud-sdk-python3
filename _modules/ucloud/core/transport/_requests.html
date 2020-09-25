@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ucloud.core.transport._requests &#8212; ucloud-sdk-python3  documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -39,10 +40,11 @@
 <span class="kn">from</span> <span class="nn">ucloud.core.transport</span> <span class="kn">import</span> <span class="n">http</span>
 <span class="kn">from</span> <span class="nn">ucloud.core.transport.http</span> <span class="kn">import</span> <span class="n">Request</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">SSLOption</span>
 <span class="kn">from</span> <span class="nn">ucloud.core.utils.middleware</span> <span class="kn">import</span> <span class="n">Middleware</span>
+<span class="kn">from</span> <span class="nn">ucloud.core</span> <span class="kn">import</span> <span class="n">exc</span>
 
 
 <div class="viewcode-block" id="RequestsTransport"><a class="viewcode-back" href="../../../../core.html#ucloud.core.transport.RequestsTransport">[docs]</a><span class="k">class</span> <span class="nc">RequestsTransport</span><span class="p">(</span><span class="n">http</span><span class="o">.</span><span class="n">Transport</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; transport is the implementation of http client, use for send a request and return a http response</span>
+    <span class="sd">&quot;&quot;&quot;transport is the implementation of http client, use for send a request and return a http response</span>
 
 <span class="sd">    :type max_retries: int</span>
 <span class="sd">    :param max_retries: max retries is the max number of transport request when occur http error</span>
@@ -67,7 +69,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_middleware</span> <span class="o">=</span> <span class="n">Middleware</span><span class="p">()</span>
 
 <div class="viewcode-block" id="RequestsTransport.send"><a class="viewcode-back" href="../../../../core.html#ucloud.core.transport.RequestsTransport.send">[docs]</a>    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">http</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; send request and return the response</span>
+        <span class="sd">&quot;&quot;&quot;send request and return the response</span>
 
 <span class="sd">        :param req: the full http request descriptor</span>
 <span class="sd">        :return: the response of http request</span>
@@ -89,7 +91,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">middleware</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Middleware</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; the middleware object, see :mod:</span>
+        <span class="sd">&quot;&quot;&quot;the middleware object, see :mod:</span>
 
 <span class="sd">        :return: the transport middleware</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -117,6 +119,11 @@
             <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_response</span><span class="p">(</span><span class="n">session_resp</span><span class="p">)</span>
             <span class="n">resp</span><span class="o">.</span><span class="n">request</span> <span class="o">=</span> <span class="n">req</span>
             <span class="n">resp</span><span class="o">.</span><span class="n">response_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">&gt;=</span> <span class="mi">400</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">exc</span><span class="o">.</span><span class="n">HTTPStatusException</span><span class="p">(</span>
+                    <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">request_uuid</span>
+                <span class="p">)</span>
             <span class="k">return</span> <span class="n">resp</span>
 
     <span class="nd">@staticmethod</span>
@@ -222,7 +229,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ucloud.services.uhost.client &#8212; ucloud-sdk-python3  documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -49,23 +50,23 @@
 <div class="viewcode-block" id="UHostClient.copy_custom_image"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.copy_custom_image">[docs]</a>    <span class="k">def</span> <span class="nf">copy_custom_image</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; CopyCustomImage - 复制自制镜像</span>
+        <span class="sd">&quot;&quot;&quot;CopyCustomImage - 复制自制镜像</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **SourceImageId** (str) - (Required) 源镜像Id, 参见 DescribeImage</span>
 <span class="sd">        - **TargetProjectId** (str) - (Required) 目标项目Id, 参见 GetProjectList</span>
 <span class="sd">        - **TargetImageDescription** (str) - 目标镜像描述</span>
 <span class="sd">        - **TargetImageName** (str) - 目标镜像名称</span>
 <span class="sd">        - **TargetRegion** (str) - 目标地域，不跨地域不用填</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **TargetImageId** (str) - 目标镜像Id</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -81,21 +82,21 @@
 <div class="viewcode-block" id="UHostClient.create_custom_image"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.create_custom_image">[docs]</a>    <span class="k">def</span> <span class="nf">create_custom_image</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; CreateCustomImage - 从指定UHost实例，生成自定义镜像。</span>
+        <span class="sd">&quot;&quot;&quot;CreateCustomImage - 从指定UHost实例，生成自定义镜像。</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **ImageName** (str) - (Required) 镜像名称</span>
-<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_ </span>
+<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_</span>
 <span class="sd">        - **ImageDescription** (str) - 镜像描述</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **ImageId** (str) - 镜像Id</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -111,16 +112,16 @@
 <div class="viewcode-block" id="UHostClient.create_uhost_instance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.create_uhost_instance">[docs]</a>    <span class="k">def</span> <span class="nf">create_uhost_instance</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; CreateUHostInstance - 创建UHost实例。</span>
+        <span class="sd">&quot;&quot;&quot;CreateUHostInstance - 创建UHost实例。</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **ImageId** (str) - (Required) 镜像ID。 请通过  `DescribeImage &lt;https://docs.ucloud.cn/api/uhost-api/describe_image.html&gt;`_ 获取</span>
 <span class="sd">        - **LoginMode** (str) - (Required) 主机登陆模式。密码（默认选项）: Password。</span>
 <span class="sd">        - **Password** (str) - (Required) UHost密码。请遵照 `字段规范 &lt;https://docs.ucloud.cn/api/uhost-api/specification&gt;`_ 设定密码。密码需使用base64进行编码，举例如下：# echo -n Password1 | base64UGFzc3dvcmQx。</span>
-<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **AlarmTemplateId** (int) - 告警模板id，如果传了告警模板id，且告警模板id正确，则绑定告警模板。绑定告警模板失败只会在后台有日志，不会影响创建主机流程，也不会在前端报错。</span>
 <span class="sd">        - **BootDiskSpace** (int) - 【待废弃，不建议调用】系统盘大小。 单位：GB， 范围[20,100]， 步长：10</span>
 <span class="sd">        - **CPU** (int) - 虚拟CPU核数。可选参数：1-64（具体机型与CPU的对应关系参照控制台）。默认值: 4。</span>
@@ -159,22 +160,22 @@
 <span class="sd">        - **UserData** (str) - 【即将支持】用户自定义数据。当镜像支持Cloud-init Feature时可填写此字段。注意：1、总数据量大小不超多16K；2、使用base64编码</span>
 <span class="sd">        - **UserDataScript** (str) - 【暂不支持】cloudinit方式下，用户初始化脚本</span>
 <span class="sd">        - **VPCId** (str) - VPC ID。默认为当前地域的默认VPC。</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **IPs** (list) - 【批量创建不会返回】IP信息</span>
 <span class="sd">        - **UHostIds** (list) - UHost实例Id集合</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Request Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSH** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSH**</span>
+
 <span class="sd">        - **Area** (str) - 填写支持SSH访问IP的地区名称，如“洛杉矶”，“新加坡”，“香港”，“东京”，“华盛顿”，“法兰克福”。Area和AreaCode两者必填其中之一。</span>
 <span class="sd">        - **AreaCode** (str) - GlobalSSH的地区编码，格式为区域航空港国际通用代码。Area和AreaCode两者必填其中之一。</span>
 <span class="sd">        - **Port** (int) - SSH端口，1-65535且不能使用80，443端口</span>
 
-<span class="sd">        **CreateUHostInstanceParamNetworkInterfaceEIP** </span>
-<span class="sd">        </span>
+<span class="sd">        **CreateUHostInstanceParamNetworkInterfaceEIP**</span>
+
 <span class="sd">        - **Bandwidth** (int) - 【若绑定EIP，此参数必填】弹性IP的外网带宽, 单位为Mbps. 共享带宽模式必须指定0M带宽, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-800]</span>
 <span class="sd">        - **CouponId** (str) - 当前EIP代金券id。请通过DescribeCoupon接口查询，或登录用户中心查看。</span>
 <span class="sd">        - **GlobalSSH** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSH** 模型定义</span>
@@ -182,14 +183,14 @@
 <span class="sd">        - **PayMode** (str) - 弹性IP的计费模式. 枚举值: &quot;Traffic&quot;, 流量计费; &quot;Bandwidth&quot;, 带宽计费; &quot;ShareBandwidth&quot;,共享带宽模式. &quot;Free&quot;:免费带宽模式.默认为 &quot;Bandwidth&quot;.</span>
 <span class="sd">        - **ShareBandwidthId** (str) - 绑定的共享带宽Id，仅当PayMode为ShareBandwidth时有效</span>
 
-<span class="sd">        **CreateUHostInstanceParamNetworkInterfaceIPv6** </span>
-<span class="sd">        </span>
+<span class="sd">        **CreateUHostInstanceParamNetworkInterfaceIPv6**</span>
+
 <span class="sd">        - **Adress** (str) - 第N个网卡对应的IPv6地址，默认不分配IPv6，“Auto”自动分配，不为空的其他字符串为实际要分配的IPv6地址</span>
 <span class="sd">        - **ShareBandwidthId** (str) - 第N块网卡中IPv6对应的共享带宽id，默认不带外网</span>
 
-<span class="sd">        **CreateUHostInstanceParamDisks** </span>
-<span class="sd">        </span>
-<span class="sd">        - **BackupType** (str) - 磁盘备份方案。枚举值：\\ &gt; NONE，无备份 \\ &gt; DATAARK，数据方舟 \\ 当前磁盘支持的备份模式参考  `磁盘类型 &lt;https://docs.ucloud.cn/api/uhost-api/disk_type&gt;`_ </span>
+<span class="sd">        **CreateUHostInstanceParamDisks**</span>
+
+<span class="sd">        - **BackupType** (str) - 磁盘备份方案。枚举值：\\ &gt; NONE，无备份 \\ &gt; DATAARK，数据方舟 \\ 当前磁盘支持的备份模式参考  `磁盘类型 &lt;https://docs.ucloud.cn/api/uhost-api/disk_type&gt;`_</span>
 <span class="sd">        - **CouponId** (str) - 云盘代金券id。不适用于系统盘/本地盘。请通过DescribeCoupon接口查询，或登录用户中心查看</span>
 <span class="sd">        - **Encrypted** (bool) - 【功能仅部分可用区开放，详询技术支持】磁盘是否加密。加密：true, 不加密: false加密必须传入对应的的KmsKeyId</span>
 <span class="sd">        - **IsBoot** (str) - 是否是系统盘。枚举值：\\ &gt; True，是系统盘 \\ &gt; False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。</span>
@@ -197,8 +198,8 @@
 <span class="sd">        - **Size** (int) - 磁盘大小，单位GB，必须是10GB的整数倍。请参考 `磁盘类型 &lt;https://docs.ucloud.cn/api/uhost-api/disk_type&gt;`_ 。</span>
 <span class="sd">        - **Type** (str) - 磁盘类型。请参考 `磁盘类型 &lt;https://docs.ucloud.cn/api/uhost-api/disk_type&gt;`_ 。</span>
 
-<span class="sd">        **CreateUHostInstanceParamNetworkInterface** </span>
-<span class="sd">        </span>
+<span class="sd">        **CreateUHostInstanceParamNetworkInterface**</span>
+
 <span class="sd">        - **EIP** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceEIP** 模型定义</span>
 <span class="sd">        - **IPv6** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceIPv6** 模型定义</span>
 
@@ -217,29 +218,29 @@
 <div class="viewcode-block" id="UHostClient.describe_image"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.describe_image">[docs]</a>    <span class="k">def</span> <span class="nf">describe_image</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; DescribeImage - 获取指定数据中心镜像列表，用户可通过指定操作系统类型，镜像Id进行过滤。</span>
+        <span class="sd">&quot;&quot;&quot;DescribeImage - 获取指定数据中心镜像列表，用户可通过指定操作系统类型，镜像Id进行过滤。</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **ImageId** (str) - 镜像Id</span>
 <span class="sd">        - **ImageType** (str) - 镜像类型。标准镜像：Base，镜像市场：Business， 自定义镜像：Custom，默认返回所有类型</span>
 <span class="sd">        - **Limit** (int) - 返回数据长度，默认为20</span>
 <span class="sd">        - **Offset** (int) - 列表起始位置偏移量，默认为0</span>
 <span class="sd">        - **OsType** (str) - 操作系统类型：Linux， Windows 默认返回所有类型</span>
 <span class="sd">        - **PriceSet** (int) - 是否返回价格：1返回，0不返回；默认不返回</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **ImageSet** (list) - 见 **UHostImageSet** 模型定义</span>
 <span class="sd">        - **TotalCount** (int) - 满足条件的镜像总数</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **UHostImageSet** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **UHostImageSet**</span>
+
 <span class="sd">        - **CreateTime** (int) - 创建时间，格式为Unix时间戳</span>
 <span class="sd">        - **Features** (list) - 特殊状态标识， 目前包含NetEnhnced（网络增强1.0）, NetEnhanced_Ultra]（网络增强2.0）,HotPlug(热升级),CloudInit</span>
 <span class="sd">        - **FuncType** (str) - 行业镜像类型（仅行业镜像将返回这个值）</span>
@@ -255,7 +256,7 @@
 <span class="sd">        - **OsType** (str) - 操作系统类型：Liunx，Windows</span>
 <span class="sd">        - **State** (str) - 镜像状态， 可用：Available，制作中：Making， 不可用：Unavailable</span>
 <span class="sd">        - **Vendor** (str) - 供应商（仅行业镜像将返回这个值）</span>
-<span class="sd">        - **Zone** (str) - 可用区，参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **Zone** (str) - 可用区，参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -269,29 +270,29 @@
 <div class="viewcode-block" id="UHostClient.describe_isolation_group"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.describe_isolation_group">[docs]</a>    <span class="k">def</span> <span class="nf">describe_isolation_group</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; DescribeIsolationGroup - 查询硬件隔离组列表。</span>
+        <span class="sd">&quot;&quot;&quot;DescribeIsolationGroup - 查询硬件隔离组列表。</span>
 
 <span class="sd">        **Request**</span>
 
 <span class="sd">        - **ProjectId** (str) - (Config) 项目id</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **GroupId** (str) - 待查的硬件隔离组id</span>
 <span class="sd">        - **Limit** (int) - 返回数据长度，默认为20，最大100</span>
 <span class="sd">        - **Offset** (int) - 列表起始位置偏移量，默认为0</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **IsolationGroupSet** (list) - 见 **IsolationGroup** 模型定义</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **SpreadInfo** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **SpreadInfo**</span>
+
 <span class="sd">        - **UHostCount** (int) - 可用区中硬件隔离组中云主机的数量，不超过7。</span>
 <span class="sd">        - **Zone** (str) - 可用区信息</span>
 
-<span class="sd">        **IsolationGroup** </span>
-<span class="sd">        </span>
+<span class="sd">        **IsolationGroup**</span>
+
 <span class="sd">        - **GroupId** (str) - 硬件隔离组id</span>
 <span class="sd">        - **GroupName** (str) - 硬件隔离组名称</span>
 <span class="sd">        - **Remark** (str) - 备注</span>
@@ -309,12 +310,12 @@
 <div class="viewcode-block" id="UHostClient.describe_uhost_instance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.describe_uhost_instance">[docs]</a>    <span class="k">def</span> <span class="nf">describe_uhost_instance</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; DescribeUHostInstance - 获取主机或主机列表信息，并可根据数据中心，主机ID等参数进行过滤。</span>
+        <span class="sd">&quot;&quot;&quot;DescribeUHostInstance - 获取主机或主机列表信息，并可根据数据中心，主机ID等参数进行过滤。</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **IsolationGroup** (str) - 硬件隔离组id。通过硬件隔离组筛选主机。</span>
 <span class="sd">        - **LifeCycle** (int) - 1：普通云主机；2：抢占型云主机；如不传此参数，默认全部获取</span>
 <span class="sd">        - **Limit** (int) - 返回数据长度，默认为20，最大100</span>
@@ -323,19 +324,19 @@
 <span class="sd">        - **Tag** (str) - 要查询的业务组名称</span>
 <span class="sd">        - **UHostIds** (list) - 【数组】UHost主机的资源ID，例如UHostIds.0代表希望获取信息 的主机1，UHostIds.1代表主机2。 如果不传入，则返回当前Region 所有符合条件的UHost实例。</span>
 <span class="sd">        - **VPCId** (str) - vpc id。通过VPC筛选主机。北京一地域无效。</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **Action** (str) - 操作名称</span>
 <span class="sd">        - **RetCode** (int) - 返回码</span>
 <span class="sd">        - **TotalCount** (int) - UHostInstance总数</span>
 <span class="sd">        - **UHostSet** (list) - 见 **UHostInstanceSet** 模型定义</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **UHostDiskSet** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **UHostDiskSet**</span>
+
 <span class="sd">        - **BackupType** (str) - 备份方案。若开通了数据方舟，则为DataArk</span>
 <span class="sd">        - **DiskId** (str) - 磁盘ID</span>
 <span class="sd">        - **DiskType** (str) - 磁盘类型。请参考 `磁盘类型 &lt;https://docs.ucloud.cn/api/uhost-api/disk_type&gt;`_ 。</span>
@@ -346,8 +347,8 @@
 <span class="sd">        - **Size** (int) - 磁盘大小，单位: GB</span>
 <span class="sd">        - **Type** (str) - 【建议不再使用】磁盘类型。系统盘: Boot，数据盘: Data,网络盘：Udisk</span>
 
-<span class="sd">        **UHostIPSet** </span>
-<span class="sd">        </span>
+<span class="sd">        **UHostIPSet**</span>
+
 <span class="sd">        - **Bandwidth** (int) - IP对应的带宽, 单位: Mb  (内网IP不显示带宽信息)</span>
 <span class="sd">        - **Default** (str) - 【暂未支持】是否为默认网卡。True: 是默认网卡；其他值：不是。</span>
 <span class="sd">        - **IP** (str) - IP地址</span>
@@ -358,8 +359,8 @@
 <span class="sd">        - **VPCId** (str) - IP地址对应的VPC ID。（北京一不支持，字段返回为空）</span>
 <span class="sd">        - **Weight** (int) - 当前EIP的权重。权重最大的为当前的出口IP。</span>
 
-<span class="sd">        **UHostInstanceSet** </span>
-<span class="sd">        </span>
+<span class="sd">        **UHostInstanceSet**</span>
+
 <span class="sd">        - **AutoRenew** (str) - 是否自动续费，自动续费：“Yes”，不自动续费：“No”</span>
 <span class="sd">        - **BasicImageId** (str) - 基础镜像ID（指当前自定义镜像的来源镜像）</span>
 <span class="sd">        - **BasicImageName** (str) - 基础镜像名称（指当前自定义镜像的来源镜像）</span>
@@ -392,7 +393,7 @@
 <span class="sd">        - **TotalDiskSpace** (int) - 总的数据盘存储空间。</span>
 <span class="sd">        - **UHostId** (str) - UHost实例ID</span>
 <span class="sd">        - **UHostType** (str) - 【建议不再使用】云主机机型（旧）。参考 `云主机机型说明 &lt;https://docs.ucloud.cn/api/uhost-api/uhost_type&gt;`_ 。</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -406,24 +407,24 @@
 <div class="viewcode-block" id="UHostClient.describe_uhost_instance_snapshot"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.describe_uhost_instance_snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">describe_uhost_instance_snapshot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; DescribeUHostInstanceSnapshot - 获取已经存在的UHost实例的存储快照列表。</span>
+        <span class="sd">&quot;&quot;&quot;DescribeUHostInstanceSnapshot - 获取已经存在的UHost实例的存储快照列表。</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_ </span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **SnapshotSet** (list) - 见 **UHostSnapshotSet** 模型定义</span>
 <span class="sd">        - **UhostId** (str) - UHost实例ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **UHostSnapshotSet** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **UHostSnapshotSet**</span>
+
 <span class="sd">        - **SnapshotName** (str) - 快照名称</span>
 <span class="sd">        - **SnapshotState** (str) - 快照状态, 制作中:Capturing 制作成功:Success 制作失败:Fail</span>
 <span class="sd">        - **SnapshotTime** (str) - 快照制作时间</span>
@@ -440,23 +441,23 @@
 <div class="viewcode-block" id="UHostClient.describe_uhost_tags"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.describe_uhost_tags">[docs]</a>    <span class="k">def</span> <span class="nf">describe_uhost_tags</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; DescribeUHostTags - 获取指定数据中心的业务组列表。</span>
+        <span class="sd">&quot;&quot;&quot;DescribeUHostTags - 获取指定数据中心的业务组列表。</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **TagSet** (list) - 见 **UHostTagSet** 模型定义</span>
 <span class="sd">        - **TotalCount** (int) - 已有主机的业务组总个数</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **UHostTagSet** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **UHostTagSet**</span>
+
 <span class="sd">        - **Tag** (str) - 业务组名称</span>
 <span class="sd">        - **TotalCount** (int) - 该业务组中包含的主机个数</span>
 <span class="sd">        - **Zone** (str) - 可用区</span>
@@ -473,12 +474,12 @@
 <div class="viewcode-block" id="UHostClient.get_uhost_instance_price"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.get_uhost_instance_price">[docs]</a>    <span class="k">def</span> <span class="nf">get_uhost_instance_price</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; GetUHostInstancePrice - 根据UHost实例配置，获取UHost实例的价格。</span>
+        <span class="sd">&quot;&quot;&quot;GetUHostInstancePrice - 根据UHost实例配置，获取UHost实例的价格。</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **CPU** (int) - (Required) CPU核数。可选参数：1-64。可选范围参照控制台。默认值: 4</span>
 <span class="sd">        - **Count** (int) - (Required) 购买台数，范围[1,5]</span>
 <span class="sd">        - **ImageId** (str) - (Required) 镜像Id，可通过  `DescribeImage &lt;https://docs.ucloud.cn/api/uhost-api/describe_image.html&gt;`_  获取镜像ID</span>
@@ -495,25 +496,25 @@
 <span class="sd">        - **StorageType** (str) - 【待废弃】磁盘类型，同时设定系统盘和数据盘， 枚举值为：LocalDisk，本地磁盘; UDisk，云硬盘; 默认为LocalDisk 仅部分可用区支持云硬盘方式的主机存储方式，具体请查询控制台。</span>
 <span class="sd">        - **TimemachineFeature** (str) - 【待废弃】方舟机型。No，Yes。默认是No。</span>
 <span class="sd">        - **UHostType** (str) - 【待废弃】云主机机型（V1版本概念）。参考 `云主机机型说明 &lt;https://docs.ucloud.cn/api/uhost-api/uhost_type&gt;`_ 。</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **PriceSet** (list) - 见 **UHostPriceSet** 模型定义</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Request Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **GetUHostInstancePriceParamDisks** </span>
-<span class="sd">        </span>
-<span class="sd">        - **BackupType** (str) - 磁盘备份方案。枚举值：\\ &gt; NONE，无备份 \\ &gt; DATAARK，数据方舟 \\ 当前磁盘支持的备份模式参考  `磁盘类型 &lt;https://docs.ucloud.cn/api/uhost-api/disk_type&gt;`_ </span>
+
+<span class="sd">        **GetUHostInstancePriceParamDisks**</span>
+
+<span class="sd">        - **BackupType** (str) - 磁盘备份方案。枚举值：\\ &gt; NONE，无备份 \\ &gt; DATAARK，数据方舟 \\ 当前磁盘支持的备份模式参考  `磁盘类型 &lt;https://docs.ucloud.cn/api/uhost-api/disk_type&gt;`_</span>
 <span class="sd">        - **IsBoot** (str) - 是否是系统盘。枚举值：\\ &gt; True，是系统盘 \\ &gt; False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。</span>
 <span class="sd">        - **Size** (int) - 磁盘大小，单位GB。请参考 `磁盘类型 &lt;https://docs.ucloud.cn/api/uhost-api/disk_type&gt;`_ 。</span>
 <span class="sd">        - **Type** (str) - 磁盘类型。请参考 `磁盘类型 &lt;https://docs.ucloud.cn/api/uhost-api/disk_type&gt;`_ 。</span>
 
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **UHostPriceSet** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **UHostPriceSet**</span>
+
 <span class="sd">        - **ChargeType** (str) - 计费类型。Year，Month，Dynamic</span>
 <span class="sd">        - **Price** (float) - 价格，单位: 元，保留小数点后两位有效数字</span>
 
@@ -529,22 +530,22 @@
 <div class="viewcode-block" id="UHostClient.get_uhost_instance_vnc_info"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.get_uhost_instance_vnc_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_uhost_instance_vnc_info</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; GetUHostInstanceVncInfo - 获取指定UHost实例的管理VNC配置详细信息。</span>
+        <span class="sd">&quot;&quot;&quot;GetUHostInstanceVncInfo - 获取指定UHost实例的管理VNC配置详细信息。</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_ </span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **UhostId** (str) - UHost实例ID</span>
 <span class="sd">        - **VncIP** (str) - Vnc登录IP</span>
 <span class="sd">        - **VncPassword** (str) - Vnc 登录密码</span>
 <span class="sd">        - **VncPort** (int) - Vnc登录端口</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -557,12 +558,12 @@
 <div class="viewcode-block" id="UHostClient.get_uhost_upgrade_price"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.get_uhost_upgrade_price">[docs]</a>    <span class="k">def</span> <span class="nf">get_uhost_upgrade_price</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; GetUHostUpgradePrice - 获取UHost实例升级配置的价格。可选配置范围请参考 `云主机机型说明 &lt;https://docs.ucloud.cn/api/uhost-api/uhost_type&gt;`_ 。</span>
+        <span class="sd">&quot;&quot;&quot;GetUHostUpgradePrice - 获取UHost实例升级配置的价格。可选配置范围请参考 `云主机机型说明 &lt;https://docs.ucloud.cn/api/uhost-api/uhost_type&gt;`_ 。</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **UHostId** (str) - (Required) UHost实例ID。 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_ 。</span>
 <span class="sd">        - **BootDiskSpace** (int) - 【待废弃】系统大小，单位: GB，范围[20,100]，步长: 10。</span>
 <span class="sd">        - **CPU** (int) - 虚拟CPU核数。可选参数：1-64（可选范围参考控制台）。默认值为当前实例的CPU核数。</span>
@@ -571,12 +572,12 @@
 <span class="sd">        - **Memory** (int) - 内存大小。单位：MB。范围 ：[1024, 262144]，取值为1024的倍数（可选范围参考控制台）。默认值为当前实例的内存大小。</span>
 <span class="sd">        - **NetCapValue** (int) - 网卡升降级（1，表示升级，2表示降级，0表示不变）</span>
 <span class="sd">        - **TimemachineFeature** (str) - 方舟机型。No，Yes。默认是No。</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **Price** (float) - 规格调整差价。精确到小数点后2位。</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -589,12 +590,12 @@
 <div class="viewcode-block" id="UHostClient.import_custom_image"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.import_custom_image">[docs]</a>    <span class="k">def</span> <span class="nf">import_custom_image</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; ImportCustomImage - 把UFile的镜像文件导入到UHost，生成自定义镜像</span>
+        <span class="sd">&quot;&quot;&quot;ImportCustomImage - 把UFile的镜像文件导入到UHost，生成自定义镜像</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **Auth** (bool) - (Required) 是否授权。必须填true</span>
 <span class="sd">        - **Format** (str) - (Required) 镜像格式，可选RAW、VHD、VMDK、qcow2</span>
 <span class="sd">        - **ImageName** (str) - (Required) 镜像名称</span>
@@ -602,11 +603,11 @@
 <span class="sd">        - **OsType** (str) - (Required) 操作系统平台，比如CentOS、Ubuntu、Windows、RedHat等，请参考控制台的镜像版本；若导入控制台上没有的操作系统，参数为Other</span>
 <span class="sd">        - **UFileUrl** (str) - (Required) UFile私有空间地址</span>
 <span class="sd">        - **ImageDescription** (str) - 镜像描述</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **ImageId** (str) - 镜像Id</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -622,20 +623,20 @@
 <div class="viewcode-block" id="UHostClient.modify_uhost_instance_name"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.modify_uhost_instance_name">[docs]</a>    <span class="k">def</span> <span class="nf">modify_uhost_instance_name</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; ModifyUHostInstanceName - 修改指定UHost实例名称，需要给出数据中心，UHostId，及新的实例名称。</span>
+        <span class="sd">&quot;&quot;&quot;ModifyUHostInstanceName - 修改指定UHost实例名称，需要给出数据中心，UHostId，及新的实例名称。</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_</span>
 <span class="sd">        - **Name** (str) - UHost实例名称</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **UhostId** (str) - UHost实例ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -648,20 +649,20 @@
 <div class="viewcode-block" id="UHostClient.modify_uhost_instance_remark"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.modify_uhost_instance_remark">[docs]</a>    <span class="k">def</span> <span class="nf">modify_uhost_instance_remark</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; ModifyUHostInstanceRemark - 修改指定UHost实例备注信息。</span>
+        <span class="sd">&quot;&quot;&quot;ModifyUHostInstanceRemark - 修改指定UHost实例备注信息。</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_</span>
 <span class="sd">        - **Remark** (str) - 备注</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **UhostId** (str) - UHost实例ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -674,20 +675,20 @@
 <div class="viewcode-block" id="UHostClient.modify_uhost_instance_tag"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.modify_uhost_instance_tag">[docs]</a>    <span class="k">def</span> <span class="nf">modify_uhost_instance_tag</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; ModifyUHostInstanceTag - 修改指定UHost实例业务组标识。</span>
+        <span class="sd">&quot;&quot;&quot;ModifyUHostInstanceTag - 修改指定UHost实例业务组标识。</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_</span>
 <span class="sd">        - **Tag** (str) - 业务组名称</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **UhostId** (str) - UHost实例ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -700,19 +701,19 @@
 <div class="viewcode-block" id="UHostClient.poweroff_uhost_instance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.poweroff_uhost_instance">[docs]</a>    <span class="k">def</span> <span class="nf">poweroff_uhost_instance</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; PoweroffUHostInstance - 直接关闭UHost实例电源，无需等待实例正常关闭。</span>
+        <span class="sd">&quot;&quot;&quot;PoweroffUHostInstance - 直接关闭UHost实例电源，无需等待实例正常关闭。</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_ </span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **UhostId** (str) - UHost实例ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -725,20 +726,20 @@
 <div class="viewcode-block" id="UHostClient.reboot_uhost_instance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.reboot_uhost_instance">[docs]</a>    <span class="k">def</span> <span class="nf">reboot_uhost_instance</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; RebootUHostInstance - 重新启动UHost实例，需要指定数据中心及UHostID两个参数的值。</span>
+        <span class="sd">&quot;&quot;&quot;RebootUHostInstance - 重新启动UHost实例，需要指定数据中心及UHostID两个参数的值。</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_</span>
 <span class="sd">        - **DiskPassword** (str) - 加密盘密码</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **UhostId** (str) - UHost实例ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -751,24 +752,24 @@
 <div class="viewcode-block" id="UHostClient.reinstall_uhost_instance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.reinstall_uhost_instance">[docs]</a>    <span class="k">def</span> <span class="nf">reinstall_uhost_instance</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; ReinstallUHostInstance - 重新安装指定UHost实例的操作系统</span>
+        <span class="sd">&quot;&quot;&quot;ReinstallUHostInstance - 重新安装指定UHost实例的操作系统</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        - **UHostId** (str) - (Required) UHost实例资源ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **UHostId** (str) - (Required) UHost实例资源ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_</span>
 <span class="sd">        - **DNSServers** (list) - 针对非私有子网主机，可自定义DNS。n可为0-2</span>
-<span class="sd">        - **ImageId** (str) - 镜像Id，默认使用原镜像 参见  `DescribeImage &lt;https://docs.ucloud.cn/api/uhost-api/describe_image.html&gt;`_ </span>
+<span class="sd">        - **ImageId** (str) - 镜像Id，默认使用原镜像 参见  `DescribeImage &lt;https://docs.ucloud.cn/api/uhost-api/describe_image.html&gt;`_</span>
 <span class="sd">        - **Password** (str) - 如果创建UHost实例时LoginMode为Password，则必须填写，如果LoginMode为KeyPair，不需要填写 （密码格式使用BASE64编码；LoginMode不可变更）</span>
 <span class="sd">        - **ReserveDisk** (str) - 是否保留数据盘，保留：Yes，不报留：No， 默认：Yes</span>
 <span class="sd">        - **ResourceType** (int) - 云灾备指明191</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **UhostId** (str) - UHost实例资源ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -781,20 +782,20 @@
 <div class="viewcode-block" id="UHostClient.reset_uhost_instance_password"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.reset_uhost_instance_password">[docs]</a>    <span class="k">def</span> <span class="nf">reset_uhost_instance_password</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; ResetUHostInstancePassword - 重置UHost实例的管理员密码。</span>
+        <span class="sd">&quot;&quot;&quot;ResetUHostInstancePassword - 重置UHost实例的管理员密码。</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **Password** (str) - (Required) UHost新密码（密码格式使用BASE64编码）</span>
 <span class="sd">        - **UHostId** (str) - (Required) UHost实例ID</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **UhostId** (str) - UHost实例ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -807,21 +808,21 @@
 <div class="viewcode-block" id="UHostClient.resize_attached_disk"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.resize_attached_disk">[docs]</a>    <span class="k">def</span> <span class="nf">resize_attached_disk</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; ResizeAttachedDisk - 修改挂载的磁盘大小，包含系统盘和数据盘</span>
+        <span class="sd">&quot;&quot;&quot;ResizeAttachedDisk - 修改挂载的磁盘大小，包含系统盘和数据盘</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **DiskId** (str) - (Required) 磁盘ID。参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_ 返回值中的DiskSet。</span>
 <span class="sd">        - **DiskSpace** (int) - (Required) 磁盘大小，单位GB，步长为10。取值范围需大于当前磁盘大小，最大值请参考 `磁盘类型 &lt;https://docs.ucloud.cn/api/uhost-api/disk_type&gt;`_ 。</span>
 <span class="sd">        - **UHostId** (str) - (Required) UHost实例ID。 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_ 。</span>
-<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **DiskId** (str) - 改配成功的磁盘id</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -834,24 +835,24 @@
 <div class="viewcode-block" id="UHostClient.resize_uhost_instance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.resize_uhost_instance">[docs]</a>    <span class="k">def</span> <span class="nf">resize_uhost_instance</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; ResizeUHostInstance - 修改指定UHost实例的资源配置，如CPU核心数，内存容量大小，磁盘空间大小,网络增强等。</span>
+        <span class="sd">&quot;&quot;&quot;ResizeUHostInstance - 修改指定UHost实例的资源配置，如CPU核心数，内存容量大小，磁盘空间大小,网络增强等。</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_</span>
 <span class="sd">        - **BootDiskSpace** (int) - 系统盘大小，单位：GB，范围[20,100]，步长：10，系统盘不支持缩容，因此不允许输入比当前实例系统盘小的值</span>
 <span class="sd">        - **CPU** (int) - 虚拟CPU核数，单位：个，范围：[1,16]，最小值为1，其他值是2的倍数，默认值为当前实例的CPU核数（*windows CPU&gt;=2）</span>
 <span class="sd">        - **DiskSpace** (int) - 数据盘大小，单位：GB，范围[10,1000]； SSD机型，单位：GB，范围[100,500]；步长：10，默认值为当前实例的数据盘大小，数据盘不支持缩容，因此不允许输入比当前实例数据盘大小的值</span>
 <span class="sd">        - **Memory** (int) - 内存大小，单位：MB，范围[2048,65536]，步长：2048，默认值为当前实例的内存大小（BGP-C数据中心最小支持1024，限Linux系统）</span>
 <span class="sd">        - **NetCapValue** (int) - 网卡升降级（1，表示升级，2表示降级，0表示不变）</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **UhostId** (str) - UHost实例ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -864,20 +865,20 @@
 <div class="viewcode-block" id="UHostClient.start_uhost_instance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.start_uhost_instance">[docs]</a>    <span class="k">def</span> <span class="nf">start_uhost_instance</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; StartUHostInstance - 启动处于关闭状态的UHost实例，需要指定数据中心及UHostID两个参数的值。</span>
+        <span class="sd">&quot;&quot;&quot;StartUHostInstance - 启动处于关闭状态的UHost实例，需要指定数据中心及UHostID两个参数的值。</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_</span>
 <span class="sd">        - **DiskPassword** (str) - 加密盘密码</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **UhostId** (str) - UHost实例ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -890,19 +891,19 @@
 <div class="viewcode-block" id="UHostClient.stop_uhost_instance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.stop_uhost_instance">[docs]</a>    <span class="k">def</span> <span class="nf">stop_uhost_instance</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; StopUHostInstance - 指停止处于运行状态的UHost实例，需指定数据中心及UhostID。</span>
+        <span class="sd">&quot;&quot;&quot;StopUHostInstance - 指停止处于运行状态的UHost实例，需指定数据中心及UhostID。</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_ </span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **UhostId** (str) - UHost实例ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -915,19 +916,19 @@
 <div class="viewcode-block" id="UHostClient.terminate_custom_image"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.terminate_custom_image">[docs]</a>    <span class="k">def</span> <span class="nf">terminate_custom_image</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; TerminateCustomImage - 删除用户自定义镜像</span>
+        <span class="sd">&quot;&quot;&quot;TerminateCustomImage - 删除用户自定义镜像</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        - **ImageId** (str) - (Required) 自制镜像ID 参见  `DescribeImage &lt;https://docs.ucloud.cn/api/uhost-api/describe_image.html&gt;`_ </span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ImageId** (str) - (Required) 自制镜像ID 参见  `DescribeImage &lt;https://docs.ucloud.cn/api/uhost-api/describe_image.html&gt;`_</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **ImageId** (str) - 自制镜像Id</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -940,23 +941,23 @@
 <div class="viewcode-block" id="UHostClient.terminate_uhost_instance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.terminate_uhost_instance">[docs]</a>    <span class="k">def</span> <span class="nf">terminate_uhost_instance</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; TerminateUHostInstance - 删除指定数据中心的UHost实例。</span>
+        <span class="sd">&quot;&quot;&quot;TerminateUHostInstance - 删除指定数据中心的UHost实例。</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        - **UHostId** (str) - (Required) UHost资源Id 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **UHostId** (str) - (Required) UHost资源Id 参见  `DescribeUHostInstance &lt;https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html&gt;`_</span>
 <span class="sd">        - **Destroy** (int) - 是否直接删除，0表示按照原来的逻辑（有回收站权限，则进入回收站），1表示直接删除</span>
 <span class="sd">        - **ReleaseEIP** (bool) - 是否释放绑定的EIP。true: 解绑EIP后，并释放；其他值或不填：解绑EIP。</span>
 <span class="sd">        - **ReleaseUDisk** (bool) - 是否删除挂载的数据盘。true删除，其他不删除。</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **InRecycle** (str) - 放入回收站:&quot;Yes&quot;, 彻底删除：“No”</span>
 <span class="sd">        - **UHostId** (str) - UHost 实例 Id</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -969,19 +970,19 @@
 <div class="viewcode-block" id="UHostClient.upgrade_to_ark_uhost_instance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uhost.client.UHostClient.upgrade_to_ark_uhost_instance">[docs]</a>    <span class="k">def</span> <span class="nf">upgrade_to_ark_uhost_instance</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; UpgradeToArkUHostInstance - 普通升级为方舟机型</span>
+        <span class="sd">&quot;&quot;&quot;UpgradeToArkUHostInstance - 普通升级为方舟机型</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **UHostIds** (list) - (Required) UHost主机的资源ID，例如UHostIds.0代表希望升级的主机1，UHostIds.1代表主机2。</span>
-<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **CouponId** (str) - 代金券ID 请参考DescribeCoupon接口</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **UHostSet** (list) - UHost主机的资源ID数组</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -1053,7 +1054,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

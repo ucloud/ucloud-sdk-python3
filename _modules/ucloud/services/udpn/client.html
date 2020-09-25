@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ucloud.services.udpn.client &#8212; ucloud-sdk-python3  documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -49,23 +50,23 @@
 <div class="viewcode-block" id="UDPNClient.allocate_udpn"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udpn.client.UDPNClient.allocate_udpn">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_udpn</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; AllocateUDPN - 分配一条 UDPN 专线</span>
+        <span class="sd">&quot;&quot;&quot;AllocateUDPN - 分配一条 UDPN 专线</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **Bandwidth** (int) - (Required) 带宽</span>
 <span class="sd">        - **Peer1** (str) - (Required) 专线可用区1，支持地域：北京二：cn-bj2, 上海二：cn-sh2, 广东：cn-gd, 亚太： hk, 上海一：cn-sh1, 法兰克福：ge-fra, 新加坡：sg,  洛杉矶：us-la， 华盛顿：us-ws， 东京：jpn-tky</span>
 <span class="sd">        - **Peer2** (str) - (Required) 专线可用区2，支持地域：北京二：cn-bj2, 上海二：cn-sh2, 广东：cn-gd, 亚太： hk, 上海一：cn-sh1, 法兰克福：ge-fra, 新加坡：sg,  洛杉矶：us-la， 华盛顿：us-ws， 东京：jpn-tky</span>
 <span class="sd">        - **ChargeType** (str) - 计费类型，枚举值为： Year，按年付费； Month，按月付费； Dynamic，按需付费</span>
 <span class="sd">        - **CouponId** (str) - 代金劵</span>
 <span class="sd">        - **Quantity** (int) - 计费时长，默认 1</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **UDPNId** (str) - 资源名称</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -81,25 +82,25 @@
 <div class="viewcode-block" id="UDPNClient.describe_udpn"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udpn.client.UDPNClient.describe_udpn">[docs]</a>    <span class="k">def</span> <span class="nf">describe_udpn</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; DescribeUDPN - 描述 UDPN</span>
+        <span class="sd">&quot;&quot;&quot;DescribeUDPN - 描述 UDPN</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **Limit** (int) - 返回数据长度，默认为 20</span>
 <span class="sd">        - **Offset** (int) - 列表起始位置偏移量，默认为 0</span>
 <span class="sd">        - **UDPNId** (str) - 申请到的 UDPN 资源 ID。若为空，则查询该用户在机房所有的专线信息。非默认项目资源，需填写ProjectId</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **DataSet** (list) - 见 **UDPNData** 模型定义</span>
 <span class="sd">        - **TotalCount** (int) - 查询到的总数量</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **UDPNData** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **UDPNData**</span>
+
 <span class="sd">        - **Bandwidth** (int) - 带宽</span>
 <span class="sd">        - **ChargeType** (str) - 计费类型</span>
 <span class="sd">        - **CreateTime** (int) - unix 时间戳 创建时间</span>
@@ -120,22 +121,22 @@
 <div class="viewcode-block" id="UDPNClient.get_udpn_line_list"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udpn.client.UDPNClient.get_udpn_line_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_udpn_line_list</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; GetUDPNLineList - 获取当前支持的专线线路列表</span>
+        <span class="sd">&quot;&quot;&quot;GetUDPNLineList - 获取当前支持的专线线路列表</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
-<span class="sd">        </span>
+<span class="sd">        - **ProjectId** (str) - (Config)</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **DataSet** (list) - 见 **UDPNLineSet** 模型定义</span>
 <span class="sd">        - **TotalCount** (int) - DataSet中的元素个数</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **UDPNLineSet** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **UDPNLineSet**</span>
+
 <span class="sd">        - **BandwidthUpperLimit** (int) - 线路带宽上限,单位 M</span>
 <span class="sd">        - **LocalRegion** (str) - 支持UDPN的地域之一，北京二：cn-bj2, 上海二：cn-sh2, 广东：cn-gd, 亚太： hk, 上海一：cn-sh1, 法兰克福：ge-fra, 新加坡：sg, 华盛顿：us-ws, 洛杉矶：us-la， 东京：jpn-tky</span>
 <span class="sd">        - **RemoteRegion** (str) - 支持UDPN的地域之一，北京二：cn-bj2, 上海二：cn-sh2, 广东：cn-gd, 亚太： hk, 上海一：cn-sh1, 法兰克福：ge-fra, 新加坡：sg, 华盛顿：us-ws, 洛杉矶：us-la， 东京：jpn-tky</span>
@@ -152,22 +153,22 @@
 <div class="viewcode-block" id="UDPNClient.get_udpn_price"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udpn.client.UDPNClient.get_udpn_price">[docs]</a>    <span class="k">def</span> <span class="nf">get_udpn_price</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; GetUDPNPrice - 获取 UDPN 价格</span>
+        <span class="sd">&quot;&quot;&quot;GetUDPNPrice - 获取 UDPN 价格</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **Bandwidth** (int) - (Required) 带宽信息</span>
 <span class="sd">        - **Peer1** (str) - (Required) 专线可用区1，支持地域：北京二：cn-bj2, 上海二：cn-sh2, 广东：cn-gd, 亚太： hk, 上海一：cn-sh1, 法兰克福：ge-fra, 新加坡：sg, 洛杉矶：us-la， 华盛顿：us-ws， 东京：jpn-tky</span>
 <span class="sd">        - **Peer2** (str) - (Required) 专线可用区2，支持地域：北京二：cn-bj2, 上海二：cn-sh2, 广东：cn-gd, 亚太： hk, 上海一：cn-sh1, 法兰克福：ge-fra, 新加坡：sg, 洛杉矶：us-la， 华盛顿：us-ws， 东京：jpn-tky</span>
 <span class="sd">        - **ChargeType** (str) - 计费类型</span>
 <span class="sd">        - **Quantity** (int) - 购买时长</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **Price** (float) - 专线价格</span>
 <span class="sd">        - **PurchaseValue** (int) - 资源有效期 unix 时间戳</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -180,19 +181,19 @@
 <div class="viewcode-block" id="UDPNClient.get_udpn_upgrade_price"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udpn.client.UDPNClient.get_udpn_upgrade_price">[docs]</a>    <span class="k">def</span> <span class="nf">get_udpn_upgrade_price</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; GetUDPNUpgradePrice - 获取专线升级价格</span>
+        <span class="sd">&quot;&quot;&quot;GetUDPNUpgradePrice - 获取专线升级价格</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **Bandwidth** (int) - (Required) 带宽</span>
 <span class="sd">        - **UDPNId** (str) - (Required) 专线带宽资源 Id</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **Price** (float) - 升级后的价格</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -205,19 +206,19 @@
 <div class="viewcode-block" id="UDPNClient.modify_udpn_bandwidth"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udpn.client.UDPNClient.modify_udpn_bandwidth">[docs]</a>    <span class="k">def</span> <span class="nf">modify_udpn_bandwidth</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; ModifyUDPNBandwidth - 修改带宽值</span>
+        <span class="sd">&quot;&quot;&quot;ModifyUDPNBandwidth - 修改带宽值</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **Bandwidth** (int) - (Required) 调整后专线带宽, 单位为Mbps，取值范围为大于等于2且小于等于1000([2-1000])的整数</span>
 <span class="sd">        - **UDPNId** (str) - (Required) UDPN Id</span>
 <span class="sd">        - **CouponId** (str) - 代金劵 ID</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -228,17 +229,17 @@
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyUDPNBandwidthResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UDPNClient.release_udpn"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udpn.client.UDPNClient.release_udpn">[docs]</a>    <span class="k">def</span> <span class="nf">release_udpn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; ReleaseUDPN - 释放 UDPN</span>
+        <span class="sd">&quot;&quot;&quot;ReleaseUDPN - 释放 UDPN</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **UDPNId** (str) - (Required) UDPN 资源 Id</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -310,7 +311,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ucloud.core.utils.middleware &#8212; ucloud-sdk-python3  documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -32,7 +33,7 @@
             
   <h1>Source code for ucloud.core.utils.middleware</h1><div class="highlight"><pre>
 <div class="viewcode-block" id="Middleware"><a class="viewcode-back" href="../../../../core.html#ucloud.core.utils.middleware.Middleware">[docs]</a><span></span><span class="k">class</span> <span class="nc">Middleware</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot; middleware is the object to store request/response handlers</span>
+    <span class="sd">&quot;&quot;&quot;middleware is the object to store request/response handlers</span>
 
 <span class="sd">    &gt;&gt;&gt; middleware = Middleware()</span>
 
@@ -60,7 +61,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">exception_handlers</span> <span class="o">=</span> <span class="p">[]</span>
 
 <div class="viewcode-block" id="Middleware.request"><a class="viewcode-back" href="../../../../core.html#ucloud.core.utils.middleware.Middleware.request">[docs]</a>    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">index</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; request is the request handler register to add request handler.</span>
+        <span class="sd">&quot;&quot;&quot;request is the request handler register to add request handler.</span>
 
 <span class="sd">        :param handler: request handler function, receive request object</span>
 <span class="sd">                        and return a new request</span>
@@ -72,7 +73,7 @@
         <span class="k">return</span> <span class="n">handler</span></div>
 
 <div class="viewcode-block" id="Middleware.response"><a class="viewcode-back" href="../../../../core.html#ucloud.core.utils.middleware.Middleware.response">[docs]</a>    <span class="k">def</span> <span class="nf">response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">index</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; response is the response handler register to add response handler.</span>
+        <span class="sd">&quot;&quot;&quot;response is the response handler register to add response handler.</span>
 
 <span class="sd">        :param handler: response handler function, receive response object</span>
 <span class="sd">                        and return a new response</span>
@@ -84,7 +85,7 @@
         <span class="k">return</span> <span class="n">handler</span></div>
 
 <div class="viewcode-block" id="Middleware.exception"><a class="viewcode-back" href="../../../../core.html#ucloud.core.utils.middleware.Middleware.exception">[docs]</a>    <span class="k">def</span> <span class="nf">exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">index</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; exception is the exception handler register to add exception handler.</span>
+        <span class="sd">&quot;&quot;&quot;exception is the exception handler register to add exception handler.</span>
 
 <span class="sd">        :param handler: exception handler function, receive exception object</span>
 <span class="sd">                        and raise a new exception or ignore it</span>
@@ -157,7 +158,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

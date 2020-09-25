@@ -1,10 +1,10 @@
 
-
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Index &#8212; ucloud-sdk-python3  documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -63,8 +63,12 @@
 </li>
       <li><a href="services.html#ucloud.services.ulb.client.ULBClient.allocate_backend_batch">allocate_backend_batch() (ucloud.services.ulb.client.ULBClient method)</a>
 </li>
-      <li><a href="services.html#ucloud.services.unet.client.UNetClient.allocate_eip">allocate_eip() (ucloud.services.unet.client.UNetClient method)</a>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.allocate_eip">allocate_eip() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+
+      <ul>
+        <li><a href="services.html#ucloud.services.unet.client.UNetClient.allocate_eip">(ucloud.services.unet.client.UNetClient method)</a>
 </li>
+      </ul></li>
       <li><a href="services.html#ucloud.services.unet.client.UNetClient.allocate_share_bandwidth">allocate_share_bandwidth() (ucloud.services.unet.client.UNetClient method)</a>
 </li>
   </ul></td>
@@ -76,6 +80,10 @@
       <li><a href="services.html#ucloud.services.unet.client.UNetClient.associate_eip_with_share_bandwidth">associate_eip_with_share_bandwidth() (ucloud.services.unet.client.UNetClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.vpc.client.VPCClient.associate_route_table">associate_route_table() (ucloud.services.vpc.client.VPCClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.attach_disk">attach_disk() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.attach_nic">attach_nic() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.udisk.client.UDiskClient.attach_udisk">attach_udisk() (ucloud.services.udisk.client.UDiskClient method)</a>
 </li>
@@ -93,15 +101,25 @@
 </li>
       <li><a href="services.html#ucloud.services.udb.client.UDBClient.backup_udb_instance_binlog">backup_udb_instance_binlog() (ucloud.services.udb.client.UDBClient method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="services.html#ucloud.services.udb.client.UDBClient.backup_udb_instance_error_log">backup_udb_instance_error_log() (ucloud.services.udb.client.UDBClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.udb.client.UDBClient.backup_udb_instance_slow_log">backup_udb_instance_slow_log() (ucloud.services.udb.client.UDBClient method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="services.html#ucloud.services.ucdn.client.UCDNClient.batch_describe_new_ucdn_domain">batch_describe_new_ucdn_domain() (ucloud.services.ucdn.client.UCDNClient method)</a>
 </li>
-      <li><a href="services.html#ucloud.services.unet.client.UNetClient.bind_eip">bind_eip() (ucloud.services.unet.client.UNetClient method)</a>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.bind_alarm_template">bind_alarm_template() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.bind_eip">bind_eip() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+
+      <ul>
+        <li><a href="services.html#ucloud.services.unet.client.UNetClient.bind_eip">(ucloud.services.unet.client.UNetClient method)</a>
+</li>
+      </ul></li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.bind_physical_ip">bind_physical_ip() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.bind_security_group">bind_security_group() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.ulb.client.ULBClient.bind_ssl">bind_ssl() (ucloud.services.ulb.client.ULBClient method)</a>
 </li>
@@ -119,6 +137,8 @@
 </li>
       <li><a href="core.html#ucloud.core.client.Client">Client (class in ucloud.core.client)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.clone_disk">clone_disk() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.vpc.client.VPCClient.clone_route_table">clone_route_table() (ucloud.services.vpc.client.VPCClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.udisk.client.UDiskClient.clone_udisk">clone_udisk() (ucloud.services.udisk.client.UDiskClient method)</a>
@@ -131,13 +151,31 @@
 </li>
       <li><a href="services.html#ucloud.services.unet.client.UNetClient.create_bandwidth_package">create_bandwidth_package() (ucloud.services.unet.client.UNetClient method)</a>
 </li>
-      <li><a href="services.html#ucloud.services.uhost.client.UHostClient.create_custom_image">create_custom_image() (ucloud.services.uhost.client.UHostClient method)</a>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.create_certificate">create_certificate() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.create_custom_image">create_custom_image() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+
+      <ul>
+        <li><a href="services.html#ucloud.services.uhost.client.UHostClient.create_custom_image">(ucloud.services.uhost.client.UHostClient method)</a>
+</li>
+      </ul></li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.create_disk">create_disk() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.unet.client.UNetClient.create_firewall">create_firewall() (ucloud.services.unet.client.UNetClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.pathx.client.PathXClient.create_global_ssh_instance">create_global_ssh_instance() (ucloud.services.pathx.client.PathXClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.create_lb">create_lb() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.create_natgw">create_natgw() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.create_natgw_rule">create_natgw_rule() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.create_nic">create_nic() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.uphost.client.UPHostClient.create_phost">create_phost() (ucloud.services.uphost.client.UPHostClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.create_physical_ip">create_physical_ip() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.ulb.client.ULBClient.create_policy">create_policy() (ucloud.services.ulb.client.ULBClient method)</a>
 </li>
@@ -147,14 +185,26 @@
 </li>
       <li><a href="services.html#ucloud.services.vpc.client.VPCClient.create_route_table">create_route_table() (ucloud.services.vpc.client.VPCClient method)</a>
 </li>
-      <li><a href="services.html#ucloud.services.stepflow.client.StepFlowClient.create_sf_workflow_from_template">create_sf_workflow_from_template() (ucloud.services.stepflow.client.StepFlowClient method)</a>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.create_rs">create_rs() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
-      <li><a href="services.html#ucloud.services.ulb.client.ULBClient.create_ssl">create_ssl() (ucloud.services.ulb.client.ULBClient method)</a>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.create_security_group">create_security_group() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.create_security_group_rule">create_security_group_rule() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.stepflow.client.StepFlowClient.create_sf_workflow_from_template">create_sf_workflow_from_template() (ucloud.services.stepflow.client.StepFlowClient method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="services.html#ucloud.services.vpc.client.VPCClient.create_subnet">create_subnet() (ucloud.services.vpc.client.VPCClient method)</a>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.create_snapshot">create_snapshot() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ulb.client.ULBClient.create_ssl">create_ssl() (ucloud.services.ulb.client.ULBClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.create_subnet">create_subnet() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+
+      <ul>
+        <li><a href="services.html#ucloud.services.vpc.client.VPCClient.create_subnet">(ucloud.services.vpc.client.VPCClient method)</a>
+</li>
+      </ul></li>
       <li><a href="services.html#ucloud.services.udb.client.UDBClient.create_udb_instance">create_udb_instance() (ucloud.services.udb.client.UDBClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.udb.client.UDBClient.create_udb_instance_by_recovery">create_udb_instance_by_recovery() (ucloud.services.udb.client.UDBClient method)</a>
@@ -177,19 +227,35 @@
 </li>
       <li><a href="services.html#ucloud.services.ulb.client.ULBClient.create_ulb">create_ulb() (ucloud.services.ulb.client.ULBClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.umem.client.UMemClient.create_umem_backup">create_umem_backup() (ucloud.services.umem.client.UMemClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.umem.client.UMemClient.create_umem_cache_group">create_umem_cache_group() (ucloud.services.umem.client.UMemClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.umem.client.UMemClient.create_umem_space">create_umem_space() (ucloud.services.umem.client.UMemClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.umem.client.UMemClient.create_uredis_backup">create_uredis_backup() (ucloud.services.umem.client.UMemClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.umem.client.UMemClient.create_uredis_group">create_uredis_group() (ucloud.services.umem.client.UMemClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.create_user">create_user() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.usms.client.USMSClient.create_usms_signature">create_usms_signature() (ucloud.services.usms.client.USMSClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.usms.client.USMSClient.create_usms_template">create_usms_template() (ucloud.services.usms.client.USMSClient method)</a>
 </li>
-      <li><a href="services.html#ucloud.services.vpc.client.VPCClient.create_vpc">create_vpc() (ucloud.services.vpc.client.VPCClient method)</a>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.create_vm_instance">create_vm_instance() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.create_vpc">create_vpc() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+
+      <ul>
+        <li><a href="services.html#ucloud.services.vpc.client.VPCClient.create_vpc">(ucloud.services.vpc.client.VPCClient method)</a>
+</li>
+      </ul></li>
       <li><a href="services.html#ucloud.services.vpc.client.VPCClient.create_vpc_intercom">create_vpc_intercom() (ucloud.services.vpc.client.VPCClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.create_vs">create_vs() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.create_vs_policy">create_vs_policy() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.ulb.client.ULBClient.create_vserver">create_vserver() (ucloud.services.ulb.client.ULBClient method)</a>
 </li>
@@ -203,9 +269,25 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="services.html#ucloud.services.unet.client.UNetClient.delete_bandwidth_package">delete_bandwidth_package() (ucloud.services.unet.client.UNetClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.delete_certificate">delete_certificate() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.delete_custom_image">delete_custom_image() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.delete_disk">delete_disk() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.unet.client.UNetClient.delete_firewall">delete_firewall() (ucloud.services.unet.client.UNetClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.pathx.client.PathXClient.delete_global_ssh_instance">delete_global_ssh_instance() (ucloud.services.pathx.client.PathXClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.delete_lb">delete_lb() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.delete_natgw">delete_natgw() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.delete_natgw_rule">delete_natgw_rule() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.delete_nic">delete_nic() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.delete_physical_ip">delete_physical_ip() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.ulb.client.ULBClient.delete_policy">delete_policy() (ucloud.services.ulb.client.ULBClient method)</a>
 </li>
@@ -215,10 +297,22 @@
 </li>
       <li><a href="services.html#ucloud.services.vpc.client.VPCClient.delete_route_table">delete_route_table() (ucloud.services.vpc.client.VPCClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.delete_rs">delete_rs() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.delete_security_group">delete_security_group() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.delete_security_group_rule">delete_security_group_rule() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.delete_snapshot">delete_snapshot() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.ulb.client.ULBClient.delete_ssl">delete_ssl() (ucloud.services.ulb.client.ULBClient method)</a>
 </li>
-      <li><a href="services.html#ucloud.services.vpc.client.VPCClient.delete_subnet">delete_subnet() (ucloud.services.vpc.client.VPCClient method)</a>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.delete_subnet">delete_subnet() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+
+      <ul>
+        <li><a href="services.html#ucloud.services.vpc.client.VPCClient.delete_subnet">(ucloud.services.vpc.client.VPCClient method)</a>
 </li>
+      </ul></li>
       <li><a href="services.html#ucloud.services.udb.client.UDBClient.delete_udb_backup">delete_udb_backup() (ucloud.services.udb.client.UDBClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.udb.client.UDBClient.delete_udb_instance">delete_udb_instance() (ucloud.services.udb.client.UDBClient method)</a>
@@ -243,9 +337,19 @@
 </li>
       <li><a href="services.html#ucloud.services.usms.client.USMSClient.delete_usms_template">delete_usms_template() (ucloud.services.usms.client.USMSClient method)</a>
 </li>
-      <li><a href="services.html#ucloud.services.vpc.client.VPCClient.delete_vpc">delete_vpc() (ucloud.services.vpc.client.VPCClient method)</a>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.delete_vm_instance">delete_vm_instance() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.delete_vpc">delete_vpc() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+
+      <ul>
+        <li><a href="services.html#ucloud.services.vpc.client.VPCClient.delete_vpc">(ucloud.services.vpc.client.VPCClient method)</a>
+</li>
+      </ul></li>
       <li><a href="services.html#ucloud.services.vpc.client.VPCClient.delete_vpc_intercom">delete_vpc_intercom() (ucloud.services.vpc.client.VPCClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.delete_vs">delete_vs() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.delete_vs_policy">delete_vs_policy() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.ulb.client.ULBClient.delete_vserver">delete_vserver() (ucloud.services.ulb.client.ULBClient method)</a>
 </li>
@@ -253,8 +357,16 @@
 </li>
       <li><a href="services.html#ucloud.services.unet.client.UNetClient.describe_bandwidth_usage">describe_bandwidth_usage() (ucloud.services.unet.client.UNetClient method)</a>
 </li>
-      <li><a href="services.html#ucloud.services.unet.client.UNetClient.describe_eip">describe_eip() (ucloud.services.unet.client.UNetClient method)</a>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_certificate">describe_certificate() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_disk">describe_disk() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_eip">describe_eip() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+
+      <ul>
+        <li><a href="services.html#ucloud.services.unet.client.UNetClient.describe_eip">(ucloud.services.unet.client.UNetClient method)</a>
+</li>
+      </ul></li>
       <li><a href="services.html#ucloud.services.unet.client.UNetClient.describe_firewall">describe_firewall() (ucloud.services.unet.client.UNetClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.unet.client.UNetClient.describe_firewall_resource">describe_firewall_resource() (ucloud.services.unet.client.UNetClient method)</a>
@@ -263,13 +375,29 @@
 </li>
       <li><a href="services.html#ucloud.services.pathx.client.PathXClient.describe_global_ssh_instance">describe_global_ssh_instance() (ucloud.services.pathx.client.PathXClient method)</a>
 </li>
-      <li><a href="services.html#ucloud.services.uhost.client.UHostClient.describe_image">describe_image() (ucloud.services.uhost.client.UHostClient method)</a>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_image">describe_image() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+
+      <ul>
+        <li><a href="services.html#ucloud.services.uhost.client.UHostClient.describe_image">(ucloud.services.uhost.client.UHostClient method)</a>
 </li>
+      </ul></li>
       <li><a href="services.html#ucloud.services.uhost.client.UHostClient.describe_isolation_group">describe_isolation_group() (ucloud.services.uhost.client.UHostClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_lb">describe_lb() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_metric">describe_metric() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_natgw">describe_natgw() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_natgw_rule">describe_natgw_rule() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.ucdn.client.UCDNClient.describe_new_ucdn_prefetch_cache_task">describe_new_ucdn_prefetch_cache_task() (ucloud.services.ucdn.client.UCDNClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.ucdn.client.UCDNClient.describe_new_ucdn_refresh_cache_task">describe_new_ucdn_refresh_cache_task() (ucloud.services.ucdn.client.UCDNClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_nic">describe_nic() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_op_logs">describe_op_logs() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.uphost.client.UPHostClient.describe_phost">describe_phost() (ucloud.services.uphost.client.UPHostClient method)</a>
 </li>
@@ -277,18 +405,36 @@
 </li>
       <li><a href="services.html#ucloud.services.uphost.client.UPHostClient.describe_phost_tags">describe_phost_tags() (ucloud.services.uphost.client.UPHostClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_physical_ip">describe_physical_ip() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_recycled_resource">describe_recycled_resource() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.ipsecvpn.client.IPSecVPNClient.describe_remote_vpn_gateway">describe_remote_vpn_gateway() (ucloud.services.ipsecvpn.client.IPSecVPNClient method)</a>
-</li>
-      <li><a href="services.html#ucloud.services.vpc.client.VPCClient.describe_route_table">describe_route_table() (ucloud.services.vpc.client.VPCClient method)</a>
-</li>
-      <li><a href="services.html#ucloud.services.unet.client.UNetClient.describe_share_bandwidth">describe_share_bandwidth() (ucloud.services.unet.client.UNetClient method)</a>
-</li>
-      <li><a href="services.html#ucloud.services.ulb.client.ULBClient.describe_ssl">describe_ssl() (ucloud.services.ulb.client.ULBClient method)</a>
-</li>
-      <li><a href="services.html#ucloud.services.vpc.client.VPCClient.describe_subnet">describe_subnet() (ucloud.services.vpc.client.VPCClient method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="services.html#ucloud.services.vpc.client.VPCClient.describe_route_table">describe_route_table() (ucloud.services.vpc.client.VPCClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_rs">describe_rs() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_security_group">describe_security_group() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_security_group_resource">describe_security_group_resource() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.unet.client.UNetClient.describe_share_bandwidth">describe_share_bandwidth() (ucloud.services.unet.client.UNetClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_snapshot">describe_snapshot() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ulb.client.ULBClient.describe_ssl">describe_ssl() (ucloud.services.ulb.client.ULBClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_storage_type">describe_storage_type() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_subnet">describe_subnet() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+
+      <ul>
+        <li><a href="services.html#ucloud.services.vpc.client.VPCClient.describe_subnet">(ucloud.services.vpc.client.VPCClient method)</a>
+</li>
+      </ul></li>
       <li><a href="services.html#ucloud.services.vpc.client.VPCClient.describe_subnet_resource">describe_subnet_resource() (ucloud.services.vpc.client.VPCClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.udb.client.UDBClient.describe_udb_backup">describe_udb_backup() (ucloud.services.udb.client.UDBClient method)</a>
@@ -341,6 +487,12 @@
 </li>
       <li><a href="services.html#ucloud.services.ulb.client.ULBClient.describe_ulb">describe_ulb() (ucloud.services.ulb.client.ULBClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.umem.client.UMemClient.describe_umem_backup">describe_umem_backup() (ucloud.services.umem.client.UMemClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.umem.client.UMemClient.describe_umem_backup_url">describe_umem_backup_url() (ucloud.services.umem.client.UMemClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.umem.client.UMemClient.describe_umem_block_info">describe_umem_block_info() (ucloud.services.umem.client.UMemClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.umem.client.UMemClient.describe_umem_cache_group">describe_umem_cache_group() (ucloud.services.umem.client.UMemClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.umem.client.UMemClient.describe_umem_cache_price">describe_umem_cache_price() (ucloud.services.umem.client.UMemClient method)</a>
@@ -357,23 +509,49 @@
 </li>
       <li><a href="services.html#ucloud.services.umem.client.UMemClient.describe_uredis_backup_url">describe_uredis_backup_url() (ucloud.services.umem.client.UMemClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.umem.client.UMemClient.describe_uredis_config">describe_uredis_config() (ucloud.services.umem.client.UMemClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.umem.client.UMemClient.describe_uredis_group">describe_uredis_group() (ucloud.services.umem.client.UMemClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.umem.client.UMemClient.describe_uredis_price">describe_uredis_price() (ucloud.services.umem.client.UMemClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.umem.client.UMemClient.describe_uredis_slowlog">describe_uredis_slowlog() (ucloud.services.umem.client.UMemClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.umem.client.UMemClient.describe_uredis_upgrade_price">describe_uredis_upgrade_price() (ucloud.services.umem.client.UMemClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.umem.client.UMemClient.describe_uredis_version">describe_uredis_version() (ucloud.services.umem.client.UMemClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_user">describe_user() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.unet.client.UNetClient.describe_vip">describe_vip() (ucloud.services.unet.client.UNetClient method)</a>
 </li>
-      <li><a href="services.html#ucloud.services.vpc.client.VPCClient.describe_vpc">describe_vpc() (ucloud.services.vpc.client.VPCClient method)</a>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_vm_instance">describe_vm_instance() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_vm_type">describe_vm_type() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_vpc">describe_vpc() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+
+      <ul>
+        <li><a href="services.html#ucloud.services.vpc.client.VPCClient.describe_vpc">(ucloud.services.vpc.client.VPCClient method)</a>
+</li>
+      </ul></li>
       <li><a href="services.html#ucloud.services.vpc.client.VPCClient.describe_vpc_intercom">describe_vpc_intercom() (ucloud.services.vpc.client.VPCClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.ipsecvpn.client.IPSecVPNClient.describe_vpn_tunnel">describe_vpn_tunnel() (ucloud.services.ipsecvpn.client.IPSecVPNClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_vs">describe_vs() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.describe_vs_policy">describe_vs_policy() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.ulb.client.ULBClient.describe_vserver">describe_vserver() (ucloud.services.ulb.client.ULBClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.detach_disk">detach_disk() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.detach_nic">detach_nic() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.udisk.client.UDiskClient.detach_udisk">detach_udisk() (ucloud.services.udisk.client.UDiskClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.disable_rs">disable_rs() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.unet.client.UNetClient.disassociate_eip_with_share_bandwidth">disassociate_eip_with_share_bandwidth() (ucloud.services.unet.client.UNetClient method)</a>
 </li>
@@ -384,6 +562,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="services.html#ucloud.services.udb.client.UDBClient.edit_udb_backup_blacklist">edit_udb_backup_blacklist() (ucloud.services.udb.client.UDBClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.enable_rs">enable_rs() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -407,10 +587,16 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="helpers.html#ucloud.helpers.utils.gen_password">gen_password() (in module ucloud.helpers.utils)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.get_disk_price">get_disk_price() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.unet.client.UNetClient.get_eip_pay_mode">get_eip_pay_mode() (ucloud.services.unet.client.UNetClient method)</a>
 </li>
-      <li><a href="services.html#ucloud.services.unet.client.UNetClient.get_eip_price">get_eip_price() (ucloud.services.unet.client.UNetClient method)</a>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.get_eip_price">get_eip_price() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+
+      <ul>
+        <li><a href="services.html#ucloud.services.unet.client.UNetClient.get_eip_price">(ucloud.services.unet.client.UNetClient method)</a>
 </li>
+      </ul></li>
       <li><a href="services.html#ucloud.services.unet.client.UNetClient.get_eip_upgrade_price">get_eip_upgrade_price() (ucloud.services.unet.client.UNetClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.uhub.client.UHubClient.get_image_tag">get_image_tag() (ucloud.services.uhub.client.UHubClient method)</a>
@@ -435,10 +621,10 @@
 </li>
       <li><a href="services.html#ucloud.services.uhub.client.UHubClient.get_repo_image">get_repo_image() (ucloud.services.uhub.client.UHubClient method)</a>
 </li>
-      <li><a href="services.html#ucloud.services.stepflow.client.StepFlowClient.get_sf_workflow_template">get_sf_workflow_template() (ucloud.services.stepflow.client.StepFlowClient method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="services.html#ucloud.services.stepflow.client.StepFlowClient.get_sf_workflow_template">get_sf_workflow_template() (ucloud.services.stepflow.client.StepFlowClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.ucdn.client.UCDNClient.get_ucdn_domain_log">get_ucdn_domain_log() (ucloud.services.ucdn.client.UCDNClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.ucdn.client.UCDNClient.get_ucdn_domain_prefetch_enable">get_ucdn_domain_prefetch_enable() (ucloud.services.ucdn.client.UCDNClient method)</a>
@@ -469,6 +655,8 @@
 </li>
       <li><a href="services.html#ucloud.services.usms.client.USMSClient.get_usms_send_receipt">get_usms_send_receipt() (ucloud.services.usms.client.USMSClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.get_vm_instance_price">get_vm_instance_price() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.unet.client.UNetClient.grant_firewall">grant_firewall() (ucloud.services.unet.client.UNetClient method)</a>
 </li>
   </ul></td>
@@ -495,22 +683,28 @@
 </li>
       <li><a href="core.html#ucloud.core.transport.RequestsTransport.middleware">middleware() (ucloud.core.transport.RequestsTransport property)</a>
 </li>
-      <li><a href="services.html#ucloud.services.unet.client.UNetClient.modify_eip_bandwidth">modify_eip_bandwidth() (ucloud.services.unet.client.UNetClient method)</a>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.modify_eip_bandwidth">modify_eip_bandwidth() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+
+      <ul>
+        <li><a href="services.html#ucloud.services.unet.client.UNetClient.modify_eip_bandwidth">(ucloud.services.unet.client.UNetClient method)</a>
 </li>
+      </ul></li>
       <li><a href="services.html#ucloud.services.unet.client.UNetClient.modify_eip_weight">modify_eip_weight() (ucloud.services.unet.client.UNetClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.pathx.client.PathXClient.modify_global_ssh_port">modify_global_ssh_port() (ucloud.services.pathx.client.PathXClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.pathx.client.PathXClient.modify_global_ssh_remark">modify_global_ssh_remark() (ucloud.services.pathx.client.PathXClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.modify_name_and_remark">modify_name_and_remark() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.uphost.client.UPHostClient.modify_phost_info">modify_phost_info() (ucloud.services.uphost.client.UPHostClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.uaccount.client.UAccountClient.modify_project">modify_project() (ucloud.services.uaccount.client.UAccountClient method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="services.html#ucloud.services.vpc.client.VPCClient.modify_route_rule">modify_route_rule() (ucloud.services.vpc.client.VPCClient method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="services.html#ucloud.services.udb.client.UDBClient.modify_udb_instance_name">modify_udb_instance_name() (ucloud.services.udb.client.UDBClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.udb.client.UDBClient.modify_udb_instance_password">modify_udb_instance_password() (ucloud.services.udb.client.UDBClient method)</a>
@@ -527,6 +721,15 @@
 </li>
       <li><a href="services.html#ucloud.services.umem.client.UMemClient.modify_uredis_group_name">modify_uredis_group_name() (ucloud.services.umem.client.UMemClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.umem.client.UMemClient.modify_uredis_group_password">modify_uredis_group_password() (ucloud.services.umem.client.UMemClient method)</a>
+</li>
+      <li>
+    module
+
+      <ul>
+        <li><a href="helpers.html#module-ucloud.helpers.utils">ucloud.helpers.utils</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -541,6 +744,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.poweroff_vm_instance">poweroff_vm_instance() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.ucdn.client.UCDNClient.prefetch_new_ucdn_domain_cache">prefetch_new_ucdn_domain_cache() (ucloud.services.ucdn.client.UCDNClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.udb.client.UDBClient.promote_udb_instance_to_ha">promote_udb_instance_to_ha() (ucloud.services.udb.client.UDBClient method)</a>
@@ -569,16 +774,24 @@
 </li>
       <li><a href="services.html#ucloud.services.uhost.client.UHostClient.reboot_uhost_instance">reboot_uhost_instance() (ucloud.services.uhost.client.UHostClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.recharge">recharge() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.ucdn.client.UCDNClient.refresh_new_ucdn_domain_cache">refresh_new_ucdn_domain_cache() (ucloud.services.ucdn.client.UCDNClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.uphost.client.UPHostClient.reinstall_phost">reinstall_phost() (ucloud.services.uphost.client.UPHostClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.uhost.client.UHostClient.reinstall_uhost_instance">reinstall_uhost_instance() (ucloud.services.uhost.client.UHostClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.reinstall_vm_instance">reinstall_vm_instance() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.ulb.client.ULBClient.release_backend">release_backend() (ucloud.services.ulb.client.ULBClient method)</a>
 </li>
-      <li><a href="services.html#ucloud.services.unet.client.UNetClient.release_eip">release_eip() (ucloud.services.unet.client.UNetClient method)</a>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.release_eip">release_eip() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+
+      <ul>
+        <li><a href="services.html#ucloud.services.unet.client.UNetClient.release_eip">(ucloud.services.unet.client.UNetClient method)</a>
 </li>
+      </ul></li>
       <li><a href="services.html#ucloud.services.unet.client.UNetClient.release_share_bandwidth">release_share_bandwidth() (ucloud.services.unet.client.UNetClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.udpn.client.UDPNClient.release_udpn">release_udpn() (ucloud.services.udpn.client.UDPNClient method)</a>
@@ -589,6 +802,8 @@
 </li>
       <li><a href="services.html#ucloud.services.udisk.client.UDiskClient.rename_udisk">rename_udisk() (ucloud.services.udisk.client.UDiskClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.renew_resource">renew_resource() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
       <li><a href="core.html#ucloud.core.utils.middleware.Middleware.request">request() (ucloud.core.utils.middleware.Middleware method)</a>
 </li>
   </ul></td>
@@ -596,6 +811,8 @@
       <li><a href="core.html#ucloud.core.transport.RequestsTransport">RequestsTransport (class in ucloud.core.transport)</a>
 </li>
       <li><a href="services.html#ucloud.services.uhost.client.UHostClient.reset_uhost_instance_password">reset_uhost_instance_password() (ucloud.services.uhost.client.UHostClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.reset_vm_instance_password">reset_vm_instance_password() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.uhost.client.UHostClient.resize_attached_disk">resize_attached_disk() (ucloud.services.uhost.client.UHostClient method)</a>
 </li>
@@ -605,13 +822,13 @@
 </li>
       <li><a href="services.html#ucloud.services.udisk.client.UDiskClient.resize_udisk">resize_udisk() (ucloud.services.udisk.client.UDiskClient method)</a>
 </li>
-      <li><a href="services.html#ucloud.services.umem.client.UMemClient.resize_udredis_space">resize_udredis_space() (ucloud.services.umem.client.UMemClient method)</a>
-</li>
       <li><a href="services.html#ucloud.services.uhost.client.UHostClient.resize_uhost_instance">resize_uhost_instance() (ucloud.services.uhost.client.UHostClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.umem.client.UMemClient.resize_umem_space">resize_umem_space() (ucloud.services.umem.client.UMemClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.umem.client.UMemClient.resize_uredis_group">resize_uredis_group() (ucloud.services.umem.client.UMemClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.resize_vm_config">resize_vm_config() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
       <li><a href="core.html#ucloud.core.utils.middleware.Middleware.response">response() (ucloud.core.utils.middleware.Middleware method)</a>
 </li>
@@ -619,7 +836,13 @@
 </li>
       <li><a href="services.html#ucloud.services.umem.client.UMemClient.restart_umem_cache_group">restart_umem_cache_group() (ucloud.services.umem.client.UMemClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.restart_vm_instance">restart_vm_instance() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.udisk.client.UDiskClient.restore_udisk">restore_udisk() (ucloud.services.udisk.client.UDiskClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.rollback_resource">rollback_resource() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.rollback_snapshot">rollback_snapshot() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -639,15 +862,19 @@
 </li>
       <li><a href="services.html#ucloud.services.udb.client.UDBClient.start_udb_instance">start_udb_instance() (ucloud.services.udb.client.UDBClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.uhost.client.UHostClient.start_uhost_instance">start_uhost_instance() (ucloud.services.uhost.client.UHostClient method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="services.html#ucloud.services.uhost.client.UHostClient.start_uhost_instance">start_uhost_instance() (ucloud.services.uhost.client.UHostClient method)</a>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.start_vm_instance">start_vm_instance() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.stepflow.client.StepFlowClient">StepFlowClient (class in ucloud.services.stepflow.client)</a>
 </li>
       <li><a href="services.html#ucloud.services.udb.client.UDBClient.stop_udb_instance">stop_udb_instance() (ucloud.services.udb.client.UDBClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.uhost.client.UHostClient.stop_uhost_instance">stop_uhost_instance() (ucloud.services.uhost.client.UHostClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.stop_vm_instance">stop_vm_instance() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.ucdn.client.UCDNClient.switch_ucdn_charge_type">switch_ucdn_charge_type() (ucloud.services.ucdn.client.UCDNClient method)</a>
 </li>
@@ -667,6 +894,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="services.html#ucloud.services.uaccount.client.UAccountClient.terminate_project">terminate_project() (ucloud.services.uaccount.client.UAccountClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.terminate_resource">terminate_resource() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.uhost.client.UHostClient.terminate_uhost_instance">terminate_uhost_instance() (ucloud.services.uhost.client.UHostClient method)</a>
 </li>
   </ul></td>
@@ -679,7 +908,14 @@
 </li>
       <li><a href="services.html#ucloud.services.ucdn.client.UCDNClient">UCDNClient (class in ucloud.services.ucdn.client)</a>
 </li>
-      <li><a href="helpers.html#module-ucloud.helpers.utils">ucloud.helpers.utils (module)</a>
+      <li>
+    ucloud.helpers.utils
+
+      <ul>
+        <li><a href="helpers.html#module-ucloud.helpers.utils">module</a>
+</li>
+      </ul></li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient">UCloudStackClient (class in ucloud.services.ucloudstack.client)</a>
 </li>
       <li><a href="services.html#ucloud.services.udb.client.UDBClient">UDBClient (class in ucloud.services.udb.client)</a>
 </li>
@@ -697,20 +933,32 @@
 </li>
       <li><a href="services.html#ucloud.services.umem.client.UMemClient">UMemClient (class in ucloud.services.umem.client)</a>
 </li>
-      <li><a href="services.html#ucloud.services.unet.client.UNetClient.un_bind_eip">un_bind_eip() (ucloud.services.unet.client.UNetClient method)</a>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.un_bind_eip">un_bind_eip() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+
+      <ul>
+        <li><a href="services.html#ucloud.services.unet.client.UNetClient.un_bind_eip">(ucloud.services.unet.client.UNetClient method)</a>
+</li>
+      </ul></li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.un_bind_security_group">un_bind_security_group() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.unbind_alarm_template">unbind_alarm_template() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.unbind_physical_ip">unbind_physical_ip() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.ulb.client.ULBClient.unbind_ssl">unbind_ssl() (ucloud.services.ulb.client.ULBClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.unet.client.UNetClient">UNetClient (class in ucloud.services.unet.client)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.update_alarm_template_rule">update_alarm_template_rule() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.ulb.client.ULBClient.update_backend_attribute">update_backend_attribute() (ucloud.services.ulb.client.ULBClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.unet.client.UNetClient.update_eip_attribute">update_eip_attribute() (ucloud.services.unet.client.UNetClient method)</a>
 </li>
-      <li><a href="services.html#ucloud.services.unet.client.UNetClient.update_firewall">update_firewall() (ucloud.services.unet.client.UNetClient method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="services.html#ucloud.services.unet.client.UNetClient.update_firewall">update_firewall() (ucloud.services.unet.client.UNetClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.unet.client.UNetClient.update_firewall_attribute">update_firewall_attribute() (ucloud.services.unet.client.UNetClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.ulb.client.ULBClient.update_policy">update_policy() (ucloud.services.ulb.client.ULBClient method)</a>
@@ -718,6 +966,10 @@
       <li><a href="services.html#ucloud.services.uhub.client.UHubClient.update_repo">update_repo() (ucloud.services.uhub.client.UHubClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.vpc.client.VPCClient.update_route_table_attribute">update_route_table_attribute() (ucloud.services.vpc.client.VPCClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.update_rs">update_rs() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.update_security_group_rule">update_security_group_rule() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.vpc.client.VPCClient.update_subnet_attribute">update_subnet_attribute() (ucloud.services.vpc.client.VPCClient method)</a>
 </li>
@@ -729,13 +981,21 @@
 </li>
       <li><a href="services.html#ucloud.services.ulb.client.ULBClient.update_ulb_attribute">update_ulb_attribute() (ucloud.services.ulb.client.ULBClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.umem.client.UMemClient.update_uredis_backup_strategy">update_uredis_backup_strategy() (ucloud.services.umem.client.UMemClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.usms.client.USMSClient.update_usms_signature">update_usms_signature() (ucloud.services.usms.client.USMSClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.usms.client.USMSClient.update_usms_template">update_usms_template() (ucloud.services.usms.client.USMSClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.vpc.client.VPCClient.update_vpc_network">update_vpc_network() (ucloud.services.vpc.client.VPCClient method)</a>
 </li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.update_vs">update_vs() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.update_vs_policy">update_vs_policy() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
+</li>
       <li><a href="services.html#ucloud.services.ulb.client.ULBClient.update_vserver_attribute">update_vserver_attribute() (ucloud.services.ulb.client.ULBClient method)</a>
+</li>
+      <li><a href="services.html#ucloud.services.ucloudstack.client.UCloudStackClient.upgrade_disk">upgrade_disk() (ucloud.services.ucloudstack.client.UCloudStackClient method)</a>
 </li>
       <li><a href="services.html#ucloud.services.uhost.client.UHostClient.upgrade_to_ark_uhost_instance">upgrade_to_ark_uhost_instance() (ucloud.services.uhost.client.UHostClient method)</a>
 </li>
@@ -825,7 +1085,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ucloud.services.ipsecvpn.client &#8212; ucloud-sdk-python3  documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -51,26 +52,26 @@
 <div class="viewcode-block" id="IPSecVPNClient.describe_remote_vpn_gateway"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ipsecvpn.client.IPSecVPNClient.describe_remote_vpn_gateway">[docs]</a>    <span class="k">def</span> <span class="nf">describe_remote_vpn_gateway</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; DescribeRemoteVPNGateway - 获取客户VPN网关信息</span>
+        <span class="sd">&quot;&quot;&quot;DescribeRemoteVPNGateway - 获取客户VPN网关信息</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **Limit** (int) - 数据分页值, 默认为20</span>
 <span class="sd">        - **Offset** (int) - 数据偏移量, 默认为0</span>
 <span class="sd">        - **RemoteVPNGatewayIds** (list) - 客户VPN网关的资源ID，例如RemoteVPNGatewayIds.0代表希望获取客户VPN网关1的信息，RemoteVPNGatewayIds.1代表客户VPN网关2，如果为空，则返回当前Region中所有客户VPN网关实例的信息</span>
 <span class="sd">        - **Tag** (str) - 业务组名称，若指定则返回业务组下所有客户VPN网关信息</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **DataSet** (list) - 见 **RemoteVPNGatewayDataSet** 模型定义</span>
 <span class="sd">        - **TotalCount** (int) - 符合条件的客户VPN网关总数</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **RemoteVPNGatewayDataSet** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **RemoteVPNGatewayDataSet**</span>
+
 <span class="sd">        - **ActiveTunnels** (str) - 活跃的隧道id</span>
 <span class="sd">        - **CreateTime** (int) - 创建时间</span>
 <span class="sd">        - **Remark** (str) - 备注</span>
@@ -95,26 +96,26 @@
 <div class="viewcode-block" id="IPSecVPNClient.describe_vpn_tunnel"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ipsecvpn.client.IPSecVPNClient.describe_vpn_tunnel">[docs]</a>    <span class="k">def</span> <span class="nf">describe_vpn_tunnel</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; DescribeVPNTunnel - 获取VPN隧道信息</span>
+        <span class="sd">&quot;&quot;&quot;DescribeVPNTunnel - 获取VPN隧道信息</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **Limit** (int) - 数据分页值, 默认为20</span>
 <span class="sd">        - **Offset** (int) - 数据偏移量, 默认为0</span>
 <span class="sd">        - **Tag** (str) - 业务组名称，若指定则返回指定的业务组下的所有VPN网关的信息</span>
 <span class="sd">        - **VPNTunnelIds** (list) - VPN隧道的资源ID，例如VPNTunnelIds.0代表希望获取信息的VPN隧道1，VPNTunneIds.1代表VPN隧道2，如果为空，则返回当前Region中所有的VPN隧道实例</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **DataSet** (list) - 见 **VPNTunnelDataSet** 模型定义</span>
 <span class="sd">        - **TotalCount** (int) - VPN隧道总数</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **IPSecData** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **IPSecData**</span>
+
 <span class="sd">        - **IPSecAuthenticationAlgorithm** (str) - IPSec通道中使用的认证算法</span>
 <span class="sd">        - **IPSecEncryptionAlgorithm** (str) - IPSec通道中使用的加密算法</span>
 <span class="sd">        - **IPSecLocalSubnetIds** (list) - 指定VPN连接的本地子网，用逗号分隔</span>
@@ -124,8 +125,8 @@
 <span class="sd">        - **IPSecSALifetime** (str) - IPSec中SA的生存时间</span>
 <span class="sd">        - **IPSecSALifetimeBytes** (str) - IPSec中SA的生存时间（以字节计）</span>
 
-<span class="sd">        **IKEData** </span>
-<span class="sd">        </span>
+<span class="sd">        **IKEData**</span>
+
 <span class="sd">        - **IKEAuthenticationAlgorithm** (str) - IKE认证算法</span>
 <span class="sd">        - **IKEDhGroup** (str) - IKEDH组</span>
 <span class="sd">        - **IKEEncryptionAlgorithm** (str) - IKE加密算法</span>
@@ -136,8 +137,8 @@
 <span class="sd">        - **IKESALifetime** (str) - IKE秘钥生存时间</span>
 <span class="sd">        - **IKEVersion** (str) - IKE版本</span>
 
-<span class="sd">        **VPNTunnelDataSet** </span>
-<span class="sd">        </span>
+<span class="sd">        **VPNTunnelDataSet**</span>
+
 <span class="sd">        - **CreateTime** (int) - 创建时间</span>
 <span class="sd">        - **IKEData** (dict) - 见 **IKEData** 模型定义</span>
 <span class="sd">        - **IPSecData** (dict) - 见 **IPSecData** 模型定义</span>
@@ -226,7 +227,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

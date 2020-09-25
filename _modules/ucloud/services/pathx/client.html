@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ucloud.services.pathx.client &#8212; ucloud-sdk-python3  documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -49,11 +50,11 @@
 <div class="viewcode-block" id="PathXClient.create_global_ssh_instance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.create_global_ssh_instance">[docs]</a>    <span class="k">def</span> <span class="nf">create_global_ssh_instance</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; CreateGlobalSSHInstance - 创建GlobalSSH实例</span>
+        <span class="sd">&quot;&quot;&quot;CreateGlobalSSHInstance - 创建GlobalSSH实例</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **Area** (str) - (Required) 填写支持SSH访问IP的地区名称，如“洛杉矶”，“新加坡”，“香港”，“东京”，“华盛顿”，“法兰克福”。Area和AreaCode两者必填一个</span>
 <span class="sd">        - **AreaCode** (str) - (Required) AreaCode, 区域航空港国际通用代码。Area和AreaCode两者必填一个</span>
 <span class="sd">        - **Port** (int) - (Required) SSH端口，1-65535且不能使用80，443端口</span>
@@ -62,13 +63,13 @@
 <span class="sd">        - **CouponId** (str) - 使用代金券可冲抵部分费用</span>
 <span class="sd">        - **Quantity** (int) - 购买数量</span>
 <span class="sd">        - **Remark** (str) - 备注信息</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **AcceleratingDomain** (str) - 加速域名，访问该域名可就近接入</span>
 <span class="sd">        - **InstanceId** (str) - 实例ID，资源唯一标识</span>
 <span class="sd">        - **Message** (str) - 提示信息</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">}</span>
@@ -84,17 +85,17 @@
 <div class="viewcode-block" id="PathXClient.delete_global_ssh_instance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.delete_global_ssh_instance">[docs]</a>    <span class="k">def</span> <span class="nf">delete_global_ssh_instance</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; DeleteGlobalSSHInstance - 删除GlobalSSH实例</span>
+        <span class="sd">&quot;&quot;&quot;DeleteGlobalSSHInstance - 删除GlobalSSH实例</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **InstanceId** (str) - (Required) 实例Id,资源的唯一标识</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **Message** (str) - 提示信息</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">}</span>
@@ -107,22 +108,22 @@
 <div class="viewcode-block" id="PathXClient.describe_global_ssh_area"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.describe_global_ssh_area">[docs]</a>    <span class="k">def</span> <span class="nf">describe_global_ssh_area</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; DescribeGlobalSSHArea - 获取GlobalSSH覆盖的地区列表 用于控制显示哪些机房地域可以使用SSH特性</span>
+        <span class="sd">&quot;&quot;&quot;DescribeGlobalSSHArea - 获取GlobalSSH覆盖的地区列表 用于控制显示哪些机房地域可以使用SSH特性</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **Region** (str) - (Config) 机房地域代号，如hk、 us-ca、 us-ws等。不填默认为空，返回所有支持地区。</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **AreaSet** (list) - 见 **GlobalSSHArea** 模型定义</span>
 <span class="sd">        - **Message** (str) - 提示信息</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **GlobalSSHArea** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **GlobalSSHArea**</span>
+
 <span class="sd">        - **Area** (str) - GlobalSSH覆盖的地区,如香港、东京、洛杉矶等</span>
 <span class="sd">        - **AreaCode** (str) - 地区代号,以地区AirPort Code</span>
 <span class="sd">        - **RegionSet** (list) - ucloud机房代号构成的数组，如[&quot;hk&quot;,&quot;us-ca&quot;]</span>
@@ -139,21 +140,21 @@
 <div class="viewcode-block" id="PathXClient.describe_global_ssh_instance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.describe_global_ssh_instance">[docs]</a>    <span class="k">def</span> <span class="nf">describe_global_ssh_instance</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; DescribeGlobalSSHInstance - 获取GlobalSSH实例列表（传实例ID获取单个实例信息，不传获取项目下全部实例）</span>
+        <span class="sd">&quot;&quot;&quot;DescribeGlobalSSHInstance - 获取GlobalSSH实例列表（传实例ID获取单个实例信息，不传获取项目下全部实例）</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID，如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID，如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **InstanceId** (str) - 实例ID，资源唯一标识</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **InstanceSet** (list) - 见 **GlobalSSHInfo** 模型定义</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **GlobalSSHInfo** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **GlobalSSHInfo**</span>
+
 <span class="sd">        - **AcceleratingDomain** (str) - 加速域名</span>
 <span class="sd">        - **Area** (str) - 被SSH访问的IP所在地区</span>
 <span class="sd">        - **ChargeType** (str) - 支付周期，如Month,Year等</span>
@@ -176,18 +177,18 @@
 <div class="viewcode-block" id="PathXClient.modify_global_ssh_port"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.modify_global_ssh_port">[docs]</a>    <span class="k">def</span> <span class="nf">modify_global_ssh_port</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; ModifyGlobalSSHPort - 修改GlobalSSH端口</span>
+        <span class="sd">&quot;&quot;&quot;ModifyGlobalSSHPort - 修改GlobalSSH端口</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID，如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID，如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **InstanceId** (str) - (Required) 实例ID,资源唯一标识</span>
 <span class="sd">        - **Port** (int) - (Required) 调整后的SSH登陆端口</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **Message** (str) - 提示信息</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">}</span>
@@ -200,18 +201,18 @@
 <div class="viewcode-block" id="PathXClient.modify_global_ssh_remark"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.modify_global_ssh_remark">[docs]</a>    <span class="k">def</span> <span class="nf">modify_global_ssh_remark</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; ModifyGlobalSSHRemark - 修改GlobalSSH备注</span>
+        <span class="sd">&quot;&quot;&quot;ModifyGlobalSSHRemark - 修改GlobalSSH备注</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID，如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID，如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **InstanceId** (str) - (Required) 实例ID,资源唯一标识</span>
 <span class="sd">        - **Remark** (str) - 备注信息，不填默认为空字符串</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **Message** (str) - 接口返回消息</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">}</span>
@@ -283,7 +284,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

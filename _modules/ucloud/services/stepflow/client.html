@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ucloud.services.stepflow.client &#8212; ucloud-sdk-python3  documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -51,21 +52,21 @@
 <div class="viewcode-block" id="StepFlowClient.create_sf_workflow_from_template"><a class="viewcode-back" href="../../../../services.html#ucloud.services.stepflow.client.StepFlowClient.create_sf_workflow_from_template">[docs]</a>    <span class="k">def</span> <span class="nf">create_sf_workflow_from_template</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; CreateSFWorkflowFromTemplate - 导入工作流定义</span>
+        <span class="sd">&quot;&quot;&quot;CreateSFWorkflowFromTemplate - 导入工作流定义</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **Namespace** (str) - (Required) 需要创建的工作流namespace</span>
 <span class="sd">        - **Workflow** (str) - (Required) 描述工作流定义的base64字符串</span>
 <span class="sd">        - **WorkflowName** (str) - (Required) 需要创建的工作流名称</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **Message** (str) - 返回消息</span>
 <span class="sd">        - **Version** (int) - 创建的工作流版本号</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
@@ -81,32 +82,32 @@
 <div class="viewcode-block" id="StepFlowClient.get_sf_workflow_template"><a class="viewcode-back" href="../../../../services.html#ucloud.services.stepflow.client.StepFlowClient.get_sf_workflow_template">[docs]</a>    <span class="k">def</span> <span class="nf">get_sf_workflow_template</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; GetSFWorkflowTemplate - 导出工作流定义</span>
+        <span class="sd">&quot;&quot;&quot;GetSFWorkflowTemplate - 导出工作流定义</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_ </span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_ </span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **WorkflowId** (str) - (Required) 被导出工作流的Id</span>
 <span class="sd">        - **WorkflowVersion** (int) - 被导出工作流的版本号。取值范围：WorkflowVersion &gt;= 1；默认会获取发布版本对应的workflow；超过最大版本会返回错误</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **Message** (str) - 返回消息</span>
 <span class="sd">        - **Version** (int) - 导出工作流的版本号</span>
 <span class="sd">        - **Workflow** (dict) - 见 **WorkflowTemplate** 模型定义</span>
 <span class="sd">        - **WorkflowId** (str) - 导出工作流的Id</span>
-<span class="sd">        </span>
+
 <span class="sd">        **Response Model**</span>
-<span class="sd">        </span>
-<span class="sd">        **Param** </span>
-<span class="sd">        </span>
+
+<span class="sd">        **Param**</span>
+
 <span class="sd">        - **Name** (str) - 参数名称</span>
 <span class="sd">        - **Type** (str) - 参数类型</span>
 <span class="sd">        - **Value** (str) - 参数值</span>
 
-<span class="sd">        **ActivityTemplate** </span>
-<span class="sd">        </span>
+<span class="sd">        **ActivityTemplate**</span>
+
 <span class="sd">        - **Input** (dict) - Activity的输入</span>
 <span class="sd">        - **Name** (str) - Activity的名字</span>
 <span class="sd">        - **Next** (str) - 下一个Activity的名字</span>
@@ -115,8 +116,8 @@
 <span class="sd">        - **Timeout** (str) - Activity的超时时间</span>
 <span class="sd">        - **Type** (str) - Activity的类型</span>
 
-<span class="sd">        **WorkflowTemplate** </span>
-<span class="sd">        </span>
+<span class="sd">        **WorkflowTemplate**</span>
+
 <span class="sd">        - **Activites** (list) - 见 **ActivityTemplate** 模型定义</span>
 <span class="sd">        - **Input** (list) - 见 **Param** 模型定义</span>
 <span class="sd">        - **Output** (list) - 见 **Param** 模型定义</span>
@@ -192,7 +193,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
