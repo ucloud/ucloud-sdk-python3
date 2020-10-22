@@ -50,22 +50,6 @@ class IsolationGroupSchema(schema.ResponseSchema):
     }
 
 
-class UHostDiskSetSchema(schema.ResponseSchema):
-    """UHostDiskSet - DescribeUHostInstance"""
-
-    fields = {
-        "BackupType": fields.Str(required=False, load_from="BackupType"),
-        "DiskId": fields.Str(required=False, load_from="DiskId"),
-        "DiskType": fields.Str(required=True, load_from="DiskType"),
-        "Drive": fields.Str(required=False, load_from="Drive"),
-        "Encrypted": fields.Bool(required=False, load_from="Encrypted"),
-        "IsBoot": fields.Str(required=True, load_from="IsBoot"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Size": fields.Int(required=False, load_from="Size"),
-        "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
 class UHostIPSetSchema(schema.ResponseSchema):
     """UHostIPSet - DescribeUHostInstance"""
 
@@ -74,11 +58,28 @@ class UHostIPSetSchema(schema.ResponseSchema):
         "Default": fields.Str(required=True, load_from="Default"),
         "IP": fields.Str(required=False, load_from="IP"),
         "IPId": fields.Str(required=False, load_from="IPId"),
+        "IPMode": fields.Str(required=True, load_from="IPMode"),
         "Mac": fields.Str(required=True, load_from="Mac"),
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
         "Type": fields.Str(required=False, load_from="Type"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
         "Weight": fields.Int(required=True, load_from="Weight"),
+    }
+
+
+class UHostDiskSetSchema(schema.ResponseSchema):
+    """UHostDiskSet - DescribeUHostInstance"""
+
+    fields = {
+        "BackupType": fields.Str(required=False, load_from="BackupType"),
+        "DiskId": fields.Str(required=False, load_from="DiskId"),
+        "DiskType": fields.Str(required=True, load_from="DiskType"),
+        "Drive": fields.Str(required=False, load_from="Drive"),
+        "Encrypted": fields.Str(required=False, load_from="Encrypted"),
+        "IsBoot": fields.Str(required=True, load_from="IsBoot"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "Type": fields.Str(required=False, load_from="Type"),
     }
 
 
@@ -94,6 +95,10 @@ class UHostInstanceSetSchema(schema.ResponseSchema):
         "BootDiskState": fields.Str(required=False, load_from="BootDiskState"),
         "CPU": fields.Int(required=False, load_from="CPU"),
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "CloudInitFeature": fields.Bool(
+            required=False, load_from="CloudInitFeature"
+        ),
+        "CpuPlatform": fields.Str(required=False, load_from="CpuPlatform"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "DiskSet": fields.List(UHostDiskSetSchema()),
         "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
@@ -103,6 +108,7 @@ class UHostInstanceSetSchema(schema.ResponseSchema):
             required=False, load_from="HotplugFeature"
         ),
         "IPSet": fields.List(UHostIPSetSchema()),
+        "IPv6Feature": fields.Bool(required=True, load_from="IPv6Feature"),
         "ImageId": fields.Str(required=False, load_from="ImageId"),
         "IsolationGroup": fields.Str(
             required=False, load_from="IsolationGroup"
@@ -115,6 +121,7 @@ class UHostInstanceSetSchema(schema.ResponseSchema):
         "NetworkState": fields.Str(required=False, load_from="NetworkState"),
         "OsName": fields.Str(required=False, load_from="OsName"),
         "OsType": fields.Str(required=False, load_from="OsType"),
+        "RdmaClusterId": fields.Str(required=False, load_from="RdmaClusterId"),
         "Remark": fields.Str(required=False, load_from="Remark"),
         "State": fields.Str(required=False, load_from="State"),
         "StorageType": fields.Str(required=False, load_from="StorageType"),
@@ -129,16 +136,6 @@ class UHostInstanceSetSchema(schema.ResponseSchema):
         "UHostId": fields.Str(required=False, load_from="UHostId"),
         "UHostType": fields.Str(required=False, load_from="UHostType"),
         "Zone": fields.Str(required=False, load_from="Zone"),
-    }
-
-
-class UHostSnapshotSetSchema(schema.ResponseSchema):
-    """UHostSnapshotSet - DescribeUHostInstanceSnapshot"""
-
-    fields = {
-        "SnapshotName": fields.Str(required=False, load_from="SnapshotName"),
-        "SnapshotState": fields.Str(required=False, load_from="SnapshotState"),
-        "SnapshotTime": fields.Str(required=False, load_from="SnapshotTime"),
     }
 
 
@@ -157,5 +154,7 @@ class UHostPriceSetSchema(schema.ResponseSchema):
 
     fields = {
         "ChargeType": fields.Str(required=True, load_from="ChargeType"),
+        "ListPrice": fields.Float(required=True, load_from="ListPrice"),
+        "OriginalPrice": fields.Float(required=True, load_from="OriginalPrice"),
         "Price": fields.Float(required=True, load_from="Price"),
     }
