@@ -4,7 +4,7 @@ from ucloud.core.typesystem import schema, fields
 
 
 class UnetEIPAddrSetSchema(schema.ResponseSchema):
-    """UnetEIPAddrSet - DescribeEIP"""
+    """UnetEIPAddrSet - AllocateEIP"""
 
     fields = {
         "IP": fields.Str(required=False, load_from="IP"),
@@ -21,18 +21,8 @@ class UnetAllocateEIPSetSchema(schema.ResponseSchema):
     }
 
 
-class VIPSetSchema(schema.ResponseSchema):
-    """VIPSet - VIPSet"""
-
-    fields = {
-        "VIP": fields.Str(required=False, load_from="VIP"),
-        "VIPId": fields.Str(required=False, load_from="VIPId"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-    }
-
-
 class EIPAddrSetSchema(schema.ResponseSchema):
-    """EIPAddrSet - DescribeShareBandwidth"""
+    """EIPAddrSet - DescribeBandwidthPackage"""
 
     fields = {
         "IP": fields.Str(required=False, load_from="IP"),
@@ -86,7 +76,7 @@ class UnetEIPResourceSetSchema(schema.ResponseSchema):
 
     fields = {
         "EIPId": fields.Str(required=False, load_from="EIPId"),
-        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
+        "ResourceID": fields.Str(required=False, load_from="ResourceID"),
         "ResourceName": fields.Str(required=False, load_from="ResourceName"),
         "ResourceType": fields.Str(required=False, load_from="ResourceType"),
         "SubResourceId": fields.Str(required=False, load_from="SubResourceId"),
@@ -187,6 +177,7 @@ class UnetShareBandwidthSetSchema(schema.ResponseSchema):
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "EIPSet": fields.List(EIPSetDataSchema()),
         "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "IPVersion": fields.Str(required=True, load_from="IPVersion"),
         "Name": fields.Str(required=False, load_from="Name"),
         "PostPayStartTime": fields.Int(
             required=False, load_from="PostPayStartTime"
@@ -197,21 +188,6 @@ class UnetShareBandwidthSetSchema(schema.ResponseSchema):
         "ShareBandwidthId": fields.Str(
             required=False, load_from="ShareBandwidthId"
         ),
-    }
-
-
-class VIPDetailSetSchema(schema.ResponseSchema):
-    """VIPDetailSet - VIPDetailSet"""
-
-    fields = {
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "RealIp": fields.Str(required=False, load_from="RealIp"),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "VIP": fields.Str(required=False, load_from="VIP"),
-        "VIPId": fields.Str(required=False, load_from="VIPId"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-        "Zone": fields.Str(required=False, load_from="Zone"),
     }
 
 
@@ -229,6 +205,9 @@ class EIPPriceDetailSetSchema(schema.ResponseSchema):
 
     fields = {
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "OriginalPrice": fields.Float(
+            required=False, load_from="OriginalPrice"
+        ),
         "Price": fields.Float(required=False, load_from="Price"),
         "PurchaseValue": fields.Int(required=False, load_from="PurchaseValue"),
     }
