@@ -87,6 +87,13 @@ VPC
 
 
 
+Cube
+----
+
+.. autoclass:: ucloud.services.cube.client.CubeClient
+   :members:
+
+
 IPSecVPN
 --------
 
@@ -112,5 +119,12 @@ UHub
 ----
 
 .. autoclass:: ucloud.services.uhub.client.UHubClient
+   :members:
+
+
+VPC
+---
+
+.. autoclass:: ucloud.services.vpc.client.VPCClient
    :members:
 
