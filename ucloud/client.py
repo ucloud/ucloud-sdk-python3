@@ -136,6 +136,13 @@ class Client(client.Client):
             self._config, self.transport, self.middleware, self.logger
         )
 
+    def uk8s(self):
+        from ucloud.services.uk8s.client import UK8SClient
+
+        return UK8SClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
     def vpc(self):
         from ucloud.services.vpc.client import VPCClient
 
