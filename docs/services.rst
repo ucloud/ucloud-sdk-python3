@@ -122,6 +122,13 @@ UHub
    :members:
 
 
+UK8S
+----
+
+.. autoclass:: ucloud.services.uk8s.client.UK8SClient
+   :members:
+
+
 VPC
 ---
 
