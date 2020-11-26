@@ -101,6 +101,13 @@ class Client(client.Client):
             self._config, self.transport, self.middleware, self.logger
         )
 
+    def cube(self):
+        from ucloud.services.cube.client import CubeClient
+
+        return CubeClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
     def ipsecvpn(self):
         from ucloud.services.ipsecvpn.client import IPSecVPNClient
 
