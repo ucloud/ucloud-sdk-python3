@@ -2,6 +2,7 @@
 
 import typing
 
+
 from ucloud.core.client import Client
 from ucloud.services.unet.schemas import apis
 
@@ -19,16 +20,17 @@ class UNetClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。
         - **Region** (str) - (Config) 地域。
-        - **Bandwidth** (int) - (Required) 弹性IP的外网带宽, 单位为Mbps. 共享带宽模式必须指定0M带宽, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-200]，带宽计费[1-800]
+        - **Bandwidth** (int) - (Required) 弹性IP的外网带宽, 单位为Mbps. 共享带宽模式必须指定0M带宽, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-10000]
         - **OperatorName** (str) - (Required) 弹性IP的线路如下: 国际: International BGP: Bgp  各地域允许的线路参数如下:  cn-sh1: Bgp cn-sh2: Bgp cn-gd: Bgp cn-bj1: Bgp cn-bj2: Bgp hk: International us-ca: International th-bkk: International  kr-seoul:International  us-ws:International  ge-fra:International  sg:International  tw-kh:International.其他海外线路均为 International
         - **ChargeType** (str) - 付费方式, 枚举值为: Year, 按年付费; Month, 按月付费; Dynamic, 按需付费(需开启权限); Trial, 试用(需开启权限) 默认为按月付费
         - **CouponId** (str) - 代金券ID, 默认不使用
         - **Name** (str) - 弹性IP的名称, 默认为 "EIP"
-        - **PayMode** (str) - 弹性IP的计费模式. 枚举值: "Traffic", 流量计费; "Bandwidth", 带宽计费; "ShareBandwidth",共享带宽模式. 默认为 "Bandwidth".
-        - **Quantity** (int) - 购买时长, 默认: 1
+        - **PayMode** (str) - 弹性IP的计费模式. 枚举值: "Traffic", 流量计费; "Bandwidth", 带宽计费; "ShareBandwidth",共享带宽模式. 默认为 "Bandwidth".“PostAccurateBandwidth”：带宽后付费模式
+        - **Quantity** (int) - 购买的时长, 默认: 1
         - **Remark** (str) - 弹性IP的备注, 默认为空
-        - **ShareBandwidthId** (str) - 绑定的共享带宽Id，仅当PayMode为ShareBandwidth时有效
+        - **ShareBandwidthId** (str) - 绑定的共享带宽Id,仅当PayMode为ShareBandwidth时有效
         - **Tag** (str) - 业务组名称, 默认为 "Default"
+        - **UseType** (str) - 用以区分最终分配的IP类型，中国移动承载网为6，中移动公网为7
 
         **Response**
 
@@ -39,7 +41,7 @@ class UNetClient(Client):
         **UnetEIPAddrSet**
 
         - **IP** (str) - IP地址
-        - **OperatorName** (str) - 运营商信息如: 电信: Telecom, 联通: Unicom, 国际: International, Duplet: 双线IP（电信+联通), BGP: Bgp
+        - **OperatorName** (str) - 运营商信息如: 国际: International, BGP: BGP
 
         **UnetAllocateEIPSet**
 
@@ -48,7 +50,10 @@ class UNetClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.AllocateEIPRequestSchema().dumps(d)
 
@@ -70,9 +75,10 @@ class UNetClient(Client):
         - **ChargeType** (str) - (Required) 付费方式:Year 按年,Month 按月,Dynamic 按时;
         - **Name** (str) - (Required) 共享带宽名字
         - **ShareBandwidth** (int) - (Required) 共享带宽值
-        - **BwType** (str) - 共享带宽类型，ipv4或者ipv6，不传默认ipv4
+        - **BwType** (str) -
+        - **IPVersion** (str) - 共享带宽类型，IPv4或者IPv6，不传默认IPv4
         - **Quantity** (int) - 购买时长
-        - **ShareBandwidthGuarantee** (int) - 共享带宽保底值(后付费)
+        - **ShareBandwidthGuarantee** (int) -
 
         **Response**
 
@@ -80,7 +86,10 @@ class UNetClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.AllocateShareBandwidthRequestSchema().dumps(d)
 
@@ -91,38 +100,41 @@ class UNetClient(Client):
         return apis.AllocateShareBandwidthResponseSchema().loads(resp)
 
     def allocate_vip(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """AllocateVIP - 根据提供信息，申请内网VIP(Virtual IP），多用于高可用程序作为漂移IP。
+        """AllocateVIP -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域
-        - **SubnetId** (str) - (Required) 子网id
-        - **VPCId** (str) - (Required) 指定vip所属的VPC
-        - **BusinessId** (str) - 业务组
-        - **Count** (int) - 申请数量，默认: 1
-        - **Ip** (str) - 指定ip
-        - **Name** (str) - vip名，默认为VIP
-        - **Remark** (str) - 备注
-        - **Tag** (str) - 业务组名称，默认为Default
-        - **Zone** (str) - 可用区
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **SubnetId** (str) - (Required)
+        - **VPCId** (str) - (Required)
+        - **BusinessId** (str) -
+        - **Count** (int) -
+        - **Ip** (str) -
+        - **Name** (str) -
+        - **Remark** (str) -
+        - **Tag** (str) -
+        - **Zone** (str) -
 
         **Response**
 
-        - **DataSet** (list) - 申请到的VIP地址
+        - **DataSet** (list) -
         - **VIPSet** (list) - 见 **VIPSet** 模型定义
 
         **Response Model**
 
         **VIPSet**
 
-        - **VIP** (str) - 虚拟ip
-        - **VIPId** (str) - 虚拟ip id
-        - **VPCId** (str) - VPC id
+        - **VIP** (str) -
+        - **VIPId** (str) -
+        - **VPCId** (str) -
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.AllocateVIPRequestSchema().dumps(d)
 
@@ -143,13 +155,17 @@ class UNetClient(Client):
         - **Region** (str) - (Config) 地域。
         - **EIPIds** (list) - (Required) 要加入共享带宽的EIP的资源Id
         - **ShareBandwidthId** (str) - (Required) 共享带宽ID
+        - **IPVersion** (str) - 共享带宽类型，IPv4或者IPv6，不传默认IPv4
 
         **Response**
 
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.AssociateEIPWithShareBandwidthRequestSchema().dumps(d)
 
@@ -165,14 +181,17 @@ class UNetClient(Client):
         - **Region** (str) - (Config) 地域
         - **EIPId** (str) - (Required) 弹性IP的资源Id
         - **ResourceId** (str) - (Required) 弹性IP请求绑定的资源ID
-        - **ResourceType** (str) - (Required) 弹性IP请求绑定的资源类型, 枚举值为: uhost: 云主机; ulb, 负载均衡器 upm: 物理机; hadoophost: 大数据集群;fortresshost：堡垒机；udockhost：容器；udhost：私有专区主机；natgw：natgw；udb：udb；vpngw：ipsec vpn；ucdr：云灾备；dbaudit：数据库审计；uni：虚拟网卡。
+        - **ResourceType** (str) - (Required) 弹性IP请求绑定的资源类型, 枚举值为: uhost: 云主机; ulb, 负载均衡器 upm: 物理机; hadoophost: 大数据集群;fortresshost：堡垒机；udockhost：容器；udhost：私有专区主机；natgw：natgw；udb：udb；vpngw：ipsec vpn；ucdr：云灾备；dbaudit：数据库审计；uni：虚拟网卡。如果EIP为普通带宽计费，且带宽值高于2G，则只允许绑定在快杰型云主机和ULB
 
         **Response**
 
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.BindEIPRequestSchema().dumps(d)
 
@@ -186,8 +205,8 @@ class UNetClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。
-        - **Region** (str) - (Config) 地域
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Bandwidth** (int) - (Required) 带宽大小(单位Mbps), 取值范围[2,800] (最大值受地域限制)
         - **EIPId** (str) - (Required) 所绑定弹性IP的资源ID
         - **TimeRange** (int) - (Required) 带宽包有效时长, 取值范围为大于0的整数, 即该带宽包在EnableTime到 EnableTime+TimeRange时间段内生效
@@ -200,7 +219,10 @@ class UNetClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.CreateBandwidthPackageRequestSchema().dumps(d)
 
@@ -220,7 +242,7 @@ class UNetClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写
         - **Region** (str) - (Config) 地域
         - **Name** (str) - (Required) 防火墙名称
-        - **Rule** (list) - (Required) 防火墙规则，例如：TCP|22|192.168.1.1/22|DROP|LOW|禁用22端口，第一个参数代表协议：第二个参数代表端口号，第三个参数为ip，第四个参数为ACCEPT（接受）和DROP（拒绝），第五个参数优先级：HIGH（高），MEDIUM（中），LOW（低），第六个参数为该条规则的自定义备注
+        - **Rule** (list) - (Required) 防火墙规则，例如：TCP|22|192.168.1.1/22|DROP|LOW|禁用22端口，第一个参数代表协议：第二个参数代表端口号，第三个参数为ip，第四个参数为ACCEPT（接受）和DROP（拒绝），第五个参数优先级：HIGH（高），MEDIUM（中），LOW（低），第六个参数为该条规则的自定义备注,bj1不支持添加备注
         - **Remark** (str) - 防火墙描述，默认为空
         - **Tag** (str) - 防火墙业务组，默认为Default
 
@@ -230,7 +252,10 @@ class UNetClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.CreateFirewallRequestSchema().dumps(d)
 
@@ -247,8 +272,8 @@ class UNetClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写
-        - **Region** (str) - (Config) 地域
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **BandwidthPackageId** (str) - (Required) 带宽包资源ID
 
         **Response**
@@ -256,7 +281,10 @@ class UNetClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DeleteBandwidthPackageRequestSchema().dumps(d)
 
@@ -270,8 +298,8 @@ class UNetClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写
-        - **Region** (str) - (Config) 地域
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **FWId** (str) - (Required) 防火墙资源ID
 
         **Response**
@@ -279,7 +307,10 @@ class UNetClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DeleteFirewallRequestSchema().dumps(d)
 
@@ -308,7 +339,7 @@ class UNetClient(Client):
         **EIPAddrSet**
 
         - **IP** (str) - 弹性IP地址
-        - **OperatorName** (str) - 运营商信息, 枚举值为: Telecom 电信; Unicom: 联通; Duplet: 双线; Bgp: BGP; International: 国际.
+        - **OperatorName** (str) - 运营商信息, 枚举值为:  BGP: BGP; International: 国际.
 
         **UnetBandwidthPackageSet**
 
@@ -322,7 +353,10 @@ class UNetClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeBandwidthPackageRequestSchema().dumps(d)
 
@@ -356,7 +390,10 @@ class UNetClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeBandwidthUsageRequestSchema().dumps(d)
 
@@ -371,6 +408,7 @@ class UNetClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写
         - **Region** (str) - (Config) 地域
         - **EIPIds** (list) - 弹性IP的资源ID如果为空, 则返回当前 Region中符合条件的的所有EIP
+        - **IPs** (list) - IP地址，支持通过ip查询，如果ip与EIP都传，会取并集查询
         - **Limit** (int) - 数据分页值, 默认为20
         - **Offset** (int) - 数据偏移量, 默认为0
 
@@ -379,29 +417,14 @@ class UNetClient(Client):
         - **EIPSet** (list) - 见 **UnetEIPSet** 模型定义
         - **TotalBandwidth** (int) - 满足条件的弹性IP带宽总和, 单位Mbps
         - **TotalCount** (int) - 满足条件的弹性IP总数
+        - **UnbindCount** (int) - 未绑定的弹性IP总数
 
         **Response Model**
-
-        **ShareBandwidthSet**
-
-        - **ShareBandwidth** (int) - 共享带宽带宽值
-        - **ShareBandwidthId** (str) - 共享带宽ID
-        - **ShareBandwidthName** (str) - 共享带宽的资源名称
 
         **UnetEIPAddrSet**
 
         - **IP** (str) - IP地址
-        - **OperatorName** (str) - 运营商信息如: 电信: Telecom, 联通: Unicom, 国际: International, Duplet: 双线IP（电信+联通), BGP: Bgp
-
-        **UnetEIPResourceSet**
-
-        - **EIPId** (str) - 弹性IP的资源ID
-        - **ResourceId** (str) - 已绑定资源的资源ID
-        - **ResourceName** (str) - 已绑定的资源名称
-        - **ResourceType** (str) - 已绑定的资源类型, 枚举值为: uhost, 云主机；natgw：NAT网关；ulb：负载均衡器；upm: 物理机; hadoophost: 大数据集群;fortresshost：堡垒机；udockhost：容器；udhost：私有专区主机；vpngw：IPSec VPN；ucdr：云灾备；dbaudit：数据库审计，uni：虚拟网卡。
-        - **SubResourceId** (str) - 资源绑定的虚拟网卡的ID
-        - **SubResourceName** (str) - 资源绑定的虚拟网卡的名称
-        - **SubResourceType** (str) - 资源绑定的虚拟网卡的类型。uni，虚拟网卡。
+        - **OperatorName** (str) - 运营商信息如: 国际: International, BGP: BGP
 
         **UnetEIPSet**
 
@@ -422,9 +445,28 @@ class UNetClient(Client):
         - **Tag** (str) - 弹性IP的业务组标识, 缺省值为 "Default"
         - **Weight** (int) - 外网出口权重, 默认为50, 范围[0-100]
 
+        **ShareBandwidthSet**
+
+        - **ShareBandwidth** (int) - 共享带宽带宽值
+        - **ShareBandwidthId** (str) - 共享带宽ID
+        - **ShareBandwidthName** (str) - 共享带宽的资源名称
+
+        **UnetEIPResourceSet**
+
+        - **EIPId** (str) - 弹性IP的资源ID
+        - **ResourceID** (str) - 已绑定资源的资源ID
+        - **ResourceName** (str) - 已绑定的资源名称
+        - **ResourceType** (str) - 已绑定的资源类型, 枚举值为: uhost, 云主机；natgw：NAT网关；ulb：负载均衡器；upm: 物理机; hadoophost: 大数据集群;fortresshost：堡垒机；udockhost：容器；udhost：私有专区主机；vpngw：IPSec VPN；ucdr：云灾备；dbaudit：数据库审计，uni：虚拟网卡。
+        - **SubResourceId** (str) - 资源绑定的虚拟网卡的ID
+        - **SubResourceName** (str) - 资源绑定的虚拟网卡的名称
+        - **SubResourceType** (str) - 资源绑定的虚拟网卡的类型。uni，虚拟网卡。
+
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeEIPRequestSchema().dumps(d)
 
@@ -476,7 +518,10 @@ class UNetClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeFirewallRequestSchema().dumps(d)
 
@@ -509,14 +554,17 @@ class UNetClient(Client):
         - **PrivateIP** (str) - 内网IP
         - **Remark** (str) - 备注
         - **ResourceID** (str) - 绑定该防火墙的资源id
-        - **ResourceType** (str) - 绑定资源的资源类型，如"uhost","upm","umem","uhive","uvip","uredis","uhadoop","ufortress","dbaudit","udw","udocker", "umemcache"
+        - **ResourceType** (str) - 绑定防火墙组的资源类型。"unatgw"，NAT网关； "uhost"，云主机； "upm"，物理云主机； "hadoophost"，hadoop节点； "fortresshost"，堡垒机； "udhost"，私有专区主机；"udockhost"，容器；"dbaudit"，数据库审计.
         - **Status** (int) - 状态
         - **Tag** (str) - 业务组
         - **Zone** (int) - 可用区
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeFirewallResourceRequestSchema().dumps(d)
 
@@ -544,7 +592,7 @@ class UNetClient(Client):
         **EIPAddrSet**
 
         - **IP** (str) - 弹性IP地址
-        - **OperatorName** (str) - 运营商信息, 枚举值为: Telecom 电信; Unicom: 联通; Duplet: 双线; Bgp: BGP; International: 国际.
+        - **OperatorName** (str) - 运营商信息, 枚举值为:  BGP: BGP; International: 国际.
 
         **EIPSetData**
 
@@ -554,19 +602,23 @@ class UNetClient(Client):
 
         **UnetShareBandwidthSet**
 
-        - **BandwidthGuarantee** (int) - 共享带宽保底值(后付费)
+        - **BandwidthGuarantee** (int) -
         - **ChargeType** (str) - 付费方式, 预付费:Year 按年,Month 按月,Dynamic 按需;后付费:PostPay(按月)
         - **CreateTime** (int) - 创建时间, 格式为Unix Timestamp
         - **EIPSet** (list) - 见 **EIPSetData** 模型定义
         - **ExpireTime** (int) - 过期时间, 格式为Unix Timestamp
+        - **IPVersion** (str) - 共享带宽类型
         - **Name** (str) - 共享带宽名称
-        - **PostPayStartTime** (int) - 共享带宽后付费开始计费时间(后付费)
+        - **PostPayStartTime** (int) -
         - **ShareBandwidth** (int) - 共享带宽值(预付费)/共享带宽峰值(后付费), 单位Mbps
         - **ShareBandwidthId** (str) - 共享带宽的资源ID
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeShareBandwidthRequestSchema().dumps(d)
 
@@ -574,42 +626,48 @@ class UNetClient(Client):
         return apis.DescribeShareBandwidthResponseSchema().loads(resp)
 
     def describe_vip(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """DescribeVIP - 获取内网VIP详细信息
+        """DescribeVIP -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **BusinessId** (str) - 业务组
-        - **SubnetId** (str) - 子网id，不指定则获取VPCId下的所有vip
-        - **Tag** (str) - 业务组名称, 默认为 Default
-        - **VPCId** (str) - vpc的id,指定SubnetId时必填
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **BusinessId** (str) -
+        - **SubnetId** (str) -
+        - **Tag** (str) -
+        - **VPCId** (str) -
+        - **Zone** (str) -
 
         **Response**
 
-        - **DataSet** (list) - 内网VIP地址列表
-        - **TotalCount** (int) - vip数量
+        - **DataSet** (list) -
+        - **TotalCount** (int) -
         - **VIPSet** (list) - 见 **VIPDetailSet** 模型定义
 
         **Response Model**
 
         **VIPDetailSet**
 
-        - **CreateTime** (int) - 创建时间
+        - **CreateTime** (int) -
         - **Name** (str) -
-        - **RealIp** (str) - 真实主机ip
-        - **SubnetId** (str) - 子网id
-        - **VIP** (str) - 虚拟ip
-        - **VIPId** (str) - 虚拟ip id
-        - **VPCId** (str) - VPC id
-        - **Zone** (str) - 地域
+        - **RealIp** (str) -
+        - **SubnetId** (str) -
+        - **VIP** (str) -
+        - **VIPId** (str) -
+        - **VPCId** (str) -
+        - **Zone** (str) -
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeVIPRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("DescribeVIP", d, **kwargs)
         return apis.DescribeVIPResponseSchema().loads(resp)
@@ -626,6 +684,7 @@ class UNetClient(Client):
         - **Bandwidth** (int) - (Required) 移出共享带宽后，EIP的外网带宽, 单位为Mbps. 各地域带宽范围如下：  流量计费[1-200],带宽计费[1-800]
         - **ShareBandwidthId** (str) - (Required) 共享带宽ID
         - **EIPIds** (list) - EIP的资源Id；默认移出该共享带宽下所有的EIP
+        - **IPVersion** (str) - 共享带宽类型，IPv4或者IPv6，不传默认IPv4
         - **PayMode** (str) - 移出共享带宽后，EIP的计费模式. 枚举值: "Traffic", 流量计费; "Bandwidth", 带宽计费;  默认为 "Bandwidth".
 
         **Response**
@@ -633,7 +692,10 @@ class UNetClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DisassociateEIPWithShareBandwidthRequestSchema().dumps(d)
 
@@ -649,8 +711,8 @@ class UNetClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写
-        - **Region** (str) - (Config) 地域
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **EIPId** (list) - (Required) 弹性IP的资源Id
 
         **Response**
@@ -666,7 +728,10 @@ class UNetClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.GetEIPPayModeRequestSchema().dumps(d)
 
@@ -697,12 +762,16 @@ class UNetClient(Client):
         **EIPPriceDetailSet**
 
         - **ChargeType** (str) - 弹性IP付费方式
-        - **Price** (float) - 弹性IP价格, 单位"元"
+        - **OriginalPrice** (float) - 弹性IP的原价，单位“元”
+        - **Price** (float) - 购买弹性IP的实际价格, 单位"元"
         - **PurchaseValue** (int) - 资源有效期, 以Unix Timestamp表示
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.GetEIPPriceRequestSchema().dumps(d)
 
@@ -727,7 +796,10 @@ class UNetClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.GetEIPUpgradePriceRequestSchema().dumps(d)
 
@@ -745,14 +817,17 @@ class UNetClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **FWId** (str) - (Required) 防火墙资源ID
         - **ResourceId** (str) - (Required) 所应用资源ID
-        - **ResourceType** (str) - (Required) 绑定防火墙组的资源类型，默认为全部资源类型。枚举值为："unatgw"，NAT网关； "uhost"，云主机； "upm"，物理云主机； "hadoophost"，hadoop节点； "fortresshost"，堡垒机； "udhost"，私有专区主机；"udockhost"，容器；"dbaudit"，数据库审计，”uni“，虚拟网卡。
+        - **ResourceType** (str) - (Required) 绑定防火墙组的资源类型，默认为全部资源类型。枚举值为："unatgw"，NAT网关； "uhost"，云主机； "upm"，物理云主机； "hadoophost"，hadoop节点； "fortresshost"，堡垒机； "udhost"，私有专区主机；"udockhost"，容器；"dbaudit"，数据库审计.
 
         **Response**
 
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.GrantFirewallRequestSchema().dumps(d)
 
@@ -776,7 +851,10 @@ class UNetClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.ModifyEIPBandwidthRequestSchema().dumps(d)
 
@@ -800,7 +878,10 @@ class UNetClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.ModifyEIPWeightRequestSchema().dumps(d)
 
@@ -821,7 +902,10 @@ class UNetClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.ReleaseEIPRequestSchema().dumps(d)
 
@@ -839,14 +923,17 @@ class UNetClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **EIPBandwidth** (int) - (Required) 关闭共享带宽后，各EIP恢复为的带宽值
         - **ShareBandwidthId** (str) - (Required) 共享带宽ID
-        - **PayMode** (str) - Bandwidth 带宽计费, Traffic 转流量计费
+        - **PayMode** (str) - 默认为 Bandwidth 带宽计费
 
         **Response**
 
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.ReleaseShareBandwidthRequestSchema().dumps(d)
 
@@ -854,23 +941,29 @@ class UNetClient(Client):
         return apis.ReleaseShareBandwidthResponseSchema().loads(resp)
 
     def release_vip(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ReleaseVIP - 释放VIP资源
+        """ReleaseVIP -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写
-        - **Region** (str) - (Config) 地域
-        - **VIPId** (str) - (Required) 内网VIP的id
-        - **Zone** (str) - 可用区
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **VIPId** (str) - (Required)
+        - **Zone** (str) -
 
         **Response**
 
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.ReleaseVIPRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("ReleaseVIP", d, **kwargs)
         return apis.ReleaseVIPResponseSchema().loads(resp)
@@ -892,7 +985,10 @@ class UNetClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.ResizeShareBandwidthRequestSchema().dumps(d)
 
@@ -917,7 +1013,10 @@ class UNetClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.SetEIPPayModeRequestSchema().dumps(d)
 
@@ -933,14 +1032,17 @@ class UNetClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **EIPId** (str) - (Required) 弹性IP的资源Id
         - **ResourceId** (str) - (Required) 弹性IP请求解绑的资源ID
-        - **ResourceType** (str) - (Required) 弹性IP请求解绑的资源类型, 枚举值为: uhost: 云主机; ulb, 负载均衡器 upm: 物理机; hadoophost: 大数据集群;fortresshost：堡垒机；udockhost：容器；udhost：私有专区主机；natgw：NAT网关；udb：udb；vpngw：ipsec vpn；ucdr：云灾备；dbaudit：数据库审计；uni，虚拟网卡。
+        - **ResourceType** (str) - (Required) 弹性IP请求解绑的资源类型, 枚举值为: uhost: 云主机; ulb, 负载均衡器 upm: 物理机; hadoophost: 大数据集群;fortresshost：堡垒机；udockhost：容器；udhost：私有专区主机；natgw：NAT网关；udb：udb；vpngw：ipsec vpn；ucdr：云灾备；dbaudit：数据库审计；
 
         **Response**
 
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.UnBindEIPRequestSchema().dumps(d)
 
@@ -966,7 +1068,10 @@ class UNetClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.UpdateEIPAttributeRequestSchema().dumps(d)
 
@@ -991,7 +1096,10 @@ class UNetClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.UpdateFirewallRequestSchema().dumps(d)
 
@@ -1017,48 +1125,12 @@ class UNetClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.UpdateFirewallAttributeRequestSchema().dumps(d)
 
         resp = self.invoke("UpdateFirewallAttribute", d, **kwargs)
         return apis.UpdateFirewallAttributeResponseSchema().loads(resp)
-
-    _deprecated = {
-        "allocate_e_ip": "allocate_eip",
-        "associate_e_ip_with_share_bandwidth": "associate_eip_with_share_bandwidth",
-        "bind_e_ip": "bind_eip",
-        "describe_e_ip": "describe_eip",
-        "disassociate_e_ip_with_share_bandwidth": "disassociate_eip_with_share_bandwidth",
-        "get_e_ip_pay_mode": "get_eip_pay_mode",
-        "get_e_ip_price": "get_eip_price",
-        "get_e_ip_upgrade_price": "get_eip_upgrade_price",
-        "modify_e_ip_bandwidth": "modify_eip_bandwidth",
-        "modify_e_ip_weight": "modify_eip_weight",
-        "release_e_ip": "release_eip",
-        "set_e_ip_pay_mode": "set_eip_pay_mode",
-        "un_bind_e_ip": "un_bind_eip",
-        "update_e_ip_attribute": "update_eip_attribute",
-        "release_v_ip": "release_vip",
-        "allocate_v_ip": "allocate_vip",
-        "describe_v_ip": "describe_vip",
-    }
-
-    def __getattr__(self, item):
-        if item in self._deprecated:
-            instead_of = self._deprecated[item]
-            msg = (
-                "the method {} is deprecated, "
-                "please use {} instead, "
-                "this method will remove after 0.5.0 version"
-            )
-            self.logger.warning(msg.format(item, instead_of))
-            return getattr(self, self._deprecated[item])
-
-        raise AttributeError(
-            (
-                "'{}' object has no attribute '{}'".format(
-                    self.__class__.__name__, item
-                )
-            )
-        )
