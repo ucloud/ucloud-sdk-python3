@@ -115,10 +115,80 @@ class Client(client.Client):
             self._config, self.transport, self.middleware, self.logger
         )
 
+    def uapigateway(self):
+        from ucloud.services.uapigateway.client import UAPIGatewayClient
+
+        return UAPIGatewayClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def uarchive(self):
+        from ucloud.services.uarchive.client import UArchiveClient
+
+        return UArchiveClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def ubill(self):
+        from ucloud.services.ubill.client import UBillClient
+
+        return UBillClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
     def ucloudstack(self):
         from ucloud.services.ucloudstack.client import UCloudStackClient
 
         return UCloudStackClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def uddb(self):
+        from ucloud.services.uddb.client import UDDBClient
+
+        return UDDBClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def uddos_uclean(self):
+        from ucloud.services.uddos_uclean.client import UDDoS_UCleanClient
+
+        return UDDoS_UCleanClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def udhost(self):
+        from ucloud.services.udhost.client import UDHostClient
+
+        return UDHostClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def udts(self):
+        from ucloud.services.udts.client import UDTSClient
+
+        return UDTSClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def udocker(self):
+        from ucloud.services.udocker.client import UDockerClient
+
+        return UDockerClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def uec(self):
+        from ucloud.services.uec.client import UECClient
+
+        return UECClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def uewaf(self):
+        from ucloud.services.uewaf.client import UEWAFClient
+
+        return UEWAFClient(
             self._config, self.transport, self.middleware, self.logger
         )
 
@@ -129,6 +199,20 @@ class Client(client.Client):
             self._config, self.transport, self.middleware, self.logger
         )
 
+    def ufile(self):
+        from ucloud.services.ufile.client import UFileClient
+
+        return UFileClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def ugc(self):
+        from ucloud.services.ugc.client import UGCClient
+
+        return UGCClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
     def uhub(self):
         from ucloud.services.uhub.client import UHubClient
 
@@ -136,10 +220,94 @@ class Client(client.Client):
             self._config, self.transport, self.middleware, self.logger
         )
 
+    def uhybridv2(self):
+        from ucloud.services.uhybridv2.client import UHybridV2Client
+
+        return UHybridV2Client(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def uhybridv3(self):
+        from ucloud.services.uhybridv3.client import UHybridV3Client
+
+        return UHybridV3Client(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
     def uk8s(self):
         from ucloud.services.uk8s.client import UK8SClient
 
         return UK8SClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def ukms(self):
+        from ucloud.services.ukms.client import UKMSClient
+
+        return UKMSClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def ukafka(self):
+        from ucloud.services.ukafka.client import UKafkaClient
+
+        return UKafkaClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def ulive(self):
+        from ucloud.services.ulive.client import ULiveClient
+
+        return ULiveClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def umai(self):
+        from ucloud.services.umai.client import UMAIClient
+
+        return UMAIClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def umedia(self):
+        from ucloud.services.umedia.client import UMediaClient
+
+        return UMediaClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def umon(self):
+        from ucloud.services.umon.client import UMonClient
+
+        return UMonClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def urtc(self):
+        from ucloud.services.urtc.client import URTCClient
+
+        return URTCClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def usa(self):
+        from ucloud.services.usa.client import USAClient
+
+        return USAClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def usql(self):
+        from ucloud.services.usql.client import USQLClient
+
+        return USQLClient(
+            self._config, self.transport, self.middleware, self.logger
+        )
+
+    def uvideo(self):
+        from ucloud.services.uvideo.client import UVideoClient
+
+        return UVideoClient(
             self._config, self.transport, self.middleware, self.logger
         )
 
