@@ -288,12 +288,14 @@ class VPCIntercomInfoSchema(schema.ResponseSchema):
     """VPCIntercomInfo -"""
 
     fields = {
+        "AccountId": fields.Int(required=True, load_from="AccountId"),
         "DstRegion": fields.Str(required=False, load_from="DstRegion"),
         "Name": fields.Str(required=False, load_from="Name"),
         "Network": fields.List(fields.Str()),
         "ProjectId": fields.Str(required=False, load_from="ProjectId"),
         "Tag": fields.Str(required=False, load_from="Tag"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "VPCType": fields.Int(required=True, load_from="VPCType"),
     }
 
 
