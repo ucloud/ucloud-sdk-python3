@@ -346,7 +346,6 @@ class UHostClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **IsolationGroup** (str) - 硬件隔离组id。通过硬件隔离组筛选主机。
         - **Limit** (int) - 返回数据长度，默认为20，最大100
         - **Offset** (int) - 列表起始位置偏移量，默认为0
@@ -355,6 +354,7 @@ class UHostClient(Client):
         - **UDiskIdForAttachment** (str) - 要挂载的云盘id，过滤返回能被UDiskId挂载的云主机。目前主要针对rssd云盘使用
         - **UHostIds** (list) - 【数组】UHost主机的资源ID，例如UHostIds.0代表希望获取信息 的主机1，UHostIds.1代表主机2。 如果不传入，则返回当前Region 所有符合条件的UHost实例。
         - **VPCId** (str) - vpc id。通过VPC筛选主机。北京一地域无效。
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
