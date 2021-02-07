@@ -401,7 +401,7 @@ class DescribeUHostInstanceRequestSchema(schema.RequestSchema):
         ),
         "UHostIds": fields.List(fields.Str()),
         "VPCId": fields.Str(required=False, dump_to="VPCId"),
-        "Zone": fields.Str(required=True, dump_to="Zone"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
 
