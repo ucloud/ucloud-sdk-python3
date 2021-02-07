@@ -1,3 +1,18 @@
+## 0.10.1 (2021-02-07)
+
+ENHANCEMENTS:
+
+- Update all APIs of `VPC` (#82)
+- Update all APIs of `UDisk` (#81)
+- Update all APIs of `UNet` (#80)
+- Update all APIs of `UHost` (#76)
+
+BUG FIXES:
+
+- (**BROKEN CHANGE**) Fix `DescribeRouteTable` field `SubnetCount` from `string` to `integer` (#82)
+- (**BROKEN CHANGE**) Fix `CloneRouteTable` field `Region` as `Required` (#82)
+- (**BROKEN CHANGE**) Fix `UHostDiskSet` field `Encrypted` from `string` to `boolean` (#76)
+
 ## 0.10.0 (2020-11-26)
 
 FEATURES:
