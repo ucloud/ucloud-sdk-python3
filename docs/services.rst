@@ -101,13 +101,6 @@ IPSecVPN
    :members:
 
 
-UCloudStack
------------
-
-.. autoclass:: ucloud.services.ucloudstack.client.UCloudStackClient
-   :members:
-
-
 UFS
 ---
 
