@@ -852,18 +852,18 @@ class VPCClient(Client):
         - **OperatorName** (str) - IP的运营商信息
 
 
+        **NatGatewaySubnetSet**
+        - **Subnet** (str) - 子网网段
+        - **SubnetName** (str) - 子网名字
+        - **SubnetworkId** (str) - 子网id
+
+
         **NatGatewayIPSet**
         - **Bandwidth** (int) - 带宽
         - **BandwidthType** (str) - EIP带宽类型
         - **EIPId** (str) - 外网IP的 EIPId
         - **IPResInfo** (list) - 见 **NatGWIPResInfo** 模型定义
         - **Weight** (int) - 权重为100的为出口
-
-
-        **NatGatewaySubnetSet**
-        - **Subnet** (str) - 子网网段
-        - **SubnetName** (str) - 子网名字
-        - **SubnetworkId** (str) - 子网id
 
 
         **NatGatewayDataSet**
@@ -965,6 +965,13 @@ class VPCClient(Client):
         - **SubnetworkId** (str) - 子网ID
 
 
+        **AssociationInfo**
+        - **AclId** (str) - ACL的ID
+        - **AssociationId** (str) - 绑定ID
+        - **CreateTime** (int) - 创建的Unix时间戳
+        - **SubnetworkId** (str) - 绑定的子网ID
+
+
         **AclEntryInfo**
         - **CidrBlock** (str) - IP段的CIDR信息
         - **CreateTime** (int) - 创建的Unix时间戳
@@ -978,13 +985,6 @@ class VPCClient(Client):
         - **TargetResourceList** (list) - 见 **TargetResourceInfo** 模型定义
         - **TargetType** (int) - 应用目标类型。 0代表“子网内全部资源” ，1代表“子网内指定资源” 。
         - **UpdateTime** (int) - 更改的Unix时间戳
-
-
-        **AssociationInfo**
-        - **AclId** (str) - ACL的ID
-        - **AssociationId** (str) - 绑定ID
-        - **CreateTime** (int) - 创建的Unix时间戳
-        - **SubnetworkId** (str) - 绑定的子网ID
 
 
         **AclInfo**
@@ -1444,8 +1444,8 @@ class VPCClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 源VPC所在项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 源VPC所在地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 源VPC所在项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 源VPC所在地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **VPCId** (str) - (Required) VPC短ID
         - **DstProjectId** (str) - 目的项目ID，默认为全部项目
         - **DstRegion** (str) - 目的VPC所在地域，默认为全部地域
@@ -1457,12 +1457,14 @@ class VPCClient(Client):
         **Response Model**
 
         **VPCIntercomInfo**
+        - **AccountId** (int) - 项目Id（数字）
         - **DstRegion** (str) - 所属地域
         - **Name** (str) - VPC名字
         - **Network** (list) - VPC的地址空间
         - **ProjectId** (str) - 项目Id
         - **Tag** (str) - 业务组（未分组显示为 Default）
         - **VPCId** (str) - VPCId
+        - **VPCType** (int) - vpc类型（1表示托管VPC，0表示公有云VPC）
 
 
         """

@@ -1096,7 +1096,7 @@ class DescribeVPCIntercomRequestSchema(schema.RequestSchema):
     fields = {
         "DstProjectId": fields.Str(required=False, dump_to="DstProjectId"),
         "DstRegion": fields.Str(required=False, dump_to="DstRegion"),
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "VPCId": fields.Str(required=True, dump_to="VPCId"),
     }
