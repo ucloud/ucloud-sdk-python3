@@ -12,7 +12,6 @@
     <script src="../../../../_static/jquery.js"></script>
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
    
@@ -55,18 +54,24 @@
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **UDiskId** (str) - (Required) 需要挂载的UDisk实例ID.</span>
-<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID</span>
-<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **HostId** (str) - Host实例ID</span>
 <span class="sd">        - **MultiAttach** (str) - 是否允许多点挂载（Yes: 允许多点挂载， No: 不允许多点挂载， 不填默认Yes ）</span>
+<span class="sd">        - **UHostId** (str) - UHost实例ID。【UHostId和HostId必须选填一个，本字段即将废弃，建议使用HostId】</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 
 <span class="sd">        **Response**</span>
 
+<span class="sd">        - **DeviceName** (str) - 挂载的设备名称</span>
+<span class="sd">        - **HostId** (str) - 挂载的Host实例ID</span>
 <span class="sd">        - **UDiskId** (str) - 挂载的UDisk实例ID</span>
-<span class="sd">        - **UHostId** (str) - 挂载的UHost实例ID</span>
+<span class="sd">        - **UHostId** (str) - 挂载的UHost实例ID。【即将废弃，建议使用HostId】</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">AttachUDiskRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -83,11 +88,13 @@
 <span class="sd">        - **Name** (str) - (Required) 实例名称</span>
 <span class="sd">        - **SourceId** (str) - (Required) 克隆父Disk的Id</span>
 <span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
-<span class="sd">        - **ChargeType** (str) - Year , Month, Dynamic，Postpay 默认: Dynamic</span>
+<span class="sd">        - **ChargeType** (str) - Year , Month, Dynamic，Postpay，Trial 默认: Month</span>
 <span class="sd">        - **Comment** (str) - Disk注释</span>
 <span class="sd">        - **CouponId** (str) - 使用的代金券id</span>
 <span class="sd">        - **Quantity** (int) - 购买时长 默认: 1</span>
-<span class="sd">        - **UDataArkMode** (str) - 方舟是否开启，&quot;Yes&quot;:开启，&quot;No&quot;:关闭；默认为&quot;No&quot;</span>
+<span class="sd">        - **SnapshotService** (str) - 是否开启快照服务。Yes：开启，No：不开启，默认值：No</span>
+<span class="sd">        - **Tag** (str) - 业务组 默认：Default</span>
+<span class="sd">        - **UDataArkMode** (str) - 【即将废弃，开启快照服务时，免费开启数据方舟】是否开启数据方舟。Yes：开启，No：不开启，默认值：No</span>
 
 <span class="sd">        **Response**</span>
 
@@ -95,12 +102,12 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CloneUDiskRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-
-        <span class="c1"># build options</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;CloneUDisk&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">CloneUDiskResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
@@ -115,14 +122,16 @@
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **Name** (str) - (Required) 实例名称</span>
-<span class="sd">        - **Size** (int) - (Required) 购买UDisk大小,单位:GB,范围[1~2000], 权限位控制可达8T,若需要请申请开通相关权限。</span>
 <span class="sd">        - **SourceId** (str) - (Required) 克隆父Snapshot的Id</span>
 <span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **ChargeType** (str) - Year , Month, Dynamic，Postpay 默认: Dynamic</span>
 <span class="sd">        - **Comment** (str) - Disk注释</span>
 <span class="sd">        - **CouponId** (str) - 使用的代金券id</span>
 <span class="sd">        - **Quantity** (int) - 购买时长 默认: 1</span>
-<span class="sd">        - **UDataArkMode** (str) - 是否开启数据方舟   默认:No</span>
+<span class="sd">        - **Size** (int) - 购买UDisk大小,单位:GB,范围[1~8000]。(UDisk大小设定对本地盘快照有效，对云盘快照无效)</span>
+<span class="sd">        - **SnapshotService** (str) - 是否开启快照服务。Yes：开启，No：不开启，默认值：No</span>
+<span class="sd">        - **Tag** (str) - 业务组 默认：Default</span>
+<span class="sd">        - **UDataArkMode** (str) - 【即将废弃，开启快照服务时，免费开启数据方舟】是否开启数据方舟。Yes：开启，No：不开启，默认值：No</span>
 
 <span class="sd">        **Response**</span>
 
@@ -130,15 +139,100 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CloneUDiskSnapshotRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;CloneUDiskSnapshot&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">CloneUDiskSnapshotResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UDiskClient.clone_udisk_udataark"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udisk.client.UDiskClient.clone_udisk_udataark">[docs]</a>    <span class="k">def</span> <span class="nf">clone_udisk_udataark</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;CloneUDiskUDataArk - 从数据方舟的备份创建UDisk</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Name** (str) - (Required) 实例名称</span>
+<span class="sd">        - **SnapshotTime** (int) - (Required) 指定从方舟克隆的备份时间点</span>
+<span class="sd">        - **UDiskId** (str) - (Required) 需要克隆的源盘id</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ChargeType** (str) - Year , Month, Dynamic，Postpay 默认: Dynamic</span>
+<span class="sd">        - **Comment** (str) - Disk注释</span>
+<span class="sd">        - **CouponId** (str) - 使用的代金券id</span>
+<span class="sd">        - **Quantity** (int) - 购买时长 默认: 1</span>
+<span class="sd">        - **Size** (int) - 购买UDisk大小,单位:GB,范围[1~8000]。(UDisk大小设定对本地盘备份有效，对云盘备份无效)</span>
+<span class="sd">        - **SnapshotService** (str) - 是否开启快照服务。Yes：开启，No：不开启，默认值：No</span>
+<span class="sd">        - **Tag** (str) - 业务组 默认：Default</span>
+<span class="sd">        - **UDataArkMode** (str) - 【即将废弃，开启快照服务时，免费开启数据方舟】是否开启数据方舟。Yes：开启，No：不开启，默认值：No</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **UDiskId** (list) - 创建UDisk Id</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CloneUDiskUDataArkRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;CloneUDiskUDataArk&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">CloneUDiskUDataArkResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UDiskClient.create_attach_udisk"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udisk.client.UDiskClient.create_attach_udisk">[docs]</a>    <span class="k">def</span> <span class="nf">create_attach_udisk</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;CreateAttachUDisk - 创建并挂载UDisk磁盘</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Name** (str) - (Required) 实例名称</span>
+<span class="sd">        - **Size** (int) - (Required) 购买UDisk大小,单位:GB,普通数据盘：范围[1~8000]；SSD数据盘：范围[1~8000]；RSSD数据盘：范围[1~32000]。</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ChargeType** (str) - Year , Month, Dynamic, Postpay, Trial 。 Size小于等于2000时，默认为Dynamic；Size大于2000时，默认为Month。</span>
+<span class="sd">        - **CmkId** (str) - 加密需要的cmk id，UKmsMode为Yes时，必填</span>
+<span class="sd">        - **CouponId** (str) - 使用的代金券id</span>
+<span class="sd">        - **DiskType** (str) - UDisk 类型: DataDisk（普通数据盘），SSDDataDisk（SSD数据盘），RSSDDataDisk（RSSD数据盘），默认值（DataDisk）</span>
+<span class="sd">        - **HostId** (str) - Host实例ID。当创建云盘类型为RSSDDataDisk时，根据传入的HostId，创建与虚机在同一PodId下的云盘。</span>
+<span class="sd">        - **MultiAttach** (str) - 是否允许多点挂载（Yes: 允许多点挂载， No: 不允许多点挂载， 不填默认Yes ）</span>
+<span class="sd">        - **Quantity** (int) - 购买时长 默认: 1</span>
+<span class="sd">        - **SnapshotService** (str) - 是否开启快照服务。Yes：开启，No：不开启，默认值：No</span>
+<span class="sd">        - **Tag** (str) - 业务组 默认：Default</span>
+<span class="sd">        - **UDataArkMode** (str) - 【即将废弃，开启快照服务时，免费开启数据方舟】是否开启数据方舟。Yes：开启，No：不开启，默认值：No</span>
+<span class="sd">        - **UHostId** (str) - UHost实例ID。当创建云盘类型为RSSDDataDisk时，根据传入的UHostId，创建与虚机在同一PodId下的云盘。【UHostId和HostId必须选填一个，本字段即将废弃，建议使用HostId】</span>
+<span class="sd">        - **UKmsMode** (str) - 是否加密。Yes：加密，No：不加密，默认值（No）</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **DeviceName** (str) - 挂载设备名称</span>
+<span class="sd">        - **HostId** (str) - 挂载的Host实例ID</span>
+<span class="sd">        - **UDiskId** (str) - 挂载的UDisk实例ID</span>
+<span class="sd">        - **UHostId** (str) - 挂载的UHost实例ID。【即将废弃，建议使用HostId】</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateAttachUDiskRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
         <span class="c1"># build options</span>
         <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
 
-        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;CloneUDiskSnapshot&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">CloneUDiskSnapshotResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;CreateAttachUDisk&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateAttachUDiskResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UDiskClient.create_udisk"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udisk.client.UDiskClient.create_udisk">[docs]</a>    <span class="k">def</span> <span class="nf">create_udisk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;CreateUDisk - 创建UDisk磁盘</span>
@@ -148,15 +242,17 @@
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **Name** (str) - (Required) 实例名称</span>
-<span class="sd">        - **Size** (int) - (Required) 购买UDisk大小,单位:GB,普通盘: 范围[1~2000], 权限位控制可达8T,若需要请申请开通相关权限;SSD盘： 范围[1~4000]。</span>
+<span class="sd">        - **Size** (int) - (Required) 购买UDisk大小,单位:GB,普通数据盘：范围[1~8000]；SSD数据盘：范围[1~8000]；RSSD数据盘：范围[1~32000]。</span>
 <span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
-<span class="sd">        - **ChargeType** (str) - Year , Month, Dynamic, Postpay, Trial 默认: Dynamic</span>
+<span class="sd">        - **ChargeType** (str) - Year , Month, Dynamic, Postpay, Trial 。默认为Dynamic。</span>
 <span class="sd">        - **CmkId** (str) - 加密需要的cmk id，UKmsMode为Yes时，必填</span>
 <span class="sd">        - **CouponId** (str) - 使用的代金券id</span>
 <span class="sd">        - **DiskType** (str) - UDisk 类型: DataDisk（普通数据盘），SSDDataDisk（SSD数据盘），RSSDDataDisk（RSSD数据盘），默认值（DataDisk）</span>
 <span class="sd">        - **Quantity** (int) - 购买时长 默认: 1</span>
+<span class="sd">        - **RdmaClusterId** (str) - RDMA集群id。DiskType为RSSDDataDisk可填，指定云盘创建到对应的RDMA集群。</span>
+<span class="sd">        - **SnapshotService** (str) - 是否开启快照服务。Yes：开启，No：不开启，默认值：No</span>
 <span class="sd">        - **Tag** (str) - 业务组 默认：Default</span>
-<span class="sd">        - **UDataArkMode** (str) - 是否开启数据方舟</span>
+<span class="sd">        - **UDataArkMode** (str) - 【即将废弃，开启快照服务时，免费开启数据方舟】是否开启数据方舟。Yes：开启，No：不开启，默认值：No</span>
 <span class="sd">        - **UKmsMode** (str) - 是否加密。Yes：加密，No：不加密，默认值（No）</span>
 
 <span class="sd">        **Response**</span>
@@ -165,7 +261,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateUDiskRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -187,9 +286,9 @@
 <span class="sd">        - **Name** (str) - (Required) 快照名称</span>
 <span class="sd">        - **UDiskId** (str) - (Required) 快照的UDisk的Id</span>
 <span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
-<span class="sd">        - **ChargeType** (str) - Year , Month, Dynamic 默认: Dynamic</span>
+<span class="sd">        - **ChargeType** (str) - Year , Month, Dynamic 默认: Dynamic  (已废弃)</span>
 <span class="sd">        - **Comment** (str) - 快照描述</span>
-<span class="sd">        - **Quantity** (int) - 购买时长 默认: 1</span>
+<span class="sd">        - **Quantity** (int) - 购买时长 默认: 1  (已废弃)</span>
 
 <span class="sd">        **Response**</span>
 
@@ -197,7 +296,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateUDiskSnapshotRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -222,7 +324,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteUDiskRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -247,12 +352,58 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteUDiskSnapshotRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DeleteUDiskSnapshot&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteUDiskSnapshotResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UDiskClient.describe_recycle_udisk"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udisk.client.UDiskClient.describe_recycle_udisk">[docs]</a>    <span class="k">def</span> <span class="nf">describe_recycle_udisk</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DescribeRecycleUDisk - 拉取回收站中云硬盘列表</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Limit** (int) - 返回数据长度, 默认为20</span>
+<span class="sd">        - **Offset** (int) - 数据偏移量, 默认为0</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **DataSet** (list) - 见 **RecycleUDiskSet** 模型定义</span>
+<span class="sd">        - **TotalCount** (int) - 磁盘数量</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **RecycleUDiskSet**</span>
+<span class="sd">        - **CountdownTime** (int) - 销毁倒计时</span>
+<span class="sd">        - **CreateTime** (int) - 创建时间</span>
+<span class="sd">        - **ExpiredTime** (int) - 过期时间</span>
+<span class="sd">        - **Name** (str) - 磁盘名称</span>
+<span class="sd">        - **Size** (int) - 磁盘容量</span>
+<span class="sd">        - **Tag** (str) - 业务组</span>
+<span class="sd">        - **UDiskId** (str) - 磁盘id</span>
+<span class="sd">        - **Zone** (str) - 可用区</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeRecycleUDiskRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeRecycleUDisk&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeRecycleUDiskResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UDiskClient.describe_udisk"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udisk.client.UDiskClient.describe_udisk">[docs]</a>    <span class="k">def</span> <span class="nf">describe_udisk</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -263,12 +414,16 @@
 
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
-<span class="sd">        - **DiskType** (str) - ProtocolVersion字段为1时，需结合IsBoot确定具体磁盘类型:普通数据盘：DiskType:&quot;CLOUD_NORMAL&quot;,IsBoot:&quot;False&quot;； 普通系统盘：DiskType:&quot;CLOUD_NORMAL&quot;,IsBoot:&quot;True&quot;；SSD数据盘：DiskType:&quot;CLOUD_SSD&quot;,IsBoot:&quot;False&quot;；SSD系统盘：DiskType:&quot;CLOUD_SSD&quot;,IsBoot:&quot;True&quot;；RSSD数据盘：DiskType:&quot;CLOUD_RSSD&quot;,IsBoot:&quot;False&quot;；为空拉取所有。ProtocolVersion字段为0或没有该字段时，可设为以下几个值:普通数据盘：DataDisk；普通系统盘；SystemDisk；SSD数据盘：SSDDataDisk；SSD系统盘：SSDSystemDisk；RSSD数据盘：RSSDDataDisk；为空拉取所有。</span>
+<span class="sd">        - **DiskType** (str) - ProtocolVersion字段为1时，需结合IsBoot确定具体磁盘类型:普通数据盘：DiskType:&quot;CLOUD_NORMAL&quot;,IsBoot:&quot;False&quot;；普通系统盘：DiskType:&quot;CLOUD_NORMAL&quot;,IsBoot:&quot;True&quot;；SSD数据盘：DiskType:&quot;CLOUD_SSD&quot;,IsBoot:&quot;False&quot;；SSD系统盘：DiskType:&quot;CLOUD_SSD&quot;,IsBoot:&quot;True&quot;；RSSD数据盘：DiskType:&quot;CLOUD_RSSD&quot;,IsBoot:&quot;False&quot;；为空拉取所有。ProtocolVersion字段为0或没有该字段时，可设为以下几个值:普通数据盘：DataDisk；普通系统盘：SystemDisk；SSD数据盘：SSDDataDisk；SSD系统盘：SSDSystemDisk；RSSD数据盘：RSSDDataDisk；为空拉取所有。</span>
+<span class="sd">        - **HostIdForAttachment** (str) - 根据传入的HostIdForAttachment，筛选出虚机在同一PodId下的云盘</span>
+<span class="sd">        - **HostProduct** (str) - 宿主产品类型，可筛选挂载在该类型宿主上的云盘。可选值：uhost, uphost。为空拉取所有。（当HostIdForAttachment字段不为空时，该字段可以不填，若HostIdForAttachment与该字段宿主类型冲突，则以HostIdForAttachment字段为准。）</span>
+<span class="sd">        - **IgnoreUBillInfo** (str) - 是否忽略计费信息。Yes：忽略，No：不忽略，默认值（No）。（如不关心账单信息，建议选填“Yes”，可降低请求延时）</span>
 <span class="sd">        - **IsBoot** (str) - ProtocolVersion字段为1且DiskType不为空时，必须设置，设置规则请参照DiskType；ProtocolVersion字段为1且DiskType为空时，该字段无效。ProtocolVersion字段为0或没有该字段时，该字段无效。</span>
 <span class="sd">        - **Limit** (int) - 返回数据长度, 默认为20</span>
 <span class="sd">        - **Offset** (int) - 数据偏移量, 默认为0</span>
 <span class="sd">        - **ProtocolVersion** (int) - 请求协议版本，建议升级为1，为1时DiskType与UHost磁盘类型定义一致；默认为0</span>
 <span class="sd">        - **UDiskId** (str) - UDisk Id(留空返回全部)</span>
+<span class="sd">        - **UHostIdForAttachment** (str) - 根据传入的UHostIdForAttachment，筛选出虚机在同一PodId下的云盘【本字段即将废弃，建议使用HostIdForAttachment】</span>
 <span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 
 <span class="sd">        **Response**</span>
@@ -279,8 +434,8 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **UDiskDataSet**</span>
-
 <span class="sd">        - **ArkSwitchEnable** (int) - 是否支持开启方舟，1支持 ，0不支持</span>
+<span class="sd">        - **BackupMode** (str) - 该盘的备份方式。快照服务：&quot;SnapshotService&quot;；数据方舟：&quot;UDataArk&quot;；无备份方式：&quot;&quot;</span>
 <span class="sd">        - **ChargeType** (str) - Year,Month,Dynamic,Trial,Postpay</span>
 <span class="sd">        - **CloneEnable** (int) - 是否支持克隆，1支持 ，0不支持</span>
 <span class="sd">        - **CmkId** (str) - 该盘的cmk id</span>
@@ -291,9 +446,13 @@
 <span class="sd">        - **DeviceName** (str) - 挂载的设备名称</span>
 <span class="sd">        - **DiskType** (str) - 请求中的ProtocolVersion字段为1时，需结合IsBoot确定具体磁盘类型:普通数据盘：DiskType:&quot;CLOUD_NORMAL&quot;,IsBoot:&quot;False&quot;； 普通系统盘：DiskType:&quot;CLOUD_NORMAL&quot;,IsBoot:&quot;True&quot;；SSD数据盘：DiskType:&quot;CLOUD_SSD&quot;,IsBoot:&quot;False&quot;；SSD系统盘：DiskType:&quot;CLOUD_SSD&quot;,IsBoot:&quot;True&quot;；RSSD数据盘：DiskType:&quot;CLOUD_RSSD&quot;,IsBoot:&quot;False&quot;。请求中的ProtocolVersion字段为0或没有该字段时，云硬盘类型参照如下:普通数据盘：DataDisk；普通系统盘：SystemDisk；SSD数据盘：SSDDataDisk；SSD系统盘：SSDSystemDisk；RSSD数据盘：RSSDDataDisk。</span>
 <span class="sd">        - **ExpiredTime** (int) - 过期时间</span>
+<span class="sd">        - **HostIP** (str) - 挂载的Host的IP</span>
+<span class="sd">        - **HostId** (str) - 挂载的Host的Id</span>
+<span class="sd">        - **HostName** (str) - 挂载的Host的Name</span>
 <span class="sd">        - **IsBoot** (str) - 是否是系统盘，是：&quot;True&quot;, 否：&quot;False&quot;</span>
 <span class="sd">        - **IsExpire** (str) - 资源是否过期，过期:&quot;Yes&quot;, 未过期:&quot;No&quot;</span>
 <span class="sd">        - **Name** (str) - 实例名称</span>
+<span class="sd">        - **RdmaClusterId** (str) - RDMA集群id，仅RSSD返回该值；其他类型云盘返回&quot;&quot;。当云盘的此值与快杰云主机的RdmaClusterId相同时，RSSD可以挂载到这台云主机。</span>
 <span class="sd">        - **Size** (int) - 容量单位GB</span>
 <span class="sd">        - **SnapEnable** (int) - 是否支持快照，1支持 ，0不支持</span>
 <span class="sd">        - **SnapshotCount** (int) - 该盘快照个数</span>
@@ -302,16 +461,20 @@
 <span class="sd">        - **Tag** (str) - 业务组名称</span>
 <span class="sd">        - **UDataArkMode** (str) - 是否开启数据方舟，开启:&quot;Yes&quot;, 不支持:&quot;No&quot;</span>
 <span class="sd">        - **UDiskId** (str) - UDisk实例Id</span>
-<span class="sd">        - **UHostIP** (str) - 挂载的UHost的IP</span>
-<span class="sd">        - **UHostId** (str) - 挂载的UHost的Id</span>
-<span class="sd">        - **UHostName** (str) - 挂载的UHost的Name</span>
+<span class="sd">        - **UHostIP** (str) - 挂载的UHost的IP。【即将废弃，建议使用HostIP】</span>
+<span class="sd">        - **UHostId** (str) - 挂载的UHost的Id。【即将废弃，建议使用HostId】</span>
+<span class="sd">        - **UHostName** (str) - 挂载的UHost的Name。【即将废弃，建议使用HostName】</span>
 <span class="sd">        - **UKmsMode** (str) - 是否是加密盘，是:&quot;Yes&quot;, 否:&quot;No&quot;</span>
 <span class="sd">        - **Version** (str) - 是否支持数据方舟，支持:&quot;2.0&quot;, 不支持:&quot;1.0&quot;</span>
 <span class="sd">        - **Zone** (str) - 可用区</span>
 
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeUDiskRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -327,12 +490,15 @@
 
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
-<span class="sd">        - **Size** (int) - (Required) 购买UDisk大小,单位:GB,范围[1~1000]</span>
+<span class="sd">        - **Size** (int) - (Required) 购买UDisk大小,单位:GB,普通数据盘：范围[1~8000]；SSD数据盘：范围[1~8000]；普通系统盘：范围[1~8000]；SSD系统盘：范围[1~4000]；RSSD数据盘：范围[1~32000]。</span>
 <span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
-<span class="sd">        - **ChargeType** (str) - Year， Month， Dynamic，Trial，默认: Dynamic</span>
+<span class="sd">        - **ChargeType** (str) - Year , Month, Dynamic，Postpay，Trial 默认: Month</span>
 <span class="sd">        - **DiskType** (str) - UDisk 类型: DataDisk（普通数据盘），SSDDataDisk（SSD数据盘），SystemDisk（普通系统盘），SSDSystemDisk（SSD系统盘），RSSDDataDisk（RSSD数据盘），默认值（DataDisk）</span>
+<span class="sd">        - **IsTotalPrice** (str) - 是否将快照服务(数据方舟)，云硬盘放入一张订单, 是：&quot;Yes&quot;,否：&quot;No&quot;，默认是&quot;No&quot;</span>
+<span class="sd">        - **MachineType** (str) - 云主机机型（V2.0），枚举值[&quot;N&quot;, &quot;C&quot;, &quot;G&quot;, &quot;O&quot;, &quot;OM&quot;]。参考 `云主机机型说明 &lt;https://docs.ucloud.cn/api/uhost-api/uhost_type&gt;`_ 。</span>
 <span class="sd">        - **Quantity** (int) - 购买UDisk的时长，默认值为1</span>
-<span class="sd">        - **UDataArkMode** (str) - 是否打开数据方舟, 打开&quot;Yes&quot;,关闭&quot;No&quot;, 默认关闭</span>
+<span class="sd">        - **SnapshotService** (str) - 是否开启快照服务。Yes：开启，No：不开启，默认值：No</span>
+<span class="sd">        - **UDataArkMode** (str) - 【即将废弃，开启快照服务时，免费开启数据方舟】是否开启数据方舟。Yes：开启，No：不开启，默认值：No</span>
 
 <span class="sd">        **Response**</span>
 
@@ -341,15 +507,19 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **UDiskPriceDataSet**</span>
-
-<span class="sd">        - **ChargeName** (str) - &quot;UDataArk&quot;,&quot;UDisk&quot;</span>
+<span class="sd">        - **ChargeName** (str) - &quot;UDataArk&quot;,&quot;SnapshotService&quot;,&quot;UDisk&quot;,&quot;Total&quot;</span>
 <span class="sd">        - **ChargeType** (str) - Year， Month， Dynamic，Trial</span>
-<span class="sd">        - **OriginalPrice** (int) - 用户折后价</span>
-<span class="sd">        - **Price** (int) - 价格 (单位: 分)</span>
+<span class="sd">        - **ListPrice** (int) - 原价(对应计费OriginalPrice)</span>
+<span class="sd">        - **OriginalPrice** (int) - 用户折后价(对应计费CustomPrice)</span>
+<span class="sd">        - **Price** (int) - 实际价格 (单位: 分)</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeUDiskPriceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -379,7 +549,6 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **UDiskSnapshotSet**</span>
-
 <span class="sd">        - **CmkId** (str) - 该快照的cmk id</span>
 <span class="sd">        - **CmkIdAlias** (str) - cmk id 别名</span>
 <span class="sd">        - **CmkIdStatus** (str) - 该快照cmk的状态, Enabled(正常)，Disabled(失效)，Deleted(删除)，NoCmkId(非加密盘)</span>
@@ -398,10 +567,15 @@
 <span class="sd">        - **UHostId** (str) - 对应磁盘制作快照时所挂载的主机</span>
 <span class="sd">        - **UKmsMode** (str) - 是否是加密盘快照，是:&quot;Yes&quot;, 否:&quot;No&quot;</span>
 <span class="sd">        - **Version** (str) - 快照版本</span>
+<span class="sd">        - **Zone** (str) - 可用区</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeUDiskSnapshotRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -417,20 +591,25 @@
 
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
-<span class="sd">        - **Size** (int) - (Required) 购买UDisk大小,单位:GB,范围[1~2000], 权限位控制可达8T,若需要请申请开通相关权限。</span>
+<span class="sd">        - **Size** (int) - (Required) 购买UDisk大小,单位:GB,普通数据盘：范围[1~8000]；SSD数据盘：范围[1~8000]；普通系统盘：范围[1~8000]；SSD系统盘：范围[1~4000]；RSSD数据盘：范围[1~32000]。</span>
 <span class="sd">        - **SourceId** (str) - (Required) 升级目标UDisk ID</span>
 <span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
-<span class="sd">        - **DiskType** (str) - 磁盘类型，SSDDataDisk:ssd数据盘,DataDisk:普通数据盘,SystemDisk:普通系统盘,SSDSystemDisk:ssd系统盘。默认为DataDisk</span>
-<span class="sd">        - **UDataArkMode** (str) - 是否打开数据方舟, 打开&quot;Yes&quot;,关闭&quot;No&quot;, 默认关闭</span>
+<span class="sd">        - **DiskType** (str) - UDisk 类型: DataDisk（普通数据盘），SSDDataDisk（SSD数据盘），SystemDisk（普通系统盘），SSDSystemDisk（SSD系统盘），RSSDDataDisk（RSSD数据盘），默认值（DataDisk）</span>
+<span class="sd">        - **MachineType** (str) - 云主机机型（V2.0），枚举值[&quot;N&quot;, &quot;C&quot;, &quot;G&quot;, &quot;O&quot;, &quot;OM&quot;]。参考 `云主机机型说明 &lt;https://docs.ucloud.cn/api/uhost-api/uhost_type&gt;`_ 。</span>
+<span class="sd">        - **SnapshotService** (str) - 是否开启快照服务。Yes：开启，No：不开启，默认值：No</span>
+<span class="sd">        - **UDataArkMode** (str) - 【即将废弃，开启快照服务时，免费开启数据方舟】是否开启数据方舟。Yes：开启，No：不开启，默认值：No</span>
 
 <span class="sd">        **Response**</span>
 
-<span class="sd">        - **OriginalPrice** (int) - 用户折后价</span>
+<span class="sd">        - **OriginalPrice** (int) - 用户折后价 (对应计费CustomPrice)</span>
 <span class="sd">        - **Price** (int) - 价格</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeUDiskUpgradePriceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -445,22 +624,56 @@
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **UDiskId** (str) - (Required) 需要卸载的UDisk实例ID</span>
-<span class="sd">        - **UHostId** (str) - (Required) UHost实例ID</span>
-<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **HostId** (str) - Host实例ID</span>
+<span class="sd">        - **UHostId** (str) - UHost实例ID。【UHostId和HostId必须选填一个，本字段即将废弃，建议使用HostId】</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 
 <span class="sd">        **Response**</span>
 
+<span class="sd">        - **HostId** (str) - 卸载的Host实例ID</span>
 <span class="sd">        - **UDiskId** (str) - 卸载的UDisk实例ID</span>
-<span class="sd">        - **UHostId** (str) - 卸载的UHost实例ID</span>
+<span class="sd">        - **UHostId** (str) - 卸载的UHost实例ID。【即将废弃，建议使用HostId】</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DetachUDiskRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DetachUDisk&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DetachUDiskResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UDiskClient.recover_udisk"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udisk.client.UDiskClient.recover_udisk">[docs]</a>    <span class="k">def</span> <span class="nf">recover_udisk</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;RecoverUDisk - 从回收站中恢复云硬盘</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **UDiskId** (str) - (Required) 云硬盘资源ID</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ChargeType** (str) - Year , Month, Dynamic 默认: Dynamic</span>
+<span class="sd">        - **Quantity** (int) - 购买时长 默认: 1</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">RecoverUDiskRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;RecoverUDisk&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">RecoverUDiskResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UDiskClient.rename_udisk"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udisk.client.UDiskClient.rename_udisk">[docs]</a>    <span class="k">def</span> <span class="nf">rename_udisk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;RenameUDisk - 重命名UDisk</span>
@@ -478,7 +691,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">RenameUDiskRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -492,17 +708,21 @@
 
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
-<span class="sd">        - **Size** (int) - (Required) 调整后大小, 单位:GB, 范围[1~2000],权限位控制可达8000,若需要请申请开通相关权限。</span>
+<span class="sd">        - **Size** (int) - (Required) 调整后大小, 单位:GB,普通数据盘：范围[1~8000]；SSD数据盘：范围[1~8000]；RSSD数据盘：范围[1~32000]。</span>
 <span class="sd">        - **UDiskId** (str) - (Required) UDisk Id</span>
 <span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **CouponId** (str) - 使用的代金券id</span>
+<span class="sd">        - **MachineType** (str) - 云主机机型（V2.0），枚举值[&quot;N&quot;, &quot;C&quot;, &quot;G&quot;, &quot;O&quot;, &quot;OM&quot;]。参考 `云主机机型说明 &lt;https://docs.ucloud.cn/api/uhost-api/uhost_type&gt;`_ 。</span>
 
 <span class="sd">        **Response**</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ResizeUDiskRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -518,7 +738,7 @@
 
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
-<span class="sd">        - **UDiskId** (str) - (Required) 需要恢复的盘id</span>
+<span class="sd">        - **UDiskId** (str) - (Required) 需要恢复的盘ID</span>
 <span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **SnapshotId** (str) - 从指定的快照恢复</span>
 <span class="sd">        - **SnapshotTime** (int) - 指定从方舟恢复的备份时间点</span>
@@ -528,14 +748,20 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">RestoreUDiskRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># build options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;RestoreUDisk&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">RestoreUDiskResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="UDiskClient.set_udisk__udataark_mode"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udisk.client.UDiskClient.set_udisk__udataark_mode">[docs]</a>    <span class="k">def</span> <span class="nf">set_udisk__udataark_mode</span><span class="p">(</span>
+<div class="viewcode-block" id="UDiskClient.set_udisk_udataark_mode"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udisk.client.UDiskClient.set_udisk_udataark_mode">[docs]</a>    <span class="k">def</span> <span class="nf">set_udisk_udataark_mode</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;SetUDiskUDataArkMode - 设置UDisk数据方舟的状态</span>
@@ -544,16 +770,20 @@
 
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
-<span class="sd">        - **UDataArkMode** (str) - (Required) 是否开启数据方舟，开启:&quot;Yes&quot;, 不支持:&quot;No&quot;</span>
 <span class="sd">        - **UDiskId** (str) - (Required) 需要设置数据方舟的UDisk的Id</span>
 <span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **CouponId** (str) - 使用的代金券id</span>
+<span class="sd">        - **UDataArkMode** (str) - 【即将废弃，开启快照服务时，免费开启数据方舟】是否开启数据方舟。Yes：开启，No：不开启，默认值：No</span>
 
 <span class="sd">        **Response**</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">SetUDiskUDataArkModeRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -622,7 +852,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

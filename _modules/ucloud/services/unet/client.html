@@ -12,7 +12,6 @@
     <script src="../../../../_static/jquery.js"></script>
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
    
@@ -36,6 +35,7 @@
 
 <span class="kn">import</span> <span class="nn">typing</span>
 
+
 <span class="kn">from</span> <span class="nn">ucloud.core.client</span> <span class="kn">import</span> <span class="n">Client</span>
 <span class="kn">from</span> <span class="nn">ucloud.services.unet.schemas</span> <span class="kn">import</span> <span class="n">apis</span>
 
@@ -53,15 +53,15 @@
 
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。</span>
 <span class="sd">        - **Region** (str) - (Config) 地域。</span>
-<span class="sd">        - **Bandwidth** (int) - (Required) 弹性IP的外网带宽, 单位为Mbps. 共享带宽模式必须指定0M带宽, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-200]，带宽计费[1-800]</span>
+<span class="sd">        - **Bandwidth** (int) - (Required) 弹性IP的外网带宽, 单位为Mbps. 共享带宽模式必须指定0M带宽, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-10000]</span>
 <span class="sd">        - **OperatorName** (str) - (Required) 弹性IP的线路如下: 国际: International BGP: Bgp  各地域允许的线路参数如下:  cn-sh1: Bgp cn-sh2: Bgp cn-gd: Bgp cn-bj1: Bgp cn-bj2: Bgp hk: International us-ca: International th-bkk: International  kr-seoul:International  us-ws:International  ge-fra:International  sg:International  tw-kh:International.其他海外线路均为 International</span>
 <span class="sd">        - **ChargeType** (str) - 付费方式, 枚举值为: Year, 按年付费; Month, 按月付费; Dynamic, 按需付费(需开启权限); Trial, 试用(需开启权限) 默认为按月付费</span>
 <span class="sd">        - **CouponId** (str) - 代金券ID, 默认不使用</span>
 <span class="sd">        - **Name** (str) - 弹性IP的名称, 默认为 &quot;EIP&quot;</span>
-<span class="sd">        - **PayMode** (str) - 弹性IP的计费模式. 枚举值: &quot;Traffic&quot;, 流量计费; &quot;Bandwidth&quot;, 带宽计费; &quot;ShareBandwidth&quot;,共享带宽模式. 默认为 &quot;Bandwidth&quot;.</span>
-<span class="sd">        - **Quantity** (int) - 购买时长, 默认: 1</span>
+<span class="sd">        - **PayMode** (str) - 弹性IP的计费模式. 枚举值: &quot;Traffic&quot;, 流量计费; &quot;Bandwidth&quot;, 带宽计费; &quot;ShareBandwidth&quot;,共享带宽模式. 默认为 &quot;Bandwidth&quot;.“PostAccurateBandwidth”：带宽后付费模式</span>
+<span class="sd">        - **Quantity** (int) - 购买的时长, 默认: 1</span>
 <span class="sd">        - **Remark** (str) - 弹性IP的备注, 默认为空</span>
-<span class="sd">        - **ShareBandwidthId** (str) - 绑定的共享带宽Id，仅当PayMode为ShareBandwidth时有效</span>
+<span class="sd">        - **ShareBandwidthId** (str) - 绑定的共享带宽Id,仅当PayMode为ShareBandwidth时有效</span>
 <span class="sd">        - **Tag** (str) - 业务组名称, 默认为 &quot;Default&quot;</span>
 
 <span class="sd">        **Response**</span>
@@ -70,19 +70,22 @@
 
 <span class="sd">        **Response Model**</span>
 
-<span class="sd">        **UnetEIPAddrSet**</span>
-
-<span class="sd">        - **IP** (str) - IP地址</span>
-<span class="sd">        - **OperatorName** (str) - 运营商信息如: 电信: Telecom, 联通: Unicom, 国际: International, Duplet: 双线IP（电信+联通), BGP: Bgp</span>
-
 <span class="sd">        **UnetAllocateEIPSet**</span>
-
 <span class="sd">        - **EIPAddr** (list) - 见 **UnetEIPAddrSet** 模型定义</span>
 <span class="sd">        - **EIPId** (str) - 申请到的EIP资源ID</span>
 
+
+<span class="sd">        **UnetEIPAddrSet**</span>
+<span class="sd">        - **IP** (str) - IP地址</span>
+<span class="sd">        - **OperatorName** (str) - 运营商信息如: 国际: International, BGP: BGP</span>
+
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">AllocateEIPRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -104,9 +107,8 @@
 <span class="sd">        - **ChargeType** (str) - (Required) 付费方式:Year 按年,Month 按月,Dynamic 按时;</span>
 <span class="sd">        - **Name** (str) - (Required) 共享带宽名字</span>
 <span class="sd">        - **ShareBandwidth** (int) - (Required) 共享带宽值</span>
-<span class="sd">        - **BwType** (str) - 共享带宽类型，ipv4或者ipv6，不传默认ipv4</span>
+<span class="sd">        - **IPVersion** (str) - 共享带宽类型，IPv4或者IPv6，不传默认IPv4</span>
 <span class="sd">        - **Quantity** (int) - 购买时长</span>
-<span class="sd">        - **ShareBandwidthGuarantee** (int) - 共享带宽保底值(后付费)</span>
 
 <span class="sd">        **Response**</span>
 
@@ -114,7 +116,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">AllocateShareBandwidthRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -125,38 +130,41 @@
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">AllocateShareBandwidthResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UNetClient.allocate_vip"><a class="viewcode-back" href="../../../../services.html#ucloud.services.unet.client.UNetClient.allocate_vip">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_vip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;AllocateVIP - 根据提供信息，申请内网VIP(Virtual IP），多用于高可用程序作为漂移IP。</span>
+        <span class="sd">&quot;&quot;&quot;AllocateVIP -</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域</span>
-<span class="sd">        - **SubnetId** (str) - (Required) 子网id</span>
-<span class="sd">        - **VPCId** (str) - (Required) 指定vip所属的VPC</span>
-<span class="sd">        - **BusinessId** (str) - 业务组</span>
-<span class="sd">        - **Count** (int) - 申请数量，默认: 1</span>
-<span class="sd">        - **Ip** (str) - 指定ip</span>
-<span class="sd">        - **Name** (str) - vip名，默认为VIP</span>
-<span class="sd">        - **Remark** (str) - 备注</span>
-<span class="sd">        - **Tag** (str) - 业务组名称，默认为Default</span>
-<span class="sd">        - **Zone** (str) - 可用区</span>
+<span class="sd">        - **ProjectId** (str) - (Config)</span>
+<span class="sd">        - **Region** (str) - (Config)</span>
+<span class="sd">        - **SubnetId** (str) - (Required)</span>
+<span class="sd">        - **VPCId** (str) - (Required)</span>
+<span class="sd">        - **BusinessId** (str) -</span>
+<span class="sd">        - **Count** (int) -</span>
+<span class="sd">        - **Ip** (str) -</span>
+<span class="sd">        - **Name** (str) -</span>
+<span class="sd">        - **Remark** (str) -</span>
+<span class="sd">        - **Tag** (str) -</span>
+<span class="sd">        - **Zone** (str) -</span>
 
 <span class="sd">        **Response**</span>
 
-<span class="sd">        - **DataSet** (list) - 申请到的VIP地址</span>
+<span class="sd">        - **DataSet** (list) -</span>
 <span class="sd">        - **VIPSet** (list) - 见 **VIPSet** 模型定义</span>
 
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **VIPSet**</span>
+<span class="sd">        - **VIP** (str) -</span>
+<span class="sd">        - **VIPId** (str) -</span>
+<span class="sd">        - **VPCId** (str) -</span>
 
-<span class="sd">        - **VIP** (str) - 虚拟ip</span>
-<span class="sd">        - **VIPId** (str) - 虚拟ip id</span>
-<span class="sd">        - **VPCId** (str) - VPC id</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">AllocateVIPRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -177,13 +185,17 @@
 <span class="sd">        - **Region** (str) - (Config) 地域。</span>
 <span class="sd">        - **EIPIds** (list) - (Required) 要加入共享带宽的EIP的资源Id</span>
 <span class="sd">        - **ShareBandwidthId** (str) - (Required) 共享带宽ID</span>
+<span class="sd">        - **IPVersion** (str) - 共享带宽类型，IPv4或者IPv6，不传默认IPv4</span>
 
 <span class="sd">        **Response**</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">AssociateEIPWithShareBandwidthRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -199,14 +211,17 @@
 <span class="sd">        - **Region** (str) - (Config) 地域</span>
 <span class="sd">        - **EIPId** (str) - (Required) 弹性IP的资源Id</span>
 <span class="sd">        - **ResourceId** (str) - (Required) 弹性IP请求绑定的资源ID</span>
-<span class="sd">        - **ResourceType** (str) - (Required) 弹性IP请求绑定的资源类型, 枚举值为: uhost: 云主机; ulb, 负载均衡器 upm: 物理机; hadoophost: 大数据集群;fortresshost：堡垒机；udockhost：容器；udhost：私有专区主机；natgw：natgw；udb：udb；vpngw：ipsec vpn；ucdr：云灾备；dbaudit：数据库审计；uni：虚拟网卡。</span>
+<span class="sd">        - **ResourceType** (str) - (Required) 弹性IP请求绑定的资源类型, 枚举值为: uhost: 云主机; ulb, 负载均衡器 upm: 物理机; hadoophost: 大数据集群;fortresshost：堡垒机；udockhost：容器；udhost：私有专区主机；natgw：natgw；udb：udb；vpngw：ipsec vpn；ucdr：云灾备；dbaudit：数据库审计；uni：虚拟网卡。如果EIP为普通带宽计费，且带宽值高于2G，则只允许绑定在快杰型云主机和ULB</span>
 
 <span class="sd">        **Response**</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">BindEIPRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -220,8 +235,8 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。</span>
-<span class="sd">        - **Region** (str) - (Config) 地域</span>
+<span class="sd">        - **ProjectId** (str) - (Config)</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **Bandwidth** (int) - (Required) 带宽大小(单位Mbps), 取值范围[2,800] (最大值受地域限制)</span>
 <span class="sd">        - **EIPId** (str) - (Required) 所绑定弹性IP的资源ID</span>
 <span class="sd">        - **TimeRange** (int) - (Required) 带宽包有效时长, 取值范围为大于0的整数, 即该带宽包在EnableTime到 EnableTime+TimeRange时间段内生效</span>
@@ -234,7 +249,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateBandwidthPackageRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -254,7 +272,7 @@
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写</span>
 <span class="sd">        - **Region** (str) - (Config) 地域</span>
 <span class="sd">        - **Name** (str) - (Required) 防火墙名称</span>
-<span class="sd">        - **Rule** (list) - (Required) 防火墙规则，例如：TCP|22|192.168.1.1/22|DROP|LOW|禁用22端口，第一个参数代表协议：第二个参数代表端口号，第三个参数为ip，第四个参数为ACCEPT（接受）和DROP（拒绝），第五个参数优先级：HIGH（高），MEDIUM（中），LOW（低），第六个参数为该条规则的自定义备注</span>
+<span class="sd">        - **Rule** (list) - (Required) 防火墙规则，例如：TCP|22|192.168.1.1/22|DROP|LOW|禁用22端口，第一个参数代表协议：第二个参数代表端口号，第三个参数为ip，第四个参数为ACCEPT（接受）和DROP（拒绝），第五个参数优先级：HIGH（高），MEDIUM（中），LOW（低），第六个参数为该条规则的自定义备注,bj1不支持添加备注</span>
 <span class="sd">        - **Remark** (str) - 防火墙描述，默认为空</span>
 <span class="sd">        - **Tag** (str) - 防火墙业务组，默认为Default</span>
 
@@ -264,7 +282,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateFirewallRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -281,8 +302,8 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写</span>
-<span class="sd">        - **Region** (str) - (Config) 地域</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **BandwidthPackageId** (str) - (Required) 带宽包资源ID</span>
 
 <span class="sd">        **Response**</span>
@@ -290,7 +311,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteBandwidthPackageRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -304,8 +328,8 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写</span>
-<span class="sd">        - **Region** (str) - (Config) 地域</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **FWId** (str) - (Required) 防火墙资源ID</span>
 
 <span class="sd">        **Response**</span>
@@ -313,7 +337,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteFirewallRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -339,13 +366,7 @@
 
 <span class="sd">        **Response Model**</span>
 
-<span class="sd">        **EIPAddrSet**</span>
-
-<span class="sd">        - **IP** (str) - 弹性IP地址</span>
-<span class="sd">        - **OperatorName** (str) - 运营商信息, 枚举值为: Telecom 电信; Unicom: 联通; Duplet: 双线; Bgp: BGP; International: 国际.</span>
-
 <span class="sd">        **UnetBandwidthPackageSet**</span>
-
 <span class="sd">        - **Bandwidth** (int) - 带宽包的临时带宽值, 单位Mbps</span>
 <span class="sd">        - **BandwidthPackageId** (str) - 带宽包的资源ID</span>
 <span class="sd">        - **CreateTime** (int) - 创建时间, 格式为 Unix Timestamp</span>
@@ -354,9 +375,18 @@
 <span class="sd">        - **EIPId** (str) - 带宽包所绑定弹性IP的资源ID</span>
 <span class="sd">        - **EnableTime** (int) - 生效时间, 格式为 Unix Timestamp</span>
 
+
+<span class="sd">        **EIPAddrSet**</span>
+<span class="sd">        - **IP** (str) - 弹性IP地址</span>
+<span class="sd">        - **OperatorName** (str) - 运营商信息, 枚举值为:  BGP: BGP; International: 国际.</span>
+
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeBandwidthPackageRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -384,13 +414,16 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **UnetBandwidthUsageEIPSet**</span>
-
 <span class="sd">        - **CurBandwidth** (float) - 最近5分钟带宽用量, 单位Mbps</span>
 <span class="sd">        - **EIPId** (str) - 弹性IP资源ID</span>
 
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeBandwidthUsageRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -405,6 +438,7 @@
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写</span>
 <span class="sd">        - **Region** (str) - (Config) 地域</span>
 <span class="sd">        - **EIPIds** (list) - 弹性IP的资源ID如果为空, 则返回当前 Region中符合条件的的所有EIP</span>
+<span class="sd">        - **IPs** (list) - IP地址，支持通过ip查询，如果ip与EIP都传，会取并集查询</span>
 <span class="sd">        - **Limit** (int) - 数据分页值, 默认为20</span>
 <span class="sd">        - **Offset** (int) - 数据偏移量, 默认为0</span>
 
@@ -413,32 +447,11 @@
 <span class="sd">        - **EIPSet** (list) - 见 **UnetEIPSet** 模型定义</span>
 <span class="sd">        - **TotalBandwidth** (int) - 满足条件的弹性IP带宽总和, 单位Mbps</span>
 <span class="sd">        - **TotalCount** (int) - 满足条件的弹性IP总数</span>
+<span class="sd">        - **UnbindCount** (int) - 未绑定的弹性IP总数</span>
 
 <span class="sd">        **Response Model**</span>
 
-<span class="sd">        **ShareBandwidthSet**</span>
-
-<span class="sd">        - **ShareBandwidth** (int) - 共享带宽带宽值</span>
-<span class="sd">        - **ShareBandwidthId** (str) - 共享带宽ID</span>
-<span class="sd">        - **ShareBandwidthName** (str) - 共享带宽的资源名称</span>
-
-<span class="sd">        **UnetEIPAddrSet**</span>
-
-<span class="sd">        - **IP** (str) - IP地址</span>
-<span class="sd">        - **OperatorName** (str) - 运营商信息如: 电信: Telecom, 联通: Unicom, 国际: International, Duplet: 双线IP（电信+联通), BGP: Bgp</span>
-
-<span class="sd">        **UnetEIPResourceSet**</span>
-
-<span class="sd">        - **EIPId** (str) - 弹性IP的资源ID</span>
-<span class="sd">        - **ResourceId** (str) - 已绑定资源的资源ID</span>
-<span class="sd">        - **ResourceName** (str) - 已绑定的资源名称</span>
-<span class="sd">        - **ResourceType** (str) - 已绑定的资源类型, 枚举值为: uhost, 云主机；natgw：NAT网关；ulb：负载均衡器；upm: 物理机; hadoophost: 大数据集群;fortresshost：堡垒机；udockhost：容器；udhost：私有专区主机；vpngw：IPSec VPN；ucdr：云灾备；dbaudit：数据库审计，uni：虚拟网卡。</span>
-<span class="sd">        - **SubResourceId** (str) - 资源绑定的虚拟网卡的ID</span>
-<span class="sd">        - **SubResourceName** (str) - 资源绑定的虚拟网卡的名称</span>
-<span class="sd">        - **SubResourceType** (str) - 资源绑定的虚拟网卡的类型。uni，虚拟网卡。</span>
-
 <span class="sd">        **UnetEIPSet**</span>
-
 <span class="sd">        - **Bandwidth** (int) - 弹性IP的带宽, 单位为Mbps, 当BandwidthType=1时, 该处显示为共享带宽值. 当BandwidthType=0时, 该处显示这个弹性IP的带宽.</span>
 <span class="sd">        - **BandwidthType** (int) - 带宽模式, 枚举值为: 0: 非共享带宽模式, 1: 共享带宽模式</span>
 <span class="sd">        - **ChargeType** (str) - 付费方式, 枚举值为: Year, 按年付费; Month, 按月付费; Dynamic, 按小时付费; Trial, 试用. 按小时付费和试用这两种付费模式需要开通权限.</span>
@@ -456,9 +469,34 @@
 <span class="sd">        - **Tag** (str) - 弹性IP的业务组标识, 缺省值为 &quot;Default&quot;</span>
 <span class="sd">        - **Weight** (int) - 外网出口权重, 默认为50, 范围[0-100]</span>
 
+
+<span class="sd">        **UnetEIPAddrSet**</span>
+<span class="sd">        - **IP** (str) - IP地址</span>
+<span class="sd">        - **OperatorName** (str) - 运营商信息如: 国际: International, BGP: BGP</span>
+
+
+<span class="sd">        **UnetEIPResourceSet**</span>
+<span class="sd">        - **EIPId** (str) - 弹性IP的资源ID</span>
+<span class="sd">        - **ResourceID** (str) - 已绑定资源的资源ID</span>
+<span class="sd">        - **ResourceName** (str) - 已绑定的资源名称</span>
+<span class="sd">        - **ResourceType** (str) - 已绑定的资源类型, 枚举值为: uhost, 云主机；natgw：NAT网关；ulb：负载均衡器；upm: 物理机; hadoophost: 大数据集群;fortresshost：堡垒机；udockhost：容器；udhost：私有专区主机；vpngw：IPSec VPN；ucdr：云灾备；dbaudit：数据库审计，uni：虚拟网卡。</span>
+<span class="sd">        - **SubResourceId** (str) - 资源绑定的虚拟网卡的ID</span>
+<span class="sd">        - **SubResourceName** (str) - 资源绑定的虚拟网卡的名称</span>
+<span class="sd">        - **SubResourceType** (str) - 资源绑定的虚拟网卡的类型。uni，虚拟网卡。</span>
+
+
+<span class="sd">        **ShareBandwidthSet**</span>
+<span class="sd">        - **ShareBandwidth** (int) - 共享带宽带宽值</span>
+<span class="sd">        - **ShareBandwidthId** (str) - 共享带宽ID</span>
+<span class="sd">        - **ShareBandwidthName** (str) - 共享带宽的资源名称</span>
+
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeEIPRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -487,17 +525,7 @@
 
 <span class="sd">        **Response Model**</span>
 
-<span class="sd">        **FirewallRuleSet**</span>
-
-<span class="sd">        - **DstPort** (str) - 目标端口</span>
-<span class="sd">        - **Priority** (str) - 优先级</span>
-<span class="sd">        - **ProtocolType** (str) - 协议类型</span>
-<span class="sd">        - **Remark** (str) - 防火墙规则备注</span>
-<span class="sd">        - **RuleAction** (str) - 防火墙动作</span>
-<span class="sd">        - **SrcIP** (str) - 源地址</span>
-
 <span class="sd">        **FirewallDataSet**</span>
-
 <span class="sd">        - **CreateTime** (int) - 防火墙组创建时间，格式为Unix Timestamp</span>
 <span class="sd">        - **FWId** (str) - 防火墙ID</span>
 <span class="sd">        - **GroupId** (str) - 安全组ID（即将废弃）</span>
@@ -508,9 +536,22 @@
 <span class="sd">        - **Tag** (str) - 防火墙业务组</span>
 <span class="sd">        - **Type** (str) - 防火墙组类型，枚举值为： &quot;user defined&quot;, 用户自定义防火墙； &quot;recommend web&quot;, 默认Web防火墙； &quot;recommend non web&quot;, 默认非Web防火墙</span>
 
+
+<span class="sd">        **FirewallRuleSet**</span>
+<span class="sd">        - **DstPort** (str) - 目标端口</span>
+<span class="sd">        - **Priority** (str) - 优先级</span>
+<span class="sd">        - **ProtocolType** (str) - 协议类型</span>
+<span class="sd">        - **Remark** (str) - 防火墙规则备注</span>
+<span class="sd">        - **RuleAction** (str) - 防火墙动作</span>
+<span class="sd">        - **SrcIP** (str) - 源地址</span>
+
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeFirewallRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -538,19 +579,22 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **ResourceSet**</span>
-
 <span class="sd">        - **Name** (str) - 名称</span>
 <span class="sd">        - **PrivateIP** (str) - 内网IP</span>
 <span class="sd">        - **Remark** (str) - 备注</span>
 <span class="sd">        - **ResourceID** (str) - 绑定该防火墙的资源id</span>
-<span class="sd">        - **ResourceType** (str) - 绑定资源的资源类型，如&quot;uhost&quot;,&quot;upm&quot;,&quot;umem&quot;,&quot;uhive&quot;,&quot;uvip&quot;,&quot;uredis&quot;,&quot;uhadoop&quot;,&quot;ufortress&quot;,&quot;dbaudit&quot;,&quot;udw&quot;,&quot;udocker&quot;, &quot;umemcache&quot;</span>
+<span class="sd">        - **ResourceType** (str) - 绑定防火墙组的资源类型。&quot;unatgw&quot;，NAT网关； &quot;uhost&quot;，云主机； &quot;upm&quot;，物理云主机； &quot;hadoophost&quot;，hadoop节点； &quot;fortresshost&quot;，堡垒机； &quot;udhost&quot;，私有专区主机；&quot;udockhost&quot;，容器；&quot;dbaudit&quot;，数据库审计.</span>
 <span class="sd">        - **Status** (int) - 状态</span>
 <span class="sd">        - **Tag** (str) - 业务组</span>
 <span class="sd">        - **Zone** (int) - 可用区</span>
 
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeFirewallResourceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -575,32 +619,34 @@
 
 <span class="sd">        **Response Model**</span>
 
-<span class="sd">        **EIPAddrSet**</span>
-
-<span class="sd">        - **IP** (str) - 弹性IP地址</span>
-<span class="sd">        - **OperatorName** (str) - 运营商信息, 枚举值为: Telecom 电信; Unicom: 联通; Duplet: 双线; Bgp: BGP; International: 国际.</span>
-
-<span class="sd">        **EIPSetData**</span>
-
-<span class="sd">        - **Bandwidth** (int) - EIP带宽值</span>
-<span class="sd">        - **EIPAddr** (list) - 见 **EIPAddrSet** 模型定义</span>
-<span class="sd">        - **EIPId** (str) - EIP资源Id</span>
-
 <span class="sd">        **UnetShareBandwidthSet**</span>
-
-<span class="sd">        - **BandwidthGuarantee** (int) - 共享带宽保底值(后付费)</span>
 <span class="sd">        - **ChargeType** (str) - 付费方式, 预付费:Year 按年,Month 按月,Dynamic 按需;后付费:PostPay(按月)</span>
 <span class="sd">        - **CreateTime** (int) - 创建时间, 格式为Unix Timestamp</span>
 <span class="sd">        - **EIPSet** (list) - 见 **EIPSetData** 模型定义</span>
 <span class="sd">        - **ExpireTime** (int) - 过期时间, 格式为Unix Timestamp</span>
+<span class="sd">        - **IPVersion** (str) - 共享带宽类型</span>
 <span class="sd">        - **Name** (str) - 共享带宽名称</span>
-<span class="sd">        - **PostPayStartTime** (int) - 共享带宽后付费开始计费时间(后付费)</span>
 <span class="sd">        - **ShareBandwidth** (int) - 共享带宽值(预付费)/共享带宽峰值(后付费), 单位Mbps</span>
 <span class="sd">        - **ShareBandwidthId** (str) - 共享带宽的资源ID</span>
 
+
+<span class="sd">        **EIPSetData**</span>
+<span class="sd">        - **Bandwidth** (int) - EIP带宽值</span>
+<span class="sd">        - **EIPAddr** (list) - 见 **EIPAddrSet** 模型定义</span>
+<span class="sd">        - **EIPId** (str) - EIP资源Id</span>
+
+
+<span class="sd">        **EIPAddrSet**</span>
+<span class="sd">        - **IP** (str) - 弹性IP地址</span>
+<span class="sd">        - **OperatorName** (str) - 运营商信息, 枚举值为:  BGP: BGP; International: 国际.</span>
+
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeShareBandwidthRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -608,42 +654,48 @@
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeShareBandwidthResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UNetClient.describe_vip"><a class="viewcode-back" href="../../../../services.html#ucloud.services.unet.client.UNetClient.describe_vip">[docs]</a>    <span class="k">def</span> <span class="nf">describe_vip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;DescribeVIP - 获取内网VIP详细信息</span>
+        <span class="sd">&quot;&quot;&quot;DescribeVIP -</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
-<span class="sd">        - **BusinessId** (str) - 业务组</span>
-<span class="sd">        - **SubnetId** (str) - 子网id，不指定则获取VPCId下的所有vip</span>
-<span class="sd">        - **Tag** (str) - 业务组名称, 默认为 Default</span>
-<span class="sd">        - **VPCId** (str) - vpc的id,指定SubnetId时必填</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config)</span>
+<span class="sd">        - **Region** (str) - (Config)</span>
+<span class="sd">        - **BusinessId** (str) -</span>
+<span class="sd">        - **SubnetId** (str) -</span>
+<span class="sd">        - **Tag** (str) -</span>
+<span class="sd">        - **VPCId** (str) -</span>
+<span class="sd">        - **Zone** (str) -</span>
 
 <span class="sd">        **Response**</span>
 
-<span class="sd">        - **DataSet** (list) - 内网VIP地址列表</span>
-<span class="sd">        - **TotalCount** (int) - vip数量</span>
+<span class="sd">        - **DataSet** (list) -</span>
+<span class="sd">        - **TotalCount** (int) -</span>
 <span class="sd">        - **VIPSet** (list) - 见 **VIPDetailSet** 模型定义</span>
 
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **VIPDetailSet**</span>
-
-<span class="sd">        - **CreateTime** (int) - 创建时间</span>
+<span class="sd">        - **CreateTime** (int) -</span>
 <span class="sd">        - **Name** (str) -</span>
-<span class="sd">        - **RealIp** (str) - 真实主机ip</span>
-<span class="sd">        - **SubnetId** (str) - 子网id</span>
-<span class="sd">        - **VIP** (str) - 虚拟ip</span>
-<span class="sd">        - **VIPId** (str) - 虚拟ip id</span>
-<span class="sd">        - **VPCId** (str) - VPC id</span>
-<span class="sd">        - **Zone** (str) - 地域</span>
+<span class="sd">        - **RealIp** (str) -</span>
+<span class="sd">        - **SubnetId** (str) -</span>
+<span class="sd">        - **VIP** (str) -</span>
+<span class="sd">        - **VIPId** (str) -</span>
+<span class="sd">        - **VPCId** (str) -</span>
+<span class="sd">        - **Zone** (str) -</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeVIPRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># build options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeVIP&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeVIPResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
@@ -660,6 +712,7 @@
 <span class="sd">        - **Bandwidth** (int) - (Required) 移出共享带宽后，EIP的外网带宽, 单位为Mbps. 各地域带宽范围如下：  流量计费[1-200],带宽计费[1-800]</span>
 <span class="sd">        - **ShareBandwidthId** (str) - (Required) 共享带宽ID</span>
 <span class="sd">        - **EIPIds** (list) - EIP的资源Id；默认移出该共享带宽下所有的EIP</span>
+<span class="sd">        - **IPVersion** (str) - 共享带宽类型，IPv4或者IPv6，不传默认IPv4</span>
 <span class="sd">        - **PayMode** (str) - 移出共享带宽后，EIP的计费模式. 枚举值: &quot;Traffic&quot;, 流量计费; &quot;Bandwidth&quot;, 带宽计费;  默认为 &quot;Bandwidth&quot;.</span>
 
 <span class="sd">        **Response**</span>
@@ -667,7 +720,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DisassociateEIPWithShareBandwidthRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -683,8 +739,8 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写</span>
-<span class="sd">        - **Region** (str) - (Config) 地域</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **EIPId** (list) - (Required) 弹性IP的资源Id</span>
 
 <span class="sd">        **Response**</span>
@@ -694,13 +750,16 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **EIPPayModeSet**</span>
-
 <span class="sd">        - **EIPId** (str) - EIP的资源ID</span>
 <span class="sd">        - **EIPPayMode** (str) - EIP的计费模式. 枚举值为：Bandwidth, 带宽计费;Traffic, 流量计费; &quot;ShareBandwidth&quot;,共享带宽模式</span>
 
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetEIPPayModeRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -729,14 +788,18 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **EIPPriceDetailSet**</span>
-
 <span class="sd">        - **ChargeType** (str) - 弹性IP付费方式</span>
-<span class="sd">        - **Price** (float) - 弹性IP价格, 单位&quot;元&quot;</span>
+<span class="sd">        - **OriginalPrice** (float) - 弹性IP的原价，单位“元”</span>
+<span class="sd">        - **Price** (float) - 购买弹性IP的实际价格, 单位&quot;元&quot;</span>
 <span class="sd">        - **PurchaseValue** (int) - 资源有效期, 以Unix Timestamp表示</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetEIPPriceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -761,7 +824,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetEIPUpgradePriceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -779,14 +845,17 @@
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **FWId** (str) - (Required) 防火墙资源ID</span>
 <span class="sd">        - **ResourceId** (str) - (Required) 所应用资源ID</span>
-<span class="sd">        - **ResourceType** (str) - (Required) 绑定防火墙组的资源类型，默认为全部资源类型。枚举值为：&quot;unatgw&quot;，NAT网关； &quot;uhost&quot;，云主机； &quot;upm&quot;，物理云主机； &quot;hadoophost&quot;，hadoop节点； &quot;fortresshost&quot;，堡垒机； &quot;udhost&quot;，私有专区主机；&quot;udockhost&quot;，容器；&quot;dbaudit&quot;，数据库审计，”uni“，虚拟网卡。</span>
+<span class="sd">        - **ResourceType** (str) - (Required) 绑定防火墙组的资源类型，默认为全部资源类型。枚举值为：&quot;unatgw&quot;，NAT网关； &quot;uhost&quot;，云主机； &quot;upm&quot;，物理云主机； &quot;hadoophost&quot;，hadoop节点； &quot;fortresshost&quot;，堡垒机； &quot;udhost&quot;，私有专区主机；&quot;udockhost&quot;，容器；&quot;dbaudit&quot;，数据库审计.</span>
 
 <span class="sd">        **Response**</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GrantFirewallRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -810,7 +879,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyEIPBandwidthRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -834,7 +906,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyEIPWeightRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -855,7 +930,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ReleaseEIPRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -873,14 +951,17 @@
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **EIPBandwidth** (int) - (Required) 关闭共享带宽后，各EIP恢复为的带宽值</span>
 <span class="sd">        - **ShareBandwidthId** (str) - (Required) 共享带宽ID</span>
-<span class="sd">        - **PayMode** (str) - Bandwidth 带宽计费, Traffic 转流量计费</span>
+<span class="sd">        - **PayMode** (str) - 默认为 Bandwidth 带宽计费</span>
 
 <span class="sd">        **Response**</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ReleaseShareBandwidthRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -888,23 +969,29 @@
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ReleaseShareBandwidthResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UNetClient.release_vip"><a class="viewcode-back" href="../../../../services.html#ucloud.services.unet.client.UNetClient.release_vip">[docs]</a>    <span class="k">def</span> <span class="nf">release_vip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;ReleaseVIP - 释放VIP资源</span>
+        <span class="sd">&quot;&quot;&quot;ReleaseVIP -</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写</span>
-<span class="sd">        - **Region** (str) - (Config) 地域</span>
-<span class="sd">        - **VIPId** (str) - (Required) 内网VIP的id</span>
-<span class="sd">        - **Zone** (str) - 可用区</span>
+<span class="sd">        - **ProjectId** (str) - (Config)</span>
+<span class="sd">        - **Region** (str) - (Config)</span>
+<span class="sd">        - **VIPId** (str) - (Required)</span>
+<span class="sd">        - **Zone** (str) -</span>
 
 <span class="sd">        **Response**</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ReleaseVIPRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># build options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ReleaseVIP&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ReleaseVIPResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
@@ -926,7 +1013,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ResizeShareBandwidthRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -951,7 +1041,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">SetEIPPayModeRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -967,14 +1060,17 @@
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **EIPId** (str) - (Required) 弹性IP的资源Id</span>
 <span class="sd">        - **ResourceId** (str) - (Required) 弹性IP请求解绑的资源ID</span>
-<span class="sd">        - **ResourceType** (str) - (Required) 弹性IP请求解绑的资源类型, 枚举值为: uhost: 云主机; ulb, 负载均衡器 upm: 物理机; hadoophost: 大数据集群;fortresshost：堡垒机；udockhost：容器；udhost：私有专区主机；natgw：NAT网关；udb：udb；vpngw：ipsec vpn；ucdr：云灾备；dbaudit：数据库审计；uni，虚拟网卡。</span>
+<span class="sd">        - **ResourceType** (str) - (Required) 弹性IP请求解绑的资源类型, 枚举值为: uhost: 云主机; ulb, 负载均衡器 upm: 物理机; hadoophost: 大数据集群;fortresshost：堡垒机；udockhost：容器；udhost：私有专区主机；natgw：NAT网关；udb：udb；vpngw：ipsec vpn；ucdr：云灾备；dbaudit：数据库审计；</span>
 
 <span class="sd">        **Response**</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">UnBindEIPRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -1000,7 +1096,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">UpdateEIPAttributeRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -1025,7 +1124,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">UpdateFirewallRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -1051,7 +1153,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">UpdateFirewallAttributeRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -1159,7 +1264,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
