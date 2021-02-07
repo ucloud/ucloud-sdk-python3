@@ -3,6 +3,21 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class RecycleUDiskSetSchema(schema.ResponseSchema):
+    """RecycleUDiskSet - 回收站列表"""
+
+    fields = {
+        "CountdownTime": fields.Int(required=True, load_from="CountdownTime"),
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "ExpiredTime": fields.Int(required=True, load_from="ExpiredTime"),
+        "Name": fields.Str(required=True, load_from="Name"),
+        "Size": fields.Int(required=True, load_from="Size"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "UDiskId": fields.Str(required=True, load_from="UDiskId"),
+        "Zone": fields.Str(required=True, load_from="Zone"),
+    }
+
+
 class UDiskDataSetSchema(schema.ResponseSchema):
     """UDiskDataSet - DescribeUDisk"""
 
@@ -10,6 +25,7 @@ class UDiskDataSetSchema(schema.ResponseSchema):
         "ArkSwitchEnable": fields.Int(
             required=False, load_from="ArkSwitchEnable"
         ),
+        "BackupMode": fields.Str(required=False, load_from="BackupMode"),
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
         "CloneEnable": fields.Int(required=False, load_from="CloneEnable"),
         "CmkId": fields.Str(required=False, load_from="CmkId"),
@@ -20,9 +36,13 @@ class UDiskDataSetSchema(schema.ResponseSchema):
         "DeviceName": fields.Str(required=False, load_from="DeviceName"),
         "DiskType": fields.Str(required=False, load_from="DiskType"),
         "ExpiredTime": fields.Int(required=False, load_from="ExpiredTime"),
+        "HostIP": fields.Str(required=False, load_from="HostIP"),
+        "HostId": fields.Str(required=False, load_from="HostId"),
+        "HostName": fields.Str(required=False, load_from="HostName"),
         "IsBoot": fields.Str(required=False, load_from="IsBoot"),
         "IsExpire": fields.Str(required=False, load_from="IsExpire"),
         "Name": fields.Str(required=False, load_from="Name"),
+        "RdmaClusterId": fields.Str(required=False, load_from="RdmaClusterId"),
         "Size": fields.Int(required=False, load_from="Size"),
         "SnapEnable": fields.Int(required=False, load_from="SnapEnable"),
         "SnapshotCount": fields.Int(required=False, load_from="SnapshotCount"),
@@ -46,6 +66,7 @@ class UDiskPriceDataSetSchema(schema.ResponseSchema):
     fields = {
         "ChargeName": fields.Str(required=False, load_from="ChargeName"),
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "ListPrice": fields.Int(required=False, load_from="ListPrice"),
         "OriginalPrice": fields.Int(required=False, load_from="OriginalPrice"),
         "Price": fields.Int(required=False, load_from="Price"),
     }
@@ -75,4 +96,5 @@ class UDiskSnapshotSetSchema(schema.ResponseSchema):
         "UHostId": fields.Str(required=False, load_from="UHostId"),
         "UKmsMode": fields.Str(required=False, load_from="UKmsMode"),
         "Version": fields.Str(required=False, load_from="Version"),
+        "Zone": fields.Str(required=True, load_from="Zone"),
     }
