@@ -1,3 +1,9 @@
+## 0.10.2 (2021-03-03)
+
+BUG FIXES:
+
+- Fix `timeout` options for requests transport (#88)
+
 ## 0.10.1 (2021-02-07)
 
 ENHANCEMENTS:

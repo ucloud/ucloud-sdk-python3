@@ -80,7 +80,7 @@ class RequestsTransport(http.Transport):
                 data=req.data,
                 params=req.params,
                 headers=req.headers,
-                timeout=options.get('timeout'),
+                timeout=options.get("timeout"),
                 **kwargs
             )
             resp = self.convert_response(session_resp)
