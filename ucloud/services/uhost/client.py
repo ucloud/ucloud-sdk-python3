@@ -132,8 +132,9 @@ class UHostClient(Client):
         - **CouponId** (str) - 主机代金券ID。请通过DescribeCoupon接口查询，或登录用户中心查看
         - **Disks** (list) - 见 **CreateUHostInstanceParamDisks** 模型定义
         - **GPU** (int) - GPU卡核心数。仅GPU机型支持此字段（可选范围与MachineType+GpuType相关）
-        - **GpuType** (str) - GPU类型，枚举值["K80", "P40", "V100", "T4", "2080Ti","1080Ti"]，MachineType为G时必填
+        - **GpuType** (str) - GPU类型，枚举值["K80", "P40", "V100", "T4", "T4S","2080Ti","2080Ti-4C","1080Ti"]，MachineType为G时必填
         - **HotplugFeature** (bool) - 热升级特性。True为开启，False为未开启，默认False。
+        - **HpcEnhanced** (bool) - HPC特性，主要涉及绑核操作。True为开启，False为未开启，默认False。
         - **IsolationGroup** (str) - 硬件隔离组id。可通过DescribeIsolationGroup获取。
         - **MachineType** (str) - 云主机机型（V2.0），在本字段和字段UHostType中，仅需要其中1个字段即可。枚举值["N", "C", "G", "O", "OS", "OPRO", "OMAX", "O.BM"]。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
         - **MaxCount** (int) - 本次最大创建主机数量，取值范围是[1,100]，默认值为1。
@@ -188,7 +189,14 @@ class UHostClient(Client):
 
 
         **CreateUHostInstanceParamNetworkInterface**
+        - **CreateCernetIp** (bool) - 申请并绑定一个教育网EIP。True为申请并绑定，False为不会申请绑定，默认False。当前只支持具有HPC特性的机型。
         - **EIP** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceEIP** 模型定义
+
+
+        **CreateUHostInstanceParamVirtualGpuGPUVirtualGpu**
+
+
+        **CreateUHostInstanceParamVirtualGpu**
 
 
         **CreateUHostInstanceParamVolumes**

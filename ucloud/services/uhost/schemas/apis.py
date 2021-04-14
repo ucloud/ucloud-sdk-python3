@@ -165,6 +165,7 @@ class CreateUHostInstanceParamNetworkInterfaceSchema(schema.RequestSchema):
     """CreateUHostInstanceParamNetworkInterface -"""
 
     fields = {
+        "CreateCernetIp": fields.Bool(required=False, dump_to="CreateCernetIp"),
         "EIP": CreateUHostInstanceParamNetworkInterfaceEIPSchema(
             required=False, dump_to="EIP"
         ),
@@ -172,6 +173,20 @@ class CreateUHostInstanceParamNetworkInterfaceSchema(schema.RequestSchema):
             required=False, dump_to="IPv6"
         ),  # Deprecated, will be removed at 1.0
     }
+
+
+class CreateUHostInstanceParamVirtualGpuGPUVirtualGpuSchema(
+    schema.RequestSchema
+):
+    """CreateUHostInstanceParamVirtualGpuGPUVirtualGpu -"""
+
+    fields = {}
+
+
+class CreateUHostInstanceParamVirtualGpuSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamVirtualGpu -"""
+
+    fields = {}
 
 
 class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
@@ -212,6 +227,7 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
             required=False, dump_to="HostType"
         ),  # Deprecated, will be removed at 1.0
         "HotplugFeature": fields.Bool(required=False, dump_to="HotplugFeature"),
+        "HpcEnhanced": fields.Bool(required=False, dump_to="HpcEnhanced"),
         "ImageId": fields.Str(required=True, dump_to="ImageId"),
         "InstallAgent": fields.Str(
             required=False, dump_to="InstallAgent"
