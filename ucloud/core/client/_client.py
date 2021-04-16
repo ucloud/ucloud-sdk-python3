@@ -1,6 +1,7 @@
 import typing
 import logging
 import sys
+import time
 
 from ucloud import version
 from ucloud.core.client._cfg import Config
@@ -158,6 +159,7 @@ class Client:
             headers={
                 "User-Agent": self._build_user_agent(),
                 "Content-Type": "application/x-www-form-urlencoded",
+                "U-Timestamp-Ms": int(round(time.time() * 1000)),
             },
         )
 
