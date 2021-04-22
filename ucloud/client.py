@@ -42,6 +42,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def isms(self):
+        from ucloud.services.isms.client import ISMSClient
+
+        return ISMSClient(
+            self._auto_config("isms"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def stepflow(self):
         from ucloud.services.stepflow.client import StepFlowClient
 
