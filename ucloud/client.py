@@ -192,6 +192,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def urocketmq(self):
+        from ucloud.services.urocketmq.client import URocketMQClient
+
+        return URocketMQClient(
+            self._auto_config("urocketmq"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def usms(self):
         from ucloud.services.usms.client import USMSClient
 
