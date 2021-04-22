@@ -108,6 +108,13 @@ UFS
    :members:
 
 
+UGN
+---
+
+.. autoclass:: ucloud.services.ugn.client.UGNClient
+   :members:
+
+
 UHub
 ----
 

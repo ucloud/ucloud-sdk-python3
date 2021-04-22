@@ -112,6 +112,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def ugn(self):
+        from ucloud.services.ugn.client import UGNClient
+
+        return UGNClient(
+            self._auto_config("ugn"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def uhost(self):
         from ucloud.services.uhost.client import UHostClient
 
