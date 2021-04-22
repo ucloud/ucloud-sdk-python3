@@ -1,3 +1,15 @@
+## 0.11.0 (2021-04-22)
+
+FEATURES:
+
+- add `URocketMQ ` apis to be consistent with official document(#96 )
+- add `ISMS ` apis to be consistent with official document(#95  )
+- add `UGN ` apis to be consistent with official document(#94   )
+
+ENHANCEMENTS:
+
+- add U-Timestamp-Ms in request header for tracing the e2e latency
+
 ## 0.10.3 (2021-04-14)
 
 ## 0.10.2 (2021-03-03)
