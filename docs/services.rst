@@ -122,6 +122,13 @@ UK8S
    :members:
 
 
+URocketMQ
+---------
+
+.. autoclass:: ucloud.services.urocketmq.client.URocketMQClient
+   :members:
+
+
 VPC
 ---
 
