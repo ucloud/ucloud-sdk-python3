@@ -1,3 +1,14 @@
+## 0.11.1 (2021-04-28)
+
+ENHANCEMENTS:
+
+- Update all APIs of `UDDB` (#102)
+- Update all APIs of `UCDN` (#103)
+- Update all APIs of `UFS` (#101)
+- Update all APIs of `UDisk` (#99)
+- Update all APIs of `PathX` (#100)
+- Update all APIs of `UHost` (#98)
+
 ## 0.11.0 (2021-04-22)
 
 FEATURES:
