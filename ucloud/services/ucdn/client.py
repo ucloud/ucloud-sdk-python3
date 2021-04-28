@@ -29,7 +29,7 @@ class UCDNClient(Client):
         **Response**
 
         - **Arrearage** (list) - 标识欠费的数组，数组含有下列元素值， 1=国内流量有欠费 2=国外流量有欠费  3=国内带宽有欠费 4=国外带宽有欠费
-        - **ChargeType** (int) - 当前计费方式，10=流量付费 20=带宽日峰值  30=按月后付费
+        - **ChargeType** (int) - 当前计费方式，10-流量付费 20-带宽日峰值 30-月95计费，31-月日均峰值， 32-月第四峰值 33-日均峰值之和 34- 日95再取平均 40-未选择计费方式
         - **DomainSet** (list) - 见 **DomainInfo** 模型定义
         - **LastChargeType** (int) - 表示最后一次切换的计费方式，10=流量付费 20=带宽日峰值  30=按月后付费  40=未选择计费方式
         - **MaxDomainNum** (int) - 最大域名数量，默认20
@@ -38,23 +38,7 @@ class UCDNClient(Client):
 
         **Response Model**
 
-        **CacheConf**
-
-        - **CacheBehavior** (int) - 是否缓存，1为缓存，0为不缓存。为0的情况下，CacheTTL和CacheUnit强制不生效
-        - **CacheTTL** (int) - 缓存时间
-        - **CacheUnit** (str) - 缓存时间的单位。sec（秒），min（分钟），hour（小时），day（天）
-        - **Description** (str) - 缓存规则描述
-        - **FollowOriginRule** (int) - 是否优先遵循源站头部缓存策略，0为不优先遵循源站，1为优先遵循源站缓存头部。默认为0
-        - **HttpCodePattern** (str) - 状态码默认情况只缓存200类状态码，支持正则
-        - **IgnoreQueryString** (int) - 是否忽略参数缓存（0为不忽略，1为忽略，默认为0）
-        - **PathPattern** (str) - 路径模式，支持正则
-
-        **AccessConf**
-
-        - **IpBlacklist** (str) - 多个ip用逗号隔开
-
         **DomainInfo**
-
         - **AccessConf** (dict) - 见 **AccessConf** 模型定义
         - **AreaCode** (str) - 查询带宽区域 cn代表国内 abroad代表海外 不填默认为全部区域
         - **CacheConf** (list) - 见 **CacheConf** 模型定义
@@ -81,14 +65,57 @@ class UCDNClient(Client):
         - **TestUrl** (str) - 测试url，用于域名创建加速时的测试
         - **ValidTime** (int) - 开始分配Cname时间。格式：时间戳
 
+
+        **AccessConf**
+        - **IpBlacklist** (str) - 多个ip用逗号隔开
+
+
+        **CacheConf**
+        - **CacheBehavior** (bool) - 是否缓存，true为缓存，flase为不缓存。为flase的情况下，CacheTTL和CacheUnit强制不生效
+        - **CacheTTL** (int) - 缓存时间
+        - **CacheUnit** (str) - 缓存时间的单位。sec（秒），min（分钟），hour（小时），day（天）。上限1年。
+        - **Description** (str) - 缓存规则描述
+        - **FollowOriginRule** (bool) - 是否优先遵循源站头部缓存策略，false为不优先遵循源站，true为优先遵循源站缓存头部。默认为0
+        - **HttpCodePattern** (str) - 状态码模式，非200，206状态码，多个状态码用竖线(|)分隔，该属性仅仅在状态码缓存配置列表中返回
+        - **PathPattern** (str) - 路径模式，支持正则
+
+
         """
         # build request
-        d = {"ProjectId": self.config.project_id}
+        d = {
+            "ProjectId": self.config.project_id,
+        }
         req and d.update(req)
         d = apis.BatchDescribeNewUcdnDomainRequestSchema().dumps(d)
 
         resp = self.invoke("BatchDescribeNewUcdnDomain", d, **kwargs)
         return apis.BatchDescribeNewUcdnDomainResponseSchema().loads(resp)
+
+    def batch_refresh_new_ucdn_domain_cache(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """BatchRefreshNewUcdnDomainCache - 批量刷新缓存
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Type** (str) - (Required) 刷新类型，file代表文件刷新，dir 代表路径刷新
+        - **UrlList** (str) - (Required) 待刷新URL列表，以JSON格式描述。刷新多个URL列表时，一次最多提交1000个。每个域名必须以”http://域名/”开始。目录要以”/”结尾， 如刷新目录a下所有文件，格式为：http://abc.ucloud.cn/a/；如刷新文件目录a下面所有img.png文件， 格式为http://abc.ucloud.cn/a/img.png。请正确提交需要刷新的域名
+
+        **Response**
+
+        - **TaskId** (str) - 本次提交url对应的任务id
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.BatchRefreshNewUcdnDomainCacheRequestSchema().dumps(d)
+
+        resp = self.invoke("BatchRefreshNewUcdnDomainCache", d, **kwargs)
+        return apis.BatchRefreshNewUcdnDomainCacheResponseSchema().loads(resp)
 
     def describe_new_ucdn_prefetch_cache_task(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -97,7 +124,7 @@ class UCDNClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值
         - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。
         - **Limit** (int) - 返回数据长度,默认全部，自然数
@@ -112,25 +139,26 @@ class UCDNClient(Client):
 
         **Response Model**
 
-        **UrlProgressInfo**
+        **TaskInfo**
+        - **CreateTime** (int) - 刷新任务创建的时间。格式为Unix Timestamp
+        - **Status** (str) - 刷新任务的当前状态，枚举值：success：成功；wait：排队中；process：处理中；failure：失败； unknow：未知
+        - **TaskId** (str) - 提交任务时返回的任务ID
+        - **UrlLists** (list) - 见 **UrlProgressInfo** 模型定义
 
+
+        **UrlProgressInfo**
         - **CreateTime** (int) - 刷新任务创建的时间。格式为Unix Timestamp
         - **FinishTime** (int) - 任务完成时间。格式为Unix Timestamp
         - **Progress** (int) - 刷新进度，单位%
         - **Status** (str) - 刷新任务的当前状态，枚举值：success：成功；wait：排队中；process：处理中；failure：失败； unknow：未知
         - **Url** (str) - 刷新的单条url
 
-        **TaskInfo**
-
-        - **CreateTime** (int) - 刷新任务创建的时间。格式为Unix Timestamp
-        - **Status** (str) - 刷新任务的当前状态，枚举值：success：成功；wait：排队中；process：处理中；failure：失败； unknow：未知
-        - **TaskId** (str) - 提交任务时返回的任务ID
-        - **Type** (str) - file/dir  刷新任务会返回Type，预取任务没有
-        - **UrlLists** (list) - 见 **UrlProgressInfo** 模型定义
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id}
+        d = {
+            "ProjectId": self.config.project_id,
+        }
         req and d.update(req)
         d = apis.DescribeNewUcdnPrefetchCacheTaskRequestSchema().dumps(d)
 
@@ -159,25 +187,27 @@ class UCDNClient(Client):
 
         **Response Model**
 
-        **UrlProgressInfo**
-
-        - **CreateTime** (int) - 刷新任务创建的时间。格式为Unix Timestamp
-        - **FinishTime** (int) - 任务完成时间。格式为Unix Timestamp
-        - **Progress** (int) - 刷新进度，单位%
-        - **Status** (str) - 刷新任务的当前状态，枚举值：success：成功；wait：排队中；process：处理中；failure：失败； unknow：未知
-        - **Url** (str) - 刷新的单条url
-
         **TaskInfo**
-
         - **CreateTime** (int) - 刷新任务创建的时间。格式为Unix Timestamp
         - **Status** (str) - 刷新任务的当前状态，枚举值：success：成功；wait：排队中；process：处理中；failure：失败； unknow：未知
         - **TaskId** (str) - 提交任务时返回的任务ID
         - **Type** (str) - file/dir  刷新任务会返回Type，预取任务没有
         - **UrlLists** (list) - 见 **UrlProgressInfo** 模型定义
 
+
+        **UrlProgressInfo**
+        - **CreateTime** (int) - 刷新任务创建的时间。格式为Unix Timestamp
+        - **FinishTime** (int) - 任务完成时间。格式为Unix Timestamp
+        - **Progress** (int) - 刷新进度，单位%
+        - **Status** (str) - 刷新任务的当前状态，枚举值：success：成功；wait：排队中；process：处理中；failure：失败； unknow：未知
+        - **Url** (str) - 刷新的单条url
+
+
         """
         # build request
-        d = {"ProjectId": self.config.project_id}
+        d = {
+            "ProjectId": self.config.project_id,
+        }
         req and d.update(req)
         d = apis.DescribeNewUcdnRefreshCacheTaskRequestSchema().dumps(d)
 
@@ -201,18 +231,20 @@ class UCDNClient(Client):
         **Response**
 
         - **BandwidthList** (list) - 见 **BandwidthInfo** 模型定义
-        - **Traffic** (str) - 从起始时间到结束时间内的所使用的CDN总流量，单位GB
+        - **Traffic** (float) - 从起始时间到结束时间内的所使用的CDN总流量，单位GB
 
         **Response Model**
 
         **BandwidthInfo**
-
-        - **CdnBandwidth** (str) - 返回值返回指定时间区间内CDN的带宽峰值，单位Mbps（如果请求参数Type为0，则Value是五分钟粒度的带宽值，如果Type为1，则Value是1小时的带宽峰值，如果Type为2，则Value是一天内的带宽峰值）
+        - **CdnBandwidth** (float) - 返回值返回指定时间区间内CDN的带宽峰值，单位Mbps（如果请求参数Type为0，则Value是五分钟粒度的带宽值，如果Type为1，则Value是1小时的带宽峰值，如果Type为2，则Value是一天内的带宽峰值）
         - **Time** (int) - 带宽获取的时间点。格式：时间戳
+
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id}
+        d = {
+            "ProjectId": self.config.project_id,
+        }
         req and d.update(req)
         d = apis.GetNewUcdnDomainBandwidthRequestSchema().dumps(d)
 
@@ -227,11 +259,11 @@ class UCDNClient(Client):
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Type** (int) - (Required) 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度）
         - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外，只支持国内
         - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。如没有赋值，则返回缺少参 数错误，如果没有EndTime，BeginTime也可以不赋值，EndTime默认当前时间，BeginTime 默认前一天的当前时间。
         - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
         - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。
+        - **Type** (int) - 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度）默认5分钟
 
         **Response**
 
@@ -240,14 +272,16 @@ class UCDNClient(Client):
         **Response Model**
 
         **HitRateInfo**
-
         - **FlowHitRate** (float) - 流量命中率，单位%
         - **RequestHitRate** (float) - 请求数命中率，单位%
         - **Time** (int) - 带宽获取的时间点。格式：时间戳
 
+
         """
         # build request
-        d = {"ProjectId": self.config.project_id}
+        d = {
+            "ProjectId": self.config.project_id,
+        }
         req and d.update(req)
         d = apis.GetNewUcdnDomainHitRateRequestSchema().dumps(d)
 
@@ -275,7 +309,6 @@ class UCDNClient(Client):
         **Response Model**
 
         **HttpCodeInfo**
-
         - **HttpFiveXX** (int) - 5xx数量
         - **HttpFourXX** (int) - 4xx数量
         - **HttpOneXX** (int) - 1xx数量
@@ -283,9 +316,12 @@ class UCDNClient(Client):
         - **HttpTwoXX** (int) - 2xx数量
         - **Time** (int) - 带宽获取的时间点。格式：时间戳
 
+
         """
         # build request
-        d = {"ProjectId": self.config.project_id}
+        d = {
+            "ProjectId": self.config.project_id,
+        }
         req and d.update(req)
         d = apis.GetNewUcdnDomainHttpCodeRequestSchema().dumps(d)
 
@@ -313,7 +349,6 @@ class UCDNClient(Client):
         **Response Model**
 
         **HttpCodeV2Detail**
-
         - **Http100** (int) - http100数量
         - **Http101** (int) - http101数量
         - **Http102** (int) - http102数量
@@ -371,10 +406,14 @@ class UCDNClient(Client):
         - **Http509** (int) - http509数量
         - **Http510** (int) - http510数量
         - **Time** (int) - 时间
+        - **Total** (int) - 当前分组的总状态码数
+
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id}
+        d = {
+            "ProjectId": self.config.project_id,
+        }
         req and d.update(req)
         d = apis.GetNewUcdnDomainHttpCodeV2RequestSchema().dumps(d)
 
@@ -402,19 +441,366 @@ class UCDNClient(Client):
         **Response Model**
 
         **RequestInfo**
-
         - **CdnRequest** (float) - 返回值返回指定时间区间内的cdn收到的请求次数之和
         - **OriginRequest** (float) - 返回值返回指定时间区间内的cdn回源的请求次数之和
         - **Time** (int) - 带宽获取的时间点。格式：时间戳
 
+
         """
         # build request
-        d = {"ProjectId": self.config.project_id}
+        d = {
+            "ProjectId": self.config.project_id,
+        }
         req and d.update(req)
         d = apis.GetNewUcdnDomainRequestNumRequestSchema().dumps(d)
 
         resp = self.invoke("GetNewUcdnDomainRequestNum", d, **kwargs)
         return apis.GetNewUcdnDomainRequestNumResponseSchema().loads(resp)
+
+    def get_ucdn_domain_95bandwidth_v2(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUcdnDomain95BandwidthV2 - 获取域名九五峰值带宽数据
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **BeginTime** (int) - (Required) 查询的起始日期，格式为Unix Timestamp
+        - **EndTime** (int) - (Required) 查询的结束日期，格式为Unix Timestamp
+        - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外 不填默认为全部区域
+        - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
+
+        **Response**
+
+        - **CdnBandwidth** (float) - 查询期间的CDN的95带宽值，单位Mbps
+        - **Time** (int) - 查询时间期间的95带宽时间点  Unix时间戳
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUcdnDomain95BandwidthV2RequestSchema().dumps(d)
+
+        resp = self.invoke("GetUcdnDomain95BandwidthV2", d, **kwargs)
+        return apis.GetUcdnDomain95BandwidthV2ResponseSchema().loads(resp)
+
+    def get_ucdn_domain_bandwidth_v2(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUcdnDomainBandwidthV2 - 获取域名带宽数据(新)
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Type** (int) - (Required) 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度，3表示按照1分钟粒度）
+        - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外 不填默认为全部区域
+        - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。如没有赋值，则返回缺少参 数错误，如果没有EndTime，BeginTime也可以不赋值，EndTime默认当前时间，BeginTime 默认前一天的当前时间。
+        - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
+        - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。
+        - **Protocol** (str) - 协议，http、https  不传则查所有协议的带宽
+
+        **Response**
+
+        - **BandwidthTrafficList** (list) - 见 **BandwidthTrafficInfo** 模型定义
+
+        **Response Model**
+
+        **BandwidthTrafficInfo**
+        - **CdnBandwidth** (float) - 返回值返回指定时间区间内CDN的带宽峰值，单位Mbps（如果请求参数Type为0，则Value是五分钟粒度的带宽值，如果Type为1，则Value是1小时的带宽峰值，如果Type为2，则Value是一天内的带宽峰值）
+        - **Time** (int) - 带宽获取的时间点。格式：时间戳
+        - **Traffic** (float) - 对应时间粒度的流量，单位字节
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUcdnDomainBandwidthV2RequestSchema().dumps(d)
+
+        resp = self.invoke("GetUcdnDomainBandwidthV2", d, **kwargs)
+        return apis.GetUcdnDomainBandwidthV2ResponseSchema().loads(resp)
+
+    def get_ucdn_domain_config(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUcdnDomainConfig - 批量获取加速域名配置
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ChannelType** (str) - 产品类型ucdn，可不填，默认为ucdn
+        - **DomainId** (list) - 域名id，创建域名时生成的id。默认获取账号下的所有域名信息,n为自然数,从DomainId.0开始。
+        - **Limit** (int) - 返回数据长度， 默认全部，非负整数
+        - **Offset** (int) - 数据偏移量，默认0，非负整数
+
+        **Response**
+
+        - **DomainList** (list) - 见 **DomainConfigInfo** 模型定义
+
+        **Response Model**
+
+        **CacheKeyInfo**
+        - **Ignore** (bool) - 是否忽略
+        - **PathPattern** (str) - 路径模式，支持正则
+        - **QueryString** (str) - 自定义变量,以$符号开头，多个变量用加号(+)连接，$querystring表示所有变量
+
+
+        **CacheConf**
+        - **CacheBehavior** (bool) - 是否缓存，true为缓存，flase为不缓存。为flase的情况下，CacheTTL和CacheUnit强制不生效
+        - **CacheTTL** (int) - 缓存时间
+        - **CacheUnit** (str) - 缓存时间的单位。sec（秒），min（分钟），hour（小时），day（天）。上限1年。
+        - **Description** (str) - 缓存规则描述
+        - **FollowOriginRule** (bool) - 是否优先遵循源站头部缓存策略，false为不优先遵循源站，true为优先遵循源站缓存头部。默认为0
+        - **HttpCodePattern** (str) - 状态码模式，非200，206状态码，多个状态码用竖线(|)分隔，该属性仅仅在状态码缓存配置列表中返回
+        - **PathPattern** (str) - 路径模式，支持正则
+
+
+        **ReferConf**
+        - **NullRefer** (int) - ReferType为白名单时（删除），NullRefer为0代表不允许NULL refer访问，为1代表允许Null refer访问
+        - **ReferList** (list) - Refer防盗链规则列表，支持正则表达式
+        - **ReferType** (int) - Refer防盗链配置  0白名单，1黑名单
+
+
+        **OriginConf**
+        - **BackupOriginEnable** (bool) - 1如果为false表示BackupOriginIp为空，表示没有备份源站，忽略BackupOriginIp，BackupOriginHost字段2如果为true表示BackupOriginIp.n必须至少有一个备份源站地址
+        - **BackupOriginHost** (str) - 备份回源Http请求头部Host，默认是加速域名
+        - **BackupOriginIpList** (list) - 备份源站ip即cdn服务器回源访问的ip地址。多个源站ip，可以这样表述，如：["1.1.1.1","2.2.2.2"]
+        - **OriginErrorCode** (str) - 主源响应的回源错误码（如：404|500），默认空字符串
+        - **OriginErrorNum** (int) - 回主源的回源失败数，默认1
+        - **OriginFollow301** (int) - 跟随301跳转  0=不跟随 1=跟随
+        - **OriginHost** (str) - 回源Http请求头部Host，默认是加速域名
+        - **OriginIpList** (list) - 源站ip即cdn服务器回源访问的ip地址。多个源站ip，可以这样表述，如：["1.1.1.1","2.2.2.2"]
+        - **OriginPort** (int) - 回源端口
+        - **OriginProtocol** (str) - 源站协议http，http|https   默认http
+
+
+        **CacheAllConfig**
+        - **CacheHost** (str) - 缓存Host，不同的域名可以配置为同一个CacheHost来实现缓存共享，默认为加速域名
+        - **CacheKeyList** (list) - 见 **CacheKeyInfo** 模型定义
+        - **CacheList** (list) - 见 **CacheConf** 模型定义
+        - **HttpCodeCacheList** (list) - 见 **CacheConf** 模型定义
+
+
+        **AdvancedConf**
+        - **Http2Https** (bool) - http转https回源 true是，false否
+        - **HttpClientHeader** (list) - 客户端响应http头列表
+        - **HttpOriginHeader** (list) - 源站http头列表
+
+
+        **AccessControlConf**
+        - **IpBlackList** (list) - ip黑名单，多个ip，可表示为：IpBlackList.0=1.1.1.1，IpBlackList.1=2.2.2.2
+        - **ReferConf** (dict) - 见 **ReferConf** 模型定义
+
+
+        **DomainConfigInfo**
+        - **AccessControlConf** (dict) - 见 **AccessControlConf** 模型定义
+        - **AdvancedConf** (dict) - 见 **AdvancedConf** 模型定义
+        - **AreaCode** (str) - 查询带宽区域 cn代表国内 abroad代表海外 all表示全部区域
+        - **CacheConf** (dict) - 见 **CacheAllConfig** 模型定义
+        - **CdnType** (str) - 加速域名的业务类型，web代表网站，stream代表视频 ，download 代表下载
+        - **CertNameAbroad** (str) - 国外证书名称
+        - **CertNameCn** (str) - 国内证书名称
+        - **Cname** (str) - cdn域名。创建加速域名生成的cdn域名，用于设置CNAME记录
+        - **CreateTime** (int) - 域名创建的时间。格式：时间戳
+        - **Domain** (str) - 域名
+        - **DomainId** (str) - 域名Id
+        - **HttpsStatusAbroad** (str) - 国外https状态 enableing-开启中  fail-开启失败 enable-启用 disable-未启用
+        - **HttpsStatusCn** (str) - 国内https状态 enableing-开启中 fail-开启失败 enable-启用 disable-未启用
+        - **OriginConf** (dict) - 见 **OriginConf** 模型定义
+        - **Status** (str) - 创建的加速域名的当前的状态。check代表审核中，checkSuccess代表审核通过，checkFail代表审核失败，enable代表加速中，disable代表停止加速，delete代表删除加速enableing代表正在开启加速，disableing代表正在停止加速中，deleteing代表删除中
+        - **Tag** (str) - 业务组：Default
+        - **TestUrl** (str) - 测试url。用于域名创建加速时的测试
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUcdnDomainConfigRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUcdnDomainConfig", d, **kwargs)
+        return apis.GetUcdnDomainConfigResponseSchema().loads(resp)
+
+    def get_ucdn_domain_hit_rate(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUcdnDomainHitRate - 获取域名命中率
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Type** (int) - (Required) 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度，3表示按照一分钟的粒度）默认5分钟
+        - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外，只支持国内
+        - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。如没有赋值，则返回缺少参 数错误，如果没有EndTime，BeginTime也可以不赋值，EndTime默认当前时间，BeginTime 默认前一天的当前时间。
+        - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
+        - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。
+        - **HitType** (int) - 命中类型：0=整体命中  1=边缘命中  默认是0
+
+        **Response**
+
+        - **HitRateList** (list) - 见 **HitRateInfoV2** 模型定义
+
+        **Response Model**
+
+        **HitRateInfoV2**
+        - **FlowHitRate** (float) - 总流量命中率，单位%
+        - **RequestHitRate** (float) - 请求数命中率，单位%
+        - **Time** (int) - 带宽获取的时间点。格式：时间戳
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUcdnDomainHitRateRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUcdnDomainHitRate", d, **kwargs)
+        return apis.GetUcdnDomainHitRateResponseSchema().loads(resp)
+
+    def get_ucdn_domain_http_code_v2(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUcdnDomainHttpCodeV2 - 获取域名状态码信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Type** (int) - (Required) 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度，3表示1分钟粒度）
+        - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外，只支持国内
+        - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。如没有赋值，则返回缺少参 数错误，如果没有EndTime，BeginTime也可以不赋值，EndTime默认当前时间，BeginTime 默认前一天的当前时间。
+        - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
+        - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。
+        - **Layer** (str) - 指定获取的状态码是边缘还是上层    edge 表示边缘  layer 表示上层
+
+        **Response**
+
+        - **HttpCodeDetail** (list) - 见 **HttpCodeInfoV2** 模型定义
+
+        **Response Model**
+
+        **HttpCodeV2Detail**
+        - **Http100** (int) - http100数量
+        - **Http101** (int) - http101数量
+        - **Http102** (int) - http102数量
+        - **Http200** (int) - http200数量
+        - **Http201** (int) - http201数量
+        - **Http202** (int) - http202数量
+        - **Http203** (int) - http203数量
+        - **Http204** (int) - http204数量
+        - **Http205** (int) - http205数量
+        - **Http206** (int) - http206数量
+        - **Http207** (int) - http207数量
+        - **Http300** (int) - http300数量
+        - **Http301** (int) - http301数量
+        - **Http302** (int) - http302数量
+        - **Http303** (int) - http303数量
+        - **Http304** (int) - http304数量
+        - **Http305** (int) - http305数量
+        - **Http306** (int) - http306数量
+        - **Http307** (int) - http307数量
+        - **Http400** (int) - http400数量
+        - **Http401** (int) - http401数量
+        - **Http402** (int) - http402数量
+        - **Http403** (int) - http403数量
+        - **Http404** (int) - http404数量
+        - **Http405** (int) - http405数量
+        - **Http406** (int) - http406数量
+        - **Http407** (int) - http407数量
+        - **Http408** (int) - http408数量
+        - **Http409** (int) - http409数量
+        - **Http410** (int) - http410数量
+        - **Http411** (int) - http411数量
+        - **Http412** (int) - http412数量
+        - **Http413** (int) - http413数量
+        - **Http414** (int) - http414数量
+        - **Http415** (int) - http415数量
+        - **Http416** (int) - http416数量
+        - **Http417** (int) - http417数量
+        - **Http418** (int) - http418数量
+        - **Http421** (int) - http421数量
+        - **Http422** (int) - http422数量
+        - **Http423** (int) - http423数量
+        - **Http424** (int) - http424数量
+        - **Http425** (int) - http425数量
+        - **Http426** (int) - http426数量
+        - **Http449** (int) - http449数量
+        - **Http451** (int) - http451数量
+        - **Http500** (int) - http500数量
+        - **Http501** (int) - http501数量
+        - **Http502** (int) - http502数量
+        - **Http503** (int) - http503数量
+        - **Http504** (int) - http504数量
+        - **Http505** (int) - http505数量
+        - **Http506** (int) - http506数量
+        - **Http507** (int) - http507数量
+        - **Http509** (int) - http509数量
+        - **Http510** (int) - http510数量
+        - **Time** (int) - 时间
+        - **Total** (int) - 当前分组的总状态码数
+
+
+        **HttpCodeInfoV2**
+        - **Http1XX** (dict) - 见 **HttpCodeV2Detail** 模型定义
+        - **Http2XX** (dict) - 见 **HttpCodeV2Detail** 模型定义
+        - **Http3XX** (dict) - 见 **HttpCodeV2Detail** 模型定义
+        - **Http4XX** (dict) - 见 **HttpCodeV2Detail** 模型定义
+        - **Http5XX** (dict) - 见 **HttpCodeV2Detail** 模型定义
+        - **Http6XX** (dict) - 见 **HttpCodeV2Detail** 模型定义
+        - **Time** (int) - 带宽获取的时间点。格式：时间戳
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUcdnDomainHttpCodeV2RequestSchema().dumps(d)
+
+        resp = self.invoke("GetUcdnDomainHttpCodeV2", d, **kwargs)
+        return apis.GetUcdnDomainHttpCodeV2ResponseSchema().loads(resp)
+
+    def get_ucdn_domain_info_list(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUcdnDomainInfoList - 获取域名基本信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **PageIndex** (int) - 返回第几页，不填默认是第1页
+        - **PageSize** (int) - 分页的大小，不填默认每页20个
+
+        **Response**
+
+        - **DomainInfoList** (list) - 见 **DomainBaseInfo** 模型定义
+        - **TotalCount** (int) - 账户下域名总个数
+
+        **Response Model**
+
+        **DomainBaseInfo**
+        - **Domain** (str) - 域名
+        - **DomainId** (str) - 域名的资源id
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUcdnDomainInfoListRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUcdnDomainInfoList", d, **kwargs)
+        return apis.GetUcdnDomainInfoListResponseSchema().loads(resp)
 
     def get_ucdn_domain_log(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -435,25 +821,63 @@ class UCDNClient(Client):
 
         **Response Model**
 
-        **LogSetInfo**
+        **LogSetList**
+        - **Domain** (str) - 域名
+        - **Logs** (list) - 见 **LogSetInfo** 模型定义
 
+
+        **LogSetInfo**
         - **AbroadLog** (list) - 国外日志url列表
         - **CnLog** (list) - 国内日志url列表
         - **Time** (int) - 日志时间UnixTime
 
-        **LogSetList**
-
-        - **Domain** (str) - 域名
-        - **Logs** (list) - 见 **LogSetInfo** 模型定义
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id}
+        d = {
+            "ProjectId": self.config.project_id,
+        }
         req and d.update(req)
         d = apis.GetUcdnDomainLogRequestSchema().dumps(d)
 
         resp = self.invoke("GetUcdnDomainLog", d, **kwargs)
         return apis.GetUcdnDomainLogResponseSchema().loads(resp)
+
+    def get_ucdn_domain_origin_request_num(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUcdnDomainOriginRequestNum - 获取域名回源请求数
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **BeginTime** (int) - (Required) 查询的起始时间，格式为Unix Timestamp
+        - **EndTime** (int) - (Required) 查询的结束时间，格式为Unix Timestamp
+        - **Type** (int) - (Required) 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度, 3=按1分钟）
+        - **Areacode** (str) - 查询区域 cn代表国内 abroad代表海外，只支持国内
+        - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
+
+        **Response**
+
+        - **RequestList** (list) - 见 **RequestInfoV2** 模型定义
+
+        **Response Model**
+
+        **RequestInfoV2**
+        - **CdnRequest** (float) - 返回值返回指定时间区间内的cdn收到的请求次数之和
+        - **Time** (int) - 带宽获取的时间点。格式：时间戳
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUcdnDomainOriginRequestNumRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUcdnDomainOriginRequestNum", d, **kwargs)
+        return apis.GetUcdnDomainOriginRequestNumResponseSchema().loads(resp)
 
     def get_ucdn_domain_prefetch_enable(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -471,7 +895,9 @@ class UCDNClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id}
+        d = {
+            "ProjectId": self.config.project_id,
+        }
         req and d.update(req)
         d = apis.GetUcdnDomainPrefetchEnableRequestSchema().dumps(d)
 
@@ -499,19 +925,58 @@ class UCDNClient(Client):
         **Response Model**
 
         **RequestInfo**
-
         - **CdnRequest** (float) - 返回值返回指定时间区间内的cdn收到的请求次数之和
         - **OriginRequest** (float) - 返回值返回指定时间区间内的cdn回源的请求次数之和
         - **Time** (int) - 带宽获取的时间点。格式：时间戳
 
+
         """
         # build request
-        d = {"ProjectId": self.config.project_id}
+        d = {
+            "ProjectId": self.config.project_id,
+        }
         req and d.update(req)
         d = apis.GetUcdnDomainRequestNumV2RequestSchema().dumps(d)
 
         resp = self.invoke("GetUcdnDomainRequestNumV2", d, **kwargs)
         return apis.GetUcdnDomainRequestNumV2ResponseSchema().loads(resp)
+
+    def get_ucdn_domain_request_num_v3(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUcdnDomainRequestNumV3 - 获取域名请求数
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **BeginTime** (int) - (Required) 查询的起始时间，格式为Unix Timestamp
+        - **EndTime** (int) - (Required) 查询的结束时间，格式为Unix Timestamp
+        - **Type** (int) - (Required) 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度, 3=按1分钟）
+        - **Areacode** (str) - 查询区域 cn代表国内 abroad代表海外，只支持国内
+        - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
+        - **Protocol** (str) - 协议，http、https 不传则查所有协议的带宽
+
+        **Response**
+
+        - **RequestList** (list) - 见 **RequestInfoV2** 模型定义
+
+        **Response Model**
+
+        **RequestInfoV2**
+        - **CdnRequest** (float) - 返回值返回指定时间区间内的cdn收到的请求次数之和
+        - **Time** (int) - 带宽获取的时间点。格式：时间戳
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUcdnDomainRequestNumV3RequestSchema().dumps(d)
+
+        resp = self.invoke("GetUcdnDomainRequestNumV3", d, **kwargs)
+        return apis.GetUcdnDomainRequestNumV3ResponseSchema().loads(resp)
 
     def get_ucdn_domain_traffic(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -521,10 +986,11 @@ class UCDNClient(Client):
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Areacode** (str) - 查询流量区域 cn代表国内 abroad代表海外，默认全部区域。
-        - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。
-        - **DomainId** (list) - 域名ID，创建加速域名时生成。默认全部域名
-        - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。
+        - **AccountType** (str) - 指定按项目查询，还是按整个账户查询  取值 top 表示按整个账户查询，取值org表示按项目查询
+        - **Areacode** (str) - 查询流量区域 cn代表国内 abroad代表海外，默认全部区域
+        - **BeginTime** (int) - 查询的起始日期，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值
+        - **DomainId** (list) - 域名ID，创建加速域名时生成，n从自然数0开始。默认全部域名
+        - **EndTime** (int) - 查询的结束日期，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天
 
         **Response**
 
@@ -533,13 +999,15 @@ class UCDNClient(Client):
         **Response Model**
 
         **UcdnDomainTrafficSet**
-
         - **Time** (int) - 流量获取的时间点，格式为Unix Timestamp
         - **Value** (float) - 查询每日流量总值，单位：GB
 
+
         """
         # build request
-        d = {"ProjectId": self.config.project_id}
+        d = {
+            "ProjectId": self.config.project_id,
+        }
         req and d.update(req)
         d = apis.GetUcdnDomainTrafficRequestSchema().dumps(d)
 
@@ -567,18 +1035,141 @@ class UCDNClient(Client):
         **Response Model**
 
         **BandwidthInfoDetail**
-
         - **Bandwidth** (float) - 返回值带宽值数据。
         - **Time** (int) - 宽获取的时间点。格式：时间戳
 
+
         """
         # build request
-        d = {"ProjectId": self.config.project_id}
+        d = {
+            "ProjectId": self.config.project_id,
+        }
         req and d.update(req)
         d = apis.GetUcdnPassBandwidthRequestSchema().dumps(d)
 
         resp = self.invoke("GetUcdnPassBandwidth", d, **kwargs)
         return apis.GetUcdnPassBandwidthResponseSchema().loads(resp)
+
+    def get_ucdn_pass_bandwidth_v2(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUcdnPassBandwidthV2 - 获取回源带宽数据（cdn回客户源站部分）
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Type** (int) - (Required) 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度，3表示按照1分钟粒度）
+        - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外，只支持国内
+        - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。如没有赋值，则返回缺少参 数错误，如果没有EndTime，BeginTime也可以不赋值，EndTime默认当前时间，BeginTime 默认前一天的当前时间。
+        - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
+        - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。
+
+        **Response**
+
+        - **BandwidthList** (list) - 见 **BandwidthInfoDetail** 模型定义
+
+        **Response Model**
+
+        **BandwidthInfoDetail**
+        - **Bandwidth** (float) - 返回值带宽值数据。
+        - **Time** (int) - 宽获取的时间点。格式：时间戳
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUcdnPassBandwidthV2RequestSchema().dumps(d)
+
+        resp = self.invoke("GetUcdnPassBandwidthV2", d, **kwargs)
+        return apis.GetUcdnPassBandwidthV2ResponseSchema().loads(resp)
+
+    def get_ucdn_pro_isp_bandwidth_v2(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUcdnProIspBandwidthV2 - 按省份运营商获取域名带宽数据
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **BeginTime** (int) - (Required) 查询的起始日期，格式为Unix Timestamp
+        - **EndTime** (int) - (Required) 查询的结束日期，格式为Unix Timestamp
+        - **Type** (int) - (Required) 时间粒度0 (按5分钟粒度)1 (按小时粒度)2(按天粒度)3(按分钟粒度）
+        - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
+        - **Isp** (str) - 运营商代码，一次只能查询一个运营商，不传递默认取所有运营商
+        - **Province** (list) - 省份代码，可以传多个，不传则查询所有省份
+
+        **Response**
+
+        - **BandwidthSet** (list) - 见 **ProIspBandwidthSet** 模型定义
+
+        **Response Model**
+
+        **ProIspBandwidthList**
+        - **CdnBandwidth** (float) - 返回值返回指定时间区间内CDN的带宽峰值，单位Mbps
+        - **Time** (int) - 带宽获取的时间点。格式：时间戳
+        - **Traffic** (float) - 对应时间粒度的流量，单位字节
+
+
+        **ProIspBandwidthSet**
+        - **BandwidthTrafficList** (list) - 见 **ProIspBandwidthList** 模型定义
+        - **Province** (str) - 省份代码
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUcdnProIspBandwidthV2RequestSchema().dumps(d)
+
+        resp = self.invoke("GetUcdnProIspBandwidthV2", d, **kwargs)
+        return apis.GetUcdnProIspBandwidthV2ResponseSchema().loads(resp)
+
+    def get_ucdn_pro_isp_request_num_v2(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUcdnProIspRequestNumV2 - 按省份运营商获取域名请求数
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **BeginTime** (int) - (Required) 查询的起始日期，格式为Unix Timestamp  忽略时间部分
+        - **EndTime** (int) - (Required) 查询的结束日期，格式为Unix Timestamp  忽略时间部分
+        - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
+        - **Isp** (str) - 运营商代码，一次只能查询一个运营商，不传递默认取所有运营商
+        - **Province** (list) - 省份代码，可以传多个，不传则查询所有省份
+        - **Type** (int) - 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天粒度，3表示按照一分钟粒度）
+
+        **Response**
+
+        - **RequestNumSet** (list) - 见 **ProIspRequestNumSetV2** 模型定义
+
+        **Response Model**
+
+        **ProIspRequestListV2**
+        - **CdnRequest** (float) - 返回值返回指定时间区间内的请求数
+        - **Time** (int) - 带宽获取的时间点。格式：时间戳
+
+
+        **ProIspRequestNumSetV2**
+        - **Province** (str) - 省份代码
+        - **RequestList** (list) - 见 **ProIspRequestListV2** 模型定义
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUcdnProIspRequestNumV2RequestSchema().dumps(d)
+
+        resp = self.invoke("GetUcdnProIspRequestNumV2", d, **kwargs)
+        return apis.GetUcdnProIspRequestNumV2ResponseSchema().loads(resp)
 
     def get_ucdn_traffic(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -596,20 +1187,55 @@ class UCDNClient(Client):
         **Response Model**
 
         **TrafficSet**
-
         - **Areacode** (str) - 购买流量的区域, cn: 国内; abroad: 国外
-        - **TrafficLeft** (str) - Areacode区域内总剩余流量, 单位GB
-        - **TrafficTotal** (str) - Areacode区域内总购买流量, 单位GB
-        - **TrafficUsed** (str) - Areacode区域内总使用流量, 单位GB
+        - **TrafficLeft** (float) - Areacode区域内总剩余流量, 单位GB
+        - **TrafficTotal** (float) - Areacode区域内总购买流量, 单位GB
+        - **TrafficUsed** (float) - Areacode区域内总使用流量, 单位GB
+
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id}
+        d = {
+            "ProjectId": self.config.project_id,
+        }
         req and d.update(req)
         d = apis.GetUcdnTrafficRequestSchema().dumps(d)
 
         resp = self.invoke("GetUcdnTraffic", d, **kwargs)
         return apis.GetUcdnTrafficResponseSchema().loads(resp)
+
+    def get_ucdn_traffic_v2(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUcdnTrafficV2 - 获取流量信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+
+        **Response**
+
+        - **TrafficSet** (list) - 见 **TrafficSet** 模型定义
+
+        **Response Model**
+
+        **TrafficSet**
+        - **Areacode** (str) - 购买流量的区域, cn: 国内; abroad: 国外
+        - **TrafficLeft** (float) - Areacode区域内总剩余流量, 单位GB
+        - **TrafficTotal** (float) - Areacode区域内总购买流量, 单位GB
+        - **TrafficUsed** (float) - Areacode区域内总使用流量, 单位GB
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUcdnTrafficV2RequestSchema().dumps(d)
+
+        resp = self.invoke("GetUcdnTrafficV2", d, **kwargs)
+        return apis.GetUcdnTrafficV2ResponseSchema().loads(resp)
 
     def prefetch_new_ucdn_domain_cache(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -618,8 +1244,8 @@ class UCDNClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **UrlList** (list) - (Required) 预热URL列表，n从自然数0开始。UrlList.n字段必须以”http://域名/”开始。目录要以”/”结尾， 如刷新目录a下所有文件，格式为：http://abc.ucloud.cn/a/；如刷新文件目录a下面img.png文件， 格式为http://abc.ucloud.cn/a/img.png。请正确提交需要刷新的域名
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **UrlList** (list) - (Required) 预热URL列表，n从自然数0开始。UrlList.n字段必须以”http://域名/”开始。如刷新文件目录a下面img.png文件， 格式为http://abc.ucloud.cn/a/img.png。请正确提交需要刷新的域名
 
         **Response**
 
@@ -627,7 +1253,9 @@ class UCDNClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id}
+        d = {
+            "ProjectId": self.config.project_id,
+        }
         req and d.update(req)
         d = apis.PrefetchNewUcdnDomainCacheRequestSchema().dumps(d)
 
@@ -651,7 +1279,9 @@ class UCDNClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id}
+        d = {
+            "ProjectId": self.config.project_id,
+        }
         req and d.update(req)
         d = apis.RefreshNewUcdnDomainCacheRequestSchema().dumps(d)
 
@@ -673,7 +1303,9 @@ class UCDNClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id}
+        d = {
+            "ProjectId": self.config.project_id,
+        }
         req and d.update(req)
         d = apis.SwitchUcdnChargeTypeRequestSchema().dumps(d)
 

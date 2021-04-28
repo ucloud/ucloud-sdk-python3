@@ -74,7 +74,6 @@ class UFSClient(Client):
         **Response Model**
 
         **UFSVolumeInfo2**
-
         - **CreateTime** (int) - 文件系统创建时间（unix时间戳）
         - **ExpiredTime** (int) - 文件系统过期时间（unix时间戳）
         - **IsExpired** (str) - 是否过期
@@ -88,6 +87,7 @@ class UFSClient(Client):
         - **UsedSize** (int) - 文件系统当前使用容量，单位GB
         - **VolumeId** (str) - 文件系统ID
         - **VolumeName** (str) - 文件系统名称
+
 
         """
         # build request

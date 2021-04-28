@@ -183,14 +183,14 @@ class CreateUHostInstanceParamVirtualGpuGPUVirtualGpuSchema(
     fields = {}
 
 
-class CreateUHostInstanceParamVirtualGpuSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamVirtualGpu -"""
+class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamVolumes -"""
 
     fields = {}
 
 
-class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamVolumes -"""
+class CreateUHostInstanceParamVirtualGpuSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamVirtualGpu -"""
 
     fields = {}
 

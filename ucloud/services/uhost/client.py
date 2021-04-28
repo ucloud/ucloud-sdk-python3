@@ -196,10 +196,10 @@ class UHostClient(Client):
         **CreateUHostInstanceParamVirtualGpuGPUVirtualGpu**
 
 
-        **CreateUHostInstanceParamVirtualGpu**
-
-
         **CreateUHostInstanceParamVolumes**
+
+
+        **CreateUHostInstanceParamVirtualGpu**
 
 
         """
@@ -386,10 +386,12 @@ class UHostClient(Client):
         - **GPU** (int) - GPU个数
         - **HostType** (str) - 【建议不再使用】主机系列：N2，表示系列2；N1，表示系列1
         - **HotplugFeature** (bool) - true: 开启热升级； false，未开启热升级
+        - **HpcFeature** (bool) - true: 开启 hpc 系列功能；false: 未开启
         - **IPSet** (list) - 见 **UHostIPSet** 模型定义
         - **IPv6Feature** (bool) - true:有ipv6特性；false，没有ipv6特性
         - **ImageId** (str) - 【建议不再使用】主机的系统盘ID。
         - **IsolationGroup** (str) - 隔离组id，不在隔离组则返回""
+        - **KeyPair** (dict) - 见 **UHostKeyPair** 模型定义
         - **LifeCycle** (str) - 主机的生命周期类型。目前仅支持Normal：普通；
         - **MachineType** (str) - 云主机机型（新）。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type#主机概念20版本>`_ 。
         - **Memory** (int) - 内存大小，单位: MB
@@ -401,7 +403,7 @@ class UHostClient(Client):
         - **RdmaClusterId** (str) - RDMA集群id，仅快杰云主机返回该值；其他类型云主机返回""。当云主机的此值与RSSD云盘的RdmaClusterId相同时，RSSD可以挂载到这台云主机。
         - **Remark** (str) - 备注
         - **RestrictMode** (str) - 仅抢占式实例返回，LowSpeed为低速模式，PowerOff为关机模式
-        - **State** (str) - 实例状态，枚举值：\\ >初始化: Initializing; \\ >启动中: Starting; \\> 运行中: Running; \\> 关机中: Stopping; \\ >关机: Stopped \\ >安装失败: Install Fail; \\ >重启中: Rebooting
+        - **State** (str) - 实例状态，枚举值：\\ >初始化: Initializing; \\ >启动中: Starting; \\> 运行中: Running; \\> 关机中: Stopping; \\ >关机: Stopped \\ >安装失败: Install Fail; \\ >重启中: Rebooting; \\ > 未知(空字符串，获取状态超时或出错)：""
         - **StorageType** (str) - 【建议不再使用】主机磁盘类型。 枚举值为：\\ > LocalDisk，本地磁盘; \\ > UDisk 云盘。\\只要有一块磁盘为本地盘，即返回LocalDisk。
         - **SubnetType** (str) - 【建议不再使用】仅北京A的云主机会返回此字段。基础网络模式：Default；子网模式：Private
         - **Tag** (str) - 业务组名称
@@ -436,6 +438,11 @@ class UHostClient(Client):
         - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
         - **VPCId** (str) - IP地址对应的VPC ID。（北京一不支持，字段返回为空）
         - **Weight** (int) - 当前EIP的权重。权重最大的为当前的出口IP。
+
+
+        **UHostKeyPair**
+        - **KeyPairId** (str) - 密钥对ID
+        - **KeyPairState** (str) - 主机密钥对状态，Normal 正常，Deleted 删除
 
 
         """
