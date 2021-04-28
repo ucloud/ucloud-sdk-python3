@@ -46,6 +46,32 @@
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PathXClient</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">transport</span><span class="p">,</span> <span class="n">middleware</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span>
 
+<div class="viewcode-block" id="PathXClient.bind_path_xssl"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.bind_path_xssl">[docs]</a>    <span class="k">def</span> <span class="nf">bind_path_xssl</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;BindPathXSSL - 绑定PathX SSL证书</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Port** (list) - (Required) 绑定SSL证书的HTTPS端口。Port.0 Port.1对应多个Port。如果Port不存在则不会绑定</span>
+<span class="sd">        - **SSLId** (str) - (Required) 证书ID，如果没有指定证书ID也没有申请免费证书，HTTPS接入无法正常工作</span>
+<span class="sd">        - **UGAId** (str) - (Required) UGA实例ID</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">BindPathXSSLRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;BindPathXSSL&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">BindPathXSSLResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="PathXClient.create_global_ssh_instance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.create_global_ssh_instance">[docs]</a>    <span class="k">def</span> <span class="nf">create_global_ssh_instance</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -56,10 +82,13 @@
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **Area** (str) - (Required) 填写支持SSH访问IP的地区名称，如“洛杉矶”，“新加坡”，“香港”，“东京”，“华盛顿”，“法兰克福”。Area和AreaCode两者必填一个</span>
 <span class="sd">        - **AreaCode** (str) - (Required) AreaCode, 区域航空港国际通用代码。Area和AreaCode两者必填一个</span>
-<span class="sd">        - **Port** (int) - (Required) SSH端口，1-65535且不能使用80，443端口</span>
-<span class="sd">        - **TargetIP** (str) - (Required) 被SSH访问的IP</span>
+<span class="sd">        - **Port** (int) - (Required) 源站服务器监听的SSH端口，可取范围[1-65535]，不能使用80，443,  65123端口。如果InstanceType=Free，取值范围缩小为[22,3389],linux系统选择22，windows系统自动选3389。</span>
+<span class="sd">        - **TargetIP** (str) - (Required) 被SSH访问的源站IP，仅支持IPv4地址。</span>
+<span class="sd">        - **BandwidthPackage** (int) - Ultimate版本带宽包大小,枚举值：[0,20,40]。单位MB</span>
 <span class="sd">        - **ChargeType** (str) - 支付方式，如按月、按年、按时</span>
 <span class="sd">        - **CouponId** (str) - 使用代金券可冲抵部分费用</span>
+<span class="sd">        - **ForwardRegion** (str) - InstanceType等于Basic时可以在[&quot;cn-bj2&quot;,&quot;cn-sh2&quot;,&quot;cn-gd&quot;]中选择1个作为转发机房，Free版本固定为cn-bj2,其他付费版默认配置三个转发机房</span>
+<span class="sd">        - **InstanceType** (str) - 枚举值：[&quot;Enterprise&quot;,&quot;Basic&quot;,&quot;Free&quot;], 分别代表企业版，基础版，免费版</span>
 <span class="sd">        - **Quantity** (int) - 购买数量</span>
 <span class="sd">        - **Remark** (str) - 备注信息</span>
 
@@ -71,7 +100,9 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateGlobalSSHInstanceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -81,57 +112,306 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;CreateGlobalSSHInstance&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateGlobalSSHInstanceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PathXClient.delete_global_ssh_instance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.delete_global_ssh_instance">[docs]</a>    <span class="k">def</span> <span class="nf">delete_global_ssh_instance</span><span class="p">(</span>
+<div class="viewcode-block" id="PathXClient.create_path_xssl"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.create_path_xssl">[docs]</a>    <span class="k">def</span> <span class="nf">create_path_xssl</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;DeleteGlobalSSHInstance - 删除GlobalSSH实例</span>
+        <span class="sd">&quot;&quot;&quot;CreatePathXSSL - 创建SSL证书，可以把整个 Pem 证书内容传到SSLContent，或者把证书、私钥、CA证书分别传过来</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID org-xxx格式。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **SSLName** (str) - (Required) SSL证书的名字</span>
+<span class="sd">        - **CACert** (str) - CA颁发证书内容</span>
+<span class="sd">        - **PrivateKey** (str) - 加密证书的私钥，不可使用密码保护，开启密码保护后，重启服务需要输入密码</span>
+<span class="sd">        - **SSLContent** (str) - SSL证书的完整内容，私钥不可使用密码，包括加密证书的私钥、用户证书或CA证书等</span>
+<span class="sd">        - **SSLType** (str) - 所添加的SSL证书类型，目前只支持Pem格式</span>
+<span class="sd">        - **UserCert** (str) - 用户自签证书内容</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **SSLId** (str) - SSL证书的Id</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreatePathXSSLRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># build options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;CreatePathXSSL&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreatePathXSSLResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.create_uga_forwarder"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.create_uga_forwarder">[docs]</a>    <span class="k">def</span> <span class="nf">create_uga_forwarder</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;CreateUGAForwarder - 创建加速实例转发器，支持HTTPS接入HTTPS回源、HTTPS接入HTTP回源、HTTP接入HTTP回源、TCP接入TCP回源、UDP接入UDP回源、 支持WSS接入WSS回源、WSS接入WS回源、WS接入WS回源</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **UGAId** (str) - (Required) 加速配置实例ID</span>
+<span class="sd">        - **HTTPHTTP** (list) - HTTP接入HTTP回源转发，接入端口。禁用65123端口</span>
+<span class="sd">        - **HTTPHTTPRS** (list) - HTTP接入HTTP回源转发，源站监听端口</span>
+<span class="sd">        - **HTTPSHTTP** (list) - HTTPS接入HTTP回源转发，接入端口。禁用65123端口</span>
+<span class="sd">        - **HTTPSHTTPRS** (list) - HTTPS接入HTTP回源转发，回源端口</span>
+<span class="sd">        - **HTTPSHTTPS** (list) - HTTPS接入HTTPS回源转发，接入端口。禁用65123端口</span>
+<span class="sd">        - **HTTPSHTTPSRS** (list) - HTTPS接入HTTPS回源转发，源站监听端口</span>
+<span class="sd">        - **TCP** (list) - TCP接入端口</span>
+<span class="sd">        - **TCPRS** (list) - TCP回源端口</span>
+<span class="sd">        - **UDP** (list) - UDP接入端口</span>
+<span class="sd">        - **UDPRS** (list) - UDP回源端口</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **Message** (str) - 返回信息 说明</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateUGAForwarderRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># build options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;CreateUGAForwarder&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateUGAForwarderResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.create_uga_instance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.create_uga_instance">[docs]</a>    <span class="k">def</span> <span class="nf">create_uga_instance</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;CreateUGAInstance - 创建全球加速配置项</span>
 
 <span class="sd">        **Request**</span>
 
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **InstanceId** (str) - (Required) 实例Id,资源的唯一标识</span>
+<span class="sd">        - **Name** (str) - (Required) 加速配置实例名称</span>
+<span class="sd">        - **Domain** (str) - 加速源域名，IPList和Domain二选一必填</span>
+<span class="sd">        - **IPList** (str) - 加速源IP，多个IP用英文半角逗号(,)隔开；IPList和Domain二选一必填</span>
+<span class="sd">        - **TCP** (list) - TCP端口号，已废弃。请使用 CreateUGAForwarder API 创建端口</span>
+<span class="sd">        - **UDP** (list) - UDP端口号，已废弃。请使用 CreateUGAForwarder API 创建端口</span>
 
 <span class="sd">        **Response**</span>
 
-<span class="sd">        - **Message** (str) - 提示信息</span>
+<span class="sd">        - **CName** (str) - 加速域名 用户可把业务域名CName到此域名上。注意：未绑定线路情况时 加速域名解析不出IP。</span>
+<span class="sd">        - **Message** (str) - 返回信息</span>
+<span class="sd">        - **UGAId** (str) - 加速配置ID</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateUGAInstanceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># build options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;CreateUGAInstance&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateUGAInstanceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.create_upath"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.create_upath">[docs]</a>    <span class="k">def</span> <span class="nf">create_upath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;CreateUPath - 创建UPath</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Bandwidth** (int) - (Required) 线路带宽，最小1Mbps,最大带宽由 DescribePathXLineConfig 接口获得。如需更大带宽，请联系产品团队。</span>
+<span class="sd">        - **LineId** (str) - (Required) 选择的线路</span>
+<span class="sd">        - **Name** (str) - (Required) UPath名字</span>
+<span class="sd">        - **ChargeType** (str) - 计费模式，默认为Month 按月收费,可选范围[&#39;Month&#39;,&#39;Year&#39;,&#39;Dynamic&#39;]</span>
+<span class="sd">        - **CouponId** (str) - 代金券Id</span>
+<span class="sd">        - **PostPaid** (bool) - 是否开启后付费, 默认为false</span>
+<span class="sd">        - **Quantity** (int) - 购买周期，ChargeType为Month时，Quantity默认为0代表购买到月底，按时和按年付费该参数必须大于0</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **UPathId** (str) - 加速线路实例Id</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateUPathRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># build options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;CreateUPath&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateUPathResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.delete_global_ssh_instance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.delete_global_ssh_instance">[docs]</a>    <span class="k">def</span> <span class="nf">delete_global_ssh_instance</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DeleteGlobalSSHInstance -</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config)</span>
+<span class="sd">        - **InstanceId** (str) - (Required)</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **Message** (str) -</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteGlobalSSHInstanceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># build options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DeleteGlobalSSHInstance&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteGlobalSSHInstanceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PathXClient.describe_global_ssh_area"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.describe_global_ssh_area">[docs]</a>    <span class="k">def</span> <span class="nf">describe_global_ssh_area</span><span class="p">(</span>
+<div class="viewcode-block" id="PathXClient.delete_path_xssl"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.delete_path_xssl">[docs]</a>    <span class="k">def</span> <span class="nf">delete_path_xssl</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;DescribeGlobalSSHArea - 获取GlobalSSH覆盖的地区列表 用于控制显示哪些机房地域可以使用SSH特性</span>
+        <span class="sd">&quot;&quot;&quot;DeletePathXSSL - 删除PathX SSL证书</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **SSLId** (str) - (Required) SSL证书的ID</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeletePathXSSLRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DeletePathXSSL&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeletePathXSSLResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.delete_uga_forwarder"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.delete_uga_forwarder">[docs]</a>    <span class="k">def</span> <span class="nf">delete_uga_forwarder</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DeleteUGAForwarder - 删除加速实例转发器 按接入端口删除</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **UGAId** (str) - (Required) 加速配置实例ID</span>
+<span class="sd">        - **HTTPHTTP** (list) - HTTP接入HTTP回源，接入端口。禁用65123端口</span>
+<span class="sd">        - **HTTPSHTTP** (list) - HTTPS接入HTTP回源， 接入端口。禁用65123端口</span>
+<span class="sd">        - **HTTPSHTTPS** (list) - HTTPS接入HTTPS回源， 接入端口。禁用65123端口</span>
+<span class="sd">        - **TCP** (list) - TCP接入端口</span>
+<span class="sd">        - **UDP** (list) - UDP接入端口</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **Message** (str) - 返回信息 说明</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteUGAForwarderRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DeleteUGAForwarder&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteUGAForwarderResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.delete_uga_instance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.delete_uga_instance">[docs]</a>    <span class="k">def</span> <span class="nf">delete_uga_instance</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DeleteUGAInstance - 删除全球加速服务加速配置</span>
 
 <span class="sd">        **Request**</span>
 
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 机房地域代号，如hk、 us-ca、 us-ws等。不填默认为空，返回所有支持地区。</span>
+<span class="sd">        - **UGAId** (str) - (Required) 加速配置实例ID</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **Message** (str) - 消息提示</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteUGAInstanceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DeleteUGAInstance&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteUGAInstanceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.delete_upath"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.delete_upath">[docs]</a>    <span class="k">def</span> <span class="nf">delete_upath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DeleteUPath - 删除UPath</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **UPathId** (str) - (Required) 加速线路实例ID</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteUPathRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DeleteUPath&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteUPathResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.describe_global_ssh_area"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.describe_global_ssh_area">[docs]</a>    <span class="k">def</span> <span class="nf">describe_global_ssh_area</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DescribeGlobalSSHArea -</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config)</span>
+<span class="sd">        - **Region** (str) - (Config)</span>
 
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **AreaSet** (list) - 见 **GlobalSSHArea** 模型定义</span>
-<span class="sd">        - **Message** (str) - 提示信息</span>
+<span class="sd">        - **Message** (str) -</span>
 
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **GlobalSSHArea**</span>
+<span class="sd">        - **Area** (str) -</span>
+<span class="sd">        - **AreaCode** (str) -</span>
+<span class="sd">        - **RegionSet** (list) -</span>
 
-<span class="sd">        - **Area** (str) - GlobalSSH覆盖的地区,如香港、东京、洛杉矶等</span>
-<span class="sd">        - **AreaCode** (str) - 地区代号,以地区AirPort Code</span>
-<span class="sd">        - **RegionSet** (list) - ucloud机房代号构成的数组，如[&quot;hk&quot;,&quot;us-ca&quot;]</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeGlobalSSHAreaRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># build options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeGlobalSSHArea&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeGlobalSSHAreaResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
@@ -143,7 +423,7 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID，如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID，如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
 <span class="sd">        - **InstanceId** (str) - 实例ID，资源唯一标识</span>
 
 <span class="sd">        **Response**</span>
@@ -153,46 +433,420 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **GlobalSSHInfo**</span>
-
-<span class="sd">        - **AcceleratingDomain** (str) - 加速域名</span>
+<span class="sd">        - **AcceleratingDomain** (str) - GlobalSSH分配的加速域名。</span>
 <span class="sd">        - **Area** (str) - 被SSH访问的IP所在地区</span>
-<span class="sd">        - **ChargeType** (str) - 支付周期，如Month,Year等</span>
+<span class="sd">        - **BandwidthPackage** (int) - globalssh Ultimate带宽包大小</span>
+<span class="sd">        - **ChargeType** (str) - 支付周期，如Month,Year,Dynamic等</span>
 <span class="sd">        - **CreateTime** (int) - 资源创建时间戳</span>
+<span class="sd">        - **Expire** (bool) - 是否过期</span>
 <span class="sd">        - **ExpireTime** (int) - 资源过期时间戳</span>
+<span class="sd">        - **ForwardRegion** (str) - InstanceType为Basic版本时，需要展示具体分配的转发机房</span>
+<span class="sd">        - **GlobalSSHPort** (int) - InstanceType等于Free时，由系统自动分配，不等于源站Port值。InstanceType不等于Free时，与源站Port值相同。</span>
 <span class="sd">        - **InstanceId** (str) - 实例ID，资源唯一标识</span>
-<span class="sd">        - **Port** (int) - SSH登陆端口</span>
+<span class="sd">        - **InstanceType** (str) - 枚举值：[&quot;Enterprise&quot;,&quot;Basic&quot;,&quot;Free&quot;,&quot;Welfare&quot;], 分别代表企业版，基础版本，免费版本，较早的公测免费版</span>
+<span class="sd">        - **Port** (int) - 源站服务器监听的SSH端口，windows系统为RDP端口</span>
 <span class="sd">        - **Remark** (str) - 备注信息</span>
-<span class="sd">        - **TargetIP** (str) - 被SSH访问的EIP</span>
+<span class="sd">        - **TargetIP** (str) - 被SSH访问的源站 IPv4地址。</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeGlobalSSHInstanceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeGlobalSSHInstance&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeGlobalSSHInstanceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PathXClient.modify_global_ssh_port"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.modify_global_ssh_port">[docs]</a>    <span class="k">def</span> <span class="nf">modify_global_ssh_port</span><span class="p">(</span>
+<div class="viewcode-block" id="PathXClient.describe_path_x_line_config"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.describe_path_x_line_config">[docs]</a>    <span class="k">def</span> <span class="nf">describe_path_x_line_config</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;ModifyGlobalSSHPort - 修改GlobalSSH端口</span>
+        <span class="sd">&quot;&quot;&quot;DescribePathXLineConfig - 获取全球加速线路信息</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID，如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **InstanceId** (str) - (Required) 实例ID,资源唯一标识</span>
-<span class="sd">        - **Port** (int) - (Required) 调整后的SSH登陆端口</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 
 <span class="sd">        **Response**</span>
 
-<span class="sd">        - **Message** (str) - 提示信息</span>
+<span class="sd">        - **LineSet** (list) - 见 **UGAALine** 模型定义</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **LineDetail**</span>
+<span class="sd">        - **LineFrom** (str) - 线路源</span>
+<span class="sd">        - **LineFromName** (str) - 线路源中文名称</span>
+<span class="sd">        - **LineId** (str) - 线路计费Id</span>
+<span class="sd">        - **LineTo** (str) - 线路目的</span>
+<span class="sd">        - **LineToName** (str) - 线路目的中文名称</span>
+
+
+<span class="sd">        **UGAALine**</span>
+<span class="sd">        - **LineDetail** (list) - 见 **LineDetail** 模型定义</span>
+<span class="sd">        - **LineFrom** (str) - 线路源</span>
+<span class="sd">        - **LineFromName** (str) - 线路源中文名称</span>
+<span class="sd">        - **LineId** (str) - 线路计费Id</span>
+<span class="sd">        - **LineTo** (str) - 线路目的</span>
+<span class="sd">        - **LineToName** (str) - 线路目的中文名称</span>
+<span class="sd">        - **MaxBandwidth** (int) - 线路可售最大带宽</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribePathXLineConfigRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribePathXLineConfig&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribePathXLineConfigResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.describe_path_xssl"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.describe_path_xssl">[docs]</a>    <span class="k">def</span> <span class="nf">describe_path_xssl</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DescribePathXSSL - 获取SSL证书信息,支持分页，支持按证书名称 证书域名模糊搜索</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Limit** (int) - 最大返回条数，默认100，最大400</span>
+<span class="sd">        - **Offset** (int) - 偏移值 默认为0</span>
+<span class="sd">        - **SSLId** (str) - SSL证书的Id，不传分页获取证书列表</span>
+<span class="sd">        - **SearchValue** (str) - 不为空则按证书名称、证书域名模糊搜索 分页返回结果</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **DataSet** (list) - 见 **PathXSSLSet** 模型定义</span>
+<span class="sd">        - **TotalCount** (int) - 符合条件的证书总数</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **SSLBindedTargetSet**</span>
+<span class="sd">        - **ResourceId** (str) - SSL证书绑定到的实例ID</span>
+<span class="sd">        - **ResourceName** (str) - SSL证书绑定到的实例名称</span>
+
+
+<span class="sd">        **PathXSSLSet**</span>
+<span class="sd">        - **CreateTime** (int) - SSL证书的创建时间 时间戳</span>
+<span class="sd">        - **ExpireTime** (int) - 证书过期时间 时间戳</span>
+<span class="sd">        - **SSLBindedTargetSet** (list) - 见 **SSLBindedTargetSet** 模型定义</span>
+<span class="sd">        - **SSLContent** (str) - SSL证书内容</span>
+<span class="sd">        - **SSLId** (str) - SSL证书的Id</span>
+<span class="sd">        - **SSLMD5** (str) - SSL证书（用户证书、私钥、ca证书合并）内容md5值</span>
+<span class="sd">        - **SSLName** (str) - SSL证书的名字</span>
+<span class="sd">        - **SourceType** (int) - 证书来源，0：用户上传 1: 免费颁发</span>
+<span class="sd">        - **SubjectName** (str) - 证书域名</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribePathXSSLRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribePathXSSL&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribePathXSSLResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.describe_uga_instance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.describe_uga_instance">[docs]</a>    <span class="k">def</span> <span class="nf">describe_uga_instance</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DescribeUGAInstance - 获取全球加速服务加速配置信息，指定实例ID返回单个实例。未指定实例ID时 指定分页参数 则按创建时间降序 返回记录</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Limit** (int) - 返回的最大条数，默认为100，最大值400</span>
+<span class="sd">        - **Offset** (int) - 偏移量，默认为0</span>
+<span class="sd">        - **UGAId** (str) - 加速配置实例ID，如果传了实例ID 则返回匹配实例ID的记录；如果没传则返回 ProjectId 下全部实例且符合分页要求</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **TotalCount** (int) - 符合条件的总数</span>
+<span class="sd">        - **UGAList** (list) - 见 **UGAAInfo** 模型定义</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **UGAL7Forwarder**</span>
+<span class="sd">        - **Port** (int) - 接入端口</span>
+<span class="sd">        - **Protocol** (str) - 转发协议，枚举值[&quot;TCP&quot;，&quot;UDP&quot;，&quot;HTTPHTTP&quot;，&quot;HTTPSHTTP&quot;，&quot;HTTPSHTTPS&quot;]。TCP和UDP代表四层转发，其余为七层转发</span>
+<span class="sd">        - **RSPort** (int) - RSPort，源站监听端口</span>
+<span class="sd">        - **SSLId** (str) - 证书ID</span>
+<span class="sd">        - **SSLName** (str) - 证书名称</span>
+
+
+<span class="sd">        **UGAATask**</span>
+<span class="sd">        - **Port** (int) - 接入端口</span>
+<span class="sd">        - **Protocol** (str) - 转发协议，枚举值[&quot;TCP&quot;，&quot;UDP&quot;，&quot;HTTPHTTP&quot;，&quot;HTTPSHTTP&quot;，&quot;HTTPSHTTPS&quot;]。TCP和UDP代表四层转发，其余为七层转发</span>
+
+
+<span class="sd">        **OutPublicIpInfo**</span>
+<span class="sd">        - **Area** (str) - 线路出口机房代号</span>
+<span class="sd">        - **IP** (str) - 线路出口EIP</span>
+
+
+<span class="sd">        **UGAL4Forwarder**</span>
+<span class="sd">        - **Port** (int) - 接入端口</span>
+<span class="sd">        - **Protocol** (str) - 转发协议，枚举值[&quot;TCP&quot;，&quot;UDP&quot;，&quot;HTTPHTTP&quot;，&quot;HTTPSHTTP&quot;，&quot;HTTPSHTTPS&quot;]。TCP和UDP代表四层转发，其余为七层转发</span>
+<span class="sd">        - **RSPort** (int) - RSPort，源站监听端口</span>
+
+
+<span class="sd">        **UPathSet**</span>
+<span class="sd">        - **Bandwidth** (int) - 带宽 Mbps, 1~800Mbps</span>
+<span class="sd">        - **LineFrom** (str) - 线路起点英文代号，加速区域</span>
+<span class="sd">        - **LineFromName** (str) - 线路起点中文名字，加速区域</span>
+<span class="sd">        - **LineId** (str) - 线路ID</span>
+<span class="sd">        - **LineTo** (str) - 线路对端英文代号，源站区域</span>
+<span class="sd">        - **LineToName** (str) - 线路对端中文名字，源站区域</span>
+<span class="sd">        - **UPathId** (str) - UPath 实例ID</span>
+<span class="sd">        - **UPathName** (str) - UPath名字</span>
+
+
+<span class="sd">        **UGAAInfo**</span>
+<span class="sd">        - **CName** (str) - 加速域名，请在加速区域配置您的业务域名的CName记录值为加速域名</span>
+<span class="sd">        - **Domain** (str) - 源站域名</span>
+<span class="sd">        - **IPList** (list) - 源站IP列表，多个值由半角英文逗号相隔</span>
+<span class="sd">        - **L4ForwarderSet** (list) - 见 **UGAL4Forwarder** 模型定义</span>
+<span class="sd">        - **L7ForwarderSet** (list) - 见 **UGAL7Forwarder** 模型定义</span>
+<span class="sd">        - **Location** (str) - 源站所在区域，加速实例在绑定线路后会自动设置该值。console页面上通过该值过滤加速实例可以绑定的upath实例。注意：缺少该值会导致在console上无法修改线路</span>
+<span class="sd">        - **OutPublicIpList** (list) - 见 **OutPublicIpInfo** 模型定义</span>
+<span class="sd">        - **TaskSet** (list) - 见 **UGAATask** 模型定义</span>
+<span class="sd">        - **UGAId** (str) - 加速配置实例ID</span>
+<span class="sd">        - **UGAName** (str) - 加速配置名称</span>
+<span class="sd">        - **UPathSet** (list) - 见 **UPathSet** 模型定义</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeUGAInstanceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeUGAInstance&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeUGAInstanceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.describe_upath"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.describe_upath">[docs]</a>    <span class="k">def</span> <span class="nf">describe_upath</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DescribeUPath - 获取加速线路信息</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **UPathId** (str) - 如果不填参数 返回 ProjectId 下所有的线路资源，填此参数则返回upath实例ID匹配的线路</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **UPathSet** (list) - 见 **UPathInfo** 模型定义</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **OutPublicIpInfo**</span>
+<span class="sd">        - **Area** (str) - 线路出口机房代号</span>
+<span class="sd">        - **IP** (str) - 线路出口EIP</span>
+
+
+<span class="sd">        **PathXUGAInfo**</span>
+<span class="sd">        - **Domain** (str) - 源站域名</span>
+<span class="sd">        - **IPList** (list) - 源站IP列表，多个值由半角英文逗号相隔</span>
+<span class="sd">        - **UGAId** (str) - 加速配置ID</span>
+
+
+<span class="sd">        **UPathInfo**</span>
+<span class="sd">        - **Bandwidth** (int) - 带宽，单位Mbps</span>
+<span class="sd">        - **ChargeType** (str) - 计费模式，默认为Month 按月收费,可选范围[&#39;Month&#39;,&#39;Year&#39;,&#39;Dynamic&#39;]</span>
+<span class="sd">        - **CreateTime** (int) - UPath创建的时间，10位时间戳</span>
+<span class="sd">        - **ExpireTime** (int) - UPath的过期时间，10位时间戳</span>
+<span class="sd">        - **LineFromName** (str) - 线路入口名称</span>
+<span class="sd">        - **LineId** (str) - 选择的线路</span>
+<span class="sd">        - **LineToName** (str) - 线路出口名称</span>
+<span class="sd">        - **Name** (str) - UPath实例名字</span>
+<span class="sd">        - **OutPublicIpList** (list) - 见 **OutPublicIpInfo** 模型定义</span>
+<span class="sd">        - **PostPaid** (bool) - 是否为后付费实例</span>
+<span class="sd">        - **UGAList** (list) - 见 **PathXUGAInfo** 模型定义</span>
+<span class="sd">        - **UPathId** (str) - UPath加速线路实例ID</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeUPathRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeUPath&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeUPathResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.describe_upath_template"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.describe_upath_template">[docs]</a>    <span class="k">def</span> <span class="nf">describe_upath_template</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DescribeUPathTemplate - 查询UPath的监控模板</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **UPathId** (str) - (Required) 加速线路实例ID,格式 upath-xxxx</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **DataSet** (list) - 见 **AlarmRuler** 模型定义</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **AlarmRuler**</span>
+<span class="sd">        - **AlarmFrequency** (int) - 告警探测周期，单位秒</span>
+<span class="sd">        - **AlarmStrategy** (str) - 收敛策略，可选范围 [&#39;Exponential&#39;,&#39;Continuous&#39;,&#39;Once&#39;]，分别对应指数递增、连续告警、单次告警</span>
+<span class="sd">        - **AlarmTemplateRuleId** (int) - 告警模板策略ID</span>
+<span class="sd">        - **Compare** (str) - 比较策略，可选 [&#39;GE&#39;,&#39;LE&#39;]  分别代表不小于和不大于</span>
+<span class="sd">        - **ContactGroupId** (int) - 联系组ID</span>
+<span class="sd">        - **MetricName** (str) - 告警指标名称, 所有n的个数必须一致。目前仅允许以下四项：UpathNetworkOut:出向带宽，UpathNetworkIn:入向带宽，UpathNetworkOutUsage:出向带宽使用率，UpathNetworkInUsage:入向带宽使用率</span>
+<span class="sd">        - **ResourceType** (str) - 资源类型</span>
+<span class="sd">        - **Threshold** (int) - 告警阈值，带宽使用率的阈值范围是[50,100]的正整数，带宽告警阈值为1000000的倍数, 如大于2Mbps则告警 阈值应该传 2000000</span>
+<span class="sd">        - **TriggerCount** (int) - 告警触发周期（次数）</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeUPathTemplateRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeUPathTemplate&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeUPathTemplateResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.get_global_ssh_price"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.get_global_ssh_price">[docs]</a>    <span class="k">def</span> <span class="nf">get_global_ssh_price</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;GetGlobalSSHPrice - 获取GlobalSSH价格</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **ChargeType** (str) - 计费类型：Dynamic，Month，Year</span>
+<span class="sd">        - **InstanceType** (str) - 版本类型。枚举值，Enterprise:企业版；Basic:基础版。可不填，默认为Basic。</span>
+<span class="sd">        - **Quantity** (int) - 购买周期，如果ChargeType为Month，Quantity默认为0；其他情况必须为大于0的整数</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **Price** (float) - 价格,返回单位为元</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetGlobalSSHPriceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetGlobalSSHPrice&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetGlobalSSHPriceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.get_global_ssh_update_price"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.get_global_ssh_update_price">[docs]</a>    <span class="k">def</span> <span class="nf">get_global_ssh_update_price</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;GetGlobalSSHUpdatePrice - 获取GlobalSSH升级价格</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **InstanceType** (str) - (Required) 升级后的实例类型。枚举值，Enterprise:企业版；Basic:基础版。</span>
+<span class="sd">        - **ChargeType** (str) - 计费类型：Dynamic，Month，Year。从免费版升级到付费版必须传，其他情况不需要传</span>
+<span class="sd">        - **InstanceId** (str) - 实例ID，唯一资源标识。从免费版升级到付费版可不填，其他情况必填。</span>
+<span class="sd">        - **Quantity** (int) - 购买周期，如果ChargeType为Month，Quantity可以不填默认为0；其他情况必须为正整数。</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **Price** (float) - 价格,返回单位为元。正数表示付费升级，负数表示降级退费。</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetGlobalSSHUpdatePriceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetGlobalSSHUpdatePrice&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetGlobalSSHUpdatePriceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.get_path_x_metric"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.get_path_x_metric">[docs]</a>    <span class="k">def</span> <span class="nf">get_path_x_metric</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;GetPathXMetric - 获取全球加速监控信息</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **BeginTime** (int) - (Required) 查询起始时间，10位长度时间戳</span>
+<span class="sd">        - **EndTime** (int) - (Required) 查询结束时间，10位长度时间戳</span>
+<span class="sd">        - **LineId** (str) - (Required) 具体线路id，调用DescribePathXLineConfig接口获取线路列表</span>
+<span class="sd">        - **MetricName** (list) - (Required) 查询监控的指标项。目前仅允许以下四项：NetworkOut:出向带宽，NetworkIn:入向带宽，NetworkOutUsage:出向带宽使用率，NetworkInUsage:入向带宽使用率</span>
+<span class="sd">        - **ResourceId** (str) - (Required) ResourceId，如upath ID  和 uga ID</span>
+<span class="sd">        - **ResourceType** (str) - (Required) upath:加速线路,uga:加速实例</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **DataSet** (dict) - 见 **MetricPeriod** 模型定义</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **MatricPoint**</span>
+<span class="sd">        - **Timestamp** (int) - 时间戳</span>
+<span class="sd">        - **Value** (int) - 监控点数值</span>
+
+
+<span class="sd">        **MetricPeriod**</span>
+<span class="sd">        - **NetworkIn** (list) - 见 **MatricPoint** 模型定义</span>
+<span class="sd">        - **NetworkInUsage** (list) - 见 **MatricPoint** 模型定义</span>
+<span class="sd">        - **NetworkOut** (list) - 见 **MatricPoint** 模型定义</span>
+<span class="sd">        - **NetworkOutUsage** (list) - 见 **MatricPoint** 模型定义</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetPathXMetricRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetPathXMetric&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetPathXMetricResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.modify_global_ssh_port"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.modify_global_ssh_port">[docs]</a>    <span class="k">def</span> <span class="nf">modify_global_ssh_port</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;ModifyGlobalSSHPort -</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config)</span>
+<span class="sd">        - **InstanceId** (str) - (Required)</span>
+<span class="sd">        - **Port** (int) - (Required)</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **Message** (str) -</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyGlobalSSHPortRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># build options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ModifyGlobalSSHPort&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyGlobalSSHPortResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
@@ -200,26 +854,193 @@
 <div class="viewcode-block" id="PathXClient.modify_global_ssh_remark"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.modify_global_ssh_remark">[docs]</a>    <span class="k">def</span> <span class="nf">modify_global_ssh_remark</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;ModifyGlobalSSHRemark - 修改GlobalSSH备注</span>
+        <span class="sd">&quot;&quot;&quot;ModifyGlobalSSHRemark -</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config)</span>
+<span class="sd">        - **InstanceId** (str) - (Required)</span>
+<span class="sd">        - **Remark** (str) -</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **Message** (str) -</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyGlobalSSHRemarkRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># build options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ModifyGlobalSSHRemark&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyGlobalSSHRemarkResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.modify_global_ssh_type"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.modify_global_ssh_type">[docs]</a>    <span class="k">def</span> <span class="nf">modify_global_ssh_type</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;ModifyGlobalSSHType - 修改GlobalSSH实例类型，仅支持低版本升级到高版本，不支持高版本降级到低版本</span>
 
 <span class="sd">        **Request**</span>
 
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID，如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **InstanceId** (str) - (Required) 实例ID,资源唯一标识</span>
-<span class="sd">        - **Remark** (str) - 备注信息，不填默认为空字符串</span>
+<span class="sd">        - **InstanceType** (str) - (Required) 取值范围[&quot;Enterprise&quot;,&quot;Basic&quot;]，分别对应企业版和基础版，表示升级后的实例类型。比如从Free版本升级为Basic版或Enterprise版，不可从收费版降级为免费版，或从企业版降级为基础版</span>
+<span class="sd">        - **ChargeType** (str) - 支付方式，如按月、按年、按时</span>
+<span class="sd">        - **CouponId** (str) - 可抵扣费用的券，通常不使用</span>
+<span class="sd">        - **Quantity** (str) - 购买时间，当ChargeType为Month，Quantity为0代表购买到月底</span>
 
 <span class="sd">        **Response**</span>
 
-<span class="sd">        - **Message** (str) - 接口返回消息</span>
+<span class="sd">        - **Message** (str) - 提示信息</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyGlobalSSHRemarkRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyGlobalSSHTypeRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
-        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ModifyGlobalSSHRemark&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyGlobalSSHRemarkResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div></div>
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ModifyGlobalSSHType&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyGlobalSSHTypeResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.modify_upath_bandwidth"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.modify_upath_bandwidth">[docs]</a>    <span class="k">def</span> <span class="nf">modify_upath_bandwidth</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;ModifyUPathBandwidth - 修改加速线路带宽</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Bandwidth** (int) - (Required) 线路带宽，单位Mbps。最小1Mbps,最大带宽由 DescribePathXLineConfig 接口获得。如需更大带宽，请联系产品团队。</span>
+<span class="sd">        - **UPathId** (str) - (Required) UPath 加速线路实例Id</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyUPathBandwidthRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ModifyUPathBandwidth&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyUPathBandwidthResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.modify_upath_template"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.modify_upath_template">[docs]</a>    <span class="k">def</span> <span class="nf">modify_upath_template</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;ModifyUPathTemplate - 修改UPath监控告警项</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **UPathId** (str) - (Required) 加速线路实例ID</span>
+<span class="sd">        - **AlarmFrequency** (list) - 告警探测周期，单位：秒</span>
+<span class="sd">        - **AlarmStrategy** (list) - 收敛策略，可选范围 [&#39;Exponential&#39;,&#39;Continuous&#39;,&#39;Once&#39;]，分别对应指数递增、连续告警、单次告警</span>
+<span class="sd">        - **Compare** (list) - 比较策略，可选 [&#39;GE&#39;,&#39;LE&#39;]  分别代表不小于和不大于</span>
+<span class="sd">        - **ContactGroupId** (list) - 告警组id</span>
+<span class="sd">        - **MetricName** (list) - 告警指标名称, 所有n的个数必须一致。目前仅允许以下四项：UpathNetworkOut:出向带宽，UpathNetworkIn:入向带宽，UpathNetworkOutUsage:出向带宽使用率，UpathNetworkInUsage:入向带宽使用率</span>
+<span class="sd">        - **Threshold** (list) - 告警阈值，带宽使用率的阈值范围是[50,100]的正整数，带宽告警阈值为1000000的倍数, 如大于2Mbps则告警 阈值应该传 2000000</span>
+<span class="sd">        - **TriggerCount** (list) - 告警触发周期（次数）</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyUPathTemplateRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ModifyUPathTemplate&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyUPathTemplateResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.uga_bind_upath"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.uga_bind_upath">[docs]</a>    <span class="k">def</span> <span class="nf">uga_bind_upath</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;UGABindUPath - UGA绑定UPath</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **UGAId** (str) - (Required) 加速配置实例ID，格式uga-xxxx</span>
+<span class="sd">        - **UPathId** (str) - (Required) 加速线路实例ID，格式upath-xxx</span>
+<span class="sd">        - **CouponId** (str) - 代金券</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">UGABindUPathRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;UGABindUPath&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">UGABindUPathResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.uga_un_bind_upath"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.uga_un_bind_upath">[docs]</a>    <span class="k">def</span> <span class="nf">uga_un_bind_upath</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;UGAUnBindUPath - UGA与UPath解绑</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **UGAId** (str) - (Required) 加速配置实例ID 格式uga-xxx</span>
+<span class="sd">        - **UPathId** (str) - (Required) 加速线路实例ID 格式upath-xxx</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">UGAUnBindUPathRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;UGAUnBindUPath&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">UGAUnBindUPathResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.un_bind_path_xssl"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.un_bind_path_xssl">[docs]</a>    <span class="k">def</span> <span class="nf">un_bind_path_xssl</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;UnBindPathXSSL - 解绑PathX SSL 证书</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Port** (list) - (Required) 解绑SSL证书的HTTPS端口。Port.0 Port.1格式 端口错误则解绑失败。</span>
+<span class="sd">        - **SSLId** (str) - (Required) SSL证书ID。</span>
+<span class="sd">        - **UGAId** (str) - (Required) UGA实例ID。</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">UnBindPathXSSLRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;UnBindPathXSSL&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">UnBindPathXSSLResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -283,7 +1104,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

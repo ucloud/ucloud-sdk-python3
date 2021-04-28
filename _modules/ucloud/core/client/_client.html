@@ -34,6 +34,7 @@
 <span></span><span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
 
 <span class="kn">from</span> <span class="nn">ucloud</span> <span class="kn">import</span> <span class="n">version</span>
 <span class="kn">from</span> <span class="nn">ucloud.core.client._cfg</span> <span class="kn">import</span> <span class="n">Config</span>
@@ -191,6 +192,7 @@
             <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
                 <span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_user_agent</span><span class="p">(),</span>
                 <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/x-www-form-urlencoded&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;U-Timestamp-Ms&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))),</span>
             <span class="p">},</span>
         <span class="p">)</span>
 
@@ -268,7 +270,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

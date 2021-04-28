@@ -165,8 +165,9 @@
 <span class="sd">        - **CouponId** (str) - 主机代金券ID。请通过DescribeCoupon接口查询，或登录用户中心查看</span>
 <span class="sd">        - **Disks** (list) - 见 **CreateUHostInstanceParamDisks** 模型定义</span>
 <span class="sd">        - **GPU** (int) - GPU卡核心数。仅GPU机型支持此字段（可选范围与MachineType+GpuType相关）</span>
-<span class="sd">        - **GpuType** (str) - GPU类型，枚举值[&quot;K80&quot;, &quot;P40&quot;, &quot;V100&quot;, &quot;T4&quot;, &quot;2080Ti&quot;,&quot;1080Ti&quot;]，MachineType为G时必填</span>
+<span class="sd">        - **GpuType** (str) - GPU类型，枚举值[&quot;K80&quot;, &quot;P40&quot;, &quot;V100&quot;, &quot;T4&quot;, &quot;T4S&quot;,&quot;2080Ti&quot;,&quot;2080Ti-4C&quot;,&quot;1080Ti&quot;]，MachineType为G时必填</span>
 <span class="sd">        - **HotplugFeature** (bool) - 热升级特性。True为开启，False为未开启，默认False。</span>
+<span class="sd">        - **HpcEnhanced** (bool) - HPC特性，主要涉及绑核操作。True为开启，False为未开启，默认False。</span>
 <span class="sd">        - **IsolationGroup** (str) - 硬件隔离组id。可通过DescribeIsolationGroup获取。</span>
 <span class="sd">        - **MachineType** (str) - 云主机机型（V2.0），在本字段和字段UHostType中，仅需要其中1个字段即可。枚举值[&quot;N&quot;, &quot;C&quot;, &quot;G&quot;, &quot;O&quot;, &quot;OS&quot;, &quot;OPRO&quot;, &quot;OMAX&quot;, &quot;O.BM&quot;]。参考 `云主机机型说明 &lt;https://docs.ucloud.cn/api/uhost-api/uhost_type&gt;`_ 。</span>
 <span class="sd">        - **MaxCount** (int) - 本次最大创建主机数量，取值范围是[1,100]，默认值为1。</span>
@@ -221,10 +222,17 @@
 
 
 <span class="sd">        **CreateUHostInstanceParamNetworkInterface**</span>
+<span class="sd">        - **CreateCernetIp** (bool) - 申请并绑定一个教育网EIP。True为申请并绑定，False为不会申请绑定，默认False。当前只支持具有HPC特性的机型。</span>
 <span class="sd">        - **EIP** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceEIP** 模型定义</span>
 
 
+<span class="sd">        **CreateUHostInstanceParamVirtualGpuGPUVirtualGpu**</span>
+
+
 <span class="sd">        **CreateUHostInstanceParamVolumes**</span>
+
+
+<span class="sd">        **CreateUHostInstanceParamVirtualGpu**</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -411,10 +419,12 @@
 <span class="sd">        - **GPU** (int) - GPU个数</span>
 <span class="sd">        - **HostType** (str) - 【建议不再使用】主机系列：N2，表示系列2；N1，表示系列1</span>
 <span class="sd">        - **HotplugFeature** (bool) - true: 开启热升级； false，未开启热升级</span>
+<span class="sd">        - **HpcFeature** (bool) - true: 开启 hpc 系列功能；false: 未开启</span>
 <span class="sd">        - **IPSet** (list) - 见 **UHostIPSet** 模型定义</span>
 <span class="sd">        - **IPv6Feature** (bool) - true:有ipv6特性；false，没有ipv6特性</span>
 <span class="sd">        - **ImageId** (str) - 【建议不再使用】主机的系统盘ID。</span>
 <span class="sd">        - **IsolationGroup** (str) - 隔离组id，不在隔离组则返回&quot;&quot;</span>
+<span class="sd">        - **KeyPair** (dict) - 见 **UHostKeyPair** 模型定义</span>
 <span class="sd">        - **LifeCycle** (str) - 主机的生命周期类型。目前仅支持Normal：普通；</span>
 <span class="sd">        - **MachineType** (str) - 云主机机型（新）。参考 `云主机机型说明 &lt;https://docs.ucloud.cn/api/uhost-api/uhost_type#主机概念20版本&gt;`_ 。</span>
 <span class="sd">        - **Memory** (int) - 内存大小，单位: MB</span>
@@ -426,7 +436,7 @@
 <span class="sd">        - **RdmaClusterId** (str) - RDMA集群id，仅快杰云主机返回该值；其他类型云主机返回&quot;&quot;。当云主机的此值与RSSD云盘的RdmaClusterId相同时，RSSD可以挂载到这台云主机。</span>
 <span class="sd">        - **Remark** (str) - 备注</span>
 <span class="sd">        - **RestrictMode** (str) - 仅抢占式实例返回，LowSpeed为低速模式，PowerOff为关机模式</span>
-<span class="sd">        - **State** (str) - 实例状态，枚举值：\\ &gt;初始化: Initializing; \\ &gt;启动中: Starting; \\&gt; 运行中: Running; \\&gt; 关机中: Stopping; \\ &gt;关机: Stopped \\ &gt;安装失败: Install Fail; \\ &gt;重启中: Rebooting</span>
+<span class="sd">        - **State** (str) - 实例状态，枚举值：\\ &gt;初始化: Initializing; \\ &gt;启动中: Starting; \\&gt; 运行中: Running; \\&gt; 关机中: Stopping; \\ &gt;关机: Stopped \\ &gt;安装失败: Install Fail; \\ &gt;重启中: Rebooting; \\ &gt; 未知(空字符串，获取状态超时或出错)：&quot;&quot;</span>
 <span class="sd">        - **StorageType** (str) - 【建议不再使用】主机磁盘类型。 枚举值为：\\ &gt; LocalDisk，本地磁盘; \\ &gt; UDisk 云盘。\\只要有一块磁盘为本地盘，即返回LocalDisk。</span>
 <span class="sd">        - **SubnetType** (str) - 【建议不再使用】仅北京A的云主机会返回此字段。基础网络模式：Default；子网模式：Private</span>
 <span class="sd">        - **Tag** (str) - 业务组名称</span>
@@ -461,6 +471,11 @@
 <span class="sd">        - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private</span>
 <span class="sd">        - **VPCId** (str) - IP地址对应的VPC ID。（北京一不支持，字段返回为空）</span>
 <span class="sd">        - **Weight** (int) - 当前EIP的权重。权重最大的为当前的出口IP。</span>
+
+
+<span class="sd">        **UHostKeyPair**</span>
+<span class="sd">        - **KeyPairId** (str) - 密钥对ID</span>
+<span class="sd">        - **KeyPairState** (str) - 主机密钥对状态，Normal 正常，Deleted 删除</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1276,7 +1291,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
