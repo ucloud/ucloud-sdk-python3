@@ -57,6 +57,7 @@ class CloneUDiskRequestSchema(schema.RequestSchema):
         "Name": fields.Str(required=True, dump_to="Name"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "RdmaClusterId": fields.Str(required=False, dump_to="RdmaClusterId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SnapshotService": fields.Str(
             required=False, dump_to="SnapshotService"
@@ -95,6 +96,7 @@ class CloneUDiskSnapshotRequestSchema(schema.RequestSchema):
         "Name": fields.Str(required=True, dump_to="Name"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "RdmaClusterId": fields.Str(required=False, dump_to="RdmaClusterId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Size": fields.Int(required=False, dump_to="Size"),
         "SnapshotService": fields.Str(
@@ -134,6 +136,7 @@ class CloneUDiskUDataArkRequestSchema(schema.RequestSchema):
         "Name": fields.Str(required=True, dump_to="Name"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "RdmaClusterId": fields.Str(required=False, dump_to="RdmaClusterId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Size": fields.Int(required=False, dump_to="Size"),
         "SnapshotService": fields.Str(
