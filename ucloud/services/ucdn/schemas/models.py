@@ -3,32 +3,29 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class AccessConfSchema(schema.ResponseSchema):
+    """AccessConf - 访问控制"""
+
+    fields = {
+        "IpBlacklist": fields.Str(required=False, load_from="IpBlacklist"),
+    }
+
+
 class CacheConfSchema(schema.ResponseSchema):
     """CacheConf - 缓存配置"""
 
     fields = {
-        "CacheBehavior": fields.Int(required=False, load_from="CacheBehavior"),
+        "CacheBehavior": fields.Bool(required=False, load_from="CacheBehavior"),
         "CacheTTL": fields.Int(required=False, load_from="CacheTTL"),
         "CacheUnit": fields.Str(required=False, load_from="CacheUnit"),
         "Description": fields.Str(required=False, load_from="Description"),
-        "FollowOriginRule": fields.Int(
+        "FollowOriginRule": fields.Bool(
             required=False, load_from="FollowOriginRule"
         ),
         "HttpCodePattern": fields.Str(
             required=False, load_from="HttpCodePattern"
         ),
-        "IgnoreQueryString": fields.Int(
-            required=False, load_from="IgnoreQueryString"
-        ),
         "PathPattern": fields.Str(required=False, load_from="PathPattern"),
-    }
-
-
-class AccessConfSchema(schema.ResponseSchema):
-    """AccessConf - 访问控制"""
-
-    fields = {
-        "IpBlacklist": fields.Str(required=False, load_from="IpBlacklist")
     }
 
 
@@ -96,7 +93,7 @@ class BandwidthInfoSchema(schema.ResponseSchema):
     """BandwidthInfo - BandwidthInfo"""
 
     fields = {
-        "CdnBandwidth": fields.Str(required=False, load_from="CdnBandwidth"),
+        "CdnBandwidth": fields.Float(required=False, load_from="CdnBandwidth"),
         "Time": fields.Int(required=False, load_from="Time"),
     }
 
@@ -186,7 +183,8 @@ class HttpCodeV2DetailSchema(schema.ResponseSchema):
         "Http507": fields.Int(required=False, load_from="Http507"),
         "Http509": fields.Int(required=False, load_from="Http509"),
         "Http510": fields.Int(required=False, load_from="Http510"),
-        "Time": fields.Int(required=True, load_from="Time"),
+        "Time": fields.Int(required=False, load_from="Time"),
+        "Total": fields.Int(required=False, load_from="Total"),
     }
 
 
@@ -199,6 +197,156 @@ class RequestInfoSchema(schema.ResponseSchema):
             required=False, load_from="OriginRequest"
         ),
         "Time": fields.Int(required=False, load_from="Time"),
+    }
+
+
+class BandwidthTrafficInfoSchema(schema.ResponseSchema):
+    """BandwidthTrafficInfo - BandwidthTrafficInfo"""
+
+    fields = {
+        "CdnBandwidth": fields.Float(required=True, load_from="CdnBandwidth"),
+        "Time": fields.Int(required=True, load_from="Time"),
+        "Traffic": fields.Float(required=True, load_from="Traffic"),
+    }
+
+
+class ReferConfSchema(schema.ResponseSchema):
+    """ReferConf - refer配置"""
+
+    fields = {
+        "NullRefer": fields.Int(required=False, load_from="NullRefer"),
+        "ReferList": fields.List(fields.Str()),
+        "ReferType": fields.Int(required=False, load_from="ReferType"),
+    }
+
+
+class CacheKeyInfoSchema(schema.ResponseSchema):
+    """CacheKeyInfo - 忽略参数缓存配置"""
+
+    fields = {
+        "Ignore": fields.Bool(required=False, load_from="Ignore"),
+        "PathPattern": fields.Str(required=False, load_from="PathPattern"),
+        "QueryString": fields.Str(required=False, load_from="QueryString"),
+    }
+
+
+class AccessControlConfSchema(schema.ResponseSchema):
+    """AccessControlConf - 访问控制配置参数"""
+
+    fields = {
+        "IpBlackList": fields.List(fields.Str()),
+        "ReferConf": ReferConfSchema(),
+    }
+
+
+class OriginConfSchema(schema.ResponseSchema):
+    """OriginConf - 回源配置"""
+
+    fields = {
+        "BackupOriginEnable": fields.Bool(
+            required=False, load_from="BackupOriginEnable"
+        ),
+        "BackupOriginHost": fields.Str(
+            required=False, load_from="BackupOriginHost"
+        ),
+        "BackupOriginIpList": fields.List(fields.Str()),
+        "OriginErrorCode": fields.Str(
+            required=False, load_from="OriginErrorCode"
+        ),
+        "OriginErrorNum": fields.Int(
+            required=False, load_from="OriginErrorNum"
+        ),
+        "OriginFollow301": fields.Int(
+            required=False, load_from="OriginFollow301"
+        ),
+        "OriginHost": fields.Str(required=False, load_from="OriginHost"),
+        "OriginIpList": fields.List(fields.Str()),
+        "OriginPort": fields.Int(required=False, load_from="OriginPort"),
+        "OriginProtocol": fields.Str(
+            required=False, load_from="OriginProtocol"
+        ),
+    }
+
+
+class CacheAllConfigSchema(schema.ResponseSchema):
+    """CacheAllConfig - 缓存相关的配置"""
+
+    fields = {
+        "CacheHost": fields.Str(required=False, load_from="CacheHost"),
+        "CacheKeyList": fields.List(CacheKeyInfoSchema()),
+        "CacheList": fields.List(CacheConfSchema()),
+        "HttpCodeCacheList": fields.List(CacheConfSchema()),
+    }
+
+
+class AdvancedConfSchema(schema.ResponseSchema):
+    """AdvancedConf - 域名高级配置"""
+
+    fields = {
+        "Http2Https": fields.Bool(required=False, load_from="Http2Https"),
+        "HttpClientHeader": fields.List(fields.Str()),
+        "HttpOriginHeader": fields.List(fields.Str()),
+    }
+
+
+class DomainConfigInfoSchema(schema.ResponseSchema):
+    """DomainConfigInfo - 更新域名配置"""
+
+    fields = {
+        "AccessControlConf": AccessControlConfSchema(),
+        "AdvancedConf": AdvancedConfSchema(),
+        "AreaCode": fields.Str(required=True, load_from="AreaCode"),
+        "CacheConf": CacheAllConfigSchema(),
+        "CdnType": fields.Str(required=True, load_from="CdnType"),
+        "CertNameAbroad": fields.Str(required=True, load_from="CertNameAbroad"),
+        "CertNameCn": fields.Str(required=True, load_from="CertNameCn"),
+        "Cname": fields.Str(required=True, load_from="Cname"),
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "Domain": fields.Str(required=False, load_from="Domain"),
+        "DomainId": fields.Str(required=False, load_from="DomainId"),
+        "HttpsStatusAbroad": fields.Str(
+            required=True, load_from="HttpsStatusAbroad"
+        ),
+        "HttpsStatusCn": fields.Str(required=True, load_from="HttpsStatusCn"),
+        "OriginConf": OriginConfSchema(),
+        "Status": fields.Str(required=True, load_from="Status"),
+        "Tag": fields.Str(required=True, load_from="Tag"),
+        "TestUrl": fields.Str(required=True, load_from="TestUrl"),
+    }
+
+
+class HitRateInfoV2Schema(schema.ResponseSchema):
+    """HitRateInfoV2 - HitRateInfoV2"""
+
+    fields = {
+        "FlowHitRate": fields.Float(required=False, load_from="FlowHitRate"),
+        "RequestHitRate": fields.Float(
+            required=False, load_from="RequestHitRate"
+        ),
+        "Time": fields.Int(required=False, load_from="Time"),
+    }
+
+
+class HttpCodeInfoV2Schema(schema.ResponseSchema):
+    """HttpCodeInfoV2 - HttpCodeInfoV2"""
+
+    fields = {
+        "Http1XX": HttpCodeV2DetailSchema(),
+        "Http2XX": HttpCodeV2DetailSchema(),
+        "Http3XX": HttpCodeV2DetailSchema(),
+        "Http4XX": HttpCodeV2DetailSchema(),
+        "Http5XX": HttpCodeV2DetailSchema(),
+        "Http6XX": HttpCodeV2DetailSchema(),
+        "Time": fields.Int(required=False, load_from="Time"),
+    }
+
+
+class DomainBaseInfoSchema(schema.ResponseSchema):
+    """DomainBaseInfo - 域名基本信息"""
+
+    fields = {
+        "Domain": fields.Str(required=True, load_from="Domain"),
+        "DomainId": fields.Str(required=True, load_from="DomainId"),
     }
 
 
@@ -221,6 +369,15 @@ class LogSetListSchema(schema.ResponseSchema):
     }
 
 
+class RequestInfoV2Schema(schema.ResponseSchema):
+    """RequestInfoV2 - RequestInfoV2"""
+
+    fields = {
+        "CdnRequest": fields.Float(required=False, load_from="CdnRequest"),
+        "Time": fields.Int(required=False, load_from="Time"),
+    }
+
+
 class UcdnDomainTrafficSetSchema(schema.ResponseSchema):
     """UcdnDomainTrafficSet - GetUcdnDomainTraffic"""
 
@@ -239,12 +396,49 @@ class BandwidthInfoDetailSchema(schema.ResponseSchema):
     }
 
 
+class ProIspBandwidthListSchema(schema.ResponseSchema):
+    """ProIspBandwidthList - 省份带宽流量实例表"""
+
+    fields = {
+        "CdnBandwidth": fields.Float(required=False, load_from="CdnBandwidth"),
+        "Time": fields.Int(required=False, load_from="Time"),
+        "Traffic": fields.Float(required=False, load_from="Traffic"),
+    }
+
+
+class ProIspBandwidthSetSchema(schema.ResponseSchema):
+    """ProIspBandwidthSet - 按省份的带宽流量实例表"""
+
+    fields = {
+        "BandwidthTrafficList": fields.List(ProIspBandwidthListSchema()),
+        "Province": fields.Str(required=True, load_from="Province"),
+    }
+
+
+class ProIspRequestListV2Schema(schema.ResponseSchema):
+    """ProIspRequestListV2 - 省份请求数实例表"""
+
+    fields = {
+        "CdnRequest": fields.Float(required=False, load_from="CdnRequest"),
+        "Time": fields.Int(required=False, load_from="Time"),
+    }
+
+
+class ProIspRequestNumSetV2Schema(schema.ResponseSchema):
+    """ProIspRequestNumSetV2 - 按省份的请求数实例表"""
+
+    fields = {
+        "Province": fields.Str(required=True, load_from="Province"),
+        "RequestList": fields.List(ProIspRequestListV2Schema()),
+    }
+
+
 class TrafficSetSchema(schema.ResponseSchema):
     """TrafficSet - GetUcdnTraffic"""
 
     fields = {
         "Areacode": fields.Str(required=False, load_from="Areacode"),
-        "TrafficLeft": fields.Str(required=False, load_from="TrafficLeft"),
-        "TrafficTotal": fields.Str(required=False, load_from="TrafficTotal"),
-        "TrafficUsed": fields.Str(required=False, load_from="TrafficUsed"),
+        "TrafficLeft": fields.Float(required=False, load_from="TrafficLeft"),
+        "TrafficTotal": fields.Float(required=False, load_from="TrafficTotal"),
+        "TrafficUsed": fields.Float(required=False, load_from="TrafficUsed"),
     }
