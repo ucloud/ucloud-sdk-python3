@@ -101,10 +101,10 @@ IPSecVPN
    :members:
 
 
-ISMS
+UDDB
 ----
 
-.. autoclass:: ucloud.services.isms.client.ISMSClient
+.. autoclass:: ucloud.services.uddb.client.UDDBClient
    :members:
 
 
@@ -112,13 +112,6 @@ UFS
 ---
 
 .. autoclass:: ucloud.services.ufs.client.UFSClient
-   :members:
-
-
-UGN
----
-
-.. autoclass:: ucloud.services.ugn.client.UGNClient
    :members:
 
 
@@ -133,13 +126,6 @@ UK8S
 ----
 
 .. autoclass:: ucloud.services.uk8s.client.UK8SClient
-   :members:
-
-
-URocketMQ
----------
-
-.. autoclass:: ucloud.services.urocketmq.client.URocketMQClient
    :members:
 
 

@@ -42,16 +42,6 @@ class Client(client.Client):
             self.logger,
         )
 
-    def isms(self):
-        from ucloud.services.isms.client import ISMSClient
-
-        return ISMSClient(
-            self._auto_config("isms"),
-            self.transport,
-            self.middleware,
-            self.logger,
-        )
-
     def stepflow(self):
         from ucloud.services.stepflow.client import StepFlowClient
 
@@ -92,6 +82,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def uddb(self):
+        from ucloud.services.uddb.client import UDDBClient
+
+        return UDDBClient(
+            self._auto_config("uddb"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def udpn(self):
         from ucloud.services.udpn.client import UDPNClient
 
@@ -117,16 +117,6 @@ class Client(client.Client):
 
         return UFSClient(
             self._auto_config("ufs"),
-            self.transport,
-            self.middleware,
-            self.logger,
-        )
-
-    def ugn(self):
-        from ucloud.services.ugn.client import UGNClient
-
-        return UGNClient(
-            self._auto_config("ugn"),
             self.transport,
             self.middleware,
             self.logger,
@@ -197,16 +187,6 @@ class Client(client.Client):
 
         return UPHostClient(
             self._auto_config("uphost"),
-            self.transport,
-            self.middleware,
-            self.logger,
-        )
-
-    def urocketmq(self):
-        from ucloud.services.urocketmq.client import URocketMQClient
-
-        return URocketMQClient(
-            self._auto_config("urocketmq"),
             self.transport,
             self.middleware,
             self.logger,
