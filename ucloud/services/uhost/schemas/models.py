@@ -70,6 +70,15 @@ class UHostIPSetSchema(schema.ResponseSchema):
     }
 
 
+class UHostKeyPairSchema(schema.ResponseSchema):
+    """UHostKeyPair - 主机密钥信息"""
+
+    fields = {
+        "KeyPairId": fields.Str(required=False, load_from="KeyPairId"),
+        "KeyPairState": fields.Str(required=False, load_from="KeyPairState"),
+    }
+
+
 class UHostDiskSetSchema(schema.ResponseSchema):
     """UHostDiskSet - DescribeUHostInstance"""
 
@@ -110,12 +119,14 @@ class UHostInstanceSetSchema(schema.ResponseSchema):
         "HotplugFeature": fields.Bool(
             required=False, load_from="HotplugFeature"
         ),
+        "HpcFeature": fields.Bool(required=False, load_from="HpcFeature"),
         "IPSet": fields.List(UHostIPSetSchema()),
         "IPv6Feature": fields.Bool(required=False, load_from="IPv6Feature"),
         "ImageId": fields.Str(required=False, load_from="ImageId"),
         "IsolationGroup": fields.Str(
             required=False, load_from="IsolationGroup"
         ),
+        "KeyPair": UHostKeyPairSchema(),
         "LifeCycle": fields.Str(required=False, load_from="LifeCycle"),
         "MachineType": fields.Str(required=False, load_from="MachineType"),
         "Memory": fields.Int(required=False, load_from="Memory"),
