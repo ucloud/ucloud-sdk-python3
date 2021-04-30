@@ -46,6 +46,16 @@ class NatGWIPResInfoSchema(schema.ResponseSchema):
     }
 
 
+class NatGatewaySubnetSetSchema(schema.ResponseSchema):
+    """NatGatewaySubnetSet - natgw里面的子网信息"""
+
+    fields = {
+        "Subnet": fields.Str(required=True, load_from="Subnet"),
+        "SubnetName": fields.Str(required=True, load_from="SubnetName"),
+        "SubnetworkId": fields.Str(required=True, load_from="SubnetworkId"),
+    }
+
+
 class NatGatewayIPSetSchema(schema.ResponseSchema):
     """NatGatewayIPSet - IPSet信息"""
 
@@ -55,16 +65,6 @@ class NatGatewayIPSetSchema(schema.ResponseSchema):
         "EIPId": fields.Str(required=True, load_from="EIPId"),
         "IPResInfo": fields.List(NatGWIPResInfoSchema()),
         "Weight": fields.Int(required=True, load_from="Weight"),
-    }
-
-
-class NatGatewaySubnetSetSchema(schema.ResponseSchema):
-    """NatGatewaySubnetSet - natgw里面的子网信息"""
-
-    fields = {
-        "Subnet": fields.Str(required=True, load_from="Subnet"),
-        "SubnetName": fields.Str(required=True, load_from="SubnetName"),
-        "SubnetworkId": fields.Str(required=True, load_from="SubnetworkId"),
     }
 
 
@@ -192,6 +192,17 @@ class RouteTableInfoSchema(schema.ResponseSchema):
         "Tag": fields.Str(required=False, load_from="Tag"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
         "VPCName": fields.Str(required=False, load_from="VPCName"),
+    }
+
+
+class NATGWSnatRuleSchema(schema.ResponseSchema):
+    """NATGWSnatRule - Nat网关的Snat规则"""
+
+    fields = {
+        "Name": fields.Str(required=True, load_from="Name"),
+        "SnatIp": fields.Str(required=True, load_from="SnatIp"),
+        "SourceIp": fields.Str(required=True, load_from="SourceIp"),
+        "SubnetworkId": fields.Str(required=True, load_from="SubnetworkId"),
     }
 
 
@@ -338,6 +349,19 @@ class GetAvailableResourceForPolicyDataSetSchema(schema.ResponseSchema):
         "PrivateIP": fields.Str(required=True, load_from="PrivateIP"),
         "ResourceId": fields.Str(required=True, load_from="ResourceId"),
         "ResourceType": fields.Str(required=True, load_from="ResourceType"),
+    }
+
+
+class GetAvailableResourceForSnatRuleDataSetSchema(schema.ResponseSchema):
+    """GetAvailableResourceForSnatRuleDataSet -"""
+
+    fields = {
+        "PrivateIP": fields.Str(required=False, load_from="PrivateIP"),
+        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
+        "ResourceName": fields.Str(required=False, load_from="ResourceName"),
+        "ResourceType": fields.Str(required=False, load_from="ResourceType"),
+        "SubnetworkId": fields.Str(required=False, load_from="SubnetworkId"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
     }
 
 

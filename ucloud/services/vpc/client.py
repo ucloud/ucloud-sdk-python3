@@ -13,6 +13,38 @@ class VPCClient(Client):
     ):
         super(VPCClient, self).__init__(config, transport, middleware, logger)
 
+    def add_snat_rule(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """AddSnatRule - 对于绑定了多个EIP的NAT网关，您可以将一个子网下的某台云主机映射到某个特定的EIP上，规则生效后，则该云主机通过该特定的EIP访问互联网。
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **NATGWId** (str) - (Required) NAT网关的ID
+        - **SnatIp** (str) - (Required) EIP的ip地址,例如106.75.xx.xx
+        - **SourceIp** (str) - (Required) 需要出外网的私网IP地址，例如10.9.7.xx
+        - **Name** (str) - snat规则名称，默认为“出口规则”
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.AddSnatRuleRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("AddSnatRule", d, **kwargs)
+        return apis.AddSnatRuleResponseSchema().loads(resp)
+
     def add_vpc_network(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -721,6 +753,33 @@ class VPCClient(Client):
         resp = self.invoke("DeleteSecondaryIp", d, **kwargs)
         return apis.DeleteSecondaryIpResponseSchema().loads(resp)
 
+    def delete_snat_rule(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteSnatRule - 删除指定的出口规则（SNAT规则）
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **NATGWId** (str) - (Required) NAT网关的ID
+        - **SourceIp** (str) - (Required) 需要出外网的私网IP地址，例如10.9.7.xx
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteSnatRuleRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteSnatRule", d, **kwargs)
+        return apis.DeleteSnatRuleResponseSchema().loads(resp)
+
     def delete_subnet(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -852,18 +911,18 @@ class VPCClient(Client):
         - **OperatorName** (str) - IP的运营商信息
 
 
-        **NatGatewaySubnetSet**
-        - **Subnet** (str) - 子网网段
-        - **SubnetName** (str) - 子网名字
-        - **SubnetworkId** (str) - 子网id
-
-
         **NatGatewayIPSet**
         - **Bandwidth** (int) - 带宽
         - **BandwidthType** (str) - EIP带宽类型
         - **EIPId** (str) - 外网IP的 EIPId
         - **IPResInfo** (list) - 见 **NatGWIPResInfo** 模型定义
         - **Weight** (int) - 权重为100的为出口
+
+
+        **NatGatewaySubnetSet**
+        - **Subnet** (str) - 子网网段
+        - **SubnetName** (str) - 子网名字
+        - **SubnetworkId** (str) - 子网id
 
 
         **NatGatewayDataSet**
@@ -1246,6 +1305,47 @@ class VPCClient(Client):
         resp = self.invoke("DescribeSecondaryIp", d, **kwargs)
         return apis.DescribeSecondaryIpResponseSchema().loads(resp)
 
+    def describe_snat_rule(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeSnatRule - 获取Nat网关的出口规则（SNAT规则）
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **NATGWId** (str) - (Required) NAT网关的ID
+        - **Limit** (str) - 分页，默认为20
+        - **Offset** (str) - 偏移，默认为0
+        - **SnatIp** (str) - EIP的ip地址,例如106.75.xx.xx
+        - **SourceIp** (str) - 需要出外网的私网IP地址，例如10.9.7.xx
+
+        **Response**
+
+        - **DataSet** (list) - 见 **NATGWSnatRule** 模型定义
+        - **TotalCount** (int) - 规则数量
+
+        **Response Model**
+
+        **NATGWSnatRule**
+        - **Name** (str) - snat规则名称
+        - **SnatIp** (str) - EIP地址，如106.76.xx.xx
+        - **SourceIp** (str) - 资源的内网IP地址
+        - **SubnetworkId** (str) - SourceIp所属的子网id
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeSnatRuleRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeSnatRule", d, **kwargs)
+        return apis.DescribeSnatRuleResponseSchema().loads(resp)
+
     def describe_subnet(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1487,8 +1587,10 @@ class VPCClient(Client):
         **Request**
 
         - **ProjectId** (str) - (Config) 项目id
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **NATGWIds** (list) - (Required) NAT网关的Id
+        - **Limit** (int) - 数据分页值, 默认为20
+        - **Offset** (int) - 数据偏移量, 默认为0
 
         **Response**
 
@@ -1561,10 +1663,10 @@ class VPCClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **NATGWId** (str) - (Required) NAT网关Id
-        - **Limit** (int) - 返回数据长度，默认为10000
+        - **Limit** (int) - 返回数据长度，默认为20
         - **Offset** (int) - 列表起始位置偏移量，默认为0
 
         **Response**
@@ -1591,6 +1693,49 @@ class VPCClient(Client):
         resp = self.invoke("GetAvailableResourceForPolicy", d, **kwargs)
         return apis.GetAvailableResourceForPolicyResponseSchema().loads(resp)
 
+    def get_available_resource_for_snat_rule(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetAvailableResourceForSnatRule - 获取可用于添加snat规则（出口规则）的资源列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **NATGWId** (str) - (Required) NAT网关Id
+        - **Limit** (int) - 数据分页值, 默认为20
+        - **Offset** (int) - 数据偏移量, 默认为0
+
+        **Response**
+
+        - **Action** (str) - 操作名称
+        - **DataSet** (list) - 见 **GetAvailableResourceForSnatRuleDataSet** 模型定义
+        - **RetCode** (str) - 返回值
+        - **TotalCount** (int) - 总数
+
+        **Response Model**
+
+        **GetAvailableResourceForSnatRuleDataSet**
+        - **PrivateIP** (str) - 资源内网IP
+        - **ResourceId** (str) - 资源ID
+        - **ResourceName** (str) - 资源名称
+        - **ResourceType** (str) - 资源类型
+        - **SubnetworkId** (str) - 资源所属VPC的ID
+        - **VPCId** (str) - 资源所属子网的ID
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetAvailableResourceForSnatRuleRequestSchema().dumps(d)
+
+        resp = self.invoke("GetAvailableResourceForSnatRule", d, **kwargs)
+        return apis.GetAvailableResourceForSnatRuleResponseSchema().loads(resp)
+
     def get_available_resource_for_white_list(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1601,6 +1746,8 @@ class VPCClient(Client):
         - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **NATGWId** (str) - (Required) NAT网关Id
+        - **Limit** (int) - 数据分页值, 默认为20
+        - **Offset** (int) - 数据偏移量, 默认为0
 
         **Response**
 
@@ -1943,6 +2090,35 @@ class VPCClient(Client):
 
         resp = self.invoke("UpdateRouteTableAttribute", d, **kwargs)
         return apis.UpdateRouteTableAttributeResponseSchema().loads(resp)
+
+    def update_snat_rule(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateSnatRule - 更新指定的出口规则（SNAT规则）
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **NATGWId** (str) - (Required) NAT网关的ID，
+        - **SnatIp** (str) - (Required) EIP的ip地址,例如106.75.xx.xx
+        - **SourceIp** (str) - (Required) 需要出外网的私网IP地址，例如10.9.7.xx
+        - **Name** (str) - snat名称，即出口规则名称
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateSnatRuleRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateSnatRule", d, **kwargs)
+        return apis.UpdateSnatRuleResponseSchema().loads(resp)
 
     def update_subnet_attribute(
         self, req: typing.Optional[dict] = None, **kwargs
