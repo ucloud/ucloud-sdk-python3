@@ -112,6 +112,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def uec(self):
+        from ucloud.services.uec.client import UECClient
+
+        return UECClient(
+            self._auto_config("uec"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def ufs(self):
         from ucloud.services.ufs.client import UFSClient
 
