@@ -9,6 +9,32 @@ from ucloud.services.vpc.schemas import models
 
 
 """
+API: AddSnatRule
+
+对于绑定了多个EIP的NAT网关，您可以将一个子网下的某台云主机映射到某个特定的EIP上，规则生效后，则该云主机通过该特定的EIP访问互联网。
+"""
+
+
+class AddSnatRuleRequestSchema(schema.RequestSchema):
+    """AddSnatRule - 对于绑定了多个EIP的NAT网关，您可以将一个子网下的某台云主机映射到某个特定的EIP上，规则生效后，则该云主机通过该特定的EIP访问互联网。"""
+
+    fields = {
+        "NATGWId": fields.Str(required=True, dump_to="NATGWId"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SnatIp": fields.Str(required=True, dump_to="SnatIp"),
+        "SourceIp": fields.Str(required=True, dump_to="SourceIp"),
+    }
+
+
+class AddSnatRuleResponseSchema(schema.ResponseSchema):
+    """AddSnatRule - 对于绑定了多个EIP的NAT网关，您可以将一个子网下的某台云主机映射到某个特定的EIP上，规则生效后，则该云主机通过该特定的EIP访问互联网。"""
+
+    fields = {}
+
+
+"""
 API: AddVPCNetwork
 
 添加VPC网段
@@ -610,6 +636,30 @@ class DeleteSecondaryIpResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DeleteSnatRule
+
+删除指定的出口规则（SNAT规则）
+"""
+
+
+class DeleteSnatRuleRequestSchema(schema.RequestSchema):
+    """DeleteSnatRule - 删除指定的出口规则（SNAT规则）"""
+
+    fields = {
+        "NATGWId": fields.Str(required=True, dump_to="NATGWId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SourceIp": fields.Str(required=True, dump_to="SourceIp"),
+    }
+
+
+class DeleteSnatRuleResponseSchema(schema.ResponseSchema):
+    """DeleteSnatRule - 删除指定的出口规则（SNAT规则）"""
+
+    fields = {}
+
+
+"""
 API: DeleteSubnet
 
 删除子网
@@ -947,6 +997,38 @@ class DescribeSecondaryIpResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeSnatRule
+
+获取Nat网关的出口规则（SNAT规则）
+"""
+
+
+class DescribeSnatRuleRequestSchema(schema.RequestSchema):
+    """DescribeSnatRule - 获取Nat网关的出口规则（SNAT规则）"""
+
+    fields = {
+        "Limit": fields.Str(required=False, dump_to="Limit"),
+        "NATGWId": fields.Str(required=True, dump_to="NATGWId"),
+        "Offset": fields.Str(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SnatIp": fields.Str(required=False, dump_to="SnatIp"),
+        "SourceIp": fields.Str(required=False, dump_to="SourceIp"),
+    }
+
+
+class DescribeSnatRuleResponseSchema(schema.ResponseSchema):
+    """DescribeSnatRule - 获取Nat网关的出口规则（SNAT规则）"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.NATGWSnatRuleSchema(), required=True, load_from="DataSet"
+        ),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
 API: DescribeSubnet
 
 获取子网信息
@@ -1123,7 +1205,9 @@ class DescribeWhiteListResourceRequestSchema(schema.RequestSchema):
     """DescribeWhiteListResource - 展示NAT网关白名单资源列表"""
 
     fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
         "NATGWIds": fields.List(fields.Str()),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
     }
@@ -1198,6 +1282,40 @@ class GetAvailableResourceForPolicyResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetAvailableResourceForSnatRule
+
+获取可用于添加snat规则（出口规则）的资源列表
+"""
+
+
+class GetAvailableResourceForSnatRuleRequestSchema(schema.RequestSchema):
+    """GetAvailableResourceForSnatRule - 获取可用于添加snat规则（出口规则）的资源列表"""
+
+    fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "NATGWId": fields.Str(required=True, dump_to="NATGWId"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class GetAvailableResourceForSnatRuleResponseSchema(schema.ResponseSchema):
+    """GetAvailableResourceForSnatRule - 获取可用于添加snat规则（出口规则）的资源列表"""
+
+    fields = {
+        "Action": fields.Str(required=True, load_from="Action"),
+        "DataSet": fields.List(
+            models.GetAvailableResourceForSnatRuleDataSetSchema(),
+            required=True,
+            load_from="DataSet",
+        ),
+        "RetCode": fields.Str(required=True, load_from="RetCode"),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
 API: GetAvailableResourceForWhiteList
 
 获取NAT网关可添加白名单的资源
@@ -1208,7 +1326,9 @@ class GetAvailableResourceForWhiteListRequestSchema(schema.RequestSchema):
     """GetAvailableResourceForWhiteList - 获取NAT网关可添加白名单的资源"""
 
     fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
         "NATGWId": fields.Str(required=True, dump_to="NATGWId"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
     }
@@ -1493,6 +1613,32 @@ class UpdateRouteTableAttributeRequestSchema(schema.RequestSchema):
 
 class UpdateRouteTableAttributeResponseSchema(schema.ResponseSchema):
     """UpdateRouteTableAttribute - 更新路由表基本信息"""
+
+    fields = {}
+
+
+"""
+API: UpdateSnatRule
+
+更新指定的出口规则（SNAT规则）
+"""
+
+
+class UpdateSnatRuleRequestSchema(schema.RequestSchema):
+    """UpdateSnatRule - 更新指定的出口规则（SNAT规则）"""
+
+    fields = {
+        "NATGWId": fields.Str(required=True, dump_to="NATGWId"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SnatIp": fields.Str(required=True, dump_to="SnatIp"),
+        "SourceIp": fields.Str(required=True, dump_to="SourceIp"),
+    }
+
+
+class UpdateSnatRuleResponseSchema(schema.ResponseSchema):
+    """UpdateSnatRule - 更新指定的出口规则（SNAT规则）"""
 
     fields = {}
 

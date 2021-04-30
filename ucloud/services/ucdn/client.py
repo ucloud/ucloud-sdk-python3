@@ -543,12 +543,6 @@ class UCDNClient(Client):
 
         **Response Model**
 
-        **CacheKeyInfo**
-        - **Ignore** (bool) - 是否忽略
-        - **PathPattern** (str) - 路径模式，支持正则
-        - **QueryString** (str) - 自定义变量,以$符号开头，多个变量用加号(+)连接，$querystring表示所有变量
-
-
         **CacheConf**
         - **CacheBehavior** (bool) - 是否缓存，true为缓存，flase为不缓存。为flase的情况下，CacheTTL和CacheUnit强制不生效
         - **CacheTTL** (int) - 缓存时间
@@ -559,10 +553,34 @@ class UCDNClient(Client):
         - **PathPattern** (str) - 路径模式，支持正则
 
 
+        **CacheKeyInfo**
+        - **Ignore** (bool) - 是否忽略
+        - **PathPattern** (str) - 路径模式，支持正则
+        - **QueryString** (str) - 自定义变量,以$符号开头，多个变量用加号(+)连接，$querystring表示所有变量
+
+
         **ReferConf**
         - **NullRefer** (int) - ReferType为白名单时（删除），NullRefer为0代表不允许NULL refer访问，为1代表允许Null refer访问
         - **ReferList** (list) - Refer防盗链规则列表，支持正则表达式
         - **ReferType** (int) - Refer防盗链配置  0白名单，1黑名单
+
+
+        **AdvancedConf**
+        - **Http2Https** (bool) - http转https回源 true是，false否
+        - **HttpClientHeader** (list) - 客户端响应http头列表
+        - **HttpOriginHeader** (list) - 源站http头列表
+
+
+        **CacheAllConfig**
+        - **CacheHost** (str) - 缓存Host，不同的域名可以配置为同一个CacheHost来实现缓存共享，默认为加速域名
+        - **CacheKeyList** (list) - 见 **CacheKeyInfo** 模型定义
+        - **CacheList** (list) - 见 **CacheConf** 模型定义
+        - **HttpCodeCacheList** (list) - 见 **CacheConf** 模型定义
+
+
+        **AccessControlConf**
+        - **IpBlackList** (list) - ip黑名单，多个ip，可表示为：IpBlackList.0=1.1.1.1，IpBlackList.1=2.2.2.2
+        - **ReferConf** (dict) - 见 **ReferConf** 模型定义
 
 
         **OriginConf**
@@ -576,24 +594,6 @@ class UCDNClient(Client):
         - **OriginIpList** (list) - 源站ip即cdn服务器回源访问的ip地址。多个源站ip，可以这样表述，如：["1.1.1.1","2.2.2.2"]
         - **OriginPort** (int) - 回源端口
         - **OriginProtocol** (str) - 源站协议http，http|https   默认http
-
-
-        **CacheAllConfig**
-        - **CacheHost** (str) - 缓存Host，不同的域名可以配置为同一个CacheHost来实现缓存共享，默认为加速域名
-        - **CacheKeyList** (list) - 见 **CacheKeyInfo** 模型定义
-        - **CacheList** (list) - 见 **CacheConf** 模型定义
-        - **HttpCodeCacheList** (list) - 见 **CacheConf** 模型定义
-
-
-        **AdvancedConf**
-        - **Http2Https** (bool) - http转https回源 true是，false否
-        - **HttpClientHeader** (list) - 客户端响应http头列表
-        - **HttpOriginHeader** (list) - 源站http头列表
-
-
-        **AccessControlConf**
-        - **IpBlackList** (list) - ip黑名单，多个ip，可表示为：IpBlackList.0=1.1.1.1，IpBlackList.1=2.2.2.2
-        - **ReferConf** (dict) - 见 **ReferConf** 模型定义
 
 
         **DomainConfigInfo**
