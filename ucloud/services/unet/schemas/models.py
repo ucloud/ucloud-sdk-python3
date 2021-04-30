@@ -65,22 +65,6 @@ class UnetBandwidthUsageEIPSetSchema(schema.ResponseSchema):
     }
 
 
-class ShareBandwidthSetSchema(schema.ResponseSchema):
-    """ShareBandwidthSet - DescribeEIP"""
-
-    fields = {
-        "ShareBandwidth": fields.Int(
-            required=False, load_from="ShareBandwidth"
-        ),
-        "ShareBandwidthId": fields.Str(
-            required=False, load_from="ShareBandwidthId"
-        ),
-        "ShareBandwidthName": fields.Str(
-            required=False, load_from="ShareBandwidthName"
-        ),
-    }
-
-
 class UnetEIPResourceSetSchema(schema.ResponseSchema):
     """UnetEIPResourceSet - DescribeEIP"""
 
@@ -98,6 +82,22 @@ class UnetEIPResourceSetSchema(schema.ResponseSchema):
         ),
         "SubResourceType": fields.Str(
             required=False, load_from="SubResourceType"
+        ),
+    }
+
+
+class ShareBandwidthSetSchema(schema.ResponseSchema):
+    """ShareBandwidthSet - DescribeEIP"""
+
+    fields = {
+        "ShareBandwidth": fields.Int(
+            required=False, load_from="ShareBandwidth"
+        ),
+        "ShareBandwidthId": fields.Str(
+            required=False, load_from="ShareBandwidthId"
+        ),
+        "ShareBandwidthName": fields.Str(
+            required=False, load_from="ShareBandwidthName"
         ),
     }
 
