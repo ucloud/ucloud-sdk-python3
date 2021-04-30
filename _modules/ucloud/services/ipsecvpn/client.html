@@ -48,6 +48,209 @@
             <span class="n">config</span><span class="p">,</span> <span class="n">transport</span><span class="p">,</span> <span class="n">middleware</span><span class="p">,</span> <span class="n">logger</span>
         <span class="p">)</span>
 
+<div class="viewcode-block" id="IPSecVPNClient.create_remote_vpn_gateway"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ipsecvpn.client.IPSecVPNClient.create_remote_vpn_gateway">[docs]</a>    <span class="k">def</span> <span class="nf">create_remote_vpn_gateway</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;CreateRemoteVPNGateway - 创建客户VPN网关</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **RemoteVPNGatewayAddr** (str) - (Required) 客户VPN网关地址</span>
+<span class="sd">        - **RemoteVPNGatewayName** (str) - (Required) 客户VPN网关名称</span>
+<span class="sd">        - **Remark** (str) - 备注，默认为空</span>
+<span class="sd">        - **Tag** (str) - 业务组名称，默认为 &quot;Default&quot;</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **RemoteVPNGatewayId** (str) - 新建客户VPN网关的资源ID</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateRemoteVPNGatewayRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># build options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;CreateRemoteVPNGateway&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateRemoteVPNGatewayResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IPSecVPNClient.create_vpn_gateway"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ipsecvpn.client.IPSecVPNClient.create_vpn_gateway">[docs]</a>    <span class="k">def</span> <span class="nf">create_vpn_gateway</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;CreateVPNGateway - 创建VPN网关</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Grade** (str) - (Required) 购买的VPN网关规格，枚举值为: Standard, 标准型; Enhanced, 增强型</span>
+<span class="sd">        - **VPCId** (str) - (Required) 新建VPN网关所属VPC的资源ID</span>
+<span class="sd">        - **VPNGatewayName** (str) - (Required) 新建VPN网关名称</span>
+<span class="sd">        - **BusinessId** (str) - 业务组ID</span>
+<span class="sd">        - **ChargeType** (str) - 付费方式, 枚举值为: Year, 按年付费; Month, 按月付费；Dynamic, 按需付费(需开启权限)；Trial, 试用(需开启权限)；默认为按月付费</span>
+<span class="sd">        - **CouponId** (str) - 代金券ID, 默认不使用</span>
+<span class="sd">        - **EIPId** (str) - 若要绑定EIP，在此填上EIP的资源ID</span>
+<span class="sd">        - **Quantity** (int) - 购买时长, 默认: 1</span>
+<span class="sd">        - **Remark** (str) - 备注，默认为空</span>
+<span class="sd">        - **Tag** (str) - 业务组名称，默认为 &quot;Default&quot;</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **VPNGatewayId** (str) - 新建VPN网关的资源ID</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateVPNGatewayRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># build options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;CreateVPNGateway&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateVPNGatewayResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IPSecVPNClient.create_vpn_tunnel"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ipsecvpn.client.IPSecVPNClient.create_vpn_tunnel">[docs]</a>    <span class="k">def</span> <span class="nf">create_vpn_tunnel</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;CreateVPNTunnel - 创建VPN隧道</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **IKEPreSharedKey** (str) - (Required) 预共享密钥</span>
+<span class="sd">        - **IKEVersion** (str) - (Required) ike版本，枚举值： &quot;IKE V1&quot;，&quot;IKE V2&quot;，默认v1</span>
+<span class="sd">        - **IPSecLocalSubnetIds** (list) - (Required) 指定VPN连接的本地子网的资源ID，最多可填写10个。</span>
+<span class="sd">        - **IPSecRemoteSubnets** (list) - (Required) 指定VPN连接的客户网段，最多可填写20个。</span>
+<span class="sd">        - **RemoteVPNGatewayId** (str) - (Required) 客户VPN网关的资源ID</span>
+<span class="sd">        - **VPCId** (str) - (Required) vpcId</span>
+<span class="sd">        - **VPNGatewayId** (str) - (Required) VPN网关的资源ID</span>
+<span class="sd">        - **VPNTunnelName** (str) - (Required) VPN隧道名称</span>
+<span class="sd">        - **IKEAuthenticationAlgorithm** (str) - IKE协商过程中使用的认证算法，&quot;md5&quot;, &quot;sha1&quot;, &quot;sha2-256&quot;。默认值为“sha1”</span>
+<span class="sd">        - **IKEDhGroup** (str) - IKE协商过程中使用的DH组，枚举值，&quot;1&quot;, &quot;2&quot;, &quot;5&quot;, &quot;14&quot;, &quot;15&quot;, &quot;16&quot;。默认为“15”</span>
+<span class="sd">        - **IKEEncryptionAlgorithm** (str) - IKE协商过程中使用的加密算法，枚举值，&quot;aes128&quot;, &quot;aes192&quot;, &quot;aes256&quot;, &quot;aes512&quot;, &quot;3des&quot;。默认值为“aes128”</span>
+<span class="sd">        - **IKEExchangeMode** (str) - IKE协商过程中使用的模式，枚举值，主模式，“main”；野蛮模式，“aggressive”。IKEV1默认为主模式“main”，IKEV2时不使用该参数。</span>
+<span class="sd">        - **IKELocalId** (str) - 本端标识。枚举值，自动识别，“auto”；IP地址或域名。默认为自动识别“auto”。IKEV2必填该参数</span>
+<span class="sd">        - **IKERemoteId** (str) - 客户端标识。枚举值，自动识别，“auto”；IP地址或域名。默认为“自动识别“auto”。IKEV2必填该参数</span>
+<span class="sd">        - **IKESALifetime** (str) - IKE中SA的生存时间，可填写范围为600-604800。默认为86400。</span>
+<span class="sd">        - **IPSecAuthenticationAlgorithm** (str) - IPSec隧道中使用的认证算法，枚举值，&quot;md5&quot;, &quot;sha1&quot;。默认值为“sha1”</span>
+<span class="sd">        - **IPSecEncryptionAlgorithm** (str) - IPSec隧道中使用的加密算法，枚举值，&quot;aes128&quot;, &quot;aes192&quot;, &quot;aes256&quot;, &quot;aes512&quot;, &quot;3des&quot;。默认值为“aes128”</span>
+<span class="sd">        - **IPSecPFSDhGroup** (str) - IPSec的PFS是否开启，枚举值，，不开启，&quot;disable&quot;；数字表示DH组, &quot;1&quot;, &quot;2&quot;, &quot;5&quot;, &quot;14&quot;, &quot;15&quot;, &quot;16&quot;。默认为“disable”。</span>
+<span class="sd">        - **IPSecProtocol** (str) - 使用的安全协议，枚举值，“esp”，“ah”。默认为“esp”</span>
+<span class="sd">        - **IPSecSALifetime** (str) - IPSec中SA的生存时间，可填写范围为1200 - 604800。默认为3600</span>
+<span class="sd">        - **IPSecSALifetimeBytes** (str) - IPSec中SA的生存时间（以字节计）。可选为8000 – 20000000。默认使用SA生存时间，</span>
+<span class="sd">        - **Remark** (str) - 备注，默认为空</span>
+<span class="sd">        - **Tag** (str) - 业务组，默认为“Default”</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **VPNTunnelId** (str) - VPN隧道的资源ID</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateVPNTunnelRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># build options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;CreateVPNTunnel&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateVPNTunnelResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IPSecVPNClient.delete_remote_vpn_gateway"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ipsecvpn.client.IPSecVPNClient.delete_remote_vpn_gateway">[docs]</a>    <span class="k">def</span> <span class="nf">delete_remote_vpn_gateway</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DeleteRemoteVPNGateway - 删除客户VPN网关</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **RemoteVPNGatewayId** (str) - (Required) 客户VPN网关的资源ID</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteRemoteVPNGatewayRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DeleteRemoteVPNGateway&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteRemoteVPNGatewayResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IPSecVPNClient.delete_vpn_gateway"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ipsecvpn.client.IPSecVPNClient.delete_vpn_gateway">[docs]</a>    <span class="k">def</span> <span class="nf">delete_vpn_gateway</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DeleteVPNGateway - 删除VPN网关</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **VPNGatewayId** (str) - (Required) VPN网关的资源ID</span>
+<span class="sd">        - **ReleaseEip** (bool) - 删除VPN时是否一并释放EIP。false，只解绑EIP不删除EIP；true，解绑并释放EIP。默认是false</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteVPNGatewayRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DeleteVPNGateway&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteVPNGatewayResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IPSecVPNClient.delete_vpn_tunnel"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ipsecvpn.client.IPSecVPNClient.delete_vpn_tunnel">[docs]</a>    <span class="k">def</span> <span class="nf">delete_vpn_tunnel</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DeleteVPNTunnel - 删除VPN隧道</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **VPNTunnelId** (str) - (Required) VPN隧道的资源ID</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteVPNTunnelRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DeleteVPNTunnel&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteVPNTunnelResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="IPSecVPNClient.describe_remote_vpn_gateway"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ipsecvpn.client.IPSecVPNClient.describe_remote_vpn_gateway">[docs]</a>    <span class="k">def</span> <span class="nf">describe_remote_vpn_gateway</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -55,8 +258,8 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **Limit** (int) - 数据分页值, 默认为20</span>
 <span class="sd">        - **Offset** (int) - 数据偏移量, 默认为0</span>
 <span class="sd">        - **RemoteVPNGatewayIds** (list) - 客户VPN网关的资源ID，例如RemoteVPNGatewayIds.0代表希望获取客户VPN网关1的信息，RemoteVPNGatewayIds.1代表客户VPN网关2，如果为空，则返回当前Region中所有客户VPN网关实例的信息</span>
@@ -70,8 +273,6 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **RemoteVPNGatewayDataSet**</span>
-
-<span class="sd">        - **ActiveTunnels** (str) - 活跃的隧道id</span>
 <span class="sd">        - **CreateTime** (int) - 创建时间</span>
 <span class="sd">        - **Remark** (str) - 备注</span>
 <span class="sd">        - **RemoteVPNGatewayAddr** (str) - 客户网关IP地址</span>
@@ -79,6 +280,7 @@
 <span class="sd">        - **RemoteVPNGatewayName** (str) - 客户网关名称</span>
 <span class="sd">        - **Tag** (str) - 用户组</span>
 <span class="sd">        - **TunnelCount** (int) - 活跃的隧道数量</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -91,6 +293,57 @@
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeRemoteVPNGateway&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeRemoteVPNGatewayResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IPSecVPNClient.describe_vpn_gateway"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ipsecvpn.client.IPSecVPNClient.describe_vpn_gateway">[docs]</a>    <span class="k">def</span> <span class="nf">describe_vpn_gateway</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DescribeVPNGateway - 获取VPN网关信息</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Limit** (int) - 数据分页值。默认为20</span>
+<span class="sd">        - **Offset** (int) - 数据偏移量。默认为0</span>
+<span class="sd">        - **Tag** (str) - 业务组名称，若指定则返回指定的业务组下的所有VPN网关的信息。</span>
+<span class="sd">        - **VPCId** (str) - VPC的资源ID，返回指定的VPC下的所有VPN网关的信息。默认返回当前Region中所有VPN网关实例的信息</span>
+<span class="sd">        - **VPNGatewayIds** (list) - VPN网关的资源ID，例如VPNGatewayIds.0代表希望获取VPN网关1的信息，VPNGatewayIds.1代表VPN网关2，如果为空，则返回当前Region中所有VPN网关的信息</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **DataSet** (list) - 见 **VPNGatewayDataSet** 模型定义</span>
+<span class="sd">        - **TotalCount** (int) - 满足条件的VPN网关总数</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **VPNGatewayDataSet**</span>
+<span class="sd">        - **AutoRenew** (str) - 是否自动续费</span>
+<span class="sd">        - **ChargeType** (str) - 付费类型</span>
+<span class="sd">        - **CreateTime** (int) - 创建时间</span>
+<span class="sd">        - **EIP** (str) - 绑定EIP的IP地址</span>
+<span class="sd">        - **EIPId** (str) - EIPID</span>
+<span class="sd">        - **EIPType** (str) - EIP类型</span>
+<span class="sd">        - **ExpireTime** (int) - 到期时间</span>
+<span class="sd">        - **Grade** (str) - 网关类型</span>
+<span class="sd">        - **Remark** (str) - 网关备注</span>
+<span class="sd">        - **Tag** (str) - 网关业务组</span>
+<span class="sd">        - **VPCId** (str) - 所属VPCId</span>
+<span class="sd">        - **VPCName** (str) - 所属VPC名字</span>
+<span class="sd">        - **VPNGatewayId** (str) - 网关Id</span>
+<span class="sd">        - **VPNGatewayName** (str) - 网关名字</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeVPNGatewayRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeVPNGateway&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeVPNGatewayResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="IPSecVPNClient.describe_vpn_tunnel"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ipsecvpn.client.IPSecVPNClient.describe_vpn_tunnel">[docs]</a>    <span class="k">def</span> <span class="nf">describe_vpn_tunnel</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -113,31 +366,7 @@
 
 <span class="sd">        **Response Model**</span>
 
-<span class="sd">        **IPSecData**</span>
-
-<span class="sd">        - **IPSecAuthenticationAlgorithm** (str) - IPSec通道中使用的认证算法</span>
-<span class="sd">        - **IPSecEncryptionAlgorithm** (str) - IPSec通道中使用的加密算法</span>
-<span class="sd">        - **IPSecLocalSubnetIds** (list) - 指定VPN连接的本地子网，用逗号分隔</span>
-<span class="sd">        - **IPSecPFSDhGroup** (str) - 是否开启PFS功能,Disable表示关闭，数字表示DH组</span>
-<span class="sd">        - **IPSecProtocol** (str) - 使用的安全协议，ESP或AH</span>
-<span class="sd">        - **IPSecRemoteSubnets** (list) - 指定VPN连接的客户网段，用逗号分隔</span>
-<span class="sd">        - **IPSecSALifetime** (str) - IPSec中SA的生存时间</span>
-<span class="sd">        - **IPSecSALifetimeBytes** (str) - IPSec中SA的生存时间（以字节计）</span>
-
-<span class="sd">        **IKEData**</span>
-
-<span class="sd">        - **IKEAuthenticationAlgorithm** (str) - IKE认证算法</span>
-<span class="sd">        - **IKEDhGroup** (str) - IKEDH组</span>
-<span class="sd">        - **IKEEncryptionAlgorithm** (str) - IKE加密算法</span>
-<span class="sd">        - **IKEExchangeMode** (str) - IKEv1协商模式</span>
-<span class="sd">        - **IKELocalId** (str) - IKE本地ID标识</span>
-<span class="sd">        - **IKEPreSharedKey** (str) - IKE预共享秘钥</span>
-<span class="sd">        - **IKERemoteId** (str) - IKE对端ID标识</span>
-<span class="sd">        - **IKESALifetime** (str) - IKE秘钥生存时间</span>
-<span class="sd">        - **IKEVersion** (str) - IKE版本</span>
-
 <span class="sd">        **VPNTunnelDataSet**</span>
-
 <span class="sd">        - **CreateTime** (int) - 创建时间</span>
 <span class="sd">        - **IKEData** (dict) - 见 **IKEData** 模型定义</span>
 <span class="sd">        - **IPSecData** (dict) - 见 **IPSecData** 模型定义</span>
@@ -152,6 +381,30 @@
 <span class="sd">        - **VPNTunnelId** (str) - 隧道id</span>
 <span class="sd">        - **VPNTunnelName** (str) - 隧道名称</span>
 
+
+<span class="sd">        **IKEData**</span>
+<span class="sd">        - **IKEAuthenticationAlgorithm** (str) - IKE认证算法</span>
+<span class="sd">        - **IKEDhGroup** (str) - IKEDH组</span>
+<span class="sd">        - **IKEEncryptionAlgorithm** (str) - IKE加密算法</span>
+<span class="sd">        - **IKEExchangeMode** (str) - IKEv1协商模式</span>
+<span class="sd">        - **IKELocalId** (str) - IKE本地ID标识</span>
+<span class="sd">        - **IKEPreSharedKey** (str) - IKE预共享秘钥</span>
+<span class="sd">        - **IKERemoteId** (str) - IKE对端ID标识</span>
+<span class="sd">        - **IKESALifetime** (str) - IKE秘钥生存时间</span>
+<span class="sd">        - **IKEVersion** (str) - IKE版本</span>
+
+
+<span class="sd">        **IPSecData**</span>
+<span class="sd">        - **IPSecAuthenticationAlgorithm** (str) - IPSec通道中使用的认证算法</span>
+<span class="sd">        - **IPSecEncryptionAlgorithm** (str) - IPSec通道中使用的加密算法</span>
+<span class="sd">        - **IPSecLocalSubnetIds** (list) - 指定VPN连接的本地子网，用逗号分隔</span>
+<span class="sd">        - **IPSecPFSDhGroup** (str) - 是否开启PFS功能,Disable表示关闭，数字表示DH组</span>
+<span class="sd">        - **IPSecProtocol** (str) - 使用的安全协议，ESP或AH</span>
+<span class="sd">        - **IPSecRemoteSubnets** (list) - 指定VPN连接的客户网段，用逗号分隔</span>
+<span class="sd">        - **IPSecSALifetime** (str) - IPSec中SA的生存时间</span>
+<span class="sd">        - **IPSecSALifetimeBytes** (str) - IPSec中SA的生存时间（以字节计）</span>
+
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
@@ -162,7 +415,142 @@
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeVPNTunnelRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeVPNTunnel&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeVPNTunnelResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeVPNTunnelResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IPSecVPNClient.get_vpn_gateway_price"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ipsecvpn.client.IPSecVPNClient.get_vpn_gateway_price">[docs]</a>    <span class="k">def</span> <span class="nf">get_vpn_gateway_price</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;GetVPNGatewayPrice - 获取VPN价格</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Grade** (str) - (Required) VPN网关规格。枚举值，包括：标准型：Standard，增强型：Enhanced。</span>
+<span class="sd">        - **ChargeType** (str) - 付费方式, 枚举值为: Year, 按年付费; Month, 按月付费; Dynamic, 按需付费(需开启权限); 默认为获取三种价格</span>
+<span class="sd">        - **Quantity** (int) - 购买时长, 默认: 1</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **PriceSet** (list) - 见 **VPNGatewayPriceSet** 模型定义</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **VPNGatewayPriceSet**</span>
+<span class="sd">        - **ChargeType** (str) - VPN网关付费方式</span>
+<span class="sd">        - **Price** (float) - VPN网关价格, 单位&quot;元&quot;</span>
+<span class="sd">        - **PurchaseValue** (int) - 资源有效期, 以Unix Timestamp表示</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetVPNGatewayPriceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetVPNGatewayPrice&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetVPNGatewayPriceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IPSecVPNClient.get_vpn_gateway_upgrade_price"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ipsecvpn.client.IPSecVPNClient.get_vpn_gateway_upgrade_price">[docs]</a>    <span class="k">def</span> <span class="nf">get_vpn_gateway_upgrade_price</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;GetVPNGatewayUpgradePrice - 获取VPN网关规格改动价格</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Grade** (str) - (Required) 更改的VPN网关规格，枚举值为: Standard, 标准型; Enhanced, 增强型。</span>
+<span class="sd">        - **VPNGatewayId** (str) - (Required) VPN网关的资源ID</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **Price** (float) - 调整规格后的VPN网关价格, 单位为&quot;元&quot;, 如需退费此处为负值</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetVPNGatewayUpgradePriceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetVPNGatewayUpgradePrice&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetVPNGatewayUpgradePriceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IPSecVPNClient.update_vpn_gateway"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ipsecvpn.client.IPSecVPNClient.update_vpn_gateway">[docs]</a>    <span class="k">def</span> <span class="nf">update_vpn_gateway</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;UpdateVPNGateway - 更改VPN网关规格</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Grade** (str) - (Required) 网关规格。枚举值为: Standard, 标准型; Enhanced, 增强型。</span>
+<span class="sd">        - **VPNGatewayId** (str) - (Required) VPN网关的资源ID</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">UpdateVPNGatewayRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;UpdateVPNGateway&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">UpdateVPNGatewayResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IPSecVPNClient.update_vpn_tunnel_attribute"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ipsecvpn.client.IPSecVPNClient.update_vpn_tunnel_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">update_vpn_tunnel_attribute</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;UpdateVPNTunnelAttribute - 更新VPN隧道属性</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **VPNTunnelId** (str) - (Required) VPN隧道的资源ID</span>
+<span class="sd">        - **IKEAuthenticationAlgorithm** (str) - IKE协商过程中使用的认证算法</span>
+<span class="sd">        - **IKEDhGroup** (str) - IKE协商过程中使用的DH组</span>
+<span class="sd">        - **IKEEncryptionAlgorithm** (str) - IKE协商过程中使用的加密算法</span>
+<span class="sd">        - **IKEExchangeMode** (str) - IKE协商过程中使用的模式，可选“主动模式”与“野蛮模式”。IKEV2不使用该参数。</span>
+<span class="sd">        - **IKELocalId** (str) - 本端标识。不填时默认使用之前的参数，结合IKEversion进行校验，IKEV2时不能为auto。</span>
+<span class="sd">        - **IKEPreSharedKey** (str) - 预共享密钥</span>
+<span class="sd">        - **IKERemoteId** (str) - 客户端标识。不填时默认使用之前的参数，结合IKEversion进行校验，IKEV2时不能为auto。</span>
+<span class="sd">        - **IKESALifetime** (str) - IKE中SA的生存时间</span>
+<span class="sd">        - **IKEVersion** (str) - 枚举值：&quot;IKE V1&quot;,&quot;IKE V2&quot;</span>
+<span class="sd">        - **IPSecAuthenticationAlgorithm** (str) - IPSec隧道中使用的认证算法</span>
+<span class="sd">        - **IPSecEncryptionAlgorithm** (str) - IPSec隧道中使用的加密算法</span>
+<span class="sd">        - **IPSecLocalSubnetIds** (list) - 指定VPN连接的本地子网的id，用逗号分隔</span>
+<span class="sd">        - **IPSecPFSDhGroup** (str) - IPSec中的PFS是否开启</span>
+<span class="sd">        - **IPSecProtocol** (str) - 使用的安全协议，ESP或AH</span>
+<span class="sd">        - **IPSecRemoteSubnets** (list) - 指定VPN连接的客户网段，用逗号分隔</span>
+<span class="sd">        - **IPSecSALifetime** (str) - IPSec中SA的生存时间</span>
+<span class="sd">        - **IPSecSALifetimeBytes** (str) - IPSec中SA的生存时间（以字节计）</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">UpdateVPNTunnelAttributeRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;UpdateVPNTunnelAttribute&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">UpdateVPNTunnelAttributeResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>

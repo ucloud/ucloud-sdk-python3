@@ -101,12 +101,19 @@ IPSecVPN
    :members:
 
 
-UDDB
-----
+UEC
+---
 
-.. autoclass:: ucloud.services.uddb.client.UDDBClient
+.. autoclass:: ucloud.services.uec.client.UECClient
    :members:
 
+
+UBill
+-----
+
+.. autoclass:: ucloud.services.ubill.client.UBillClient
+   :members:
+   
 
 UFS
 ---
@@ -126,5 +133,12 @@ UK8S
 ----
 
 .. autoclass:: ucloud.services.uk8s.client.UK8SClient
+   :members:
+
+
+VPC
+---
+
+.. autoclass:: ucloud.services.vpc.client.VPCClient
    :members:
 
