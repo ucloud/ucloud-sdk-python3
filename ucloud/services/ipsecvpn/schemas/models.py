@@ -7,7 +7,9 @@ class RemoteVPNGatewayDataSetSchema(schema.ResponseSchema):
     """RemoteVPNGatewayDataSet - DescribeRemoteVPNGateway返回参数"""
 
     fields = {
-        "ActiveTunnels": fields.Str(required=False, load_from="ActiveTunnels"),
+        "ActiveTunnels": fields.Str(
+            required=False, load_from="ActiveTunnels"
+        ),  # Deprecated, will be removed at 1.0
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "Remark": fields.Str(required=False, load_from="Remark"),
         "RemoteVPNGatewayAddr": fields.Str(
@@ -21,6 +23,29 @@ class RemoteVPNGatewayDataSetSchema(schema.ResponseSchema):
         ),
         "Tag": fields.Str(required=False, load_from="Tag"),
         "TunnelCount": fields.Int(required=False, load_from="TunnelCount"),
+    }
+
+
+class VPNGatewayDataSetSchema(schema.ResponseSchema):
+    """VPNGatewayDataSet - DescribeVPNGateway返回参数"""
+
+    fields = {
+        "AutoRenew": fields.Str(required=False, load_from="AutoRenew"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "EIP": fields.Str(required=False, load_from="EIP"),
+        "EIPId": fields.Str(required=False, load_from="EIPId"),
+        "EIPType": fields.Str(required=False, load_from="EIPType"),
+        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "Grade": fields.Str(required=False, load_from="Grade"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "VPCName": fields.Str(required=False, load_from="VPCName"),
+        "VPNGatewayId": fields.Str(required=False, load_from="VPNGatewayId"),
+        "VPNGatewayName": fields.Str(
+            required=False, load_from="VPNGatewayName"
+        ),
     }
 
 
@@ -96,4 +121,14 @@ class VPNTunnelDataSetSchema(schema.ResponseSchema):
         ),
         "VPNTunnelId": fields.Str(required=False, load_from="VPNTunnelId"),
         "VPNTunnelName": fields.Str(required=False, load_from="VPNTunnelName"),
+    }
+
+
+class VPNGatewayPriceSetSchema(schema.ResponseSchema):
+    """VPNGatewayPriceSet - VPN网关的价格信息"""
+
+    fields = {
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "Price": fields.Float(required=False, load_from="Price"),
+        "PurchaseValue": fields.Int(required=False, load_from="PurchaseValue"),
     }
