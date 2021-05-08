@@ -13,6 +13,67 @@ class UMemClient(Client):
     ):
         super(UMemClient, self).__init__(config, transport, middleware, logger)
 
+    def check_udredis_space_allowance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CheckUDredisSpaceAllowance - 检查高性能UMem剩余资源，以及分片扩容前的资源预检查
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Count** (str) - (Required) 创建实例的数量，[1-10]
+        - **Size** (int) - (Required) 创建实例的容量大小,，扩容时的分片目标容量大小
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **GroupId** (str) - 资源ID，扩缩容时的必传参数
+
+        **Response**
+
+        - **Count** (int) - 创建实例资源时，表示可创建的数量；扩容资源时，返回1表示可以扩容，0表示可用区资源不足不能扩容
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CheckUDredisSpaceAllowanceRequestSchema().dumps(d)
+
+        resp = self.invoke("CheckUDredisSpaceAllowance", d, **kwargs)
+        return apis.CheckUDredisSpaceAllowanceResponseSchema().loads(resp)
+
+    def check_uredis_allowance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CheckURedisAllowance - 检查主备Redis的资源是否足够创建新实例，以及主备Redis的扩容资源预检查
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Count** (int) - (Required) 创建实例的数量，[1-10]
+        - **Size** (int) - (Required) 创建实例的容量大小, 单位:GB 目前仅支持1/2/4/8/16/32六种规格；扩缩容时，表示实例的目标资源大小
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **GroupId** (str) - 资源ID，扩容实例资源时的必传参数
+        - **Protocol** (str) -
+        - **RegionFlag** (bool) - 是否是跨机房URedis(默认false)
+        - **SlaveZone** (str) -
+
+        **Response**
+
+        - **Count** (int) - 创建实例资源时，表示可创建的数量；扩容资源时，返回1表示可以扩容，0表示可用区资源不足不能扩容
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CheckURedisAllowanceRequestSchema().dumps(d)
+
+        resp = self.invoke("CheckURedisAllowance", d, **kwargs)
+        return apis.CheckURedisAllowanceResponseSchema().loads(resp)
+
     def create_umem_backup(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -286,6 +347,45 @@ class UMemClient(Client):
         resp = self.invoke("DeleteURedisGroup", d, **kwargs)
         return apis.DeleteURedisGroupResponseSchema().loads(resp)
 
+    def describe_ud_redis_slowlog(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUDRedisSlowlog - 查询UDRedis慢日志
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **InstanceId** (str) - (Required) 实例id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Limit** (int) - 分页显示的条目数，默认为10
+
+        **Response**
+
+        - **DataSet** (list) - 见 **UDRedisSlowlogSet** 模型定义
+        - **TotalCount** (int) - 总条目数
+
+        **Response Model**
+
+        **UDRedisSlowlogSet**
+        - **BlockId** (str) - 分片id
+        - **Command** (str) - 查询命令
+        - **SpendTime** (int) - 查询消耗的时间
+        - **StartTime** (int) - 查询发生的时间
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeUDRedisSlowlogRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeUDRedisSlowlog", d, **kwargs)
+        return apis.DescribeUDRedisSlowlogResponseSchema().loads(resp)
+
     def describe_umem_backup(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -307,13 +407,13 @@ class UMemClient(Client):
         **Response Model**
 
         **UMemBackupSet**
-
         - **BackupId** (str) - 空间的备份ID
         - **BackupName** (str) - 备份名称
         - **BackupType** (str) - 备份类型: auto(自动) ,manual(手动)
         - **BlockCount** (int) - 本次备份，分片的数量
         - **CreateTime** (int) - 创建时间
         - **State** (str) - Starting:备份中 Done:完成
+
 
         """
         # build request
@@ -378,7 +478,6 @@ class UMemClient(Client):
         **Response Model**
 
         **UMemBlockInfo**
-
         - **BlockId** (str) - 分片id
         - **BlockPort** (int) - 分片端口
         - **BlockSize** (int) - 容量单位GB
@@ -387,6 +486,7 @@ class UMemClient(Client):
         - **BlockState** (str) - 实例状态 Starting // 创建中 Creating // 初始化中 CreateFail // 创建失败 Fail // 创建失败 Deleting // 删除中 DeleteFail // 删除失败 Running // 运行 Resizing // 容量调整中 ResizeFail // 容量调整失败 Configing // 配置中 ConfigFail // 配置失败Restarting // 重启中 SetPasswordFail //设置密码失败
         - **BlockUsedSize** (int) - 使用量单位MB
         - **BlockVip** (str) - 分片ip
+
 
         """
         # build request
@@ -407,11 +507,11 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Size** (int) - (Required) 购买umem大小,单位:GB,范围[1~1024]
         - **Type** (str) - (Required) 空间类型:single(无热备),double(热备)(默认: double)
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ChargeType** (str) - Year， Month， Dynamic 如果不指定，则一次性获取三种计费
         - **Quantity** (int) - 购买UMem的时长，默认值为1
 
@@ -422,11 +522,10 @@ class UMemClient(Client):
         **Response Model**
 
         **UMemPriceSet**
-
         - **ChargeType** (str) - Year， Month， Dynamic，Trial
-        - **ListPrice** (int) - 产品列表价
         - **OriginalPrice** (int) - 原价
         - **Price** (int) - 现价
+
 
         """
         # build request
@@ -462,13 +561,7 @@ class UMemClient(Client):
 
         **Response Model**
 
-        **UMemSpaceAddressSet**
-
-        - **IP** (str) - UMem实例访问IP
-        - **Port** (int) - UMem实例访问Port
-
         **UMemSpaceSet**
-
         - **Address** (list) - 见 **UMemSpaceAddressSet** 模型定义
         - **ChargeType** (str) - Year, Month, Dynamic, Trial
         - **CreateTime** (int) - 创建时间
@@ -485,6 +578,12 @@ class UMemClient(Client):
         - **UsedSize** (int) - 使用量单位MB
         - **VPCId** (str) -
         - **Zone** (str) - 可用区，参见 `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
+
+        **UMemSpaceAddressSet**
+        - **IP** (str) - UMem实例访问IP
+        - **Port** (int) - UMem实例访问Port
+
 
         """
         # build request
@@ -505,25 +604,25 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Size** (int) - (Required) 购买UMem大小,单位:GB
         - **SpaceId** (str) - (Required) 需要升级的空间的SpaceId
         - **Type** (str) - (Required) 空间类型:single(无热备),double(热备)(默认: double)
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
-        - **DataSet** (dict) - 见 **PriceDataSet** 模型定义
-        - **Price** (int) - 价格(兼容老版本)
+        - **OriginalPrice** (int) - 原价
+        - **Price** (int) - 价格
 
         **Response Model**
 
         **PriceDataSet**
+        - **CustomPrice** (int) -
+        - **PurchaseValue** (int) -
+        - **TotalPrice** (int) -
 
-        - **CustomPrice** (int) - 用户折后价
-        - **PurchaseValue** (int) - 资源有效期
-        - **TotalPrice** (int) - 升降级资源的价格
 
         """
         # build request
@@ -559,7 +658,6 @@ class UMemClient(Client):
         **Response Model**
 
         **UMemcacheGroupSet**
-
         - **ChargeType** (str) - 计费类型:Year,Month,Dynamic 默认Dynamic
         - **ConfigId** (str) - 节点的配置ID
         - **CreateTime** (int) - 创建时间 (UNIX时间戳)
@@ -576,6 +674,7 @@ class UMemClient(Client):
         - **VPCId** (str) -
         - **Version** (str) - Memcache版本信息,默认为1.4.31
         - **VirtualIP** (str) - 节点的虚拟IP地址
+
 
         """
         # build request
@@ -611,11 +710,11 @@ class UMemClient(Client):
         **Response Model**
 
         **UMemcachePriceSet**
-
         - **ChargeType** (str) - 计费模式，Year, Month, Dynamic
         - **ListPrice** (int) - 产品列表价
         - **OriginalPrice** (int) - 原价
         - **Price** (int) - 总价格
+
 
         """
         # build request
@@ -673,7 +772,6 @@ class UMemClient(Client):
         **Response Model**
 
         **URedisBackupSet**
-
         - **BackupId** (str) - 备份ID
         - **BackupName** (str) - 备份的名称
         - **BackupSize** (int) - 备份文件大小, 以字节为单位
@@ -683,6 +781,7 @@ class UMemClient(Client):
         - **GroupName** (str) - 组名称
         - **State** (str) - 备份的状态: Backuping 备份中 Success 备份成功 Error 备份失败 Expired 备份过期
         - **Zone** (str) - 可用区，参见 `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
 
         """
         # build request
@@ -752,7 +851,6 @@ class UMemClient(Client):
         **Response Model**
 
         **URedisConfigSet**
-
         - **ConfigId** (str) - 配置ID
         - **CreateTime** (int) - 创建时间 (UNIX时间戳)
         - **Description** (str) - 配置描述
@@ -763,6 +861,7 @@ class UMemClient(Client):
         - **State** (str) - 配置所处的状态
         - **Version** (str) - 配置对应的Redis版本
         - **Zone** (str) - Zone
+
 
         """
         # build request
@@ -783,12 +882,12 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **GroupId** (str) - 组的ID,如果指定则获取描述，否则为列表操 作,需指定Offset/Limit
         - **Limit** (int) - 分页显示的条目数, 默认值为20
         - **Offset** (int) - 分页显示的起始偏移, 默认值为0
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -798,7 +897,6 @@ class UMemClient(Client):
         **Response Model**
 
         **URedisGroupSet**
-
         - **AutoBackup** (str) - 是否需要自动备份,enable,disable
         - **BackupTime** (int) - 组自动备份开始时间,单位小时计,范围[0-23]
         - **ChargeType** (str) - 计费类型:Year,Month,Dynamic 默认Dynamic
@@ -818,14 +916,15 @@ class UMemClient(Client):
         - **Size** (int) - 容量单位GB
         - **SlaveZone** (str) - 跨机房URedis，slave redis所在可用区，参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **State** (str) - 状态标记 Creating // 初始化中 CreateFail // 创建失败 Deleting // 删除中 DeleteFail // 删除失败 Running // 运行 Resizing // 容量调整中 ResizeFail // 容量调整失败 Configing // 配置中 ConfigFail // 配置失败
-        - **SubnetId** (str) - 子网
+        - **SubnetId** (str) - subnetid
         - **Tag** (str) - 业务组名称
         - **Type** (str) - 空间类型:single(无热备),double(热备)
         - **UsedSize** (int) - 使用量单位MB
-        - **VPCId** (str) - VPCId
+        - **VPCId** (str) - vpcid
         - **Version** (str) - Redis版本信息
         - **VirtualIP** (str) - 节点的虚拟IP地址
         - **Zone** (str) - 实例所在可用区，或者master redis所在可用区，参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
 
         """
         # build request
@@ -862,11 +961,11 @@ class UMemClient(Client):
         **Response Model**
 
         **URedisPriceSet**
-
         - **ChargeType** (str) - Year， Month， Dynamic，Trial
         - **ListPrice** (int) - 产品列表价
         - **OriginalPrice** (int) - 原价
         - **Price** (int) - 总价格
+
 
         """
         # build request
@@ -901,10 +1000,10 @@ class UMemClient(Client):
         **Response Model**
 
         **URedisSlowlogSet**
-
         - **Command** (str) - 查询命令
         - **SpendTime** (int) - 查询消耗的时间
         - **StartTime** (int) - 查询发生的时间
+
 
         """
         # build request
@@ -964,8 +1063,8 @@ class UMemClient(Client):
         **Response Model**
 
         **URedisVersionSet**
-
         - **Version** (str) - Redis版本
+
 
         """
         # build request
@@ -978,6 +1077,38 @@ class UMemClient(Client):
 
         resp = self.invoke("DescribeURedisVersion", d, **kwargs)
         return apis.DescribeURedisVersionResponseSchema().loads(resp)
+
+    def flushall_uredis_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """FlushallURedisGroup - 清除主备redis数据
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **FlushType** (str) - (Required) FlushDb或FlushAll
+        - **GroupId** (str) - (Required) 组的ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **DbNum** (int) - 清空的db，FlushType为FlushDb，此项为必传项
+        - **OrganizationId** (int) - OrganizationId
+        - **SlaveZone** (str) - 跨机房URedis，slave所在可用区（必须和Zone在同一Region，且不可相同）
+        - **TopOrganizationId** (int) - company_id
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.FlushallURedisGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("FlushallURedisGroup", d, **kwargs)
+        return apis.FlushallURedisGroupResponseSchema().loads(resp)
 
     def get_umem_space_state(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1091,6 +1222,33 @@ class UMemClient(Client):
         resp = self.invoke("ModifyURedisGroupPassword", d, **kwargs)
         return apis.ModifyURedisGroupPasswordResponseSchema().loads(resp)
 
+    def remove_ud_redis_data(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """RemoveUDRedisData - 清除udredis实例数据
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **SpaceId** (str) - (Required) 实例id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.RemoveUDRedisDataRequestSchema().dumps(d)
+
+        resp = self.invoke("RemoveUDRedisData", d, **kwargs)
+        return apis.RemoveUDRedisDataResponseSchema().loads(resp)
+
     def resize_umem_space(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1123,7 +1281,7 @@ class UMemClient(Client):
     def resize_uredis_group(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ResizeURedisGroup - 调整主备redis容量
+        """ResizeURedisGroup - 通过调用CheckURedisAllowance接口，检查资源情况，根据不同情形来调整主备redis容量，其中主要包括可用区资源不足无法扩容，主备所在宿主机资源不足需要迁移完成扩容（需要主从切换，会闪断及负载升高），以及直接扩容（业务无感知）
 
         **Request**
 
@@ -1131,7 +1289,10 @@ class UMemClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **GroupId** (str) - (Required) 组ID
         - **Size** (int) - (Required) 内存大小, 单位:GB (需要大于原size,且小于等于32) 目前仅支持1/2/4/8/16/32 G 六种容量规格
+        - **ChargeType** (str) -
         - **CouponId** (int) - 代金券ID 请参考DescribeCoupon接口
+        - **Type** (str) - 空间类型:single(无热备),double(热备)(默认: double)
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
 
         **Response**
 
@@ -1174,6 +1335,81 @@ class UMemClient(Client):
 
         resp = self.invoke("RestartUMemcacheGroup", d, **kwargs)
         return apis.RestartUMemcacheGroupResponseSchema().loads(resp)
+
+    def restart_uredis_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """RestartURedisGroup - 重启主备实例
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **GroupId** (str) - (Required) 资源ID
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.RestartURedisGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("RestartURedisGroup", d, **kwargs)
+        return apis.RestartURedisGroupResponseSchema().loads(resp)
+
+    def shutdown_uredis_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ShutdownURedisGroup - 关闭主备实例
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **GroupId** (str) - (Required) 资源ID
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ShutdownURedisGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("ShutdownURedisGroup", d, **kwargs)
+        return apis.ShutdownURedisGroupResponseSchema().loads(resp)
+
+    def start_uredis_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """StartURedisGroup - 实例关闭状态下，启动实例
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **GroupId** (str) - (Required) 资源ID
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.StartURedisGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("StartURedisGroup", d, **kwargs)
+        return apis.StartURedisGroupResponseSchema().loads(resp)
 
     def update_uredis_backup_strategy(
         self, req: typing.Optional[dict] = None, **kwargs
