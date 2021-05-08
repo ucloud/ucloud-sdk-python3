@@ -96,6 +96,51 @@ class UNetClient(Client):
         resp = self.invoke("AllocateShareBandwidth", d, **kwargs)
         return apis.AllocateShareBandwidthResponseSchema().loads(resp)
 
+    def allocate_vip(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """AllocateVIP -
+
+        **Request**
+
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **SubnetId** (str) - (Required)
+        - **VPCId** (str) - (Required)
+        - **BusinessId** (str) -
+        - **Count** (int) -
+        - **Ip** (str) -
+        - **Name** (str) -
+        - **Remark** (str) -
+        - **Tag** (str) -
+        - **Zone** (str) -
+
+        **Response**
+
+        - **DataSet** (list) -
+        - **VIPSet** (list) - 见 **VIPSet** 模型定义
+
+        **Response Model**
+
+        **VIPSet**
+        - **VIP** (str) -
+        - **VIPId** (str) -
+        - **VPCId** (str) -
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.AllocateVIPRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("AllocateVIP", d, **kwargs)
+        return apis.AllocateVIPResponseSchema().loads(resp)
+
     def associate_eip_with_share_bandwidth(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -575,6 +620,53 @@ class UNetClient(Client):
         resp = self.invoke("DescribeShareBandwidth", d, **kwargs)
         return apis.DescribeShareBandwidthResponseSchema().loads(resp)
 
+    def describe_vip(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """DescribeVIP -
+
+        **Request**
+
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **BusinessId** (str) -
+        - **SubnetId** (str) -
+        - **Tag** (str) -
+        - **VPCId** (str) -
+        - **Zone** (str) -
+
+        **Response**
+
+        - **DataSet** (list) -
+        - **TotalCount** (int) -
+        - **VIPSet** (list) - 见 **VIPDetailSet** 模型定义
+
+        **Response Model**
+
+        **VIPDetailSet**
+        - **CreateTime** (int) -
+        - **Name** (str) -
+        - **RealIp** (str) -
+        - **SubnetId** (str) -
+        - **VIP** (str) -
+        - **VIPId** (str) -
+        - **VPCId** (str) -
+        - **Zone** (str) -
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeVIPRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("DescribeVIP", d, **kwargs)
+        return apis.DescribeVIPResponseSchema().loads(resp)
+
     def disassociate_eip_with_share_bandwidth(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -842,6 +934,34 @@ class UNetClient(Client):
 
         resp = self.invoke("ReleaseShareBandwidth", d, **kwargs)
         return apis.ReleaseShareBandwidthResponseSchema().loads(resp)
+
+    def release_vip(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ReleaseVIP -
+
+        **Request**
+
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **VIPId** (str) - (Required)
+        - **Zone** (str) -
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ReleaseVIPRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("ReleaseVIP", d, **kwargs)
+        return apis.ReleaseVIPResponseSchema().loads(resp)
 
     def resize_share_bandwidth(
         self, req: typing.Optional[dict] = None, **kwargs

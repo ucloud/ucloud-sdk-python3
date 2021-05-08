@@ -86,6 +86,44 @@ class AllocateShareBandwidthResponseSchema(schema.ResponseSchema):
 
 
 """
+API: AllocateVIP
+
+
+"""
+
+
+class AllocateVIPRequestSchema(schema.RequestSchema):
+    """AllocateVIP -"""
+
+    fields = {
+        "BusinessId": fields.Str(required=False, dump_to="BusinessId"),
+        "Count": fields.Int(required=False, dump_to="Count"),
+        "Ip": fields.Str(required=False, dump_to="Ip"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "SubnetId": fields.Str(required=True, dump_to="SubnetId"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "VPCId": fields.Str(required=True, dump_to="VPCId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class AllocateVIPResponseSchema(schema.ResponseSchema):
+    """AllocateVIP -"""
+
+    fields = {
+        "DataSet": fields.List(
+            fields.Str(), required=False, load_from="DataSet"
+        ),
+        "VIPSet": fields.List(
+            models.VIPSetSchema(), required=False, load_from="VIPSet"
+        ),
+    }
+
+
+"""
 API: AssociateEIPWithShareBandwidth
 
 将EIP加入共享带宽
@@ -437,6 +475,41 @@ class DescribeShareBandwidthResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeVIP
+
+
+"""
+
+
+class DescribeVIPRequestSchema(schema.RequestSchema):
+    """DescribeVIP -"""
+
+    fields = {
+        "BusinessId": fields.Str(required=False, dump_to="BusinessId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "VPCId": fields.Str(required=False, dump_to="VPCId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DescribeVIPResponseSchema(schema.ResponseSchema):
+    """DescribeVIP -"""
+
+    fields = {
+        "DataSet": fields.List(
+            fields.Str(), required=False, load_from="DataSet"
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+        "VIPSet": fields.List(
+            models.VIPDetailSetSchema(), required=False, load_from="VIPSet"
+        ),
+    }
+
+
+"""
 API: DisassociateEIPWithShareBandwidth
 
 将EIP移出共享带宽
@@ -670,6 +743,30 @@ class ReleaseShareBandwidthRequestSchema(schema.RequestSchema):
 
 class ReleaseShareBandwidthResponseSchema(schema.ResponseSchema):
     """ReleaseShareBandwidth - 关闭共享带宽"""
+
+    fields = {}
+
+
+"""
+API: ReleaseVIP
+
+
+"""
+
+
+class ReleaseVIPRequestSchema(schema.RequestSchema):
+    """ReleaseVIP -"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "VIPId": fields.Str(required=True, dump_to="VIPId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class ReleaseVIPResponseSchema(schema.ResponseSchema):
+    """ReleaseVIP -"""
 
     fields = {}
 
