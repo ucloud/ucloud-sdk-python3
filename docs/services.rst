@@ -101,10 +101,10 @@ IPSecVPN
    :members:
 
 
-UEC
----
+UBill
+-----
 
-.. autoclass:: ucloud.services.uec.client.UECClient
+.. autoclass:: ucloud.services.ubill.client.UBillClient
    :members:
 
 
