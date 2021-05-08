@@ -35,12 +35,12 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.BackupUDBInstanceRequestSchema().dumps(d)
-
-        # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("BackupUDBInstance", d, **kwargs)
         return apis.BackupUDBInstanceResponseSchema().loads(resp)
@@ -64,7 +64,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.BackupUDBInstanceBinlogRequestSchema().dumps(d)
 
@@ -89,7 +92,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.BackupUDBInstanceErrorLogRequestSchema().dumps(d)
 
@@ -115,12 +121,43 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.BackupUDBInstanceSlowLogRequestSchema().dumps(d)
 
         resp = self.invoke("BackupUDBInstanceSlowLog", d, **kwargs)
         return apis.BackupUDBInstanceSlowLogResponseSchema().loads(resp)
+
+    def change_udb_param_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ChangeUDBParamGroup - 修改配置文件
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **DBId** (str) - (Required) DB实例Id
+        - **GroupId** (str) - (Required) 参数组Id
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ChangeUDBParamGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("ChangeUDBParamGroup", d, **kwargs)
+        return apis.ChangeUDBParamGroupResponseSchema().loads(resp)
 
     def check_recover_udb_instance(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -131,7 +168,7 @@ class UDBClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **SrcDBId** (str) - (Required) 源实例的Id(只支持普通版DB不支持高可用)
+        - **SrcDBId** (str) - (Required) 源实例的Id
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
 
         **Response**
@@ -140,7 +177,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.CheckRecoverUDBInstanceRequestSchema().dumps(d)
 
@@ -164,7 +204,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.CheckUDBInstanceToHAAllowanceRequestSchema().dumps(d)
 
@@ -190,12 +233,68 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.ClearUDBLogRequestSchema().dumps(d)
 
         resp = self.invoke("ClearUDBLog", d, **kwargs)
         return apis.ClearUDBLogResponseSchema().loads(resp)
+
+    def create_mongo_db_replica_set(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateMongoDBReplicaSet - 一键创建DB副本集
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **AdminPassword** (str) - (Required) 管理员密码
+        - **DBTypeId** (str) - (Required) DB类型id对应的字符串形式（例如：mongodb-2.6）注意：当前仅支持mongodb
+        - **DiskSpace** (int) - (Required) 磁盘空间(GB), 暂时支持20G - 3000G
+        - **MemoryLimit** (int) - (Required) 内存限制(MB)，目前支持以下几档 1000M/2000M/4000M/ 6000M/8000M/12000M/16000M/ 24000M/32000M/48000M/ 64000M/96000M
+        - **Name** (str) - (Required) PrimaryDB实例名称，至少6位
+        - **ParamGroupId** (int) - (Required) DB实例使用的配置参数组id
+        - **Port** (int) - (Required) 端口号
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **AdminUser** (str) - 管理员帐户名，默认root
+        - **BackupCount** (int) - 备份策略，每周备份数量，默认7次
+        - **BackupDuration** (int) - 备份策略，备份时间间隔，单位小时计，默认24小时
+        - **BackupTime** (int) - 备份策略，备份开始时间，单位小时计，默认1点
+        - **CPU** (int) - cpu核数
+        - **ChargeType** (str) - Year， Month， Dynamic，Trial，默认: Month
+        - **ClusterId** (str) - 所属分片集群的ID
+        - **CouponId** (list) - CouponId.0 代表第一个代金券id，对于传入多个代金券id，后面为 CouponId.1, CouponId.2 以此类推
+        - **InstanceType** (str) - UDB数据库机型
+        - **Quantity** (int) - 购买时长(N个月)，默认值1个月。如果为0，代表购买到月底。
+        - **SSDType** (str) - SSD类型，可选值为"SATA"、"PCI-E"，如果UseSSD为true ，则必选
+        - **SubnetId** (str) - 子网ID
+        - **UseSSD** (bool) - 是否使用SSD，默认为true
+        - **VPCId** (str) - VPC的ID
+
+        **Response**
+
+        - **Action** (str) - 操作名称
+        - **DBIds** (list) - 返回所有副本集成员的Id
+        - **RetCode** (int) - 返回码
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateMongoDBReplicaSetRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateMongoDBReplicaSet", d, **kwargs)
+        return apis.CreateMongoDBReplicaSetResponseSchema().loads(resp)
 
     def create_udb_instance(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -208,8 +307,8 @@ class UDBClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **AdminPassword** (str) - (Required) 管理员密码
         - **DBTypeId** (str) - (Required) DB类型id，mysql/mongodb/postgesql按版本细分 1：mysql-5.1，2：mysql-5.5，3：percona-5.5，4：mysql-5.6，5：percona-5.6，6：mysql-5.7，7：percona-5.7，8：mariadb-10.0，9：mongodb-2.4，10：mongodb-2.6，11：mongodb-3.0，12：mongodb-3.2,13：postgresql-9.4，14：postgresql-9.6，14：postgresql-10.4
-        - **DiskSpace** (int) - (Required) 磁盘空间(GB), 暂时支持20G - 3000G
-        - **MemoryLimit** (int) - (Required) 内存限制(MB)，目前支持以下几档 1000M/2000M/4000M/ 6000M/8000M/12000M/16000M/ 24000M/32000M/48000M/ 64000M/96000M
+        - **DiskSpace** (int) - (Required) 磁盘空间(GB), 暂时支持20G - 32T
+        - **MemoryLimit** (int) - (Required) 内存限制(MB)，目前支持以下几档 1000M/2000M/4000M/ 6000M/8000M/12000M/16000M/ 24000M/32000M/48000M/ 64000M/96000M/128000M/192000M/256000M/320000M
         - **Name** (str) - (Required) 实例名称，至少6位
         - **ParamGroupId** (int) - (Required) DB实例使用的配置参数组id
         - **Port** (int) - (Required) 端口号，mysql默认3306，mongodb默认27017，postgresql默认5432
@@ -225,15 +324,15 @@ class UDBClient(Client):
         - **ClusterRole** (str) - 当DB类型(DBTypeId)为mongodb时，需要指定mongo的角色，可选值为configsrv (配置节点)，shardsrv (数据节点)
         - **CouponId** (str) - 使用的代金券id
         - **DisableSemisync** (bool) - 是否开启异步高可用，默认不填，可置为true
+        - **EnableIpV6** (bool) - 是否创建使用ipv6 资源， 默认为false， 或者不填， 创建ipv6为true
         - **HAArch** (str) - 高可用架构:1） haproxy（默认）: 当前仅支持mysql。2） sentinel: 基于vip和哨兵节点的架构，当前支持mysql和pg。
         - **InstanceMode** (str) - UDB实例模式类型, 可选值如下: "Normal": 普通版UDB实例 "HA": 高可用版UDB实例 默认是"Normal"
-        - **InstanceType** (str) - UDB数据库机型
         - **Quantity** (int) - 购买时长，默认值1
-        - **SSDType** (str) - SSD类型，可选值为"SATA"、"PCI-E"，如果UseSSD为true ，则必选
+        - **SSDType** (str) - SSD类型，可选值为"SATA"、“NVMe”，如果UseSSD为true ，则必选
         - **SubnetId** (str) - 子网ID
         - **Tag** (str) - 实例所在的业务组名称
         - **UDBCId** (str) - 专区ID信息（如果这个参数存在这说明是在专区中创建DB）
-        - **UseSSD** (bool) - 是否使用SSD，默认为false。目前主要可用区、海外机房、新机房只提供SSD资源，非SSD资源不再提供。
+        - **UseSSD** (bool) - 是否使用SSD，默认为true。目前主要可用区、海外机房、新机房只提供SSD资源，非SSD资源不再提供。
         - **VPCId** (str) - VPC的ID
 
         **Response**
@@ -242,7 +341,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.CreateUDBInstanceRequestSchema().dumps(d)
 
@@ -266,6 +368,7 @@ class UDBClient(Client):
         - **SrcDBId** (str) - (Required) 源实例的Id
         - **ChargeType** (str) - Year， Month， Dynamic，Trial，默认: Dynamic
         - **CouponId** (str) - 使用的代金券id
+        - **EnableIpV6** (bool) - 是否创建使用ipv6 资源， 默认为false， 或者不填， 创建ipv6为true
         - **Quantity** (int) - 购买时长，默认值1
         - **SubnetId** (str) - 子网ID
         - **UDBCId** (str) - 专区的Id
@@ -279,7 +382,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.CreateUDBInstanceByRecoveryRequestSchema().dumps(d)
 
@@ -311,7 +417,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.CreateUDBParamGroupRequestSchema().dumps(d)
 
@@ -335,7 +444,7 @@ class UDBClient(Client):
         - **CouponId** (str) - 使用的代金券id
         - **IsArbiter** (bool) - 是否是仲裁节点，默认false，仲裁节点按最小机型创建
         - **Port** (int) - 端口号，默认27017，取值范围3306至65535。
-        - **UseSSD** (bool) - 是否使用SSD，默认不使用
+        - **UseSSD** (bool) - 是否使用SSD，默认 为 true
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
 
         **Response**
@@ -344,7 +453,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.CreateUDBReplicationInstanceRequestSchema().dumps(d)
 
@@ -373,7 +485,7 @@ class UDBClient(Client):
         - **ChargeType** (str) - Year， Month， Dynamic，Trial，默认: Month
         - **CouponId** (str) - 使用的代金券id
         - **Quantity** (int) - 购买时长，默认值1
-        - **UseSSD** (bool) - 是否使用SSD，默认为false
+        - **UseSSD** (bool) - 是否使用SSD，默认为ture
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
 
         **Response**
@@ -382,7 +494,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.CreateUDBRouteInstanceRequestSchema().dumps(d)
 
@@ -403,15 +518,20 @@ class UDBClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Name** (str) - (Required) 实例名称，至少6位
         - **SrcId** (str) - (Required) master实例的DBId,该值可以通过DescribeUDBInstance获取
+        - **ChargeType** (str) - Year， Month， Dynamic，Trial，默认和主库保持一致
         - **CouponId** (str) - 使用的代金券id
         - **DiskSpace** (int) - 磁盘空间(GB), 暂时支持20G - 3000G（API支持，前端暂时只开放内存定制）
         - **InstanceMode** (str) - UDB实例部署模式，可选值如下：Normal: 普通单点实例HA: 高可用部署实例
-        - **InstanceType** (str) - UDB实例类型：Normal和SATA_SSD
+        - **InstanceType** (str) - UDB实例类型：Normal、SATA_SSD、NVMe_SSD
         - **IsLock** (bool) - 是否锁主库，默认为true
-        - **MemoryLimit** (int) - 内存限制(MB)，目前支持以下几档 1000M/2000M/4000M/ 6000M/8000M/12000M/16000M/ 24000M/32000M/48000M/ 64000M/96000M
-        - **Port** (int) - 端口号，mysql默认3306
-        - **SSDType** (str) - SSD类型，可选值为"SATA"、"PCI-E"，如果UseSSD为true ，则必选
-        - **UseSSD** (bool) - 是否使用SSD，默认为false
+        - **MemoryLimit** (int) - 内存限制(MB)，目前支持以下几档 1000M/2000M/4000M/ 6000M/8000M/12000M/16000M/ 24000M/32000M/48000M/ 64000M/96000M/128000M/192000M/256000M/320000M
+        - **ParamGroupId** (int) - DB实例使用的配置参数组id，默认和主库保持一致
+        - **Port** (int) - 端口号
+        - **Quantity** (int) - 购买时长，默认默认和主库保持一致
+        - **SSDType** (str) - SSD类型，可选值为"SATA"、"PCI-E"、“NVMe”，如果UseSSD为true ，则必选
+        - **SubnetId** (str) - 子网ID（如果不传用默认子网）
+        - **UseSSD** (bool) - 是否使用SSD，默认为true
+        - **VPCId** (str) - VPCID（如果不传用默认的VPC）
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
 
         **Response**
@@ -420,7 +540,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.CreateUDBSlaveRequestSchema().dumps(d)
 
@@ -433,24 +556,30 @@ class UDBClient(Client):
     def delete_udb_backup(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DeleteUDBBackup - 删除UDB实例备份
+        """DeleteUDBBackup -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **BackupId** (int) - (Required) 备份id，可通过DescribeUDBBackup获得
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **BackupZone** (str) - 跨可用区高可用备库所在可用区，参见［可用区列表］
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **BackupId** (int) - (Required)
+        - **Zone** (str) - (Required)
+        - **BackupZone** (str) -
 
         **Response**
 
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DeleteUDBBackupRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("DeleteUDBBackup", d, **kwargs)
         return apis.DeleteUDBBackupResponseSchema().loads(resp)
@@ -473,7 +602,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DeleteUDBInstanceRequestSchema().dumps(d)
 
@@ -498,7 +630,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DeleteUDBLogPackageRequestSchema().dumps(d)
 
@@ -523,7 +658,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DeleteUDBParamGroupRequestSchema().dumps(d)
 
@@ -533,7 +671,7 @@ class UDBClient(Client):
     def describe_udb_backup(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DescribeUDBBackup - 列表UDB实例备份信息.Zone不填表示多可用区，填代表单可用区
+        """DescribeUDBBackup - 列表UDB实例备份信息
 
         **Request**
 
@@ -541,10 +679,8 @@ class UDBClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Limit** (int) - (Required) 分页显示的条目数，列表操作则指定
         - **Offset** (int) - (Required) 分页显示的起始偏移，列表操作则指定
-        - **BackupId** (int) - 如果填了BackupId, 那么只拉取这个备份的记录
         - **BackupType** (int) - 备份类型,取值为0或1，0表示自动，1表示手动
         - **BeginTime** (int) - 过滤条件:起始时间(Unix时间戳)
-        - **ClassType** (str) - 如果未指定GroupId，则可选是否选取特定DB类型的配置(sql, nosql, postgresql, sqlserver)
         - **DBId** (str) - DB实例Id，如果指定，则只获取该db的备份信息 该值可以通过DescribeUDBInstance获取
         - **EndTime** (int) - 过滤条件:结束时间(Unix时间戳)
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
@@ -557,7 +693,6 @@ class UDBClient(Client):
         **Response Model**
 
         **UDBBackupSet**
-
         - **BackupEndTime** (int) - 备份完成时间(Unix时间戳)
         - **BackupId** (int) - 备份id
         - **BackupName** (str) - 备份名称
@@ -567,13 +702,16 @@ class UDBClient(Client):
         - **BackupZone** (str) - 跨机房高可用备库所在可用区
         - **DBId** (str) - dbid
         - **DBName** (str) - 对应的db名称
-        - **ErrorInfo** (str) - 备份错误信息
         - **State** (str) - 备份状态 Backuping // 备份中 Success // 备份成功 Failed // 备份失败 Expired // 备份过期
         - **Zone** (str) - 备份所在可用区
 
+
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeUDBBackupRequestSchema().dumps(d)
 
@@ -598,7 +736,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeUDBBackupBlacklistRequestSchema().dumps(d)
 
@@ -624,7 +765,9 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"Region": self.config.region}
+        d = {
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeUDBBinlogBackupURLRequestSchema().dumps(d)
 
@@ -656,8 +799,50 @@ class UDBClient(Client):
 
         **Response Model**
 
-        **UDBSlaveInstanceSet**
+        **UDBInstanceSet**
+        - **AdminUser** (str) - 管理员帐户名，默认root
+        - **BackupBeginTime** (int) - 备份策略，不可修改，开始时间，单位小时计，默认3点
+        - **BackupBlacklist** (str) - 备份策略，备份黑名单，mongodb则不适用
+        - **BackupCount** (int) - 备份策略，不可修改，备份文件保留的数量，默认7次
+        - **BackupDate** (str) - 备份日期标记位。共7位,每一位为一周中一天的备份情况 0表示关闭当天备份,1表示打开当天备份。最右边的一位 为星期天的备份开关，其余从右到左依次为星期一到星期 六的备份配置开关，每周必须至少设置两天备份。 例如：1100000 表示打开星期六和星期五的自动备份功能
+        - **BackupDuration** (int) - 备份策略，一天内备份时间间隔，单位小时，默认24小时
+        - **BackupZone** (str) - 跨可用区高可用备库所在可用区
+        - **ChargeType** (str) - Year， Month， Dynamic，Trial，默认: Dynamic
+        - **ClusterRole** (str) - 当DB类型为mongodb时，返回该实例所在集群中的角色，包括：mongos、configsrv_sccc、configsrv_csrs、shardsrv_datanode、shardsrv_arbiter，其中congfigsrv分为sccc和csrs两种模式，shardsrv分为datanode和arbiter两种模式
+        - **CreateTime** (int) - DB实例创建时间，采用UTC计时时间戳
+        - **DBId** (str) - DB实例id
+        - **DBTypeId** (str) - DB类型id，mysql/mongodb按版本细分各有一个id 目前id的取值范围为[1,7],数值对应的版本如下： 1：mysql-5.5，2：mysql-5.1，3：percona-5.5 4：mongodb-2.4，5：mongodb-2.6，6：mysql-5.6， 7：percona-5.6
+        - **DataFileSize** (float) - DB实例数据文件大小，单位GB
+        - **DataSet** (list) - 见 **UDBSlaveInstanceSet** 模型定义
+        - **DiskSpace** (int) - 磁盘空间(GB), 默认根据配置机型
+        - **DiskUsedSize** (float) - DB实例磁盘已使用空间，单位GB
+        - **ExpiredTime** (int) - DB实例过期时间，采用UTC计时时间戳
+        - **IPv6Address** (str) - 该实例的ipv6地址
+        - **InstanceMode** (str) - UDB实例模式类型, 可选值如下: “Normal”： 普通版UDB实例 “HA”: 高可用版UDB实例
+        - **InstanceType** (str) - UDB数据库机型
+        - **InstanceTypeId** (int) - UDB数据库机型ID
+        - **LogFileSize** (float) - DB实例日志文件大小，单位GB
+        - **MemoryLimit** (int) - 内存限制(MB)，默认根据配置机型
+        - **ModifyTime** (int) - DB实例修改时间，采用UTC计时时间戳
+        - **Name** (str) - 实例名称，至少6位
+        - **ParamGroupId** (int) - DB实例使用的配置参数组id
+        - **Port** (int) - 端口号，mysql默认3306，mongodb默认27017
+        - **Role** (str) - DB实例角色，mysql区分master/slave，mongodb多种角色
+        - **SSDType** (str) - SSD类型，SATA/PCI-E/NVMe
+        - **SrcDBId** (str) - 对mysql的slave而言是master的DBId，对master则为空， 对mongodb则是副本集id
+        - **State** (str) - DB状态标记 Init：初始化中，Fail：安装失败，Starting：启动中，Running：运行，Shutdown：关闭中，Shutoff：已关闭，Delete：已删除，Upgrading：升级中，Promoting：提升为独库进行中，Recovering：恢复中，Recover fail：恢复失败
+        - **SubnetId** (str) - 子网ID
+        - **SystemFileSize** (float) - DB实例系统文件大小，单位GB
+        - **Tag** (str) - 获取资源其他信息
+        - **UseSSD** (bool) - 是否使用SSD
+        - **UserUFileData** (dict) - 见 **UFileDataSet** 模型定义
+        - **VPCId** (str) - VPC的ID
+        - **VirtualIP** (str) - DB实例虚ip
+        - **VirtualIPMac** (str) - DB实例虚ip的mac地址
+        - **Zone** (str) - DB实例所在可用区
 
+
+        **UDBSlaveInstanceSet**
         - **AdminUser** (str) - 管理员帐户名，默认root
         - **BackupBeginTime** (int) - 备份策略，不可修改，开始时间，单位小时计，默认3点
         - **BackupBlacklist** (str) - 备份策略，备份黑名单，mongodb则不适用
@@ -673,6 +858,7 @@ class UDBClient(Client):
         - **DiskSpace** (int) - 磁盘空间(GB), 默认根据配置机型
         - **DiskUsedSize** (float) - DB实例磁盘已使用空间，单位GB
         - **ExpiredTime** (int) - DB实例过期时间，采用UTC计时时间戳
+        - **IPv6Address** (str) - 获取该实例的IPv6地址
         - **InstanceMode** (str) - UDB实例模式类型, 可选值如下: "Normal": 普通版UDB实例;"HA": 高可用版UDB实例
         - **InstanceType** (str) - UDB数据库机型
         - **InstanceTypeId** (int) - UDB数据库机型ID
@@ -695,50 +881,18 @@ class UDBClient(Client):
         - **VirtualIPMac** (str) - DB实例虚ip的mac地址
         - **Zone** (str) - 可用区
 
-        **UDBInstanceSet**
 
-        - **AdminUser** (str) - 管理员帐户名，默认root
-        - **BackupBeginTime** (int) - 备份策略，不可修改，开始时间，单位小时计，默认3点
-        - **BackupBlacklist** (str) - 备份策略，备份黑名单，mongodb则不适用
-        - **BackupCount** (int) - 备份策略，不可修改，备份文件保留的数量，默认7次
-        - **BackupDate** (str) - 备份日期标记位。共7位,每一位为一周中一天的备份情况 0表示关闭当天备份,1表示打开当天备份。最右边的一位 为星期天的备份开关，其余从右到左依次为星期一到星期 六的备份配置开关，每周必须至少设置两天备份。 例如：1100000 表示打开星期六和星期五的自动备份功能
-        - **BackupDuration** (int) - 备份策略，一天内备份时间间隔，单位小时，默认24小时
-        - **BackupZone** (str) - 跨可用区高可用备库所在可用区
-        - **ChargeType** (str) - Year， Month， Dynamic，Trial，默认: Dynamic
-        - **CluserRole** (str) - 当DB类型为mongodb时，返回该实例所在集群中的角色，包括：mongos、configsrv_sccc、configsrv_csrs、shardsrv_datanode、shardsrv_arbiter，其中congfigsrv分为sccc和csrs两种模式，shardsrv分为datanode和arbiter两种模式
-        - **CreateTime** (int) - DB实例创建时间，采用UTC计时时间戳
-        - **DBId** (str) - DB实例id
-        - **DBTypeId** (str) - DB类型id，mysql/mongodb按版本细分各有一个id 目前id的取值范围为[1,7],数值对应的版本如下： 1：mysql-5.5，2：mysql-5.1，3：percona-5.5 4：mongodb-2.4，5：mongodb-2.6，6：mysql-5.6， 7：percona-5.6
-        - **DataFileSize** (float) - DB实例数据文件大小，单位GB
-        - **DataSet** (list) - 见 **UDBSlaveInstanceSet** 模型定义
-        - **DiskSpace** (int) - 磁盘空间(GB), 默认根据配置机型
-        - **DiskUsedSize** (float) - DB实例磁盘已使用空间，单位GB
-        - **ExpiredTime** (int) - DB实例过期时间，采用UTC计时时间戳
-        - **InstanceMode** (str) - UDB实例模式类型, 可选值如下: “Normal”： 普通版UDB实例 “HA”: 高可用版UDB实例
-        - **InstanceType** (str) - UDB数据库机型
-        - **InstanceTypeId** (int) - UDB数据库机型ID
-        - **LogFileSize** (float) - DB实例日志文件大小，单位GB
-        - **MemoryLimit** (int) - 内存限制(MB)，默认根据配置机型
-        - **ModifyTime** (int) - DB实例修改时间，采用UTC计时时间戳
-        - **Name** (str) - 实例名称，至少6位
-        - **ParamGroupId** (int) - DB实例使用的配置参数组id
-        - **Port** (int) - 端口号，mysql默认3306，mongodb默认27017
-        - **Role** (str) - DB实例角色，mysql区分master/slave，mongodb多种角色
-        - **SSDType** (str) - SSD类型，SATA/PCI-E
-        - **SrcDBId** (str) - 对mysql的slave而言是master的DBId，对master则为空， 对mongodb则是副本集id
-        - **State** (str) - DB状态标记 Init：初始化中，Fail：安装失败，Starting：启动中，Running：运行，Shutdown：关闭中，Shutoff：已关闭，Delete：已删除，Upgrading：升级中，Promoting：提升为独库进行中，Recovering：恢复中，Recover fail：恢复失败
-        - **SubnetId** (str) - 子网ID
-        - **SystemFileSize** (float) - DB实例系统文件大小，单位GB
-        - **Tag** (str) - 获取资源其他信息
-        - **UseSSD** (bool) - 是否使用SSD
-        - **VPCId** (str) - VPC的ID
-        - **VirtualIP** (str) - DB实例虚ip
-        - **VirtualIPMac** (str) - DB实例虚ip的mac地址
-        - **Zone** (str) - DB实例所在可用区
+        **UFileDataSet**
+        - **Bucket** (str) - bucket名称
+        - **TokenID** (str) - Ufile的令牌tokenid
+
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeUDBInstanceRequestSchema().dumps(d)
 
@@ -766,7 +920,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeUDBInstanceBackupStateRequestSchema().dumps(d)
 
@@ -793,7 +950,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeUDBInstanceBackupURLRequestSchema().dumps(d)
 
@@ -821,15 +981,18 @@ class UDBClient(Client):
         **Response Model**
 
         **UDBInstanceBinlogSet**
-
         - **BeginTime** (int) - Binlog文件生成时间(时间戳)
         - **EndTime** (int) - Binlog文件结束时间(时间戳)
         - **Name** (str) - Binlog文件名
         - **Size** (int) - Binlog文件大小
 
+
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeUDBInstanceBinlogRequestSchema().dumps(d)
 
@@ -851,12 +1014,14 @@ class UDBClient(Client):
 
         **Response**
 
-        - **BackupSize** (int) - 备份文件大小(字节)
         - **State** (str) - 备份状态 0 Backuping // 备份中 1 Success // 备份成功 2 Failed // 备份失败 3 Expired // 备份过期
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeUDBInstanceBinlogBackupStateRequestSchema().dumps(d)
 
@@ -864,6 +1029,38 @@ class UDBClient(Client):
         return apis.DescribeUDBInstanceBinlogBackupStateResponseSchema().loads(
             resp
         )
+
+    def describe_udb_instance_log(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUDBInstanceLog - 查询某一段时间内UDB的错误日志或慢查询日志
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **BeginTime** (int) - (Required) 查询的日志开始的时间戳（Unix Timestamp）。对于实时查询，这个参数应该是上次轮询请求时的时间戳，后台会返回从该值到当前时间的日志内容。
+        - **DBId** (str) - (Required) 实例ID
+        - **EndTime** (int) - (Required) 查询日志的结束时间戳(Unix Timestamp），对于实时查询不传该值，与BeginTime的差值不超过24小时：(EndTime-BeginTime) < 24*60*60
+        - **LogType** (str) - (Required) 查询日志的类型
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
+        **Response**
+
+        - **Log** (str) - 查询到的日志内容，一段纯文本
+        - **NextTime** (str) - 此次查询到的日志的下一个时间，用于下一次轮询时的BeginTime参数；如果日志查询结束则返回为空，前端结束查询
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeUDBInstanceLogRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeUDBInstanceLog", d, **kwargs)
+        return apis.DescribeUDBInstanceLogResponseSchema().loads(resp)
 
     def describe_udb_instance_price(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -891,13 +1088,15 @@ class UDBClient(Client):
         **Response Model**
 
         **UDBInstancePriceSet**
-
         - **ChargeType** (str) - Year， Month， Dynamic，Trial
         - **Price** (int) - 价格，单位为分
 
+
         """
         # build request
-        d = {"Region": self.config.region}
+        d = {
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeUDBInstancePriceRequestSchema().dumps(d)
 
@@ -922,7 +1121,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeUDBInstanceStateRequestSchema().dumps(d)
 
@@ -951,7 +1153,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeUDBInstanceUpgradePriceRequestSchema().dumps(d)
 
@@ -972,12 +1177,13 @@ class UDBClient(Client):
 
         **Response**
 
-        - **BackupPath** (str) - 备份外网URL
-        - **UsernetPath** (str) - 备份用户网URL
+        - **BackupPath** (str) - DB实例备份文件的地址
 
         """
         # build request
-        d = {"Region": self.config.region}
+        d = {
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeUDBLogBackupURLRequestSchema().dumps(d)
 
@@ -1010,7 +1216,6 @@ class UDBClient(Client):
         **Response Model**
 
         **LogPackageDataSet**
-
         - **BackupId** (int) - 备份id
         - **BackupName** (str) - 备份名称
         - **BackupSize** (int) - 备份文件大小
@@ -1022,9 +1227,13 @@ class UDBClient(Client):
         - **State** (str) - 备份状态 Backuping // 备份中 Success // 备份成功 Failed // 备份失败 Expired // 备份过期
         - **Zone** (str) - 所在可用区
 
+
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeUDBLogPackageRequestSchema().dumps(d)
 
@@ -1038,15 +1247,15 @@ class UDBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **Limit** (int) - (Required) 分页显示的条目数，列表操作则指定
-        - **Offset** (int) - (Required) 分页显示的起始偏移，列表操作则指定
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClassType** (str) - 如果未指定GroupId，则可选是否选取特定DB类型的配置(sql, nosql, postgresql, sqlserver)
         - **GroupId** (int) - 参数组id，如果指定则获取描述，否则是列表操作，需要 指定Offset/Limit
         - **IsInUDBC** (bool) - 是否选取专区中配置
+        - **Limit** (int) - 分页显示的条目数，列表操作则指定
+        - **Offset** (int) - 分页显示的起始偏移，列表操作则指定
         - **RegionFlag** (bool) - 当请求没有填写Zone时，如果指定为true，表示只拉取跨可用区的相关配置文件，否则，拉取所有机房的配置文件（包括每个单可用区和跨可用区）
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -1055,18 +1264,7 @@ class UDBClient(Client):
 
         **Response Model**
 
-        **UDBParamMemberSet**
-
-        - **AllowedVal** (str) - 允许的值(根据参数类型，用分隔符表示)
-        - **ApplyType** (int) - 参数值应用类型,取值范围为{0,10,20}，各值代表 意义为0-unknown、10-static、20-dynamic
-        - **FormatType** (int) - 允许值的格式类型，取值范围为{0,10,20}，意义分 别为PVFT_UNKOWN=0,PVFT_RANGE=10, PVFT_ENUM=20
-        - **Key** (str) - 参数名称
-        - **Modifiable** (bool) - 是否可更改，默认为false
-        - **Value** (str) - 参数值
-        - **ValueType** (int) - 参数值应用类型，取值范围为{0,10,20,30},各值 代表意义为 0-unknown、10-int、20-string、 30-bool
-
         **UDBParamGroupSet**
-
         - **DBTypeId** (str) - DB类型id，mysql/mongodb按版本细分各有一个id 目前id的取值范围为[1,7],数值对应的版本如下 1：mysql-5.5，2：mysql-5.1，3：percona-5.5 4：mongodb-2.4，5：mongodb-2.6，6：mysql-5.6 7：percona-5.6
         - **Description** (str) - 参数组描述
         - **GroupId** (int) - 参数组id
@@ -1076,14 +1274,72 @@ class UDBClient(Client):
         - **RegionFlag** (bool) -
         - **Zone** (str) -
 
+
+        **UDBParamMemberSet**
+        - **AllowedVal** (str) - 允许的值(根据参数类型，用分隔符表示)
+        - **ApplyType** (int) - 参数值应用类型,取值范围为{0,10,20}，各值代表 意义为0-unknown、10-static、20-dynamic
+        - **FormatType** (int) - 允许值的格式类型，取值范围为{0,10,20}，意义分 别为PVFT_UNKOWN=0,PVFT_RANGE=10, PVFT_ENUM=20
+        - **Key** (str) - 参数名称
+        - **Modifiable** (bool) - 是否可更改，默认为false
+        - **Value** (str) - 参数值
+        - **ValueType** (int) - 参数值应用类型，取值范围为{0,10,20,30},各值 代表意义为 0-unknown、10-int、20-string、 30-bool
+
+
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeUDBParamGroupRequestSchema().dumps(d)
 
         resp = self.invoke("DescribeUDBParamGroup", d, **kwargs)
         return apis.DescribeUDBParamGroupResponseSchema().loads(resp)
+
+    def describe_udb_splitting_info(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUDBSplittingInfo - 描述读写分离功能的详细信息
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **MasterDBId** (str) - (Required) DB实例ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **DBTypeId** (str) - 数据库版本
+        - **DataSet** (list) - 见 **UDBRWSplittingSet** 模型定义
+        - **DelayThreshold** (int) - 时间阈值
+        - **MasterDBId** (str) - DB实例ID
+        - **Port** (int) - 端口号
+        - **RWIP** (str) - 读写分离IP
+        - **RWState** (str) - 读写分离状态
+        - **ReadModel** (str) - 读写分离策略
+        - **Zone** (str) - 可用区
+
+        **Response Model**
+
+        **UDBRWSplittingSet**
+        - **DBId** (str) - DB实例ID
+        - **ReadWeight** (int) - 读写分离比重
+        - **Role** (str) - 主库/从库
+        - **State** (str) - DB状态
+        - **VirtualIP** (str) - DBIP
+
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeUDBSplittingInfoRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeUDBSplittingInfo", d, **kwargs)
+        return apis.DescribeUDBSplittingInfoResponseSchema().loads(resp)
 
     def describe_udb_type(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1095,30 +1351,56 @@ class UDBClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **BackupZone** (str) - 跨可用区高可用DB的备库所在区域，仅当该可用区支持跨可用区高可用时填入。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **CompatibleWithDBType** (str) - 返回从备份创建实例时，该版本号所支持的备份创建版本。如果没传，则表示不是从备份创建。
         - **DBClusterType** (str) - DB实例类型，如mysql，sqlserver，mongo，postgresql
-        - **DiskType** (str) - 返回支持某种磁盘类型的DB类型。如果没传，则表示任何磁盘类型均可。
+        - **DiskType** (str) - 返回支持某种磁盘类型的DB类型，如Normal、SSD、NVMe_SSD。如果没传，则表示任何磁盘类型均可。
         - **InstanceMode** (str) - 返回支持某种实例类型的DB类型。如果没传，则表示任何实例类型均可。normal:单点,ha:高可用,sharded_cluster:分片集群
 
         **Response**
 
-        - **Action** (str) - 操作名称
         - **DataSet** (list) - 见 **UDBTypeSet** 模型定义
-        - **RetCode** (int) - 返回码
 
         **Response Model**
 
         **UDBTypeSet**
-
         - **DBTypeId** (str) - DB类型id，mysql/mongodb按版本细分各有一个id, 目前id的取值范围为[1,7],数值对应的版本如下： 1：mysql-5.5，2：mysql-5.1，3：percona-5.5 4：mongodb-2.4，5：mongodb-2.6，6：mysql-5.6， 7：percona-5.6
+
 
         """
         # build request
-        d = {"Region": self.config.region}
+        d = {
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeUDBTypeRequestSchema().dumps(d)
 
         resp = self.invoke("DescribeUDBType", d, **kwargs)
         return apis.DescribeUDBTypeResponseSchema().loads(resp)
+
+    def disable_udb_rw_splitting(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DisableUDBRWSplitting - 关闭DB的读写分离功能
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **MasterDBId** (str) - (Required) DB实例ID（master)
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DisableUDBRWSplittingRequestSchema().dumps(d)
+
+        resp = self.invoke("DisableUDBRWSplitting", d, **kwargs)
+        return apis.DisableUDBRWSplittingResponseSchema().loads(resp)
 
     def edit_udb_backup_blacklist(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1138,12 +1420,70 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.EditUDBBackupBlacklistRequestSchema().dumps(d)
 
         resp = self.invoke("EditUDBBackupBlacklist", d, **kwargs)
         return apis.EditUDBBackupBlacklistResponseSchema().loads(resp)
+
+    def enable_udb_rw_splitting(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """EnableUDBRWSplitting - 开启DB的读写分离功能
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **MasterDBId** (str) - (Required) DB实例ID（主库）
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **BackupZone** (str) - 备份的可用区。用于创建跨可用区读写分离的一个节点，跨机房的读写分离必须有这个参数
+
+        **Response**
+
+        - **MasterDBId** (str) - DB实例ID（主库）
+        - **RWIp** (str) - 读写分离访问IP
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.EnableUDBRWSplittingRequestSchema().dumps(d)
+
+        resp = self.invoke("EnableUDBRWSplitting", d, **kwargs)
+        return apis.EnableUDBRWSplittingResponseSchema().loads(resp)
+
+    def extract_udb_param_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ExtractUDBParamGroup - 获取配置文件内容
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **GroupId** (int) - (Required) 配置id
+        - **RegionFlag** (bool) - 是否跨可用区，RegionFlag为true时表示跨可用区配置文件。如果RegionFlag=true，Zone可以不传，否则Zone必须传。
+        - **Zone** (str) - 可用区。如果RegionFlag=false，必须传，反之，可不传。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Content** (str) - 配置文件内容
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ExtractUDBParamGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("ExtractUDBParamGroup", d, **kwargs)
+        return apis.ExtractUDBParamGroupResponseSchema().loads(resp)
 
     def fetch_udb_instance_earliest_recover_time(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1163,7 +1503,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.FetchUDBInstanceEarliestRecoverTimeRequestSchema().dumps(d)
 
@@ -1190,7 +1533,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.ModifyUDBInstanceNameRequestSchema().dumps(d)
 
@@ -1216,7 +1562,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.ModifyUDBInstancePasswordRequestSchema().dumps(d)
 
@@ -1230,8 +1579,8 @@ class UDBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **DBId** (str) - (Required) 实例的Id,该值可以通过DescribeUDBInstance获取
 
         **Response**
@@ -1239,7 +1588,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.PromoteUDBInstanceToHARequestSchema().dumps(d)
 
@@ -1264,7 +1616,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.PromoteUDBSlaveRequestSchema().dumps(d)
 
@@ -1281,15 +1636,15 @@ class UDBClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **DBId** (str) - (Required) 实例的Id
-        - **DiskSpace** (int) - (Required) 磁盘空间(GB), 暂时支持20G-3000G
-        - **MemoryLimit** (int) - (Required) 内存限制(MB)，目前支持以下几档 1000M/2000M/4000M/ 6000M/8000M/ 12000M/16000M/ 24000M/32000M/ 48000M/64000M/96000M。
+        - **DiskSpace** (int) - (Required) 磁盘空间(GB), 暂时支持20G-32T
+        - **MemoryLimit** (int) - (Required) 内存限制(MB)，目前支持以下几档 1000M/2000M/4000M/ 6000M/8000M/ 12000M/16000M/ 24000M/32000M/ 48000M/64000M/96000M/128000M/192000M/256000M/320000M。
         - **CouponId** (str) - 使用的代金券id
         - **InstanceMode** (str) - UDB实例模式类型, 可选值如下: "Normal": 普通版UDB实例 "HA": 高可用版UDB实例 默认是"Normal"
-        - **InstanceType** (str) - UDB数据库机型: "Normal": "标准机型" ,  "SATA_SSD": "SSD机型" , "PCIE_SSD": "SSD高性能机型" ,  "Normal_Volume": "标准大容量机型",  "SATA_SSD_Volume": "SSD大容量机型" ,  "PCIE_SSD_Volume": "SSD高性能大容量机型"
-        - **SSDType** (str) - SSD类型，可选值为"SATA"、"PCI-E"，如果UseSSD为true ，则必选
+        - **InstanceType** (str) - UDB数据库机型: "Normal": "标准机型" ,  "SATA_SSD": "SSD机型" , "PCIE_SSD": "SSD高性能机型" ,  "Normal_Volume": "标准大容量机型",  "SATA_SSD_Volume": "SSD大容量机型" ,  "PCIE_SSD_Volume": "SSD高性能大容量机型"，“NVMe_SSD”：“快杰机型”
+        - **SSDType** (str) - SSD类型，可选值为"SATA"、"PCI-E"、“NVMe”，如果UseSSD为true ，则必选
         - **StartAfterUpgrade** (bool) - DB关闭状态下升降级，升降级后是否启动DB，默认为false
         - **UDBCId** (str) - 专区的ID，如果有值表示专区中的DB配置升降级
-        - **UseSSD** (bool) - 是否使用SSD，默认为false
+        - **UseSSD** (bool) - 是否使用SSD，默认为true
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
 
         **Response**
@@ -1297,12 +1652,40 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.ResizeUDBInstanceRequestSchema().dumps(d)
 
         resp = self.invoke("ResizeUDBInstance", d, **kwargs)
         return apis.ResizeUDBInstanceResponseSchema().loads(resp)
+
+    def restart_rw_splitting(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """RestartRWSplitting - 读写分离中间件重启，对应docker重启，但是ip不变
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **MasterDBId** (str) - (Required) 待关闭读写分离中间键ProxyId
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.RestartRWSplittingRequestSchema().dumps(d)
+
+        resp = self.invoke("RestartRWSplitting", d, **kwargs)
+        return apis.RestartRWSplittingResponseSchema().loads(resp)
 
     def restart_udb_instance(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1321,12 +1704,44 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.RestartUDBInstanceRequestSchema().dumps(d)
 
         resp = self.invoke("RestartUDBInstance", d, **kwargs)
         return apis.RestartUDBInstanceResponseSchema().loads(resp)
+
+    def set_udb_rw_splitting(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """SetUDBRWSplitting - 设置读写分离的模式
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **DBIds** (list) - (Required) DBIds.0 代表UDB主节点， DBIds.1 到DBIds.n 代表1到N个从节点
+        - **MasterDBId** (str) - (Required) DB实例ID（master)
+        - **ReadModel** (str) - (Required) 读写分离策略
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **DelayThreshold** (int) - 时间阙值
+        - **ReadPercents** (list) - udb主从节点的只读比例。ReadPercents.0代表主节点的只读比例，ReadPercents.1代表从节点1的读写比例， 以此类推
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.SetUDBRWSplittingRequestSchema().dumps(d)
+
+        resp = self.invoke("SetUDBRWSplitting", d, **kwargs)
+        return apis.SetUDBRWSplittingResponseSchema().loads(resp)
 
     def start_udb_instance(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1345,7 +1760,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.StartUDBInstanceRequestSchema().dumps(d)
 
@@ -1370,26 +1788,53 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.StopUDBInstanceRequestSchema().dumps(d)
 
         resp = self.invoke("StopUDBInstance", d, **kwargs)
         return apis.StopUDBInstanceResponseSchema().loads(resp)
 
+    def switch_udb_ha_to_sentinel(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """SwitchUDBHAToSentinel - UDB高可用实例从HAProxy版本升级为Sentinel版本（不带HAProxy）升级耗时30-70秒
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **DBId** (str) - (Required) UDB的实例ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.SwitchUDBHAToSentinelRequestSchema().dumps(d)
+
+        resp = self.invoke("SwitchUDBHAToSentinel", d, **kwargs)
+        return apis.SwitchUDBHAToSentinelResponseSchema().loads(resp)
+
     def switch_udb_instance_to_ha(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """SwitchUDBInstanceToHA - 普通UDB切换为高可用，原db状态为WaitForSwitch时，调用该api
+        """SwitchUDBInstanceToHA - 普通UDB切换为高可用，原db状态为WaitForSwitch时，调用改api
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **DBId** (str) - (Required) 实例的Id,该值可以通过DescribeUDBInstance获取
-        - **ChargeType** (str) - Year， Month， Dynamic，Trial，不填则按现在单点计费执行
-        - **Quantity** (str) - 购买时长，需要和 ChargeType 搭配使用，否则使用单点计费策略的值
-        - **Tag** (str) - 业务组
 
         **Response**
 
@@ -1397,7 +1842,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.SwitchUDBInstanceToHARequestSchema().dumps(d)
 
@@ -1415,7 +1863,7 @@ class UDBClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **DBId** (str) - (Required) 主节点的Id
         - **BackupDate** (str) - 备份时期标记位。共7位，每一位为一周中一天的备份情况，0表示关闭当天备份，1表示打开当天备份。最右边的一位为星期天的备份开关，其余从右到左依次为星期一到星期六的备份配置开关，每周必须至少设置两天备份。例如：1100000表示打开星期六和星期五的备份功能
-        - **BackupMethod** (str) - 选择默认的备份方式，可选 snapshot 表示使用快照/物理备份，填 logic 表示使用逻辑备份。需要同时设置BackupDate字段。（注意现在只有SSD 版本的 MySQL实例支持物理备份）
+        - **BackupMethod** (str) - 选择默认的备份方式，可选 snapshot 表示使用快照/物理备份，不填或者其它任何值为默认的逻辑备份。需要同时设置BackupDate字段。（注意现在只有SSD 版本的 MySQL实例支持物理备份）
         - **BackupTime** (int) - 备份的整点时间，范围[0,23]
         - **ForceDump** (bool) - 当导出某些数据遇到问题后，是否强制导出其他剩余数据默认是false需要同时设置BackupDate字段
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
@@ -1425,7 +1873,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.UpdateUDBInstanceBackupStrategyRequestSchema().dumps(d)
 
@@ -1451,7 +1902,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.UpdateUDBInstanceSlaveBackupSwitchRequestSchema().dumps(d)
 
@@ -1482,7 +1936,10 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.UpdateUDBParamGroupRequestSchema().dumps(d)
 
@@ -1503,7 +1960,6 @@ class UDBClient(Client):
         - **Description** (str) - (Required) 参数组描述
         - **GroupName** (str) - (Required) 配置参数组名称
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **ParamGroupTypeId** (int) - 配置文件子类型 0-未知, 1-Shardsvr-MMAPv1, 2-Shardsvr-WiredTiger, 3-Configsvr-MMAPv1, 4-Configsvr-WiredTiger, 5-Mongos
         - **RegionFlag** (bool) - 该配置文件是否是地域级别配置文件，默认是false
 
         **Response**
@@ -1512,12 +1968,12 @@ class UDBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.UploadUDBParamGroupRequestSchema().dumps(d)
-
-        # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("UploadUDBParamGroup", d, **kwargs)
         return apis.UploadUDBParamGroupResponseSchema().loads(resp)
