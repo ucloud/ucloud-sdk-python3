@@ -109,9 +109,9 @@ class UECClient(Client):
 
         **Request Model**
 
-        **CreateUEcHolderParamStorage**
-        - **Path** (str) - 存储卷挂载路径
-        - **ResourceId** (str) - 存储卷资源id
+        **CreateUEcHolderParamImage**
+        - **Message** (str) - 镜像用户名和密码（如镜像名：密码）
+        - **StoreAddress** (str) - 镜像仓库地址
 
 
         **CreateUEcHolderParamPack**
@@ -126,9 +126,9 @@ class UECClient(Client):
         - **WorkDir** (str) - 容器工作目录
 
 
-        **CreateUEcHolderParamImage**
-        - **Message** (str) - 镜像用户名和密码（如镜像名：密码）
-        - **StoreAddress** (str) - 镜像仓库地址
+        **CreateUEcHolderParamStorage**
+        - **Path** (str) - 存储卷挂载路径
+        - **ResourceId** (str) - 存储卷资源id
 
 
         """
@@ -345,15 +345,6 @@ class UECClient(Client):
 
         **Response Model**
 
-        **RuleInfo**
-        - **Action** (str) - ACCEPT（接受）和DROP（拒绝）
-        - **Port** (str) - 端口，范围用"-"符号分隔，如：1-65535
-        - **Priority** (str) - 优先级：HIGH（高），MEDIUM（中），LOW（低）
-        - **ProtocolType** (str) - 协议，可选值：TCP，UDP，ICMP
-        - **Remark** (str) - 备注
-        - **SrcIp** (str) - 源ip
-
-
         **FirewallInfo**
         - **CreateTime** (int) - 创建时间
         - **FirewallId** (str) - 防火墙Id
@@ -362,6 +353,15 @@ class UECClient(Client):
         - **ResourceCount** (int) - 防火墙绑定资源数量
         - **Rule** (list) - 见 **RuleInfo** 模型定义
         - **Type** (str) - 防火墙组类型，枚举值为： "user defined", 用户自定义防火墙； "recommend web", 默认Web防火墙； "recommend non web", 默认非Web防火墙
+
+
+        **RuleInfo**
+        - **Action** (str) - ACCEPT（接受）和DROP（拒绝）
+        - **Port** (str) - 端口，范围用"-"符号分隔，如：1-65535
+        - **Priority** (str) - 优先级：HIGH（高），MEDIUM（中），LOW（低）
+        - **ProtocolType** (str) - 协议，可选值：TCP，UDP，ICMP
+        - **Remark** (str) - 备注
+        - **SrcIp** (str) - 源ip
 
 
         """
@@ -430,6 +430,44 @@ class UECClient(Client):
 
         **Response Model**
 
+        **HolderList**
+        - **City** (str) - 城市名称
+        - **CreateTime** (int) - 创建时间
+        - **DockerCount** (int) - 容器数量
+        - **DockerInfo** (list) - 见 **DockerInfo** 模型定义
+        - **ExpireTime** (int) - 过期时间
+        - **FirewallId** (str) - 外网防火墙id
+        - **HolderName** (str) - 容器组名称
+        - **IdcId** (str) - 机房id
+        - **ImageList** (list) - 见 **ImageList** 模型定义
+        - **InnerIp** (str) - 容器组内网ip
+        - **IpList** (list) - 见 **IpList** 模型定义
+        - **NetLimit** (int) - 外网绑定的带宽
+        - **OcName** (str) - 机房名称
+        - **ProductType** (str) - 机器类型（normal通用型，hf高性能型）
+        - **Province** (str) - 省份名称
+        - **ResourceId** (str) - 容器组资源id
+        - **RestartStrategy** (int) - 0：总是；1：失败是；2：永不
+        - **State** (int) - 容器组运行状态0：初始化；1：拉取镜像；2：启动中；3：运行中；4：错误；5：正在重启；6：正在删除；7：已经删除；8：容器运行错误；9：启动失败；99：异常
+        - **StorVolumeCount** (int) - 存储卷数量
+        - **StorVolumeInfo** (list) - 见 **StorVolumeInfo** 模型定义
+        - **SubnetId** (str) - 容器组子网id
+        - **Type** (int) - 线路类型（运营商类型： 0-其它, 1-一线城市单线,2-二线城市单线, 3-全国教育网, 4-全国三通）
+
+
+        **DockerInfo**
+        - **Args** (str) - 参数
+        - **CfgDictList** (list) - 见 **CfgDictList** 模型定义
+        - **Command** (str) - 命令
+        - **CpuCores** (float) - CPU核数（/核）精度0.1核
+        - **EnvList** (list) - 见 **EnvList** 模型定义
+        - **ImageName** (str) - 镜像名称
+        - **MemSize** (float) - 内存大小（Gi）
+        - **Name** (str) - 容器名称
+        - **State** (int) - 容器状态，0：初始化；1：拉取镜像；2：拉取镜像失败；3：启动中；4：运行中；5：正在停止；6：已停止；7：已删除；8：镜像拉取成功；9：启动失败；99：异常
+        - **WorkDir** (str) - 工作目录
+
+
         **CfgDictList**
         - **MountPath** (str) - 挂载路径
         - **Name** (str) - 名称
@@ -457,44 +495,6 @@ class UECClient(Client):
         - **MountPoint** (str) - 挂载点
         - **Name** (str) - 名称
         - **ResourceId** (str) - 资源id
-
-
-        **DockerInfo**
-        - **Args** (str) - 参数
-        - **CfgDictList** (list) - 见 **CfgDictList** 模型定义
-        - **Command** (str) - 命令
-        - **CpuCores** (float) - CPU核数（/核）精度0.1核
-        - **EnvList** (list) - 见 **EnvList** 模型定义
-        - **ImageName** (str) - 镜像名称
-        - **MemSize** (float) - 内存大小（Gi）
-        - **Name** (str) - 容器名称
-        - **State** (int) - 容器状态，0：初始化；1：拉取镜像；2：拉取镜像失败；3：启动中；4：运行中；5：正在停止；6：已停止；7：已删除；8：镜像拉取成功；9：启动失败；99：异常
-        - **WorkDir** (str) - 工作目录
-
-
-        **HolderList**
-        - **City** (str) - 城市名称
-        - **CreateTime** (int) - 创建时间
-        - **DockerCount** (int) - 容器数量
-        - **DockerInfo** (list) - 见 **DockerInfo** 模型定义
-        - **ExpireTime** (int) - 过期时间
-        - **FirewallId** (str) - 外网防火墙id
-        - **HolderName** (str) - 容器组名称
-        - **IdcId** (str) - 机房id
-        - **ImageList** (list) - 见 **ImageList** 模型定义
-        - **InnerIp** (str) - 容器组内网ip
-        - **IpList** (list) - 见 **IpList** 模型定义
-        - **NetLimit** (int) - 外网绑定的带宽
-        - **OcName** (str) - 机房名称
-        - **ProductType** (str) - 机器类型（normal通用型，hf高性能型）
-        - **Province** (str) - 省份名称
-        - **ResourceId** (str) - 容器组资源id
-        - **RestartStrategy** (int) - 0：总是；1：失败是；2：永不
-        - **State** (int) - 容器组运行状态0：初始化；1：拉取镜像；2：启动中；3：运行中；4：错误；5：正在重启；6：正在删除；7：已经删除；8：容器运行错误；9：启动失败；99：异常
-        - **StorVolumeCount** (int) - 存储卷数量
-        - **StorVolumeInfo** (list) - 见 **StorVolumeInfo** 模型定义
-        - **SubnetId** (str) - 容器组子网id
-        - **Type** (int) - 线路类型（运营商类型： 0-其它, 1-一线城市单线,2-二线城市单线, 3-全国教育网, 4-全国三通）
 
 
         """
@@ -651,12 +651,6 @@ class UECClient(Client):
 
         **Response Model**
 
-        **NodeIpList**
-        - **Ip** (str) - 外网ip
-        - **Isp** (str) - 运营商
-        - **IspName** (str) - 运营商名称
-
-
         **NodeInfo**
         - **ChargeType** (int) - 付费类型：1按时, 2按月,3按年
         - **City** (str) - 城市
@@ -678,6 +672,12 @@ class UECClient(Client):
         - **State** (int) - 节点状态，1部署中，2待启动，3启动中，4运行中，5正在停止，6已停止，7正在更新，8正在重启，9正在删除， 10已经删除,11异常
         - **SysDiskSize** (int) - 系统盘大小， 单位GB
         - **Type** (int) - 运营商类型： 0-其它, 1-一线城市单线,2-二线城市单线, 3-全国教育网, 4-全国三通
+
+
+        **NodeIpList**
+        - **Ip** (str) - 外网ip
+        - **Isp** (str) - 运营商
+        - **IspName** (str) - 运营商名称
 
 
         """
@@ -771,11 +771,6 @@ class UECClient(Client):
 
         **Response Model**
 
-        **MonitorInfo**
-        - **TimeStamp** (int) - 时间戳
-        - **Value** (int) - 值
-
-
         **MetricisDataSet**
         - **CPUUtilization** (list) - 见 **MonitorInfo** 模型定义
         - **MemUtilization** (list) - 见 **MonitorInfo** 模型定义
@@ -783,6 +778,11 @@ class UECClient(Client):
         - **NICOut** (list) - 见 **MonitorInfo** 模型定义
         - **NetPacketIn** (list) - 见 **MonitorInfo** 模型定义
         - **NetPacketOut** (list) - 见 **MonitorInfo** 模型定义
+
+
+        **MonitorInfo**
+        - **TimeStamp** (int) - 时间戳
+        - **Value** (int) - 值
 
 
         """
@@ -811,11 +811,6 @@ class UECClient(Client):
 
         **Response Model**
 
-        **ResourceSet**
-        - **NodeId** (str) - 节点id
-        - **OuterIps** (list) - 机器外网ip集合
-
-
         **IDCCutInfo**
         - **City** (str) - 城市
         - **CutType** (str) - 割接类型（中断、抖动、断电）
@@ -824,6 +819,11 @@ class UECClient(Client):
         - **Province** (str) - 省份
         - **ResourceSet** (list) - 见 **ResourceSet** 模型定义
         - **StartTime** (int) - 割接开始时间
+
+
+        **ResourceSet**
+        - **NodeId** (str) - 节点id
+        - **OuterIps** (list) - 机器外网ip集合
 
 
         """
@@ -854,11 +854,6 @@ class UECClient(Client):
 
         **Response Model**
 
-        **MonitorInfo**
-        - **TimeStamp** (int) - 时间戳
-        - **Value** (int) - 值
-
-
         **DataSet**
         - **CPUUtilization** (list) - 见 **MonitorInfo** 模型定义
         - **DiskReadOps** (list) - 见 **MonitorInfo** 模型定义
@@ -870,6 +865,11 @@ class UECClient(Client):
         - **NICOut** (list) - 见 **MonitorInfo** 模型定义
         - **NetPacketIn** (list) - 见 **MonitorInfo** 模型定义
         - **NetPacketOut** (list) - 见 **MonitorInfo** 模型定义
+
+
+        **MonitorInfo**
+        - **TimeStamp** (int) - 时间戳
+        - **Value** (int) - 值
 
 
         """
@@ -902,11 +902,6 @@ class UECClient(Client):
 
         **Response Model**
 
-        **DeployImageInfo**
-        - **IdcId** (str) - 机房ID
-        - **State** (int) - 镜像状态 1-可用, 2-不可用, 3-获取中, 4-转换中, 5-部署中
-
-
         **ImageInfo**
         - **CreateTime** (int) - 镜像创建时间戳
         - **DeployInfoList** (list) - 见 **DeployImageInfo** 模型定义
@@ -917,6 +912,11 @@ class UECClient(Client):
         - **ImageType** (int) - 镜像类型：1标准镜像，2行业镜像，3自定义镜像
         - **OcType** (str) - 系统类型：unix, windows
         - **State** (int) - 镜像状态：镜像状态 1可用，2不可用
+
+
+        **DeployImageInfo**
+        - **IdcId** (str) - 机房ID
+        - **State** (int) - 镜像状态 1-可用, 2-不可用, 3-获取中, 4-转换中, 5-部署中
 
 
         """
@@ -1011,11 +1011,6 @@ class UECClient(Client):
 
         **Response Model**
 
-        **MonitorInfo**
-        - **TimeStamp** (int) - 时间戳
-        - **Value** (int) - 值
-
-
         **DataSet**
         - **CPUUtilization** (list) - 见 **MonitorInfo** 模型定义
         - **DiskReadOps** (list) - 见 **MonitorInfo** 模型定义
@@ -1027,6 +1022,11 @@ class UECClient(Client):
         - **NICOut** (list) - 见 **MonitorInfo** 模型定义
         - **NetPacketIn** (list) - 见 **MonitorInfo** 模型定义
         - **NetPacketOut** (list) - 见 **MonitorInfo** 模型定义
+
+
+        **MonitorInfo**
+        - **TimeStamp** (int) - 时间戳
+        - **Value** (int) - 值
 
 
         """

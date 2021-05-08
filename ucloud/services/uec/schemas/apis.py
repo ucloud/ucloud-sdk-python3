@@ -77,12 +77,12 @@ API: CreateUEcHolder
 """
 
 
-class CreateUEcHolderParamStorageSchema(schema.RequestSchema):
-    """CreateUEcHolderParamStorage -"""
+class CreateUEcHolderParamImageSchema(schema.RequestSchema):
+    """CreateUEcHolderParamImage -"""
 
     fields = {
-        "Path": fields.Str(required=False, dump_to="Path"),
-        "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
+        "Message": fields.Str(required=False, dump_to="Message"),
+        "StoreAddress": fields.Str(required=False, dump_to="StoreAddress"),
     }
 
 
@@ -102,12 +102,12 @@ class CreateUEcHolderParamPackSchema(schema.RequestSchema):
     }
 
 
-class CreateUEcHolderParamImageSchema(schema.RequestSchema):
-    """CreateUEcHolderParamImage -"""
+class CreateUEcHolderParamStorageSchema(schema.RequestSchema):
+    """CreateUEcHolderParamStorage -"""
 
     fields = {
-        "Message": fields.Str(required=False, dump_to="Message"),
-        "StoreAddress": fields.Str(required=False, dump_to="StoreAddress"),
+        "Path": fields.Str(required=False, dump_to="Path"),
+        "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
     }
 
 

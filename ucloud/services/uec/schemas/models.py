@@ -50,16 +50,6 @@ class ResourceInfoSchema(schema.ResponseSchema):
     }
 
 
-class CfgDictListSchema(schema.ResponseSchema):
-    """CfgDictList - 容器配置字典列表"""
-
-    fields = {
-        "MountPath": fields.Str(required=False, load_from="MountPath"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
-    }
-
-
 class EnvListSchema(schema.ResponseSchema):
     """EnvList - 容器环境变量列表"""
 
@@ -69,13 +59,13 @@ class EnvListSchema(schema.ResponseSchema):
     }
 
 
-class ImageListSchema(schema.ResponseSchema):
-    """ImageList - 容器组镜像密钥列表"""
+class CfgDictListSchema(schema.ResponseSchema):
+    """CfgDictList - 容器配置字典列表"""
 
     fields = {
-        "ImageKey": fields.Str(required=False, load_from="ImageKey"),
-        "StoreAddr": fields.Str(required=False, load_from="StoreAddr"),
-        "UserName": fields.Str(required=False, load_from="UserName"),
+        "MountPath": fields.Str(required=False, load_from="MountPath"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
     }
 
 
@@ -113,6 +103,16 @@ class IpListSchema(schema.ResponseSchema):
     fields = {
         "Ip": fields.Str(required=False, load_from="Ip"),
         "Isp": fields.Str(required=False, load_from="Isp"),
+    }
+
+
+class ImageListSchema(schema.ResponseSchema):
+    """ImageList - 容器组镜像密钥列表"""
+
+    fields = {
+        "ImageKey": fields.Str(required=False, load_from="ImageKey"),
+        "StoreAddr": fields.Str(required=False, load_from="StoreAddr"),
+        "UserName": fields.Str(required=False, load_from="UserName"),
     }
 
 
