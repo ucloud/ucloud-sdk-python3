@@ -3,6 +3,17 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class UDRedisSlowlogSetSchema(schema.ResponseSchema):
+    """UDRedisSlowlogSet - DescribeUDRedisSlowlog"""
+
+    fields = {
+        "BlockId": fields.Str(required=False, load_from="BlockId"),
+        "Command": fields.Str(required=False, load_from="Command"),
+        "SpendTime": fields.Int(required=False, load_from="SpendTime"),
+        "StartTime": fields.Int(required=False, load_from="StartTime"),
+    }
+
+
 class UMemBackupSetSchema(schema.ResponseSchema):
     """UMemBackupSet - DescribeUMemBackup"""
 
@@ -36,7 +47,9 @@ class UMemPriceSetSchema(schema.ResponseSchema):
 
     fields = {
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "ListPrice": fields.Int(required=False, load_from="ListPrice"),
+        "ListPrice": fields.Int(
+            required=False, load_from="ListPrice"
+        ),  # Deprecated, will be removed at 1.0
         "OriginalPrice": fields.Int(required=False, load_from="OriginalPrice"),
         "Price": fields.Int(required=False, load_from="Price"),
     }
@@ -75,7 +88,7 @@ class UMemSpaceSetSchema(schema.ResponseSchema):
 
 
 class PriceDataSetSchema(schema.ResponseSchema):
-    """PriceDataSet - 升降级价格"""
+    """PriceDataSet -"""
 
     fields = {
         "CustomPrice": fields.Int(required=False, load_from="CustomPrice"),
@@ -180,7 +193,7 @@ class URedisGroupSetSchema(schema.ResponseSchema):
         "Tag": fields.Str(required=False, load_from="Tag"),
         "Type": fields.Str(required=False, load_from="Type"),
         "UsedSize": fields.Int(required=False, load_from="UsedSize"),
-        "VPCId": fields.Str(required=True, load_from="VPCId"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
         "Version": fields.Str(required=False, load_from="Version"),
         "VirtualIP": fields.Str(required=False, load_from="VirtualIP"),
         "Zone": fields.Str(required=False, load_from="Zone"),
