@@ -1,3 +1,15 @@
+## 0.11.3 (2021-05-08)
+
+ENHANCEMENTS:
+
+- Update all APIs of `UDDB` (#135)
+- Update all APIs of `UDB` (#134)
+- Update all APIs of `ULB` (#132)
+- Update all APIs of `UMem` (#133)
+- Update all APIs of `UFile` (#131)
+- Update all APIs of `UBill` (#128)
+- Update all APIs of `UEC` (#126)
+
 ## 0.11.2 (2021-04-30)
 
 ENHANCEMENTS:
