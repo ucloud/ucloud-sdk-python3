@@ -62,16 +62,6 @@ class Client(client.Client):
             self.logger,
         )
 
-    def ubill(self):
-        from ucloud.services.ubill.client import UBillClient
-
-        return UBillClient(
-            self._auto_config("ubill"),
-            self.transport,
-            self.middleware,
-            self.logger,
-        )
-
     def ucdn(self):
         from ucloud.services.ucdn.client import UCDNClient
 
@@ -112,21 +102,21 @@ class Client(client.Client):
             self.logger,
         )
 
-    def uec(self):
-        from ucloud.services.uec.client import UECClient
-
-        return UECClient(
-            self._auto_config("uec"),
-            self.transport,
-            self.middleware,
-            self.logger,
-        )
-
     def ufs(self):
         from ucloud.services.ufs.client import UFSClient
 
         return UFSClient(
             self._auto_config("ufs"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
+    def ufile(self):
+        from ucloud.services.ufile.client import UFileClient
+
+        return UFileClient(
+            self._auto_config("ufile"),
             self.transport,
             self.middleware,
             self.logger,
