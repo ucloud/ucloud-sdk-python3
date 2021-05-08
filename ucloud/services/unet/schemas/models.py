@@ -21,6 +21,16 @@ class UnetAllocateEIPSetSchema(schema.ResponseSchema):
     }
 
 
+class VIPSetSchema(schema.ResponseSchema):
+    """VIPSet -"""
+
+    fields = {
+        "VIP": fields.Str(required=False, load_from="VIP"),
+        "VIPId": fields.Str(required=False, load_from="VIPId"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+    }
+
+
 class EIPAddrSetSchema(schema.ResponseSchema):
     """EIPAddrSet - DescribeBandwidthPackage"""
 
@@ -55,6 +65,22 @@ class UnetBandwidthUsageEIPSetSchema(schema.ResponseSchema):
     }
 
 
+class ShareBandwidthSetSchema(schema.ResponseSchema):
+    """ShareBandwidthSet - DescribeEIP"""
+
+    fields = {
+        "ShareBandwidth": fields.Int(
+            required=False, load_from="ShareBandwidth"
+        ),
+        "ShareBandwidthId": fields.Str(
+            required=False, load_from="ShareBandwidthId"
+        ),
+        "ShareBandwidthName": fields.Str(
+            required=False, load_from="ShareBandwidthName"
+        ),
+    }
+
+
 class UnetEIPResourceSetSchema(schema.ResponseSchema):
     """UnetEIPResourceSet - DescribeEIP"""
 
@@ -72,22 +98,6 @@ class UnetEIPResourceSetSchema(schema.ResponseSchema):
         ),
         "SubResourceType": fields.Str(
             required=False, load_from="SubResourceType"
-        ),
-    }
-
-
-class ShareBandwidthSetSchema(schema.ResponseSchema):
-    """ShareBandwidthSet - DescribeEIP"""
-
-    fields = {
-        "ShareBandwidth": fields.Int(
-            required=False, load_from="ShareBandwidth"
-        ),
-        "ShareBandwidthId": fields.Str(
-            required=False, load_from="ShareBandwidthId"
-        ),
-        "ShareBandwidthName": fields.Str(
-            required=False, load_from="ShareBandwidthName"
         ),
     }
 
@@ -191,6 +201,21 @@ class UnetShareBandwidthSetSchema(schema.ResponseSchema):
         "ShareBandwidthId": fields.Str(
             required=False, load_from="ShareBandwidthId"
         ),
+    }
+
+
+class VIPDetailSetSchema(schema.ResponseSchema):
+    """VIPDetailSet -"""
+
+    fields = {
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "RealIp": fields.Str(required=False, load_from="RealIp"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "VIP": fields.Str(required=False, load_from="VIP"),
+        "VIPId": fields.Str(required=False, load_from="VIPId"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
     }
 
 
