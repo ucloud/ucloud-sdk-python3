@@ -132,6 +132,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def ufile(self):
+        from ucloud.services.ufile.client import UFileClient
+
+        return UFileClient(
+            self._auto_config("ufile"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def uhost(self):
         from ucloud.services.uhost.client import UHostClient
 
