@@ -16,9 +16,20 @@ class UDBBackupSetSchema(schema.ResponseSchema):
         "BackupZone": fields.Str(required=False, load_from="BackupZone"),
         "DBId": fields.Str(required=False, load_from="DBId"),
         "DBName": fields.Str(required=False, load_from="DBName"),
-        "ErrorInfo": fields.Str(required=False, load_from="ErrorInfo"),
+        "ErrorInfo": fields.Str(
+            required=False, load_from="ErrorInfo"
+        ),  # Deprecated, will be removed at 1.0
         "State": fields.Str(required=False, load_from="State"),
         "Zone": fields.Str(required=False, load_from="Zone"),
+    }
+
+
+class UFileDataSetSchema(schema.ResponseSchema):
+    """UFileDataSet - 增加ufile的描述"""
+
+    fields = {
+        "Bucket": fields.Str(required=False, load_from="Bucket"),
+        "TokenID": fields.Str(required=False, load_from="TokenID"),
     }
 
 
@@ -47,6 +58,7 @@ class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
         "DiskSpace": fields.Int(required=False, load_from="DiskSpace"),
         "DiskUsedSize": fields.Float(required=False, load_from="DiskUsedSize"),
         "ExpiredTime": fields.Int(required=False, load_from="ExpiredTime"),
+        "IPv6Address": fields.Str(required=False, load_from="IPv6Address"),
         "InstanceMode": fields.Str(required=False, load_from="InstanceMode"),
         "InstanceType": fields.Str(required=False, load_from="InstanceType"),
         "InstanceTypeId": fields.Int(
@@ -93,7 +105,10 @@ class UDBInstanceSetSchema(schema.ResponseSchema):
         ),
         "BackupZone": fields.Str(required=False, load_from="BackupZone"),
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "CluserRole": fields.Str(required=False, load_from="CluserRole"),
+        "CluserRole": fields.Str(
+            required=False, load_from="CluserRole"
+        ),  # Deprecated, will be removed at 1.0
+        "ClusterRole": fields.Str(required=False, load_from="ClusterRole"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "DBId": fields.Str(required=False, load_from="DBId"),
         "DBTypeId": fields.Str(required=False, load_from="DBTypeId"),
@@ -102,6 +117,7 @@ class UDBInstanceSetSchema(schema.ResponseSchema):
         "DiskSpace": fields.Int(required=False, load_from="DiskSpace"),
         "DiskUsedSize": fields.Float(required=False, load_from="DiskUsedSize"),
         "ExpiredTime": fields.Int(required=False, load_from="ExpiredTime"),
+        "IPv6Address": fields.Str(required=False, load_from="IPv6Address"),
         "InstanceMode": fields.Str(required=False, load_from="InstanceMode"),
         "InstanceType": fields.Str(required=False, load_from="InstanceType"),
         "InstanceTypeId": fields.Int(
@@ -123,6 +139,7 @@ class UDBInstanceSetSchema(schema.ResponseSchema):
         ),
         "Tag": fields.Str(required=False, load_from="Tag"),
         "UseSSD": fields.Bool(required=False, load_from="UseSSD"),
+        "UserUFileData": UFileDataSetSchema(),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
         "VirtualIP": fields.Str(required=False, load_from="VirtualIP"),
         "VirtualIPMac": fields.Str(required=False, load_from="VirtualIPMac"),
@@ -196,7 +213,21 @@ class UDBParamGroupSetSchema(schema.ResponseSchema):
     }
 
 
+class UDBRWSplittingSetSchema(schema.ResponseSchema):
+    """UDBRWSplittingSet - 读写分离"""
+
+    fields = {
+        "DBId": fields.Str(required=False, load_from="DBId"),
+        "ReadWeight": fields.Int(required=False, load_from="ReadWeight"),
+        "Role": fields.Str(required=False, load_from="Role"),
+        "State": fields.Str(required=False, load_from="State"),
+        "VirtualIP": fields.Str(required=False, load_from="VirtualIP"),
+    }
+
+
 class UDBTypeSetSchema(schema.ResponseSchema):
     """UDBTypeSet - DescribeUDBType"""
 
-    fields = {"DBTypeId": fields.Str(required=False, load_from="DBTypeId")}
+    fields = {
+        "DBTypeId": fields.Str(required=False, load_from="DBTypeId"),
+    }
