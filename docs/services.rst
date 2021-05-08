@@ -108,13 +108,6 @@ UEC
    :members:
 
 
-UBill
------
-
-.. autoclass:: ucloud.services.ubill.client.UBillClient
-   :members:
-   
-
 UFS
 ---
 

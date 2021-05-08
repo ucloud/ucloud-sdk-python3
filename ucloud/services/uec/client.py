@@ -109,6 +109,11 @@ class UECClient(Client):
 
         **Request Model**
 
+        **CreateUEcHolderParamStorage**
+        - **Path** (str) - 存储卷挂载路径
+        - **ResourceId** (str) - 存储卷资源id
+
+
         **CreateUEcHolderParamPack**
         - **Args** (str) - 容器参数（多个用；隔开）
         - **Cmd** (str) - 开启容器的命令
@@ -124,11 +129,6 @@ class UECClient(Client):
         **CreateUEcHolderParamImage**
         - **Message** (str) - 镜像用户名和密码（如镜像名：密码）
         - **StoreAddress** (str) - 镜像仓库地址
-
-
-        **CreateUEcHolderParamStorage**
-        - **Path** (str) - 存储卷挂载路径
-        - **ResourceId** (str) - 存储卷资源id
 
 
         """
@@ -441,6 +441,17 @@ class UECClient(Client):
         - **Value** (str) - 环境变量Value值
 
 
+        **ImageList**
+        - **ImageKey** (str) - 镜像密钥
+        - **StoreAddr** (str) - 仓库地址
+        - **UserName** (str) - 用户名称
+
+
+        **IpList**
+        - **Ip** (str) - 外网ip
+        - **Isp** (str) - 运营商
+
+
         **StorVolumeInfo**
         - **DiskSize** (int) - 容量（单位GB）
         - **MountPoint** (str) - 挂载点
@@ -459,17 +470,6 @@ class UECClient(Client):
         - **Name** (str) - 容器名称
         - **State** (int) - 容器状态，0：初始化；1：拉取镜像；2：拉取镜像失败；3：启动中；4：运行中；5：正在停止；6：已停止；7：已删除；8：镜像拉取成功；9：启动失败；99：异常
         - **WorkDir** (str) - 工作目录
-
-
-        **ImageList**
-        - **ImageKey** (str) - 镜像密钥
-        - **StoreAddr** (str) - 仓库地址
-        - **UserName** (str) - 用户名称
-
-
-        **IpList**
-        - **Ip** (str) - 外网ip
-        - **Isp** (str) - 运营商
 
 
         **HolderList**
