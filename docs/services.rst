@@ -108,6 +108,13 @@ UBill
    :members:
 
 
+UDDB
+----
+
+.. autoclass:: ucloud.services.uddb.client.UDDBClient
+   :members:
+
+
 UEC
 ---
 
