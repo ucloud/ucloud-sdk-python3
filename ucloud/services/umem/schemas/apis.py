@@ -9,6 +9,64 @@ from ucloud.services.umem.schemas import models
 
 
 """
+API: CheckUDredisSpaceAllowance
+
+检查高性能UMem剩余资源，以及分片扩容前的资源预检查
+"""
+
+
+class CheckUDredisSpaceAllowanceRequestSchema(schema.RequestSchema):
+    """CheckUDredisSpaceAllowance - 检查高性能UMem剩余资源，以及分片扩容前的资源预检查"""
+
+    fields = {
+        "Count": fields.Str(required=True, dump_to="Count"),
+        "GroupId": fields.Str(required=False, dump_to="GroupId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Size": fields.Int(required=True, dump_to="Size"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class CheckUDredisSpaceAllowanceResponseSchema(schema.ResponseSchema):
+    """CheckUDredisSpaceAllowance - 检查高性能UMem剩余资源，以及分片扩容前的资源预检查"""
+
+    fields = {
+        "Count": fields.Int(required=True, load_from="Count"),
+    }
+
+
+"""
+API: CheckURedisAllowance
+
+检查主备Redis的资源是否足够创建新实例，以及主备Redis的扩容资源预检查
+"""
+
+
+class CheckURedisAllowanceRequestSchema(schema.RequestSchema):
+    """CheckURedisAllowance - 检查主备Redis的资源是否足够创建新实例，以及主备Redis的扩容资源预检查"""
+
+    fields = {
+        "Count": fields.Int(required=True, dump_to="Count"),
+        "GroupId": fields.Str(required=False, dump_to="GroupId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Protocol": fields.Str(required=False, dump_to="Protocol"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "RegionFlag": fields.Bool(required=False, dump_to="RegionFlag"),
+        "Size": fields.Int(required=True, dump_to="Size"),
+        "SlaveZone": fields.Str(required=False, dump_to="SlaveZone"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class CheckURedisAllowanceResponseSchema(schema.ResponseSchema):
+    """CheckURedisAllowance - 检查主备Redis的资源是否足够创建新实例，以及主备Redis的扩容资源预检查"""
+
+    fields = {
+        "Count": fields.Int(required=True, load_from="Count"),
+    }
+
+
+"""
 API: CreateUMemBackup
 
 创建分布式redis备份
@@ -250,6 +308,36 @@ class DeleteURedisGroupResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeUDRedisSlowlog
+
+查询UDRedis慢日志
+"""
+
+
+class DescribeUDRedisSlowlogRequestSchema(schema.RequestSchema):
+    """DescribeUDRedisSlowlog - 查询UDRedis慢日志"""
+
+    fields = {
+        "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DescribeUDRedisSlowlogResponseSchema(schema.ResponseSchema):
+    """DescribeUDRedisSlowlog - 查询UDRedis慢日志"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.UDRedisSlowlogSetSchema(), required=True, load_from="DataSet"
+        ),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
 API: DescribeUMemBackup
 
 查询分布式redis备份
@@ -426,7 +514,10 @@ class DescribeUMemUpgradePriceResponseSchema(schema.ResponseSchema):
     """DescribeUMemUpgradePrice - 获取UMem升级价格信息"""
 
     fields = {
-        "DataSet": models.PriceDataSetSchema(),
+        "DataSet": models.PriceDataSetSchema(
+            required=False, load_from="DataSet"
+        ),  # Deprecated, will be removed at 1.0
+        "OriginalPrice": fields.Int(required=False, load_from="OriginalPrice"),
         "Price": fields.Int(required=False, load_from="Price"),
     }
 
@@ -762,6 +853,37 @@ class DescribeURedisVersionResponseSchema(schema.ResponseSchema):
 
 
 """
+API: FlushallURedisGroup
+
+清除主备redis数据
+"""
+
+
+class FlushallURedisGroupRequestSchema(schema.RequestSchema):
+    """FlushallURedisGroup - 清除主备redis数据"""
+
+    fields = {
+        "DbNum": fields.Int(required=False, dump_to="DbNum"),
+        "FlushType": fields.Str(required=True, dump_to="FlushType"),
+        "GroupId": fields.Str(required=True, dump_to="GroupId"),
+        "OrganizationId": fields.Int(required=False, dump_to="OrganizationId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SlaveZone": fields.Str(required=False, dump_to="SlaveZone"),
+        "TopOrganizationId": fields.Int(
+            required=False, dump_to="TopOrganizationId"
+        ),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class FlushallURedisGroupResponseSchema(schema.ResponseSchema):
+    """FlushallURedisGroup - 清除主备redis数据"""
+
+    fields = {}
+
+
+"""
 API: GetUMemSpaceState
 
 获取UMem内存空间列表
@@ -863,6 +985,30 @@ class ModifyURedisGroupPasswordResponseSchema(schema.ResponseSchema):
 
 
 """
+API: RemoveUDRedisData
+
+清除udredis实例数据
+"""
+
+
+class RemoveUDRedisDataRequestSchema(schema.RequestSchema):
+    """RemoveUDRedisData - 清除udredis实例数据"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SpaceId": fields.Str(required=True, dump_to="SpaceId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class RemoveUDRedisDataResponseSchema(schema.ResponseSchema):
+    """RemoveUDRedisData - 清除udredis实例数据"""
+
+    fields = {}
+
+
+"""
 API: ResizeUMemSpace
 
 调整内存空间容量
@@ -891,24 +1037,27 @@ class ResizeUMemSpaceResponseSchema(schema.ResponseSchema):
 """
 API: ResizeURedisGroup
 
-调整主备redis容量
+通过调用CheckURedisAllowance接口，检查资源情况，根据不同情形来调整主备redis容量，其中主要包括可用区资源不足无法扩容，主备所在宿主机资源不足需要迁移完成扩容（需要主从切换，会闪断及负载升高），以及直接扩容（业务无感知）
 """
 
 
 class ResizeURedisGroupRequestSchema(schema.RequestSchema):
-    """ResizeURedisGroup - 调整主备redis容量"""
+    """ResizeURedisGroup - 通过调用CheckURedisAllowance接口，检查资源情况，根据不同情形来调整主备redis容量，其中主要包括可用区资源不足无法扩容，主备所在宿主机资源不足需要迁移完成扩容（需要主从切换，会闪断及负载升高），以及直接扩容（业务无感知）"""
 
     fields = {
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "CouponId": fields.Int(required=False, dump_to="CouponId"),
         "GroupId": fields.Str(required=True, dump_to="GroupId"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Size": fields.Int(required=True, dump_to="Size"),
+        "Type": fields.Str(required=False, dump_to="Type"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
 
 class ResizeURedisGroupResponseSchema(schema.ResponseSchema):
-    """ResizeURedisGroup - 调整主备redis容量"""
+    """ResizeURedisGroup - 通过调用CheckURedisAllowance接口，检查资源情况，根据不同情形来调整主备redis容量，其中主要包括可用区资源不足无法扩容，主备所在宿主机资源不足需要迁移完成扩容（需要主从切换，会闪断及负载升高），以及直接扩容（业务无感知）"""
 
     fields = {}
 
@@ -933,6 +1082,74 @@ class RestartUMemcacheGroupRequestSchema(schema.RequestSchema):
 
 class RestartUMemcacheGroupResponseSchema(schema.ResponseSchema):
     """RestartUMemcacheGroup - 重启单机Memcache"""
+
+    fields = {}
+
+
+"""
+API: RestartURedisGroup
+
+重启主备实例
+"""
+
+
+class RestartURedisGroupRequestSchema(schema.RequestSchema):
+    """RestartURedisGroup - 重启主备实例"""
+
+    fields = {
+        "GroupId": fields.Str(required=True, dump_to="GroupId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class RestartURedisGroupResponseSchema(schema.ResponseSchema):
+    """RestartURedisGroup - 重启主备实例"""
+
+    fields = {}
+
+
+"""
+API: ShutdownURedisGroup
+
+关闭主备实例
+"""
+
+
+class ShutdownURedisGroupRequestSchema(schema.RequestSchema):
+    """ShutdownURedisGroup - 关闭主备实例"""
+
+    fields = {
+        "GroupId": fields.Str(required=True, dump_to="GroupId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class ShutdownURedisGroupResponseSchema(schema.ResponseSchema):
+    """ShutdownURedisGroup - 关闭主备实例"""
+
+    fields = {}
+
+
+"""
+API: StartURedisGroup
+
+实例关闭状态下，启动实例
+"""
+
+
+class StartURedisGroupRequestSchema(schema.RequestSchema):
+    """StartURedisGroup - 实例关闭状态下，启动实例"""
+
+    fields = {
+        "GroupId": fields.Str(required=True, dump_to="GroupId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class StartURedisGroupResponseSchema(schema.ResponseSchema):
+    """StartURedisGroup - 实例关闭状态下，启动实例"""
 
     fields = {}
 
