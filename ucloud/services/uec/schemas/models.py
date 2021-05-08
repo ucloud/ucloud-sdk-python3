@@ -69,15 +69,6 @@ class CfgDictListSchema(schema.ResponseSchema):
     }
 
 
-class IpListSchema(schema.ResponseSchema):
-    """IpList - 容器组外网ip列表"""
-
-    fields = {
-        "Ip": fields.Str(required=False, load_from="Ip"),
-        "Isp": fields.Str(required=False, load_from="Isp"),
-    }
-
-
 class StorVolumeInfoSchema(schema.ResponseSchema):
     """StorVolumeInfo - 容器组存储卷信息"""
 
@@ -113,6 +104,15 @@ class ImageListSchema(schema.ResponseSchema):
         "ImageKey": fields.Str(required=False, load_from="ImageKey"),
         "StoreAddr": fields.Str(required=False, load_from="StoreAddr"),
         "UserName": fields.Str(required=False, load_from="UserName"),
+    }
+
+
+class IpListSchema(schema.ResponseSchema):
+    """IpList - 容器组外网ip列表"""
+
+    fields = {
+        "Ip": fields.Str(required=False, load_from="Ip"),
+        "Isp": fields.Str(required=False, load_from="Isp"),
     }
 
 
