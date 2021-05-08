@@ -4,7 +4,7 @@ from ucloud.core.typesystem import schema, fields
 
 
 class BackendSetSchema(schema.ResponseSchema):
-    """BackendSet - ulb添加rs时返回的信息"""
+    """BackendSet -"""
 
     fields = {
         "BackendId": fields.Str(required=True, load_from="BackendId"),
@@ -12,13 +12,28 @@ class BackendSetSchema(schema.ResponseSchema):
     }
 
 
-class ULBSSLSetSchema(schema.ResponseSchema):
-    """ULBSSLSet - DescribeULB"""
+class SSLBindedTargetSetSchema(schema.ResponseSchema):
+    """SSLBindedTargetSet - DescribeSSL"""
 
     fields = {
+        "ULBId": fields.Str(required=False, load_from="ULBId"),
+        "ULBName": fields.Str(required=False, load_from="ULBName"),
+        "VServerId": fields.Str(required=False, load_from="VServerId"),
+        "VServerName": fields.Str(required=False, load_from="VServerName"),
+    }
+
+
+class ULBSSLSetSchema(schema.ResponseSchema):
+    """ULBSSLSet - DescribeSSL"""
+
+    fields = {
+        "BindedTargetSet": fields.List(SSLBindedTargetSetSchema()),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "HashValue": fields.Str(required=False, load_from="HashValue"),
+        "SSLContent": fields.Str(required=False, load_from="SSLContent"),
         "SSLId": fields.Str(required=False, load_from="SSLId"),
         "SSLName": fields.Str(required=False, load_from="SSLName"),
+        "SSLType": fields.Str(required=False, load_from="SSLType"),
     }
 
 
@@ -31,21 +46,7 @@ class PolicyBackendSetSchema(schema.ResponseSchema):
         "Port": fields.Int(required=False, load_from="Port"),
         "PrivateIP": fields.Str(required=False, load_from="PrivateIP"),
         "ResourceName": fields.Str(required=False, load_from="ResourceName"),
-    }
-
-
-class ULBBackendSetSchema(schema.ResponseSchema):
-    """ULBBackendSet - DescribeULB"""
-
-    fields = {
-        "BackendId": fields.Str(required=False, load_from="BackendId"),
-        "Enabled": fields.Int(required=False, load_from="Enabled"),
-        "Port": fields.Int(required=False, load_from="Port"),
-        "PrivateIP": fields.Str(required=False, load_from="PrivateIP"),
-        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
-        "ResourceName": fields.Str(required=False, load_from="ResourceName"),
         "ResourceType": fields.Str(required=False, load_from="ResourceType"),
-        "Status": fields.Int(required=False, load_from="Status"),
         "SubResourceId": fields.Str(required=False, load_from="SubResourceId"),
         "SubResourceName": fields.Str(
             required=False, load_from="SubResourceName"
@@ -53,8 +54,6 @@ class ULBBackendSetSchema(schema.ResponseSchema):
         "SubResourceType": fields.Str(
             required=False, load_from="SubResourceType"
         ),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "Weight": fields.Int(required=False, load_from="Weight"),
     }
 
 
@@ -75,18 +74,53 @@ class ULBPolicySetSchema(schema.ResponseSchema):
     }
 
 
+class ULBBackendSetSchema(schema.ResponseSchema):
+    """ULBBackendSet - DescribeULB"""
+
+    fields = {
+        "BackendId": fields.Str(required=False, load_from="BackendId"),
+        "Enabled": fields.Int(required=False, load_from="Enabled"),
+        "IsBackup": fields.Int(required=False, load_from="IsBackup"),
+        "Port": fields.Int(required=False, load_from="Port"),
+        "PrivateIP": fields.Str(required=False, load_from="PrivateIP"),
+        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
+        "ResourceName": fields.Str(required=False, load_from="ResourceName"),
+        "ResourceType": fields.Str(required=False, load_from="ResourceType"),
+        "Status": fields.Int(required=False, load_from="Status"),
+        "SubResourceId": fields.Str(required=False, load_from="SubResourceId"),
+        "SubResourceName": fields.Str(
+            required=False, load_from="SubResourceName"
+        ),
+        "SubResourceType": fields.Str(
+            required=False, load_from="SubResourceType"
+        ),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "Weight": fields.Int(required=False, load_from="Weight"),
+    }
+
+
+class LoggerSetSchema(schema.ResponseSchema):
+    """LoggerSet - ulb日志信息"""
+
+    fields = {
+        "BucketName": fields.Str(required=False, load_from="BucketName"),
+        "TokenID": fields.Str(required=False, load_from="TokenID"),
+        "TokenName": fields.Str(required=False, load_from="TokenName"),
+    }
+
+
 class ULBVServerSetSchema(schema.ResponseSchema):
     """ULBVServerSet - DescribeULB"""
 
     fields = {
         "BackendSet": fields.List(ULBBackendSetSchema()),
         "ClientTimeout": fields.Int(required=False, load_from="ClientTimeout"),
-        "Domain": fields.Str(required=True, load_from="Domain"),
+        "Domain": fields.Str(required=False, load_from="Domain"),
         "FrontendPort": fields.Int(required=False, load_from="FrontendPort"),
         "ListenType": fields.Str(required=False, load_from="ListenType"),
         "Method": fields.Str(required=False, load_from="Method"),
         "MonitorType": fields.Str(required=True, load_from="MonitorType"),
-        "Path": fields.Str(required=True, load_from="Path"),
+        "Path": fields.Str(required=False, load_from="Path"),
         "PersistenceInfo": fields.Str(
             required=False, load_from="PersistenceInfo"
         ),
@@ -95,6 +129,8 @@ class ULBVServerSetSchema(schema.ResponseSchema):
         ),
         "PolicySet": fields.List(ULBPolicySetSchema()),
         "Protocol": fields.Str(required=False, load_from="Protocol"),
+        "RequestMsg": fields.Str(required=False, load_from="RequestMsg"),
+        "ResponseMsg": fields.Str(required=False, load_from="ResponseMsg"),
         "SSLSet": fields.List(ULBSSLSetSchema()),
         "Status": fields.Int(required=False, load_from="Status"),
         "VServerId": fields.Str(required=False, load_from="VServerId"),
@@ -114,6 +150,15 @@ class ULBIPSetSchema(schema.ResponseSchema):
     }
 
 
+class FirewallSetSchema(schema.ResponseSchema):
+    """FirewallSet - ulb防火墙信息"""
+
+    fields = {
+        "FirewallId": fields.Str(required=False, load_from="FirewallId"),
+        "FirewallName": fields.Str(required=False, load_from="FirewallName"),
+    }
+
+
 class ULBSetSchema(schema.ResponseSchema):
     """ULBSet - DescribeULB"""
 
@@ -122,17 +167,54 @@ class ULBSetSchema(schema.ResponseSchema):
         "BandwidthType": fields.Int(required=False, load_from="BandwidthType"),
         "BusinessId": fields.Str(required=False, load_from="BusinessId"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "EnableLog": fields.Int(required=False, load_from="EnableLog"),
+        "ExpireTime": fields.Int(
+            required=False, load_from="ExpireTime"
+        ),  # Deprecated, will be removed at 1.0
+        "FirewallSet": fields.List(FirewallSetSchema()),
         "IPSet": fields.List(ULBIPSetSchema()),
+        "IPVersion": fields.Str(required=False, load_from="IPVersion"),
+        "ListenType": fields.Str(required=False, load_from="ListenType"),
+        "LogSet": LoggerSetSchema(),
         "Name": fields.Str(required=False, load_from="Name"),
         "PrivateIP": fields.Str(required=False, load_from="PrivateIP"),
         "Remark": fields.Str(required=False, load_from="Remark"),
-        "Resource": fields.List(fields.Str()),
+        "Resource": fields.List(
+            fields.Str()
+        ),  # Deprecated, will be removed at 1.0
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
         "Tag": fields.Str(required=False, load_from="Tag"),
         "ULBId": fields.Str(required=False, load_from="ULBId"),
-        "ULBName": fields.Str(required=False, load_from="ULBName"),
+        "ULBName": fields.Str(
+            required=False, load_from="ULBName"
+        ),  # Deprecated, will be removed at 1.0
         "ULBType": fields.Str(required=False, load_from="ULBType"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
         "VServerSet": fields.List(ULBVServerSetSchema()),
+    }
+
+
+class ULBSimpleSetSchema(schema.ResponseSchema):
+    """ULBSimpleSet - ulb简明信息"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "BandwidthType": fields.Int(required=False, load_from="BandwidthType"),
+        "BusinessId": fields.Str(required=False, load_from="BusinessId"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "EnableLog": fields.Int(required=False, load_from="EnableLog"),
+        "FirewallSet": fields.List(FirewallSetSchema()),
+        "IPSet": fields.List(ULBIPSetSchema()),
+        "IPVersion": fields.Str(required=True, load_from="IPVersion"),
+        "ListenType": fields.Str(required=True, load_from="ListenType"),
+        "LogSet": LoggerSetSchema(),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "PrivateIP": fields.Str(required=False, load_from="PrivateIP"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "ULBId": fields.Str(required=False, load_from="ULBId"),
+        "ULBType": fields.Str(required=False, load_from="ULBType"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "VServerCount": fields.Int(required=False, load_from="VServerCount"),
     }
