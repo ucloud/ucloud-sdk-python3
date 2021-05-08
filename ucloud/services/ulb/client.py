@@ -23,11 +23,15 @@ class ULBClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **ResourceId** (str) - (Required) 所添加的后端资源的资源ID
-        - **ResourceType** (str) - (Required) 所添加的后端资源的类型，枚举值：UHost -> 云主机；UPM -> 物理云主机； UDHost -> 私有专区主机；UDocker -> 容器，默认值为“UHost”
+        - **ResourceType** (str) - (Required) 所添加的后端资源的类型，枚举值：UHost -> 云主机；UNI -> 虚拟网卡；UPM -> 物理云主机； UDHost -> 私有专区主机；UDocker -> 容器；UHybrid->混合云主机；CUBE->Cube；默认值为UHost。报文转发模式不支持UDocker、UHybrid、CUBE
         - **ULBId** (str) - (Required) 负载均衡实例的ID
         - **VServerId** (str) - (Required) VServer实例的ID
         - **Enabled** (int) - 后端实例状态开关，枚举值： 1：启用； 0：禁用 默认为启用
+        - **IsBackup** (int) - rs是否为backup，默认为00：普通rs1：backup的rs
         - **Port** (int) - 所添加的后端资源服务端口，取值范围[1-65535]，默认80
+        - **ResourceIP** (str) - 所添加的后端服务器的资源实例IP，当ResourceType 为 UHybrid 时有效，且必填
+        - **SubnetId** (str) - 所添加的后端服务器所在的子网，当ResourceType 为 UHybrid 时有效，且必填
+        - **VPCId** (str) - 所添加的后端服务器所在的vpc，当ResourceType 为 UHybrid 时有效，且必填
         - **Weight** (int) - 所添加的后端RS权重（在加权轮询算法下有效），取值范围[0-100]，默认为1
 
         **Response**
@@ -36,9 +40,15 @@ class ULBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.AllocateBackendRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("AllocateBackend", d, **kwargs)
         return apis.AllocateBackendResponseSchema().loads(resp)
@@ -46,16 +56,16 @@ class ULBClient(Client):
     def allocate_backend_batch(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """AllocateBackendBatch - 批量添加VServer后端节点
+        """AllocateBackendBatch -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **Backends** (list) - (Required) 用| 分割字段，格式：ResourceId| ResourceType| Port| Enabled|IP| Weight。ResourceId:所添加的后端资源的资源ID；ResourceType:所添加的后端资源的类型，枚举值：UHost -> 云主机；UPM -> 物理云主机； UDHost -> 私有专区主机；UDocker -> 容器，默认值为“UHost”；Port:所添加的后端资源服务端口，取值范围[1-65535]；Enabled:后端实例状态开关，枚举值： 1：启用； 0：禁用；IP:后端资源内网ip；Weight：所添加的后端RS权重（在加权轮询算法下有效），取值范围[0-100]，默认为1
-        - **ULBId** (str) - (Required) 负载均衡实例的ID
-        - **VServerId** (str) - (Required) VServer实例的ID
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **ULBId** (str) - (Required)
+        - **VServerId** (str) - (Required)
         - **ApiVersion** (int) -
+        - **Backends** (list) -
 
         **Response**
 
@@ -64,15 +74,21 @@ class ULBClient(Client):
         **Response Model**
 
         **BackendSet**
+        - **BackendId** (str) -
+        - **ResourceId** (str) -
 
-        - **BackendId** (str) - rs的资源ID
-        - **ResourceId** (str) - rs对应的UHost ID
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.AllocateBackendBatchRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("AllocateBackendBatch", d, **kwargs)
         return apis.AllocateBackendBatchResponseSchema().loads(resp)
@@ -93,7 +109,10 @@ class ULBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.BindSSLRequestSchema().dumps(d)
 
@@ -113,6 +132,7 @@ class ULBClient(Client):
         - **Match** (str) - (Required) 内容转发匹配字段
         - **ULBId** (str) - (Required) 需要添加内容转发策略的负载均衡实例ID
         - **VServerId** (str) - (Required) 需要添加内容转发策略的VServer实例ID
+        - **PolicyPriority** (int) - 策略优先级，1-9999
         - **Type** (str) - 内容转发匹配字段的类型
 
         **Response**
@@ -121,7 +141,10 @@ class ULBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.CreatePolicyRequestSchema().dumps(d)
 
@@ -151,7 +174,10 @@ class ULBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.CreateSSLRequestSchema().dumps(d)
 
@@ -169,12 +195,11 @@ class ULBClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **BusinessId** (str) - ULB 所属的业务组ID，如果不传则使用默认的业务组
-        - **ChargeType** (str) - 付费方式
-        - **IPVersion** (str) - ULB ip类型，枚举值：IPv6 / IPv4 （内部测试，暂未对外开放）
+        - **ChargeType** (str) - 付费方式, 枚举值为: Year, 按年付费; Month, 按月付费; Dynamic, 按时付费
+        - **FirewallId** (str) - 防火墙ID，如果不传，则默认不绑定防火墙
         - **InnerMode** (str) - 创建的ULB是否为内网模式
-        - **ListenType** (str) - ULB 监听器类型，枚举值：RequestProxy / PacketsTransmit （内部测试，暂未对外开放）
+        - **ListenType** (str) - ULB 监听器类型，枚举值：RequestProxy，请求代理； PacketsTransmit ，报文转发。默认为RequestProxy
         - **OuterMode** (str) - 创建的ULB是否为外网模式，默认即为外网模式
-        - **PrivateIp** (str) - 创建内网ULB时指定内网IP。若不传值，则随机分配当前子网下的IP（暂时不对外开放，创建外网ULB该字段会忽略）
         - **Remark** (str) - 备注
         - **SubnetId** (str) - 内网ULB 所属的子网ID，如果不传则使用默认的子网
         - **Tag** (str) - 业务组
@@ -183,11 +208,15 @@ class ULBClient(Client):
 
         **Response**
 
+        - **IPv6AddressId** (str) - IPv6地址Id
         - **ULBId** (str) - 负载均衡实例的Id
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.CreateULBRequestSchema().dumps(d)
 
@@ -204,19 +233,21 @@ class ULBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ULBId** (str) - (Required) 负载均衡实例ID
         - **ClientTimeout** (int) - ListenType为RequestProxy时表示空闲连接的回收时间，单位：秒，取值范围：时(0，86400]，默认值为60；ListenType为PacketsTransmit时表示连接保持的时间，单位：秒，取值范围：[60，900]，0 表示禁用连接保持
-        - **Domain** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查域名
+        - **Domain** (str) - 根据MonitorType确认； 当MonitorType为Path时，此字段有意义，代表HTTP检查域名
         - **FrontendPort** (int) - VServer后端端口，取值范围[1-65535]；默认值为80
-        - **ListenType** (str) - 监听器类型，枚举值为：RequestProxy -> 请求代理；PacketsTransmit -> 报文转发；默认为"RequestProxy"
-        - **Method** (str) - VServer负载均衡模式，枚举值：Roundrobin -> 轮询;Source -> 源地址；ConsistentHash -> 一致性哈希；SourcePort -> 源地址（计算端口）；ConsistentHashPort -> 一致性哈希（计算端口）; WeightRoundrobin -> 加权轮询; Leastconn -> 最小连接数。ConsistentHash，SourcePort，ConsistentHashPort 只在报文转发中使用；Leastconn只在请求代理中使用；Roundrobin、Source和WeightRoundrobin在请求代理和报文转发中使用。默认为："Roundrobin"
-        - **MonitorType** (str) - 健康检查类型，枚举值：Port -> 端口检查；Path -> 路径检查；
-        - **Path** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查路径
+        - **ListenType** (str) - 监听器类型，枚举值，RequestProxy ，请求代理；PacketsTransmit ，报文转发。默认为RequestProxy
+        - **Method** (str) - VServer负载均衡模式，枚举值：Roundrobin -> 轮询;Source -> 源地址；ConsistentHash -> 一致性哈希；SourcePort -> 源地址（计算端口）；ConsistentHashPort -> 一致性哈希（计算端口）; WeightRoundrobin -> 加权轮询; Leastconn -> 最小连接数;Backup ->主备模式。ConsistentHash，SourcePort，ConsistentHashPort 只在报文转发中使用；Leastconn只在请求代理中使用；Roundrobin、Source和WeightRoundrobin,Backup在请求代理和报文转发中使用。默认为："Roundrobin"
+        - **MonitorType** (str) - 健康检查类型，枚举值：Port -> 端口检查；Path -> 路径检查；Ping -> Ping探测；Customize -> UDP检查请求代理型默认值为Port，其中TCP协议仅支持Port，其他协议支持Port和Path;报文转发型TCP协议仅支持Port，UDP协议支持Ping、Port和Customize，默认值为Ping
+        - **Path** (str) - 根据MonitorType确认； 当MonitorType为Path时，此字段有意义，代表HTTP检查路径
         - **PersistenceInfo** (str) - 根据PersistenceType确认； None和ServerInsert： 此字段无意义； UserDefined：此字段传入自定义会话保持String
         - **PersistenceType** (str) - VServer会话保持方式，默认关闭会话保持。枚举值：None -> 关闭；ServerInsert -> 自动生成KEY；UserDefined -> 用户自定义KEY。
         - **Protocol** (str) - VServer实例的协议，请求代理模式下有 HTTP、HTTPS、TCP，报文转发下有 TCP，UDP。默认为“HTTP"
+        - **RequestMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查发出的请求报文
+        - **ResponseMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查请求应收到的响应报文
         - **VServerName** (str) - VServer实例名称，默认为"VServer"
 
         **Response**
@@ -225,7 +256,10 @@ class ULBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.CreateVServerRequestSchema().dumps(d)
 
@@ -245,7 +279,6 @@ class ULBClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **PolicyId** (str) - (Required) 内容转发策略ID
-        - **GroupId** (str) - 内容转发策略组ID
         - **VServerId** (str) - VServer 资源ID
 
         **Response**
@@ -253,7 +286,10 @@ class ULBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DeletePolicyRequestSchema().dumps(d)
 
@@ -274,7 +310,10 @@ class ULBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DeleteSSLRequestSchema().dumps(d)
 
@@ -289,14 +328,17 @@ class ULBClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **ULBId** (str) - (Required) 负载均衡实例的ID
-        - **ReleaseEip** (bool) - 删除ulb时是否释放绑定的EIP，false标识只解绑EIP，true表示会释放绑定的EIP，默认是false
+        - **ReleaseEip** (bool) - 删除ulb时是否释放绑定的EIP，false标识只解绑EIP，true表示会释放绑定的EIP，默认是false。Anycast IP 此参数无效
 
         **Response**
 
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DeleteULBRequestSchema().dumps(d)
 
@@ -320,7 +362,10 @@ class ULBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DeleteVServerRequestSchema().dumps(d)
 
@@ -346,14 +391,28 @@ class ULBClient(Client):
         **Response Model**
 
         **ULBSSLSet**
-
-        - **HashValue** (str) -
+        - **BindedTargetSet** (list) - 见 **SSLBindedTargetSet** 模型定义
+        - **CreateTime** (int) - SSL证书的创建时间
+        - **HashValue** (str) - SSL证书的HASH值
+        - **SSLContent** (str) - SSL证书的内容
         - **SSLId** (str) - SSL证书的Id
         - **SSLName** (str) - SSL证书的名字
+        - **SSLType** (str) - SSL证书类型，暂时只有 Pem 一种类型
+
+
+        **SSLBindedTargetSet**
+        - **ULBId** (str) - VServer 所属的ULB实例的资源ID
+        - **ULBName** (str) - ULB实例的名称
+        - **VServerId** (str) - SSL证书绑定到的VServer的资源ID
+        - **VServerName** (str) - 对应的VServer的名字
+
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeSSLRequestSchema().dumps(d)
 
@@ -365,8 +424,8 @@ class ULBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BusinessId** (str) - ULB所属的业务组ID
         - **Limit** (int) - 数据分页值，默认为20
         - **Offset** (int) - 数据偏移量，默认为0
@@ -381,29 +440,61 @@ class ULBClient(Client):
 
         **Response Model**
 
-        **PolicyBackendSet**
+        **ULBSet**
+        - **Bandwidth** (int) - 带宽
+        - **BandwidthType** (int) - 带宽类型，枚举值为： 0，非共享带宽； 1，共享带宽
+        - **BusinessId** (str) - ULB 所属的业务组ID
+        - **CreateTime** (int) - ULB的创建时间，格式为Unix Timestamp
+        - **EnableLog** (int) - ULB是否开启日志功能。0，关闭；1，开启
+        - **FirewallSet** (list) - 见 **FirewallSet** 模型定义
+        - **IPSet** (list) - 见 **ULBIPSet** 模型定义
+        - **IPVersion** (str) - ULB ip类型，枚举值：IPv6 / IPv4 （内部测试，暂未对外开放）
+        - **ListenType** (str) - ULB 监听器类型，枚举值：RequestProxy，请求代理； PacketsTransmit ，报文转发；Comprehensive，兼容型；Pending，未定型
+        - **LogSet** (dict) - 见 **LoggerSet** 模型定义
+        - **Name** (str) - 负载均衡的资源名称
+        - **PrivateIP** (str) - ULB的内网IP，当ULBType为OuterMode时，该值为空
+        - **Remark** (str) - 负载均衡的备注
+        - **SubnetId** (str) - ULB 为 InnerMode 时，ULB 所属的子网ID，默认为空
+        - **Tag** (str) - 负载均衡的业务组名称
+        - **ULBId** (str) - 负载均衡的资源ID
+        - **ULBType** (str) - ULB 的类型
+        - **VPCId** (str) - ULB所在的VPC的ID
+        - **VServerSet** (list) - 见 **ULBVServerSet** 模型定义
 
-        - **BackendId** (str) - 所添加的后端资源在ULB中的对象ID，（为ULB系统中使用，与资源自身ID无关
-        - **ObjectId** (str) - 后端资源的对象ID
-        - **Port** (int) - 所添加的后端资源服务端口
-        - **PrivateIP** (str) - 后端资源的内网IP
-        - **ResourceName** (str) - 后端资源的实例名称
 
-        **ULBPolicySet**
+        **ULBIPSet**
+        - **Bandwidth** (int) - 弹性IP的带宽值（暂未对外开放）
+        - **BandwidthType** (int) - 弹性IP的带宽类型，枚举值：1 表示是共享带宽，0 普通带宽类型（暂未对外开放）
+        - **EIP** (str) - 弹性IP地址
+        - **EIPId** (str) - 弹性IP的ID
+        - **OperatorName** (str) - 弹性IP的运营商信息，枚举值为：  Bgp：BGP IP International：国际IP
 
-        - **BackendSet** (list) - 见 **PolicyBackendSet** 模型定义
-        - **Match** (str) - 内容转发匹配字段;默认内容转发类型下为空。
-        - **PolicyId** (str) - 内容转发Id，默认内容转发类型下为空。
-        - **PolicyPriority** (int) - 内容转发优先级，范围[1,9999]，数字越大优先级越高。默认内容转发规则下为0。
-        - **PolicyType** (str) - 内容类型，枚举值：Custom -> 客户自定义；Default -> 默认内容转发
-        - **TotalCount** (int) - 默认内容转发类型下返回当前rs总数
-        - **Type** (str) - 内容转发匹配字段的类型，枚举值：Domain -> 域名；Path -> 路径； 默认内容转发类型下为空
-        - **VServerId** (str) - 所属VServerId
+
+        **ULBVServerSet**
+        - **BackendSet** (list) - 见 **ULBBackendSet** 模型定义
+        - **ClientTimeout** (int) - 空闲连接的回收时间，单位：秒。
+        - **Domain** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查域名
+        - **FrontendPort** (int) - VServer服务端口
+        - **ListenType** (str) - 监听器类型，枚举值为: RequestProxy -> 请求代理；PacketsTransmit -> 报文转发
+        - **Method** (str) - VServer负载均衡的模式，枚举值：Roundrobin -> 轮询;Source -> 源地址；ConsistentHash -> 一致性哈希；SourcePort -> 源地址（计算端口）；ConsistentHashPort -> 一致性哈希（计算端口）。
+        - **MonitorType** (str) - 健康检查类型，枚举值：Port -> 端口检查；Path -> 路径检查；Ping -> Ping探测， Customize -> UDP检查请求代理型默认值为Port，其中TCP协议仅支持Port，其他协议支持Port和Path; 报文转发型TCP协议仅支持Port，UDP协议支持Ping、Port和Customize
+        - **Path** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查路径
+        - **PersistenceInfo** (str) - 根据PersistenceType确定： None或ServerInsert，此字段为空； UserDefined，此字段展示用户自定义会话string。
+        - **PersistenceType** (str) - VServer会话保持方式。枚举值为： None -> 关闭会话保持； ServerInsert -> 自动生成； UserDefined -> 用户自定义。
+        - **PolicySet** (list) - 见 **ULBPolicySet** 模型定义
+        - **Protocol** (str) - VServer实例的协议。 枚举值为：HTTP，TCP，UDP，HTTPS。
+        - **RequestMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查发出的请求报文
+        - **ResponseMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查请求应收到的响应报文
+        - **SSLSet** (list) - 见 **ULBSSLSet** 模型定义
+        - **Status** (int) - VServer的运行状态。枚举值： 0 -> rs全部运行正常;1 -> rs全部运行异常；2 -> rs部分运行异常。
+        - **VServerId** (str) - VServer实例的Id
+        - **VServerName** (str) - VServer实例的名字
+
 
         **ULBBackendSet**
-
         - **BackendId** (str) - 后端资源实例的Id
         - **Enabled** (int) - 后端提供服务的实例启用与否，枚举值：0 禁用 1 启用
+        - **IsBackup** (int) - 是否为backup，只有当vserver的Backup属性为1时才会有此字段，说明：0：主rs1：备rs
         - **Port** (int) - 后端提供服务的端口
         - **PrivateIP** (str) - 后端提供服务的内网IP
         - **ResourceId** (str) - 资源实例的资源Id
@@ -416,67 +507,145 @@ class ULBClient(Client):
         - **SubnetId** (str) - 后端提供服务的资源所在的子网的ID
         - **Weight** (int) -
 
-        **ULBSSLSet**
 
-        - **HashValue** (str) -
+        **ULBPolicySet**
+        - **BackendSet** (list) - 见 **PolicyBackendSet** 模型定义
+        - **Match** (str) - 内容转发匹配字段;默认内容转发类型下为空。
+        - **PolicyId** (str) - 内容转发Id，默认内容转发类型下为空。
+        - **PolicyPriority** (int) - 内容转发优先级，范围[1,9999]，数字越大优先级越高。默认内容转发规则下为0。
+        - **PolicyType** (str) - 内容类型，枚举值：Custom -> 客户自定义；Default -> 默认内容转发
+        - **TotalCount** (int) - 默认内容转发类型下返回当前rs总数
+        - **Type** (str) - 内容转发匹配字段的类型，枚举值：Domain -> 域名；Path -> 路径； 默认内容转发类型下为空
+        - **VServerId** (str) - 所属VServerId
+
+
+        **PolicyBackendSet**
+        - **BackendId** (str) - 所添加的后端资源在ULB中的对象ID，（为ULB系统中使用，与资源自身ID无关
+        - **ObjectId** (str) - 后端资源的对象ID
+        - **Port** (int) - 所添加的后端资源服务端口
+        - **PrivateIP** (str) - 后端资源的内网IP
+        - **ResourceName** (str) - 后端资源的实例名称
+        - **ResourceType** (str) - 所添加的后端资源的类型，枚举值：UHost -> 云主机；UPM -> 物理云主机； UDHost -> 私有专区主机；UDocker -> 容器；UHybrid->混合云主机；CUBE->Cube；UNI -> 虚拟网卡
+        - **SubResourceId** (str) - 如果资源绑定了弹性网卡，则展示弹性网卡的资源ID
+        - **SubResourceName** (str) - 如果资源绑定了弹性网卡，则展示弹性网卡的资源名称
+        - **SubResourceType** (str) - "UNI"或者为空
+
+
+        **ULBSSLSet**
+        - **BindedTargetSet** (list) - 见 **SSLBindedTargetSet** 模型定义
+        - **CreateTime** (int) - SSL证书的创建时间
+        - **HashValue** (str) - SSL证书的HASH值
+        - **SSLContent** (str) - SSL证书的内容
         - **SSLId** (str) - SSL证书的Id
         - **SSLName** (str) - SSL证书的名字
+        - **SSLType** (str) - SSL证书类型，暂时只有 Pem 一种类型
 
-        **ULBVServerSet**
 
-        - **BackendSet** (list) - 见 **ULBBackendSet** 模型定义
-        - **ClientTimeout** (int) - 空闲连接的回收时间，单位：秒。
-        - **Domain** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查域名
-        - **FrontendPort** (int) - VServer服务端口
-        - **ListenType** (str) - 监听器类型，枚举值为: RequestProxy -> 请求代理；PacketsTransmit -> 报文转发
-        - **Method** (str) - VServer负载均衡的模式，枚举值：Roundrobin -> 轮询;Source -> 源地址；ConsistentHash -> 一致性哈希；SourcePort -> 源地址（计算端口）；ConsistentHashPort -> 一致性哈希（计算端口）。
-        - **MonitorType** (str) - 健康检查类型，枚举值：Port -> 端口检查；Path -> 路径检查；
-        - **Path** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查路径
-        - **PersistenceInfo** (str) - 根据PersistenceType确定： None或ServerInsert，此字段为空； UserDefined，此字段展示用户自定义会话string。
-        - **PersistenceType** (str) - VServer会话保持方式。枚举值为： None -> 关闭会话保持； ServerInsert -> 自动生成； UserDefined -> 用户自定义。
-        - **PolicySet** (list) - 见 **ULBPolicySet** 模型定义
-        - **Protocol** (str) - VServer实例的协议。 枚举值为：HTTP，TCP，UDP，HTTPS。
-        - **SSLSet** (list) - 见 **ULBSSLSet** 模型定义
-        - **Status** (int) - VServer的运行状态。枚举值： 0 -> rs全部运行正常;1 -> rs全部运行异常；2 -> rs部分运行异常。
-        - **VServerId** (str) - VServer实例的Id
-        - **VServerName** (str) - VServer实例的名字
+        **SSLBindedTargetSet**
+        - **ULBId** (str) - VServer 所属的ULB实例的资源ID
+        - **ULBName** (str) - ULB实例的名称
+        - **VServerId** (str) - SSL证书绑定到的VServer的资源ID
+        - **VServerName** (str) - 对应的VServer的名字
+
+
+        **LoggerSet**
+        - **BucketName** (str) - ulb日志上传的bucket
+        - **TokenID** (str) - 上传到bucket使用的token的tokenid
+        - **TokenName** (str) - bucket的token名称
+
+
+        **FirewallSet**
+        - **FirewallId** (str) - 防火墙ID
+        - **FirewallName** (str) - 防火墙名称
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeULBRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeULB", d, **kwargs)
+        return apis.DescribeULBResponseSchema().loads(resp)
+
+    def describe_ulb_simple(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeULBSimple - 获取ULB信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **BusinessId** (str) - ULB所属的业务组ID
+        - **Limit** (int) - 数据分页值，默认为10000
+        - **Offset** (int) - 数据偏移量，默认为0
+        - **SubnetId** (str) - ULB所属的子网ID
+        - **ULBId** (str) - 负载均衡实例的Id。 若指定则返回指定的负载均衡实例的信息； 若不指定则返回当前数据中心中所有的负载均衡实例的信息
+        - **VPCId** (str) - ULB所属的VPC
+
+        **Response**
+
+        - **DataSet** (list) - 见 **ULBSimpleSet** 模型定义
+        - **TotalCount** (int) - 满足条件的ULB总数
+
+        **Response Model**
+
+        **LoggerSet**
+        - **BucketName** (str) - ulb日志上传的bucket
+        - **TokenID** (str) - 上传到bucket使用的token的tokenid
+        - **TokenName** (str) - bucket的token名称
+
+
+        **FirewallSet**
+        - **FirewallId** (str) - 防火墙ID
+        - **FirewallName** (str) - 防火墙名称
+
 
         **ULBIPSet**
-
         - **Bandwidth** (int) - 弹性IP的带宽值（暂未对外开放）
         - **BandwidthType** (int) - 弹性IP的带宽类型，枚举值：1 表示是共享带宽，0 普通带宽类型（暂未对外开放）
         - **EIP** (str) - 弹性IP地址
         - **EIPId** (str) - 弹性IP的ID
         - **OperatorName** (str) - 弹性IP的运营商信息，枚举值为：  Bgp：BGP IP International：国际IP
 
-        **ULBSet**
 
+        **ULBSimpleSet**
         - **Bandwidth** (int) - 带宽
         - **BandwidthType** (int) - 带宽类型，枚举值为： 0，非共享带宽； 1，共享带宽
         - **BusinessId** (str) - ULB 所属的业务组ID
         - **CreateTime** (int) - ULB的创建时间，格式为Unix Timestamp
-        - **ExpireTime** (int) - ULB的到期时间，格式为Unix Timestamp
+        - **EnableLog** (int) - ULB是否开启日志功能。0，关闭；1，开启
+        - **FirewallSet** (list) - 见 **FirewallSet** 模型定义
         - **IPSet** (list) - 见 **ULBIPSet** 模型定义
-        - **Name** (str) - 负载均衡的资源名称（资源系统中），缺省值“ULB”
+        - **IPVersion** (str) - ULB提供服务的IP类型。枚举值，“IPv4”,"IPv6"。默认为“IPv4”
+        - **ListenType** (str) - ULB 监听器类型，枚举值：RequestProxy，请求代理； PacketsTransmit ，报文转发；Comprehensive，兼容型；Pending，未定型
+        - **LogSet** (dict) - 见 **LoggerSet** 模型定义
+        - **Name** (str) - 负载均衡的资源名称
         - **PrivateIP** (str) - ULB的内网IP，当ULBType为OuterMode时，该值为空
-        - **Remark** (str) - 负载均衡的备注，缺省值“”
-        - **Resource** (list) - ULB的详细信息列表（废弃）
-        - **SubnetId** (str) - ULB 为 InnerMode 时，ULB 所属的子网ID，默认为空
-        - **Tag** (str) - 负载均衡的业务组名称，缺省值“Default”
+        - **Remark** (str) - 负载均衡的备注
+        - **SubnetId** (str) - ULB 为 InnerMode 时，ULB 所属的子网ID
+        - **Tag** (str) - 负载均衡的业务组名称
         - **ULBId** (str) - 负载均衡的资源ID
-        - **ULBName** (str) - 负载均衡的资源名称(内部记载，废弃)
-        - **ULBType** (str) - ULB 的类型
+        - **ULBType** (str) - ULB 的类型（InnerMode or OuterMode）
         - **VPCId** (str) - ULB所在的VPC的ID
-        - **VServerSet** (list) - 见 **ULBVServerSet** 模型定义
+        - **VServerCount** (int) - ulb下vserver数量
+
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
-        d = apis.DescribeULBRequestSchema().dumps(d)
+        d = apis.DescribeULBSimpleRequestSchema().dumps(d)
 
-        resp = self.invoke("DescribeULB", d, **kwargs)
-        return apis.DescribeULBResponseSchema().loads(resp)
+        resp = self.invoke("DescribeULBSimple", d, **kwargs)
+        return apis.DescribeULBSimpleResponseSchema().loads(resp)
 
     def describe_vserver(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -485,8 +654,8 @@ class ULBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ULBId** (str) - (Required) 负载均衡实例的Id
         - **Limit** (int) - 数据分页值
         - **Offset** (int) - 数据偏移量
@@ -499,35 +668,31 @@ class ULBClient(Client):
 
         **Response Model**
 
-        **PolicyBackendSet**
+        **ULBVServerSet**
+        - **BackendSet** (list) - 见 **ULBBackendSet** 模型定义
+        - **ClientTimeout** (int) - 空闲连接的回收时间，单位：秒。
+        - **Domain** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查域名
+        - **FrontendPort** (int) - VServer服务端口
+        - **ListenType** (str) - 监听器类型，枚举值为: RequestProxy -> 请求代理；PacketsTransmit -> 报文转发
+        - **Method** (str) - VServer负载均衡的模式，枚举值：Roundrobin -> 轮询;Source -> 源地址；ConsistentHash -> 一致性哈希；SourcePort -> 源地址（计算端口）；ConsistentHashPort -> 一致性哈希（计算端口）。
+        - **MonitorType** (str) - 健康检查类型，枚举值：Port -> 端口检查；Path -> 路径检查；Ping -> Ping探测， Customize -> UDP检查请求代理型默认值为Port，其中TCP协议仅支持Port，其他协议支持Port和Path; 报文转发型TCP协议仅支持Port，UDP协议支持Ping、Port和Customize
+        - **Path** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查路径
+        - **PersistenceInfo** (str) - 根据PersistenceType确定： None或ServerInsert，此字段为空； UserDefined，此字段展示用户自定义会话string。
+        - **PersistenceType** (str) - VServer会话保持方式。枚举值为： None -> 关闭会话保持； ServerInsert -> 自动生成； UserDefined -> 用户自定义。
+        - **PolicySet** (list) - 见 **ULBPolicySet** 模型定义
+        - **Protocol** (str) - VServer实例的协议。 枚举值为：HTTP，TCP，UDP，HTTPS。
+        - **RequestMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查发出的请求报文
+        - **ResponseMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查请求应收到的响应报文
+        - **SSLSet** (list) - 见 **ULBSSLSet** 模型定义
+        - **Status** (int) - VServer的运行状态。枚举值： 0 -> rs全部运行正常;1 -> rs全部运行异常；2 -> rs部分运行异常。
+        - **VServerId** (str) - VServer实例的Id
+        - **VServerName** (str) - VServer实例的名字
 
-        - **BackendId** (str) - 所添加的后端资源在ULB中的对象ID，（为ULB系统中使用，与资源自身ID无关
-        - **ObjectId** (str) - 后端资源的对象ID
-        - **Port** (int) - 所添加的后端资源服务端口
-        - **PrivateIP** (str) - 后端资源的内网IP
-        - **ResourceName** (str) - 后端资源的实例名称
-
-        **ULBSSLSet**
-
-        - **HashValue** (str) -
-        - **SSLId** (str) - SSL证书的Id
-        - **SSLName** (str) - SSL证书的名字
-
-        **ULBPolicySet**
-
-        - **BackendSet** (list) - 见 **PolicyBackendSet** 模型定义
-        - **Match** (str) - 内容转发匹配字段;默认内容转发类型下为空。
-        - **PolicyId** (str) - 内容转发Id，默认内容转发类型下为空。
-        - **PolicyPriority** (int) - 内容转发优先级，范围[1,9999]，数字越大优先级越高。默认内容转发规则下为0。
-        - **PolicyType** (str) - 内容类型，枚举值：Custom -> 客户自定义；Default -> 默认内容转发
-        - **TotalCount** (int) - 默认内容转发类型下返回当前rs总数
-        - **Type** (str) - 内容转发匹配字段的类型，枚举值：Domain -> 域名；Path -> 路径； 默认内容转发类型下为空
-        - **VServerId** (str) - 所属VServerId
 
         **ULBBackendSet**
-
         - **BackendId** (str) - 后端资源实例的Id
         - **Enabled** (int) - 后端提供服务的实例启用与否，枚举值：0 禁用 1 启用
+        - **IsBackup** (int) - 是否为backup，只有当vserver的Backup属性为1时才会有此字段，说明：0：主rs1：备rs
         - **Port** (int) - 后端提供服务的端口
         - **PrivateIP** (str) - 后端提供服务的内网IP
         - **ResourceId** (str) - 资源实例的资源Id
@@ -540,28 +705,53 @@ class ULBClient(Client):
         - **SubnetId** (str) - 后端提供服务的资源所在的子网的ID
         - **Weight** (int) -
 
-        **ULBVServerSet**
 
-        - **BackendSet** (list) - 见 **ULBBackendSet** 模型定义
-        - **ClientTimeout** (int) - 空闲连接的回收时间，单位：秒。
-        - **Domain** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查域名
-        - **FrontendPort** (int) - VServer服务端口
-        - **ListenType** (str) - 监听器类型，枚举值为: RequestProxy -> 请求代理；PacketsTransmit -> 报文转发
-        - **Method** (str) - VServer负载均衡的模式，枚举值：Roundrobin -> 轮询;Source -> 源地址；ConsistentHash -> 一致性哈希；SourcePort -> 源地址（计算端口）；ConsistentHashPort -> 一致性哈希（计算端口）。
-        - **MonitorType** (str) - 健康检查类型，枚举值：Port -> 端口检查；Path -> 路径检查；
-        - **Path** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查路径
-        - **PersistenceInfo** (str) - 根据PersistenceType确定： None或ServerInsert，此字段为空； UserDefined，此字段展示用户自定义会话string。
-        - **PersistenceType** (str) - VServer会话保持方式。枚举值为： None -> 关闭会话保持； ServerInsert -> 自动生成； UserDefined -> 用户自定义。
-        - **PolicySet** (list) - 见 **ULBPolicySet** 模型定义
-        - **Protocol** (str) - VServer实例的协议。 枚举值为：HTTP，TCP，UDP，HTTPS。
-        - **SSLSet** (list) - 见 **ULBSSLSet** 模型定义
-        - **Status** (int) - VServer的运行状态。枚举值： 0 -> rs全部运行正常;1 -> rs全部运行异常；2 -> rs部分运行异常。
-        - **VServerId** (str) - VServer实例的Id
-        - **VServerName** (str) - VServer实例的名字
+        **ULBPolicySet**
+        - **BackendSet** (list) - 见 **PolicyBackendSet** 模型定义
+        - **Match** (str) - 内容转发匹配字段;默认内容转发类型下为空。
+        - **PolicyId** (str) - 内容转发Id，默认内容转发类型下为空。
+        - **PolicyPriority** (int) - 内容转发优先级，范围[1,9999]，数字越大优先级越高。默认内容转发规则下为0。
+        - **PolicyType** (str) - 内容类型，枚举值：Custom -> 客户自定义；Default -> 默认内容转发
+        - **TotalCount** (int) - 默认内容转发类型下返回当前rs总数
+        - **Type** (str) - 内容转发匹配字段的类型，枚举值：Domain -> 域名；Path -> 路径； 默认内容转发类型下为空
+        - **VServerId** (str) - 所属VServerId
+
+
+        **PolicyBackendSet**
+        - **BackendId** (str) - 所添加的后端资源在ULB中的对象ID，（为ULB系统中使用，与资源自身ID无关
+        - **ObjectId** (str) - 后端资源的对象ID
+        - **Port** (int) - 所添加的后端资源服务端口
+        - **PrivateIP** (str) - 后端资源的内网IP
+        - **ResourceName** (str) - 后端资源的实例名称
+        - **ResourceType** (str) - 所添加的后端资源的类型，枚举值：UHost -> 云主机；UPM -> 物理云主机； UDHost -> 私有专区主机；UDocker -> 容器；UHybrid->混合云主机；CUBE->Cube；UNI -> 虚拟网卡
+        - **SubResourceId** (str) - 如果资源绑定了弹性网卡，则展示弹性网卡的资源ID
+        - **SubResourceName** (str) - 如果资源绑定了弹性网卡，则展示弹性网卡的资源名称
+        - **SubResourceType** (str) - "UNI"或者为空
+
+
+        **ULBSSLSet**
+        - **BindedTargetSet** (list) - 见 **SSLBindedTargetSet** 模型定义
+        - **CreateTime** (int) - SSL证书的创建时间
+        - **HashValue** (str) - SSL证书的HASH值
+        - **SSLContent** (str) - SSL证书的内容
+        - **SSLId** (str) - SSL证书的Id
+        - **SSLName** (str) - SSL证书的名字
+        - **SSLType** (str) - SSL证书类型，暂时只有 Pem 一种类型
+
+
+        **SSLBindedTargetSet**
+        - **ULBId** (str) - VServer 所属的ULB实例的资源ID
+        - **ULBName** (str) - ULB实例的名称
+        - **VServerId** (str) - SSL证书绑定到的VServer的资源ID
+        - **VServerName** (str) - 对应的VServer的名字
+
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeVServerRequestSchema().dumps(d)
 
@@ -585,7 +775,10 @@ class ULBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.ReleaseBackendRequestSchema().dumps(d)
 
@@ -608,7 +801,10 @@ class ULBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.UnbindSSLRequestSchema().dumps(d)
 
@@ -622,11 +818,12 @@ class ULBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BackendId** (str) - (Required) 后端资源实例的ID(ULB后端ID，非资源自身ID)
         - **ULBId** (str) - (Required) 负载均衡资源ID
         - **Enabled** (int) - 后端实例状态开关
+        - **IsBackup** (int) - 是否为backup0：主rs1：备rs默认为0
         - **Port** (int) - 后端资源服务端口，取值范围[1-65535]
         - **Weight** (int) - 所添加的后端RS权重（在加权轮询算法下有效），取值范围[0-100]，默认为1
 
@@ -635,7 +832,10 @@ class ULBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.UpdateBackendAttributeRequestSchema().dumps(d)
 
@@ -651,20 +851,22 @@ class ULBClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **BackendId** (list) - (Required) 内容转发策略应用的后端资源实例的ID，来源于 AllocateBackend 返回的 BackendId
         - **Match** (str) - (Required) 内容转发匹配字段
-        - **PolicyId** (str) - (Required) 转发规则的ID
         - **ULBId** (str) - (Required) 需要添加内容转发策略的负载均衡实例ID
-        - **VServerId** (str) - (Required) 需要添加内容转发策略的VServer实例ID
-        - **Type** (str) - 内容转发匹配字段的类型
+        - **VServerId** (str) - (Required) 需要添加内容转发策略的VServer实例ID，只支持请求代理模式下，HTTP或HTTPS协议的VServer
+        - **BackendId** (list) - 内容转发策略应用的后端资源实例的ID，来源于 AllocateBackend 返回的 BackendId，不传表示更新转发节点为空
+        - **PolicyId** (str) - 转发规则的ID，当Type为Default时，可以不传或为空
+        - **Type** (str) - 内容转发匹配字段的类型，枚举值：Domain -> 域名转发规则；Path -> 路径转发规则；Default -> 默认转发规则，不传默认值Domain
 
         **Response**
 
-        - **PolicyId** (str) - 转发规则的ID
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.UpdatePolicyRequestSchema().dumps(d)
 
@@ -690,7 +892,10 @@ class ULBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.UpdateULBAttributeRequestSchema().dumps(d)
 
@@ -704,18 +909,19 @@ class ULBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ULBId** (str) - (Required) 负载均衡实例ID
         - **VServerId** (str) - (Required) VServer实例ID
         - **ClientTimeout** (int) - 请求代理的VServer下表示空闲连接的回收时间，单位：秒，取值范围：时(0，86400]，默认值为60；报文转发的VServer下表示回话保持的时间，单位：秒，取值范围：[60，900]，0 表示禁用连接保持
         - **Domain** (str) - MonitorType 为 Path 时指定健康检查发送请求时HTTP HEADER 里的域名
-        - **Method** (str) - VServer负载均衡模式，枚举值：Roundrobin -> 轮询;Source -> 源地址；ConsistentHash -> 一致性哈希；SourcePort -> 源地址（计算端口）；ConsistentHashPort -> 一致性哈希（计算端口）; WeightRoundrobin -> 加权轮询; Leastconn -> 最小连接数。ConsistentHash，SourcePort，ConsistentHashPort 只在报文转发中使用；Leastconn只在请求代理中使用；Roundrobin、Source和WeightRoundrobin在请求代理和报文转发中使用。默认为："Roundrobin"
-        - **MonitorType** (str) - 健康检查的类型，Port:端口,Path:路径
+        - **Method** (str) - VServer负载均衡模式，枚举值：Roundrobin -> 轮询;Source -> 源地址；ConsistentHash -> 一致性哈希；SourcePort -> 源地址（计算端口）；ConsistentHashPort -> 一致性哈希（计算端口）; WeightRoundrobin -> 加权轮询; Leastconn -> 最小连接数；Backup -> 主备模式。ConsistentHash，SourcePort，ConsistentHashPort 只在报文转发中使用；Leastconn只在请求代理中使用；Roundrobin、Source和WeightRoundrobin,Backup在请求代理和报文转发中使用。默认为："Roundrobin"
+        - **MonitorType** (str) - 健康检查类型，枚举值：Port -> 端口检查；Path -> 路径检查；Ping -> Ping探测，Customize -> UDP检查请求代理型默认值为Port，其中TCP协议仅支持Port，其他协议支持Port和Path;报文转发型TCP协议仅支持Port，UDP协议支持Ping、Port和Customize，默认值为Ping
         - **Path** (str) - MonitorType 为 Path 时指定健康检查发送请求时的路径，默认为 /
         - **PersistenceInfo** (str) - 根据PersistenceType确定: None或ServerInsert, 此字段无意义; UserDefined, 则此字段传入用户自定义会话保持String. 若无此字段则不做修改
         - **PersistenceType** (str) - VServer会话保持模式，若无此字段则不做修改。枚举值：None：关闭；ServerInsert：自动生成KEY；UserDefined：用户自定义KEY。
-        - **Protocol** (str) - VServer协议类型，请求代理只支持修改为 HTTP/HTTPS，报文转发VServer只支持修改为 TCP/UDP
+        - **RequestMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查发出的请求报文
+        - **ResponseMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查请求应收到的响应报文
         - **VServerName** (str) - VServer实例名称，若无此字段则不做修改
 
         **Response**
@@ -723,7 +929,10 @@ class ULBClient(Client):
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id, "Region": self.config.region}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.UpdateVServerAttributeRequestSchema().dumps(d)
 
