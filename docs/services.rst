@@ -122,6 +122,13 @@ UFS
    :members:
 
 
+UFile
+-----
+
+.. autoclass:: ucloud.services.ufile.client.UFileClient
+   :members:
+
+
 UHub
 ----
 
