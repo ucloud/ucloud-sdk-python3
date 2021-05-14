@@ -14,26 +14,28 @@ class ImageInfoSchema(schema.ResponseSchema):
     }
 
 
+class KubeProxySchema(schema.ResponseSchema):
+    """KubeProxy - KubeProxy信息"""
+
+    fields = {
+        "Mode": fields.Str(required=False, load_from="Mode"),
+    }
+
+
 class UHostIPSetSchema(schema.ResponseSchema):
     """UHostIPSet - 云主机IP信息"""
 
     fields = {
         "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "Default": fields.Str(required=False, load_from="Default"),
+        "Default": fields.Str(
+            required=False, load_from="Default"
+        ),  # Deprecated, will be removed at 1.0
         "IP": fields.Str(required=False, load_from="IP"),
         "IPId": fields.Str(required=False, load_from="IPId"),
         "Mac": fields.Str(required=False, load_from="Mac"),
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
         "Type": fields.Str(required=False, load_from="Type"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
-    }
-
-
-class KubeProxySchema(schema.ResponseSchema):
-    """KubeProxy - KubeProxy信息"""
-
-    fields = {
-        "Mode": fields.Str(required=False, load_from="Mode"),
     }
 
 
@@ -54,6 +56,7 @@ class NodeInfoV2Schema(schema.ResponseSchema):
         "MachineType": fields.Str(required=True, load_from="MachineType"),
         "Memory": fields.Int(required=True, load_from="Memory"),
         "NodeId": fields.Str(required=True, load_from="NodeId"),
+        "NodeLogInfo": fields.Str(required=True, load_from="NodeLogInfo"),
         "NodeRole": fields.Str(required=True, load_from="NodeRole"),
         "NodeStatus": fields.Str(required=True, load_from="NodeStatus"),
         "OsName": fields.Str(required=True, load_from="OsName"),
