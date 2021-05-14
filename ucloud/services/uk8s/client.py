@@ -189,6 +189,31 @@ class UK8SClient(Client):
 
         **Request Model**
 
+        **CreateUK8SClusterV2ParamKubeProxy**
+        - **Mode** (str) - 集群kube-proxy模式。支持iptables和ipvs，默认为iptables。
+
+
+        **CreateUK8SClusterV2ParamMaster**
+        - **Zone** (str) - Master节点所属可用区，需要设置 Master.0.Zone、 Master.1.Zone、Master.2.Zone 三个 Master 节点的可用区。 三个节点可部署在不同可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
+
+        **CreateUK8SClusterV2ParamNodes**
+        - **BootDiskType** (str) - 一组Node节点的系统盘类型，请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。默认为SSD云盘
+        - **CPU** (int) - 一组Node节点的虚拟CPU核数。单位：核，范围：[2, 64]，可选范围参考控制台。
+        - **Count** (int) - 一组Node节点的数量，范围：[1,10]。
+        - **DataDiskSize** (int) - 数据磁盘大小，单位GB。默认0。范围 ：[20, 1000]
+        - **DataDiskType** (str) - 一组Node节点的数据盘类型，请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。默认为SSD云盘
+        - **GPU** (int) - 一组Node节点的GPU卡核心数，仅GPU机型支持此字段。
+        - **GpuType** (str) - 一组Node节点的GPU类型，枚举值["K80", "P40", "V100"]，最新值参考Console。
+        - **IsolationGroup** (str) - 一组Node节点的隔离组Id，归属于同一隔离组的虚拟机节点将落在不同的物理机上，单个隔离组最多只能容纳8个节点。参见DescribeIsolationGroup。
+        - **Labels** (str) - Node节点标签，形式为key=value，多组Labels用”,“隔开,最多支持五组。
+        - **MachineType** (str) - 一组Nodes节点云主机机型，如["N", "C", "O", "OS"]，具体请参照云主机机型。
+        - **MaxPods** (int) - Node节点上可运行最大节点数，默认为110。
+        - **Mem** (int) - 一组Node节点的内存大小。单位：MB,范围 ：[4096, 262144]，取值为1024的倍数，可选范围参考控制台。
+        - **MinmalCpuPlatform** (str) - Node节点的最低cpu平台，不选则随机。枚举值["Intel/Auto", "Intel/IvyBridge", "Intel/Haswell", "Intel/Broadwell", "Intel/Skylake", "Intel/Cascadelake"。
+        - **Zone** (str) - 一组Nodes节点所属可用区，可创建多组Nodes节点，如一组是CPU Nodes节点，另一组是GPU Nodes节点。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
+
         """
         # build request
         d = {
@@ -280,11 +305,11 @@ class UK8SClient(Client):
         **Response Model**
 
         **ImageInfo**
-
         - **ImageId** (str) - 镜像 Id
         - **ImageName** (str) - 镜像名称
         - **NotSupportGPU** (bool) - 该镜像是否支持GPU机型，枚举值[true:不支持，false:支持]。
         - **ZoneId** (int) - 可用区 Id
+
 
         """
         # build request
@@ -305,8 +330,8 @@ class UK8SClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterId** (str) - (Required) UK8S集群ID
 
         **Response**
@@ -316,23 +341,7 @@ class UK8SClient(Client):
 
         **Response Model**
 
-        **UHostIPSet**
-
-        - **Bandwidth** (int) - IP对应的带宽, 单位: Mb (内网IP不显示带宽信息)
-        - **Default** (str) - 是否默认的弹性网卡的信息。true: 是默认弹性网卡；其他值：不是。
-        - **IP** (str) - IP地址
-        - **IPId** (str) - IP资源ID (内网IP无对应的资源ID)
-        - **Mac** (str) - Mac地址
-        - **SubnetId** (str) - IP地址对应的子网 ID
-        - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
-        - **VPCId** (str) - IP地址对应的VPC ID
-
-        **KubeProxy**
-
-        - **Mode** (str) - KubeProxy模式，枚举值为[ipvs,iptables]
-
         **NodeInfoV2**
-
         - **AsgId** (str) - 节点所属伸缩组ID，非伸缩组创建出来的节点，伸缩组ID为Default。
         - **CPU** (int) - Node节点CPU核数，单位: 个。
         - **CreateTime** (int) - 节点创建时间
@@ -346,12 +355,28 @@ class UK8SClient(Client):
         - **MachineType** (str) - 机型类别，分别对应Uhost的MachineType或PHost的PHostType。
         - **Memory** (int) - 内存大小，单位: MB。
         - **NodeId** (str) - NodeId，Node在UK8S处的唯一标示，如uk8s-reewqe5-sdasadsda
+        - **NodeLogInfo** (str) - 加节点时判断是否没有资源，如果返回NORESOURCE则代表没有资源了
         - **NodeRole** (str) - node角色，枚举值为master、node
         - **NodeStatus** (str) - Node的状态
         - **OsName** (str) - Node节点的镜像名称。
         - **OsType** (str) - Node节点的操作系统类别，如Linux或Windows。
         - **Unschedulable** (bool) - 是否允许Pod调度到该节点，枚举值为true或false。
         - **Zone** (str) - Node所在可用区
+
+
+        **UHostIPSet**
+        - **Bandwidth** (int) - IP对应的带宽, 单位: Mb (内网IP不显示带宽信息)
+        - **IP** (str) - IP地址
+        - **IPId** (str) - IP资源ID (内网IP无对应的资源ID)
+        - **Mac** (str) - Mac地址
+        - **SubnetId** (str) - IP地址对应的子网 ID
+        - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
+        - **VPCId** (str) - IP地址对应的VPC ID
+
+
+        **KubeProxy**
+        - **Mode** (str) - KubeProxy模式，枚举值为[ipvs,iptables]
+
 
         """
         # build request
@@ -386,7 +411,6 @@ class UK8SClient(Client):
         **Response Model**
 
         **ClusterSet**
-
         - **ApiServer** (str) - 集群apiserver地址
         - **ClusterId** (str) - 集群ID
         - **ClusterName** (str) - 资源名字
@@ -400,6 +424,7 @@ class UK8SClient(Client):
         - **Status** (str) - 状态
         - **SubnetId** (str) - 所属子网
         - **VPCId** (str) - 所属VPC
+
 
         """
         # build request

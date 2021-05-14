@@ -147,19 +147,19 @@ API: CreateUK8SClusterV2
 """
 
 
-class CreateUK8SClusterV2ParamMasterSchema(schema.RequestSchema):
-    """CreateUK8SClusterV2ParamMaster -"""
-
-    fields = {
-        "Zone": fields.Str(required=True, dump_to="Zone"),
-    }
-
-
 class CreateUK8SClusterV2ParamKubeProxySchema(schema.RequestSchema):
     """CreateUK8SClusterV2ParamKubeProxy -"""
 
     fields = {
         "Mode": fields.Str(required=False, dump_to="Mode"),
+    }
+
+
+class CreateUK8SClusterV2ParamMasterSchema(schema.RequestSchema):
+    """CreateUK8SClusterV2ParamMaster -"""
+
+    fields = {
+        "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
 
