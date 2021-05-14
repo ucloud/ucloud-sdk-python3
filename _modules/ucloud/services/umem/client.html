@@ -6,9 +6,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ucloud.services.umem.client &#8212; ucloud-sdk-python3  documentation</title>
-    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
     <script src="../../../../_static/jquery.js"></script>
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/doctools.js"></script>
@@ -45,6 +45,67 @@
         <span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">transport</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">middleware</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">UMemClient</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">transport</span><span class="p">,</span> <span class="n">middleware</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span>
+
+<div class="viewcode-block" id="UMemClient.check_udredis_space_allowance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.umem.client.UMemClient.check_udredis_space_allowance">[docs]</a>    <span class="k">def</span> <span class="nf">check_udredis_space_allowance</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;CheckUDredisSpaceAllowance - 检查高性能UMem剩余资源，以及分片扩容前的资源预检查</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **Count** (str) - (Required) 创建实例的数量，[1-10]</span>
+<span class="sd">        - **Size** (int) - (Required) 创建实例的容量大小,，扩容时的分片目标容量大小</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **GroupId** (str) - 资源ID，扩缩容时的必传参数</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **Count** (int) - 创建实例资源时，表示可创建的数量；扩容资源时，返回1表示可以扩容，0表示可用区资源不足不能扩容</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CheckUDredisSpaceAllowanceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;CheckUDredisSpaceAllowance&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">CheckUDredisSpaceAllowanceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UMemClient.check_uredis_allowance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.umem.client.UMemClient.check_uredis_allowance">[docs]</a>    <span class="k">def</span> <span class="nf">check_uredis_allowance</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;CheckURedisAllowance - 检查主备Redis的资源是否足够创建新实例，以及主备Redis的扩容资源预检查</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **Count** (int) - (Required) 创建实例的数量，[1-10]</span>
+<span class="sd">        - **Size** (int) - (Required) 创建实例的容量大小, 单位:GB 目前仅支持1/2/4/8/16/32六种规格；扩缩容时，表示实例的目标资源大小</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **GroupId** (str) - 资源ID，扩容实例资源时的必传参数</span>
+<span class="sd">        - **Protocol** (str) -</span>
+<span class="sd">        - **RegionFlag** (bool) - 是否是跨机房URedis(默认false)</span>
+<span class="sd">        - **SlaveZone** (str) -</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **Count** (int) - 创建实例资源时，表示可创建的数量；扩容资源时，返回1表示可以扩容，0表示可用区资源不足不能扩容</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CheckURedisAllowanceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;CheckURedisAllowance&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">CheckURedisAllowanceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UMemClient.create_umem_backup"><a class="viewcode-back" href="../../../../services.html#ucloud.services.umem.client.UMemClient.create_umem_backup">[docs]</a>    <span class="k">def</span> <span class="nf">create_umem_backup</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -319,6 +380,45 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DeleteURedisGroup&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteURedisGroupResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="UMemClient.describe_ud_redis_slowlog"><a class="viewcode-back" href="../../../../services.html#ucloud.services.umem.client.UMemClient.describe_ud_redis_slowlog">[docs]</a>    <span class="k">def</span> <span class="nf">describe_ud_redis_slowlog</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DescribeUDRedisSlowlog - 查询UDRedis慢日志</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **InstanceId** (str) - (Required) 实例id</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Limit** (int) - 分页显示的条目数，默认为10</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **DataSet** (list) - 见 **UDRedisSlowlogSet** 模型定义</span>
+<span class="sd">        - **TotalCount** (int) - 总条目数</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **UDRedisSlowlogSet**</span>
+<span class="sd">        - **BlockId** (str) - 分片id</span>
+<span class="sd">        - **Command** (str) - 查询命令</span>
+<span class="sd">        - **SpendTime** (int) - 查询消耗的时间</span>
+<span class="sd">        - **StartTime** (int) - 查询发生的时间</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeUDRedisSlowlogRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeUDRedisSlowlog&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeUDRedisSlowlogResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="UMemClient.describe_umem_backup"><a class="viewcode-back" href="../../../../services.html#ucloud.services.umem.client.UMemClient.describe_umem_backup">[docs]</a>    <span class="k">def</span> <span class="nf">describe_umem_backup</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -340,13 +440,13 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **UMemBackupSet**</span>
-
 <span class="sd">        - **BackupId** (str) - 空间的备份ID</span>
 <span class="sd">        - **BackupName** (str) - 备份名称</span>
 <span class="sd">        - **BackupType** (str) - 备份类型: auto(自动) ,manual(手动)</span>
 <span class="sd">        - **BlockCount** (int) - 本次备份，分片的数量</span>
 <span class="sd">        - **CreateTime** (int) - 创建时间</span>
 <span class="sd">        - **State** (str) - Starting:备份中 Done:完成</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -411,7 +511,6 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **UMemBlockInfo**</span>
-
 <span class="sd">        - **BlockId** (str) - 分片id</span>
 <span class="sd">        - **BlockPort** (int) - 分片端口</span>
 <span class="sd">        - **BlockSize** (int) - 容量单位GB</span>
@@ -420,6 +519,7 @@
 <span class="sd">        - **BlockState** (str) - 实例状态 Starting // 创建中 Creating // 初始化中 CreateFail // 创建失败 Fail // 创建失败 Deleting // 删除中 DeleteFail // 删除失败 Running // 运行 Resizing // 容量调整中 ResizeFail // 容量调整失败 Configing // 配置中 ConfigFail // 配置失败Restarting // 重启中 SetPasswordFail //设置密码失败</span>
 <span class="sd">        - **BlockUsedSize** (int) - 使用量单位MB</span>
 <span class="sd">        - **BlockVip** (str) - 分片ip</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -440,11 +540,11 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **Size** (int) - (Required) 购买umem大小,单位:GB,范围[1~1024]</span>
 <span class="sd">        - **Type** (str) - (Required) 空间类型:single(无热备),double(热备)(默认: double)</span>
-<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **ChargeType** (str) - Year， Month， Dynamic 如果不指定，则一次性获取三种计费</span>
 <span class="sd">        - **Quantity** (int) - 购买UMem的时长，默认值为1</span>
 
@@ -455,11 +555,10 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **UMemPriceSet**</span>
-
 <span class="sd">        - **ChargeType** (str) - Year， Month， Dynamic，Trial</span>
-<span class="sd">        - **ListPrice** (int) - 产品列表价</span>
 <span class="sd">        - **OriginalPrice** (int) - 原价</span>
 <span class="sd">        - **Price** (int) - 现价</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -495,13 +594,7 @@
 
 <span class="sd">        **Response Model**</span>
 
-<span class="sd">        **UMemSpaceAddressSet**</span>
-
-<span class="sd">        - **IP** (str) - UMem实例访问IP</span>
-<span class="sd">        - **Port** (int) - UMem实例访问Port</span>
-
 <span class="sd">        **UMemSpaceSet**</span>
-
 <span class="sd">        - **Address** (list) - 见 **UMemSpaceAddressSet** 模型定义</span>
 <span class="sd">        - **ChargeType** (str) - Year, Month, Dynamic, Trial</span>
 <span class="sd">        - **CreateTime** (int) - 创建时间</span>
@@ -518,6 +611,12 @@
 <span class="sd">        - **UsedSize** (int) - 使用量单位MB</span>
 <span class="sd">        - **VPCId** (str) -</span>
 <span class="sd">        - **Zone** (str) - 可用区，参见 `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
+
+<span class="sd">        **UMemSpaceAddressSet**</span>
+<span class="sd">        - **IP** (str) - UMem实例访问IP</span>
+<span class="sd">        - **Port** (int) - UMem实例访问Port</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -538,25 +637,25 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **Size** (int) - (Required) 购买UMem大小,单位:GB</span>
 <span class="sd">        - **SpaceId** (str) - (Required) 需要升级的空间的SpaceId</span>
 <span class="sd">        - **Type** (str) - (Required) 空间类型:single(无热备),double(热备)(默认: double)</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 
 <span class="sd">        **Response**</span>
 
-<span class="sd">        - **DataSet** (dict) - 见 **PriceDataSet** 模型定义</span>
-<span class="sd">        - **Price** (int) - 价格(兼容老版本)</span>
+<span class="sd">        - **OriginalPrice** (int) - 原价</span>
+<span class="sd">        - **Price** (int) - 价格</span>
 
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **PriceDataSet**</span>
+<span class="sd">        - **CustomPrice** (int) -</span>
+<span class="sd">        - **PurchaseValue** (int) -</span>
+<span class="sd">        - **TotalPrice** (int) -</span>
 
-<span class="sd">        - **CustomPrice** (int) - 用户折后价</span>
-<span class="sd">        - **PurchaseValue** (int) - 资源有效期</span>
-<span class="sd">        - **TotalPrice** (int) - 升降级资源的价格</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -592,7 +691,6 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **UMemcacheGroupSet**</span>
-
 <span class="sd">        - **ChargeType** (str) - 计费类型:Year,Month,Dynamic 默认Dynamic</span>
 <span class="sd">        - **ConfigId** (str) - 节点的配置ID</span>
 <span class="sd">        - **CreateTime** (int) - 创建时间 (UNIX时间戳)</span>
@@ -609,6 +707,7 @@
 <span class="sd">        - **VPCId** (str) -</span>
 <span class="sd">        - **Version** (str) - Memcache版本信息,默认为1.4.31</span>
 <span class="sd">        - **VirtualIP** (str) - 节点的虚拟IP地址</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -644,11 +743,11 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **UMemcachePriceSet**</span>
-
 <span class="sd">        - **ChargeType** (str) - 计费模式，Year, Month, Dynamic</span>
 <span class="sd">        - **ListPrice** (int) - 产品列表价</span>
 <span class="sd">        - **OriginalPrice** (int) - 原价</span>
 <span class="sd">        - **Price** (int) - 总价格</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -706,7 +805,6 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **URedisBackupSet**</span>
-
 <span class="sd">        - **BackupId** (str) - 备份ID</span>
 <span class="sd">        - **BackupName** (str) - 备份的名称</span>
 <span class="sd">        - **BackupSize** (int) - 备份文件大小, 以字节为单位</span>
@@ -716,6 +814,7 @@
 <span class="sd">        - **GroupName** (str) - 组名称</span>
 <span class="sd">        - **State** (str) - 备份的状态: Backuping 备份中 Success 备份成功 Error 备份失败 Expired 备份过期</span>
 <span class="sd">        - **Zone** (str) - 可用区，参见 `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -785,7 +884,6 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **URedisConfigSet**</span>
-
 <span class="sd">        - **ConfigId** (str) - 配置ID</span>
 <span class="sd">        - **CreateTime** (int) - 创建时间 (UNIX时间戳)</span>
 <span class="sd">        - **Description** (str) - 配置描述</span>
@@ -796,6 +894,7 @@
 <span class="sd">        - **State** (str) - 配置所处的状态</span>
 <span class="sd">        - **Version** (str) - 配置对应的Redis版本</span>
 <span class="sd">        - **Zone** (str) - Zone</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -816,12 +915,12 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **GroupId** (str) - 组的ID,如果指定则获取描述，否则为列表操 作,需指定Offset/Limit</span>
 <span class="sd">        - **Limit** (int) - 分页显示的条目数, 默认值为20</span>
 <span class="sd">        - **Offset** (int) - 分页显示的起始偏移, 默认值为0</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 
 <span class="sd">        **Response**</span>
 
@@ -831,7 +930,6 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **URedisGroupSet**</span>
-
 <span class="sd">        - **AutoBackup** (str) - 是否需要自动备份,enable,disable</span>
 <span class="sd">        - **BackupTime** (int) - 组自动备份开始时间,单位小时计,范围[0-23]</span>
 <span class="sd">        - **ChargeType** (str) - 计费类型:Year,Month,Dynamic 默认Dynamic</span>
@@ -851,14 +949,15 @@
 <span class="sd">        - **Size** (int) - 容量单位GB</span>
 <span class="sd">        - **SlaveZone** (str) - 跨机房URedis，slave redis所在可用区，参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **State** (str) - 状态标记 Creating // 初始化中 CreateFail // 创建失败 Deleting // 删除中 DeleteFail // 删除失败 Running // 运行 Resizing // 容量调整中 ResizeFail // 容量调整失败 Configing // 配置中 ConfigFail // 配置失败</span>
-<span class="sd">        - **SubnetId** (str) - 子网</span>
+<span class="sd">        - **SubnetId** (str) - subnetid</span>
 <span class="sd">        - **Tag** (str) - 业务组名称</span>
 <span class="sd">        - **Type** (str) - 空间类型:single(无热备),double(热备)</span>
 <span class="sd">        - **UsedSize** (int) - 使用量单位MB</span>
-<span class="sd">        - **VPCId** (str) - VPCId</span>
+<span class="sd">        - **VPCId** (str) - vpcid</span>
 <span class="sd">        - **Version** (str) - Redis版本信息</span>
 <span class="sd">        - **VirtualIP** (str) - 节点的虚拟IP地址</span>
 <span class="sd">        - **Zone** (str) - 实例所在可用区，或者master redis所在可用区，参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -895,11 +994,11 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **URedisPriceSet**</span>
-
 <span class="sd">        - **ChargeType** (str) - Year， Month， Dynamic，Trial</span>
 <span class="sd">        - **ListPrice** (int) - 产品列表价</span>
 <span class="sd">        - **OriginalPrice** (int) - 原价</span>
 <span class="sd">        - **Price** (int) - 总价格</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -934,10 +1033,10 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **URedisSlowlogSet**</span>
-
 <span class="sd">        - **Command** (str) - 查询命令</span>
 <span class="sd">        - **SpendTime** (int) - 查询消耗的时间</span>
 <span class="sd">        - **StartTime** (int) - 查询发生的时间</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -997,8 +1096,8 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **URedisVersionSet**</span>
-
 <span class="sd">        - **Version** (str) - Redis版本</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -1011,6 +1110,38 @@
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeURedisVersion&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeURedisVersionResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UMemClient.flushall_uredis_group"><a class="viewcode-back" href="../../../../services.html#ucloud.services.umem.client.UMemClient.flushall_uredis_group">[docs]</a>    <span class="k">def</span> <span class="nf">flushall_uredis_group</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;FlushallURedisGroup - 清除主备redis数据</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **FlushType** (str) - (Required) FlushDb或FlushAll</span>
+<span class="sd">        - **GroupId** (str) - (Required) 组的ID</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **DbNum** (int) - 清空的db，FlushType为FlushDb，此项为必传项</span>
+<span class="sd">        - **OrganizationId** (int) - OrganizationId</span>
+<span class="sd">        - **SlaveZone** (str) - 跨机房URedis，slave所在可用区（必须和Zone在同一Region，且不可相同）</span>
+<span class="sd">        - **TopOrganizationId** (int) - company_id</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">FlushallURedisGroupRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;FlushallURedisGroup&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">FlushallURedisGroupResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UMemClient.get_umem_space_state"><a class="viewcode-back" href="../../../../services.html#ucloud.services.umem.client.UMemClient.get_umem_space_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_umem_space_state</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -1124,6 +1255,33 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ModifyURedisGroupPassword&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyURedisGroupPasswordResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="UMemClient.remove_ud_redis_data"><a class="viewcode-back" href="../../../../services.html#ucloud.services.umem.client.UMemClient.remove_ud_redis_data">[docs]</a>    <span class="k">def</span> <span class="nf">remove_ud_redis_data</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;RemoveUDRedisData - 清除udredis实例数据</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **SpaceId** (str) - (Required) 实例id</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">RemoveUDRedisDataRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;RemoveUDRedisData&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">RemoveUDRedisDataResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="UMemClient.resize_umem_space"><a class="viewcode-back" href="../../../../services.html#ucloud.services.umem.client.UMemClient.resize_umem_space">[docs]</a>    <span class="k">def</span> <span class="nf">resize_umem_space</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -1156,7 +1314,7 @@
 <div class="viewcode-block" id="UMemClient.resize_uredis_group"><a class="viewcode-back" href="../../../../services.html#ucloud.services.umem.client.UMemClient.resize_uredis_group">[docs]</a>    <span class="k">def</span> <span class="nf">resize_uredis_group</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;ResizeURedisGroup - 调整主备redis容量</span>
+        <span class="sd">&quot;&quot;&quot;ResizeURedisGroup - 通过调用CheckURedisAllowance接口，检查资源情况，根据不同情形来调整主备redis容量，其中主要包括可用区资源不足无法扩容，主备所在宿主机资源不足需要迁移完成扩容（需要主从切换，会闪断及负载升高），以及直接扩容（业务无感知）</span>
 
 <span class="sd">        **Request**</span>
 
@@ -1164,7 +1322,10 @@
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **GroupId** (str) - (Required) 组ID</span>
 <span class="sd">        - **Size** (int) - (Required) 内存大小, 单位:GB (需要大于原size,且小于等于32) 目前仅支持1/2/4/8/16/32 G 六种容量规格</span>
+<span class="sd">        - **ChargeType** (str) -</span>
 <span class="sd">        - **CouponId** (int) - 代金券ID 请参考DescribeCoupon接口</span>
+<span class="sd">        - **Type** (str) - 空间类型:single(无热备),double(热备)(默认: double)</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 
 <span class="sd">        **Response**</span>
 
@@ -1207,6 +1368,81 @@
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;RestartUMemcacheGroup&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">RestartUMemcacheGroupResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UMemClient.restart_uredis_group"><a class="viewcode-back" href="../../../../services.html#ucloud.services.umem.client.UMemClient.restart_uredis_group">[docs]</a>    <span class="k">def</span> <span class="nf">restart_uredis_group</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;RestartURedisGroup - 重启主备实例</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **GroupId** (str) - (Required) 资源ID</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">RestartURedisGroupRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;RestartURedisGroup&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">RestartURedisGroupResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UMemClient.shutdown_uredis_group"><a class="viewcode-back" href="../../../../services.html#ucloud.services.umem.client.UMemClient.shutdown_uredis_group">[docs]</a>    <span class="k">def</span> <span class="nf">shutdown_uredis_group</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;ShutdownURedisGroup - 关闭主备实例</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **GroupId** (str) - (Required) 资源ID</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ShutdownURedisGroupRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ShutdownURedisGroup&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ShutdownURedisGroupResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UMemClient.start_uredis_group"><a class="viewcode-back" href="../../../../services.html#ucloud.services.umem.client.UMemClient.start_uredis_group">[docs]</a>    <span class="k">def</span> <span class="nf">start_uredis_group</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;StartURedisGroup - 实例关闭状态下，启动实例</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **GroupId** (str) - (Required) 资源ID</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">StartURedisGroupRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;StartURedisGroup&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">StartURedisGroupResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UMemClient.update_uredis_backup_strategy"><a class="viewcode-back" href="../../../../services.html#ucloud.services.umem.client.UMemClient.update_uredis_backup_strategy">[docs]</a>    <span class="k">def</span> <span class="nf">update_uredis_backup_strategy</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -1300,7 +1536,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

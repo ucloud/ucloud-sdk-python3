@@ -6,9 +6,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ucloud.services.uec.client &#8212; ucloud-sdk-python3  documentation</title>
-    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
     <script src="../../../../_static/jquery.js"></script>
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/doctools.js"></script>
@@ -142,6 +142,11 @@
 
 <span class="sd">        **Request Model**</span>
 
+<span class="sd">        **CreateUEcHolderParamStorage**</span>
+<span class="sd">        - **Path** (str) - 存储卷挂载路径</span>
+<span class="sd">        - **ResourceId** (str) - 存储卷资源id</span>
+
+
 <span class="sd">        **CreateUEcHolderParamPack**</span>
 <span class="sd">        - **Args** (str) - 容器参数（多个用；隔开）</span>
 <span class="sd">        - **Cmd** (str) - 开启容器的命令</span>
@@ -157,11 +162,6 @@
 <span class="sd">        **CreateUEcHolderParamImage**</span>
 <span class="sd">        - **Message** (str) - 镜像用户名和密码（如镜像名：密码）</span>
 <span class="sd">        - **StoreAddress** (str) - 镜像仓库地址</span>
-
-
-<span class="sd">        **CreateUEcHolderParamStorage**</span>
-<span class="sd">        - **Path** (str) - 存储卷挂载路径</span>
-<span class="sd">        - **ResourceId** (str) - 存储卷资源id</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -474,6 +474,17 @@
 <span class="sd">        - **Value** (str) - 环境变量Value值</span>
 
 
+<span class="sd">        **ImageList**</span>
+<span class="sd">        - **ImageKey** (str) - 镜像密钥</span>
+<span class="sd">        - **StoreAddr** (str) - 仓库地址</span>
+<span class="sd">        - **UserName** (str) - 用户名称</span>
+
+
+<span class="sd">        **IpList**</span>
+<span class="sd">        - **Ip** (str) - 外网ip</span>
+<span class="sd">        - **Isp** (str) - 运营商</span>
+
+
 <span class="sd">        **StorVolumeInfo**</span>
 <span class="sd">        - **DiskSize** (int) - 容量（单位GB）</span>
 <span class="sd">        - **MountPoint** (str) - 挂载点</span>
@@ -492,17 +503,6 @@
 <span class="sd">        - **Name** (str) - 容器名称</span>
 <span class="sd">        - **State** (int) - 容器状态，0：初始化；1：拉取镜像；2：拉取镜像失败；3：启动中；4：运行中；5：正在停止；6：已停止；7：已删除；8：镜像拉取成功；9：启动失败；99：异常</span>
 <span class="sd">        - **WorkDir** (str) - 工作目录</span>
-
-
-<span class="sd">        **ImageList**</span>
-<span class="sd">        - **ImageKey** (str) - 镜像密钥</span>
-<span class="sd">        - **StoreAddr** (str) - 仓库地址</span>
-<span class="sd">        - **UserName** (str) - 用户名称</span>
-
-
-<span class="sd">        **IpList**</span>
-<span class="sd">        - **Ip** (str) - 外网ip</span>
-<span class="sd">        - **Isp** (str) - 运营商</span>
 
 
 <span class="sd">        **HolderList**</span>
@@ -1567,7 +1567,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

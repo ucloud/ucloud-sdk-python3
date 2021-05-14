@@ -6,9 +6,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ucloud.services.uk8s.client &#8212; ucloud-sdk-python3  documentation</title>
-    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
     <script src="../../../../_static/jquery.js"></script>
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/doctools.js"></script>
@@ -222,6 +222,31 @@
 
 <span class="sd">        **Request Model**</span>
 
+<span class="sd">        **CreateUK8SClusterV2ParamKubeProxy**</span>
+<span class="sd">        - **Mode** (str) - 集群kube-proxy模式。支持iptables和ipvs，默认为iptables。</span>
+
+
+<span class="sd">        **CreateUK8SClusterV2ParamMaster**</span>
+<span class="sd">        - **Zone** (str) - Master节点所属可用区，需要设置 Master.0.Zone、 Master.1.Zone、Master.2.Zone 三个 Master 节点的可用区。 三个节点可部署在不同可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
+
+<span class="sd">        **CreateUK8SClusterV2ParamNodes**</span>
+<span class="sd">        - **BootDiskType** (str) - 一组Node节点的系统盘类型，请参考 `磁盘类型 &lt;https://docs.ucloud.cn/api/uhost-api/disk_type&gt;`_ 。默认为SSD云盘</span>
+<span class="sd">        - **CPU** (int) - 一组Node节点的虚拟CPU核数。单位：核，范围：[2, 64]，可选范围参考控制台。</span>
+<span class="sd">        - **Count** (int) - 一组Node节点的数量，范围：[1,10]。</span>
+<span class="sd">        - **DataDiskSize** (int) - 数据磁盘大小，单位GB。默认0。范围 ：[20, 1000]</span>
+<span class="sd">        - **DataDiskType** (str) - 一组Node节点的数据盘类型，请参考 `磁盘类型 &lt;https://docs.ucloud.cn/api/uhost-api/disk_type&gt;`_ 。默认为SSD云盘</span>
+<span class="sd">        - **GPU** (int) - 一组Node节点的GPU卡核心数，仅GPU机型支持此字段。</span>
+<span class="sd">        - **GpuType** (str) - 一组Node节点的GPU类型，枚举值[&quot;K80&quot;, &quot;P40&quot;, &quot;V100&quot;]，最新值参考Console。</span>
+<span class="sd">        - **IsolationGroup** (str) - 一组Node节点的隔离组Id，归属于同一隔离组的虚拟机节点将落在不同的物理机上，单个隔离组最多只能容纳8个节点。参见DescribeIsolationGroup。</span>
+<span class="sd">        - **Labels** (str) - Node节点标签，形式为key=value，多组Labels用”,“隔开,最多支持五组。</span>
+<span class="sd">        - **MachineType** (str) - 一组Nodes节点云主机机型，如[&quot;N&quot;, &quot;C&quot;, &quot;O&quot;, &quot;OS&quot;]，具体请参照云主机机型。</span>
+<span class="sd">        - **MaxPods** (int) - Node节点上可运行最大节点数，默认为110。</span>
+<span class="sd">        - **Mem** (int) - 一组Node节点的内存大小。单位：MB,范围 ：[4096, 262144]，取值为1024的倍数，可选范围参考控制台。</span>
+<span class="sd">        - **MinmalCpuPlatform** (str) - Node节点的最低cpu平台，不选则随机。枚举值[&quot;Intel/Auto&quot;, &quot;Intel/IvyBridge&quot;, &quot;Intel/Haswell&quot;, &quot;Intel/Broadwell&quot;, &quot;Intel/Skylake&quot;, &quot;Intel/Cascadelake&quot;。</span>
+<span class="sd">        - **Zone** (str) - 一组Nodes节点所属可用区，可创建多组Nodes节点，如一组是CPU Nodes节点，另一组是GPU Nodes节点。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
@@ -313,11 +338,11 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **ImageInfo**</span>
-
 <span class="sd">        - **ImageId** (str) - 镜像 Id</span>
 <span class="sd">        - **ImageName** (str) - 镜像名称</span>
 <span class="sd">        - **NotSupportGPU** (bool) - 该镜像是否支持GPU机型，枚举值[true:不支持，false:支持]。</span>
 <span class="sd">        - **ZoneId** (int) - 可用区 Id</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -338,8 +363,8 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **ClusterId** (str) - (Required) UK8S集群ID</span>
 
 <span class="sd">        **Response**</span>
@@ -349,23 +374,7 @@
 
 <span class="sd">        **Response Model**</span>
 
-<span class="sd">        **UHostIPSet**</span>
-
-<span class="sd">        - **Bandwidth** (int) - IP对应的带宽, 单位: Mb (内网IP不显示带宽信息)</span>
-<span class="sd">        - **Default** (str) - 是否默认的弹性网卡的信息。true: 是默认弹性网卡；其他值：不是。</span>
-<span class="sd">        - **IP** (str) - IP地址</span>
-<span class="sd">        - **IPId** (str) - IP资源ID (内网IP无对应的资源ID)</span>
-<span class="sd">        - **Mac** (str) - Mac地址</span>
-<span class="sd">        - **SubnetId** (str) - IP地址对应的子网 ID</span>
-<span class="sd">        - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private</span>
-<span class="sd">        - **VPCId** (str) - IP地址对应的VPC ID</span>
-
-<span class="sd">        **KubeProxy**</span>
-
-<span class="sd">        - **Mode** (str) - KubeProxy模式，枚举值为[ipvs,iptables]</span>
-
 <span class="sd">        **NodeInfoV2**</span>
-
 <span class="sd">        - **AsgId** (str) - 节点所属伸缩组ID，非伸缩组创建出来的节点，伸缩组ID为Default。</span>
 <span class="sd">        - **CPU** (int) - Node节点CPU核数，单位: 个。</span>
 <span class="sd">        - **CreateTime** (int) - 节点创建时间</span>
@@ -379,12 +388,28 @@
 <span class="sd">        - **MachineType** (str) - 机型类别，分别对应Uhost的MachineType或PHost的PHostType。</span>
 <span class="sd">        - **Memory** (int) - 内存大小，单位: MB。</span>
 <span class="sd">        - **NodeId** (str) - NodeId，Node在UK8S处的唯一标示，如uk8s-reewqe5-sdasadsda</span>
+<span class="sd">        - **NodeLogInfo** (str) - 加节点时判断是否没有资源，如果返回NORESOURCE则代表没有资源了</span>
 <span class="sd">        - **NodeRole** (str) - node角色，枚举值为master、node</span>
 <span class="sd">        - **NodeStatus** (str) - Node的状态</span>
 <span class="sd">        - **OsName** (str) - Node节点的镜像名称。</span>
 <span class="sd">        - **OsType** (str) - Node节点的操作系统类别，如Linux或Windows。</span>
 <span class="sd">        - **Unschedulable** (bool) - 是否允许Pod调度到该节点，枚举值为true或false。</span>
 <span class="sd">        - **Zone** (str) - Node所在可用区</span>
+
+
+<span class="sd">        **UHostIPSet**</span>
+<span class="sd">        - **Bandwidth** (int) - IP对应的带宽, 单位: Mb (内网IP不显示带宽信息)</span>
+<span class="sd">        - **IP** (str) - IP地址</span>
+<span class="sd">        - **IPId** (str) - IP资源ID (内网IP无对应的资源ID)</span>
+<span class="sd">        - **Mac** (str) - Mac地址</span>
+<span class="sd">        - **SubnetId** (str) - IP地址对应的子网 ID</span>
+<span class="sd">        - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private</span>
+<span class="sd">        - **VPCId** (str) - IP地址对应的VPC ID</span>
+
+
+<span class="sd">        **KubeProxy**</span>
+<span class="sd">        - **Mode** (str) - KubeProxy模式，枚举值为[ipvs,iptables]</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -419,7 +444,6 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **ClusterSet**</span>
-
 <span class="sd">        - **ApiServer** (str) - 集群apiserver地址</span>
 <span class="sd">        - **ClusterId** (str) - 集群ID</span>
 <span class="sd">        - **ClusterName** (str) - 资源名字</span>
@@ -433,6 +457,7 @@
 <span class="sd">        - **Status** (str) - 状态</span>
 <span class="sd">        - **SubnetId** (str) - 所属子网</span>
 <span class="sd">        - **VPCId** (str) - 所属VPC</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -508,7 +533,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

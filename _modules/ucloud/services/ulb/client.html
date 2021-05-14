@@ -6,9 +6,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ucloud.services.ulb.client &#8212; ucloud-sdk-python3  documentation</title>
-    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
     <script src="../../../../_static/jquery.js"></script>
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/doctools.js"></script>
@@ -56,11 +56,15 @@
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **ResourceId** (str) - (Required) 所添加的后端资源的资源ID</span>
-<span class="sd">        - **ResourceType** (str) - (Required) 所添加的后端资源的类型，枚举值：UHost -&gt; 云主机；UPM -&gt; 物理云主机； UDHost -&gt; 私有专区主机；UDocker -&gt; 容器，默认值为“UHost”</span>
+<span class="sd">        - **ResourceType** (str) - (Required) 所添加的后端资源的类型，枚举值：UHost -&gt; 云主机；UNI -&gt; 虚拟网卡；UPM -&gt; 物理云主机； UDHost -&gt; 私有专区主机；UDocker -&gt; 容器；UHybrid-&gt;混合云主机；CUBE-&gt;Cube；默认值为UHost。报文转发模式不支持UDocker、UHybrid、CUBE</span>
 <span class="sd">        - **ULBId** (str) - (Required) 负载均衡实例的ID</span>
 <span class="sd">        - **VServerId** (str) - (Required) VServer实例的ID</span>
 <span class="sd">        - **Enabled** (int) - 后端实例状态开关，枚举值： 1：启用； 0：禁用 默认为启用</span>
+<span class="sd">        - **IsBackup** (int) - rs是否为backup，默认为00：普通rs1：backup的rs</span>
 <span class="sd">        - **Port** (int) - 所添加的后端资源服务端口，取值范围[1-65535]，默认80</span>
+<span class="sd">        - **ResourceIP** (str) - 所添加的后端服务器的资源实例IP，当ResourceType 为 UHybrid 时有效，且必填</span>
+<span class="sd">        - **SubnetId** (str) - 所添加的后端服务器所在的子网，当ResourceType 为 UHybrid 时有效，且必填</span>
+<span class="sd">        - **VPCId** (str) - 所添加的后端服务器所在的vpc，当ResourceType 为 UHybrid 时有效，且必填</span>
 <span class="sd">        - **Weight** (int) - 所添加的后端RS权重（在加权轮询算法下有效），取值范围[0-100]，默认为1</span>
 
 <span class="sd">        **Response**</span>
@@ -69,9 +73,15 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">AllocateBackendRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># build options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;AllocateBackend&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">AllocateBackendResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
@@ -79,16 +89,16 @@
 <div class="viewcode-block" id="ULBClient.allocate_backend_batch"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ulb.client.ULBClient.allocate_backend_batch">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_backend_batch</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;AllocateBackendBatch - 批量添加VServer后端节点</span>
+        <span class="sd">&quot;&quot;&quot;AllocateBackendBatch -</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
-<span class="sd">        - **Backends** (list) - (Required) 用| 分割字段，格式：ResourceId| ResourceType| Port| Enabled|IP| Weight。ResourceId:所添加的后端资源的资源ID；ResourceType:所添加的后端资源的类型，枚举值：UHost -&gt; 云主机；UPM -&gt; 物理云主机； UDHost -&gt; 私有专区主机；UDocker -&gt; 容器，默认值为“UHost”；Port:所添加的后端资源服务端口，取值范围[1-65535]；Enabled:后端实例状态开关，枚举值： 1：启用； 0：禁用；IP:后端资源内网ip；Weight：所添加的后端RS权重（在加权轮询算法下有效），取值范围[0-100]，默认为1</span>
-<span class="sd">        - **ULBId** (str) - (Required) 负载均衡实例的ID</span>
-<span class="sd">        - **VServerId** (str) - (Required) VServer实例的ID</span>
+<span class="sd">        - **ProjectId** (str) - (Config)</span>
+<span class="sd">        - **Region** (str) - (Config)</span>
+<span class="sd">        - **ULBId** (str) - (Required)</span>
+<span class="sd">        - **VServerId** (str) - (Required)</span>
 <span class="sd">        - **ApiVersion** (int) -</span>
+<span class="sd">        - **Backends** (list) -</span>
 
 <span class="sd">        **Response**</span>
 
@@ -97,15 +107,21 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **BackendSet**</span>
+<span class="sd">        - **BackendId** (str) -</span>
+<span class="sd">        - **ResourceId** (str) -</span>
 
-<span class="sd">        - **BackendId** (str) - rs的资源ID</span>
-<span class="sd">        - **ResourceId** (str) - rs对应的UHost ID</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">AllocateBackendBatchRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># build options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;AllocateBackendBatch&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">AllocateBackendBatchResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
@@ -126,7 +142,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">BindSSLRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -146,6 +165,7 @@
 <span class="sd">        - **Match** (str) - (Required) 内容转发匹配字段</span>
 <span class="sd">        - **ULBId** (str) - (Required) 需要添加内容转发策略的负载均衡实例ID</span>
 <span class="sd">        - **VServerId** (str) - (Required) 需要添加内容转发策略的VServer实例ID</span>
+<span class="sd">        - **PolicyPriority** (int) - 策略优先级，1-9999</span>
 <span class="sd">        - **Type** (str) - 内容转发匹配字段的类型</span>
 
 <span class="sd">        **Response**</span>
@@ -154,7 +174,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreatePolicyRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -184,7 +207,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateSSLRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -202,12 +228,11 @@
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **BusinessId** (str) - ULB 所属的业务组ID，如果不传则使用默认的业务组</span>
-<span class="sd">        - **ChargeType** (str) - 付费方式</span>
-<span class="sd">        - **IPVersion** (str) - ULB ip类型，枚举值：IPv6 / IPv4 （内部测试，暂未对外开放）</span>
+<span class="sd">        - **ChargeType** (str) - 付费方式, 枚举值为: Year, 按年付费; Month, 按月付费; Dynamic, 按时付费</span>
+<span class="sd">        - **FirewallId** (str) - 防火墙ID，如果不传，则默认不绑定防火墙</span>
 <span class="sd">        - **InnerMode** (str) - 创建的ULB是否为内网模式</span>
-<span class="sd">        - **ListenType** (str) - ULB 监听器类型，枚举值：RequestProxy / PacketsTransmit （内部测试，暂未对外开放）</span>
+<span class="sd">        - **ListenType** (str) - ULB 监听器类型，枚举值：RequestProxy，请求代理； PacketsTransmit ，报文转发。默认为RequestProxy</span>
 <span class="sd">        - **OuterMode** (str) - 创建的ULB是否为外网模式，默认即为外网模式</span>
-<span class="sd">        - **PrivateIp** (str) - 创建内网ULB时指定内网IP。若不传值，则随机分配当前子网下的IP（暂时不对外开放，创建外网ULB该字段会忽略）</span>
 <span class="sd">        - **Remark** (str) - 备注</span>
 <span class="sd">        - **SubnetId** (str) - 内网ULB 所属的子网ID，如果不传则使用默认的子网</span>
 <span class="sd">        - **Tag** (str) - 业务组</span>
@@ -216,11 +241,15 @@
 
 <span class="sd">        **Response**</span>
 
+<span class="sd">        - **IPv6AddressId** (str) - IPv6地址Id</span>
 <span class="sd">        - **ULBId** (str) - 负载均衡实例的Id</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateULBRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -237,19 +266,21 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **ULBId** (str) - (Required) 负载均衡实例ID</span>
 <span class="sd">        - **ClientTimeout** (int) - ListenType为RequestProxy时表示空闲连接的回收时间，单位：秒，取值范围：时(0，86400]，默认值为60；ListenType为PacketsTransmit时表示连接保持的时间，单位：秒，取值范围：[60，900]，0 表示禁用连接保持</span>
-<span class="sd">        - **Domain** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查域名</span>
+<span class="sd">        - **Domain** (str) - 根据MonitorType确认； 当MonitorType为Path时，此字段有意义，代表HTTP检查域名</span>
 <span class="sd">        - **FrontendPort** (int) - VServer后端端口，取值范围[1-65535]；默认值为80</span>
-<span class="sd">        - **ListenType** (str) - 监听器类型，枚举值为：RequestProxy -&gt; 请求代理；PacketsTransmit -&gt; 报文转发；默认为&quot;RequestProxy&quot;</span>
-<span class="sd">        - **Method** (str) - VServer负载均衡模式，枚举值：Roundrobin -&gt; 轮询;Source -&gt; 源地址；ConsistentHash -&gt; 一致性哈希；SourcePort -&gt; 源地址（计算端口）；ConsistentHashPort -&gt; 一致性哈希（计算端口）; WeightRoundrobin -&gt; 加权轮询; Leastconn -&gt; 最小连接数。ConsistentHash，SourcePort，ConsistentHashPort 只在报文转发中使用；Leastconn只在请求代理中使用；Roundrobin、Source和WeightRoundrobin在请求代理和报文转发中使用。默认为：&quot;Roundrobin&quot;</span>
-<span class="sd">        - **MonitorType** (str) - 健康检查类型，枚举值：Port -&gt; 端口检查；Path -&gt; 路径检查；</span>
-<span class="sd">        - **Path** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查路径</span>
+<span class="sd">        - **ListenType** (str) - 监听器类型，枚举值，RequestProxy ，请求代理；PacketsTransmit ，报文转发。默认为RequestProxy</span>
+<span class="sd">        - **Method** (str) - VServer负载均衡模式，枚举值：Roundrobin -&gt; 轮询;Source -&gt; 源地址；ConsistentHash -&gt; 一致性哈希；SourcePort -&gt; 源地址（计算端口）；ConsistentHashPort -&gt; 一致性哈希（计算端口）; WeightRoundrobin -&gt; 加权轮询; Leastconn -&gt; 最小连接数;Backup -&gt;主备模式。ConsistentHash，SourcePort，ConsistentHashPort 只在报文转发中使用；Leastconn只在请求代理中使用；Roundrobin、Source和WeightRoundrobin,Backup在请求代理和报文转发中使用。默认为：&quot;Roundrobin&quot;</span>
+<span class="sd">        - **MonitorType** (str) - 健康检查类型，枚举值：Port -&gt; 端口检查；Path -&gt; 路径检查；Ping -&gt; Ping探测；Customize -&gt; UDP检查请求代理型默认值为Port，其中TCP协议仅支持Port，其他协议支持Port和Path;报文转发型TCP协议仅支持Port，UDP协议支持Ping、Port和Customize，默认值为Ping</span>
+<span class="sd">        - **Path** (str) - 根据MonitorType确认； 当MonitorType为Path时，此字段有意义，代表HTTP检查路径</span>
 <span class="sd">        - **PersistenceInfo** (str) - 根据PersistenceType确认； None和ServerInsert： 此字段无意义； UserDefined：此字段传入自定义会话保持String</span>
 <span class="sd">        - **PersistenceType** (str) - VServer会话保持方式，默认关闭会话保持。枚举值：None -&gt; 关闭；ServerInsert -&gt; 自动生成KEY；UserDefined -&gt; 用户自定义KEY。</span>
 <span class="sd">        - **Protocol** (str) - VServer实例的协议，请求代理模式下有 HTTP、HTTPS、TCP，报文转发下有 TCP，UDP。默认为“HTTP&quot;</span>
+<span class="sd">        - **RequestMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查发出的请求报文</span>
+<span class="sd">        - **ResponseMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查请求应收到的响应报文</span>
 <span class="sd">        - **VServerName** (str) - VServer实例名称，默认为&quot;VServer&quot;</span>
 
 <span class="sd">        **Response**</span>
@@ -258,7 +289,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreateVServerRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -278,7 +312,6 @@
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **PolicyId** (str) - (Required) 内容转发策略ID</span>
-<span class="sd">        - **GroupId** (str) - 内容转发策略组ID</span>
 <span class="sd">        - **VServerId** (str) - VServer 资源ID</span>
 
 <span class="sd">        **Response**</span>
@@ -286,7 +319,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeletePolicyRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -307,7 +343,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteSSLRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -322,14 +361,17 @@
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **ULBId** (str) - (Required) 负载均衡实例的ID</span>
-<span class="sd">        - **ReleaseEip** (bool) - 删除ulb时是否释放绑定的EIP，false标识只解绑EIP，true表示会释放绑定的EIP，默认是false</span>
+<span class="sd">        - **ReleaseEip** (bool) - 删除ulb时是否释放绑定的EIP，false标识只解绑EIP，true表示会释放绑定的EIP，默认是false。Anycast IP 此参数无效</span>
 
 <span class="sd">        **Response**</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteULBRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -353,7 +395,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteVServerRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -379,14 +424,28 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **ULBSSLSet**</span>
-
-<span class="sd">        - **HashValue** (str) -</span>
+<span class="sd">        - **BindedTargetSet** (list) - 见 **SSLBindedTargetSet** 模型定义</span>
+<span class="sd">        - **CreateTime** (int) - SSL证书的创建时间</span>
+<span class="sd">        - **HashValue** (str) - SSL证书的HASH值</span>
+<span class="sd">        - **SSLContent** (str) - SSL证书的内容</span>
 <span class="sd">        - **SSLId** (str) - SSL证书的Id</span>
 <span class="sd">        - **SSLName** (str) - SSL证书的名字</span>
+<span class="sd">        - **SSLType** (str) - SSL证书类型，暂时只有 Pem 一种类型</span>
+
+
+<span class="sd">        **SSLBindedTargetSet**</span>
+<span class="sd">        - **ULBId** (str) - VServer 所属的ULB实例的资源ID</span>
+<span class="sd">        - **ULBName** (str) - ULB实例的名称</span>
+<span class="sd">        - **VServerId** (str) - SSL证书绑定到的VServer的资源ID</span>
+<span class="sd">        - **VServerName** (str) - 对应的VServer的名字</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeSSLRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -398,8 +457,8 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **BusinessId** (str) - ULB所属的业务组ID</span>
 <span class="sd">        - **Limit** (int) - 数据分页值，默认为20</span>
 <span class="sd">        - **Offset** (int) - 数据偏移量，默认为0</span>
@@ -414,29 +473,61 @@
 
 <span class="sd">        **Response Model**</span>
 
-<span class="sd">        **PolicyBackendSet**</span>
+<span class="sd">        **ULBSet**</span>
+<span class="sd">        - **Bandwidth** (int) - 带宽</span>
+<span class="sd">        - **BandwidthType** (int) - 带宽类型，枚举值为： 0，非共享带宽； 1，共享带宽</span>
+<span class="sd">        - **BusinessId** (str) - ULB 所属的业务组ID</span>
+<span class="sd">        - **CreateTime** (int) - ULB的创建时间，格式为Unix Timestamp</span>
+<span class="sd">        - **EnableLog** (int) - ULB是否开启日志功能。0，关闭；1，开启</span>
+<span class="sd">        - **FirewallSet** (list) - 见 **FirewallSet** 模型定义</span>
+<span class="sd">        - **IPSet** (list) - 见 **ULBIPSet** 模型定义</span>
+<span class="sd">        - **IPVersion** (str) - ULB ip类型，枚举值：IPv6 / IPv4 （内部测试，暂未对外开放）</span>
+<span class="sd">        - **ListenType** (str) - ULB 监听器类型，枚举值：RequestProxy，请求代理； PacketsTransmit ，报文转发；Comprehensive，兼容型；Pending，未定型</span>
+<span class="sd">        - **LogSet** (dict) - 见 **LoggerSet** 模型定义</span>
+<span class="sd">        - **Name** (str) - 负载均衡的资源名称</span>
+<span class="sd">        - **PrivateIP** (str) - ULB的内网IP，当ULBType为OuterMode时，该值为空</span>
+<span class="sd">        - **Remark** (str) - 负载均衡的备注</span>
+<span class="sd">        - **SubnetId** (str) - ULB 为 InnerMode 时，ULB 所属的子网ID，默认为空</span>
+<span class="sd">        - **Tag** (str) - 负载均衡的业务组名称</span>
+<span class="sd">        - **ULBId** (str) - 负载均衡的资源ID</span>
+<span class="sd">        - **ULBType** (str) - ULB 的类型</span>
+<span class="sd">        - **VPCId** (str) - ULB所在的VPC的ID</span>
+<span class="sd">        - **VServerSet** (list) - 见 **ULBVServerSet** 模型定义</span>
 
-<span class="sd">        - **BackendId** (str) - 所添加的后端资源在ULB中的对象ID，（为ULB系统中使用，与资源自身ID无关</span>
-<span class="sd">        - **ObjectId** (str) - 后端资源的对象ID</span>
-<span class="sd">        - **Port** (int) - 所添加的后端资源服务端口</span>
-<span class="sd">        - **PrivateIP** (str) - 后端资源的内网IP</span>
-<span class="sd">        - **ResourceName** (str) - 后端资源的实例名称</span>
 
-<span class="sd">        **ULBPolicySet**</span>
+<span class="sd">        **ULBIPSet**</span>
+<span class="sd">        - **Bandwidth** (int) - 弹性IP的带宽值（暂未对外开放）</span>
+<span class="sd">        - **BandwidthType** (int) - 弹性IP的带宽类型，枚举值：1 表示是共享带宽，0 普通带宽类型（暂未对外开放）</span>
+<span class="sd">        - **EIP** (str) - 弹性IP地址</span>
+<span class="sd">        - **EIPId** (str) - 弹性IP的ID</span>
+<span class="sd">        - **OperatorName** (str) - 弹性IP的运营商信息，枚举值为：  Bgp：BGP IP International：国际IP</span>
 
-<span class="sd">        - **BackendSet** (list) - 见 **PolicyBackendSet** 模型定义</span>
-<span class="sd">        - **Match** (str) - 内容转发匹配字段;默认内容转发类型下为空。</span>
-<span class="sd">        - **PolicyId** (str) - 内容转发Id，默认内容转发类型下为空。</span>
-<span class="sd">        - **PolicyPriority** (int) - 内容转发优先级，范围[1,9999]，数字越大优先级越高。默认内容转发规则下为0。</span>
-<span class="sd">        - **PolicyType** (str) - 内容类型，枚举值：Custom -&gt; 客户自定义；Default -&gt; 默认内容转发</span>
-<span class="sd">        - **TotalCount** (int) - 默认内容转发类型下返回当前rs总数</span>
-<span class="sd">        - **Type** (str) - 内容转发匹配字段的类型，枚举值：Domain -&gt; 域名；Path -&gt; 路径； 默认内容转发类型下为空</span>
-<span class="sd">        - **VServerId** (str) - 所属VServerId</span>
+
+<span class="sd">        **ULBVServerSet**</span>
+<span class="sd">        - **BackendSet** (list) - 见 **ULBBackendSet** 模型定义</span>
+<span class="sd">        - **ClientTimeout** (int) - 空闲连接的回收时间，单位：秒。</span>
+<span class="sd">        - **Domain** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查域名</span>
+<span class="sd">        - **FrontendPort** (int) - VServer服务端口</span>
+<span class="sd">        - **ListenType** (str) - 监听器类型，枚举值为: RequestProxy -&gt; 请求代理；PacketsTransmit -&gt; 报文转发</span>
+<span class="sd">        - **Method** (str) - VServer负载均衡的模式，枚举值：Roundrobin -&gt; 轮询;Source -&gt; 源地址；ConsistentHash -&gt; 一致性哈希；SourcePort -&gt; 源地址（计算端口）；ConsistentHashPort -&gt; 一致性哈希（计算端口）。</span>
+<span class="sd">        - **MonitorType** (str) - 健康检查类型，枚举值：Port -&gt; 端口检查；Path -&gt; 路径检查；Ping -&gt; Ping探测， Customize -&gt; UDP检查请求代理型默认值为Port，其中TCP协议仅支持Port，其他协议支持Port和Path; 报文转发型TCP协议仅支持Port，UDP协议支持Ping、Port和Customize</span>
+<span class="sd">        - **Path** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查路径</span>
+<span class="sd">        - **PersistenceInfo** (str) - 根据PersistenceType确定： None或ServerInsert，此字段为空； UserDefined，此字段展示用户自定义会话string。</span>
+<span class="sd">        - **PersistenceType** (str) - VServer会话保持方式。枚举值为： None -&gt; 关闭会话保持； ServerInsert -&gt; 自动生成； UserDefined -&gt; 用户自定义。</span>
+<span class="sd">        - **PolicySet** (list) - 见 **ULBPolicySet** 模型定义</span>
+<span class="sd">        - **Protocol** (str) - VServer实例的协议。 枚举值为：HTTP，TCP，UDP，HTTPS。</span>
+<span class="sd">        - **RequestMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查发出的请求报文</span>
+<span class="sd">        - **ResponseMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查请求应收到的响应报文</span>
+<span class="sd">        - **SSLSet** (list) - 见 **ULBSSLSet** 模型定义</span>
+<span class="sd">        - **Status** (int) - VServer的运行状态。枚举值： 0 -&gt; rs全部运行正常;1 -&gt; rs全部运行异常；2 -&gt; rs部分运行异常。</span>
+<span class="sd">        - **VServerId** (str) - VServer实例的Id</span>
+<span class="sd">        - **VServerName** (str) - VServer实例的名字</span>
+
 
 <span class="sd">        **ULBBackendSet**</span>
-
 <span class="sd">        - **BackendId** (str) - 后端资源实例的Id</span>
 <span class="sd">        - **Enabled** (int) - 后端提供服务的实例启用与否，枚举值：0 禁用 1 启用</span>
+<span class="sd">        - **IsBackup** (int) - 是否为backup，只有当vserver的Backup属性为1时才会有此字段，说明：0：主rs1：备rs</span>
 <span class="sd">        - **Port** (int) - 后端提供服务的端口</span>
 <span class="sd">        - **PrivateIP** (str) - 后端提供服务的内网IP</span>
 <span class="sd">        - **ResourceId** (str) - 资源实例的资源Id</span>
@@ -449,67 +540,145 @@
 <span class="sd">        - **SubnetId** (str) - 后端提供服务的资源所在的子网的ID</span>
 <span class="sd">        - **Weight** (int) -</span>
 
-<span class="sd">        **ULBSSLSet**</span>
 
-<span class="sd">        - **HashValue** (str) -</span>
+<span class="sd">        **ULBPolicySet**</span>
+<span class="sd">        - **BackendSet** (list) - 见 **PolicyBackendSet** 模型定义</span>
+<span class="sd">        - **Match** (str) - 内容转发匹配字段;默认内容转发类型下为空。</span>
+<span class="sd">        - **PolicyId** (str) - 内容转发Id，默认内容转发类型下为空。</span>
+<span class="sd">        - **PolicyPriority** (int) - 内容转发优先级，范围[1,9999]，数字越大优先级越高。默认内容转发规则下为0。</span>
+<span class="sd">        - **PolicyType** (str) - 内容类型，枚举值：Custom -&gt; 客户自定义；Default -&gt; 默认内容转发</span>
+<span class="sd">        - **TotalCount** (int) - 默认内容转发类型下返回当前rs总数</span>
+<span class="sd">        - **Type** (str) - 内容转发匹配字段的类型，枚举值：Domain -&gt; 域名；Path -&gt; 路径； 默认内容转发类型下为空</span>
+<span class="sd">        - **VServerId** (str) - 所属VServerId</span>
+
+
+<span class="sd">        **PolicyBackendSet**</span>
+<span class="sd">        - **BackendId** (str) - 所添加的后端资源在ULB中的对象ID，（为ULB系统中使用，与资源自身ID无关</span>
+<span class="sd">        - **ObjectId** (str) - 后端资源的对象ID</span>
+<span class="sd">        - **Port** (int) - 所添加的后端资源服务端口</span>
+<span class="sd">        - **PrivateIP** (str) - 后端资源的内网IP</span>
+<span class="sd">        - **ResourceName** (str) - 后端资源的实例名称</span>
+<span class="sd">        - **ResourceType** (str) - 所添加的后端资源的类型，枚举值：UHost -&gt; 云主机；UPM -&gt; 物理云主机； UDHost -&gt; 私有专区主机；UDocker -&gt; 容器；UHybrid-&gt;混合云主机；CUBE-&gt;Cube；UNI -&gt; 虚拟网卡</span>
+<span class="sd">        - **SubResourceId** (str) - 如果资源绑定了弹性网卡，则展示弹性网卡的资源ID</span>
+<span class="sd">        - **SubResourceName** (str) - 如果资源绑定了弹性网卡，则展示弹性网卡的资源名称</span>
+<span class="sd">        - **SubResourceType** (str) - &quot;UNI&quot;或者为空</span>
+
+
+<span class="sd">        **ULBSSLSet**</span>
+<span class="sd">        - **BindedTargetSet** (list) - 见 **SSLBindedTargetSet** 模型定义</span>
+<span class="sd">        - **CreateTime** (int) - SSL证书的创建时间</span>
+<span class="sd">        - **HashValue** (str) - SSL证书的HASH值</span>
+<span class="sd">        - **SSLContent** (str) - SSL证书的内容</span>
 <span class="sd">        - **SSLId** (str) - SSL证书的Id</span>
 <span class="sd">        - **SSLName** (str) - SSL证书的名字</span>
+<span class="sd">        - **SSLType** (str) - SSL证书类型，暂时只有 Pem 一种类型</span>
 
-<span class="sd">        **ULBVServerSet**</span>
 
-<span class="sd">        - **BackendSet** (list) - 见 **ULBBackendSet** 模型定义</span>
-<span class="sd">        - **ClientTimeout** (int) - 空闲连接的回收时间，单位：秒。</span>
-<span class="sd">        - **Domain** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查域名</span>
-<span class="sd">        - **FrontendPort** (int) - VServer服务端口</span>
-<span class="sd">        - **ListenType** (str) - 监听器类型，枚举值为: RequestProxy -&gt; 请求代理；PacketsTransmit -&gt; 报文转发</span>
-<span class="sd">        - **Method** (str) - VServer负载均衡的模式，枚举值：Roundrobin -&gt; 轮询;Source -&gt; 源地址；ConsistentHash -&gt; 一致性哈希；SourcePort -&gt; 源地址（计算端口）；ConsistentHashPort -&gt; 一致性哈希（计算端口）。</span>
-<span class="sd">        - **MonitorType** (str) - 健康检查类型，枚举值：Port -&gt; 端口检查；Path -&gt; 路径检查；</span>
-<span class="sd">        - **Path** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查路径</span>
-<span class="sd">        - **PersistenceInfo** (str) - 根据PersistenceType确定： None或ServerInsert，此字段为空； UserDefined，此字段展示用户自定义会话string。</span>
-<span class="sd">        - **PersistenceType** (str) - VServer会话保持方式。枚举值为： None -&gt; 关闭会话保持； ServerInsert -&gt; 自动生成； UserDefined -&gt; 用户自定义。</span>
-<span class="sd">        - **PolicySet** (list) - 见 **ULBPolicySet** 模型定义</span>
-<span class="sd">        - **Protocol** (str) - VServer实例的协议。 枚举值为：HTTP，TCP，UDP，HTTPS。</span>
-<span class="sd">        - **SSLSet** (list) - 见 **ULBSSLSet** 模型定义</span>
-<span class="sd">        - **Status** (int) - VServer的运行状态。枚举值： 0 -&gt; rs全部运行正常;1 -&gt; rs全部运行异常；2 -&gt; rs部分运行异常。</span>
-<span class="sd">        - **VServerId** (str) - VServer实例的Id</span>
-<span class="sd">        - **VServerName** (str) - VServer实例的名字</span>
+<span class="sd">        **SSLBindedTargetSet**</span>
+<span class="sd">        - **ULBId** (str) - VServer 所属的ULB实例的资源ID</span>
+<span class="sd">        - **ULBName** (str) - ULB实例的名称</span>
+<span class="sd">        - **VServerId** (str) - SSL证书绑定到的VServer的资源ID</span>
+<span class="sd">        - **VServerName** (str) - 对应的VServer的名字</span>
+
+
+<span class="sd">        **LoggerSet**</span>
+<span class="sd">        - **BucketName** (str) - ulb日志上传的bucket</span>
+<span class="sd">        - **TokenID** (str) - 上传到bucket使用的token的tokenid</span>
+<span class="sd">        - **TokenName** (str) - bucket的token名称</span>
+
+
+<span class="sd">        **FirewallSet**</span>
+<span class="sd">        - **FirewallId** (str) - 防火墙ID</span>
+<span class="sd">        - **FirewallName** (str) - 防火墙名称</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeULBRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeULB&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeULBResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ULBClient.describe_ulb_simple"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ulb.client.ULBClient.describe_ulb_simple">[docs]</a>    <span class="k">def</span> <span class="nf">describe_ulb_simple</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DescribeULBSimple - 获取ULB信息</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **BusinessId** (str) - ULB所属的业务组ID</span>
+<span class="sd">        - **Limit** (int) - 数据分页值，默认为10000</span>
+<span class="sd">        - **Offset** (int) - 数据偏移量，默认为0</span>
+<span class="sd">        - **SubnetId** (str) - ULB所属的子网ID</span>
+<span class="sd">        - **ULBId** (str) - 负载均衡实例的Id。 若指定则返回指定的负载均衡实例的信息； 若不指定则返回当前数据中心中所有的负载均衡实例的信息</span>
+<span class="sd">        - **VPCId** (str) - ULB所属的VPC</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **DataSet** (list) - 见 **ULBSimpleSet** 模型定义</span>
+<span class="sd">        - **TotalCount** (int) - 满足条件的ULB总数</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **LoggerSet**</span>
+<span class="sd">        - **BucketName** (str) - ulb日志上传的bucket</span>
+<span class="sd">        - **TokenID** (str) - 上传到bucket使用的token的tokenid</span>
+<span class="sd">        - **TokenName** (str) - bucket的token名称</span>
+
+
+<span class="sd">        **FirewallSet**</span>
+<span class="sd">        - **FirewallId** (str) - 防火墙ID</span>
+<span class="sd">        - **FirewallName** (str) - 防火墙名称</span>
+
 
 <span class="sd">        **ULBIPSet**</span>
-
 <span class="sd">        - **Bandwidth** (int) - 弹性IP的带宽值（暂未对外开放）</span>
 <span class="sd">        - **BandwidthType** (int) - 弹性IP的带宽类型，枚举值：1 表示是共享带宽，0 普通带宽类型（暂未对外开放）</span>
 <span class="sd">        - **EIP** (str) - 弹性IP地址</span>
 <span class="sd">        - **EIPId** (str) - 弹性IP的ID</span>
 <span class="sd">        - **OperatorName** (str) - 弹性IP的运营商信息，枚举值为：  Bgp：BGP IP International：国际IP</span>
 
-<span class="sd">        **ULBSet**</span>
 
+<span class="sd">        **ULBSimpleSet**</span>
 <span class="sd">        - **Bandwidth** (int) - 带宽</span>
 <span class="sd">        - **BandwidthType** (int) - 带宽类型，枚举值为： 0，非共享带宽； 1，共享带宽</span>
 <span class="sd">        - **BusinessId** (str) - ULB 所属的业务组ID</span>
 <span class="sd">        - **CreateTime** (int) - ULB的创建时间，格式为Unix Timestamp</span>
-<span class="sd">        - **ExpireTime** (int) - ULB的到期时间，格式为Unix Timestamp</span>
+<span class="sd">        - **EnableLog** (int) - ULB是否开启日志功能。0，关闭；1，开启</span>
+<span class="sd">        - **FirewallSet** (list) - 见 **FirewallSet** 模型定义</span>
 <span class="sd">        - **IPSet** (list) - 见 **ULBIPSet** 模型定义</span>
-<span class="sd">        - **Name** (str) - 负载均衡的资源名称（资源系统中），缺省值“ULB”</span>
+<span class="sd">        - **IPVersion** (str) - ULB提供服务的IP类型。枚举值，“IPv4”,&quot;IPv6&quot;。默认为“IPv4”</span>
+<span class="sd">        - **ListenType** (str) - ULB 监听器类型，枚举值：RequestProxy，请求代理； PacketsTransmit ，报文转发；Comprehensive，兼容型；Pending，未定型</span>
+<span class="sd">        - **LogSet** (dict) - 见 **LoggerSet** 模型定义</span>
+<span class="sd">        - **Name** (str) - 负载均衡的资源名称</span>
 <span class="sd">        - **PrivateIP** (str) - ULB的内网IP，当ULBType为OuterMode时，该值为空</span>
-<span class="sd">        - **Remark** (str) - 负载均衡的备注，缺省值“”</span>
-<span class="sd">        - **Resource** (list) - ULB的详细信息列表（废弃）</span>
-<span class="sd">        - **SubnetId** (str) - ULB 为 InnerMode 时，ULB 所属的子网ID，默认为空</span>
-<span class="sd">        - **Tag** (str) - 负载均衡的业务组名称，缺省值“Default”</span>
+<span class="sd">        - **Remark** (str) - 负载均衡的备注</span>
+<span class="sd">        - **SubnetId** (str) - ULB 为 InnerMode 时，ULB 所属的子网ID</span>
+<span class="sd">        - **Tag** (str) - 负载均衡的业务组名称</span>
 <span class="sd">        - **ULBId** (str) - 负载均衡的资源ID</span>
-<span class="sd">        - **ULBName** (str) - 负载均衡的资源名称(内部记载，废弃)</span>
-<span class="sd">        - **ULBType** (str) - ULB 的类型</span>
+<span class="sd">        - **ULBType** (str) - ULB 的类型（InnerMode or OuterMode）</span>
 <span class="sd">        - **VPCId** (str) - ULB所在的VPC的ID</span>
-<span class="sd">        - **VServerSet** (list) - 见 **ULBVServerSet** 模型定义</span>
+<span class="sd">        - **VServerCount** (int) - ulb下vserver数量</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeULBRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeULBSimpleRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
-        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeULB&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeULBResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeULBSimple&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeULBSimpleResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ULBClient.describe_vserver"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ulb.client.ULBClient.describe_vserver">[docs]</a>    <span class="k">def</span> <span class="nf">describe_vserver</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -518,8 +687,8 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **ULBId** (str) - (Required) 负载均衡实例的Id</span>
 <span class="sd">        - **Limit** (int) - 数据分页值</span>
 <span class="sd">        - **Offset** (int) - 数据偏移量</span>
@@ -532,35 +701,31 @@
 
 <span class="sd">        **Response Model**</span>
 
-<span class="sd">        **PolicyBackendSet**</span>
+<span class="sd">        **ULBVServerSet**</span>
+<span class="sd">        - **BackendSet** (list) - 见 **ULBBackendSet** 模型定义</span>
+<span class="sd">        - **ClientTimeout** (int) - 空闲连接的回收时间，单位：秒。</span>
+<span class="sd">        - **Domain** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查域名</span>
+<span class="sd">        - **FrontendPort** (int) - VServer服务端口</span>
+<span class="sd">        - **ListenType** (str) - 监听器类型，枚举值为: RequestProxy -&gt; 请求代理；PacketsTransmit -&gt; 报文转发</span>
+<span class="sd">        - **Method** (str) - VServer负载均衡的模式，枚举值：Roundrobin -&gt; 轮询;Source -&gt; 源地址；ConsistentHash -&gt; 一致性哈希；SourcePort -&gt; 源地址（计算端口）；ConsistentHashPort -&gt; 一致性哈希（计算端口）。</span>
+<span class="sd">        - **MonitorType** (str) - 健康检查类型，枚举值：Port -&gt; 端口检查；Path -&gt; 路径检查；Ping -&gt; Ping探测， Customize -&gt; UDP检查请求代理型默认值为Port，其中TCP协议仅支持Port，其他协议支持Port和Path; 报文转发型TCP协议仅支持Port，UDP协议支持Ping、Port和Customize</span>
+<span class="sd">        - **Path** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查路径</span>
+<span class="sd">        - **PersistenceInfo** (str) - 根据PersistenceType确定： None或ServerInsert，此字段为空； UserDefined，此字段展示用户自定义会话string。</span>
+<span class="sd">        - **PersistenceType** (str) - VServer会话保持方式。枚举值为： None -&gt; 关闭会话保持； ServerInsert -&gt; 自动生成； UserDefined -&gt; 用户自定义。</span>
+<span class="sd">        - **PolicySet** (list) - 见 **ULBPolicySet** 模型定义</span>
+<span class="sd">        - **Protocol** (str) - VServer实例的协议。 枚举值为：HTTP，TCP，UDP，HTTPS。</span>
+<span class="sd">        - **RequestMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查发出的请求报文</span>
+<span class="sd">        - **ResponseMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查请求应收到的响应报文</span>
+<span class="sd">        - **SSLSet** (list) - 见 **ULBSSLSet** 模型定义</span>
+<span class="sd">        - **Status** (int) - VServer的运行状态。枚举值： 0 -&gt; rs全部运行正常;1 -&gt; rs全部运行异常；2 -&gt; rs部分运行异常。</span>
+<span class="sd">        - **VServerId** (str) - VServer实例的Id</span>
+<span class="sd">        - **VServerName** (str) - VServer实例的名字</span>
 
-<span class="sd">        - **BackendId** (str) - 所添加的后端资源在ULB中的对象ID，（为ULB系统中使用，与资源自身ID无关</span>
-<span class="sd">        - **ObjectId** (str) - 后端资源的对象ID</span>
-<span class="sd">        - **Port** (int) - 所添加的后端资源服务端口</span>
-<span class="sd">        - **PrivateIP** (str) - 后端资源的内网IP</span>
-<span class="sd">        - **ResourceName** (str) - 后端资源的实例名称</span>
-
-<span class="sd">        **ULBSSLSet**</span>
-
-<span class="sd">        - **HashValue** (str) -</span>
-<span class="sd">        - **SSLId** (str) - SSL证书的Id</span>
-<span class="sd">        - **SSLName** (str) - SSL证书的名字</span>
-
-<span class="sd">        **ULBPolicySet**</span>
-
-<span class="sd">        - **BackendSet** (list) - 见 **PolicyBackendSet** 模型定义</span>
-<span class="sd">        - **Match** (str) - 内容转发匹配字段;默认内容转发类型下为空。</span>
-<span class="sd">        - **PolicyId** (str) - 内容转发Id，默认内容转发类型下为空。</span>
-<span class="sd">        - **PolicyPriority** (int) - 内容转发优先级，范围[1,9999]，数字越大优先级越高。默认内容转发规则下为0。</span>
-<span class="sd">        - **PolicyType** (str) - 内容类型，枚举值：Custom -&gt; 客户自定义；Default -&gt; 默认内容转发</span>
-<span class="sd">        - **TotalCount** (int) - 默认内容转发类型下返回当前rs总数</span>
-<span class="sd">        - **Type** (str) - 内容转发匹配字段的类型，枚举值：Domain -&gt; 域名；Path -&gt; 路径； 默认内容转发类型下为空</span>
-<span class="sd">        - **VServerId** (str) - 所属VServerId</span>
 
 <span class="sd">        **ULBBackendSet**</span>
-
 <span class="sd">        - **BackendId** (str) - 后端资源实例的Id</span>
 <span class="sd">        - **Enabled** (int) - 后端提供服务的实例启用与否，枚举值：0 禁用 1 启用</span>
+<span class="sd">        - **IsBackup** (int) - 是否为backup，只有当vserver的Backup属性为1时才会有此字段，说明：0：主rs1：备rs</span>
 <span class="sd">        - **Port** (int) - 后端提供服务的端口</span>
 <span class="sd">        - **PrivateIP** (str) - 后端提供服务的内网IP</span>
 <span class="sd">        - **ResourceId** (str) - 资源实例的资源Id</span>
@@ -573,28 +738,53 @@
 <span class="sd">        - **SubnetId** (str) - 后端提供服务的资源所在的子网的ID</span>
 <span class="sd">        - **Weight** (int) -</span>
 
-<span class="sd">        **ULBVServerSet**</span>
 
-<span class="sd">        - **BackendSet** (list) - 见 **ULBBackendSet** 模型定义</span>
-<span class="sd">        - **ClientTimeout** (int) - 空闲连接的回收时间，单位：秒。</span>
-<span class="sd">        - **Domain** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查域名</span>
-<span class="sd">        - **FrontendPort** (int) - VServer服务端口</span>
-<span class="sd">        - **ListenType** (str) - 监听器类型，枚举值为: RequestProxy -&gt; 请求代理；PacketsTransmit -&gt; 报文转发</span>
-<span class="sd">        - **Method** (str) - VServer负载均衡的模式，枚举值：Roundrobin -&gt; 轮询;Source -&gt; 源地址；ConsistentHash -&gt; 一致性哈希；SourcePort -&gt; 源地址（计算端口）；ConsistentHashPort -&gt; 一致性哈希（计算端口）。</span>
-<span class="sd">        - **MonitorType** (str) - 健康检查类型，枚举值：Port -&gt; 端口检查；Path -&gt; 路径检查；</span>
-<span class="sd">        - **Path** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查路径</span>
-<span class="sd">        - **PersistenceInfo** (str) - 根据PersistenceType确定： None或ServerInsert，此字段为空； UserDefined，此字段展示用户自定义会话string。</span>
-<span class="sd">        - **PersistenceType** (str) - VServer会话保持方式。枚举值为： None -&gt; 关闭会话保持； ServerInsert -&gt; 自动生成； UserDefined -&gt; 用户自定义。</span>
-<span class="sd">        - **PolicySet** (list) - 见 **ULBPolicySet** 模型定义</span>
-<span class="sd">        - **Protocol** (str) - VServer实例的协议。 枚举值为：HTTP，TCP，UDP，HTTPS。</span>
-<span class="sd">        - **SSLSet** (list) - 见 **ULBSSLSet** 模型定义</span>
-<span class="sd">        - **Status** (int) - VServer的运行状态。枚举值： 0 -&gt; rs全部运行正常;1 -&gt; rs全部运行异常；2 -&gt; rs部分运行异常。</span>
-<span class="sd">        - **VServerId** (str) - VServer实例的Id</span>
-<span class="sd">        - **VServerName** (str) - VServer实例的名字</span>
+<span class="sd">        **ULBPolicySet**</span>
+<span class="sd">        - **BackendSet** (list) - 见 **PolicyBackendSet** 模型定义</span>
+<span class="sd">        - **Match** (str) - 内容转发匹配字段;默认内容转发类型下为空。</span>
+<span class="sd">        - **PolicyId** (str) - 内容转发Id，默认内容转发类型下为空。</span>
+<span class="sd">        - **PolicyPriority** (int) - 内容转发优先级，范围[1,9999]，数字越大优先级越高。默认内容转发规则下为0。</span>
+<span class="sd">        - **PolicyType** (str) - 内容类型，枚举值：Custom -&gt; 客户自定义；Default -&gt; 默认内容转发</span>
+<span class="sd">        - **TotalCount** (int) - 默认内容转发类型下返回当前rs总数</span>
+<span class="sd">        - **Type** (str) - 内容转发匹配字段的类型，枚举值：Domain -&gt; 域名；Path -&gt; 路径； 默认内容转发类型下为空</span>
+<span class="sd">        - **VServerId** (str) - 所属VServerId</span>
+
+
+<span class="sd">        **PolicyBackendSet**</span>
+<span class="sd">        - **BackendId** (str) - 所添加的后端资源在ULB中的对象ID，（为ULB系统中使用，与资源自身ID无关</span>
+<span class="sd">        - **ObjectId** (str) - 后端资源的对象ID</span>
+<span class="sd">        - **Port** (int) - 所添加的后端资源服务端口</span>
+<span class="sd">        - **PrivateIP** (str) - 后端资源的内网IP</span>
+<span class="sd">        - **ResourceName** (str) - 后端资源的实例名称</span>
+<span class="sd">        - **ResourceType** (str) - 所添加的后端资源的类型，枚举值：UHost -&gt; 云主机；UPM -&gt; 物理云主机； UDHost -&gt; 私有专区主机；UDocker -&gt; 容器；UHybrid-&gt;混合云主机；CUBE-&gt;Cube；UNI -&gt; 虚拟网卡</span>
+<span class="sd">        - **SubResourceId** (str) - 如果资源绑定了弹性网卡，则展示弹性网卡的资源ID</span>
+<span class="sd">        - **SubResourceName** (str) - 如果资源绑定了弹性网卡，则展示弹性网卡的资源名称</span>
+<span class="sd">        - **SubResourceType** (str) - &quot;UNI&quot;或者为空</span>
+
+
+<span class="sd">        **ULBSSLSet**</span>
+<span class="sd">        - **BindedTargetSet** (list) - 见 **SSLBindedTargetSet** 模型定义</span>
+<span class="sd">        - **CreateTime** (int) - SSL证书的创建时间</span>
+<span class="sd">        - **HashValue** (str) - SSL证书的HASH值</span>
+<span class="sd">        - **SSLContent** (str) - SSL证书的内容</span>
+<span class="sd">        - **SSLId** (str) - SSL证书的Id</span>
+<span class="sd">        - **SSLName** (str) - SSL证书的名字</span>
+<span class="sd">        - **SSLType** (str) - SSL证书类型，暂时只有 Pem 一种类型</span>
+
+
+<span class="sd">        **SSLBindedTargetSet**</span>
+<span class="sd">        - **ULBId** (str) - VServer 所属的ULB实例的资源ID</span>
+<span class="sd">        - **ULBName** (str) - ULB实例的名称</span>
+<span class="sd">        - **VServerId** (str) - SSL证书绑定到的VServer的资源ID</span>
+<span class="sd">        - **VServerName** (str) - 对应的VServer的名字</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeVServerRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -618,7 +808,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ReleaseBackendRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -641,7 +834,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">UnbindSSLRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -655,11 +851,12 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **BackendId** (str) - (Required) 后端资源实例的ID(ULB后端ID，非资源自身ID)</span>
 <span class="sd">        - **ULBId** (str) - (Required) 负载均衡资源ID</span>
 <span class="sd">        - **Enabled** (int) - 后端实例状态开关</span>
+<span class="sd">        - **IsBackup** (int) - 是否为backup0：主rs1：备rs默认为0</span>
 <span class="sd">        - **Port** (int) - 后端资源服务端口，取值范围[1-65535]</span>
 <span class="sd">        - **Weight** (int) - 所添加的后端RS权重（在加权轮询算法下有效），取值范围[0-100]，默认为1</span>
 
@@ -668,7 +865,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">UpdateBackendAttributeRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -684,20 +884,22 @@
 
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
-<span class="sd">        - **BackendId** (list) - (Required) 内容转发策略应用的后端资源实例的ID，来源于 AllocateBackend 返回的 BackendId</span>
 <span class="sd">        - **Match** (str) - (Required) 内容转发匹配字段</span>
-<span class="sd">        - **PolicyId** (str) - (Required) 转发规则的ID</span>
 <span class="sd">        - **ULBId** (str) - (Required) 需要添加内容转发策略的负载均衡实例ID</span>
-<span class="sd">        - **VServerId** (str) - (Required) 需要添加内容转发策略的VServer实例ID</span>
-<span class="sd">        - **Type** (str) - 内容转发匹配字段的类型</span>
+<span class="sd">        - **VServerId** (str) - (Required) 需要添加内容转发策略的VServer实例ID，只支持请求代理模式下，HTTP或HTTPS协议的VServer</span>
+<span class="sd">        - **BackendId** (list) - 内容转发策略应用的后端资源实例的ID，来源于 AllocateBackend 返回的 BackendId，不传表示更新转发节点为空</span>
+<span class="sd">        - **PolicyId** (str) - 转发规则的ID，当Type为Default时，可以不传或为空</span>
+<span class="sd">        - **Type** (str) - 内容转发匹配字段的类型，枚举值：Domain -&gt; 域名转发规则；Path -&gt; 路径转发规则；Default -&gt; 默认转发规则，不传默认值Domain</span>
 
 <span class="sd">        **Response**</span>
 
-<span class="sd">        - **PolicyId** (str) - 转发规则的ID</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">UpdatePolicyRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -723,7 +925,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">UpdateULBAttributeRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -737,18 +942,19 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **ULBId** (str) - (Required) 负载均衡实例ID</span>
 <span class="sd">        - **VServerId** (str) - (Required) VServer实例ID</span>
 <span class="sd">        - **ClientTimeout** (int) - 请求代理的VServer下表示空闲连接的回收时间，单位：秒，取值范围：时(0，86400]，默认值为60；报文转发的VServer下表示回话保持的时间，单位：秒，取值范围：[60，900]，0 表示禁用连接保持</span>
 <span class="sd">        - **Domain** (str) - MonitorType 为 Path 时指定健康检查发送请求时HTTP HEADER 里的域名</span>
-<span class="sd">        - **Method** (str) - VServer负载均衡模式，枚举值：Roundrobin -&gt; 轮询;Source -&gt; 源地址；ConsistentHash -&gt; 一致性哈希；SourcePort -&gt; 源地址（计算端口）；ConsistentHashPort -&gt; 一致性哈希（计算端口）; WeightRoundrobin -&gt; 加权轮询; Leastconn -&gt; 最小连接数。ConsistentHash，SourcePort，ConsistentHashPort 只在报文转发中使用；Leastconn只在请求代理中使用；Roundrobin、Source和WeightRoundrobin在请求代理和报文转发中使用。默认为：&quot;Roundrobin&quot;</span>
-<span class="sd">        - **MonitorType** (str) - 健康检查的类型，Port:端口,Path:路径</span>
+<span class="sd">        - **Method** (str) - VServer负载均衡模式，枚举值：Roundrobin -&gt; 轮询;Source -&gt; 源地址；ConsistentHash -&gt; 一致性哈希；SourcePort -&gt; 源地址（计算端口）；ConsistentHashPort -&gt; 一致性哈希（计算端口）; WeightRoundrobin -&gt; 加权轮询; Leastconn -&gt; 最小连接数；Backup -&gt; 主备模式。ConsistentHash，SourcePort，ConsistentHashPort 只在报文转发中使用；Leastconn只在请求代理中使用；Roundrobin、Source和WeightRoundrobin,Backup在请求代理和报文转发中使用。默认为：&quot;Roundrobin&quot;</span>
+<span class="sd">        - **MonitorType** (str) - 健康检查类型，枚举值：Port -&gt; 端口检查；Path -&gt; 路径检查；Ping -&gt; Ping探测，Customize -&gt; UDP检查请求代理型默认值为Port，其中TCP协议仅支持Port，其他协议支持Port和Path;报文转发型TCP协议仅支持Port，UDP协议支持Ping、Port和Customize，默认值为Ping</span>
 <span class="sd">        - **Path** (str) - MonitorType 为 Path 时指定健康检查发送请求时的路径，默认为 /</span>
 <span class="sd">        - **PersistenceInfo** (str) - 根据PersistenceType确定: None或ServerInsert, 此字段无意义; UserDefined, 则此字段传入用户自定义会话保持String. 若无此字段则不做修改</span>
 <span class="sd">        - **PersistenceType** (str) - VServer会话保持模式，若无此字段则不做修改。枚举值：None：关闭；ServerInsert：自动生成KEY；UserDefined：用户自定义KEY。</span>
-<span class="sd">        - **Protocol** (str) - VServer协议类型，请求代理只支持修改为 HTTP/HTTPS，报文转发VServer只支持修改为 TCP/UDP</span>
+<span class="sd">        - **RequestMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查发出的请求报文</span>
+<span class="sd">        - **ResponseMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查请求应收到的响应报文</span>
 <span class="sd">        - **VServerName** (str) - VServer实例名称，若无此字段则不做修改</span>
 
 <span class="sd">        **Response**</span>
@@ -756,7 +962,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">UpdateVServerAttributeRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -825,7 +1034,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

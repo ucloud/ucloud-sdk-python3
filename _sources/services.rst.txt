@@ -101,6 +101,20 @@ IPSecVPN
    :members:
 
 
+UBill
+-----
+
+.. autoclass:: ucloud.services.ubill.client.UBillClient
+   :members:
+
+
+UDDB
+----
+
+.. autoclass:: ucloud.services.uddb.client.UDDBClient
+   :members:
+
+
 UEC
 ---
 
@@ -108,17 +122,17 @@ UEC
    :members:
 
 
-UBill
------
-
-.. autoclass:: ucloud.services.ubill.client.UBillClient
-   :members:
-   
-
 UFS
 ---
 
 .. autoclass:: ucloud.services.ufs.client.UFSClient
+   :members:
+
+
+UFile
+-----
+
+.. autoclass:: ucloud.services.ufile.client.UFileClient
    :members:
 
 
