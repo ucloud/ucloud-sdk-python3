@@ -15,6 +15,64 @@ class UAccountClient(Client):
             config, transport, middleware, logger
         )
 
+    def add_member_to_project(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """AddMemberToProject - 添加成员到项目
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID，请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 的描述。不填写为创建时间最早的项目。
+        - **CharacterId** (str) - (Required) 被加入成员归属角色ID
+        - **MemberEmail** (str) - (Required) 被加入成员Email
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.AddMemberToProjectRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("AddMemberToProject", d, **kwargs)
+        return apis.AddMemberToProjectResponseSchema().loads(resp)
+
+    def create_character(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateCharacter - 创建角色
+
+        **Request**
+
+        - **CharacterName** (str) - (Required) 角色名称，不得与现有角色重名
+        - **Add** (list) - 角色对产品的权限(增)
+        - **CharacterDescription** (str) - 角色描述
+        - **Del** (list) - 角色对产品的权限(删)
+        - **Get** (list) - 角色对产品的权限(查)
+        - **Mod** (list) - 角色对产品的权限(改)
+
+        **Response**
+
+        - **CharacterId** (str) - 角色ID
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.CreateCharacterRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateCharacter", d, **kwargs)
+        return apis.CreateCharacterResponseSchema().loads(resp)
+
     def create_project(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -22,7 +80,7 @@ class UAccountClient(Client):
 
         **Request**
 
-        - **ProjectName** (str) - (Required) 项目名称
+        - **ProjectName** (str) - (Required) 项目名称，不得与现有项目重名
 
         **Response**
 
@@ -40,6 +98,152 @@ class UAccountClient(Client):
         resp = self.invoke("CreateProject", d, **kwargs)
         return apis.CreateProjectResponseSchema().loads(resp)
 
+    def describe_character_list(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeCharacterList - 获取角色列表
+
+        **Request**
+
+        - **Limit** (int) - 角色列表的最大数量，默认为20
+        - **Offset** (int) - 角色列表的偏移量，默认为0
+
+        **Response**
+
+        - **CharacterSet** (list) - 见 **CharacterSet** 模型定义
+        - **TotalCount** (int) - 角色总数
+
+        **Response Model**
+
+        **PermissionSet**
+        - **Add** (list) - 有增权限的产品列表
+        - **Del** (list) - 有删权限的产品列表
+        - **Get** (list) - 有查权限的产品列表
+        - **Mod** (list) - 有改权限的产品列表
+
+
+        **CharacterSet**
+        - **CharacterDescription** (str) - 角色描述
+        - **CharacterId** (str) - 角色ID
+        - **CharacterName** (str) - 角色名
+        - **Modifiable** (bool) - 可修改性
+        - **PermissionSet** (list) - 见 **PermissionSet** 模型定义
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.DescribeCharacterListRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeCharacterList", d, **kwargs)
+        return apis.DescribeCharacterListResponseSchema().loads(resp)
+
+    def describe_member_list(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeMemberList - 获取成员列表，限主账号使用。
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID，请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 。不填写为查询所有项目。
+        - **Limit** (str) - 成员列表的最大数量，默认为200
+        - **Offset** (str) - 成员列表的偏移量，默认为0
+
+        **Response**
+
+        - **MemberSet** (list) - 见 **MemberInfo** 模型定义
+        - **TotalCount** (int) - 成员总数
+
+        **Response Model**
+
+        **ProjectInfo**
+        - **CharacterId** (str) - 角色ID
+        - **ProjectId** (str) - 项目ID，请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **ProjectName** (str) - 项目名
+
+
+        **MemberInfo**
+        - **ActivateFlag** (int) - 激活状态（0：未激活，1：已激活）
+        - **Created** (int) - 创建时间
+        - **DefultProjectId** (str) - 默认项目
+        - **IsAdmin** (int) - 是否主账号（0：子账号，1：主账号）
+        - **IsFinance** (int) - 是否有财务权限（0：无财务权限，1：有财务权限）
+        - **LastLogin** (int) - 最后一次登录时间
+        - **LastRegionId** (str) - 最后访问的机房
+        - **MemberEmail** (str) - 成员邮箱
+        - **MemberName** (str) - 成员名字
+        - **MemberPhone** (str) - 成员手机
+        - **MemberPosition** (str) - 成员地址
+        - **MemberQQ** (str) - 成员QQ
+        - **PasswordPolicyDate** (int) - 密码安全策略开启时间，格式：unix timestamp
+        - **ProjectSet** (list) - 见 **ProjectInfo** 模型定义
+        - **PublicKey** (str) - 公钥
+        - **State** (str) - 状态
+        - **TOTPStatus** (int) - TOTP状态（0：未开启，1：已开启）
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.DescribeMemberListRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeMemberList", d, **kwargs)
+        return apis.DescribeMemberListResponseSchema().loads(resp)
+
+    def freeze_member(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """FreezeMember - 冻结成员
+
+        **Request**
+
+        - **MemberEmail** (str) - (Required) 需要被冻结的成员Email
+
+        **Response**
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.FreezeMemberRequestSchema().dumps(d)
+
+        resp = self.invoke("FreezeMember", d, **kwargs)
+        return apis.FreezeMemberResponseSchema().loads(resp)
+
+    def get_network_mask(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetNetworkMask - 查询登录与API调用的网络掩码
+
+        **Request**
+
+
+        **Response**
+
+        - **Data** (dict) - 见 **NetworkMask** 模型定义
+        - **Message** (str) - 接口信息，成功时为`success`，错误时显示具体错误信息。
+
+        **Response Model**
+
+        **NetworkMask**
+        - **APINetworkMask** (str) - API调用网络掩码，默认空字符串，不限制登录IP，多个IP以英文逗号分隔。
+        - **LoginNetworkMask** (str) - 登录网络掩码，默认空字符串，不限制登录IP，多个IP以英文逗号分隔。
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.GetNetworkMaskRequestSchema().dumps(d)
+
+        resp = self.invoke("GetNetworkMask", d, **kwargs)
+        return apis.GetNetworkMaskResponseSchema().loads(resp)
+
     def get_project_list(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -47,7 +251,7 @@ class UAccountClient(Client):
 
         **Request**
 
-        - **IsFinance** (str) - 是否是财务账号
+        - **IsFinance** (str) - 是否是财务账号（Yes：是，No：否）
 
         **Response**
 
@@ -57,15 +261,15 @@ class UAccountClient(Client):
         **Response Model**
 
         **ProjectListInfo**
-
         - **CreateTime** (int) - 创建时间(Unix时间戳)
         - **IsDefault** (bool) - 是否为默认项目
         - **MemberCount** (int) - 项目下成员数量
-        - **ParentId** (str) - 父项目ID
-        - **ParentName** (str) - 父项目名称
+        - **ParentId** (str) - 父项目ID（已废弃）
+        - **ParentName** (str) - 父项目名称（已废弃）
         - **ProjectId** (str) - 项目ID
         - **ProjectName** (str) - 项目名称
-        - **ResourceCount** (int) - 项目下资源数量
+        - **ResourceCount** (int) - 项目下资源数量（已废弃，不建议使用）
+
 
         """
         # build request
@@ -89,13 +293,13 @@ class UAccountClient(Client):
         **Response Model**
 
         **RegionInfo**
-
         - **BitMaps** (str) - 用户在此数据中心的权限位
         - **IsDefault** (bool) - 是否用户当前默认数据中心
         - **Region** (str) - 地域名字，如cn-bj
         - **RegionId** (int) - 数据中心ID
         - **RegionName** (str) - 数据中心名称
         - **Zone** (str) - 可用区名字，如cn-bj-01
+
 
         """
         # build request
@@ -109,7 +313,7 @@ class UAccountClient(Client):
     def get_user_info(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """GetUserInfo - 获取用户信息
+        """GetUserInfo -
 
         **Request**
 
@@ -121,23 +325,23 @@ class UAccountClient(Client):
         **Response Model**
 
         **UserInfo**
+        - **Admin** (int) -
+        - **Administrator** (str) -
+        - **AuthState** (str) -
+        - **City** (str) -
+        - **CompanyName** (str) -
+        - **Finance** (int) -
+        - **IndustryType** (int) -
+        - **PhonePrefix** (str) -
+        - **Province** (str) -
+        - **UserAddress** (str) -
+        - **UserEmail** (str) -
+        - **UserId** (int) -
+        - **UserName** (str) -
+        - **UserPhone** (str) -
+        - **UserType** (int) -
+        - **UserVersion** (int) -
 
-        - **Admin** (int) - 是否超级管理员 0:否 1:是
-        - **Administrator** (str) - 管理员
-        - **AuthState** (str) - 实名认证状态
-        - **City** (str) - 城市
-        - **CompanyName** (str) - 公司名称
-        - **Finance** (int) - 是否有财务权限 0:否 1:是
-        - **IndustryType** (int) - 所属行业
-        - **PhonePrefix** (str) - 国际号码前缀
-        - **Province** (str) - 省份
-        - **UserAddress** (str) - 公司地址
-        - **UserEmail** (str) - 用户邮箱
-        - **UserId** (int) - 用户Id
-        - **UserName** (str) - 称呼
-        - **UserPhone** (str) - 用户手机
-        - **UserType** (int) - 会员类型
-        - **UserVersion** (int) - 是否子帐户(大于100为子帐户)
 
         """
         # build request
@@ -145,30 +349,179 @@ class UAccountClient(Client):
         req and d.update(req)
         d = apis.GetUserInfoRequestSchema().dumps(d)
 
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("GetUserInfo", d, **kwargs)
         return apis.GetUserInfoResponseSchema().loads(resp)
 
-    def modify_project(
+    def invite_subaccount(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ModifyProject - 修改项目
+        """InviteSubaccount - 邀请子帐号成员
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **ProjectName** (str) - (Required) 新的项目名称
+        - **IsFinance** (str) - (Required) 是否有财务权限(true:是,false:否,默认为否)
+        - **UserEmail** (str) - (Required) 受邀成员邮箱地址，不得重复
+        - **UserName** (str) - (Required) 受邀成员姓名
+        - **UserPhone** (str) - (Required) 受邀成员手机号码
 
         **Response**
 
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id}
+        d = {}
+        req and d.update(req)
+        d = apis.InviteSubaccountRequestSchema().dumps(d)
+
+        resp = self.invoke("InviteSubaccount", d, **kwargs)
+        return apis.InviteSubaccountResponseSchema().loads(resp)
+
+    def modify_character(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyCharacter - 修改角色
+
+        **Request**
+
+        - **CharacterId** (str) - (Required) 角色ID
+        - **Add** (list) - 角色权限(增)
+        - **CharacterDescription** (str) - 角色描述
+        - **CharacterName** (str) - 新角色名称
+        - **Del** (list) - 角色权限(删)
+        - **Get** (list) - 角色权限(查)
+        - **Mod** (list) - 角色权限(改)
+
+        **Response**
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.ModifyCharacterRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyCharacter", d, **kwargs)
+        return apis.ModifyCharacterResponseSchema().loads(resp)
+
+    def modify_project(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyProject -
+
+        **Request**
+
+        - **ProjectId** (str) - (Config)
+        - **ProjectName** (str) - (Required)
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
         req and d.update(req)
         d = apis.ModifyProjectRequestSchema().dumps(d)
 
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("ModifyProject", d, **kwargs)
         return apis.ModifyProjectResponseSchema().loads(resp)
+
+    def remove_member_from_project(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """RemoveMemberFromProject - 从项目中移除成员
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID，请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 的描述。不填写为默认项目，子帐号必须填写。
+        - **MemberEmail** (str) - (Required) 需要被移除成员Email
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.RemoveMemberFromProjectRequestSchema().dumps(d)
+
+        resp = self.invoke("RemoveMemberFromProject", d, **kwargs)
+        return apis.RemoveMemberFromProjectResponseSchema().loads(resp)
+
+    def set_network_mask(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """SetNetworkMask - 设置登录与API调用的网络掩码
+
+        **Request**
+
+        - **Code** (str) - (Required) 短信验证码
+        - **APINetworkMask** (str) - API调用网络掩码，多个IP以英文逗号分隔。默认空字符串，不限制登录IP。
+        - **LoginNetworkMask** (str) - 登录网络掩码，多个IP以英文逗号分隔。默认空字符串，不限制登录IP。
+
+        **Response**
+
+        - **Message** (str) - 接口信息，成功时为`success`，错误时显示具体错误信息。
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.SetNetworkMaskRequestSchema().dumps(d)
+
+        resp = self.invoke("SetNetworkMask", d, **kwargs)
+        return apis.SetNetworkMaskResponseSchema().loads(resp)
+
+    def terminate_character(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """TerminateCharacter - 删除用户角色管理列表中的指定角色
+
+        **Request**
+
+        - **CharacterId** (str) - (Required) 角色ID，使用 `DescribeCharacterList接口 <https://docs.ucloud.cn/api/summary/describe_character_list.html>`_  获取角色ID
+
+        **Response**
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.TerminateCharacterRequestSchema().dumps(d)
+
+        resp = self.invoke("TerminateCharacter", d, **kwargs)
+        return apis.TerminateCharacterResponseSchema().loads(resp)
+
+    def terminate_member(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """TerminateMember - 删除管理员人员管理页面的指定子账号
+
+        **Request**
+
+        - **MemberEmail** (str) - (Required) 用户邮箱
+
+        **Response**
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.TerminateMemberRequestSchema().dumps(d)
+
+        resp = self.invoke("TerminateMember", d, **kwargs)
+        return apis.TerminateMemberResponseSchema().loads(resp)
 
     def terminate_project(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -177,14 +530,16 @@ class UAccountClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID，不填写为默认项目，子帐号必须填写。
+        - **ProjectId** (str) - (Config) 项目ID，请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 的描述。
 
         **Response**
 
 
         """
         # build request
-        d = {"ProjectId": self.config.project_id}
+        d = {
+            "ProjectId": self.config.project_id,
+        }
         req and d.update(req)
         d = apis.TerminateProjectRequestSchema().dumps(d)
 

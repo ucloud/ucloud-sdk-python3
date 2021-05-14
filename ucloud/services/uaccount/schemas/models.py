@@ -3,6 +3,80 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class PermissionSetSchema(schema.ResponseSchema):
+    """PermissionSet - 权限列表"""
+
+    fields = {
+        "Add": fields.List(fields.Str()),
+        "Del": fields.List(fields.Str()),
+        "Get": fields.List(fields.Str()),
+        "Mod": fields.List(fields.Str()),
+    }
+
+
+class CharacterSetSchema(schema.ResponseSchema):
+    """CharacterSet - 角色信息"""
+
+    fields = {
+        "CharacterDescription": fields.Str(
+            required=True, load_from="CharacterDescription"
+        ),
+        "CharacterId": fields.Str(required=True, load_from="CharacterId"),
+        "CharacterName": fields.Str(required=True, load_from="CharacterName"),
+        "Modifiable": fields.Bool(required=True, load_from="Modifiable"),
+        "PermissionSet": fields.List(PermissionSetSchema()),
+    }
+
+
+class ProjectInfoSchema(schema.ResponseSchema):
+    """ProjectInfo - 项目信息"""
+
+    fields = {
+        "CharacterId": fields.Str(required=True, load_from="CharacterId"),
+        "ProjectId": fields.Str(required=True, load_from="ProjectId"),
+        "ProjectName": fields.Str(required=True, load_from="ProjectName"),
+    }
+
+
+class MemberInfoSchema(schema.ResponseSchema):
+    """MemberInfo - 成员信息"""
+
+    fields = {
+        "ActivateFlag": fields.Int(required=True, load_from="ActivateFlag"),
+        "Created": fields.Int(required=True, load_from="Created"),
+        "DefultProjectId": fields.Str(
+            required=True, load_from="DefultProjectId"
+        ),
+        "IsAdmin": fields.Int(required=True, load_from="IsAdmin"),
+        "IsFinance": fields.Int(required=True, load_from="IsFinance"),
+        "LastLogin": fields.Int(required=True, load_from="LastLogin"),
+        "LastRegionId": fields.Str(required=True, load_from="LastRegionId"),
+        "MemberEmail": fields.Str(required=True, load_from="MemberEmail"),
+        "MemberName": fields.Str(required=True, load_from="MemberName"),
+        "MemberPhone": fields.Str(required=True, load_from="MemberPhone"),
+        "MemberPosition": fields.Str(required=True, load_from="MemberPosition"),
+        "MemberQQ": fields.Str(required=True, load_from="MemberQQ"),
+        "PasswordPolicyDate": fields.Int(
+            required=True, load_from="PasswordPolicyDate"
+        ),
+        "ProjectSet": fields.List(ProjectInfoSchema()),
+        "PublicKey": fields.Str(required=True, load_from="PublicKey"),
+        "State": fields.Str(required=True, load_from="State"),
+        "TOTPStatus": fields.Int(required=True, load_from="TOTPStatus"),
+    }
+
+
+class NetworkMaskSchema(schema.ResponseSchema):
+    """NetworkMask - 登录与API调用的网络掩码"""
+
+    fields = {
+        "APINetworkMask": fields.Str(required=True, load_from="APINetworkMask"),
+        "LoginNetworkMask": fields.Str(
+            required=True, load_from="LoginNetworkMask"
+        ),
+    }
+
+
 class ProjectListInfoSchema(schema.ResponseSchema):
     """ProjectListInfo - 项目信息"""
 
@@ -10,8 +84,8 @@ class ProjectListInfoSchema(schema.ResponseSchema):
         "CreateTime": fields.Int(required=True, load_from="CreateTime"),
         "IsDefault": fields.Bool(required=True, load_from="IsDefault"),
         "MemberCount": fields.Int(required=True, load_from="MemberCount"),
-        "ParentId": fields.Str(required=True, load_from="ParentId"),
-        "ParentName": fields.Str(required=True, load_from="ParentName"),
+        "ParentId": fields.Str(required=False, load_from="ParentId"),
+        "ParentName": fields.Str(required=False, load_from="ParentName"),
         "ProjectId": fields.Str(required=True, load_from="ProjectId"),
         "ProjectName": fields.Str(required=True, load_from="ProjectName"),
         "ResourceCount": fields.Int(required=True, load_from="ResourceCount"),
@@ -32,7 +106,7 @@ class RegionInfoSchema(schema.ResponseSchema):
 
 
 class UserInfoSchema(schema.ResponseSchema):
-    """UserInfo - 用户信息"""
+    """UserInfo -"""
 
     fields = {
         "Admin": fields.Int(required=True, load_from="Admin"),
