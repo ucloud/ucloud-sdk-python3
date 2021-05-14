@@ -38,3 +38,21 @@ class CubeExtendInfoSchema(schema.ResponseSchema):
         "Name": fields.Str(required=False, load_from="Name"),
         "Tag": fields.Str(required=False, load_from="Tag"),
     }
+
+
+class ValueSetSchema(schema.ResponseSchema):
+    """ValueSet -"""
+
+    fields = {
+        "Timestamp": fields.Int(required=False, load_from="Timestamp"),
+        "Value": fields.Float(required=True, load_from="Value"),
+    }
+
+
+class MetricDataSetSchema(schema.ResponseSchema):
+    """MetricDataSet - 监控数据集合"""
+
+    fields = {
+        "MetricName": fields.Str(required=False, load_from="MetricName"),
+        "Values": fields.List(ValueSetSchema()),
+    }

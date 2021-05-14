@@ -9,6 +9,41 @@ from ucloud.services.cube.schemas import models
 
 
 """
+API: CreateCubeDeployment
+
+创建Cube的Deployment
+"""
+
+
+class CreateCubeDeploymentRequestSchema(schema.RequestSchema):
+    """CreateCubeDeployment - 创建Cube的Deployment"""
+
+    fields = {
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "CpuPlatform": fields.Str(required=False, dump_to="CpuPlatform"),
+        "Deployment": fields.Str(required=True, dump_to="Deployment"),
+        "KubeConfig": fields.Str(required=False, dump_to="KubeConfig"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SubnetId": fields.Str(required=True, dump_to="SubnetId"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "VPCId": fields.Str(required=True, dump_to="VPCId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class CreateCubeDeploymentResponseSchema(schema.ResponseSchema):
+    """CreateCubeDeployment - 创建Cube的Deployment"""
+
+    fields = {
+        "Deployment": fields.Str(required=False, load_from="Deployment"),
+        "DeploymentId": fields.Str(required=True, load_from="DeploymentId"),
+    }
+
+
+"""
 API: CreateCubePod
 
 创建Pod
@@ -20,11 +55,13 @@ class CreateCubePodRequestSchema(schema.RequestSchema):
 
     fields = {
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
         "CpuPlatform": fields.Str(required=False, dump_to="CpuPlatform"),
         "Group": fields.Str(required=False, dump_to="Group"),
+        "KubeConfig": fields.Str(required=False, dump_to="KubeConfig"),
         "Name": fields.Str(required=False, dump_to="Name"),
         "Pod": fields.Str(required=True, dump_to="Pod"),
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SubnetId": fields.Str(required=True, dump_to="SubnetId"),
@@ -43,6 +80,30 @@ class CreateCubePodResponseSchema(schema.ResponseSchema):
         "Pod": fields.Str(required=True, load_from="Pod"),
         "RetCode": fields.Int(required=True, load_from="RetCode"),
     }
+
+
+"""
+API: DeleteCubeDeployment
+
+删除Cube的Deployment
+"""
+
+
+class DeleteCubeDeploymentRequestSchema(schema.RequestSchema):
+    """DeleteCubeDeployment - 删除Cube的Deployment"""
+
+    fields = {
+        "DeploymentId": fields.Str(required=True, dump_to="DeploymentId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DeleteCubeDeploymentResponseSchema(schema.ResponseSchema):
+    """DeleteCubeDeployment - 删除Cube的Deployment"""
+
+    fields = {}
 
 
 """
@@ -69,6 +130,32 @@ class DeleteCubePodResponseSchema(schema.ResponseSchema):
     """DeleteCubePod - 删除Pod"""
 
     fields = {}
+
+
+"""
+API: GetCubeDeployment
+
+获取Deployment的详细信息
+"""
+
+
+class GetCubeDeploymentRequestSchema(schema.RequestSchema):
+    """GetCubeDeployment - 获取Deployment的详细信息"""
+
+    fields = {
+        "DeploymentId": fields.Str(required=True, dump_to="DeploymentId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class GetCubeDeploymentResponseSchema(schema.ResponseSchema):
+    """GetCubeDeployment - 获取Deployment的详细信息"""
+
+    fields = {
+        "Deployment": fields.Str(required=True, load_from="Deployment"),
+    }
 
 
 """
@@ -100,6 +187,39 @@ class GetCubeExtendInfoResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetCubeMetrics
+
+获取Cube实例（Pod，PodX，Deploy等）监控数据时间序列
+"""
+
+
+class GetCubeMetricsRequestSchema(schema.RequestSchema):
+    """GetCubeMetrics - 获取Cube实例（Pod，PodX，Deploy等）监控数据时间序列"""
+
+    fields = {
+        "BeginTime": fields.Int(required=True, dump_to="BeginTime"),
+        "ContainerName": fields.Str(required=True, dump_to="ContainerName"),
+        "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "MetricName": fields.List(fields.Str()),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class GetCubeMetricsResponseSchema(schema.ResponseSchema):
+    """GetCubeMetrics - 获取Cube实例（Pod，PodX，Deploy等）监控数据时间序列"""
+
+    fields = {
+        "DataSets": fields.List(
+            models.MetricDataSetSchema(), required=False, load_from="DataSets"
+        ),
+        "Message": fields.Str(required=False, load_from="Message"),
+    }
+
+
+"""
 API: GetCubePod
 
 获取Pod的详细信息
@@ -123,6 +243,39 @@ class GetCubePodResponseSchema(schema.ResponseSchema):
 
     fields = {
         "Pod": fields.Str(required=True, load_from="Pod"),
+    }
+
+
+"""
+API: GetCubePrice
+
+获取cube的价格
+"""
+
+
+class GetCubePriceRequestSchema(schema.RequestSchema):
+    """GetCubePrice - 获取cube的价格"""
+
+    fields = {
+        "ChargeType": fields.Str(required=True, dump_to="ChargeType"),
+        "Count": fields.Str(required=True, dump_to="Count"),
+        "Cpu": fields.Str(required=True, dump_to="Cpu"),
+        "Mem": fields.Str(required=True, dump_to="Mem"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Quantity": fields.Int(required=True, dump_to="Quantity"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class GetCubePriceResponseSchema(schema.ResponseSchema):
+    """GetCubePrice - 获取cube的价格"""
+
+    fields = {
+        "Action": fields.Str(required=True, load_from="Action"),
+        "OriginalPrice": fields.Int(required=True, load_from="OriginalPrice"),
+        "Price": fields.Int(required=True, load_from="Price"),
+        "RetCode": fields.Int(required=True, load_from="RetCode"),
     }
 
 
@@ -183,6 +336,33 @@ class ModifyCubeExtendInfoResponseSchema(schema.ResponseSchema):
 
 
 """
+API: ModifyCubeTag
+
+修改业务组名字
+"""
+
+
+class ModifyCubeTagRequestSchema(schema.RequestSchema):
+    """ModifyCubeTag - 修改业务组名字"""
+
+    fields = {
+        "CubeId": fields.Str(required=True, dump_to="CubeId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Tag": fields.Str(required=True, dump_to="Tag"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class ModifyCubeTagResponseSchema(schema.ResponseSchema):
+    """ModifyCubeTag - 修改业务组名字"""
+
+    fields = {
+        "CubeId": fields.Str(required=True, load_from="CubeId"),
+    }
+
+
+"""
 API: RenewCubePod
 
 更新Pod
@@ -206,4 +386,32 @@ class RenewCubePodResponseSchema(schema.ResponseSchema):
 
     fields = {
         "Pod": fields.Str(required=True, load_from="Pod"),
+    }
+
+
+"""
+API: UpdateCubeDeployment
+
+更新Deployment
+"""
+
+
+class UpdateCubeDeploymentRequestSchema(schema.RequestSchema):
+    """UpdateCubeDeployment - 更新Deployment"""
+
+    fields = {
+        "Deployment": fields.Str(required=True, dump_to="Deployment"),
+        "DeploymentId": fields.Str(required=True, dump_to="DeploymentId"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class UpdateCubeDeploymentResponseSchema(schema.ResponseSchema):
+    """UpdateCubeDeployment - 更新Deployment"""
+
+    fields = {
+        "Deployment": fields.Str(required=False, load_from="Deployment"),
     }
