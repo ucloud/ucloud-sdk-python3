@@ -15,9 +15,9 @@ class CacheConfSchema(schema.ResponseSchema):
     """CacheConf - 缓存配置"""
 
     fields = {
-        "CacheBehavior": fields.Bool(required=False, load_from="CacheBehavior"),
-        "CacheTTL": fields.Int(required=False, load_from="CacheTTL"),
-        "CacheUnit": fields.Str(required=False, load_from="CacheUnit"),
+        "CacheBehavior": fields.Bool(required=True, load_from="CacheBehavior"),
+        "CacheTTL": fields.Int(required=True, load_from="CacheTTL"),
+        "CacheUnit": fields.Str(required=True, load_from="CacheUnit"),
         "Description": fields.Str(required=False, load_from="Description"),
         "FollowOriginRule": fields.Bool(
             required=False, load_from="FollowOriginRule"
@@ -25,7 +25,7 @@ class CacheConfSchema(schema.ResponseSchema):
         "HttpCodePattern": fields.Str(
             required=False, load_from="HttpCodePattern"
         ),
-        "PathPattern": fields.Str(required=False, load_from="PathPattern"),
+        "PathPattern": fields.Str(required=True, load_from="PathPattern"),
     }
 
 
@@ -84,7 +84,9 @@ class TaskInfoSchema(schema.ResponseSchema):
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "Status": fields.Str(required=False, load_from="Status"),
         "TaskId": fields.Str(required=False, load_from="TaskId"),
-        "Type": fields.Str(required=False, load_from="Type"),
+        "Type": fields.Str(
+            required=False, load_from="Type"
+        ),  # Deprecated, will be removed at 1.0
         "UrlLists": fields.List(UrlProgressInfoSchema()),
     }
 
@@ -259,6 +261,16 @@ class OriginConfSchema(schema.ResponseSchema):
     }
 
 
+class AdvancedConfSchema(schema.ResponseSchema):
+    """AdvancedConf - 域名高级配置"""
+
+    fields = {
+        "Http2Https": fields.Bool(required=False, load_from="Http2Https"),
+        "HttpClientHeader": fields.List(fields.Str()),
+        "HttpOriginHeader": fields.List(fields.Str()),
+    }
+
+
 class AccessControlConfSchema(schema.ResponseSchema):
     """AccessControlConf - 访问控制配置参数"""
 
@@ -276,16 +288,6 @@ class CacheAllConfigSchema(schema.ResponseSchema):
         "CacheKeyList": fields.List(CacheKeyInfoSchema()),
         "CacheList": fields.List(CacheConfSchema()),
         "HttpCodeCacheList": fields.List(CacheConfSchema()),
-    }
-
-
-class AdvancedConfSchema(schema.ResponseSchema):
-    """AdvancedConf - 域名高级配置"""
-
-    fields = {
-        "Http2Https": fields.Bool(required=False, load_from="Http2Https"),
-        "HttpClientHeader": fields.List(fields.Str()),
-        "HttpOriginHeader": fields.List(fields.Str()),
     }
 
 

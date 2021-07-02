@@ -336,9 +336,10 @@ class GetUcdnDomainBandwidthV2RequestSchema(schema.RequestSchema):
         "BeginTime": fields.Int(required=False, dump_to="BeginTime"),
         "DomainId": fields.List(fields.Str()),
         "EndTime": fields.Int(required=False, dump_to="EndTime"),
+        "Primeval": fields.Int(required=False, dump_to="Primeval"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Protocol": fields.Str(required=False, dump_to="Protocol"),
-        "Type": fields.Int(required=True, dump_to="Type"),
+        "Type": fields.Int(required=False, dump_to="Type"),
     }
 
 
@@ -506,6 +507,70 @@ class GetUcdnDomainLogResponseSchema(schema.ResponseSchema):
     fields = {
         "LogSet": fields.List(
             models.LogSetListSchema(), required=False, load_from="LogSet"
+        ),
+    }
+
+
+"""
+API: GetUcdnDomainOriginHttpCode
+
+获取域名源站状态码监控
+"""
+
+
+class GetUcdnDomainOriginHttpCodeRequestSchema(schema.RequestSchema):
+    """GetUcdnDomainOriginHttpCode - 获取域名源站状态码监控"""
+
+    fields = {
+        "Areacode": fields.Str(required=False, dump_to="Areacode"),
+        "BeginTime": fields.Int(required=False, dump_to="BeginTime"),
+        "DomainId": fields.List(fields.Str()),
+        "EndTime": fields.Int(required=False, dump_to="EndTime"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Type": fields.Int(required=True, dump_to="Type"),
+    }
+
+
+class GetUcdnDomainOriginHttpCodeResponseSchema(schema.ResponseSchema):
+    """GetUcdnDomainOriginHttpCode - 获取域名源站状态码监控"""
+
+    fields = {
+        "HttpCodeDetail": fields.List(
+            models.HttpCodeInfoSchema(),
+            required=False,
+            load_from="HttpCodeDetail",
+        ),
+    }
+
+
+"""
+API: GetUcdnDomainOriginHttpCodeDetail
+
+获取域名源站详细状态码监控
+"""
+
+
+class GetUcdnDomainOriginHttpCodeDetailRequestSchema(schema.RequestSchema):
+    """GetUcdnDomainOriginHttpCodeDetail - 获取域名源站详细状态码监控"""
+
+    fields = {
+        "Areacode": fields.Str(required=False, dump_to="Areacode"),
+        "BeginTime": fields.Int(required=True, dump_to="BeginTime"),
+        "DomainId": fields.List(fields.Str()),
+        "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Type": fields.Int(required=True, dump_to="Type"),
+    }
+
+
+class GetUcdnDomainOriginHttpCodeDetailResponseSchema(schema.ResponseSchema):
+    """GetUcdnDomainOriginHttpCodeDetail - 获取域名源站详细状态码监控"""
+
+    fields = {
+        "HttpCodeV2Detail": fields.List(
+            models.HttpCodeV2DetailSchema(),
+            required=False,
+            load_from="HttpCodeV2Detail",
         ),
     }
 
