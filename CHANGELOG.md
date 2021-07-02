@@ -1,3 +1,10 @@
+## 0.11.5 (2021-07-02)
+
+ENHANCEMENTS:
+
+- Update all APIs of `UMem` (#143)
+- Update all APIs of `UCDN` (#142)
+
 ## 0.11.4 (2021-05-14)
 
 ENHANCEMENTS:
