@@ -386,6 +386,101 @@ class UMemClient(Client):
         resp = self.invoke("DescribeUDRedisSlowlog", d, **kwargs)
         return apis.DescribeUDRedisSlowlogResponseSchema().loads(resp)
 
+    def describe_umem(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUMem - 获取UMem列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Limit** (int) - 分页显示的条目数, 默认值为20
+        - **Offset** (int) - 分页显示的起始偏移, 默认值为0
+        - **Protocol** (str) - 协议类型: memcache, redis
+        - **ResourceId** (str) - 资源ID
+        - **ResourceType** (str) -
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **DataSet** (list) - 见 **UMemDataSet** 模型定义
+        - **TotalCount** (int) - 根据过滤条件得到的总数
+
+        **Response Model**
+
+        **UMemSpaceAddressSet**
+        - **IP** (str) - UMem实例访问IP
+        - **Port** (int) - UMem实例访问Port
+
+
+        **UMemSlaveDataSet**
+        - **ChargeType** (str) - 计费模式，Year, Month, Dynamic, Trial
+        - **ConfigId** (str) - 节点的配置ID
+        - **CreateTime** (int) - 创建时间
+        - **ExpireTime** (int) - 到期时间
+        - **GroupId** (str) - 资源id
+        - **GroupName** (str) - 资源名称
+        - **MasterGroupId** (str) - 主实例id
+        - **MemorySize** (int) - 实力大小
+        - **ModifyTime** (int) - 修改时间
+        - **Name** (str) - 资源名称
+        - **Port** (int) - 端口
+        - **ResourceType** (str) - distributed: 分布式版Redis,或者分布式Memcache；single：主备版Redis,或者单机Memcache；performance：高性能版
+        - **RewriteTime** (int) - 主备Redis返回运维时间 0//0点 1 //1点 以此类推
+        - **Role** (str) - 表示实例是主库还是从库,master,slave
+        - **Size** (int) - 容量单位GB
+        - **State** (str) - 实例状态                                  Starting                  // 创建中       Creating                  // 初始化中     CreateFail                // 创建失败     Fail                      // 创建失败     Deleting                  // 删除中       DeleteFail                // 删除失败     Running                   // 运行         Resizing                  // 容量调整中   ResizeFail                // 容量调整失败 Configing                 // 配置中       ConfigFail                // 配置失败Restarting                // 重启中SetPasswordFail  //设置密码失败
+        - **SubnetId** (str) - 子网
+        - **Tag** (str) - 业务组名称
+        - **UsedSize** (int) - 使用量单位MB
+        - **VPCId** (str) - vpc
+        - **Version** (str) - Redis版本信息
+        - **VirtualIP** (str) -
+        - **Zone** (str) - 实例所在可用区，或者master redis所在可用区，参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
+
+        **UMemDataSet**
+        - **Address** (list) - 见 **UMemSpaceAddressSet** 模型定义
+        - **AutoBackup** (str) - 是否需要自动备份,enable,disable
+        - **BackupTime** (int) - 自动备份开始时间,单位小时计,范围[0-23]
+        - **ChargeType** (str) - 计费模式，Year, Month, Dynamic, Trial
+        - **ConfigId** (str) - 节点的配置ID
+        - **CreateTime** (int) - 创建时间
+        - **DataSet** (list) - 见 **UMemSlaveDataSet** 模型定义
+        - **ExpireTime** (int) - 到期时间
+        - **HighAvailability** (str) - 是否开启高可用,enable,disable
+        - **Name** (str) - 资源名称
+        - **OwnSlave** (str) - 是否拥有只读Slave“Yes” 包含“No” 不包含
+        - **Protocol** (str) - 协议类型: memcache, redis
+        - **ResourceId** (str) - 资源ID
+        - **ResourceType** (str) - distributed: 分布式版Redis,或者分布式Memcache；single：主备版Redis,或者单机Memcache；performance：高性能版
+        - **RewriteTime** (int) - 主备redis和分布式redis运维时间0  //0点1  //1点以此类推单机版memcache不返回该项
+        - **Role** (str) - 表示实例是主库还是从库,master,slave仅主备redis返回该项参数
+        - **Size** (int) - 容量单位GB
+        - **SlaveZone** (str) - 跨机房URedis，slave redis所在可用区，参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **State** (str) - 实例状态                                  Starting                  // 创建中       Creating                  // 初始化中     CreateFail                // 创建失败     Fail                      // 创建失败     Deleting                  // 删除中       DeleteFail                // 删除失败     Running                   // 运行         Resizing                  // 容量调整中   ResizeFail                // 容量调整失败 Configing                 // 配置中       ConfigFail                // 配置失败Restarting                // 重启中SetPasswordFail    //设置密码失败
+        - **SubnetId** (str) - 子网
+        - **Tag** (str) - 业务组名称
+        - **Type** (str) - 空间类型:single(无热备),double(热备)
+        - **UsedSize** (int) - 使用量单位MB
+        - **VPCId** (str) - vpc
+        - **Version** (str) - Redis版本信息
+        - **Zone** (str) - 实例所在可用区，或者master redis所在可用区，参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeUMemRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeUMem", d, **kwargs)
+        return apis.DescribeUMemResponseSchema().loads(resp)
+
     def describe_umem_backup(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1137,6 +1232,35 @@ class UMemClient(Client):
 
         resp = self.invoke("GetUMemSpaceState", d, **kwargs)
         return apis.GetUMemSpaceStateResponseSchema().loads(resp)
+
+    def i_solation_uredis_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ISolationURedisGroup - 打开/关闭URedis
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **GroupId** (str) - (Required) 组的ID
+        - **TransformType** (str) - (Required) UNBind(关闭)或Bind(打开)
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **SlaveZone** (str) - 跨机房URedis，slave所在可用区（必须和Zone在同一Region，且不可相同）
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ISolationURedisGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("ISolationURedisGroup", d, **kwargs)
+        return apis.ISolationURedisGroupResponseSchema().loads(resp)
 
     def modify_umem_space_name(
         self, req: typing.Optional[dict] = None, **kwargs

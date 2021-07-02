@@ -14,6 +14,80 @@ class UDRedisSlowlogSetSchema(schema.ResponseSchema):
     }
 
 
+class UMemSlaveDataSetSchema(schema.ResponseSchema):
+    """UMemSlaveDataSet - DescribeUMem"""
+
+    fields = {
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "ConfigId": fields.Str(required=False, load_from="ConfigId"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "GroupId": fields.Str(required=False, load_from="GroupId"),
+        "GroupName": fields.Str(required=False, load_from="GroupName"),
+        "MasterGroupId": fields.Str(required=False, load_from="MasterGroupId"),
+        "MemorySize": fields.Int(required=False, load_from="MemorySize"),
+        "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Port": fields.Int(required=False, load_from="Port"),
+        "ResourceType": fields.Str(required=False, load_from="ResourceType"),
+        "RewriteTime": fields.Int(required=False, load_from="RewriteTime"),
+        "Role": fields.Str(required=False, load_from="Role"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "State": fields.Str(required=False, load_from="State"),
+        "SubnetId": fields.Str(required=True, load_from="SubnetId"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "UsedSize": fields.Int(required=False, load_from="UsedSize"),
+        "VPCId": fields.Str(required=True, load_from="VPCId"),
+        "Version": fields.Str(required=False, load_from="Version"),
+        "VirtualIP": fields.Str(required=True, load_from="VirtualIP"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+    }
+
+
+class UMemSpaceAddressSetSchema(schema.ResponseSchema):
+    """UMemSpaceAddressSet - DescribeUMemSpace"""
+
+    fields = {
+        "IP": fields.Str(required=False, load_from="IP"),
+        "Port": fields.Int(required=False, load_from="Port"),
+    }
+
+
+class UMemDataSetSchema(schema.ResponseSchema):
+    """UMemDataSet - DescribeUMem"""
+
+    fields = {
+        "Address": fields.List(UMemSpaceAddressSetSchema()),
+        "AutoBackup": fields.Str(required=False, load_from="AutoBackup"),
+        "BackupTime": fields.Int(required=False, load_from="BackupTime"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "ConfigId": fields.Str(required=False, load_from="ConfigId"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "DataSet": fields.List(UMemSlaveDataSetSchema()),
+        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "HighAvailability": fields.Str(
+            required=False, load_from="HighAvailability"
+        ),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "OwnSlave": fields.Str(required=True, load_from="OwnSlave"),
+        "Protocol": fields.Str(required=False, load_from="Protocol"),
+        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
+        "ResourceType": fields.Str(required=False, load_from="ResourceType"),
+        "RewriteTime": fields.Int(required=False, load_from="RewriteTime"),
+        "Role": fields.Str(required=False, load_from="Role"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "SlaveZone": fields.Str(required=False, load_from="SlaveZone"),
+        "State": fields.Str(required=False, load_from="State"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "Type": fields.Str(required=False, load_from="Type"),
+        "UsedSize": fields.Int(required=False, load_from="UsedSize"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "Version": fields.Str(required=False, load_from="Version"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+    }
+
+
 class UMemBackupSetSchema(schema.ResponseSchema):
     """UMemBackupSet - DescribeUMemBackup"""
 
@@ -52,15 +126,6 @@ class UMemPriceSetSchema(schema.ResponseSchema):
         ),  # Deprecated, will be removed at 1.0
         "OriginalPrice": fields.Int(required=False, load_from="OriginalPrice"),
         "Price": fields.Int(required=False, load_from="Price"),
-    }
-
-
-class UMemSpaceAddressSetSchema(schema.ResponseSchema):
-    """UMemSpaceAddressSet - DescribeUMemSpace"""
-
-    fields = {
-        "IP": fields.Str(required=False, load_from="IP"),
-        "Port": fields.Int(required=False, load_from="Port"),
     }
 
 

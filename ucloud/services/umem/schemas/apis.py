@@ -338,6 +338,39 @@ class DescribeUDRedisSlowlogResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeUMem
+
+获取UMem列表
+"""
+
+
+class DescribeUMemRequestSchema(schema.RequestSchema):
+    """DescribeUMem - 获取UMem列表"""
+
+    fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Protocol": fields.Str(required=False, dump_to="Protocol"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
+        "ResourceType": fields.Str(required=False, dump_to="ResourceType"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DescribeUMemResponseSchema(schema.ResponseSchema):
+    """DescribeUMem - 获取UMem列表"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.UMemDataSetSchema(), required=False, load_from="DataSet"
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
 API: DescribeUMemBackup
 
 查询分布式redis备份
@@ -907,6 +940,32 @@ class GetUMemSpaceStateResponseSchema(schema.ResponseSchema):
     fields = {
         "State": fields.Str(required=False, load_from="State"),
     }
+
+
+"""
+API: ISolationURedisGroup
+
+打开/关闭URedis
+"""
+
+
+class ISolationURedisGroupRequestSchema(schema.RequestSchema):
+    """ISolationURedisGroup - 打开/关闭URedis"""
+
+    fields = {
+        "GroupId": fields.Str(required=True, dump_to="GroupId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SlaveZone": fields.Str(required=False, dump_to="SlaveZone"),
+        "TransformType": fields.Str(required=True, dump_to="TransformType"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ISolationURedisGroupResponseSchema(schema.ResponseSchema):
+    """ISolationURedisGroup - 打开/关闭URedis"""
+
+    fields = {}
 
 
 """
