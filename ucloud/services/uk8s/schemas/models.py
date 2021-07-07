@@ -14,11 +14,18 @@ class ImageInfoSchema(schema.ResponseSchema):
     }
 
 
-class KubeProxySchema(schema.ResponseSchema):
-    """KubeProxy - KubeProxy信息"""
+class K8SNodeConditionSchema(schema.ResponseSchema):
+    """K8SNodeCondition - Kubernetes Node Condition"""
 
     fields = {
-        "Mode": fields.Str(required=False, load_from="Mode"),
+        "LastProbeTime": fields.Str(required=False, load_from="LastProbeTime"),
+        "LastTransitionTime": fields.Str(
+            required=False, load_from="LastTransitionTime"
+        ),
+        "Message": fields.Str(required=False, load_from="Message"),
+        "Reason": fields.Str(required=False, load_from="Reason"),
+        "Status": fields.Str(required=False, load_from="Status"),
+        "Type": fields.Str(required=False, load_from="Type"),
     }
 
 
@@ -36,6 +43,14 @@ class UHostIPSetSchema(schema.ResponseSchema):
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
         "Type": fields.Str(required=False, load_from="Type"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
+    }
+
+
+class KubeProxySchema(schema.ResponseSchema):
+    """KubeProxy - KubeProxy信息"""
+
+    fields = {
+        "Mode": fields.Str(required=False, load_from="Mode"),
     }
 
 
@@ -72,6 +87,9 @@ class ClusterSetSchema(schema.ResponseSchema):
     fields = {
         "ApiServer": fields.Str(required=True, load_from="ApiServer"),
         "ClusterId": fields.Str(required=True, load_from="ClusterId"),
+        "ClusterLogInfo": fields.Str(
+            required=False, load_from="ClusterLogInfo"
+        ),
         "ClusterName": fields.Str(required=True, load_from="ClusterName"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "ExternalApiServer": fields.Str(
