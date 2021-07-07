@@ -104,15 +104,15 @@ class UK8SClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **CPU** (int) - (Required) 虚拟CPU核数。可选参数：2-64（具体机型与CPU的对应关系参照控制台）。默认值: 4。
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CPU** (str) - (Required) 虚拟CPU核数。可选参数：2-64（具体机型与CPU的对应关系参照控制台）。默认值: 4。
         - **ChargeType** (str) - (Required) 计费模式。枚举值为： \\ > Year，按年付费； \\ > Month，按月付费；\\ > Dynamic，按小时预付费 \\ > Postpay，按小时后付费（支持关机不收费，目前仅部分可用区支持，请联系您的客户经理） \\ 默认为月付
         - **ClusterId** (str) - (Required) UK8S集群ID。 可从UK8S控制台获取。
-        - **Count** (int) - (Required) 最大创建Node节点数量，取值范围是[1,10]。
-        - **Mem** (int) - (Required) 内存大小。单位：MB。范围 ：[4096, 262144]，取值为1024的倍数（可选范围参考控制台）。默认值：8192
+        - **Count** (str) - (Required) 创建Node节点数量，取值范围是[1,50]。
+        - **Mem** (str) - (Required) 内存大小。单位：MB。范围 ：[4096, 262144]，取值为1024的倍数（可选范围参考控制台）。默认值：8192
         - **Password** (str) - (Required) Node节点密码。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定密码。密码需使用base64进行编码，如下：# echo -n Password1 | base64
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BootDiskType** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。默认为SSD云盘
         - **DataDiskSize** (str) - 数据磁盘大小，单位GB。默认0。范围 ：[20, 1000]
         - **DataDiskType** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。默认为SSD云盘
@@ -132,7 +132,6 @@ class UK8SClient(Client):
 
         **Response**
 
-        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息。
         - **NodeIds** (list) - Node实例Id集合
 
         """
@@ -323,6 +322,75 @@ class UK8SClient(Client):
         resp = self.invoke("DescribeUK8SImage", d, **kwargs)
         return apis.DescribeUK8SImageResponseSchema().loads(resp)
 
+    def describe_uk8s_node(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUK8SNode - 用于获取 UK8S 节点详情
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ClusterId** (str) - (Required) UK8S 集群 Id
+        - **Name** (str) - (Required) K8S 节点IP或者节点ID
+
+        **Response**
+
+        - **Action** (str) - 操作名称
+        - **AllocatedPodCount** (int) - 已分配到当前节点的 Pod 数量
+        - **Annotations** (list) - 字符串数组，每一项是类似 "node.alpha.kubernetes.io/ttl=0" 的注解
+        - **CPUCapacity** (str) - 节点 CPU 总量
+        - **CPULimits** (str) - 节点上已分配 Pod 的 CPU 限制值
+        - **CPULimitsFraction** (str) - 节点上已分配 Pod 的 CPU 限制值占 CPU 总量的比例
+        - **CPURequests** (str) - 节点上已分配 Pod 的 CPU 请求量
+        - **CPURequestsFraction** (str) - 节点上已分配 Pod 的 CPU 请求量占 CPU 总量的比例
+        - **Conditions** (list) - 见 **K8SNodeCondition** 模型定义
+        - **ContainerImages** (list) - 节点上镜像名称数组
+        - **ContainerRuntimeVersion** (str) - 容器运行时版本，如："docker://18.9.9"
+        - **CreationTimestamp** (int) - 时间戳，单位是 秒
+        - **Hostname** (str) - 主机名
+        - **InternalIP** (str) - 内部 IP 地址
+        - **KernelVersion** (str) - 内核版本，如："4.19.0-6.el7.ucloud.x86_64"
+        - **KubeProxyVersion** (str) - kubeproxy 版本
+        - **KubeletVersion** (str) - kubelet 版本
+        - **Labels** (list) - 字符串数组，每一项是类似 "kubernetes.io/arch=amd64" 的标签
+        - **MemoryCapacity** (str) - 节点内存总量
+        - **MemoryLimits** (str) - 节点上已分配 Pod 的内存限制量
+        - **MemoryLimitsFraction** (str) - 节点上已分配 Pod 的内存限制量占内存总量的比例，如返回值为 "18"，则意味着限制量占总量的 18%
+        - **MemoryRequests** (str) - 节点上已分配 Pod 的内存请求量
+        - **MemoryRequestsFraction** (str) - 节点上已分配 Pod 的内存请求量占内存总量的比例，如返回值为 "4.5"，则意味着请求量占总量的 4.5%
+        - **Message** (str) - 操作出错时的提示信息
+        - **Name** (str) - 节点名称
+        - **OSImage** (str) - 操作系统类型，如："CentOS Linux 7 (Core)"
+        - **PodCapacity** (int) - 节点允许的可分配 Pod 最大数量
+        - **ProviderID** (str) - 字符串，如："UCloud://cn-sh2-02//uk8s-vsc0vgob-n-mpzxc"
+        - **RetCode** (int) - 返回码
+        - **Taints** (list) - 字符串数组，每一项是类似 "node-role.kubernetes.io/master:NoSchedule" 的污点
+        - **Unschedulable** (bool) - 是否禁止调度
+
+        **Response Model**
+
+        **K8SNodeCondition**
+        - **LastProbeTime** (str) - 最后一次上报状态的时间
+        - **LastTransitionTime** (str) - 最后一次状态转变时间
+        - **Message** (str) - 状态变化的描述信息
+        - **Reason** (str) - 状态变化的原因
+        - **Status** (str) - 状态，False、True
+        - **Type** (str) - Condition 类型，如 MemoryPressure、DiskPressure、PIDPressure、Ready
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeUK8SNodeRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeUK8SNode", d, **kwargs)
+        return apis.DescribeUK8SNodeResponseSchema().loads(resp)
+
     def list_uk8s_cluster_node_v2(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -357,7 +425,7 @@ class UK8SClient(Client):
         - **NodeId** (str) - NodeId，Node在UK8S处的唯一标示，如uk8s-reewqe5-sdasadsda
         - **NodeLogInfo** (str) - 加节点时判断是否没有资源，如果返回NORESOURCE则代表没有资源了
         - **NodeRole** (str) - node角色，枚举值为master、node
-        - **NodeStatus** (str) - Node的状态
+        - **NodeStatus** (str) - Node的状态：枚举值：初始化："Initializing"；启动中："Starting"；运行："Running"；停止中："Stopping"；停止："Stopped"；待删除："ToBeDeleted"；删除中："Deleting"；异常："Error"；安装失败："Install Fail"；
         - **OsName** (str) - Node节点的镜像名称。
         - **OsType** (str) - Node节点的操作系统类别，如Linux或Windows。
         - **Unschedulable** (bool) - 是否允许Pod调度到该节点，枚举值为true或false。
@@ -397,8 +465,8 @@ class UK8SClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterId** (str) - UK8S集群ID
         - **Limit** (int) - 返回数据长度，默认为20。
         - **Offset** (int) - 列表起始位置偏移量，默认为0。
@@ -413,6 +481,7 @@ class UK8SClient(Client):
         **ClusterSet**
         - **ApiServer** (str) - 集群apiserver地址
         - **ClusterId** (str) - 集群ID
+        - **ClusterLogInfo** (str) - 创建集群时判断如果为NORESOURCE则为没资源，否则为空
         - **ClusterName** (str) - 资源名字
         - **CreateTime** (int) - 创建时间
         - **ExternalApiServer** (str) - 集群外部apiserver地址
@@ -421,7 +490,7 @@ class UK8SClient(Client):
         - **NodeCount** (int) - Node节点数量
         - **PodCIDR** (str) - Pod网段
         - **ServiceCIDR** (str) - 服务网段
-        - **Status** (str) - 状态
+        - **Status** (str) - 集群状态，枚举值：初始化："INITIALIZING"；启动中："STARTING"；创建失败："CREATEFAILED"；正常运行："RUNNING"；添加节点："ADDNODE"；删除节点："DELNODE"；删除中："DELETING"；删除失败："DELETEFAILED"；错误："ERROR"；升级插件："UPDATE_PLUGIN"；更新插件信息："UPDATE_PLUGIN_INFO"；异常："ABNORMAL"；升级集群中："UPGRADING"；容器运行时切换："CONVERTING"
         - **SubnetId** (str) - 所属子网
         - **VPCId** (str) - 所属VPC
 

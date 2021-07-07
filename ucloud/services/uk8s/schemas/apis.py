@@ -98,10 +98,10 @@ class AddUK8SUHostNodeRequestSchema(schema.RequestSchema):
 
     fields = {
         "BootDiskType": fields.Str(required=False, dump_to="BootDiskType"),
-        "CPU": fields.Int(required=True, dump_to="CPU"),
+        "CPU": fields.Str(required=True, dump_to="CPU"),
         "ChargeType": fields.Str(required=True, dump_to="ChargeType"),
         "ClusterId": fields.Str(required=True, dump_to="ClusterId"),
-        "Count": fields.Int(required=True, dump_to="Count"),
+        "Count": fields.Str(required=True, dump_to="Count"),
         "DataDiskSize": fields.Str(required=False, dump_to="DataDiskSize"),
         "DataDiskType": fields.Str(required=False, dump_to="DataDiskType"),
         "DisableSchedule": fields.Bool(
@@ -115,7 +115,7 @@ class AddUK8SUHostNodeRequestSchema(schema.RequestSchema):
         "Labels": fields.Str(required=False, dump_to="Labels"),
         "MachineType": fields.Str(required=False, dump_to="MachineType"),
         "MaxPods": fields.Int(required=False, dump_to="MaxPods"),
-        "Mem": fields.Int(required=True, dump_to="Mem"),
+        "Mem": fields.Str(required=True, dump_to="Mem"),
         "MinmalCpuPlatform": fields.Str(
             required=False, dump_to="MinmalCpuPlatform"
         ),
@@ -133,7 +133,9 @@ class AddUK8SUHostNodeResponseSchema(schema.ResponseSchema):
     """AddUK8SUHostNode - 为UK8S集群添加一台Node节点，机型类型为云主机"""
 
     fields = {
-        "Message": fields.Str(required=True, load_from="Message"),
+        "Message": fields.Str(
+            required=True, load_from="Message"
+        ),  # Deprecated, will be removed at 1.0
         "NodeIds": fields.List(
             fields.Str(), required=False, load_from="NodeIds"
         ),
@@ -323,6 +325,86 @@ class DescribeUK8SImageResponseSchema(schema.ResponseSchema):
         "PHostImageSet": fields.List(
             models.ImageInfoSchema(), required=False, load_from="PHostImageSet"
         ),
+    }
+
+
+"""
+API: DescribeUK8SNode
+
+用于获取 UK8S 节点详情
+"""
+
+
+class DescribeUK8SNodeRequestSchema(schema.RequestSchema):
+    """DescribeUK8SNode - 用于获取 UK8S 节点详情"""
+
+    fields = {
+        "ClusterId": fields.Str(required=True, dump_to="ClusterId"),
+        "Name": fields.Str(required=True, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DescribeUK8SNodeResponseSchema(schema.ResponseSchema):
+    """DescribeUK8SNode - 用于获取 UK8S 节点详情"""
+
+    fields = {
+        "Action": fields.Str(required=True, load_from="Action"),
+        "AllocatedPodCount": fields.Int(
+            required=True, load_from="AllocatedPodCount"
+        ),
+        "Annotations": fields.List(
+            fields.Str(), required=True, load_from="Annotations"
+        ),
+        "CPUCapacity": fields.Str(required=True, load_from="CPUCapacity"),
+        "CPULimits": fields.Str(required=True, load_from="CPULimits"),
+        "CPULimitsFraction": fields.Str(
+            required=True, load_from="CPULimitsFraction"
+        ),
+        "CPURequests": fields.Str(required=True, load_from="CPURequests"),
+        "CPURequestsFraction": fields.Str(
+            required=True, load_from="CPURequestsFraction"
+        ),
+        "Conditions": fields.List(
+            models.K8SNodeConditionSchema(),
+            required=True,
+            load_from="Conditions",
+        ),
+        "ContainerImages": fields.List(
+            fields.Str(), required=True, load_from="ContainerImages"
+        ),
+        "ContainerRuntimeVersion": fields.Str(
+            required=True, load_from="ContainerRuntimeVersion"
+        ),
+        "CreationTimestamp": fields.Int(
+            required=True, load_from="CreationTimestamp"
+        ),
+        "Hostname": fields.Str(required=True, load_from="Hostname"),
+        "InternalIP": fields.Str(required=True, load_from="InternalIP"),
+        "KernelVersion": fields.Str(required=True, load_from="KernelVersion"),
+        "KubeProxyVersion": fields.Str(
+            required=True, load_from="KubeProxyVersion"
+        ),
+        "KubeletVersion": fields.Str(required=True, load_from="KubeletVersion"),
+        "Labels": fields.List(fields.Str(), required=True, load_from="Labels"),
+        "MemoryCapacity": fields.Str(required=True, load_from="MemoryCapacity"),
+        "MemoryLimits": fields.Str(required=True, load_from="MemoryLimits"),
+        "MemoryLimitsFraction": fields.Str(
+            required=True, load_from="MemoryLimitsFraction"
+        ),
+        "MemoryRequests": fields.Str(required=True, load_from="MemoryRequests"),
+        "MemoryRequestsFraction": fields.Str(
+            required=True, load_from="MemoryRequestsFraction"
+        ),
+        "Message": fields.Str(required=True, load_from="Message"),
+        "Name": fields.Str(required=True, load_from="Name"),
+        "OSImage": fields.Str(required=True, load_from="OSImage"),
+        "PodCapacity": fields.Int(required=True, load_from="PodCapacity"),
+        "ProviderID": fields.Str(required=True, load_from="ProviderID"),
+        "RetCode": fields.Int(required=True, load_from="RetCode"),
+        "Taints": fields.List(fields.Str(), required=False, load_from="Taints"),
+        "Unschedulable": fields.Bool(required=True, load_from="Unschedulable"),
     }
 
 
