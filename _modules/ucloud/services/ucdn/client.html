@@ -205,7 +205,7 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
 <span class="sd">        - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值</span>
 <span class="sd">        - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。</span>
 <span class="sd">        - **Limit** (int) - 返回数据长度,默认全部，自然数</span>
@@ -224,7 +224,6 @@
 <span class="sd">        - **CreateTime** (int) - 刷新任务创建的时间。格式为Unix Timestamp</span>
 <span class="sd">        - **Status** (str) - 刷新任务的当前状态，枚举值：success：成功；wait：排队中；process：处理中；failure：失败； unknow：未知</span>
 <span class="sd">        - **TaskId** (str) - 提交任务时返回的任务ID</span>
-<span class="sd">        - **Type** (str) - file/dir  刷新任务会返回Type，预取任务没有</span>
 <span class="sd">        - **UrlLists** (list) - 见 **UrlProgressInfo** 模型定义</span>
 
 
@@ -291,7 +290,7 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
 <span class="sd">        - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外，只支持国内</span>
 <span class="sd">        - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。如没有赋值，则返回缺少参 数错误，如果没有EndTime，BeginTime也可以不赋值，EndTime默认当前时间，BeginTime 默认前一天的当前时间。</span>
 <span class="sd">        - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名</span>
@@ -305,7 +304,7 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **HitRateInfo**</span>
-<span class="sd">        - **FlowHitRate** (float) - 流量命中率，单位%</span>
+<span class="sd">        - **FlowHitRate** (float) - 总流量命中率，单位%</span>
 <span class="sd">        - **RequestHitRate** (float) - 请求数命中率，单位%</span>
 <span class="sd">        - **Time** (int) - 带宽获取的时间点。格式：时间戳</span>
 
@@ -328,7 +327,7 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
 <span class="sd">        - **Type** (int) - (Required) 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度）</span>
 <span class="sd">        - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外，只支持国内</span>
 <span class="sd">        - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。如没有赋值，则返回缺少参 数错误，如果没有EndTime，BeginTime也可以不赋值，EndTime默认当前时间，BeginTime 默认前一天的当前时间。</span>
@@ -368,7 +367,7 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
 <span class="sd">        - **BeginTime** (int) - (Required) 查询的起始时间，格式为Unix Timestamp。</span>
 <span class="sd">        - **EndTime** (int) - (Required) 查询的结束时间，格式为Unix Timestamp。</span>
 <span class="sd">        - **Type** (int) - (Required) 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天粒度，3表示按照一分钟粒度）</span>
@@ -497,7 +496,7 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
 <span class="sd">        - **BeginTime** (int) - (Required) 查询的起始日期，格式为Unix Timestamp</span>
 <span class="sd">        - **EndTime** (int) - (Required) 查询的结束日期，格式为Unix Timestamp</span>
 <span class="sd">        - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外 不填默认为全部区域</span>
@@ -526,13 +525,14 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Type** (int) - (Required) 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度，3表示按照1分钟粒度）</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
 <span class="sd">        - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外 不填默认为全部区域</span>
 <span class="sd">        - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。如没有赋值，则返回缺少参 数错误，如果没有EndTime，BeginTime也可以不赋值，EndTime默认当前时间，BeginTime 默认前一天的当前时间。</span>
 <span class="sd">        - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名</span>
 <span class="sd">        - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。</span>
+<span class="sd">        - **Primeval** (int) - 原始带宽，不为0则获取原始带宽，默认为0</span>
 <span class="sd">        - **Protocol** (str) - 协议，http、https  不传则查所有协议的带宽</span>
+<span class="sd">        - **Type** (int) - 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度，3表示按照1分钟粒度）</span>
 
 <span class="sd">        **Response**</span>
 
@@ -576,20 +576,29 @@
 
 <span class="sd">        **Response Model**</span>
 
-<span class="sd">        **CacheConf**</span>
-<span class="sd">        - **CacheBehavior** (bool) - 是否缓存，true为缓存，flase为不缓存。为flase的情况下，CacheTTL和CacheUnit强制不生效</span>
-<span class="sd">        - **CacheTTL** (int) - 缓存时间</span>
-<span class="sd">        - **CacheUnit** (str) - 缓存时间的单位。sec（秒），min（分钟），hour（小时），day（天）。上限1年。</span>
-<span class="sd">        - **Description** (str) - 缓存规则描述</span>
-<span class="sd">        - **FollowOriginRule** (bool) - 是否优先遵循源站头部缓存策略，false为不优先遵循源站，true为优先遵循源站缓存头部。默认为0</span>
-<span class="sd">        - **HttpCodePattern** (str) - 状态码模式，非200，206状态码，多个状态码用竖线(|)分隔，该属性仅仅在状态码缓存配置列表中返回</span>
-<span class="sd">        - **PathPattern** (str) - 路径模式，支持正则</span>
+<span class="sd">        **DomainConfigInfo**</span>
+<span class="sd">        - **AccessControlConf** (dict) - 见 **AccessControlConf** 模型定义</span>
+<span class="sd">        - **AdvancedConf** (dict) - 见 **AdvancedConf** 模型定义</span>
+<span class="sd">        - **AreaCode** (str) - 查询带宽区域 cn代表国内 abroad代表海外 all表示全部区域</span>
+<span class="sd">        - **CacheConf** (dict) - 见 **CacheAllConfig** 模型定义</span>
+<span class="sd">        - **CdnType** (str) - 加速域名的业务类型，web代表网站，stream代表视频 ，download 代表下载</span>
+<span class="sd">        - **CertNameAbroad** (str) - 国外证书名称</span>
+<span class="sd">        - **CertNameCn** (str) - 国内证书名称</span>
+<span class="sd">        - **Cname** (str) - cdn域名。创建加速域名生成的cdn域名，用于设置CNAME记录</span>
+<span class="sd">        - **CreateTime** (int) - 域名创建的时间。格式：时间戳</span>
+<span class="sd">        - **Domain** (str) - 域名</span>
+<span class="sd">        - **DomainId** (str) - 域名Id</span>
+<span class="sd">        - **HttpsStatusAbroad** (str) - 国外https状态 enableing-开启中  fail-开启失败 enable-启用 disable-未启用</span>
+<span class="sd">        - **HttpsStatusCn** (str) - 国内https状态 enableing-开启中 fail-开启失败 enable-启用 disable-未启用</span>
+<span class="sd">        - **OriginConf** (dict) - 见 **OriginConf** 模型定义</span>
+<span class="sd">        - **Status** (str) - 创建的加速域名的当前的状态。check代表审核中，checkSuccess代表审核通过，checkFail代表审核失败，enable代表加速中，disable代表停止加速，delete代表删除加速enableing代表正在开启加速，disableing代表正在停止加速中，deleteing代表删除中</span>
+<span class="sd">        - **Tag** (str) - 业务组：Default</span>
+<span class="sd">        - **TestUrl** (str) - 测试url。用于域名创建加速时的测试</span>
 
 
-<span class="sd">        **CacheKeyInfo**</span>
-<span class="sd">        - **Ignore** (bool) - 是否忽略</span>
-<span class="sd">        - **PathPattern** (str) - 路径模式，支持正则</span>
-<span class="sd">        - **QueryString** (str) - 自定义变量,以$符号开头，多个变量用加号(+)连接，$querystring表示所有变量</span>
+<span class="sd">        **AccessControlConf**</span>
+<span class="sd">        - **IpBlackList** (list) - ip黑名单，多个ip，可表示为：IpBlackList.0=1.1.1.1，IpBlackList.1=2.2.2.2</span>
+<span class="sd">        - **ReferConf** (dict) - 见 **ReferConf** 模型定义</span>
 
 
 <span class="sd">        **ReferConf**</span>
@@ -611,9 +620,20 @@
 <span class="sd">        - **HttpCodeCacheList** (list) - 见 **CacheConf** 模型定义</span>
 
 
-<span class="sd">        **AccessControlConf**</span>
-<span class="sd">        - **IpBlackList** (list) - ip黑名单，多个ip，可表示为：IpBlackList.0=1.1.1.1，IpBlackList.1=2.2.2.2</span>
-<span class="sd">        - **ReferConf** (dict) - 见 **ReferConf** 模型定义</span>
+<span class="sd">        **CacheKeyInfo**</span>
+<span class="sd">        - **Ignore** (bool) - 是否忽略</span>
+<span class="sd">        - **PathPattern** (str) - 路径模式，支持正则</span>
+<span class="sd">        - **QueryString** (str) - 自定义变量,以$符号开头，多个变量用加号(+)连接，$querystring表示所有变量</span>
+
+
+<span class="sd">        **CacheConf**</span>
+<span class="sd">        - **CacheBehavior** (bool) - 是否缓存，true为缓存，flase为不缓存。为flase的情况下，CacheTTL和CacheUnit强制不生效</span>
+<span class="sd">        - **CacheTTL** (int) - 缓存时间</span>
+<span class="sd">        - **CacheUnit** (str) - 缓存时间的单位。sec（秒），min（分钟），hour（小时），day（天）。上限1年。</span>
+<span class="sd">        - **Description** (str) - 缓存规则描述</span>
+<span class="sd">        - **FollowOriginRule** (bool) - 是否优先遵循源站头部缓存策略，false为不优先遵循源站，true为优先遵循源站缓存头部。默认为0</span>
+<span class="sd">        - **HttpCodePattern** (str) - 状态码模式，非200，206状态码，多个状态码用竖线(|)分隔，该属性仅仅在状态码缓存配置列表中返回</span>
+<span class="sd">        - **PathPattern** (str) - 路径模式，支持正则</span>
 
 
 <span class="sd">        **OriginConf**</span>
@@ -627,26 +647,6 @@
 <span class="sd">        - **OriginIpList** (list) - 源站ip即cdn服务器回源访问的ip地址。多个源站ip，可以这样表述，如：[&quot;1.1.1.1&quot;,&quot;2.2.2.2&quot;]</span>
 <span class="sd">        - **OriginPort** (int) - 回源端口</span>
 <span class="sd">        - **OriginProtocol** (str) - 源站协议http，http|https   默认http</span>
-
-
-<span class="sd">        **DomainConfigInfo**</span>
-<span class="sd">        - **AccessControlConf** (dict) - 见 **AccessControlConf** 模型定义</span>
-<span class="sd">        - **AdvancedConf** (dict) - 见 **AdvancedConf** 模型定义</span>
-<span class="sd">        - **AreaCode** (str) - 查询带宽区域 cn代表国内 abroad代表海外 all表示全部区域</span>
-<span class="sd">        - **CacheConf** (dict) - 见 **CacheAllConfig** 模型定义</span>
-<span class="sd">        - **CdnType** (str) - 加速域名的业务类型，web代表网站，stream代表视频 ，download 代表下载</span>
-<span class="sd">        - **CertNameAbroad** (str) - 国外证书名称</span>
-<span class="sd">        - **CertNameCn** (str) - 国内证书名称</span>
-<span class="sd">        - **Cname** (str) - cdn域名。创建加速域名生成的cdn域名，用于设置CNAME记录</span>
-<span class="sd">        - **CreateTime** (int) - 域名创建的时间。格式：时间戳</span>
-<span class="sd">        - **Domain** (str) - 域名</span>
-<span class="sd">        - **DomainId** (str) - 域名Id</span>
-<span class="sd">        - **HttpsStatusAbroad** (str) - 国外https状态 enableing-开启中  fail-开启失败 enable-启用 disable-未启用</span>
-<span class="sd">        - **HttpsStatusCn** (str) - 国内https状态 enableing-开启中 fail-开启失败 enable-启用 disable-未启用</span>
-<span class="sd">        - **OriginConf** (dict) - 见 **OriginConf** 模型定义</span>
-<span class="sd">        - **Status** (str) - 创建的加速域名的当前的状态。check代表审核中，checkSuccess代表审核通过，checkFail代表审核失败，enable代表加速中，disable代表停止加速，delete代表删除加速enableing代表正在开启加速，disableing代表正在停止加速中，deleteing代表删除中</span>
-<span class="sd">        - **Tag** (str) - 业务组：Default</span>
-<span class="sd">        - **TestUrl** (str) - 测试url。用于域名创建加速时的测试</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -705,7 +705,7 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
 <span class="sd">        - **Type** (int) - (Required) 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度，3表示1分钟粒度）</span>
 <span class="sd">        - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外，只支持国内</span>
 <span class="sd">        - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。如没有赋值，则返回缺少参 数错误，如果没有EndTime，BeginTime也可以不赋值，EndTime默认当前时间，BeginTime 默认前一天的当前时间。</span>
@@ -716,6 +716,223 @@
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **HttpCodeDetail** (list) - 见 **HttpCodeInfoV2** 模型定义</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **HttpCodeInfoV2**</span>
+<span class="sd">        - **Http1XX** (dict) - 见 **HttpCodeV2Detail** 模型定义</span>
+<span class="sd">        - **Http2XX** (dict) - 见 **HttpCodeV2Detail** 模型定义</span>
+<span class="sd">        - **Http3XX** (dict) - 见 **HttpCodeV2Detail** 模型定义</span>
+<span class="sd">        - **Http4XX** (dict) - 见 **HttpCodeV2Detail** 模型定义</span>
+<span class="sd">        - **Http5XX** (dict) - 见 **HttpCodeV2Detail** 模型定义</span>
+<span class="sd">        - **Http6XX** (dict) - 见 **HttpCodeV2Detail** 模型定义</span>
+<span class="sd">        - **Time** (int) - 带宽获取的时间点。格式：时间戳</span>
+
+
+<span class="sd">        **HttpCodeV2Detail**</span>
+<span class="sd">        - **Http100** (int) - http100数量</span>
+<span class="sd">        - **Http101** (int) - http101数量</span>
+<span class="sd">        - **Http102** (int) - http102数量</span>
+<span class="sd">        - **Http200** (int) - http200数量</span>
+<span class="sd">        - **Http201** (int) - http201数量</span>
+<span class="sd">        - **Http202** (int) - http202数量</span>
+<span class="sd">        - **Http203** (int) - http203数量</span>
+<span class="sd">        - **Http204** (int) - http204数量</span>
+<span class="sd">        - **Http205** (int) - http205数量</span>
+<span class="sd">        - **Http206** (int) - http206数量</span>
+<span class="sd">        - **Http207** (int) - http207数量</span>
+<span class="sd">        - **Http300** (int) - http300数量</span>
+<span class="sd">        - **Http301** (int) - http301数量</span>
+<span class="sd">        - **Http302** (int) - http302数量</span>
+<span class="sd">        - **Http303** (int) - http303数量</span>
+<span class="sd">        - **Http304** (int) - http304数量</span>
+<span class="sd">        - **Http305** (int) - http305数量</span>
+<span class="sd">        - **Http306** (int) - http306数量</span>
+<span class="sd">        - **Http307** (int) - http307数量</span>
+<span class="sd">        - **Http400** (int) - http400数量</span>
+<span class="sd">        - **Http401** (int) - http401数量</span>
+<span class="sd">        - **Http402** (int) - http402数量</span>
+<span class="sd">        - **Http403** (int) - http403数量</span>
+<span class="sd">        - **Http404** (int) - http404数量</span>
+<span class="sd">        - **Http405** (int) - http405数量</span>
+<span class="sd">        - **Http406** (int) - http406数量</span>
+<span class="sd">        - **Http407** (int) - http407数量</span>
+<span class="sd">        - **Http408** (int) - http408数量</span>
+<span class="sd">        - **Http409** (int) - http409数量</span>
+<span class="sd">        - **Http410** (int) - http410数量</span>
+<span class="sd">        - **Http411** (int) - http411数量</span>
+<span class="sd">        - **Http412** (int) - http412数量</span>
+<span class="sd">        - **Http413** (int) - http413数量</span>
+<span class="sd">        - **Http414** (int) - http414数量</span>
+<span class="sd">        - **Http415** (int) - http415数量</span>
+<span class="sd">        - **Http416** (int) - http416数量</span>
+<span class="sd">        - **Http417** (int) - http417数量</span>
+<span class="sd">        - **Http418** (int) - http418数量</span>
+<span class="sd">        - **Http421** (int) - http421数量</span>
+<span class="sd">        - **Http422** (int) - http422数量</span>
+<span class="sd">        - **Http423** (int) - http423数量</span>
+<span class="sd">        - **Http424** (int) - http424数量</span>
+<span class="sd">        - **Http425** (int) - http425数量</span>
+<span class="sd">        - **Http426** (int) - http426数量</span>
+<span class="sd">        - **Http449** (int) - http449数量</span>
+<span class="sd">        - **Http451** (int) - http451数量</span>
+<span class="sd">        - **Http500** (int) - http500数量</span>
+<span class="sd">        - **Http501** (int) - http501数量</span>
+<span class="sd">        - **Http502** (int) - http502数量</span>
+<span class="sd">        - **Http503** (int) - http503数量</span>
+<span class="sd">        - **Http504** (int) - http504数量</span>
+<span class="sd">        - **Http505** (int) - http505数量</span>
+<span class="sd">        - **Http506** (int) - http506数量</span>
+<span class="sd">        - **Http507** (int) - http507数量</span>
+<span class="sd">        - **Http509** (int) - http509数量</span>
+<span class="sd">        - **Http510** (int) - http510数量</span>
+<span class="sd">        - **Time** (int) - 时间</span>
+<span class="sd">        - **Total** (int) - 当前分组的总状态码数</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetUcdnDomainHttpCodeV2RequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetUcdnDomainHttpCodeV2&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetUcdnDomainHttpCodeV2ResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UCDNClient.get_ucdn_domain_info_list"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ucdn.client.UCDNClient.get_ucdn_domain_info_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_ucdn_domain_info_list</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;GetUcdnDomainInfoList - 获取域名基本信息</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **PageIndex** (int) - 返回第几页，不填默认是第1页</span>
+<span class="sd">        - **PageSize** (int) - 分页的大小，不填默认每页20个</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **DomainInfoList** (list) - 见 **DomainBaseInfo** 模型定义</span>
+<span class="sd">        - **TotalCount** (int) - 账户下域名总个数</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **DomainBaseInfo**</span>
+<span class="sd">        - **Domain** (str) - 域名</span>
+<span class="sd">        - **DomainId** (str) - 域名的资源id</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetUcdnDomainInfoListRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetUcdnDomainInfoList&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetUcdnDomainInfoListResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UCDNClient.get_ucdn_domain_log"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ucdn.client.UCDNClient.get_ucdn_domain_log">[docs]</a>    <span class="k">def</span> <span class="nf">get_ucdn_domain_log</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;GetUcdnDomainLog - 获取加速域名原始日志</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。</span>
+<span class="sd">        - **DomainId** (list) - 域名ID，创建加速域名时生成。默认全部域名</span>
+<span class="sd">        - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。</span>
+<span class="sd">        - **Type** (int) - 查询粒度  0=default(没有粒度) 1=按小时  2=按天</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **LogSet** (list) - 见 **LogSetList** 模型定义</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **LogSetList**</span>
+<span class="sd">        - **Domain** (str) - 域名</span>
+<span class="sd">        - **Logs** (list) - 见 **LogSetInfo** 模型定义</span>
+
+
+<span class="sd">        **LogSetInfo**</span>
+<span class="sd">        - **AbroadLog** (list) - 国外日志url列表</span>
+<span class="sd">        - **CnLog** (list) - 国内日志url列表</span>
+<span class="sd">        - **Time** (int) - 日志时间UnixTime</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetUcdnDomainLogRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetUcdnDomainLog&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetUcdnDomainLogResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UCDNClient.get_ucdn_domain_origin_http_code"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ucdn.client.UCDNClient.get_ucdn_domain_origin_http_code">[docs]</a>    <span class="k">def</span> <span class="nf">get_ucdn_domain_origin_http_code</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;GetUcdnDomainOriginHttpCode - 获取域名源站状态码监控</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Type** (int) - (Required) 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度，3表示按照1分钟粒度）</span>
+<span class="sd">        - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外，只支持国内</span>
+<span class="sd">        - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。如没有赋值，则返回缺少参 数错误，如果没有EndTime，BeginTime也可以不赋值，EndTime默认当前时间，BeginTime 默认前一天的当前时间。</span>
+<span class="sd">        - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名</span>
+<span class="sd">        - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **HttpCodeDetail** (list) - 见 **HttpCodeInfo** 模型定义</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **HttpCodeInfo**</span>
+<span class="sd">        - **HttpFiveXX** (int) - 5xx数量</span>
+<span class="sd">        - **HttpFourXX** (int) - 4xx数量</span>
+<span class="sd">        - **HttpOneXX** (int) - 1xx数量</span>
+<span class="sd">        - **HttpThreeXX** (int) - 3xx数量</span>
+<span class="sd">        - **HttpTwoXX** (int) - 2xx数量</span>
+<span class="sd">        - **Time** (int) - 带宽获取的时间点。格式：时间戳</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetUcdnDomainOriginHttpCodeRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetUcdnDomainOriginHttpCode&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetUcdnDomainOriginHttpCodeResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UCDNClient.get_ucdn_domain_origin_http_code_detail"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ucdn.client.UCDNClient.get_ucdn_domain_origin_http_code_detail">[docs]</a>    <span class="k">def</span> <span class="nf">get_ucdn_domain_origin_http_code_detail</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;GetUcdnDomainOriginHttpCodeDetail - 获取域名源站详细状态码监控</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **BeginTime** (int) - (Required) 查询的起始时间，格式为Unix Timestamp。</span>
+<span class="sd">        - **EndTime** (int) - (Required) 查询的结束时间，格式为Unix Timestamp。</span>
+<span class="sd">        - **Type** (int) - (Required) 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天粒度，3表示按照一分钟粒度）</span>
+<span class="sd">        - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外，只支持国内</span>
+<span class="sd">        - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **HttpCodeV2Detail** (list) - 见 **HttpCodeV2Detail** 模型定义</span>
 
 <span class="sd">        **Response Model**</span>
 
@@ -780,101 +997,18 @@
 <span class="sd">        - **Total** (int) - 当前分组的总状态码数</span>
 
 
-<span class="sd">        **HttpCodeInfoV2**</span>
-<span class="sd">        - **Http1XX** (dict) - 见 **HttpCodeV2Detail** 模型定义</span>
-<span class="sd">        - **Http2XX** (dict) - 见 **HttpCodeV2Detail** 模型定义</span>
-<span class="sd">        - **Http3XX** (dict) - 见 **HttpCodeV2Detail** 模型定义</span>
-<span class="sd">        - **Http4XX** (dict) - 见 **HttpCodeV2Detail** 模型定义</span>
-<span class="sd">        - **Http5XX** (dict) - 见 **HttpCodeV2Detail** 模型定义</span>
-<span class="sd">        - **Http6XX** (dict) - 见 **HttpCodeV2Detail** 模型定义</span>
-<span class="sd">        - **Time** (int) - 带宽获取的时间点。格式：时间戳</span>
-
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetUcdnDomainHttpCodeV2RequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetUcdnDomainOriginHttpCodeDetailRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
-        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetUcdnDomainHttpCodeV2&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetUcdnDomainHttpCodeV2ResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="UCDNClient.get_ucdn_domain_info_list"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ucdn.client.UCDNClient.get_ucdn_domain_info_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_ucdn_domain_info_list</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;GetUcdnDomainInfoList - 获取域名基本信息</span>
-
-<span class="sd">        **Request**</span>
-
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
-<span class="sd">        - **PageIndex** (int) - 返回第几页，不填默认是第1页</span>
-<span class="sd">        - **PageSize** (int) - 分页的大小，不填默认每页20个</span>
-
-<span class="sd">        **Response**</span>
-
-<span class="sd">        - **DomainInfoList** (list) - 见 **DomainBaseInfo** 模型定义</span>
-<span class="sd">        - **TotalCount** (int) - 账户下域名总个数</span>
-
-<span class="sd">        **Response Model**</span>
-
-<span class="sd">        **DomainBaseInfo**</span>
-<span class="sd">        - **Domain** (str) - 域名</span>
-<span class="sd">        - **DomainId** (str) - 域名的资源id</span>
-
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
-        <span class="p">}</span>
-        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetUcdnDomainInfoListRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-
-        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetUcdnDomainInfoList&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetUcdnDomainInfoListResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="UCDNClient.get_ucdn_domain_log"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ucdn.client.UCDNClient.get_ucdn_domain_log">[docs]</a>    <span class="k">def</span> <span class="nf">get_ucdn_domain_log</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;GetUcdnDomainLog - 获取加速域名原始日志</span>
-
-<span class="sd">        **Request**</span>
-
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。</span>
-<span class="sd">        - **DomainId** (list) - 域名ID，创建加速域名时生成。默认全部域名</span>
-<span class="sd">        - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。</span>
-<span class="sd">        - **Type** (int) - 查询粒度  0=default(没有粒度) 1=按小时  2=按天</span>
-
-<span class="sd">        **Response**</span>
-
-<span class="sd">        - **LogSet** (list) - 见 **LogSetList** 模型定义</span>
-
-<span class="sd">        **Response Model**</span>
-
-<span class="sd">        **LogSetList**</span>
-<span class="sd">        - **Domain** (str) - 域名</span>
-<span class="sd">        - **Logs** (list) - 见 **LogSetInfo** 模型定义</span>
-
-
-<span class="sd">        **LogSetInfo**</span>
-<span class="sd">        - **AbroadLog** (list) - 国外日志url列表</span>
-<span class="sd">        - **CnLog** (list) - 国内日志url列表</span>
-<span class="sd">        - **Time** (int) - 日志时间UnixTime</span>
-
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
-        <span class="p">}</span>
-        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetUcdnDomainLogRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-
-        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetUcdnDomainLog&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetUcdnDomainLogResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetUcdnDomainOriginHttpCodeDetail&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetUcdnDomainOriginHttpCodeDetailResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span>
+            <span class="n">resp</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="UCDNClient.get_ucdn_domain_origin_request_num"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ucdn.client.UCDNClient.get_ucdn_domain_origin_request_num">[docs]</a>    <span class="k">def</span> <span class="nf">get_ucdn_domain_origin_request_num</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -919,7 +1053,7 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
 <span class="sd">        - **DomainId** (str) - (Required) 域名ID，创建加速域名时生成。</span>
 
 <span class="sd">        **Response**</span>
@@ -944,7 +1078,7 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
 <span class="sd">        - **BeginTime** (int) - (Required) 查询的起始时间，格式为Unix Timestamp</span>
 <span class="sd">        - **EndTime** (int) - (Required) 查询的结束时间，格式为Unix Timestamp</span>
 <span class="sd">        - **Type** (int) - (Required) 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度, 3=按1分钟）</span>
@@ -981,7 +1115,7 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
 <span class="sd">        - **BeginTime** (int) - (Required) 查询的起始时间，格式为Unix Timestamp</span>
 <span class="sd">        - **EndTime** (int) - (Required) 查询的结束时间，格式为Unix Timestamp</span>
 <span class="sd">        - **Type** (int) - (Required) 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度, 3=按1分钟）</span>
@@ -1018,7 +1152,7 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
 <span class="sd">        - **AccountType** (str) - 指定按项目查询，还是按整个账户查询  取值 top 表示按整个账户查询，取值org表示按项目查询</span>
 <span class="sd">        - **Areacode** (str) - 查询流量区域 cn代表国内 abroad代表海外，默认全部区域</span>
 <span class="sd">        - **BeginTime** (int) - 查询的起始日期，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值</span>
@@ -1054,7 +1188,7 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
 <span class="sd">        - **Type** (int) - (Required) 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度）</span>
 <span class="sd">        - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外，只支持国内</span>
 <span class="sd">        - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。如没有赋值，则返回缺少参 数错误，如果没有EndTime，BeginTime也可以不赋值，EndTime默认当前时间，BeginTime 默认前一天的当前时间。</span>
@@ -1090,7 +1224,7 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
 <span class="sd">        - **Type** (int) - (Required) 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度，3表示按照1分钟粒度）</span>
 <span class="sd">        - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外，只支持国内</span>
 <span class="sd">        - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。如没有赋值，则返回缺少参 数错误，如果没有EndTime，BeginTime也可以不赋值，EndTime默认当前时间，BeginTime 默认前一天的当前时间。</span>
@@ -1126,13 +1260,13 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
 <span class="sd">        - **BeginTime** (int) - (Required) 查询的起始日期，格式为Unix Timestamp</span>
 <span class="sd">        - **EndTime** (int) - (Required) 查询的结束日期，格式为Unix Timestamp</span>
 <span class="sd">        - **Type** (int) - (Required) 时间粒度0 (按5分钟粒度)1 (按小时粒度)2(按天粒度)3(按分钟粒度）</span>
 <span class="sd">        - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名</span>
-<span class="sd">        - **Isp** (str) - 运营商代码，一次只能查询一个运营商，不传递默认取所有运营商</span>
-<span class="sd">        - **Province** (list) - 省份代码，可以传多个，不传则查询所有省份</span>
+<span class="sd">        - **Isp** (str) - 运营商代码（运营商拼音），一次只能查询一个运营商，不传递默认取所有运营商</span>
+<span class="sd">        - **Province** (list) - 省份代码（省份拼音），可以传多个，不传则查询所有省份</span>
 
 <span class="sd">        **Response**</span>
 
@@ -1140,15 +1274,15 @@
 
 <span class="sd">        **Response Model**</span>
 
+<span class="sd">        **ProIspBandwidthSet**</span>
+<span class="sd">        - **BandwidthTrafficList** (list) - 见 **ProIspBandwidthList** 模型定义</span>
+<span class="sd">        - **Province** (str) - 省份代码</span>
+
+
 <span class="sd">        **ProIspBandwidthList**</span>
 <span class="sd">        - **CdnBandwidth** (float) - 返回值返回指定时间区间内CDN的带宽峰值，单位Mbps</span>
 <span class="sd">        - **Time** (int) - 带宽获取的时间点。格式：时间戳</span>
 <span class="sd">        - **Traffic** (float) - 对应时间粒度的流量，单位字节</span>
-
-
-<span class="sd">        **ProIspBandwidthSet**</span>
-<span class="sd">        - **BandwidthTrafficList** (list) - 见 **ProIspBandwidthList** 模型定义</span>
-<span class="sd">        - **Province** (str) - 省份代码</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1183,14 +1317,14 @@
 
 <span class="sd">        **Response Model**</span>
 
-<span class="sd">        **ProIspRequestListV2**</span>
-<span class="sd">        - **CdnRequest** (float) - 返回值返回指定时间区间内的请求数</span>
-<span class="sd">        - **Time** (int) - 带宽获取的时间点。格式：时间戳</span>
-
-
 <span class="sd">        **ProIspRequestNumSetV2**</span>
 <span class="sd">        - **Province** (str) - 省份代码</span>
 <span class="sd">        - **RequestList** (list) - 见 **ProIspRequestListV2** 模型定义</span>
+
+
+<span class="sd">        **ProIspRequestListV2**</span>
+<span class="sd">        - **CdnRequest** (float) - 返回值返回指定时间区间内的请求数</span>
+<span class="sd">        - **Time** (int) - 带宽获取的时间点。格式：时间戳</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1295,6 +1429,38 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;PrefetchNewUcdnDomainCache&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">PrefetchNewUcdnDomainCacheResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="UCDNClient.query_ip_location"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ucdn.client.UCDNClient.query_ip_location">[docs]</a>    <span class="k">def</span> <span class="nf">query_ip_location</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;QueryIpLocation - 查询IP信息</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **Ip** (list) - (Required) ip列表</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **Data** (list) - 见 **IpLocationInfo** 模型定义</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **IpLocationInfo**</span>
+<span class="sd">        - **Area** (str) - 地区</span>
+<span class="sd">        - **City** (str) - 城市</span>
+<span class="sd">        - **Exist** (bool) - ip是否存在</span>
+<span class="sd">        - **Ip** (str) - 客户端请求的ip</span>
+<span class="sd">        - **Isp** (str) - 运营商</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">QueryIpLocationRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;QueryIpLocation&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">QueryIpLocationResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="UCDNClient.refresh_new_ucdn_domain_cache"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ucdn.client.UCDNClient.refresh_new_ucdn_domain_cache">[docs]</a>    <span class="k">def</span> <span class="nf">refresh_new_ucdn_domain_cache</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -1302,9 +1468,9 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
 <span class="sd">        - **Type** (str) - (Required) 刷新类型，file代表文件刷新，dir 代表路径刷新</span>
-<span class="sd">        - **UrlList** (list) - (Required) 刷新多个URL列表时，一次最多提交30个。必须以”http://域名/”开始。目录要以”/”结尾， 如刷新目录a下所有文件，格式为：http://abc.ucloud.cn/a/；如刷新文件目录a下面img.png文件， 格式为http://abc.ucloud.cn/a/img.png。请正确提交需要刷新的域名</span>
+<span class="sd">        - **UrlList** (list) - (Required) 需要刷新的URL，n 从自然数0开始，刷新多个URL列表时，一次最多提交30个。必须以”http://域名/”开始。目录要以”/”结尾， 如刷新目录a下所有文件，格式为：http://abc.ucloud.cn/a/；如刷新文件目录a下面img.png文件， 格式为http://abc.ucloud.cn/a/img.png。请正确提交需要刷新的域名</span>
 
 <span class="sd">        **Response**</span>
 
@@ -1407,7 +1573,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

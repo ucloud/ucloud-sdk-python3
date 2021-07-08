@@ -137,17 +137,17 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **CPU** (int) - (Required) 虚拟CPU核数。可选参数：2-64（具体机型与CPU的对应关系参照控制台）。默认值: 4。</span>
 <span class="sd">        - **ChargeType** (str) - (Required) 计费模式。枚举值为： \\ &gt; Year，按年付费； \\ &gt; Month，按月付费；\\ &gt; Dynamic，按小时预付费 \\ &gt; Postpay，按小时后付费（支持关机不收费，目前仅部分可用区支持，请联系您的客户经理） \\ 默认为月付</span>
 <span class="sd">        - **ClusterId** (str) - (Required) UK8S集群ID。 可从UK8S控制台获取。</span>
-<span class="sd">        - **Count** (int) - (Required) 最大创建Node节点数量，取值范围是[1,10]。</span>
+<span class="sd">        - **Count** (int) - (Required) 创建Node节点数量，取值范围是[1,50]。</span>
 <span class="sd">        - **Mem** (int) - (Required) 内存大小。单位：MB。范围 ：[4096, 262144]，取值为1024的倍数（可选范围参考控制台）。默认值：8192</span>
 <span class="sd">        - **Password** (str) - (Required) Node节点密码。请遵照 `字段规范 &lt;https://docs.ucloud.cn/api/uhost-api/specification&gt;`_ 设定密码。密码需使用base64进行编码，如下：# echo -n Password1 | base64</span>
-<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **BootDiskType** (str) - 磁盘类型。请参考 `磁盘类型 &lt;https://docs.ucloud.cn/api/uhost-api/disk_type&gt;`_ 。默认为SSD云盘</span>
-<span class="sd">        - **DataDiskSize** (str) - 数据磁盘大小，单位GB。默认0。范围 ：[20, 1000]</span>
+<span class="sd">        - **DataDiskSize** (int) - 数据磁盘大小，单位GB。默认0。范围 ：[20, 1000]</span>
 <span class="sd">        - **DataDiskType** (str) - 磁盘类型。请参考 `磁盘类型 &lt;https://docs.ucloud.cn/api/uhost-api/disk_type&gt;`_ 。默认为SSD云盘</span>
 <span class="sd">        - **DisableSchedule** (bool) - 用于标示添加完节点后是否将节点临时禁用. 传入 &quot;true&quot; 表示禁用,传入其它或不传表示不禁用</span>
 <span class="sd">        - **GPU** (int) - GPU卡核心数。仅GPU机型支持此字段（可选范围与MachineType+GpuType相关）</span>
@@ -165,7 +165,6 @@
 
 <span class="sd">        **Response**</span>
 
-<span class="sd">        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息。</span>
 <span class="sd">        - **NodeIds** (list) - Node实例Id集合</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -356,6 +355,75 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeUK8SImage&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeUK8SImageResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="UK8SClient.describe_uk8s_node"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uk8s.client.UK8SClient.describe_uk8s_node">[docs]</a>    <span class="k">def</span> <span class="nf">describe_uk8s_node</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DescribeUK8SNode - 用于获取 UK8S 节点详情</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **ClusterId** (str) - (Required) UK8S 集群 Id</span>
+<span class="sd">        - **Name** (str) - (Required) K8S 节点IP或者节点ID</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **Action** (str) - 操作名称</span>
+<span class="sd">        - **AllocatedPodCount** (int) - 已分配到当前节点的 Pod 数量</span>
+<span class="sd">        - **Annotations** (list) - 字符串数组，每一项是类似 &quot;node.alpha.kubernetes.io/ttl=0&quot; 的注解</span>
+<span class="sd">        - **CPUCapacity** (str) - 节点 CPU 总量</span>
+<span class="sd">        - **CPULimits** (str) - 节点上已分配 Pod 的 CPU 限制值</span>
+<span class="sd">        - **CPULimitsFraction** (str) - 节点上已分配 Pod 的 CPU 限制值占 CPU 总量的比例</span>
+<span class="sd">        - **CPURequests** (str) - 节点上已分配 Pod 的 CPU 请求量</span>
+<span class="sd">        - **CPURequestsFraction** (str) - 节点上已分配 Pod 的 CPU 请求量占 CPU 总量的比例</span>
+<span class="sd">        - **Conditions** (list) - 见 **K8SNodeCondition** 模型定义</span>
+<span class="sd">        - **ContainerImages** (list) - 节点上镜像名称数组</span>
+<span class="sd">        - **ContainerRuntimeVersion** (str) - 容器运行时版本，如：&quot;docker://18.9.9&quot;</span>
+<span class="sd">        - **CreationTimestamp** (int) - 时间戳，单位是 秒</span>
+<span class="sd">        - **Hostname** (str) - 主机名</span>
+<span class="sd">        - **InternalIP** (str) - 内部 IP 地址</span>
+<span class="sd">        - **KernelVersion** (str) - 内核版本，如：&quot;4.19.0-6.el7.ucloud.x86_64&quot;</span>
+<span class="sd">        - **KubeProxyVersion** (str) - kubeproxy 版本</span>
+<span class="sd">        - **KubeletVersion** (str) - kubelet 版本</span>
+<span class="sd">        - **Labels** (list) - 字符串数组，每一项是类似 &quot;kubernetes.io/arch=amd64&quot; 的标签</span>
+<span class="sd">        - **MemoryCapacity** (str) - 节点内存总量</span>
+<span class="sd">        - **MemoryLimits** (str) - 节点上已分配 Pod 的内存限制量</span>
+<span class="sd">        - **MemoryLimitsFraction** (str) - 节点上已分配 Pod 的内存限制量占内存总量的比例，如返回值为 &quot;18&quot;，则意味着限制量占总量的 18%</span>
+<span class="sd">        - **MemoryRequests** (str) - 节点上已分配 Pod 的内存请求量</span>
+<span class="sd">        - **MemoryRequestsFraction** (str) - 节点上已分配 Pod 的内存请求量占内存总量的比例，如返回值为 &quot;4.5&quot;，则意味着请求量占总量的 4.5%</span>
+<span class="sd">        - **Message** (str) - 操作出错时的提示信息</span>
+<span class="sd">        - **Name** (str) - 节点名称</span>
+<span class="sd">        - **OSImage** (str) - 操作系统类型，如：&quot;CentOS Linux 7 (Core)&quot;</span>
+<span class="sd">        - **PodCapacity** (int) - 节点允许的可分配 Pod 最大数量</span>
+<span class="sd">        - **ProviderID** (str) - 字符串，如：&quot;UCloud://cn-sh2-02//uk8s-vsc0vgob-n-mpzxc&quot;</span>
+<span class="sd">        - **RetCode** (int) - 返回码</span>
+<span class="sd">        - **Taints** (list) - 字符串数组，每一项是类似 &quot;node-role.kubernetes.io/master:NoSchedule&quot; 的污点</span>
+<span class="sd">        - **Unschedulable** (bool) - 是否禁止调度</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **K8SNodeCondition**</span>
+<span class="sd">        - **LastProbeTime** (str) - 最后一次上报状态的时间</span>
+<span class="sd">        - **LastTransitionTime** (str) - 最后一次状态转变时间</span>
+<span class="sd">        - **Message** (str) - 状态变化的描述信息</span>
+<span class="sd">        - **Reason** (str) - 状态变化的原因</span>
+<span class="sd">        - **Status** (str) - 状态，False、True</span>
+<span class="sd">        - **Type** (str) - Condition 类型，如 MemoryPressure、DiskPressure、PIDPressure、Ready</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeUK8SNodeRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeUK8SNode&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeUK8SNodeResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="UK8SClient.list_uk8s_cluster_node_v2"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uk8s.client.UK8SClient.list_uk8s_cluster_node_v2">[docs]</a>    <span class="k">def</span> <span class="nf">list_uk8s_cluster_node_v2</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -390,7 +458,7 @@
 <span class="sd">        - **NodeId** (str) - NodeId，Node在UK8S处的唯一标示，如uk8s-reewqe5-sdasadsda</span>
 <span class="sd">        - **NodeLogInfo** (str) - 加节点时判断是否没有资源，如果返回NORESOURCE则代表没有资源了</span>
 <span class="sd">        - **NodeRole** (str) - node角色，枚举值为master、node</span>
-<span class="sd">        - **NodeStatus** (str) - Node的状态</span>
+<span class="sd">        - **NodeStatus** (str) - Node的状态：枚举值：初始化：&quot;Initializing&quot;；启动中：&quot;Starting&quot;；运行：&quot;Running&quot;；停止中：&quot;Stopping&quot;；停止：&quot;Stopped&quot;；待删除：&quot;ToBeDeleted&quot;；删除中：&quot;Deleting&quot;；异常：&quot;Error&quot;；安装失败：&quot;Install Fail&quot;；</span>
 <span class="sd">        - **OsName** (str) - Node节点的镜像名称。</span>
 <span class="sd">        - **OsType** (str) - Node节点的操作系统类别，如Linux或Windows。</span>
 <span class="sd">        - **Unschedulable** (bool) - 是否允许Pod调度到该节点，枚举值为true或false。</span>
@@ -430,8 +498,8 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **ClusterId** (str) - UK8S集群ID</span>
 <span class="sd">        - **Limit** (int) - 返回数据长度，默认为20。</span>
 <span class="sd">        - **Offset** (int) - 列表起始位置偏移量，默认为0。</span>
@@ -446,6 +514,7 @@
 <span class="sd">        **ClusterSet**</span>
 <span class="sd">        - **ApiServer** (str) - 集群apiserver地址</span>
 <span class="sd">        - **ClusterId** (str) - 集群ID</span>
+<span class="sd">        - **ClusterLogInfo** (str) - 创建集群时判断如果为NORESOURCE则为没资源，否则为空</span>
 <span class="sd">        - **ClusterName** (str) - 资源名字</span>
 <span class="sd">        - **CreateTime** (int) - 创建时间</span>
 <span class="sd">        - **ExternalApiServer** (str) - 集群外部apiserver地址</span>
@@ -454,7 +523,7 @@
 <span class="sd">        - **NodeCount** (int) - Node节点数量</span>
 <span class="sd">        - **PodCIDR** (str) - Pod网段</span>
 <span class="sd">        - **ServiceCIDR** (str) - 服务网段</span>
-<span class="sd">        - **Status** (str) - 状态</span>
+<span class="sd">        - **Status** (str) - 集群状态，枚举值：初始化：&quot;INITIALIZING&quot;；启动中：&quot;STARTING&quot;；创建失败：&quot;CREATEFAILED&quot;；正常运行：&quot;RUNNING&quot;；添加节点：&quot;ADDNODE&quot;；删除节点：&quot;DELNODE&quot;；删除中：&quot;DELETING&quot;；删除失败：&quot;DELETEFAILED&quot;；错误：&quot;ERROR&quot;；升级插件：&quot;UPDATE_PLUGIN&quot;；更新插件信息：&quot;UPDATE_PLUGIN_INFO&quot;；异常：&quot;ABNORMAL&quot;；升级集群中：&quot;UPGRADING&quot;；容器运行时切换：&quot;CONVERTING&quot;</span>
 <span class="sd">        - **SubnetId** (str) - 所属子网</span>
 <span class="sd">        - **VPCId** (str) - 所属VPC</span>
 
@@ -533,7 +602,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
