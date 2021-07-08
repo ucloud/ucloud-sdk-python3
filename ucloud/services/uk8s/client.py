@@ -106,15 +106,15 @@ class UK8SClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **CPU** (str) - (Required) 虚拟CPU核数。可选参数：2-64（具体机型与CPU的对应关系参照控制台）。默认值: 4。
+        - **CPU** (int) - (Required) 虚拟CPU核数。可选参数：2-64（具体机型与CPU的对应关系参照控制台）。默认值: 4。
         - **ChargeType** (str) - (Required) 计费模式。枚举值为： \\ > Year，按年付费； \\ > Month，按月付费；\\ > Dynamic，按小时预付费 \\ > Postpay，按小时后付费（支持关机不收费，目前仅部分可用区支持，请联系您的客户经理） \\ 默认为月付
         - **ClusterId** (str) - (Required) UK8S集群ID。 可从UK8S控制台获取。
-        - **Count** (str) - (Required) 创建Node节点数量，取值范围是[1,50]。
-        - **Mem** (str) - (Required) 内存大小。单位：MB。范围 ：[4096, 262144]，取值为1024的倍数（可选范围参考控制台）。默认值：8192
+        - **Count** (int) - (Required) 创建Node节点数量，取值范围是[1,50]。
+        - **Mem** (int) - (Required) 内存大小。单位：MB。范围 ：[4096, 262144]，取值为1024的倍数（可选范围参考控制台）。默认值：8192
         - **Password** (str) - (Required) Node节点密码。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定密码。密码需使用base64进行编码，如下：# echo -n Password1 | base64
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BootDiskType** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。默认为SSD云盘
-        - **DataDiskSize** (str) - 数据磁盘大小，单位GB。默认0。范围 ：[20, 1000]
+        - **DataDiskSize** (int) - 数据磁盘大小，单位GB。默认0。范围 ：[20, 1000]
         - **DataDiskType** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。默认为SSD云盘
         - **DisableSchedule** (bool) - 用于标示添加完节点后是否将节点临时禁用. 传入 "true" 表示禁用,传入其它或不传表示不禁用
         - **GPU** (int) - GPU卡核心数。仅GPU机型支持此字段（可选范围与MachineType+GpuType相关）
