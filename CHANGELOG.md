@@ -1,3 +1,9 @@
+## 0.11.6 (2021-07-08)
+
+ENHANCEMENTS:
+
+- Update all APIs of `UK8S` (#145)
+
 ## 0.11.5 (2021-07-02)
 
 ENHANCEMENTS:
