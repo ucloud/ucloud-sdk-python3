@@ -1396,6 +1396,38 @@ class UCDNClient(Client):
         resp = self.invoke("PrefetchNewUcdnDomainCache", d, **kwargs)
         return apis.PrefetchNewUcdnDomainCacheResponseSchema().loads(resp)
 
+    def query_ip_location(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """QueryIpLocation - 查询IP信息
+
+        **Request**
+
+        - **Ip** (list) - (Required) ip列表
+
+        **Response**
+
+        - **Data** (list) - 见 **IpLocationInfo** 模型定义
+
+        **Response Model**
+
+        **IpLocationInfo**
+        - **Area** (str) - 地区
+        - **City** (str) - 城市
+        - **Exist** (bool) - ip是否存在
+        - **Ip** (str) - 客户端请求的ip
+        - **Isp** (str) - 运营商
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.QueryIpLocationRequestSchema().dumps(d)
+
+        resp = self.invoke("QueryIpLocation", d, **kwargs)
+        return apis.QueryIpLocationResponseSchema().loads(resp)
+
     def refresh_new_ucdn_domain_cache(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:

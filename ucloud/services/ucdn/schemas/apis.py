@@ -931,6 +931,31 @@ class PrefetchNewUcdnDomainCacheResponseSchema(schema.ResponseSchema):
 
 
 """
+API: QueryIpLocation
+
+查询IP信息
+"""
+
+
+class QueryIpLocationRequestSchema(schema.RequestSchema):
+    """QueryIpLocation - 查询IP信息"""
+
+    fields = {
+        "Ip": fields.List(fields.Str()),
+    }
+
+
+class QueryIpLocationResponseSchema(schema.ResponseSchema):
+    """QueryIpLocation - 查询IP信息"""
+
+    fields = {
+        "Data": fields.List(
+            models.IpLocationInfoSchema(), required=True, load_from="Data"
+        ),
+    }
+
+
+"""
 API: RefreshNewUcdnDomainCache
 
 刷新缓存

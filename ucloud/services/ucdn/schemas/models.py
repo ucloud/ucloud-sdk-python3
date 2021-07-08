@@ -232,6 +232,25 @@ class CacheKeyInfoSchema(schema.ResponseSchema):
     }
 
 
+class AccessControlConfSchema(schema.ResponseSchema):
+    """AccessControlConf - 访问控制配置参数"""
+
+    fields = {
+        "IpBlackList": fields.List(fields.Str()),
+        "ReferConf": ReferConfSchema(),
+    }
+
+
+class AdvancedConfSchema(schema.ResponseSchema):
+    """AdvancedConf - 域名高级配置"""
+
+    fields = {
+        "Http2Https": fields.Bool(required=False, load_from="Http2Https"),
+        "HttpClientHeader": fields.List(fields.Str()),
+        "HttpOriginHeader": fields.List(fields.Str()),
+    }
+
+
 class OriginConfSchema(schema.ResponseSchema):
     """OriginConf - 回源配置"""
 
@@ -258,25 +277,6 @@ class OriginConfSchema(schema.ResponseSchema):
         "OriginProtocol": fields.Str(
             required=False, load_from="OriginProtocol"
         ),
-    }
-
-
-class AdvancedConfSchema(schema.ResponseSchema):
-    """AdvancedConf - 域名高级配置"""
-
-    fields = {
-        "Http2Https": fields.Bool(required=False, load_from="Http2Https"),
-        "HttpClientHeader": fields.List(fields.Str()),
-        "HttpOriginHeader": fields.List(fields.Str()),
-    }
-
-
-class AccessControlConfSchema(schema.ResponseSchema):
-    """AccessControlConf - 访问控制配置参数"""
-
-    fields = {
-        "IpBlackList": fields.List(fields.Str()),
-        "ReferConf": ReferConfSchema(),
     }
 
 
@@ -443,4 +443,16 @@ class TrafficSetSchema(schema.ResponseSchema):
         "TrafficLeft": fields.Float(required=False, load_from="TrafficLeft"),
         "TrafficTotal": fields.Float(required=False, load_from="TrafficTotal"),
         "TrafficUsed": fields.Float(required=False, load_from="TrafficUsed"),
+    }
+
+
+class IpLocationInfoSchema(schema.ResponseSchema):
+    """IpLocationInfo - ip详细信息"""
+
+    fields = {
+        "Area": fields.Str(required=False, load_from="Area"),
+        "City": fields.Str(required=False, load_from="City"),
+        "Exist": fields.Bool(required=False, load_from="Exist"),
+        "Ip": fields.Str(required=False, load_from="Ip"),
+        "Isp": fields.Str(required=False, load_from="Isp"),
     }
