@@ -98,11 +98,11 @@ class AddUK8SUHostNodeRequestSchema(schema.RequestSchema):
 
     fields = {
         "BootDiskType": fields.Str(required=False, dump_to="BootDiskType"),
-        "CPU": fields.Str(required=True, dump_to="CPU"),
+        "CPU": fields.Int(required=True, dump_to="CPU"),
         "ChargeType": fields.Str(required=True, dump_to="ChargeType"),
         "ClusterId": fields.Str(required=True, dump_to="ClusterId"),
-        "Count": fields.Str(required=True, dump_to="Count"),
-        "DataDiskSize": fields.Str(required=False, dump_to="DataDiskSize"),
+        "Count": fields.Int(required=True, dump_to="Count"),
+        "DataDiskSize": fields.Int(required=False, dump_to="DataDiskSize"),
         "DataDiskType": fields.Str(required=False, dump_to="DataDiskType"),
         "DisableSchedule": fields.Bool(
             required=False, dump_to="DisableSchedule"
@@ -115,7 +115,7 @@ class AddUK8SUHostNodeRequestSchema(schema.RequestSchema):
         "Labels": fields.Str(required=False, dump_to="Labels"),
         "MachineType": fields.Str(required=False, dump_to="MachineType"),
         "MaxPods": fields.Int(required=False, dump_to="MaxPods"),
-        "Mem": fields.Str(required=True, dump_to="Mem"),
+        "Mem": fields.Int(required=True, dump_to="Mem"),
         "MinmalCpuPlatform": fields.Str(
             required=False, dump_to="MinmalCpuPlatform"
         ),
