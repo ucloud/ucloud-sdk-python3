@@ -3,6 +3,23 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class KeyPairSchema(schema.ResponseSchema):
+    """KeyPair - 密钥对信息"""
+
+    fields = {
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "KeyPairFingerPrint": fields.Str(
+            required=False, load_from="KeyPairFingerPrint"
+        ),
+        "KeyPairId": fields.Str(required=False, load_from="KeyPairId"),
+        "KeyPairName": fields.Str(required=False, load_from="KeyPairName"),
+        "PrivateKeyBody": fields.Str(
+            required=False, load_from="PrivateKeyBody"
+        ),
+        "ProjectId": fields.Str(required=False, load_from="ProjectId"),
+    }
+
+
 class UHostImageSetSchema(schema.ResponseSchema):
     """UHostImageSet - DescribeImage"""
 
@@ -50,6 +67,22 @@ class IsolationGroupSchema(schema.ResponseSchema):
     }
 
 
+class UHostDiskSetSchema(schema.ResponseSchema):
+    """UHostDiskSet - DescribeUHostInstance"""
+
+    fields = {
+        "BackupType": fields.Str(required=False, load_from="BackupType"),
+        "DiskId": fields.Str(required=False, load_from="DiskId"),
+        "DiskType": fields.Str(required=True, load_from="DiskType"),
+        "Drive": fields.Str(required=False, load_from="Drive"),
+        "Encrypted": fields.Str(required=False, load_from="Encrypted"),
+        "IsBoot": fields.Str(required=True, load_from="IsBoot"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
 class UHostIPSetSchema(schema.ResponseSchema):
     """UHostIPSet - DescribeUHostInstance"""
 
@@ -76,22 +109,6 @@ class UHostKeyPairSchema(schema.ResponseSchema):
     fields = {
         "KeyPairId": fields.Str(required=False, load_from="KeyPairId"),
         "KeyPairState": fields.Str(required=False, load_from="KeyPairState"),
-    }
-
-
-class UHostDiskSetSchema(schema.ResponseSchema):
-    """UHostDiskSet - DescribeUHostInstance"""
-
-    fields = {
-        "BackupType": fields.Str(required=False, load_from="BackupType"),
-        "DiskId": fields.Str(required=False, load_from="DiskId"),
-        "DiskType": fields.Str(required=True, load_from="DiskType"),
-        "Drive": fields.Str(required=False, load_from="Drive"),
-        "Encrypted": fields.Str(required=False, load_from="Encrypted"),
-        "IsBoot": fields.Str(required=True, load_from="IsBoot"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Size": fields.Int(required=False, load_from="Size"),
-        "Type": fields.Str(required=False, load_from="Type"),
     }
 
 
@@ -161,6 +178,20 @@ class UHostSnapshotSetSchema(schema.ResponseSchema):
         "SnapshotName": fields.Str(required=False, load_from="SnapshotName"),
         "SnapshotState": fields.Str(required=False, load_from="SnapshotState"),
         "SnapshotTime": fields.Str(required=False, load_from="SnapshotTime"),
+    }
+
+
+class KeyPairDescSchema(schema.ResponseSchema):
+    """KeyPairDesc - 密钥对信息，不包含私钥内容。"""
+
+    fields = {
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "KeyPairFingerPrint": fields.Str(
+            required=False, load_from="KeyPairFingerPrint"
+        ),
+        "KeyPairId": fields.Str(required=False, load_from="KeyPairId"),
+        "KeyPairName": fields.Str(required=False, load_from="KeyPairName"),
+        "ProjectId": fields.Str(required=False, load_from="ProjectId"),
     }
 
 
