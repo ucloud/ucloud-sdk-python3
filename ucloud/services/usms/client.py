@@ -24,7 +24,7 @@ class USMSClient(Client):
         - **CertificateType** (int) - (Required) 签名的资质证明文件类型，需与签名类型保持一致，说明如下：0-三证合一/企业营业执照/组织机构代码证书/社会信用代码证书；1-应用商店后台开发者管理截图；2-备案服务商的备案成功截图(含域名，网站名称，备案号)；3-公众号或小程序的管理界面截图；4-商标注册证书；5-组织机构代码证书、社会信用代码证书；
         - **Description** (str) - (Required) 短信签名申请原因
         - **File** (str) - (Required) 短信签名的资质证明文件，需先进行base64编码格式转换，此处填写转换后的字符串。文件大小不超过4 MB
-        - **SigContent** (str) - (Required)
+        - **SigContent** (str) - (Required) 签名内容
         - **SigPurpose** (int) - (Required) 签名用途，0-自用，1-他用；
         - **SigType** (int) - (Required) 签名类型，说明如下：0-公司或企业的全称或简称；1-App应用的全称或简称；2-工信部备案网站的全称或简称；3-公众号或小程序的全称或简称；4-商标名的全称或简称；5-政府/机关事业单位/其他单位的全称或简称；
         - **International** (bool) - 国内/国际短信。true:国际短信，false:国内短信，若不传值则默认该值为false
@@ -143,10 +143,10 @@ class USMSClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **SessionNoSet** (list) - (Required) 发送短信时返回的SessionNo集合，SessionNoSet.0,SessionNoSet.1....格式
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -163,9 +163,11 @@ class USMSClient(Client):
         **ReceiptPerPhone**
         - **CostCount** (int) - 消耗短信条数
         - **Phone** (str) - 手机号码
+        - **ReceiptCode** (str) - 状态报告编码
         - **ReceiptDesc** (str) - 回执结果描述
-        - **ReceiptResult** (str) - 回执结果
+        - **ReceiptResult** (str) - 回执结果，枚举值：\\ > 发送成功: 代表成功 \\ > Success: 代表成功 \\ > 发送失败: 代表失败 \\ > Fail: 代表失败 \\ > 状态未知: 代表未知 \\ > Unknow: 代表未知
         - **ReceiptTime** (int) - 回执返回时间
+        - **UserId** (str) - 自定义的业务标识ID，字符串
 
 
         """
@@ -256,6 +258,59 @@ class USMSClient(Client):
         resp = self.invoke("QueryUSMSTemplate", d, **kwargs)
         return apis.QueryUSMSTemplateResponseSchema().loads(resp)
 
+    def send_batch_usms_message(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """SendBatchUSMSMessage - 调用SendBatchUSMSMessage接口批量发送短信
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **TaskContent** (str) - (Required) 批量发送内容，该参数是json数组的base64编码结果。发送内容json数组中，每个“模板+签名”组合作为一个子项，每个子项内支持多个号码，示例：发送内容json数组（base64编码前）：[{"TemplateId": "UTA20212831C85C", "SigContent": "UCloud", "Target": [{"TemplateParams": ["123456"], "Phone": "18500000123", "ExtendCode": "123", "UserId": "456"} ] } ]   。json数组中各参数的定义："TemplateId":模板ID，"SigContent"短信签名内容，"Target"具体到号码粒度的发送内容。"Target"中的具体字段有："TemplateParams"实际发送的模板参数（若使用的是无参数模板，该参数不能传值），"Phone"手机号码, "ExtendCode"短信扩展码, "UserId"自定义业务标识ID。其中必传参数为"TemplateId", "SigContent", "Target"（"Target"中必传参数为"Phone"）。实际调用本接口时TaskContent传值（发送内容base64编码后）为：W3siVGVtcGxhdGVJZCI6ICJVVEEyMDIxMjgzMUM4NUMiLCAiU2lnQ29udGVudCI6ICJVQ2xvdWQiLCAiVGFyZ2V0IjogW3siVGVtcGxhdGVQYXJhbXMiOiBbIjEyMzQ1NiJdLCAiUGhvbmUiOiAiMTg1MDAwMDAxMjMiLCAiRXh0ZW5kQ29kZSI6ICIxMjMiLCAiVXNlcklkIjogIjQ1NiJ9IF0gfSBdIA==
+
+        **Response**
+
+        - **Action** (str) - 操作名称
+        - **FailContent** (list) - 见 **BatchInfo** 模型定义
+        - **Message** (str) - 发生错误时表示错误描述
+        - **ReqUuid** (str) - 本次请求Uuid
+        - **RetCode** (int) - 返回码。0表示成功，非0表示失败。
+        - **SessionNo** (str) - 本次提交发送任务的唯一ID，可根据该值查询本次发送的短信列表。注：成功提交短信数大于0时，才返回该字段
+        - **SuccessCount** (int) - 成功提交短信（未拆分）条数
+
+        **Response Model**
+
+        **FailPhoneDetail**
+        - **ExtendCode** (str) - 扩展号码
+        - **FailureDetails** (str) - 发送失败原因。注：若模板/签名校验失败，该字段为空
+        - **Phone** (str) - 手机号
+        - **TemplateParams** (list) - 模板参数
+        - **UserId** (str) - 用户自定义ID
+
+
+        **BatchInfo**
+        - **FailureDetails** (str) - 未能成功发送的详情。注：模板/签名检验失败时，该字段有效
+        - **SigContent** (str) - 签名
+        - **Target** (list) - 见 **FailPhoneDetail** 模型定义
+        - **TemplateId** (str) - 模板ID
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.SendBatchUSMSMessageRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("SendBatchUSMSMessage", d, **kwargs)
+        return apis.SendBatchUSMSMessageResponseSchema().loads(resp)
+
     def send_usms_message(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -270,7 +325,7 @@ class USMSClient(Client):
         - **TemplateId** (str) - (Required) 模板ID（也即短信模板申请时的工单ID），请到 `USMS控制台 <https://console.ucloud.cn/usms>`_ 的模板管理页面查看；使用的短信模板必须是已申请并通过审核；
         - **ExtendCode** (str) - 短信扩展码，格式为阿拉伯数字串，默认不开通，如需开通请联系 UCloud技术支持
         - **TemplateParams** (list) - 模板可变参数，以数组的方式填写，举例，TempalteParams.0，TempalteParams.1，... 若模板中无可变参数，则该项可不填写；若模板中有可变参数，则该项为必填项，参数个数需与变量个数保持一致，否则无法发送；
-        - **UserId** (str) - 自定义的业务标识ID，字符串（ 长度不能超过32 位）
+        - **UserId** (str) - 自定义的业务标识ID，字符串（ 长度不能超过32 位），不支持 单引号、表情包符号等特殊字符
 
         **Response**
 
