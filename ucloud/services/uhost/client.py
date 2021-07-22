@@ -122,8 +122,7 @@ class UHostClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ImageId** (str) - (Required) 镜像ID。 请通过  `DescribeImage <https://docs.ucloud.cn/api/uhost-api/describe_image.html>`_ 获取
-        - **LoginMode** (str) - (Required) 主机登陆模式。密码（默认选项）: Password。
-        - **Password** (str) - (Required) UHost密码。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定密码。密码需使用base64进行编码，举例如下：# echo -n Password1 | base64UGFzc3dvcmQx。
+        - **LoginMode** (str) - (Required) 主机登陆模式。密码（默认选项）: Password，密钥：KeyPair。
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **AlarmTemplateId** (int) - 告警模板id，如果传了告警模板id，且告警模板id正确，则绑定告警模板。绑定告警模板失败只会在后台有日志，不会影响创建主机流程，也不会在前端报错。
         - **AutoDataDiskInit** (str) - 数据盘是否需要自动分区挂载。当镜像支持“Cloud-init”Feature时可填写此字段。取值 >“On” 自动挂载（默认值）> “Off” 不自动挂载。
@@ -134,8 +133,8 @@ class UHostClient(Client):
         - **GPU** (int) - GPU卡核心数。仅GPU机型支持此字段（可选范围与MachineType+GpuType相关）
         - **GpuType** (str) - GPU类型，枚举值["K80", "P40", "V100", "T4", "T4S","2080Ti","2080Ti-4C","1080Ti"]，MachineType为G时必填
         - **HotplugFeature** (bool) - 热升级特性。True为开启，False为未开启，默认False。
-        - **HpcEnhanced** (bool) - HPC特性，主要涉及绑核操作。True为开启，False为未开启，默认False。
         - **IsolationGroup** (str) - 硬件隔离组id。可通过DescribeIsolationGroup获取。
+        - **KeyPairId** (str) - KeypairId 密钥对ID，LoginMode为KeyPair时此项必须
         - **MachineType** (str) - 云主机机型（V2.0），在本字段和字段UHostType中，仅需要其中1个字段即可。枚举值["N", "C", "G", "O", "OS", "OPRO", "OMAX", "O.BM"]。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
         - **MaxCount** (int) - 本次最大创建主机数量，取值范围是[1,100]，默认值为1。
         - **Memory** (int) - 内存大小。单位：MB。范围 ：[1024, 262144]，取值为1024的倍数（可选范围参考控制台）。默认值：8192
@@ -143,10 +142,10 @@ class UHostClient(Client):
         - **Name** (str) - UHost实例名称。默认：UHost。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定实例名称。
         - **NetCapability** (str) - 网络增强特性。枚举值：Normal（默认），不开启;  Super，开启网络增强1.0； Ultra，开启网络增强2.0（仅支持部分可用区，请参考控制台）
         - **NetworkInterface** (list) - 见 **CreateUHostInstanceParamNetworkInterface** 模型定义
+        - **Password** (str) - UHost密码。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定密码。密码需使用base64进行编码，举例如下：# echo -n Password1 | base64UGFzc3dvcmQx。
         - **PrivateIp** (list) - 【数组】创建云主机时指定内网IP。若不传值，则随机分配当前子网下的IP。调用方式举例：PrivateIp.0=x.x.x.x。当前只支持一个内网IP。
         - **Quantity** (int) - 购买时长。默认:值 1。按小时购买（Dynamic/Postpay）时无需此参数。 月付时，此参数传0，代表购买至月末。
-        - **RestrictMode** (str) - 抢占式实例限制模式，仅在ChargeType为"Preemptive"生效。可选模式为PowerOff:代表关机，LowSpeed代码限速 //默认为PowerOff
-        - **SecurityGroupId** (str) - 防火墙ID，默认：Web推荐防火墙。如何查询SecurityGroupId请参见  `DescribeFirewall <https://docs.ucloud.cn/api/unet-api/describe_firewall.html>`_ 。
+        - **SecurityGroupId** (str) - 防火墙ID，默认：Web推荐防火墙。如何查询SecurityGroupId请参见  `DescribeFirewall <https://docs.ucloud.cn/api/uhost-api/api/unet-api/describe_firewall.html>`_ 。
         - **SubnetId** (str) - 子网 ID。默认为当前地域的默认子网。
         - **Tag** (str) - 业务组。默认：Default（Default即为未分组）。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定业务组。
         - **UHostType** (str) - 【建议后续不再使用】云主机机型（V1.0），在本字段和字段MachineType中，仅需要其中1个字段即可。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
@@ -196,10 +195,10 @@ class UHostClient(Client):
         **CreateUHostInstanceParamVirtualGpuGPUVirtualGpu**
 
 
-        **CreateUHostInstanceParamVolumes**
-
-
         **CreateUHostInstanceParamVirtualGpu**
+
+
+        **CreateUHostInstanceParamVolumes**
 
 
         """
@@ -216,6 +215,48 @@ class UHostClient(Client):
 
         resp = self.invoke("CreateUHostInstance", d, **kwargs)
         return apis.CreateUHostInstanceResponseSchema().loads(resp)
+
+    def create_uhost_key_pair(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateUHostKeyPair - 创建主机密钥对信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **KeyPairName** (str) - (Required) 密钥对名称。 由字母，数字，符号组成，长度为1-63位。
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **KeyPair** (dict) - 见 **KeyPair** 模型定义
+
+        **Response Model**
+
+        **KeyPair**
+        - **CreateTime** (int) - 密钥对的创建时间，格式为Unix Timestamp。
+        - **KeyPairFingerPrint** (str) - 密钥对指纹。md5(ProjectId|KeyPairId|PublicKey)
+        - **KeyPairId** (str) - 密钥对ID。
+        - **KeyPairName** (str) - 密钥对名称。 长度为1~63个英文或中文字符。
+        - **PrivateKeyBody** (str) - 密钥对的私钥内容。只有创建接口才会返回。
+        - **ProjectId** (str) - 项目ID。
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateUHostKeyPairRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateUHostKeyPair", d, **kwargs)
+        return apis.CreateUHostKeyPairResponseSchema().loads(resp)
 
     def delete_isolation_group(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -243,6 +284,33 @@ class UHostClient(Client):
 
         resp = self.invoke("DeleteIsolationGroup", d, **kwargs)
         return apis.DeleteIsolationGroupResponseSchema().loads(resp)
+
+    def delete_uhost_key_pairs(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteUHostKeyPairs - 删除一对或者多对密钥对。
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **KeyPairIds** (list) - (Required) 密钥对ID，最多支持 100 对。
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteUHostKeyPairsRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteUHostKeyPairs", d, **kwargs)
+        return apis.DeleteUHostKeyPairsResponseSchema().loads(resp)
 
     def describe_image(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -497,6 +565,48 @@ class UHostClient(Client):
         resp = self.invoke("DescribeUHostInstanceSnapshot", d, **kwargs)
         return apis.DescribeUHostInstanceSnapshotResponseSchema().loads(resp)
 
+    def describe_uhost_key_pairs(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUHostKeyPairs - 查询一个或多个密钥对。
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **KeyPairFingerPrint** (str) - 密钥对的指纹。
+        - **KeyPairName** (str) - 密钥对名称。
+        - **Limit** (int) - 返回数据长度，默认为20，最大100
+        - **Offset** (int) - 列表起始位置偏移量，默认为0
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **KeyPairs** (list) - 见 **KeyPairDesc** 模型定义
+        - **TotalCount** (int) - 密钥对总数
+
+        **Response Model**
+
+        **KeyPairDesc**
+        - **CreateTime** (int) - 密钥对的创建时间，格式为Unix Timestamp。
+        - **KeyPairFingerPrint** (str) - 密钥对指纹。md5(ProjectId|KeyPairId|PublicKey)
+        - **KeyPairId** (str) - 密钥对ID。
+        - **KeyPairName** (str) - 密钥对名称。 长度为1~63个英文或中文字符。
+        - **ProjectId** (str) - 项目ID。
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeUHostKeyPairsRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeUHostKeyPairs", d, **kwargs)
+        return apis.DescribeUHostKeyPairsResponseSchema().loads(resp)
+
     def describe_uhost_tags(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -576,11 +686,11 @@ class UHostClient(Client):
         - **CPU** (int) - (Required) CPU核数。可选参数：1-64。可选范围参照控制台。默认值: 4
         - **Count** (int) - (Required) 购买台数，范围[1,5]
         - **Memory** (int) - (Required) 内存大小。单位：MB。范围 ：[1024, 262144]，取值为1024的倍数（可选范围参照好控制台）。默认值：8192
-        - **ChargeType** (str) - 计费模式。枚举值为： \\ > Year，按年付费； \\ > Month，按月付费；\\ > Dynamic，按小时付费 // >Preemptive 抢占式实例 \\ 默认为月付。
+        - **ChargeType** (str) - 计费模式。枚举值为： \\ > Year，按年付费； \\ > Month，按月付费；\\ > Dynamic，按小时付费 // >Preemptive 抢占式实例 \\ 如果不传某个枚举值，默认返回年付、月付、时付的价格组合集。
         - **CpuPlatform** (str) - 取值"Intel" "Amd"，默认值“Intel”
         - **Disks** (list) - 见 **GetUHostInstancePriceParamDisks** 模型定义
         - **GPU** (int) - GPU卡核心数。仅GPU机型支持此字段。
-        - **GpuType** (str) - GPU类型，枚举值["K80", "P40", "V100", "T4"]
+        - **GpuType** (str) - GPU类型，枚举值["K80", "P40", "V100", "T4","T4S","2080Ti","2080Ti-4C","1080Ti"]
         - **ImageId** (str) - 镜像Id，可通过  `DescribeImage <https://docs.ucloud.cn/api/uhost-api/describe_image.html>`_  获取镜像ID， 如果镜像ID不传，系统盘大小必传
         - **MachineType** (str) - 云主机机型（V2版本概念）。枚举值["N", "C", "G", "O", "OS", "OPRO", "OMAX", "O.BM"]。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
         - **NetCapability** (str) - 网络增强。枚举值：Normal，不开启; Super，开启网络增强1.0。 默认值为Normal。
@@ -602,6 +712,9 @@ class UHostClient(Client):
 
 
         **GetUHostInstancePriceParamVolumes**
+
+
+        **GetUHostInstancePriceParamVirtualGpu**
 
 
         **Response Model**
@@ -723,6 +836,40 @@ class UHostClient(Client):
 
         resp = self.invoke("ImportCustomImage", d, **kwargs)
         return apis.ImportCustomImageResponseSchema().loads(resp)
+
+    def import_uhost_key_pairs(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ImportUHostKeyPairs - 导入密钥对后，仅保管公钥部分，需自行妥善保存密钥对的私钥部分。
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **KeyPairName** (str) - (Required) 密钥对名称。由字母，数字，符号组成，长度为1-63位。
+        - **PublicKeyBody** (str) - (Required) 密钥对的公钥内容。
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **KeyPairFingerPrint** (str) - 密钥对指纹。根据RFC4716定义的公钥指纹格式，采用MD5信息摘要算法。算法处理的具体信息格式：`ProjectIdKeyPairId|PublicKeyBody`。
+        - **KeyPairId** (str) - 密钥对标识
+        - **KeyPairName** (str) - 密钥对名称
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ImportUHostKeyPairsRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("ImportUHostKeyPairs", d, **kwargs)
+        return apis.ImportUHostKeyPairsResponseSchema().loads(resp)
 
     def leave_isolation_group(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -941,7 +1088,9 @@ class UHostClient(Client):
         - **AutoDataDiskInit** (str) - 数据盘是否需要自动分区挂载。当镜像支持Cloud-init Feature时可填写此字段。取值“On”（默认值）， “Off”
         - **BootDiskSpace** (int) - 系统盘大小。 单位：GB， 范围[20,100]， 步长：10
         - **ImageId** (str) - 镜像Id，默认使用原镜像 参见  `DescribeImage <https://docs.ucloud.cn/api/uhost-api/describe_image.html>`_
-        - **Password** (str) - 如果创建UHost实例时LoginMode为Password，则必须填写，如果LoginMode为KeyPair，不需要填写 （密码格式使用BASE64编码；LoginMode不可变更）
+        - **KeyPairId** (str) - KeypairId 密钥对ID，LoginMode为KeyPair时此项必须。
+        - **LoginMode** (str) - 主机登陆模式。密码（默认选项）: Password，密钥 KeyPair。
+        - **Password** (str) - 如果重装UHost实例时LoginMode为Password，则必须填写，如果LoginMode为KeyPair，不需要填写 （密码格式使用BASE64编码；举例如下：# echo -n Password1 | base64UGFzc3dvcmQx。）
         - **ReserveDisk** (str) - 是否保留数据盘，保留：Yes，不报留：No， 默认：Yes；如果是从Windows重装为Linux或反之，则无法保留数据盘（该参数目前仅对本地数据盘起作用）
         - **UserData** (str) - cloudinit初始化使用。注意：1、总数据量大小不超多16K 2、使用base64编码
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_

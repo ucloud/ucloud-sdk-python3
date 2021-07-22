@@ -183,14 +183,14 @@ class CreateUHostInstanceParamVirtualGpuGPUVirtualGpuSchema(
     fields = {}
 
 
-class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamVolumes -"""
+class CreateUHostInstanceParamVirtualGpuSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamVirtualGpu -"""
 
     fields = {}
 
 
-class CreateUHostInstanceParamVirtualGpuSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamVirtualGpu -"""
+class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamVolumes -"""
 
     fields = {}
 
@@ -227,7 +227,9 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
             required=False, dump_to="HostType"
         ),  # Deprecated, will be removed at 1.0
         "HotplugFeature": fields.Bool(required=False, dump_to="HotplugFeature"),
-        "HpcEnhanced": fields.Bool(required=False, dump_to="HpcEnhanced"),
+        "HpcEnhanced": fields.Bool(
+            required=False, dump_to="HpcEnhanced"
+        ),  # Deprecated, will be removed at 1.0
         "ImageId": fields.Str(required=True, dump_to="ImageId"),
         "InstallAgent": fields.Str(
             required=False, dump_to="InstallAgent"
@@ -236,6 +238,7 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
         "KeyPair": fields.Str(
             required=False, dump_to="KeyPair"
         ),  # Deprecated, will be removed at 1.0
+        "KeyPairId": fields.Str(required=False, dump_to="KeyPairId"),
         "LoginMode": fields.Str(required=True, dump_to="LoginMode"),
         "MachineType": fields.Str(required=False, dump_to="MachineType"),
         "MaxCount": fields.Int(required=False, dump_to="MaxCount"),
@@ -251,7 +254,7 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
         "NetworkInterface": fields.List(
             CreateUHostInstanceParamNetworkInterfaceSchema()
         ),
-        "Password": fields.Base64(required=True, dump_to="Password"),
+        "Password": fields.Base64(required=False, dump_to="Password"),
         "PrivateIp": fields.List(fields.Str()),
         "PrivateMac": fields.Str(
             required=False, dump_to="PrivateMac"
@@ -262,7 +265,9 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
         "ResourceType": fields.Str(
             required=False, dump_to="ResourceType"
         ),  # Deprecated, will be removed at 1.0
-        "RestrictMode": fields.Str(required=False, dump_to="RestrictMode"),
+        "RestrictMode": fields.Str(
+            required=False, dump_to="RestrictMode"
+        ),  # Deprecated, will be removed at 1.0
         "SecurityGroupId": fields.Str(
             required=False, dump_to="SecurityGroupId"
         ),
@@ -299,6 +304,32 @@ class CreateUHostInstanceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: CreateUHostKeyPair
+
+创建主机密钥对信息
+"""
+
+
+class CreateUHostKeyPairRequestSchema(schema.RequestSchema):
+    """CreateUHostKeyPair - 创建主机密钥对信息"""
+
+    fields = {
+        "KeyPairName": fields.Str(required=True, dump_to="KeyPairName"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class CreateUHostKeyPairResponseSchema(schema.ResponseSchema):
+    """CreateUHostKeyPair - 创建主机密钥对信息"""
+
+    fields = {
+        "KeyPair": models.KeyPairSchema(),
+    }
+
+
+"""
 API: DeleteIsolationGroup
 
 删除硬件隔离组。
@@ -321,6 +352,30 @@ class DeleteIsolationGroupResponseSchema(schema.ResponseSchema):
     fields = {
         "GroupId": fields.Str(required=True, load_from="GroupId"),
     }
+
+
+"""
+API: DeleteUHostKeyPairs
+
+删除一对或者多对密钥对。
+"""
+
+
+class DeleteUHostKeyPairsRequestSchema(schema.RequestSchema):
+    """DeleteUHostKeyPairs - 删除一对或者多对密钥对。"""
+
+    fields = {
+        "KeyPairIds": fields.List(fields.Str()),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DeleteUHostKeyPairsResponseSchema(schema.ResponseSchema):
+    """DeleteUHostKeyPairs - 删除一对或者多对密钥对。"""
+
+    fields = {}
 
 
 """
@@ -464,6 +519,40 @@ class DescribeUHostInstanceSnapshotResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeUHostKeyPairs
+
+查询一个或多个密钥对。
+"""
+
+
+class DescribeUHostKeyPairsRequestSchema(schema.RequestSchema):
+    """DescribeUHostKeyPairs - 查询一个或多个密钥对。"""
+
+    fields = {
+        "KeyPairFingerPrint": fields.Str(
+            required=False, dump_to="KeyPairFingerPrint"
+        ),
+        "KeyPairName": fields.Str(required=False, dump_to="KeyPairName"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DescribeUHostKeyPairsResponseSchema(schema.ResponseSchema):
+    """DescribeUHostKeyPairs - 查询一个或多个密钥对。"""
+
+    fields = {
+        "KeyPairs": fields.List(
+            models.KeyPairDescSchema(), required=True, load_from="KeyPairs"
+        ),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
 API: DescribeUHostTags
 
 获取指定数据中心的业务组列表。
@@ -540,6 +629,12 @@ class GetUHostInstancePriceParamDisksSchema(schema.RequestSchema):
 
 class GetUHostInstancePriceParamVolumesSchema(schema.RequestSchema):
     """GetUHostInstancePriceParamVolumes -"""
+
+    fields = {}
+
+
+class GetUHostInstancePriceParamVirtualGpuSchema(schema.RequestSchema):
+    """GetUHostInstancePriceParamVirtualGpu -"""
 
     fields = {}
 
@@ -695,6 +790,37 @@ class ImportCustomImageResponseSchema(schema.ResponseSchema):
 
     fields = {
         "ImageId": fields.Str(required=False, load_from="ImageId"),
+    }
+
+
+"""
+API: ImportUHostKeyPairs
+
+导入密钥对后，仅保管公钥部分，需自行妥善保存密钥对的私钥部分。
+"""
+
+
+class ImportUHostKeyPairsRequestSchema(schema.RequestSchema):
+    """ImportUHostKeyPairs - 导入密钥对后，仅保管公钥部分，需自行妥善保存密钥对的私钥部分。"""
+
+    fields = {
+        "KeyPairName": fields.Str(required=True, dump_to="KeyPairName"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "PublicKeyBody": fields.Str(required=True, dump_to="PublicKeyBody"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class ImportUHostKeyPairsResponseSchema(schema.ResponseSchema):
+    """ImportUHostKeyPairs - 导入密钥对后，仅保管公钥部分，需自行妥善保存密钥对的私钥部分。"""
+
+    fields = {
+        "KeyPairFingerPrint": fields.Str(
+            required=False, load_from="KeyPairFingerPrint"
+        ),
+        "KeyPairId": fields.Str(required=False, load_from="KeyPairId"),
+        "KeyPairName": fields.Str(required=True, load_from="KeyPairName"),
     }
 
 
@@ -926,6 +1052,8 @@ class ReinstallUHostInstanceRequestSchema(schema.RequestSchema):
             fields.Str()
         ),  # Deprecated, will be removed at 1.0
         "ImageId": fields.Str(required=False, dump_to="ImageId"),
+        "KeyPairId": fields.Str(required=False, dump_to="KeyPairId"),
+        "LoginMode": fields.Str(required=False, dump_to="LoginMode"),
         "Password": fields.Base64(required=False, dump_to="Password"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
