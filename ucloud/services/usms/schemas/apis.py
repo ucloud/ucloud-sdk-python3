@@ -25,9 +25,7 @@ class CreateUSMSSignatureRequestSchema(schema.RequestSchema):
         "International": fields.Bool(required=False, dump_to="International"),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "ProxyFile": fields.Str(required=False, dump_to="ProxyFile"),
-        "SigContent": fields.Str(
-            required=True, dump_to="SigContent"
-        ),  # Deprecated, will be removed at 1.0
+        "SigContent": fields.Str(required=True, dump_to="SigContent"),
         "SigPurpose": fields.Int(required=True, dump_to="SigPurpose"),
         "SigType": fields.Int(required=True, dump_to="SigType"),
     }
@@ -214,6 +212,38 @@ class QueryUSMSTemplateResponseSchema(schema.ResponseSchema):
     fields = {
         "Data": models.OutTemplateSchema(),
         "Message": fields.Str(required=False, load_from="Message"),
+    }
+
+
+"""
+API: SendBatchUSMSMessage
+
+调用SendBatchUSMSMessage接口批量发送短信
+"""
+
+
+class SendBatchUSMSMessageRequestSchema(schema.RequestSchema):
+    """SendBatchUSMSMessage - 调用SendBatchUSMSMessage接口批量发送短信"""
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "TaskContent": fields.Str(required=True, dump_to="TaskContent"),
+    }
+
+
+class SendBatchUSMSMessageResponseSchema(schema.ResponseSchema):
+    """SendBatchUSMSMessage - 调用SendBatchUSMSMessage接口批量发送短信"""
+
+    fields = {
+        "Action": fields.Str(required=True, load_from="Action"),
+        "FailContent": fields.List(
+            models.BatchInfoSchema(), required=False, load_from="FailContent"
+        ),
+        "Message": fields.Str(required=True, load_from="Message"),
+        "ReqUuid": fields.Str(required=False, load_from="ReqUuid"),
+        "RetCode": fields.Int(required=True, load_from="RetCode"),
+        "SessionNo": fields.Str(required=False, load_from="SessionNo"),
+        "SuccessCount": fields.Int(required=False, load_from="SuccessCount"),
     }
 
 
