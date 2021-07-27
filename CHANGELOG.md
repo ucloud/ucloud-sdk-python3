@@ -1,3 +1,9 @@
+## 0.11.8 (2021-07-27)
+
+ENHANCEMENTS:
+
+- Update all APIs of `UDTS` (#153)
+
 ## 0.11.7 (2021-07-22)
 
 ENHANCEMENTS:
