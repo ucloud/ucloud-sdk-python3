@@ -112,6 +112,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def udts(self):
+        from ucloud.services.udts.client import UDTSClient
+
+        return UDTSClient(
+            self._auto_config("udts"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def udisk(self):
         from ucloud.services.udisk.client import UDiskClient
 
