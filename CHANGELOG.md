@@ -1,3 +1,10 @@
+## 0.11.9 (2021-08-12)
+
+ENHANCEMENTS:
+
+- Update all APIs of `UMem` (#156)
+- Update all APIs of `PathX` (#155)
+
 ## 0.11.8 (2021-07-27)
 
 ENHANCEMENTS:
