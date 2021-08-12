@@ -46,24 +46,23 @@ class PathXClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Area** (str) - (Required) 填写支持SSH访问IP的地区名称，如“洛杉矶”，“新加坡”，“香港”，“东京”，“华盛顿”，“法兰克福”。Area和AreaCode两者必填一个
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Area** (str) - (Required) 填写支持SSH访问IP的地区名称，如“洛杉矶”，“新加坡”，“香港”，“东京”，“华盛顿”，“法兰克福”，“首尔”。Area和AreaCode两者必填一个
         - **AreaCode** (str) - (Required) AreaCode, 区域航空港国际通用代码。Area和AreaCode两者必填一个
         - **Port** (int) - (Required) 源站服务器监听的SSH端口，可取范围[1-65535]，不能使用80，443,  65123端口。如果InstanceType=Free，取值范围缩小为[22,3389],linux系统选择22，windows系统自动选3389。
         - **TargetIP** (str) - (Required) 被SSH访问的源站IP，仅支持IPv4地址。
         - **BandwidthPackage** (int) - Ultimate版本带宽包大小,枚举值：[0,20,40]。单位MB
-        - **ChargeType** (str) - 支付方式，如按月、按年、按时
+        - **ChargeType** (str) - 支付方式，如按月：Month、 按年：Year、按时：Dynamic
         - **CouponId** (str) - 使用代金券可冲抵部分费用
         - **ForwardRegion** (str) - InstanceType等于Basic时可以在["cn-bj2","cn-sh2","cn-gd"]中选择1个作为转发机房，Free版本固定为cn-bj2,其他付费版默认配置三个转发机房
-        - **InstanceType** (str) - 枚举值：["Enterprise","Basic","Free"], 分别代表企业版，基础版，免费版
-        - **Quantity** (int) - 购买数量
+        - **InstanceType** (str) - 枚举值：["Ultimate","Enterprise","Basic","Primary"], 分别代表旗舰版，企业版，基础版，入门版
+        - **Quantity** (int) - 购买数量按月购买至月底请传0
         - **Remark** (str) - 备注信息
 
         **Response**
 
         - **AcceleratingDomain** (str) - 加速域名，访问该域名可就近接入
         - **InstanceId** (str) - 实例ID，资源唯一标识
-        - **Message** (str) - 提示信息
 
         """
         # build request
@@ -119,7 +118,7 @@ class PathXClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **UGAId** (str) - (Required) 加速配置实例ID
         - **HTTPHTTP** (list) - HTTP接入HTTP回源转发，接入端口。禁用65123端口
         - **HTTPHTTPRS** (list) - HTTP接入HTTP回源转发，源站监听端口
@@ -127,14 +126,19 @@ class PathXClient(Client):
         - **HTTPSHTTPRS** (list) - HTTPS接入HTTP回源转发，回源端口
         - **HTTPSHTTPS** (list) - HTTPS接入HTTPS回源转发，接入端口。禁用65123端口
         - **HTTPSHTTPSRS** (list) - HTTPS接入HTTPS回源转发，源站监听端口
-        - **TCP** (list) - TCP接入端口
+        - **TCP** (list) - TCP接入端口，禁用65123端口
         - **TCPRS** (list) - TCP回源端口
-        - **UDP** (list) - UDP接入端口
+        - **UDP** (list) - UDP接入端口，禁用65123端口
         - **UDPRS** (list) - UDP回源端口
+        - **WSSWS** (list) - WebSocketS接入WebSocket回源转发，接入端口。禁用65123。
+        - **WSSWSRS** (list) - WebSocketS接入WebSocket回源转发，源站监听端口。
+        - **WSSWSS** (list) - WebSocketS接入WebSocketS回源转发，接入端口。禁用65123。
+        - **WSSWSSRS** (list) - WebSocketS接入WebSocketS回源转发，源站监听端口。
+        - **WSWS** (list) - WebSocket接入WebSocket回源转发，接入端口。禁用65123。
+        - **WSWSRS** (list) - WebSocket接入WebSocket回源转发，源站监听端口
 
         **Response**
 
-        - **Message** (str) - 返回信息 说明
 
         """
         # build request
@@ -219,16 +223,16 @@ class PathXClient(Client):
     def delete_global_ssh_instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DeleteGlobalSSHInstance -
+        """DeleteGlobalSSHInstance - 删除GlobalSSH实例
 
         **Request**
 
-        - **ProjectId** (str) - (Config)
-        - **InstanceId** (str) - (Required)
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **InstanceId** (str) - (Required) 实例Id,资源的唯一标识
 
         **Response**
 
-        - **Message** (str) -
+        - **Message** (str) - 提示信息
 
         """
         # build request
@@ -237,9 +241,6 @@ class PathXClient(Client):
         }
         req and d.update(req)
         d = apis.DeleteGlobalSSHInstanceRequestSchema().dumps(d)
-
-        # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("DeleteGlobalSSHInstance", d, **kwargs)
         return apis.DeleteGlobalSSHInstanceResponseSchema().loads(resp)
@@ -275,17 +276,19 @@ class PathXClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **UGAId** (str) - (Required) 加速配置实例ID
         - **HTTPHTTP** (list) - HTTP接入HTTP回源，接入端口。禁用65123端口
         - **HTTPSHTTP** (list) - HTTPS接入HTTP回源， 接入端口。禁用65123端口
         - **HTTPSHTTPS** (list) - HTTPS接入HTTPS回源， 接入端口。禁用65123端口
         - **TCP** (list) - TCP接入端口
         - **UDP** (list) - UDP接入端口
+        - **WSSWS** (list) - WebSocketS接入WebSocket回源， 接入端口。禁用65123端口。
+        - **WSSWSS** (list) - WebSocketS接入WebSocketS回源， 接入端口。禁用65123端口
+        - **WSWS** (list) - WebSocket接入WebSocket回源， 接入端口。禁用65123端口
 
         **Response**
 
-        - **Message** (str) - 返回信息 说明
 
         """
         # build request
@@ -442,14 +445,6 @@ class PathXClient(Client):
 
         **Response Model**
 
-        **LineDetail**
-        - **LineFrom** (str) - 线路源
-        - **LineFromName** (str) - 线路源中文名称
-        - **LineId** (str) - 线路计费Id
-        - **LineTo** (str) - 线路目的
-        - **LineToName** (str) - 线路目的中文名称
-
-
         **UGAALine**
         - **LineDetail** (list) - 见 **LineDetail** 模型定义
         - **LineFrom** (str) - 线路源
@@ -458,6 +453,14 @@ class PathXClient(Client):
         - **LineTo** (str) - 线路目的
         - **LineToName** (str) - 线路目的中文名称
         - **MaxBandwidth** (int) - 线路可售最大带宽
+
+
+        **LineDetail**
+        - **LineFrom** (str) - 线路源
+        - **LineFromName** (str) - 线路源中文名称
+        - **LineId** (str) - 线路计费Id
+        - **LineTo** (str) - 线路目的
+        - **LineToName** (str) - 线路目的中文名称
 
 
         """
@@ -491,11 +494,6 @@ class PathXClient(Client):
 
         **Response Model**
 
-        **SSLBindedTargetSet**
-        - **ResourceId** (str) - SSL证书绑定到的实例ID
-        - **ResourceName** (str) - SSL证书绑定到的实例名称
-
-
         **PathXSSLSet**
         - **CreateTime** (int) - SSL证书的创建时间 时间戳
         - **ExpireTime** (int) - 证书过期时间 时间戳
@@ -506,6 +504,11 @@ class PathXClient(Client):
         - **SSLName** (str) - SSL证书的名字
         - **SourceType** (int) - 证书来源，0：用户上传 1: 免费颁发
         - **SubjectName** (str) - 证书域名
+
+
+        **SSLBindedTargetSet**
+        - **ResourceId** (str) - SSL证书绑定到的实例ID
+        - **ResourceName** (str) - SSL证书绑定到的实例名称
 
 
         """
@@ -538,41 +541,6 @@ class PathXClient(Client):
 
         **Response Model**
 
-        **UGAL7Forwarder**
-        - **Port** (int) - 接入端口
-        - **Protocol** (str) - 转发协议，枚举值["TCP"，"UDP"，"HTTPHTTP"，"HTTPSHTTP"，"HTTPSHTTPS"]。TCP和UDP代表四层转发，其余为七层转发
-        - **RSPort** (int) - RSPort，源站监听端口
-        - **SSLId** (str) - 证书ID
-        - **SSLName** (str) - 证书名称
-
-
-        **UGAATask**
-        - **Port** (int) - 接入端口
-        - **Protocol** (str) - 转发协议，枚举值["TCP"，"UDP"，"HTTPHTTP"，"HTTPSHTTP"，"HTTPSHTTPS"]。TCP和UDP代表四层转发，其余为七层转发
-
-
-        **OutPublicIpInfo**
-        - **Area** (str) - 线路出口机房代号
-        - **IP** (str) - 线路出口EIP
-
-
-        **UGAL4Forwarder**
-        - **Port** (int) - 接入端口
-        - **Protocol** (str) - 转发协议，枚举值["TCP"，"UDP"，"HTTPHTTP"，"HTTPSHTTP"，"HTTPSHTTPS"]。TCP和UDP代表四层转发，其余为七层转发
-        - **RSPort** (int) - RSPort，源站监听端口
-
-
-        **UPathSet**
-        - **Bandwidth** (int) - 带宽 Mbps, 1~800Mbps
-        - **LineFrom** (str) - 线路起点英文代号，加速区域
-        - **LineFromName** (str) - 线路起点中文名字，加速区域
-        - **LineId** (str) - 线路ID
-        - **LineTo** (str) - 线路对端英文代号，源站区域
-        - **LineToName** (str) - 线路对端中文名字，源站区域
-        - **UPathId** (str) - UPath 实例ID
-        - **UPathName** (str) - UPath名字
-
-
         **UGAAInfo**
         - **CName** (str) - 加速域名，请在加速区域配置您的业务域名的CName记录值为加速域名
         - **Domain** (str) - 源站域名
@@ -585,6 +553,41 @@ class PathXClient(Client):
         - **UGAId** (str) - 加速配置实例ID
         - **UGAName** (str) - 加速配置名称
         - **UPathSet** (list) - 见 **UPathSet** 模型定义
+
+
+        **UGAL4Forwarder**
+        - **Port** (int) - 接入端口
+        - **Protocol** (str) - 转发协议，枚举值["TCP"，"UDP"，"HTTPHTTP"，"HTTPSHTTP"，"HTTPSHTTPS"]。TCP和UDP代表四层转发，其余为七层转发
+        - **RSPort** (int) - RSPort，源站监听端口
+
+
+        **UGAL7Forwarder**
+        - **Port** (int) - 接入端口
+        - **Protocol** (str) - 转发协议，枚举值["TCP"，"UDP"，"HTTPHTTP"，"HTTPSHTTP"，"HTTPSHTTPS"]。TCP和UDP代表四层转发，其余为七层转发
+        - **RSPort** (int) - RSPort，源站监听端口
+        - **SSLId** (str) - 证书ID
+        - **SSLName** (str) - 证书名称
+
+
+        **OutPublicIpInfo**
+        - **Area** (str) - 线路出口机房代号
+        - **IP** (str) - 线路出口EIP
+
+
+        **UGAATask**
+        - **Port** (int) - 接入端口
+        - **Protocol** (str) - 转发协议，枚举值["TCP"，"UDP"，"HTTPHTTP"，"HTTPSHTTP"，"HTTPSHTTPS"]。TCP和UDP代表四层转发，其余为七层转发
+
+
+        **UPathSet**
+        - **Bandwidth** (int) - 带宽 Mbps, 1~800Mbps
+        - **LineFrom** (str) - 线路起点英文代号，加速区域
+        - **LineFromName** (str) - 线路起点中文名字，加速区域
+        - **LineId** (str) - 线路ID
+        - **LineTo** (str) - 线路对端英文代号，源站区域
+        - **LineToName** (str) - 线路对端中文名字，源站区域
+        - **UPathId** (str) - UPath 实例ID
+        - **UPathName** (str) - UPath名字
 
 
         """
@@ -614,17 +617,6 @@ class PathXClient(Client):
 
         **Response Model**
 
-        **OutPublicIpInfo**
-        - **Area** (str) - 线路出口机房代号
-        - **IP** (str) - 线路出口EIP
-
-
-        **PathXUGAInfo**
-        - **Domain** (str) - 源站域名
-        - **IPList** (list) - 源站IP列表，多个值由半角英文逗号相隔
-        - **UGAId** (str) - 加速配置ID
-
-
         **UPathInfo**
         - **Bandwidth** (int) - 带宽，单位Mbps
         - **ChargeType** (str) - 计费模式，默认为Month 按月收费,可选范围['Month','Year','Dynamic']
@@ -638,6 +630,17 @@ class PathXClient(Client):
         - **PostPaid** (bool) - 是否为后付费实例
         - **UGAList** (list) - 见 **PathXUGAInfo** 模型定义
         - **UPathId** (str) - UPath加速线路实例ID
+
+
+        **OutPublicIpInfo**
+        - **Area** (str) - 线路出口机房代号
+        - **IP** (str) - 线路出口EIP
+
+
+        **PathXUGAInfo**
+        - **Domain** (str) - 源站域名
+        - **IPList** (list) - 源站IP列表，多个值由半角英文逗号相隔
+        - **UGAId** (str) - 加速配置ID
 
 
         """
@@ -766,16 +769,16 @@ class PathXClient(Client):
 
         **Response Model**
 
-        **MatricPoint**
-        - **Timestamp** (int) - 时间戳
-        - **Value** (int) - 监控点数值
-
-
         **MetricPeriod**
         - **NetworkIn** (list) - 见 **MatricPoint** 模型定义
         - **NetworkInUsage** (list) - 见 **MatricPoint** 模型定义
         - **NetworkOut** (list) - 见 **MatricPoint** 模型定义
         - **NetworkOutUsage** (list) - 见 **MatricPoint** 模型定义
+
+
+        **MatricPoint**
+        - **Timestamp** (int) - 时间戳
+        - **Value** (int) - 监控点数值
 
 
         """
@@ -792,17 +795,17 @@ class PathXClient(Client):
     def modify_global_ssh_port(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ModifyGlobalSSHPort -
+        """ModifyGlobalSSHPort - 修改GlobalSSH端口
 
         **Request**
 
-        - **ProjectId** (str) - (Config)
-        - **InstanceId** (str) - (Required)
-        - **Port** (int) - (Required)
+        - **ProjectId** (str) - (Config) 项目ID，如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **InstanceId** (str) - (Required) 实例ID,资源唯一标识。当前仅收费版GlobalSSH实例可以修改端口。
+        - **Port** (int) - (Required) 源站服务器监听的SSH端口号。收费版本端口范围[1,65535]且不能为80，443，65123端口。免费版不支持修改端口。
 
         **Response**
 
-        - **Message** (str) -
+        - **Message** (str) - 提示信息
 
         """
         # build request
@@ -811,9 +814,6 @@ class PathXClient(Client):
         }
         req and d.update(req)
         d = apis.ModifyGlobalSSHPortRequestSchema().dumps(d)
-
-        # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("ModifyGlobalSSHPort", d, **kwargs)
         return apis.ModifyGlobalSSHPortResponseSchema().loads(resp)
@@ -1008,3 +1008,28 @@ class PathXClient(Client):
 
         resp = self.invoke("UnBindPathXSSL", d, **kwargs)
         return apis.UnBindPathXSSLResponseSchema().loads(resp)
+
+    def update_path_x_whitelist(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdatePathXWhitelist - 更新入口白名单,仅限GlobalSSH 实例使用。其他uga-实例不生效
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **InstanceId** (str) - (Required) GlobalSSH实例ID，资源唯一标识
+        - **Whitelist** (list) - 白名单规则,例如 "Whitelist.0": "192.168.1.1/24|tcp|22"，"Whitelist.1": "192.168.1.2|tcp|8080:8090"，第一个参数为ip或ip段，第二个参数代表协议（tcp/udp），第三个参数代表端口号或端口范围（使用 ':' 隔开）；可以添加多条规则（递增Whitelist.n字段内的n值）；此接口需要列出全部规则，例如不填则为清空白名单规则，如若需要增量添加，使用InsertPathXWhitelist接口,globalssh 没有端口范围：端口设置成加速端口，协议设置成tcp:ip|tcp|加速端口
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.UpdatePathXWhitelistRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdatePathXWhitelist", d, **kwargs)
+        return apis.UpdatePathXWhitelistResponseSchema().loads(resp)

@@ -101,6 +101,15 @@ class UGAL7ForwarderSchema(schema.ResponseSchema):
     }
 
 
+class OutPublicIpInfoSchema(schema.ResponseSchema):
+    """OutPublicIpInfo - 线路出口IP信息"""
+
+    fields = {
+        "Area": fields.Str(required=False, load_from="Area"),
+        "IP": fields.Str(required=False, load_from="IP"),
+    }
+
+
 class UPathSetSchema(schema.ResponseSchema):
     """UPathSet - uga关联的upath信息"""
 
@@ -122,15 +131,6 @@ class UGAATaskSchema(schema.ResponseSchema):
     fields = {
         "Port": fields.Int(required=True, load_from="Port"),
         "Protocol": fields.Str(required=True, load_from="Protocol"),
-    }
-
-
-class OutPublicIpInfoSchema(schema.ResponseSchema):
-    """OutPublicIpInfo - 线路出口IP信息"""
-
-    fields = {
-        "Area": fields.Str(required=False, load_from="Area"),
-        "IP": fields.Str(required=False, load_from="IP"),
     }
 
 
