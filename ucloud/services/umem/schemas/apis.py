@@ -351,7 +351,7 @@ class DescribeUMemRequestSchema(schema.RequestSchema):
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Protocol": fields.Str(required=False, dump_to="Protocol"),
+        "Protocol": fields.Str(required=True, dump_to="Protocol"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
         "ResourceType": fields.Str(required=False, dump_to="ResourceType"),
