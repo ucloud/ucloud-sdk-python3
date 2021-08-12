@@ -68,7 +68,9 @@ class CreateGlobalSSHInstanceResponseSchema(schema.ResponseSchema):
             required=False, load_from="AcceleratingDomain"
         ),
         "InstanceId": fields.Str(required=True, load_from="InstanceId"),
-        "Message": fields.Str(required=False, load_from="Message"),
+        "Message": fields.Str(
+            required=False, load_from="Message"
+        ),  # Deprecated, will be removed at 1.0
     }
 
 
@@ -124,6 +126,12 @@ class CreateUGAForwarderRequestSchema(schema.RequestSchema):
         "UDP": fields.List(fields.Int()),
         "UDPRS": fields.List(fields.Int()),
         "UGAId": fields.Str(required=True, dump_to="UGAId"),
+        "WSSWS": fields.List(fields.Int()),
+        "WSSWSRS": fields.List(fields.Int()),
+        "WSSWSS": fields.List(fields.Int()),
+        "WSSWSSRS": fields.List(fields.Int()),
+        "WSWS": fields.List(fields.Int()),
+        "WSWSRS": fields.List(fields.Int()),
     }
 
 
@@ -131,7 +139,9 @@ class CreateUGAForwarderResponseSchema(schema.ResponseSchema):
     """CreateUGAForwarder - 创建加速实例转发器，支持HTTPS接入HTTPS回源、HTTPS接入HTTP回源、HTTP接入HTTP回源、TCP接入TCP回源、UDP接入UDP回源、 支持WSS接入WSS回源、WSS接入WS回源、WS接入WS回源"""
 
     fields = {
-        "Message": fields.Str(required=True, load_from="Message"),
+        "Message": fields.Str(
+            required=True, load_from="Message"
+        ),  # Deprecated, will be removed at 1.0
     }
 
 
@@ -198,12 +208,12 @@ class CreateUPathResponseSchema(schema.ResponseSchema):
 """
 API: DeleteGlobalSSHInstance
 
-
+删除GlobalSSH实例
 """
 
 
 class DeleteGlobalSSHInstanceRequestSchema(schema.RequestSchema):
-    """DeleteGlobalSSHInstance -"""
+    """DeleteGlobalSSHInstance - 删除GlobalSSH实例"""
 
     fields = {
         "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
@@ -212,7 +222,7 @@ class DeleteGlobalSSHInstanceRequestSchema(schema.RequestSchema):
 
 
 class DeleteGlobalSSHInstanceResponseSchema(schema.ResponseSchema):
-    """DeleteGlobalSSHInstance -"""
+    """DeleteGlobalSSHInstance - 删除GlobalSSH实例"""
 
     fields = {
         "Message": fields.Str(required=False, load_from="Message"),
@@ -259,6 +269,9 @@ class DeleteUGAForwarderRequestSchema(schema.RequestSchema):
         "TCP": fields.List(fields.Int()),
         "UDP": fields.List(fields.Int()),
         "UGAId": fields.Str(required=True, dump_to="UGAId"),
+        "WSSWS": fields.List(fields.Int()),
+        "WSSWSS": fields.List(fields.Int()),
+        "WSWS": fields.List(fields.Int()),
     }
 
 
@@ -266,7 +279,9 @@ class DeleteUGAForwarderResponseSchema(schema.ResponseSchema):
     """DeleteUGAForwarder - 删除加速实例转发器 按接入端口删除"""
 
     fields = {
-        "Message": fields.Str(required=True, load_from="Message"),
+        "Message": fields.Str(
+            required=True, load_from="Message"
+        ),  # Deprecated, will be removed at 1.0
     }
 
 
@@ -592,12 +607,12 @@ class GetPathXMetricResponseSchema(schema.ResponseSchema):
 """
 API: ModifyGlobalSSHPort
 
-
+修改GlobalSSH端口
 """
 
 
 class ModifyGlobalSSHPortRequestSchema(schema.RequestSchema):
-    """ModifyGlobalSSHPort -"""
+    """ModifyGlobalSSHPort - 修改GlobalSSH端口"""
 
     fields = {
         "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
@@ -607,7 +622,7 @@ class ModifyGlobalSSHPortRequestSchema(schema.RequestSchema):
 
 
 class ModifyGlobalSSHPortResponseSchema(schema.ResponseSchema):
-    """ModifyGlobalSSHPort -"""
+    """ModifyGlobalSSHPort - 修改GlobalSSH端口"""
 
     fields = {
         "Message": fields.Str(required=False, load_from="Message"),
@@ -786,5 +801,28 @@ class UnBindPathXSSLRequestSchema(schema.RequestSchema):
 
 class UnBindPathXSSLResponseSchema(schema.ResponseSchema):
     """UnBindPathXSSL - 解绑PathX SSL 证书"""
+
+    fields = {}
+
+
+"""
+API: UpdatePathXWhitelist
+
+更新入口白名单,仅限GlobalSSH 实例使用。其他uga-实例不生效
+"""
+
+
+class UpdatePathXWhitelistRequestSchema(schema.RequestSchema):
+    """UpdatePathXWhitelist - 更新入口白名单,仅限GlobalSSH 实例使用。其他uga-实例不生效"""
+
+    fields = {
+        "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Whitelist": fields.List(fields.Str()),
+    }
+
+
+class UpdatePathXWhitelistResponseSchema(schema.ResponseSchema):
+    """UpdatePathXWhitelist - 更新入口白名单,仅限GlobalSSH 实例使用。其他uga-实例不生效"""
 
     fields = {}
