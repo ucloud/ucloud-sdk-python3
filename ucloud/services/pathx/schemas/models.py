@@ -89,27 +89,6 @@ class PathXSSLSetSchema(schema.ResponseSchema):
     }
 
 
-class UGAL7ForwarderSchema(schema.ResponseSchema):
-    """UGAL7Forwarder - UGA实例 7层转发器信息"""
-
-    fields = {
-        "Port": fields.Int(required=True, load_from="Port"),
-        "Protocol": fields.Str(required=True, load_from="Protocol"),
-        "RSPort": fields.Int(required=True, load_from="RSPort"),
-        "SSLId": fields.Str(required=False, load_from="SSLId"),
-        "SSLName": fields.Str(required=False, load_from="SSLName"),
-    }
-
-
-class OutPublicIpInfoSchema(schema.ResponseSchema):
-    """OutPublicIpInfo - 线路出口IP信息"""
-
-    fields = {
-        "Area": fields.Str(required=False, load_from="Area"),
-        "IP": fields.Str(required=False, load_from="IP"),
-    }
-
-
 class UPathSetSchema(schema.ResponseSchema):
     """UPathSet - uga关联的upath信息"""
 
@@ -125,12 +104,33 @@ class UPathSetSchema(schema.ResponseSchema):
     }
 
 
+class UGAL7ForwarderSchema(schema.ResponseSchema):
+    """UGAL7Forwarder - UGA实例 7层转发器信息"""
+
+    fields = {
+        "Port": fields.Int(required=True, load_from="Port"),
+        "Protocol": fields.Str(required=True, load_from="Protocol"),
+        "RSPort": fields.Int(required=True, load_from="RSPort"),
+        "SSLId": fields.Str(required=False, load_from="SSLId"),
+        "SSLName": fields.Str(required=False, load_from="SSLName"),
+    }
+
+
 class UGAATaskSchema(schema.ResponseSchema):
     """UGAATask - 用户在UGAA实例下配置的多端口任务"""
 
     fields = {
         "Port": fields.Int(required=True, load_from="Port"),
         "Protocol": fields.Str(required=True, load_from="Protocol"),
+    }
+
+
+class OutPublicIpInfoSchema(schema.ResponseSchema):
+    """OutPublicIpInfo - 线路出口IP信息"""
+
+    fields = {
+        "Area": fields.Str(required=False, load_from="Area"),
+        "IP": fields.Str(required=False, load_from="IP"),
     }
 
 
