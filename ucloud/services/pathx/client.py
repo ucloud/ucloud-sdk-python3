@@ -54,7 +54,7 @@ class PathXClient(Client):
         - **BandwidthPackage** (int) - Ultimate版本带宽包大小,枚举值：[0,20,40]。单位MB
         - **ChargeType** (str) - 支付方式，如按月：Month、 按年：Year、按时：Dynamic
         - **CouponId** (str) - 使用代金券可冲抵部分费用
-        - **ForwardRegion** (str) - InstanceType等于Basic时可以在["cn-bj2","cn-sh2","cn-gd"]中选择1个作为转发机房，Free版本固定为cn-bj2,其他付费版默认配置三个转发机房
+        - **ForwardRegion** (str) - InstanceType等于Basic时可以在["cn-bj2","cn-sh2","cn-gd"]中选择1个作为转发机房，其他付费版默认配置三个转发机房
         - **InstanceType** (str) - 枚举值：["Ultimate","Enterprise","Basic","Primary"], 分别代表旗舰版，企业版，基础版，入门版
         - **Quantity** (int) - 购买数量按月购买至月底请传0
         - **Remark** (str) - 备注信息
