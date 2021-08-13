@@ -115,6 +115,13 @@ UDDB
    :members:
 
 
+UDTS
+----
+
+.. autoclass:: ucloud.services.udts.client.UDTSClient
+   :members:
+
+
 UEC
 ---
 

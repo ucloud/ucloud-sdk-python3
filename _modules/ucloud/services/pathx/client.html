@@ -79,24 +79,23 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Area** (str) - (Required) 填写支持SSH访问IP的地区名称，如“洛杉矶”，“新加坡”，“香港”，“东京”，“华盛顿”，“法兰克福”。Area和AreaCode两者必填一个</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Area** (str) - (Required) 填写支持SSH访问IP的地区名称，如“洛杉矶”，“新加坡”，“香港”，“东京”，“华盛顿”，“法兰克福”，“首尔”。Area和AreaCode两者必填一个</span>
 <span class="sd">        - **AreaCode** (str) - (Required) AreaCode, 区域航空港国际通用代码。Area和AreaCode两者必填一个</span>
 <span class="sd">        - **Port** (int) - (Required) 源站服务器监听的SSH端口，可取范围[1-65535]，不能使用80，443,  65123端口。如果InstanceType=Free，取值范围缩小为[22,3389],linux系统选择22，windows系统自动选3389。</span>
 <span class="sd">        - **TargetIP** (str) - (Required) 被SSH访问的源站IP，仅支持IPv4地址。</span>
 <span class="sd">        - **BandwidthPackage** (int) - Ultimate版本带宽包大小,枚举值：[0,20,40]。单位MB</span>
-<span class="sd">        - **ChargeType** (str) - 支付方式，如按月、按年、按时</span>
+<span class="sd">        - **ChargeType** (str) - 支付方式，如按月：Month、 按年：Year、按时：Dynamic</span>
 <span class="sd">        - **CouponId** (str) - 使用代金券可冲抵部分费用</span>
-<span class="sd">        - **ForwardRegion** (str) - InstanceType等于Basic时可以在[&quot;cn-bj2&quot;,&quot;cn-sh2&quot;,&quot;cn-gd&quot;]中选择1个作为转发机房，Free版本固定为cn-bj2,其他付费版默认配置三个转发机房</span>
-<span class="sd">        - **InstanceType** (str) - 枚举值：[&quot;Enterprise&quot;,&quot;Basic&quot;,&quot;Free&quot;], 分别代表企业版，基础版，免费版</span>
-<span class="sd">        - **Quantity** (int) - 购买数量</span>
+<span class="sd">        - **ForwardRegion** (str) - InstanceType等于Basic时可以在[&quot;cn-bj2&quot;,&quot;cn-sh2&quot;,&quot;cn-gd&quot;]中选择1个作为转发机房，其他付费版默认配置三个转发机房</span>
+<span class="sd">        - **InstanceType** (str) - 枚举值：[&quot;Ultimate&quot;,&quot;Enterprise&quot;,&quot;Basic&quot;,&quot;Primary&quot;], 分别代表旗舰版，企业版，基础版，入门版</span>
+<span class="sd">        - **Quantity** (int) - 购买数量按月购买至月底请传0</span>
 <span class="sd">        - **Remark** (str) - 备注信息</span>
 
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **AcceleratingDomain** (str) - 加速域名，访问该域名可就近接入</span>
 <span class="sd">        - **InstanceId** (str) - 实例ID，资源唯一标识</span>
-<span class="sd">        - **Message** (str) - 提示信息</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -152,7 +151,7 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
 <span class="sd">        - **UGAId** (str) - (Required) 加速配置实例ID</span>
 <span class="sd">        - **HTTPHTTP** (list) - HTTP接入HTTP回源转发，接入端口。禁用65123端口</span>
 <span class="sd">        - **HTTPHTTPRS** (list) - HTTP接入HTTP回源转发，源站监听端口</span>
@@ -160,14 +159,19 @@
 <span class="sd">        - **HTTPSHTTPRS** (list) - HTTPS接入HTTP回源转发，回源端口</span>
 <span class="sd">        - **HTTPSHTTPS** (list) - HTTPS接入HTTPS回源转发，接入端口。禁用65123端口</span>
 <span class="sd">        - **HTTPSHTTPSRS** (list) - HTTPS接入HTTPS回源转发，源站监听端口</span>
-<span class="sd">        - **TCP** (list) - TCP接入端口</span>
+<span class="sd">        - **TCP** (list) - TCP接入端口，禁用65123端口</span>
 <span class="sd">        - **TCPRS** (list) - TCP回源端口</span>
-<span class="sd">        - **UDP** (list) - UDP接入端口</span>
+<span class="sd">        - **UDP** (list) - UDP接入端口，禁用65123端口</span>
 <span class="sd">        - **UDPRS** (list) - UDP回源端口</span>
+<span class="sd">        - **WSSWS** (list) - WebSocketS接入WebSocket回源转发，接入端口。禁用65123。</span>
+<span class="sd">        - **WSSWSRS** (list) - WebSocketS接入WebSocket回源转发，源站监听端口。</span>
+<span class="sd">        - **WSSWSS** (list) - WebSocketS接入WebSocketS回源转发，接入端口。禁用65123。</span>
+<span class="sd">        - **WSSWSSRS** (list) - WebSocketS接入WebSocketS回源转发，源站监听端口。</span>
+<span class="sd">        - **WSWS** (list) - WebSocket接入WebSocket回源转发，接入端口。禁用65123。</span>
+<span class="sd">        - **WSWSRS** (list) - WebSocket接入WebSocket回源转发，源站监听端口</span>
 
 <span class="sd">        **Response**</span>
 
-<span class="sd">        - **Message** (str) - 返回信息 说明</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -252,16 +256,16 @@
 <div class="viewcode-block" id="PathXClient.delete_global_ssh_instance"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.delete_global_ssh_instance">[docs]</a>    <span class="k">def</span> <span class="nf">delete_global_ssh_instance</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;DeleteGlobalSSHInstance -</span>
+        <span class="sd">&quot;&quot;&quot;DeleteGlobalSSHInstance - 删除GlobalSSH实例</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config)</span>
-<span class="sd">        - **InstanceId** (str) - (Required)</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **InstanceId** (str) - (Required) 实例Id,资源的唯一标识</span>
 
 <span class="sd">        **Response**</span>
 
-<span class="sd">        - **Message** (str) -</span>
+<span class="sd">        - **Message** (str) - 提示信息</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -270,9 +274,6 @@
         <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteGlobalSSHInstanceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-
-        <span class="c1"># build options</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DeleteGlobalSSHInstance&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteGlobalSSHInstanceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
@@ -308,17 +309,19 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
 <span class="sd">        - **UGAId** (str) - (Required) 加速配置实例ID</span>
 <span class="sd">        - **HTTPHTTP** (list) - HTTP接入HTTP回源，接入端口。禁用65123端口</span>
 <span class="sd">        - **HTTPSHTTP** (list) - HTTPS接入HTTP回源， 接入端口。禁用65123端口</span>
 <span class="sd">        - **HTTPSHTTPS** (list) - HTTPS接入HTTPS回源， 接入端口。禁用65123端口</span>
 <span class="sd">        - **TCP** (list) - TCP接入端口</span>
 <span class="sd">        - **UDP** (list) - UDP接入端口</span>
+<span class="sd">        - **WSSWS** (list) - WebSocketS接入WebSocket回源， 接入端口。禁用65123端口。</span>
+<span class="sd">        - **WSSWSS** (list) - WebSocketS接入WebSocketS回源， 接入端口。禁用65123端口</span>
+<span class="sd">        - **WSWS** (list) - WebSocket接入WebSocket回源， 接入端口。禁用65123端口</span>
 
 <span class="sd">        **Response**</span>
 
-<span class="sd">        - **Message** (str) - 返回信息 说明</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -475,14 +478,6 @@
 
 <span class="sd">        **Response Model**</span>
 
-<span class="sd">        **LineDetail**</span>
-<span class="sd">        - **LineFrom** (str) - 线路源</span>
-<span class="sd">        - **LineFromName** (str) - 线路源中文名称</span>
-<span class="sd">        - **LineId** (str) - 线路计费Id</span>
-<span class="sd">        - **LineTo** (str) - 线路目的</span>
-<span class="sd">        - **LineToName** (str) - 线路目的中文名称</span>
-
-
 <span class="sd">        **UGAALine**</span>
 <span class="sd">        - **LineDetail** (list) - 见 **LineDetail** 模型定义</span>
 <span class="sd">        - **LineFrom** (str) - 线路源</span>
@@ -491,6 +486,14 @@
 <span class="sd">        - **LineTo** (str) - 线路目的</span>
 <span class="sd">        - **LineToName** (str) - 线路目的中文名称</span>
 <span class="sd">        - **MaxBandwidth** (int) - 线路可售最大带宽</span>
+
+
+<span class="sd">        **LineDetail**</span>
+<span class="sd">        - **LineFrom** (str) - 线路源</span>
+<span class="sd">        - **LineFromName** (str) - 线路源中文名称</span>
+<span class="sd">        - **LineId** (str) - 线路计费Id</span>
+<span class="sd">        - **LineTo** (str) - 线路目的</span>
+<span class="sd">        - **LineToName** (str) - 线路目的中文名称</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -524,11 +527,6 @@
 
 <span class="sd">        **Response Model**</span>
 
-<span class="sd">        **SSLBindedTargetSet**</span>
-<span class="sd">        - **ResourceId** (str) - SSL证书绑定到的实例ID</span>
-<span class="sd">        - **ResourceName** (str) - SSL证书绑定到的实例名称</span>
-
-
 <span class="sd">        **PathXSSLSet**</span>
 <span class="sd">        - **CreateTime** (int) - SSL证书的创建时间 时间戳</span>
 <span class="sd">        - **ExpireTime** (int) - 证书过期时间 时间戳</span>
@@ -539,6 +537,11 @@
 <span class="sd">        - **SSLName** (str) - SSL证书的名字</span>
 <span class="sd">        - **SourceType** (int) - 证书来源，0：用户上传 1: 免费颁发</span>
 <span class="sd">        - **SubjectName** (str) - 证书域名</span>
+
+
+<span class="sd">        **SSLBindedTargetSet**</span>
+<span class="sd">        - **ResourceId** (str) - SSL证书绑定到的实例ID</span>
+<span class="sd">        - **ResourceName** (str) - SSL证书绑定到的实例名称</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -571,41 +574,6 @@
 
 <span class="sd">        **Response Model**</span>
 
-<span class="sd">        **UGAL7Forwarder**</span>
-<span class="sd">        - **Port** (int) - 接入端口</span>
-<span class="sd">        - **Protocol** (str) - 转发协议，枚举值[&quot;TCP&quot;，&quot;UDP&quot;，&quot;HTTPHTTP&quot;，&quot;HTTPSHTTP&quot;，&quot;HTTPSHTTPS&quot;]。TCP和UDP代表四层转发，其余为七层转发</span>
-<span class="sd">        - **RSPort** (int) - RSPort，源站监听端口</span>
-<span class="sd">        - **SSLId** (str) - 证书ID</span>
-<span class="sd">        - **SSLName** (str) - 证书名称</span>
-
-
-<span class="sd">        **UGAATask**</span>
-<span class="sd">        - **Port** (int) - 接入端口</span>
-<span class="sd">        - **Protocol** (str) - 转发协议，枚举值[&quot;TCP&quot;，&quot;UDP&quot;，&quot;HTTPHTTP&quot;，&quot;HTTPSHTTP&quot;，&quot;HTTPSHTTPS&quot;]。TCP和UDP代表四层转发，其余为七层转发</span>
-
-
-<span class="sd">        **OutPublicIpInfo**</span>
-<span class="sd">        - **Area** (str) - 线路出口机房代号</span>
-<span class="sd">        - **IP** (str) - 线路出口EIP</span>
-
-
-<span class="sd">        **UGAL4Forwarder**</span>
-<span class="sd">        - **Port** (int) - 接入端口</span>
-<span class="sd">        - **Protocol** (str) - 转发协议，枚举值[&quot;TCP&quot;，&quot;UDP&quot;，&quot;HTTPHTTP&quot;，&quot;HTTPSHTTP&quot;，&quot;HTTPSHTTPS&quot;]。TCP和UDP代表四层转发，其余为七层转发</span>
-<span class="sd">        - **RSPort** (int) - RSPort，源站监听端口</span>
-
-
-<span class="sd">        **UPathSet**</span>
-<span class="sd">        - **Bandwidth** (int) - 带宽 Mbps, 1~800Mbps</span>
-<span class="sd">        - **LineFrom** (str) - 线路起点英文代号，加速区域</span>
-<span class="sd">        - **LineFromName** (str) - 线路起点中文名字，加速区域</span>
-<span class="sd">        - **LineId** (str) - 线路ID</span>
-<span class="sd">        - **LineTo** (str) - 线路对端英文代号，源站区域</span>
-<span class="sd">        - **LineToName** (str) - 线路对端中文名字，源站区域</span>
-<span class="sd">        - **UPathId** (str) - UPath 实例ID</span>
-<span class="sd">        - **UPathName** (str) - UPath名字</span>
-
-
 <span class="sd">        **UGAAInfo**</span>
 <span class="sd">        - **CName** (str) - 加速域名，请在加速区域配置您的业务域名的CName记录值为加速域名</span>
 <span class="sd">        - **Domain** (str) - 源站域名</span>
@@ -618,6 +586,41 @@
 <span class="sd">        - **UGAId** (str) - 加速配置实例ID</span>
 <span class="sd">        - **UGAName** (str) - 加速配置名称</span>
 <span class="sd">        - **UPathSet** (list) - 见 **UPathSet** 模型定义</span>
+
+
+<span class="sd">        **UGAL4Forwarder**</span>
+<span class="sd">        - **Port** (int) - 接入端口</span>
+<span class="sd">        - **Protocol** (str) - 转发协议，枚举值[&quot;TCP&quot;，&quot;UDP&quot;，&quot;HTTPHTTP&quot;，&quot;HTTPSHTTP&quot;，&quot;HTTPSHTTPS&quot;]。TCP和UDP代表四层转发，其余为七层转发</span>
+<span class="sd">        - **RSPort** (int) - RSPort，源站监听端口</span>
+
+
+<span class="sd">        **UGAL7Forwarder**</span>
+<span class="sd">        - **Port** (int) - 接入端口</span>
+<span class="sd">        - **Protocol** (str) - 转发协议，枚举值[&quot;TCP&quot;，&quot;UDP&quot;，&quot;HTTPHTTP&quot;，&quot;HTTPSHTTP&quot;，&quot;HTTPSHTTPS&quot;]。TCP和UDP代表四层转发，其余为七层转发</span>
+<span class="sd">        - **RSPort** (int) - RSPort，源站监听端口</span>
+<span class="sd">        - **SSLId** (str) - 证书ID</span>
+<span class="sd">        - **SSLName** (str) - 证书名称</span>
+
+
+<span class="sd">        **OutPublicIpInfo**</span>
+<span class="sd">        - **Area** (str) - 线路出口机房代号</span>
+<span class="sd">        - **IP** (str) - 线路出口EIP</span>
+
+
+<span class="sd">        **UGAATask**</span>
+<span class="sd">        - **Port** (int) - 接入端口</span>
+<span class="sd">        - **Protocol** (str) - 转发协议，枚举值[&quot;TCP&quot;，&quot;UDP&quot;，&quot;HTTPHTTP&quot;，&quot;HTTPSHTTP&quot;，&quot;HTTPSHTTPS&quot;]。TCP和UDP代表四层转发，其余为七层转发</span>
+
+
+<span class="sd">        **UPathSet**</span>
+<span class="sd">        - **Bandwidth** (int) - 带宽 Mbps, 1~800Mbps</span>
+<span class="sd">        - **LineFrom** (str) - 线路起点英文代号，加速区域</span>
+<span class="sd">        - **LineFromName** (str) - 线路起点中文名字，加速区域</span>
+<span class="sd">        - **LineId** (str) - 线路ID</span>
+<span class="sd">        - **LineTo** (str) - 线路对端英文代号，源站区域</span>
+<span class="sd">        - **LineToName** (str) - 线路对端中文名字，源站区域</span>
+<span class="sd">        - **UPathId** (str) - UPath 实例ID</span>
+<span class="sd">        - **UPathName** (str) - UPath名字</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -647,17 +650,6 @@
 
 <span class="sd">        **Response Model**</span>
 
-<span class="sd">        **OutPublicIpInfo**</span>
-<span class="sd">        - **Area** (str) - 线路出口机房代号</span>
-<span class="sd">        - **IP** (str) - 线路出口EIP</span>
-
-
-<span class="sd">        **PathXUGAInfo**</span>
-<span class="sd">        - **Domain** (str) - 源站域名</span>
-<span class="sd">        - **IPList** (list) - 源站IP列表，多个值由半角英文逗号相隔</span>
-<span class="sd">        - **UGAId** (str) - 加速配置ID</span>
-
-
 <span class="sd">        **UPathInfo**</span>
 <span class="sd">        - **Bandwidth** (int) - 带宽，单位Mbps</span>
 <span class="sd">        - **ChargeType** (str) - 计费模式，默认为Month 按月收费,可选范围[&#39;Month&#39;,&#39;Year&#39;,&#39;Dynamic&#39;]</span>
@@ -671,6 +663,17 @@
 <span class="sd">        - **PostPaid** (bool) - 是否为后付费实例</span>
 <span class="sd">        - **UGAList** (list) - 见 **PathXUGAInfo** 模型定义</span>
 <span class="sd">        - **UPathId** (str) - UPath加速线路实例ID</span>
+
+
+<span class="sd">        **OutPublicIpInfo**</span>
+<span class="sd">        - **Area** (str) - 线路出口机房代号</span>
+<span class="sd">        - **IP** (str) - 线路出口EIP</span>
+
+
+<span class="sd">        **PathXUGAInfo**</span>
+<span class="sd">        - **Domain** (str) - 源站域名</span>
+<span class="sd">        - **IPList** (list) - 源站IP列表，多个值由半角英文逗号相隔</span>
+<span class="sd">        - **UGAId** (str) - 加速配置ID</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -799,16 +802,16 @@
 
 <span class="sd">        **Response Model**</span>
 
-<span class="sd">        **MatricPoint**</span>
-<span class="sd">        - **Timestamp** (int) - 时间戳</span>
-<span class="sd">        - **Value** (int) - 监控点数值</span>
-
-
 <span class="sd">        **MetricPeriod**</span>
 <span class="sd">        - **NetworkIn** (list) - 见 **MatricPoint** 模型定义</span>
 <span class="sd">        - **NetworkInUsage** (list) - 见 **MatricPoint** 模型定义</span>
 <span class="sd">        - **NetworkOut** (list) - 见 **MatricPoint** 模型定义</span>
 <span class="sd">        - **NetworkOutUsage** (list) - 见 **MatricPoint** 模型定义</span>
+
+
+<span class="sd">        **MatricPoint**</span>
+<span class="sd">        - **Timestamp** (int) - 时间戳</span>
+<span class="sd">        - **Value** (int) - 监控点数值</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -825,17 +828,17 @@
 <div class="viewcode-block" id="PathXClient.modify_global_ssh_port"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.modify_global_ssh_port">[docs]</a>    <span class="k">def</span> <span class="nf">modify_global_ssh_port</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;ModifyGlobalSSHPort -</span>
+        <span class="sd">&quot;&quot;&quot;ModifyGlobalSSHPort - 修改GlobalSSH端口</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config)</span>
-<span class="sd">        - **InstanceId** (str) - (Required)</span>
-<span class="sd">        - **Port** (int) - (Required)</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID，如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **InstanceId** (str) - (Required) 实例ID,资源唯一标识。当前仅收费版GlobalSSH实例可以修改端口。</span>
+<span class="sd">        - **Port** (int) - (Required) 源站服务器监听的SSH端口号。收费版本端口范围[1,65535]且不能为80，443，65123端口。免费版不支持修改端口。</span>
 
 <span class="sd">        **Response**</span>
 
-<span class="sd">        - **Message** (str) -</span>
+<span class="sd">        - **Message** (str) - 提示信息</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -844,9 +847,6 @@
         <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyGlobalSSHPortRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-
-        <span class="c1"># build options</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ModifyGlobalSSHPort&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyGlobalSSHPortResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
@@ -1040,7 +1040,32 @@
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">UnBindPathXSSLRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;UnBindPathXSSL&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">UnBindPathXSSLResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">UnBindPathXSSLResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PathXClient.update_path_x_whitelist"><a class="viewcode-back" href="../../../../services.html#ucloud.services.pathx.client.PathXClient.update_path_x_whitelist">[docs]</a>    <span class="k">def</span> <span class="nf">update_path_x_whitelist</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;UpdatePathXWhitelist - 更新入口白名单,仅限GlobalSSH 实例使用。其他uga-实例不生效</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **InstanceId** (str) - (Required) GlobalSSH实例ID，资源唯一标识</span>
+<span class="sd">        - **Whitelist** (list) - 白名单规则,例如 &quot;Whitelist.0&quot;: &quot;192.168.1.1/24|tcp|22&quot;，&quot;Whitelist.1&quot;: &quot;192.168.1.2|tcp|8080:8090&quot;，第一个参数为ip或ip段，第二个参数代表协议（tcp/udp），第三个参数代表端口号或端口范围（使用 &#39;:&#39; 隔开）；可以添加多条规则（递增Whitelist.n字段内的n值）；此接口需要列出全部规则，例如不填则为清空白名单规则，如若需要增量添加，使用InsertPathXWhitelist接口,globalssh 没有端口范围：端口设置成加速端口，协议设置成tcp:ip|tcp|加速端口</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">UpdatePathXWhitelistRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;UpdatePathXWhitelist&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">UpdatePathXWhitelistResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -1082,7 +1107,7 @@
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -1104,7 +1129,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
