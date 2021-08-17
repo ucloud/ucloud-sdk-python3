@@ -77,10 +77,8 @@ class CubeClient(Client):
 
         **Response**
 
-        - **Action** (str) - 操作名称
         - **CubeId** (str) - cube的资源Id
         - **Pod** (str) - base64编码的yaml
-        - **RetCode** (int) - 返回码
 
         """
         # build request
@@ -181,6 +179,37 @@ class CubeClient(Client):
         resp = self.invoke("GetCubeDeployment", d, **kwargs)
         return apis.GetCubeDeploymentResponseSchema().loads(resp)
 
+    def get_cube_exec_token(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetCubeExecToken - 获取登录容器的token
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ContainerName** (str) - (Required) 容器名称
+        - **CubeId** (str) - CubeId 和 Uid 中必须填写任意一个。CubeId 是所有 Cube 资源的唯一 ID，如非在 UK8S 通过 Virtual Kubelet 插件创建的 Cube， 则必填 CubeId
+        - **Uid** (str) - CubeId 和 Uid 中必须填写任意一个。Uid 是在 UK8S 中通过 Virtual Kubelet 插件创建出的 Cube 的唯一标识
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **TerminalUrl** (str) - terminal的登录连接地址，限单点登录，有效时间5min
+        - **Token** (str) - 有效时间5min
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetCubeExecTokenRequestSchema().dumps(d)
+
+        resp = self.invoke("GetCubeExecToken", d, **kwargs)
+        return apis.GetCubeExecTokenResponseSchema().loads(resp)
+
     def get_cube_extend_info(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -259,14 +288,14 @@ class CubeClient(Client):
 
         **Response Model**
 
-        **ValueSet**
-        - **Timestamp** (int) -
-        - **Value** (float) -
-
-
         **MetricDataSet**
         - **MetricName** (str) -
         - **Values** (list) - 见 **ValueSet** 模型定义
+
+
+        **ValueSet**
+        - **Timestamp** (int) -
+        - **Value** (float) -
 
 
         """
@@ -326,10 +355,8 @@ class CubeClient(Client):
 
         **Response**
 
-        - **Action** (str) - 操作名称
         - **OriginalPrice** (int) - 列表价格，单位为分
         - **Price** (int) - 折扣后价格，单位为分
-        - **RetCode** (int) - 返回码
 
         """
         # build request
@@ -343,6 +370,36 @@ class CubeClient(Client):
         resp = self.invoke("GetCubePrice", d, **kwargs)
         return apis.GetCubePriceResponseSchema().loads(resp)
 
+    def list_cube_deployment(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListCubeDeployment - 获取Cube的Deployment列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Limit** (int) - (Required) 默认20
+        - **Offset** (int) - (Required) 默认0
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Deployments** (list) - DeploymentInfo
+        - **TotalCount** (int) -
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ListCubeDeploymentRequestSchema().dumps(d)
+
+        resp = self.invoke("ListCubeDeployment", d, **kwargs)
+        return apis.ListCubeDeploymentResponseSchema().loads(resp)
+
     def list_cube_pod(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -350,14 +407,15 @@ class CubeClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **DeploymentId** (str) - Deployment的Id
         - **Group** (str) - 组名称
         - **Limit** (int) - 默认20
         - **Offset** (int) - 默认0
         - **SubnetId** (str) - 子网Id
         - **VPCId** (str) - VPC的Id
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
