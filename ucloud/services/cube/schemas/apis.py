@@ -75,10 +75,8 @@ class CreateCubePodResponseSchema(schema.ResponseSchema):
     """CreateCubePod - 创建Pod"""
 
     fields = {
-        "Action": fields.Str(required=True, load_from="Action"),
         "CubeId": fields.Str(required=False, load_from="CubeId"),
         "Pod": fields.Str(required=True, load_from="Pod"),
-        "RetCode": fields.Int(required=True, load_from="RetCode"),
     }
 
 
@@ -155,6 +153,35 @@ class GetCubeDeploymentResponseSchema(schema.ResponseSchema):
 
     fields = {
         "Deployment": fields.Str(required=True, load_from="Deployment"),
+    }
+
+
+"""
+API: GetCubeExecToken
+
+获取登录容器的token
+"""
+
+
+class GetCubeExecTokenRequestSchema(schema.RequestSchema):
+    """GetCubeExecToken - 获取登录容器的token"""
+
+    fields = {
+        "ContainerName": fields.Str(required=True, dump_to="ContainerName"),
+        "CubeId": fields.Str(required=False, dump_to="CubeId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Uid": fields.Str(required=False, dump_to="Uid"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class GetCubeExecTokenResponseSchema(schema.ResponseSchema):
+    """GetCubeExecToken - 获取登录容器的token"""
+
+    fields = {
+        "TerminalUrl": fields.Str(required=False, load_from="TerminalUrl"),
+        "Token": fields.Str(required=True, load_from="Token"),
     }
 
 
@@ -272,10 +299,38 @@ class GetCubePriceResponseSchema(schema.ResponseSchema):
     """GetCubePrice - 获取cube的价格"""
 
     fields = {
-        "Action": fields.Str(required=True, load_from="Action"),
         "OriginalPrice": fields.Int(required=True, load_from="OriginalPrice"),
         "Price": fields.Int(required=True, load_from="Price"),
-        "RetCode": fields.Int(required=True, load_from="RetCode"),
+    }
+
+
+"""
+API: ListCubeDeployment
+
+获取Cube的Deployment列表
+"""
+
+
+class ListCubeDeploymentRequestSchema(schema.RequestSchema):
+    """ListCubeDeployment - 获取Cube的Deployment列表"""
+
+    fields = {
+        "Limit": fields.Int(required=True, dump_to="Limit"),
+        "Offset": fields.Int(required=True, dump_to="Offset"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class ListCubeDeploymentResponseSchema(schema.ResponseSchema):
+    """ListCubeDeployment - 获取Cube的Deployment列表"""
+
+    fields = {
+        "Deployments": fields.List(
+            fields.Str(), required=True, load_from="Deployments"
+        ),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
     }
 
 
@@ -290,10 +345,11 @@ class ListCubePodRequestSchema(schema.RequestSchema):
     """ListCubePod - 获取Pods列表"""
 
     fields = {
+        "DeploymentId": fields.Str(required=False, dump_to="DeploymentId"),
         "Group": fields.Str(required=False, dump_to="Group"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
         "VPCId": fields.Str(required=False, dump_to="VPCId"),
