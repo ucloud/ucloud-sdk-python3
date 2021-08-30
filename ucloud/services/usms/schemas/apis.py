@@ -65,7 +65,7 @@ class CreateUSMSTemplateRequestSchema(schema.RequestSchema):
         "TemplateName": fields.Str(required=True, dump_to="TemplateName"),
         "UnsubscribeInfo": fields.Str(
             required=False, dump_to="UnsubscribeInfo"
-        ),  # Deprecated, will be removed at 1.0
+        ),
         "Zone": fields.Str(
             required=False, dump_to="Zone"
         ),  # Deprecated, will be removed at 1.0
