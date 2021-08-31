@@ -23,3 +23,28 @@ class ReceiptPerTaskSchema(schema.ResponseSchema):
         "ReceiptSet": fields.List(ReceiptPerPhoneSchema()),
         "TaskId": fields.Str(required=True, load_from="TaskId"),
     }
+
+
+class OutSignatureSchema(schema.ResponseSchema):
+    """OutSignature - 短信签名"""
+
+    fields = {
+        "ErrDesc": fields.Str(required=True, load_from="ErrDesc"),
+        "SigContent": fields.Str(required=True, load_from="SigContent"),
+        "SigId": fields.Str(required=True, load_from="SigId"),
+        "Status": fields.Int(required=True, load_from="Status"),
+    }
+
+
+class OutTemplateSchema(schema.ResponseSchema):
+    """OutTemplate - 模板状态"""
+
+    fields = {
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "Purpose": fields.Int(required=False, load_from="Purpose"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "StatusDesc": fields.Str(required=False, load_from="StatusDesc"),
+        "TemplateId": fields.Str(required=False, load_from="TemplateId"),
+        "TemplateName": fields.Str(required=False, load_from="TemplateName"),
+    }
