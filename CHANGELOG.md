@@ -1,3 +1,10 @@
+## 0.11.13 (2021-08-31)
+
+ENHANCEMENTS:
+
+- Update all APIs of `UCDN` (#168)
+- Update all APIs of `ISMS` (#166)
+
 ## 0.11.12 (2021-08-30)
 
 ENHANCEMENTS:
