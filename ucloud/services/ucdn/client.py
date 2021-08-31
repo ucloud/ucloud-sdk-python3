@@ -13,6 +13,36 @@ class UCDNClient(Client):
     ):
         super(UCDNClient, self).__init__(config, transport, middleware, logger)
 
+    def add_certificate(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """AddCertificate - 添加证书
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **CertName** (str) - (Required) 证书名称
+        - **PrivateKey** (str) - (Required) 用户私钥
+        - **UserCert** (str) - (Required) 用户证书
+        - **CaCert** (str) - Ca证书，默认为空
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.AddCertificateRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("AddCertificate", d, **kwargs)
+        return apis.AddCertificateResponseSchema().loads(resp)
+
     def batch_describe_new_ucdn_domain(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -117,6 +147,30 @@ class UCDNClient(Client):
         resp = self.invoke("BatchRefreshNewUcdnDomainCache", d, **kwargs)
         return apis.BatchRefreshNewUcdnDomainCacheResponseSchema().loads(resp)
 
+    def delete_certificate(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteCertificate - 删除证书
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **CertName** (str) - (Required) 证书名称
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.DeleteCertificateRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteCertificate", d, **kwargs)
+        return apis.DeleteCertificateResponseSchema().loads(resp)
+
     def describe_new_ucdn_prefetch_cache_task(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -212,6 +266,47 @@ class UCDNClient(Client):
 
         resp = self.invoke("DescribeNewUcdnRefreshCacheTask", d, **kwargs)
         return apis.DescribeNewUcdnRefreshCacheTaskResponseSchema().loads(resp)
+
+    def get_certificate_v2(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetCertificateV2 - 获取证书列表(新)
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Limit** (int) - 长度，默认为全部，非负整数
+        - **Offset** (int) - 偏移，默认为0，非负整数
+
+        **Response**
+
+        - **CertList** (list) - 见 **CertList** 模型定义
+        - **TotalCount** (int) - 证书数量
+
+        **Response Model**
+
+        **CertList**
+        - **BeginTime** (int) - 证书开始时间
+        - **CaCert** (str) - ca证内容
+        - **CertName** (str) - 证书名
+        - **CommonName** (str) - 通用名
+        - **DnsName** (str) - dns名称
+        - **DomainCount** (int) - 已配置域名个数
+        - **Domains** (list) - 已配置的域名列表
+        - **EndTime** (int) - 证书获取时间
+        - **UserCert** (str) - 证书内容
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetCertificateV2RequestSchema().dumps(d)
+
+        resp = self.invoke("GetCertificateV2", d, **kwargs)
+        return apis.GetCertificateV2ResponseSchema().loads(resp)
 
     def get_new_ucdn_domain_bandwidth(
         self, req: typing.Optional[dict] = None, **kwargs

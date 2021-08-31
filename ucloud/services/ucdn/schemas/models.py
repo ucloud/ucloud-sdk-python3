@@ -91,6 +91,22 @@ class TaskInfoSchema(schema.ResponseSchema):
     }
 
 
+class CertListSchema(schema.ResponseSchema):
+    """CertList - 证书信息"""
+
+    fields = {
+        "BeginTime": fields.Int(required=True, load_from="BeginTime"),
+        "CaCert": fields.Str(required=True, load_from="CaCert"),
+        "CertName": fields.Str(required=True, load_from="CertName"),
+        "CommonName": fields.Str(required=True, load_from="CommonName"),
+        "DnsName": fields.Str(required=True, load_from="DnsName"),
+        "DomainCount": fields.Int(required=True, load_from="DomainCount"),
+        "Domains": fields.List(fields.Str()),
+        "EndTime": fields.Int(required=True, load_from="EndTime"),
+        "UserCert": fields.Str(required=True, load_from="UserCert"),
+    }
+
+
 class BandwidthInfoSchema(schema.ResponseSchema):
     """BandwidthInfo - BandwidthInfo"""
 
@@ -241,6 +257,17 @@ class AccessControlConfSchema(schema.ResponseSchema):
     }
 
 
+class CacheAllConfigSchema(schema.ResponseSchema):
+    """CacheAllConfig - 缓存相关的配置"""
+
+    fields = {
+        "CacheHost": fields.Str(required=False, load_from="CacheHost"),
+        "CacheKeyList": fields.List(CacheKeyInfoSchema()),
+        "CacheList": fields.List(CacheConfSchema()),
+        "HttpCodeCacheList": fields.List(CacheConfSchema()),
+    }
+
+
 class AdvancedConfSchema(schema.ResponseSchema):
     """AdvancedConf - 域名高级配置"""
 
@@ -277,17 +304,6 @@ class OriginConfSchema(schema.ResponseSchema):
         "OriginProtocol": fields.Str(
             required=False, load_from="OriginProtocol"
         ),
-    }
-
-
-class CacheAllConfigSchema(schema.ResponseSchema):
-    """CacheAllConfig - 缓存相关的配置"""
-
-    fields = {
-        "CacheHost": fields.Str(required=False, load_from="CacheHost"),
-        "CacheKeyList": fields.List(CacheKeyInfoSchema()),
-        "CacheList": fields.List(CacheConfSchema()),
-        "HttpCodeCacheList": fields.List(CacheConfSchema()),
     }
 
 
