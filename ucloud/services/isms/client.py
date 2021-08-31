@@ -160,6 +160,11 @@ class ISMSClient(Client):
 
         **Response Model**
 
+        **ReceiptPerTask**
+        - **ReceiptSet** (list) - 见 **ReceiptPerPhone** 模型定义
+        - **TaskId** (str) - 发送短信时返回的TaskId
+
+
         **ReceiptPerPhone**
         - **Phone** (str) - 手机号码
         - **ReceiptCode** (str) - 回执码
@@ -167,11 +172,6 @@ class ISMSClient(Client):
         - **ReceiptResult** (str) - 回执结果(发送成功、发送失败、状态未知)
         - **ReceiptTime** (int) - 回执返回时间
         - **SessionId** (str) - SessionId
-
-
-        **ReceiptPerTask**
-        - **ReceiptSet** (list) - 见 **ReceiptPerPhone** 模型定义
-        - **TaskId** (str) - 发送短信时返回的TaskId
 
 
         """
