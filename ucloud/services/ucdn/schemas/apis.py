@@ -9,6 +9,31 @@ from ucloud.services.ucdn.schemas import models
 
 
 """
+API: AddCertificate
+
+添加证书
+"""
+
+
+class AddCertificateRequestSchema(schema.RequestSchema):
+    """AddCertificate - 添加证书"""
+
+    fields = {
+        "CaCert": fields.Str(required=False, dump_to="CaCert"),
+        "CertName": fields.Str(required=True, dump_to="CertName"),
+        "PrivateKey": fields.Str(required=True, dump_to="PrivateKey"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "UserCert": fields.Str(required=True, dump_to="UserCert"),
+    }
+
+
+class AddCertificateResponseSchema(schema.ResponseSchema):
+    """AddCertificate - 添加证书"""
+
+    fields = {}
+
+
+"""
 API: BatchDescribeNewUcdnDomain
 
 批量获取加速域名配置
@@ -73,6 +98,28 @@ class BatchRefreshNewUcdnDomainCacheResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DeleteCertificate
+
+删除证书
+"""
+
+
+class DeleteCertificateRequestSchema(schema.RequestSchema):
+    """DeleteCertificate - 删除证书"""
+
+    fields = {
+        "CertName": fields.Str(required=True, dump_to="CertName"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+    }
+
+
+class DeleteCertificateResponseSchema(schema.ResponseSchema):
+    """DeleteCertificate - 删除证书"""
+
+    fields = {}
+
+
+"""
 API: DescribeNewUcdnPrefetchCacheTask
 
 获取预取任务状态
@@ -133,6 +180,34 @@ class DescribeNewUcdnRefreshCacheTaskResponseSchema(schema.ResponseSchema):
             models.TaskInfoSchema(), required=False, load_from="TaskList"
         ),
         "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
+API: GetCertificateV2
+
+获取证书列表(新)
+"""
+
+
+class GetCertificateV2RequestSchema(schema.RequestSchema):
+    """GetCertificateV2 - 获取证书列表(新)"""
+
+    fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+    }
+
+
+class GetCertificateV2ResponseSchema(schema.ResponseSchema):
+    """GetCertificateV2 - 获取证书列表(新)"""
+
+    fields = {
+        "CertList": fields.List(
+            models.CertListSchema(), required=True, load_from="CertList"
+        ),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
     }
 
 
