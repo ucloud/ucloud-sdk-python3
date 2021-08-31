@@ -9,6 +9,122 @@ from ucloud.services.isms.schemas import models
 
 
 """
+API: CreateISMSSignature
+
+调用接口CreateISMSSignature申请视频短信签名
+"""
+
+
+class CreateISMSSignatureRequestSchema(schema.RequestSchema):
+    """CreateISMSSignature - 调用接口CreateISMSSignature申请视频短信签名"""
+
+    fields = {
+        "CertificateType": fields.Int(required=True, dump_to="CertificateType"),
+        "Description": fields.Str(required=True, dump_to="Description"),
+        "File": fields.Str(required=True, dump_to="File"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "ProxyFile": fields.Str(required=False, dump_to="ProxyFile"),
+        "SigContent": fields.Str(required=True, dump_to="SigContent"),
+        "SigPurpose": fields.Int(required=True, dump_to="SigPurpose"),
+        "SigType": fields.Int(required=True, dump_to="SigType"),
+    }
+
+
+class CreateISMSSignatureResponseSchema(schema.ResponseSchema):
+    """CreateISMSSignature - 调用接口CreateISMSSignature申请视频短信签名"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "SigId": fields.Str(required=False, load_from="SigId"),
+    }
+
+
+"""
+API: CreateISMSTemplate
+
+申请视频短信模板
+"""
+
+
+class CreateISMSTemplateRequestSchema(schema.RequestSchema):
+    """CreateISMSTemplate - 申请视频短信模板"""
+
+    fields = {
+        "Content": fields.Str(required=True, dump_to="Content"),
+        "MsgSignature": fields.Str(required=True, dump_to="MsgSignature"),
+        "MsgTitle": fields.Str(required=True, dump_to="MsgTitle"),
+        "NetworkOperator": fields.Str(
+            required=False, dump_to="NetworkOperator"
+        ),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Purpose": fields.Int(required=False, dump_to="Purpose"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Remark": fields.Str(required=True, dump_to="Remark"),
+        "TemplateName": fields.Str(required=True, dump_to="TemplateName"),
+        "UnsubscribeInfo": fields.Str(required=True, dump_to="UnsubscribeInfo"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class CreateISMSTemplateResponseSchema(schema.ResponseSchema):
+    """CreateISMSTemplate - 申请视频短信模板"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "ReqUuid": fields.Str(required=True, load_from="ReqUuid"),
+        "TemplateId": fields.Str(required=True, load_from="TemplateId"),
+    }
+
+
+"""
+API: DeleteISMSSignature
+
+调用接口DeleteISMSSignature删除视频短信签名
+"""
+
+
+class DeleteISMSSignatureRequestSchema(schema.RequestSchema):
+    """DeleteISMSSignature - 调用接口DeleteISMSSignature删除视频短信签名"""
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "SigIds": fields.List(fields.Str()),
+    }
+
+
+class DeleteISMSSignatureResponseSchema(schema.ResponseSchema):
+    """DeleteISMSSignature - 调用接口DeleteISMSSignature删除视频短信签名"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: DeleteISMSTemplate
+
+调用接口DeleteISMSTemplate删除视频短信模板
+"""
+
+
+class DeleteISMSTemplateRequestSchema(schema.RequestSchema):
+    """DeleteISMSTemplate - 调用接口DeleteISMSTemplate删除视频短信模板"""
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "TemplateIds": fields.List(fields.Str()),
+    }
+
+
+class DeleteISMSTemplateResponseSchema(schema.ResponseSchema):
+    """DeleteISMSTemplate - 调用接口DeleteISMSTemplate删除视频短信模板"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
 API: GetISMSSendReceipt
 
 获取视频短信发送记录的状态回执
@@ -39,6 +155,60 @@ class GetISMSSendReceiptResponseSchema(schema.ResponseSchema):
 
 
 """
+API: QueryISMSSignature
+
+调用接口QueryISMSSignature查询视频短信签名申请状态
+"""
+
+
+class QueryISMSSignatureRequestSchema(schema.RequestSchema):
+    """QueryISMSSignature - 调用接口QueryISMSSignature查询视频短信签名申请状态"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "SigContent": fields.Str(required=False, dump_to="SigContent"),
+        "SigId": fields.Str(required=True, dump_to="SigId"),
+    }
+
+
+class QueryISMSSignatureResponseSchema(schema.ResponseSchema):
+    """QueryISMSSignature - 调用接口QueryISMSSignature查询视频短信签名申请状态"""
+
+    fields = {
+        "Data": models.OutSignatureSchema(),
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: QueryISMSTemplate
+
+查询模板状态信息
+"""
+
+
+class QueryISMSTemplateRequestSchema(schema.RequestSchema):
+    """QueryISMSTemplate - 查询模板状态信息"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "TemplateId": fields.Str(required=True, dump_to="TemplateId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class QueryISMSTemplateResponseSchema(schema.ResponseSchema):
+    """QueryISMSTemplate - 查询模板状态信息"""
+
+    fields = {
+        "Data": models.OutTemplateSchema(),
+        "Message": fields.Str(required=True, load_from="Message"),
+        "ReqUuid": fields.Str(required=False, load_from="ReqUuid"),
+    }
+
+
+"""
 API: SendISMSMessage
 
 发送视频短信
@@ -64,4 +234,38 @@ class SendISMSMessageResponseSchema(schema.ResponseSchema):
         "Message": fields.Str(required=True, load_from="Message"),
         "ReqUuid": fields.Str(required=True, load_from="ReqUuid"),
         "TaskId": fields.Str(required=True, load_from="TaskId"),
+    }
+
+
+"""
+API: UpdateISMSSignature
+
+调用接口UpdateISMSSignature修改未通过审核的视频短信签名，并重新提交审核
+"""
+
+
+class UpdateISMSSignatureRequestSchema(schema.RequestSchema):
+    """UpdateISMSSignature - 调用接口UpdateISMSSignature修改未通过审核的视频短信签名，并重新提交审核"""
+
+    fields = {
+        "CertificateType": fields.Int(
+            required=False, dump_to="CertificateType"
+        ),
+        "Document": fields.Str(required=False, dump_to="Document"),
+        "File": fields.Str(required=False, dump_to="File"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "ProxyDoc": fields.Str(required=False, dump_to="ProxyDoc"),
+        "ProxyFile": fields.Str(required=False, dump_to="ProxyFile"),
+        "SigContent": fields.Str(required=True, dump_to="SigContent"),
+        "SigId": fields.Str(required=True, dump_to="SigId"),
+        "SigPurpose": fields.Int(required=True, dump_to="SigPurpose"),
+        "SigType": fields.Int(required=True, dump_to="SigType"),
+    }
+
+
+class UpdateISMSSignatureResponseSchema(schema.ResponseSchema):
+    """UpdateISMSSignature - 调用接口UpdateISMSSignature修改未通过审核的视频短信签名，并重新提交审核"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
     }
