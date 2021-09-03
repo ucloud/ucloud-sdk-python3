@@ -305,6 +305,34 @@ class GetCubePriceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetCubeToken
+
+获取Cube的token，可用于terminal登录、log获取
+"""
+
+
+class GetCubeTokenRequestSchema(schema.RequestSchema):
+    """GetCubeToken - 获取Cube的token，可用于terminal登录、log获取"""
+
+    fields = {
+        "ContainerName": fields.Str(required=True, dump_to="ContainerName"),
+        "CubeId": fields.Str(required=False, dump_to="CubeId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Uid": fields.Str(required=False, dump_to="Uid"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class GetCubeTokenResponseSchema(schema.ResponseSchema):
+    """GetCubeToken - 获取Cube的token，可用于terminal登录、log获取"""
+
+    fields = {
+        "Token": fields.Str(required=True, load_from="Token"),
+    }
+
+
+"""
 API: ListCubeDeployment
 
 获取Cube的Deployment列表
