@@ -370,6 +370,36 @@ class CubeClient(Client):
         resp = self.invoke("GetCubePrice", d, **kwargs)
         return apis.GetCubePriceResponseSchema().loads(resp)
 
+    def get_cube_token(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetCubeToken - 获取Cube的token，可用于terminal登录、log获取
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ContainerName** (str) - (Required) 容器名称
+        - **CubeId** (str) - CubeId 和 Uid 中必须填写任意一个。CubeId 是所有 Cube 资源的唯一 ID，如非在 UK8S 通过 Virtual Kubelet 插件创建的 Cube， 则必填 CubeId
+        - **Uid** (str) - CubeId 和 Uid 中必须填写任意一个。Uid 是在 UK8S 中通过 Virtual Kubelet 插件创建出的 Cube 的唯一标识
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Token** (str) - 有效时间5min
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetCubeTokenRequestSchema().dumps(d)
+
+        resp = self.invoke("GetCubeToken", d, **kwargs)
+        return apis.GetCubeTokenResponseSchema().loads(resp)
+
     def list_cube_deployment(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
