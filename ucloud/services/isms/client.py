@@ -63,8 +63,6 @@ class ISMSClient(Client):
         - **Remark** (str) - (Required) 备注
         - **TemplateName** (str) - (Required) 视频短信模板名称
         - **UnsubscribeInfo** (str) - (Required) 退订信息，如：“回T退订”
-        - **NetworkOperator** (str) - 需要报备的运营商。json数组的字符串格式。true-需要报备，false-不需要报备。如：{"telecom":true, "mobile":false, "unicom":true }
-        - **Purpose** (int) - 模板用途类型：1-验证码类短信模板；2-系统通知类短信模板；3-会员推广类短信模板；
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
@@ -160,6 +158,11 @@ class ISMSClient(Client):
 
         **Response Model**
 
+        **ReceiptPerTask**
+        - **ReceiptSet** (list) - 见 **ReceiptPerPhone** 模型定义
+        - **TaskId** (str) - 发送短信时返回的TaskId
+
+
         **ReceiptPerPhone**
         - **Phone** (str) - 手机号码
         - **ReceiptCode** (str) - 回执码
@@ -167,11 +170,6 @@ class ISMSClient(Client):
         - **ReceiptResult** (str) - 回执结果(发送成功、发送失败、状态未知)
         - **ReceiptTime** (int) - 回执返回时间
         - **SessionId** (str) - SessionId
-
-
-        **ReceiptPerTask**
-        - **ReceiptSet** (list) - 见 **ReceiptPerPhone** 模型定义
-        - **TaskId** (str) - 发送短信时返回的TaskId
 
 
         """
@@ -247,7 +245,7 @@ class ISMSClient(Client):
         - **ExpireTime** (int) - 截止有效时间，时间戳格式1629357838
         - **Purpose** (int) - 视频短信类型（3-会员营销）
         - **Remark** (str) - 备注信息
-        - **StatusDesc** (str) - 状态描述。json格式，给出运营商维度的审核状态信息，示例：{"telecom_status":2,"telecom_desc":"审核通过","unicom_status":2,"unicom_desc":"审核通过","mobile_status":2,"mobile_desc":"审核通过"}
+        - **StatusDesc** (str) - 状态描述。json格式，给出运营商维度的审核状态信息，示例：{"telecom_status":2,"telecom_desc":"审核通过","unicom_status":2,"unicom_desc":"审核通过","mobile_status":2,"mobile_desc":"审核通过"}。状态枚举值：0-创建模板时未向该运营商报备  1->审核中  2->审核通过   3->审核未通过   4->禁用   7->过期   11->待审核
         - **TemplateId** (str) - 模板ID
         - **TemplateName** (str) - 模板名称
 

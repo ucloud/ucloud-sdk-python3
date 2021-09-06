@@ -55,9 +55,11 @@ class CreateISMSTemplateRequestSchema(schema.RequestSchema):
         "MsgTitle": fields.Str(required=True, dump_to="MsgTitle"),
         "NetworkOperator": fields.Str(
             required=False, dump_to="NetworkOperator"
-        ),
+        ),  # Deprecated, will be removed at 1.0
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
-        "Purpose": fields.Int(required=False, dump_to="Purpose"),
+        "Purpose": fields.Int(
+            required=False, dump_to="Purpose"
+        ),  # Deprecated, will be removed at 1.0
         "Region": fields.Str(required=False, dump_to="Region"),
         "Remark": fields.Str(required=True, dump_to="Remark"),
         "TemplateName": fields.Str(required=True, dump_to="TemplateName"),
