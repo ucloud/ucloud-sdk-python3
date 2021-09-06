@@ -1,3 +1,9 @@
+## 0.11.15 (2021-09-06)
+
+ENHANCEMENTS:
+
+- Update all APIs of `ISMS` (#172)
+
 ## 0.11.14 (2021-09-03)
 
 ENHANCEMENTS:
