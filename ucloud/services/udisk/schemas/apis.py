@@ -54,6 +54,7 @@ class CloneUDiskRequestSchema(schema.RequestSchema):
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "Comment": fields.Str(required=False, dump_to="Comment"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "HostId": fields.Str(required=False, dump_to="HostId"),
         "Name": fields.Str(required=True, dump_to="Name"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
@@ -93,6 +94,7 @@ class CloneUDiskSnapshotRequestSchema(schema.RequestSchema):
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "Comment": fields.Str(required=False, dump_to="Comment"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "HostId": fields.Str(required=False, dump_to="HostId"),
         "Name": fields.Str(required=True, dump_to="Name"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
@@ -133,6 +135,7 @@ class CloneUDiskUDataArkRequestSchema(schema.RequestSchema):
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "Comment": fields.Str(required=False, dump_to="Comment"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "HostId": fields.Str(required=False, dump_to="HostId"),
         "Name": fields.Str(required=True, dump_to="Name"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
@@ -368,10 +371,14 @@ class DescribeUDiskRequestSchema(schema.RequestSchema):
 
     fields = {
         "DiskType": fields.Str(required=False, dump_to="DiskType"),
+        "HostId": fields.Str(required=False, dump_to="HostId"),
         "HostIdForAttachment": fields.Str(
             required=False, dump_to="HostIdForAttachment"
         ),
         "HostProduct": fields.Str(required=False, dump_to="HostProduct"),
+        "IgnoreBackupMode": fields.Str(
+            required=False, dump_to="IgnoreBackupMode"
+        ),
         "IgnoreUBillInfo": fields.Str(
             required=False, dump_to="IgnoreUBillInfo"
         ),
@@ -383,6 +390,7 @@ class DescribeUDiskRequestSchema(schema.RequestSchema):
             required=False, dump_to="ProtocolVersion"
         ),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "UDiskBasicInfo": fields.Str(required=False, dump_to="UDiskBasicInfo"),
         "UDiskId": fields.Str(required=False, dump_to="UDiskId"),
         "UHostIdForAttachment": fields.Str(
             required=False, dump_to="UHostIdForAttachment"
