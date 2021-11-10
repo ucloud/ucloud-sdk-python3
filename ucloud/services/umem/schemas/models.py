@@ -3,6 +3,17 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class UDRedisProxyInfoSchema(schema.ResponseSchema):
+    """UDRedisProxyInfo - udredis代理信息"""
+
+    fields = {
+        "ProxyId": fields.Str(required=True, load_from="ProxyId"),
+        "ResourceId": fields.Str(required=True, load_from="ResourceId"),
+        "State": fields.Str(required=True, load_from="State"),
+        "Vip": fields.Str(required=True, load_from="Vip"),
+    }
+
+
 class UDRedisSlowlogSetSchema(schema.ResponseSchema):
     """UDRedisSlowlogSet - DescribeUDRedisSlowlog"""
 
@@ -11,15 +22,6 @@ class UDRedisSlowlogSetSchema(schema.ResponseSchema):
         "Command": fields.Str(required=False, load_from="Command"),
         "SpendTime": fields.Int(required=False, load_from="SpendTime"),
         "StartTime": fields.Int(required=False, load_from="StartTime"),
-    }
-
-
-class UMemSpaceAddressSetSchema(schema.ResponseSchema):
-    """UMemSpaceAddressSet - DescribeUMemSpace"""
-
-    fields = {
-        "IP": fields.Str(required=False, load_from="IP"),
-        "Port": fields.Int(required=False, load_from="Port"),
     }
 
 
@@ -50,6 +52,15 @@ class UMemSlaveDataSetSchema(schema.ResponseSchema):
         "Version": fields.Str(required=False, load_from="Version"),
         "VirtualIP": fields.Str(required=True, load_from="VirtualIP"),
         "Zone": fields.Str(required=False, load_from="Zone"),
+    }
+
+
+class UMemSpaceAddressSetSchema(schema.ResponseSchema):
+    """UMemSpaceAddressSet - DescribeUMemSpace"""
+
+    fields = {
+        "IP": fields.Str(required=False, load_from="IP"),
+        "Port": fields.Int(required=False, load_from="Port"),
     }
 
 
