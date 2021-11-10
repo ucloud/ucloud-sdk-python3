@@ -347,6 +347,43 @@ class UMemClient(Client):
         resp = self.invoke("DeleteURedisGroup", d, **kwargs)
         return apis.DeleteURedisGroupResponseSchema().loads(resp)
 
+    def describe_ud_redis_proxy_info(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUDRedisProxyInfo - 拉取udredis所有的代理信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **SpaceId** (str) - (Required) udredis实例id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **DataSet** (list) - 见 **UDRedisProxyInfo** 模型定义
+
+        **Response Model**
+
+        **UDRedisProxyInfo**
+        - **ProxyId** (str) - 代理id
+        - **ResourceId** (str) - 代理资源id
+        - **State** (str) - 代理状态
+        - **Vip** (str) - 代理ip
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeUDRedisProxyInfoRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeUDRedisProxyInfo", d, **kwargs)
+        return apis.DescribeUDRedisProxyInfoResponseSchema().loads(resp)
+
     def describe_ud_redis_slowlog(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:

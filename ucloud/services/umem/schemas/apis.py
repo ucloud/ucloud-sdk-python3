@@ -308,6 +308,34 @@ class DeleteURedisGroupResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeUDRedisProxyInfo
+
+拉取udredis所有的代理信息
+"""
+
+
+class DescribeUDRedisProxyInfoRequestSchema(schema.RequestSchema):
+    """DescribeUDRedisProxyInfo - 拉取udredis所有的代理信息"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SpaceId": fields.Str(required=True, dump_to="SpaceId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DescribeUDRedisProxyInfoResponseSchema(schema.ResponseSchema):
+    """DescribeUDRedisProxyInfo - 拉取udredis所有的代理信息"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.UDRedisProxyInfoSchema(), required=True, load_from="DataSet"
+        ),
+    }
+
+
+"""
 API: DescribeUDRedisSlowlog
 
 查询UDRedis慢日志
