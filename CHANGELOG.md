@@ -1,3 +1,10 @@
+## 0.11.17 (2021-11-11)
+
+ENHANCEMENTS:
+
+- Update all APIs of `UNet` (#177)
+- Update all APIs of `UMem` (#176)
+
 ## 0.11.16 (2021-11-04)
 
 ENHANCEMENTS:
