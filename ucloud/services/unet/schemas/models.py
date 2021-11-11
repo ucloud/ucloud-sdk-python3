@@ -21,16 +21,6 @@ class UnetAllocateEIPSetSchema(schema.ResponseSchema):
     }
 
 
-class VIPSetSchema(schema.ResponseSchema):
-    """VIPSet -"""
-
-    fields = {
-        "VIP": fields.Str(required=False, load_from="VIP"),
-        "VIPId": fields.Str(required=False, load_from="VIPId"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-    }
-
-
 class EIPAddrSetSchema(schema.ResponseSchema):
     """EIPAddrSet - DescribeBandwidthPackage"""
 
@@ -164,6 +154,13 @@ class ResourceSetSchema(schema.ResponseSchema):
         "ResourceID": fields.Str(required=False, load_from="ResourceID"),
         "ResourceType": fields.Str(required=False, load_from="ResourceType"),
         "Status": fields.Int(required=False, load_from="Status"),
+        "SubResourceId": fields.Str(required=True, load_from="SubResourceId"),
+        "SubResourceName": fields.Str(
+            required=True, load_from="SubResourceName"
+        ),
+        "SubResourceType": fields.Str(
+            required=True, load_from="SubResourceType"
+        ),
         "Tag": fields.Str(required=False, load_from="Tag"),
         "Zone": fields.Int(required=False, load_from="Zone"),
     }
@@ -204,21 +201,6 @@ class UnetShareBandwidthSetSchema(schema.ResponseSchema):
     }
 
 
-class VIPDetailSetSchema(schema.ResponseSchema):
-    """VIPDetailSet -"""
-
-    fields = {
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "RealIp": fields.Str(required=False, load_from="RealIp"),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "VIP": fields.Str(required=False, load_from="VIP"),
-        "VIPId": fields.Str(required=False, load_from="VIPId"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-        "Zone": fields.Str(required=False, load_from="Zone"),
-    }
-
-
 class EIPPayModeSetSchema(schema.ResponseSchema):
     """EIPPayModeSet - GetEIPPayModeEIP"""
 
@@ -238,4 +220,15 @@ class EIPPriceDetailSetSchema(schema.ResponseSchema):
         ),
         "Price": fields.Float(required=False, load_from="Price"),
         "PurchaseValue": fields.Int(required=False, load_from="PurchaseValue"),
+    }
+
+
+class ThroughputDailyBillingInfoSchema(schema.ResponseSchema):
+    """ThroughputDailyBillingInfo - 流量计费EIP计费信息"""
+
+    fields = {
+        "BillingState": fields.Str(required=False, load_from="BillingState"),
+        "EndTime": fields.Int(required=False, load_from="EndTime"),
+        "QuantityOut": fields.Int(required=False, load_from="QuantityOut"),
+        "StartTime": fields.Int(required=False, load_from="StartTime"),
     }
