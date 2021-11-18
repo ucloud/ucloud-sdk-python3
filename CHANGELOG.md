@@ -1,3 +1,10 @@
+## 0.11.18 (2021-11-18)
+
+ENHANCEMENTS:
+
+- Update all APIs of `UEC` (#182)
+- Update all APIs of `UNVS` (#179)
+
 ## 0.11.17 (2021-11-11)
 
 ENHANCEMENTS:
