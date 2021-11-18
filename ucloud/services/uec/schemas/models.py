@@ -50,6 +50,15 @@ class ResourceInfoSchema(schema.ResponseSchema):
     }
 
 
+class EnvListSchema(schema.ResponseSchema):
+    """EnvList - 容器环境变量列表"""
+
+    fields = {
+        "Key": fields.Str(required=False, load_from="Key"),
+        "Value": fields.Str(required=False, load_from="Value"),
+    }
+
+
 class CfgDictListSchema(schema.ResponseSchema):
     """CfgDictList - 容器配置字典列表"""
 
@@ -60,12 +69,23 @@ class CfgDictListSchema(schema.ResponseSchema):
     }
 
 
-class EnvListSchema(schema.ResponseSchema):
-    """EnvList - 容器环境变量列表"""
+class IpListSchema(schema.ResponseSchema):
+    """IpList - 容器组外网ip列表"""
 
     fields = {
-        "Key": fields.Str(required=False, load_from="Key"),
-        "Value": fields.Str(required=False, load_from="Value"),
+        "Ip": fields.Str(required=False, load_from="Ip"),
+        "Isp": fields.Str(required=False, load_from="Isp"),
+    }
+
+
+class StorVolumeInfoSchema(schema.ResponseSchema):
+    """StorVolumeInfo - 容器组存储卷信息"""
+
+    fields = {
+        "DiskSize": fields.Int(required=False, load_from="DiskSize"),
+        "MountPoint": fields.Str(required=False, load_from="MountPoint"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
     }
 
 
@@ -93,26 +113,6 @@ class DockerInfoSchema(schema.ResponseSchema):
         "Name": fields.Str(required=False, load_from="Name"),
         "State": fields.Int(required=False, load_from="State"),
         "WorkDir": fields.Str(required=False, load_from="WorkDir"),
-    }
-
-
-class StorVolumeInfoSchema(schema.ResponseSchema):
-    """StorVolumeInfo - 容器组存储卷信息"""
-
-    fields = {
-        "DiskSize": fields.Int(required=False, load_from="DiskSize"),
-        "MountPoint": fields.Str(required=False, load_from="MountPoint"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
-    }
-
-
-class IpListSchema(schema.ResponseSchema):
-    """IpList - 容器组外网ip列表"""
-
-    fields = {
-        "Ip": fields.Str(required=False, load_from="Ip"),
-        "Isp": fields.Str(required=False, load_from="Isp"),
     }
 
 
@@ -201,6 +201,7 @@ class NodeInfoSchema(schema.ResponseSchema):
         "FirewallId": fields.Str(required=False, load_from="FirewallId"),
         "IdcId": fields.Str(required=False, load_from="IdcId"),
         "ImageName": fields.Str(required=False, load_from="ImageName"),
+        "InnerIps": fields.List(fields.Str()),
         "MemSize": fields.Int(required=False, load_from="MemSize"),
         "NetLimit": fields.Int(required=False, load_from="NetLimit"),
         "NodeId": fields.Str(required=False, load_from="NodeId"),
@@ -304,6 +305,7 @@ class ImageInfoSchema(schema.ResponseSchema):
     fields = {
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "DeployInfoList": fields.List(DeployImageInfoSchema()),
+        "Gpu": fields.Int(required=False, load_from="Gpu"),
         "ImageDesc": fields.Str(required=False, load_from="ImageDesc"),
         "ImageId": fields.Str(required=False, load_from="ImageId"),
         "ImageName": fields.Str(required=False, load_from="ImageName"),

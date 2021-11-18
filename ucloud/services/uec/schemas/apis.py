@@ -32,6 +32,34 @@ class BindUEcFirewallResponseSchema(schema.ResponseSchema):
 
 
 """
+API: CreateUEcCustomImage
+
+从指定虚拟机，生成自定义镜像。
+"""
+
+
+class CreateUEcCustomImageRequestSchema(schema.RequestSchema):
+    """CreateUEcCustomImage - 从指定虚拟机，生成自定义镜像。"""
+
+    fields = {
+        "ImageDescription": fields.Str(
+            required=False, dump_to="ImageDescription"
+        ),
+        "ImageName": fields.Str(required=True, dump_to="ImageName"),
+        "NodeId": fields.Str(required=True, dump_to="NodeId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+    }
+
+
+class CreateUEcCustomImageResponseSchema(schema.ResponseSchema):
+    """CreateUEcCustomImage - 从指定虚拟机，生成自定义镜像。"""
+
+    fields = {
+        "ImageId": fields.Str(required=True, load_from="ImageId"),
+    }
+
+
+"""
 API: CreateUEcFirewall
 
 创建外网防火墙
@@ -77,12 +105,12 @@ API: CreateUEcHolder
 """
 
 
-class CreateUEcHolderParamStorageSchema(schema.RequestSchema):
-    """CreateUEcHolderParamStorage -"""
+class CreateUEcHolderParamImageSchema(schema.RequestSchema):
+    """CreateUEcHolderParamImage -"""
 
     fields = {
-        "Path": fields.Str(required=False, dump_to="Path"),
-        "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
+        "Message": fields.Str(required=False, dump_to="Message"),
+        "StoreAddress": fields.Str(required=False, dump_to="StoreAddress"),
     }
 
 
@@ -102,12 +130,12 @@ class CreateUEcHolderParamPackSchema(schema.RequestSchema):
     }
 
 
-class CreateUEcHolderParamImageSchema(schema.RequestSchema):
-    """CreateUEcHolderParamImage -"""
+class CreateUEcHolderParamStorageSchema(schema.RequestSchema):
+    """CreateUEcHolderParamStorage -"""
 
     fields = {
-        "Message": fields.Str(required=False, dump_to="Message"),
-        "StoreAddress": fields.Str(required=False, dump_to="StoreAddress"),
+        "Path": fields.Str(required=False, dump_to="Path"),
+        "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
     }
 
 
@@ -188,6 +216,8 @@ class CreateUEcVHostRequestSchema(schema.RequestSchema):
         "CpuCore": fields.Int(required=True, dump_to="CpuCore"),
         "DiskSize": fields.Int(required=True, dump_to="DiskSize"),
         "FirewallId": fields.Str(required=False, dump_to="FirewallId"),
+        "Gpu": fields.Int(required=False, dump_to="Gpu"),
+        "GpuType": fields.Str(required=False, dump_to="GpuType"),
         "IdcId": fields.Str(required=True, dump_to="IdcId"),
         "ImageId": fields.Str(required=True, dump_to="ImageId"),
         "IsNeedOuterIp": fields.Str(required=False, dump_to="IsNeedOuterIp"),
@@ -433,6 +463,7 @@ class DescribeUEcIDCRequestSchema(schema.RequestSchema):
 
     fields = {
         "Cpu": fields.Int(required=True, dump_to="Cpu"),
+        "Gpu": fields.Int(required=False, dump_to="Gpu"),
         "IdcId": fields.List(fields.Str()),
         "Memory": fields.Int(required=True, dump_to="Memory"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
@@ -774,6 +805,8 @@ class GetUEcVHostPriceRequestSchema(schema.RequestSchema):
         "ChargeType": fields.Int(required=False, dump_to="ChargeType"),
         "CpuCore": fields.Int(required=False, dump_to="CpuCore"),
         "DiskSize": fields.Int(required=False, dump_to="DiskSize"),
+        "Gpu": fields.Int(required=False, dump_to="Gpu"),
+        "GpuType": fields.Str(required=False, dump_to="GpuType"),
         "IdcId": fields.Str(required=True, dump_to="IdcId"),
         "IpCount": fields.Int(required=False, dump_to="IpCount"),
         "MemSize": fields.Int(required=False, dump_to="MemSize"),
