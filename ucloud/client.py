@@ -222,6 +222,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def unvs(self):
+        from ucloud.services.unvs.client import UNVSClient
+
+        return UNVSClient(
+            self._auto_config("unvs"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def unet(self):
         from ucloud.services.unet.client import UNetClient
 
