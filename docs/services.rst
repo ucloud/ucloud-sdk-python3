@@ -164,6 +164,13 @@ UK8S
    :members:
 
 
+UNVS
+----
+
+.. autoclass:: ucloud.services.unvs.client.UNVSClient
+   :members:
+
+
 VPC
 ---
 
