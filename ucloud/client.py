@@ -62,6 +62,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def tidb(self):
+        from ucloud.services.tidb.client import TiDBClient
+
+        return TiDBClient(
+            self._auto_config("tidb"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def uaccount(self):
         from ucloud.services.uaccount.client import UAccountClient
 

@@ -108,6 +108,13 @@ ISMS
    :members:
 
 
+TiDB
+----
+
+.. autoclass:: ucloud.services.tidb.client.TiDBClient
+   :members:
+
+
 UBill
 -----
 
