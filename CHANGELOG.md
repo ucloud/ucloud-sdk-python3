@@ -1,3 +1,9 @@
+## 0.11.20 (2021-12-14)
+
+BUG FIXES:
+
+- Fix deprecated class: `collections.Iterable` to `collections.abc.Iterable` at 3.10
+
 ## 0.11.19 (2021-11-25)
 
 ENHANCEMENTS:
