@@ -1,4 +1,4 @@
-import collections
+from collections.abc import Iterable
 
 from ucloud.core.utils import compat
 
@@ -81,7 +81,7 @@ class ValidationException(UCloudException):
     def __init__(self, e=None):
         if isinstance(e, compat.string_types):
             self.errors = [e]
-        elif isinstance(e, collections.Iterable):
+        elif isinstance(e, Iterable):
             self.errors = e or []
         else:
             self.errors = [e]

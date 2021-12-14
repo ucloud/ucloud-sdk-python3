@@ -1,6 +1,6 @@
 import base64
 import typing
-import collections
+from collections.abc import Iterable
 
 from ucloud.core.typesystem import abstract
 from ucloud.core.exc import ValidationException
@@ -25,7 +25,7 @@ class List(abstract.Field):
         self.item = item
 
     def dumps(self, value, name=None, **kwargs):
-        if not isinstance(value, collections.Iterable):
+        if not isinstance(value, Iterable):
             raise ValidationException(
                 "invalid field {}, expect list, got {}".format(
                     name, type(value)
@@ -48,7 +48,7 @@ class List(abstract.Field):
         return values
 
     def loads(self, value, name=None, **kwargs):
-        if not isinstance(value, collections.Iterable):
+        if not isinstance(value, Iterable):
             raise ValidationException(
                 "invalid field {}, expect list, got {}".format(
                     name, type(value)
