@@ -298,6 +298,56 @@ class DelUK8SClusterNodeV2ResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeUK8SCluster
+
+获取集群信息
+"""
+
+
+class DescribeUK8SClusterRequestSchema(schema.RequestSchema):
+    """DescribeUK8SCluster - 获取集群信息"""
+
+    fields = {
+        "ClusterId": fields.Str(required=True, dump_to="ClusterId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DescribeUK8SClusterResponseSchema(schema.ResponseSchema):
+    """DescribeUK8SCluster - 获取集群信息"""
+
+    fields = {
+        "ApiServer": fields.Str(required=False, load_from="ApiServer"),
+        "CACert": fields.Str(required=False, load_from="CACert"),
+        "ClusterDomain": fields.Str(required=False, load_from="ClusterDomain"),
+        "ClusterId": fields.Str(required=True, load_from="ClusterId"),
+        "ClusterName": fields.Str(required=True, load_from="ClusterName"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "EtcdCert": fields.Str(required=False, load_from="EtcdCert"),
+        "EtcdKey": fields.Str(required=False, load_from="EtcdKey"),
+        "ExternalApiServer": fields.Str(
+            required=False, load_from="ExternalApiServer"
+        ),
+        "KubeProxy": fields.Str(),
+        "MasterCount": fields.Int(required=True, load_from="MasterCount"),
+        "MasterList": fields.List(
+            models.UhostInfoSchema(), required=False, load_from="MasterList"
+        ),
+        "NodeCount": fields.Int(required=False, load_from="NodeCount"),
+        "NodeList": fields.List(
+            models.UhostInfoSchema(), required=False, load_from="NodeList"
+        ),
+        "PodCIDR": fields.Str(required=True, load_from="PodCIDR"),
+        "ServiceCIDR": fields.Str(required=True, load_from="ServiceCIDR"),
+        "Status": fields.Str(required=False, load_from="Status"),
+        "SubnetId": fields.Str(required=True, load_from="SubnetId"),
+        "VPCId": fields.Str(required=True, load_from="VPCId"),
+        "Version": fields.Str(required=False, load_from="Version"),
+    }
+
+
+"""
 API: DescribeUK8SImage
 
 获取UK8S支持的Node节点操作系统，可基于该操作系统制定自定义镜像

@@ -284,6 +284,90 @@ class UK8SClient(Client):
         resp = self.invoke("DelUK8SClusterNodeV2", d, **kwargs)
         return apis.DelUK8SClusterNodeV2ResponseSchema().loads(resp)
 
+    def describe_uk8s_cluster(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUK8SCluster - 获取集群信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目id
+        - **Region** (str) - (Config) 所属区域
+        - **ClusterId** (str) - (Required) k8s集群ID
+
+        **Response**
+
+        - **ApiServer** (str) - 集群apiserver地址
+        - **CACert** (str) - 集群CA根证书
+        - **ClusterDomain** (str) - 自定义或者默认的clusterdomain
+        - **ClusterId** (str) - 集群ID
+        - **ClusterName** (str) - 资源名字
+        - **CreateTime** (int) - 创建时间
+        - **EtcdCert** (str) - 集群etcd服务证书
+        - **EtcdKey** (str) - 集群etcd服务密钥
+        - **ExternalApiServer** (str) - 集群外部apiserver地址
+        - **KubeProxy** (dict) - kube-proxy配置
+        - **MasterCount** (int) - Master 节点数量
+        - **MasterList** (list) - 见 **UhostInfo** 模型定义
+        - **NodeCount** (int) - Node节点数量
+        - **NodeList** (list) - 见 **UhostInfo** 模型定义
+        - **PodCIDR** (str) - Pod网段
+        - **ServiceCIDR** (str) - 服务网段
+        - **Status** (str) - 状态
+        - **SubnetId** (str) - 所属子网
+        - **VPCId** (str) - 所属VPC
+        - **Version** (str) - K8S版本
+
+        **Response Model**
+
+        **DiskSet**
+        - **BackupType** (str) - 备份方案，枚举类型：BASIC_SNAPSHOT,普通快照；DATAARK,方舟。无快照则不返回该字段。
+        - **DiskId** (str) - 磁盘长ID
+        - **DiskType** (str) - LOCAL_NOMAL| CLOUD_NORMAL| LOCAL_SSD| CLOUD_SSD|EXCLUSIVE_LOCAL_DISK
+        - **Drive** (str) - 磁盘盘符
+        - **Encrypted** (str) - Yes: 加密 No: 非加密
+        - **IOPS** (int) - 当前主机的IOPS值
+        - **IsBoot** (str) - True| False
+        - **Name** (str) - UDisk名字（仅当磁盘是UDisk时返回）
+        - **Size** (int) - 磁盘大小，单位: GB
+        - **Type** (str) - 磁盘类型。系统盘: Boot，数据盘: Data,网络盘：Udisk
+
+
+        **IPSet**
+        - **Bandwidth** (int) - IP对应的带宽, 单位: Mb (内网IP不显示带宽信息)
+        - **Default** (str) - 是否默认的弹性网卡的信息。true: 是默认弹性网卡；其他值：不是。
+        - **IP** (str) - IP地址
+        - **IPId** (str) - IP资源ID (内网IP无对应的资源ID)
+        - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
+
+
+        **UhostInfo**
+        - **CPU** (int) - Cpu数量
+        - **CreateTime** (int) - 创建时间
+        - **DiskSet** (list) - 见 **DiskSet** 模型定义
+        - **ExpireTime** (int) - 到期时间
+        - **IPSet** (list) - 见 **IPSet** 模型定义
+        - **Memory** (int) - 内存
+        - **Name** (str) - 主机名称
+        - **NodeId** (str) - 主机ID
+        - **NodeType** (str) - 节点类型：uhost表示云主机;uphost表示物理云主机
+        - **OsName** (str) - 镜像信息
+        - **State** (str) - 主机状态
+        - **Zone** (str) - 所在机房
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeUK8SClusterRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeUK8SCluster", d, **kwargs)
+        return apis.DescribeUK8SClusterResponseSchema().loads(resp)
+
     def describe_uk8s_image(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:

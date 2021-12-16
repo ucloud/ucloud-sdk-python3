@@ -3,6 +3,54 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class IPSetSchema(schema.ResponseSchema):
+    """IPSet - 节点的IP信息"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "Default": fields.Str(required=False, load_from="Default"),
+        "IP": fields.Str(required=False, load_from="IP"),
+        "IPId": fields.Str(required=False, load_from="IPId"),
+        "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
+class DiskSetSchema(schema.ResponseSchema):
+    """DiskSet - 节点磁盘信息"""
+
+    fields = {
+        "BackupType": fields.Str(required=False, load_from="BackupType"),
+        "DiskId": fields.Str(required=False, load_from="DiskId"),
+        "DiskType": fields.Str(required=False, load_from="DiskType"),
+        "Drive": fields.Str(required=False, load_from="Drive"),
+        "Encrypted": fields.Str(required=False, load_from="Encrypted"),
+        "IOPS": fields.Int(required=False, load_from="IOPS"),
+        "IsBoot": fields.Str(required=False, load_from="IsBoot"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
+class UhostInfoSchema(schema.ResponseSchema):
+    """UhostInfo - 机器信息"""
+
+    fields = {
+        "CPU": fields.Int(required=True, load_from="CPU"),
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "DiskSet": fields.List(DiskSetSchema()),
+        "ExpireTime": fields.Int(required=True, load_from="ExpireTime"),
+        "IPSet": fields.List(IPSetSchema()),
+        "Memory": fields.Int(required=True, load_from="Memory"),
+        "Name": fields.Str(required=True, load_from="Name"),
+        "NodeId": fields.Str(required=True, load_from="NodeId"),
+        "NodeType": fields.Str(required=True, load_from="NodeType"),
+        "OsName": fields.Str(required=True, load_from="OsName"),
+        "State": fields.Str(required=True, load_from="State"),
+        "Zone": fields.Str(required=True, load_from="Zone"),
+    }
+
+
 class ImageInfoSchema(schema.ResponseSchema):
     """ImageInfo - UK8S 可用镜像信息"""
 
@@ -29,6 +77,14 @@ class K8SNodeConditionSchema(schema.ResponseSchema):
     }
 
 
+class KubeProxySchema(schema.ResponseSchema):
+    """KubeProxy - KubeProxy信息"""
+
+    fields = {
+        "Mode": fields.Str(required=False, load_from="Mode"),
+    }
+
+
 class UHostIPSetSchema(schema.ResponseSchema):
     """UHostIPSet - 云主机IP信息"""
 
@@ -43,14 +99,6 @@ class UHostIPSetSchema(schema.ResponseSchema):
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
         "Type": fields.Str(required=False, load_from="Type"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
-    }
-
-
-class KubeProxySchema(schema.ResponseSchema):
-    """KubeProxy - KubeProxy信息"""
-
-    fields = {
-        "Mode": fields.Str(required=False, load_from="Mode"),
     }
 
 
