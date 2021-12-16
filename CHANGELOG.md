@@ -1,3 +1,9 @@
+## 0.11.21 (2021-12-16)
+
+ENHANCEMENTS:
+
+- Update all APIs of `UK8S` (#190)
+
 ## 0.11.20 (2021-12-14)
 
 BUG FIXES:
