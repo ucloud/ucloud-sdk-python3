@@ -40,10 +40,12 @@ class GetBillDataFileUrlRequestSchema(schema.RequestSchema):
     """GetBillDataFileUrl - 生成账单数据文件下载的 url"""
 
     fields = {
-        "BillPeriod": fields.Int(required=True, dump_to="BillPeriod"),
+        "BillPeriod": fields.Int(required=False, dump_to="BillPeriod"),
         "BillType": fields.Int(required=True, dump_to="BillType"),
+        "BillingCycle": fields.Str(required=True, dump_to="BillingCycle"),
         "PaidType": fields.Int(required=False, dump_to="PaidType"),
         "RequireVersion": fields.Str(required=False, dump_to="RequireVersion"),
+        "Version": fields.Str(required=False, dump_to="Version"),
     }
 
 
