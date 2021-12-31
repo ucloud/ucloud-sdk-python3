@@ -1037,13 +1037,13 @@ class UDBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BeginTime** (int) - (Required) 查询的日志开始的时间戳（Unix Timestamp）。对于实时查询，这个参数应该是上次轮询请求时的时间戳，后台会返回从该值到当前时间的日志内容。
         - **DBId** (str) - (Required) 实例ID
         - **EndTime** (int) - (Required) 查询日志的结束时间戳(Unix Timestamp），对于实时查询不传该值，与BeginTime的差值不超过24小时：(EndTime-BeginTime) < 24*60*60
-        - **LogType** (str) - (Required) 查询日志的类型
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **LogType** (str) - (Required) 查询日志的类型error：错误日志；slow：慢日志
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -1170,18 +1170,21 @@ class UDBClient(Client):
 
         **Request**
 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BackupId** (int) - (Required) DB实例备份ID
         - **DBId** (str) - (Required) DB实例Id
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
-        - **BackupPath** (str) - DB实例备份文件的地址
+        - **BackupPath** (str) - 备份外网URL
+        - **UsernetPath** (str) - 备份用户网URL
 
         """
         # build request
         d = {
+            "ProjectId": self.config.project_id,
             "Region": self.config.region,
         }
         req and d.update(req)
@@ -1515,6 +1518,41 @@ class UDBClient(Client):
             resp
         )
 
+    def get_udb_client_conn_num(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUDBClientConnNum - 输入一个DBID，能够获取客户端来源IP以及对应的连接数
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **DBId** (str) - (Required) DB实例id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **DataSet** (list) - 见 **ConnNumMap** 模型定义
+
+        **Response Model**
+
+        **ConnNumMap**
+        - **Ip** (str) - 客户端IP
+        - **Num** (int) - 该Ip连接数
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetUDBClientConnNumRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUDBClientConnNum", d, **kwargs)
+        return apis.GetUDBClientConnNumResponseSchema().loads(resp)
+
     def modify_udb_instance_name(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1575,7 +1613,7 @@ class UDBClient(Client):
     def promote_udb_instance_to_ha(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """PromoteUDBInstanceToHA - 普通db升级为高可用(只针对mysql5.5及以上版本)
+        """PromoteUDBInstanceToHA - 普通db升级为高可用(只针对mysql5.5及以上版本SSD机型的实例)  ，对于NVMe机型的单点升级高可用，虽然也能使用该操作再加上SwitchUDBInstanceToHA，但是更建议直接调用新的API接口（UpgradeUDBInstanceToHA）
 
         **Request**
 
@@ -1801,14 +1839,15 @@ class UDBClient(Client):
     def switch_udb_ha_to_sentinel(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """SwitchUDBHAToSentinel - UDB高可用实例从HAProxy版本升级为Sentinel版本（不带HAProxy）升级耗时30-70秒
+        """SwitchUDBHAToSentinel - UDB高可用实例从HAProxy版本升级为Sentinel版本（不带HAProxy）升级耗时5-10秒
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **DBId** (str) - (Required) UDB的实例ID
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ForceSwitch** (bool) - 是否跳过预检查强制升级。
 
         **Response**
 
@@ -1828,13 +1867,16 @@ class UDBClient(Client):
     def switch_udb_instance_to_ha(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """SwitchUDBInstanceToHA - 普通UDB切换为高可用，原db状态为WaitForSwitch时，调用改api
+        """SwitchUDBInstanceToHA - 普通UDB切换为高可用(只针对mysql5.5及以上版本SSD机型的实例) ，原db状态为WaitForSwitch时，调用该api； 对于NVMe机型的单点升级高可用，虽然也能使用PromoteUDBInstanceToHA再加上该操作，但是更建议直接调用新的API接口（UpgradeUDBInstanceToHA）
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **DBId** (str) - (Required) 实例的Id,该值可以通过DescribeUDBInstance获取
+        - **ChargeType** (str) - Year， Month， Dynamic，Trial，不填则按现在单点计费执行
+        - **Quantity** (str) - 购买时长，需要和 ChargeType 搭配使用，否则使用单点计费策略的值
+        - **Tag** (str) - 业务组
 
         **Response**
 
@@ -1945,6 +1987,33 @@ class UDBClient(Client):
 
         resp = self.invoke("UpdateUDBParamGroup", d, **kwargs)
         return apis.UpdateUDBParamGroupResponseSchema().loads(resp)
+
+    def upgrade_udb_instance_to_ha(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpgradeUDBInstanceToHA - 快杰普通db升级为高可用(只针对mysql5.5及以上版本Nvme机型的实例)
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **DBId** (str) - (Required) 实例的Id,该值可以通过DescribeUDBInstance获取
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpgradeUDBInstanceToHARequestSchema().dumps(d)
+
+        resp = self.invoke("UpgradeUDBInstanceToHA", d, **kwargs)
+        return apis.UpgradeUDBInstanceToHAResponseSchema().loads(resp)
 
     def upload_udb_param_group(
         self, req: typing.Optional[dict] = None, **kwargs

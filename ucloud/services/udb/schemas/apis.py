@@ -983,6 +983,7 @@ class DescribeUDBLogBackupURLRequestSchema(schema.RequestSchema):
     fields = {
         "BackupId": fields.Int(required=True, dump_to="BackupId"),
         "DBId": fields.Str(required=True, dump_to="DBId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
     }
@@ -993,9 +994,7 @@ class DescribeUDBLogBackupURLResponseSchema(schema.ResponseSchema):
 
     fields = {
         "BackupPath": fields.Str(required=False, load_from="BackupPath"),
-        "UsernetPath": fields.Str(
-            required=False, load_from="UsernetPath"
-        ),  # Deprecated, will be removed at 1.0
+        "UsernetPath": fields.Str(required=False, load_from="UsernetPath"),
     }
 
 
@@ -1270,6 +1269,34 @@ class FetchUDBInstanceEarliestRecoverTimeResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetUDBClientConnNum
+
+输入一个DBID，能够获取客户端来源IP以及对应的连接数
+"""
+
+
+class GetUDBClientConnNumRequestSchema(schema.RequestSchema):
+    """GetUDBClientConnNum - 输入一个DBID，能够获取客户端来源IP以及对应的连接数"""
+
+    fields = {
+        "DBId": fields.Str(required=True, dump_to="DBId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class GetUDBClientConnNumResponseSchema(schema.ResponseSchema):
+    """GetUDBClientConnNum - 输入一个DBID，能够获取客户端来源IP以及对应的连接数"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.ConnNumMapSchema(), required=True, load_from="DataSet"
+        ),
+    }
+
+
+"""
 API: ModifyUDBInstanceName
 
 重命名UDB实例
@@ -1323,12 +1350,12 @@ class ModifyUDBInstancePasswordResponseSchema(schema.ResponseSchema):
 """
 API: PromoteUDBInstanceToHA
 
-普通db升级为高可用(只针对mysql5.5及以上版本)
+普通db升级为高可用(只针对mysql5.5及以上版本SSD机型的实例)  ，对于NVMe机型的单点升级高可用，虽然也能使用该操作再加上SwitchUDBInstanceToHA，但是更建议直接调用新的API接口（UpgradeUDBInstanceToHA）
 """
 
 
 class PromoteUDBInstanceToHARequestSchema(schema.RequestSchema):
-    """PromoteUDBInstanceToHA - 普通db升级为高可用(只针对mysql5.5及以上版本)"""
+    """PromoteUDBInstanceToHA - 普通db升级为高可用(只针对mysql5.5及以上版本SSD机型的实例)  ，对于NVMe机型的单点升级高可用，虽然也能使用该操作再加上SwitchUDBInstanceToHA，但是更建议直接调用新的API接口（UpgradeUDBInstanceToHA）"""
 
     fields = {
         "DBId": fields.Str(required=True, dump_to="DBId"),
@@ -1338,7 +1365,7 @@ class PromoteUDBInstanceToHARequestSchema(schema.RequestSchema):
 
 
 class PromoteUDBInstanceToHAResponseSchema(schema.ResponseSchema):
-    """PromoteUDBInstanceToHA - 普通db升级为高可用(只针对mysql5.5及以上版本)"""
+    """PromoteUDBInstanceToHA - 普通db升级为高可用(只针对mysql5.5及以上版本SSD机型的实例)  ，对于NVMe机型的单点升级高可用，虽然也能使用该操作再加上SwitchUDBInstanceToHA，但是更建议直接调用新的API接口（UpgradeUDBInstanceToHA）"""
 
     fields = {}
 
@@ -1529,15 +1556,16 @@ class StopUDBInstanceResponseSchema(schema.ResponseSchema):
 """
 API: SwitchUDBHAToSentinel
 
-UDB高可用实例从HAProxy版本升级为Sentinel版本（不带HAProxy）升级耗时30-70秒
+UDB高可用实例从HAProxy版本升级为Sentinel版本（不带HAProxy）升级耗时5-10秒
 """
 
 
 class SwitchUDBHAToSentinelRequestSchema(schema.RequestSchema):
-    """SwitchUDBHAToSentinel - UDB高可用实例从HAProxy版本升级为Sentinel版本（不带HAProxy）升级耗时30-70秒"""
+    """SwitchUDBHAToSentinel - UDB高可用实例从HAProxy版本升级为Sentinel版本（不带HAProxy）升级耗时5-10秒"""
 
     fields = {
         "DBId": fields.Str(required=True, dump_to="DBId"),
+        "ForceSwitch": fields.Bool(required=False, dump_to="ForceSwitch"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
@@ -1545,7 +1573,7 @@ class SwitchUDBHAToSentinelRequestSchema(schema.RequestSchema):
 
 
 class SwitchUDBHAToSentinelResponseSchema(schema.ResponseSchema):
-    """SwitchUDBHAToSentinel - UDB高可用实例从HAProxy版本升级为Sentinel版本（不带HAProxy）升级耗时30-70秒"""
+    """SwitchUDBHAToSentinel - UDB高可用实例从HAProxy版本升级为Sentinel版本（不带HAProxy）升级耗时5-10秒"""
 
     fields = {}
 
@@ -1553,31 +1581,25 @@ class SwitchUDBHAToSentinelResponseSchema(schema.ResponseSchema):
 """
 API: SwitchUDBInstanceToHA
 
-普通UDB切换为高可用，原db状态为WaitForSwitch时，调用改api
+普通UDB切换为高可用(只针对mysql5.5及以上版本SSD机型的实例) ，原db状态为WaitForSwitch时，调用该api； 对于NVMe机型的单点升级高可用，虽然也能使用PromoteUDBInstanceToHA再加上该操作，但是更建议直接调用新的API接口（UpgradeUDBInstanceToHA）
 """
 
 
 class SwitchUDBInstanceToHARequestSchema(schema.RequestSchema):
-    """SwitchUDBInstanceToHA - 普通UDB切换为高可用，原db状态为WaitForSwitch时，调用改api"""
+    """SwitchUDBInstanceToHA - 普通UDB切换为高可用(只针对mysql5.5及以上版本SSD机型的实例) ，原db状态为WaitForSwitch时，调用该api； 对于NVMe机型的单点升级高可用，虽然也能使用PromoteUDBInstanceToHA再加上该操作，但是更建议直接调用新的API接口（UpgradeUDBInstanceToHA）"""
 
     fields = {
-        "ChargeType": fields.Str(
-            required=False, dump_to="ChargeType"
-        ),  # Deprecated, will be removed at 1.0
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "DBId": fields.Str(required=True, dump_to="DBId"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Quantity": fields.Str(
-            required=False, dump_to="Quantity"
-        ),  # Deprecated, will be removed at 1.0
+        "Quantity": fields.Str(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "Tag": fields.Str(
-            required=False, dump_to="Tag"
-        ),  # Deprecated, will be removed at 1.0
+        "Tag": fields.Str(required=False, dump_to="Tag"),
     }
 
 
 class SwitchUDBInstanceToHAResponseSchema(schema.ResponseSchema):
-    """SwitchUDBInstanceToHA - 普通UDB切换为高可用，原db状态为WaitForSwitch时，调用改api"""
+    """SwitchUDBInstanceToHA - 普通UDB切换为高可用(只针对mysql5.5及以上版本SSD机型的实例) ，原db状态为WaitForSwitch时，调用该api； 对于NVMe机型的单点升级高可用，虽然也能使用PromoteUDBInstanceToHA再加上该操作，但是更建议直接调用新的API接口（UpgradeUDBInstanceToHA）"""
 
     fields = {
         "DBId": fields.Str(required=False, load_from="DBId"),
@@ -1663,6 +1685,30 @@ class UpdateUDBParamGroupRequestSchema(schema.RequestSchema):
 
 class UpdateUDBParamGroupResponseSchema(schema.ResponseSchema):
     """UpdateUDBParamGroup - 更新UDB配置参数项"""
+
+    fields = {}
+
+
+"""
+API: UpgradeUDBInstanceToHA
+
+快杰普通db升级为高可用(只针对mysql5.5及以上版本Nvme机型的实例)  
+"""
+
+
+class UpgradeUDBInstanceToHARequestSchema(schema.RequestSchema):
+    """UpgradeUDBInstanceToHA - 快杰普通db升级为高可用(只针对mysql5.5及以上版本Nvme机型的实例)"""
+
+    fields = {
+        "DBId": fields.Str(required=True, dump_to="DBId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class UpgradeUDBInstanceToHAResponseSchema(schema.ResponseSchema):
+    """UpgradeUDBInstanceToHA - 快杰普通db升级为高可用(只针对mysql5.5及以上版本Nvme机型的实例)"""
 
     fields = {}
 

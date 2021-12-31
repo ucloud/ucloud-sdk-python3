@@ -231,3 +231,12 @@ class UDBTypeSetSchema(schema.ResponseSchema):
     fields = {
         "DBTypeId": fields.Str(required=False, load_from="DBTypeId"),
     }
+
+
+class ConnNumMapSchema(schema.ResponseSchema):
+    """ConnNumMap - db实例ip和连接数信息"""
+
+    fields = {
+        "Ip": fields.Str(required=False, load_from="Ip"),
+        "Num": fields.Int(required=False, load_from="Num"),
+    }
