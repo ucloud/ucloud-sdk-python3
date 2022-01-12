@@ -42,17 +42,6 @@ class TaskHistoryItemSchema(schema.ResponseSchema):
     }
 
 
-class SyncDataSchema(schema.ResponseSchema):
-    """SyncData - 增量同步数据"""
-
-    fields = {
-        "BinlogGTID": fields.Str(required=False, load_from="BinlogGTID"),
-        "BinlogName": fields.Str(required=True, load_from="BinlogName"),
-        "BinlogPos": fields.Int(required=True, load_from="BinlogPos"),
-        "ServerId": fields.Int(required=True, load_from="ServerId"),
-    }
-
-
 class ProgressSchema(schema.ResponseSchema):
     """Progress - 进度信息"""
 
@@ -62,6 +51,19 @@ class ProgressSchema(schema.ResponseSchema):
         "Percentage": fields.Float(required=False, load_from="Percentage"),
         "TotalCount": fields.Int(required=False, load_from="TotalCount"),
         "TotalDuration": fields.Int(required=False, load_from="TotalDuration"),
+    }
+
+
+class SyncDataSchema(schema.ResponseSchema):
+    """SyncData - 增量同步数据"""
+
+    fields = {
+        "BinlogGTID": fields.Str(required=False, load_from="BinlogGTID"),
+        "BinlogName": fields.Str(required=False, load_from="BinlogName"),
+        "BinlogPos": fields.Int(required=False, load_from="BinlogPos"),
+        "ServerId": fields.Int(
+            required=True, load_from="ServerId"
+        ),  # Deprecated, will be removed at 1.0
     }
 
 
@@ -82,12 +84,17 @@ class ListDataItemSchema(schema.ResponseSchema):
     """ListDataItem - 返回列表的一个 Task 的信息"""
 
     fields = {
+        "AutoRenew": fields.Str(required=True, load_from="AutoRenew"),
+        "ChargeType": fields.Str(required=True, load_from="ChargeType"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "CurRetryCount": fields.Int(required=False, load_from="CurRetryCount"),
+        "ExpireTime": fields.Int(required=True, load_from="ExpireTime"),
+        "IsExpire": fields.Str(required=True, load_from="IsExpire"),
         "MaxRetryCount": fields.Int(required=False, load_from="MaxRetryCount"),
-        "Name": fields.Str(required=False, load_from="Name"),
+        "Name": fields.Str(required=True, load_from="Name"),
         "Progress": ProgressSchema(),
+        "ServiceType": fields.Str(required=True, load_from="ServiceType"),
         "Status": fields.Str(required=False, load_from="Status"),
-        "TaskId": fields.Str(required=False, load_from="TaskId"),
-        "Type": fields.Str(required=False, load_from="Type"),
+        "TaskId": fields.Str(required=True, load_from="TaskId"),
+        "Type": fields.Str(required=True, load_from="Type"),
     }
