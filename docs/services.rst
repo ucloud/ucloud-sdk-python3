@@ -178,6 +178,13 @@ UNVS
    :members:
 
 
+UTSDB
+-----
+
+.. autoclass:: ucloud.services.utsdb.client.UTSDBClient
+   :members:
+
+
 VPC
 ---
 
