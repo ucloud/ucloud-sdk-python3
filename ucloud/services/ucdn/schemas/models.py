@@ -3,14 +3,6 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class AccessConfSchema(schema.ResponseSchema):
-    """AccessConf - 访问控制"""
-
-    fields = {
-        "IpBlacklist": fields.Str(required=False, load_from="IpBlacklist"),
-    }
-
-
 class CacheConfSchema(schema.ResponseSchema):
     """CacheConf - 缓存配置"""
 
@@ -26,6 +18,14 @@ class CacheConfSchema(schema.ResponseSchema):
             required=False, load_from="HttpCodePattern"
         ),
         "PathPattern": fields.Str(required=True, load_from="PathPattern"),
+    }
+
+
+class AccessConfSchema(schema.ResponseSchema):
+    """AccessConf - 访问控制"""
+
+    fields = {
+        "IpBlacklist": fields.Str(required=False, load_from="IpBlacklist"),
     }
 
 
@@ -218,6 +218,45 @@ class RequestInfoSchema(schema.ResponseSchema):
     }
 
 
+class RefererListSchema(schema.ResponseSchema):
+    """RefererList - RefererList"""
+
+    fields = {
+        "Percent": fields.Float(required=False, load_from="Percent"),
+        "Referer": fields.Str(required=False, load_from="Referer"),
+        "RequestTimes": fields.Int(required=False, load_from="RequestTimes"),
+    }
+
+
+class RefererStatisticsSchema(schema.ResponseSchema):
+    """RefererStatistics - RefererStatistics"""
+
+    fields = {
+        "Date": fields.Str(required=False, load_from="Date"),
+        "RefererList": fields.List(RefererListSchema()),
+    }
+
+
+class DownloadStatisticInfoSchema(schema.ResponseSchema):
+    """DownloadStatisticInfo - DownloadStatisticInfo"""
+
+    fields = {
+        "DownloadTimes": fields.Int(required=False, load_from="DownloadTimes"),
+        "Percent": fields.Float(required=False, load_from="Percent"),
+        "Traffic": fields.Float(required=False, load_from="Traffic"),
+        "Url": fields.Str(required=False, load_from="Url"),
+    }
+
+
+class UrlStatisticsSchema(schema.ResponseSchema):
+    """UrlStatistics - UrlStatistics"""
+
+    fields = {
+        "Date": fields.Str(required=False, load_from="Date"),
+        "UrlList": fields.List(DownloadStatisticInfoSchema()),
+    }
+
+
 class BandwidthTrafficInfoSchema(schema.ResponseSchema):
     """BandwidthTrafficInfo - BandwidthTrafficInfo"""
 
@@ -225,16 +264,6 @@ class BandwidthTrafficInfoSchema(schema.ResponseSchema):
         "CdnBandwidth": fields.Float(required=True, load_from="CdnBandwidth"),
         "Time": fields.Int(required=True, load_from="Time"),
         "Traffic": fields.Float(required=True, load_from="Traffic"),
-    }
-
-
-class ReferConfSchema(schema.ResponseSchema):
-    """ReferConf - refer配置"""
-
-    fields = {
-        "NullRefer": fields.Int(required=False, load_from="NullRefer"),
-        "ReferList": fields.List(fields.Str()),
-        "ReferType": fields.Int(required=False, load_from="ReferType"),
     }
 
 
@@ -248,12 +277,13 @@ class CacheKeyInfoSchema(schema.ResponseSchema):
     }
 
 
-class AccessControlConfSchema(schema.ResponseSchema):
-    """AccessControlConf - 访问控制配置参数"""
+class ReferConfSchema(schema.ResponseSchema):
+    """ReferConf - refer配置"""
 
     fields = {
-        "IpBlackList": fields.List(fields.Str()),
-        "ReferConf": ReferConfSchema(),
+        "NullRefer": fields.Int(required=False, load_from="NullRefer"),
+        "ReferList": fields.List(fields.Str()),
+        "ReferType": fields.Int(required=False, load_from="ReferType"),
     }
 
 
@@ -304,6 +334,15 @@ class OriginConfSchema(schema.ResponseSchema):
         "OriginProtocol": fields.Str(
             required=False, load_from="OriginProtocol"
         ),
+    }
+
+
+class AccessControlConfSchema(schema.ResponseSchema):
+    """AccessControlConf - 访问控制配置参数"""
+
+    fields = {
+        "IpBlackList": fields.List(fields.Str()),
+        "ReferConf": ReferConfSchema(),
     }
 
 

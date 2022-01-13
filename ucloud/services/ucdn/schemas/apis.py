@@ -98,6 +98,29 @@ class BatchRefreshNewUcdnDomainCacheResponseSchema(schema.ResponseSchema):
 
 
 """
+API: ControlUcdnDomainCacheAccess
+
+封禁解封缓存访问
+"""
+
+
+class ControlUcdnDomainCacheAccessRequestSchema(schema.RequestSchema):
+    """ControlUcdnDomainCacheAccess - 封禁解封缓存访问"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Type": fields.Str(required=True, dump_to="Type"),
+        "UrlList": fields.List(fields.Str()),
+    }
+
+
+class ControlUcdnDomainCacheAccessResponseSchema(schema.ResponseSchema):
+    """ControlUcdnDomainCacheAccess - 封禁解封缓存访问"""
+
+    fields = {}
+
+
+"""
 API: DeleteCertificate
 
 删除证书
@@ -364,6 +387,71 @@ class GetNewUcdnDomainRequestNumResponseSchema(schema.ResponseSchema):
     fields = {
         "RequestList": fields.List(
             models.RequestInfoSchema(), required=False, load_from="RequestList"
+        ),
+    }
+
+
+"""
+API: GetNewUcdnLogRefererStatistics
+
+获取热点referer统计
+"""
+
+
+class GetNewUcdnLogRefererStatisticsRequestSchema(schema.RequestSchema):
+    """GetNewUcdnLogRefererStatistics - 获取热点referer统计"""
+
+    fields = {
+        "Areacode": fields.Str(required=False, dump_to="Areacode"),
+        "BeginTime": fields.Int(required=False, dump_to="BeginTime"),
+        "DomainId": fields.Str(required=False, dump_to="DomainId"),
+        "EndTime": fields.Int(required=False, dump_to="EndTime"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "OrderBy": fields.Int(required=False, dump_to="OrderBy"),
+    }
+
+
+class GetNewUcdnLogRefererStatisticsResponseSchema(schema.ResponseSchema):
+    """GetNewUcdnLogRefererStatistics - 获取热点referer统计"""
+
+    fields = {
+        "RefererStatistics": fields.List(
+            models.RefererStatisticsSchema(),
+            required=False,
+            load_from="RefererStatistics",
+        ),
+    }
+
+
+"""
+API: GetNewUcdnLogUrlStatistics
+
+获取日志url统计
+"""
+
+
+class GetNewUcdnLogUrlStatisticsRequestSchema(schema.RequestSchema):
+    """GetNewUcdnLogUrlStatistics - 获取日志url统计"""
+
+    fields = {
+        "Areacode": fields.Str(required=False, dump_to="Areacode"),
+        "BeginTime": fields.Int(required=False, dump_to="BeginTime"),
+        "DomainId": fields.Str(required=True, dump_to="DomainId"),
+        "EndTime": fields.Int(required=False, dump_to="EndTime"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "OrderBy": fields.Int(required=False, dump_to="OrderBy"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+    }
+
+
+class GetNewUcdnLogUrlStatisticsResponseSchema(schema.ResponseSchema):
+    """GetNewUcdnLogUrlStatistics - 获取日志url统计"""
+
+    fields = {
+        "UrlStatisticsList": fields.List(
+            models.UrlStatisticsSchema(),
+            required=False,
+            load_from="UrlStatisticsList",
         ),
     }
 

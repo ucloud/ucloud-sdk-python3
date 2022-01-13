@@ -147,6 +147,31 @@ class UCDNClient(Client):
         resp = self.invoke("BatchRefreshNewUcdnDomainCache", d, **kwargs)
         return apis.BatchRefreshNewUcdnDomainCacheResponseSchema().loads(resp)
 
+    def control_ucdn_domain_cache_access(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ControlUcdnDomainCacheAccess - 封禁解封缓存访问
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Type** (str) - (Required) forbid=封禁   unforbid=解封  其他值非法
+        - **UrlList** (list) - (Required) 待封禁的Url，一次封禁多个Url时最多一次30条，只能对表示文件的Url进行操作
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.ControlUcdnDomainCacheAccessRequestSchema().dumps(d)
+
+        resp = self.invoke("ControlUcdnDomainCacheAccess", d, **kwargs)
+        return apis.ControlUcdnDomainCacheAccessResponseSchema().loads(resp)
+
     def delete_certificate(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -550,6 +575,90 @@ class UCDNClient(Client):
 
         resp = self.invoke("GetNewUcdnDomainRequestNum", d, **kwargs)
         return apis.GetNewUcdnDomainRequestNumResponseSchema().loads(resp)
+
+    def get_new_ucdn_log_referer_statistics(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetNewUcdnLogRefererStatistics - 获取热点referer统计
+
+        **Request**
+
+        - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外 ；目前只支持国内
+        - **BeginTime** (int) - 查询带宽的起始时间，格式：时间戳
+        - **DomainId** (str) - 域名id，创建域名时生成的id
+        - **EndTime** (int) - 查询统计日志的结束时间，格式：时间戳。最大时间间隔30天
+        - **Limit** (int) - 返回的结果数量限制，默认1000
+        - **OrderBy** (int) - 0表示按流量降序排列，1表示按照下载次数降序排列，默认为0
+
+        **Response**
+
+        - **RefererStatistics** (list) - 见 **RefererStatistics** 模型定义
+
+        **Response Model**
+
+        **RefererList**
+        - **Percent** (float) - 次数占比，单位%
+        - **Referer** (str) - 客户端请求的referer
+        - **RequestTimes** (int) - 次数
+
+
+        **RefererStatistics**
+        - **Date** (str) - 日期
+        - **RefererList** (list) - 见 **RefererList** 模型定义
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.GetNewUcdnLogRefererStatisticsRequestSchema().dumps(d)
+
+        resp = self.invoke("GetNewUcdnLogRefererStatistics", d, **kwargs)
+        return apis.GetNewUcdnLogRefererStatisticsResponseSchema().loads(resp)
+
+    def get_new_ucdn_log_url_statistics(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetNewUcdnLogUrlStatistics - 获取日志url统计
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **DomainId** (str) - (Required) 域名Id
+        - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外 只支持国内
+        - **BeginTime** (int) - 查询带宽的起始时间，格式：时间戳。BeginTime和EndTime必须同时赋值
+        - **EndTime** (int) - 查询统计日志的结束时间，格式：时间戳,最多可拉取30天
+        - **Limit** (int) - 返回的结果数量限制，默认1000
+        - **OrderBy** (int) - 0表示按流量降序排列，1表示按照下载次数降序排列，默认为0
+
+        **Response**
+
+        - **UrlStatisticsList** (list) - 见 **UrlStatistics** 模型定义
+
+        **Response Model**
+
+        **DownloadStatisticInfo**
+        - **DownloadTimes** (int) - 下载次数
+        - **Percent** (float) - 流量占比，单位%
+        - **Traffic** (float) - 流量（单位为G）
+        - **Url** (str) - 下载链接的url
+
+
+        **UrlStatistics**
+        - **Date** (str) - 日期
+        - **UrlList** (list) - 见 **DownloadStatisticInfo** 模型定义
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetNewUcdnLogUrlStatisticsRequestSchema().dumps(d)
+
+        resp = self.invoke("GetNewUcdnLogUrlStatistics", d, **kwargs)
+        return apis.GetNewUcdnLogUrlStatisticsResponseSchema().loads(resp)
 
     def get_ucdn_domain_95bandwidth_v2(
         self, req: typing.Optional[dict] = None, **kwargs
