@@ -96,7 +96,7 @@ class UHubClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **ImageName** (str) - (Required) 镜像名称
         - **RepoName** (str) - (Required) 镜像仓库名称
         - **Limit** (int) - 每次获取数量，默认为20
@@ -111,9 +111,10 @@ class UHubClient(Client):
         **Response Model**
 
         **TagSet**
-
+        - **Digest** (str) - 镜像digest值
         - **TagName** (str) - Tag名称
         - **UpdateTime** (str) - 镜像更新时间
+
 
         """
         # build request
@@ -144,13 +145,13 @@ class UHubClient(Client):
         **Response Model**
 
         **RepoSet**
-
         - **CreateTime** (str) - 仓库创建时间
         - **Description** (str) - 镜像仓库描述
         - **IsOutSide** (str) - 镜像仓库是否外网可以访问，可以为ture,不可以为false
         - **IsShared** (str) - 镜像仓库类型,false为私有；true为公有
         - **RepoName** (str) - 镜像仓库名称
         - **UpdateTime** (str) - 仓库更新时间
+
 
         """
         # build request
@@ -183,13 +184,13 @@ class UHubClient(Client):
         **Response Model**
 
         **ImageSet**
-
         - **CreateTime** (str) - 创建时间
         - **ImageName** (str) - 镜像名称
         - **LatestTag** (str) - 最新push的Tag
         - **PullCount** (int) - 镜像被下载次数
         - **RepoName** (str) - 镜像仓库名称
         - **UpdateTime** (str) - 修改时间
+
 
         """
         # build request
