@@ -7,6 +7,7 @@ class TagSetSchema(schema.ResponseSchema):
     """TagSet - Tag详细信息"""
 
     fields = {
+        "Digest": fields.Str(required=False, load_from="Digest"),
         "TagName": fields.Str(required=True, load_from="TagName"),
         "UpdateTime": fields.Str(required=True, load_from="UpdateTime"),
     }
