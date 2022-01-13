@@ -1,3 +1,11 @@
+## 0.11.24 (2022-01-13)
+
+ENHANCEMENTS:
+
+- Update all APIs of `UTSDB` (#200)
+- Update all APIs of `UHub` (#199)
+- Update all APIs of `UCDN` (#198)
+
 ## 0.11.23 (2021-12-31)
 
 ENHANCEMENTS:
