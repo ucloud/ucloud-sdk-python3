@@ -171,6 +171,35 @@ class DescribeUFileTokenResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetUFileDailyReport
+
+查看日消费报表
+"""
+
+
+class GetUFileDailyReportRequestSchema(schema.RequestSchema):
+    """GetUFileDailyReport - 查看日消费报表"""
+
+    fields = {
+        "BucketName": fields.Str(required=False, dump_to="BucketName"),
+        "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "StartTime": fields.Int(required=True, dump_to="StartTime"),
+    }
+
+
+class GetUFileDailyReportResponseSchema(schema.ResponseSchema):
+    """GetUFileDailyReport - 查看日消费报表"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.UFileReportItemSchema(), required=True, load_from="DataSet"
+        ),
+    }
+
+
+"""
 API: GetUFileQuota
 
 查看配额状态
