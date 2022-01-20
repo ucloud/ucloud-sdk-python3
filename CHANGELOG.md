@@ -1,3 +1,10 @@
+## 0.11.25 (2022-01-20)
+
+ENHANCEMENTS:
+
+- Update all APIs of `UK8S` (#203)
+- Update all APIs of `UFile` (#202)
+
 ## 0.11.24 (2022-01-13)
 
 ENHANCEMENTS:
