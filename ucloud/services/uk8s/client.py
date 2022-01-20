@@ -53,6 +53,51 @@ class UK8SClient(Client):
         resp = self.invoke("AddUK8SExistingUHost", d, **kwargs)
         return apis.AddUK8SExistingUHostResponseSchema().loads(resp)
 
+    def add_uk8s_node_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """AddUK8SNodeGroup - 添加UK8S节点池
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ClusterId** (str) - (Required) 集群ID
+        - **NodeGroupName** (str) - (Required) 节点池名字
+        - **BootDiskType** (str) - 磁盘类型
+        - **CPU** (int) - GPU卡核心数。仅GPU机型支持此字段（可选范围与MachineType+GpuType相关）
+        - **ChargeType** (str) - 计费模式
+        - **DataDiskSize** (int) - 数据磁盘大小
+        - **DataDiskType** (str) - 磁盘类型
+        - **GPU** (int) - GPU卡核心数
+        - **GpuType** (str) - GPU类型
+        - **ImageId** (str) - 镜像ID
+        - **MachineType** (str) - 云主机机型。枚举值["N", "C", "G", "O", "OS"]。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
+        - **Mem** (int) - 内存大小。单位：MB
+        - **MinimalCpuPlatform** (str) - 最低cpu平台，枚举值["Intel/Auto", "Intel/IvyBridge", "Intel/Haswell", "Intel/Broadwell", "Intel/Skylake", "Intel/Cascadelake"；"Intel/CascadelakeR"; “Amd/Epyc2”,"Amd/Auto"],默认值是"Intel/Auto"
+        - **Tag** (str) - 业务组
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息。
+        - **NodeGroupId** (str) - 节点池ID
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.AddUK8SNodeGroupRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("AddUK8SNodeGroup", d, **kwargs)
+        return apis.AddUK8SNodeGroupResponseSchema().loads(resp)
+
     def add_uk8s_phost_node(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -320,6 +365,21 @@ class UK8SClient(Client):
 
         **Response Model**
 
+        **UhostInfo**
+        - **CPU** (int) - Cpu数量
+        - **CreateTime** (int) - 创建时间
+        - **DiskSet** (list) - 见 **DiskSet** 模型定义
+        - **ExpireTime** (int) - 到期时间
+        - **IPSet** (list) - 见 **IPSet** 模型定义
+        - **Memory** (int) - 内存
+        - **Name** (str) - 主机名称
+        - **NodeId** (str) - 主机ID
+        - **NodeType** (str) - 节点类型：uhost表示云主机;uphost表示物理云主机
+        - **OsName** (str) - 镜像信息
+        - **State** (str) - 主机状态
+        - **Zone** (str) - 所在机房
+
+
         **DiskSet**
         - **BackupType** (str) - 备份方案，枚举类型：BASIC_SNAPSHOT,普通快照；DATAARK,方舟。无快照则不返回该字段。
         - **DiskId** (str) - 磁盘长ID
@@ -339,21 +399,6 @@ class UK8SClient(Client):
         - **IP** (str) - IP地址
         - **IPId** (str) - IP资源ID (内网IP无对应的资源ID)
         - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
-
-
-        **UhostInfo**
-        - **CPU** (int) - Cpu数量
-        - **CreateTime** (int) - 创建时间
-        - **DiskSet** (list) - 见 **DiskSet** 模型定义
-        - **ExpireTime** (int) - 到期时间
-        - **IPSet** (list) - 见 **IPSet** 模型定义
-        - **Memory** (int) - 内存
-        - **Name** (str) - 主机名称
-        - **NodeId** (str) - 主机ID
-        - **NodeType** (str) - 节点类型：uhost表示云主机;uphost表示物理云主机
-        - **OsName** (str) - 镜像信息
-        - **State** (str) - 主机状态
-        - **Zone** (str) - 所在机房
 
 
         """
@@ -590,3 +635,79 @@ class UK8SClient(Client):
 
         resp = self.invoke("ListUK8SClusterV2", d, **kwargs)
         return apis.ListUK8SClusterV2ResponseSchema().loads(resp)
+
+    def list_uk8s_node_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListUK8SNodeGroup - 列出UK8S节点池
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ClusterId** (str) - (Required) 集群ID
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **NodeGroupList** (list) - 见 **NodeGroupSet** 模型定义
+
+        **Response Model**
+
+        **NodeGroupSet**
+        - **BootDiskType** (str) - 系统盘类型
+        - **CPU** (int) - 虚拟CPU核数
+        - **ChargeType** (str) - 付费方式
+        - **DataDiskSize** (int) - 数据盘大小
+        - **DataDiskType** (str) - 数据盘类型
+        - **GPU** (int) - GPU卡核心数
+        - **GpuType** (str) - GPU类型
+        - **ImageId** (str) - 镜像ID
+        - **MachineType** (str) - 机型
+        - **Mem** (int) - 内存大小
+        - **MinimalCpuPlatform** (str) - cpu平台
+        - **NodeGroupId** (str) - 节点池ID
+        - **NodeGroupName** (str) - 节点池名字
+        - **NodeList** (list) - 节点id列表
+        - **Tag** (str) - 业务组
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ListUK8SNodeGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("ListUK8SNodeGroup", d, **kwargs)
+        return apis.ListUK8SNodeGroupResponseSchema().loads(resp)
+
+    def remove_uk8s_node_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """RemoveUK8SNodeGroup - 删除UK8S节点池
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ClusterId** (str) - (Required) 集群id
+        - **NodeGroupId** (str) - (Required) 节点池Id
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.RemoveUK8SNodeGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("RemoveUK8SNodeGroup", d, **kwargs)
+        return apis.RemoveUK8SNodeGroupResponseSchema().loads(resp)

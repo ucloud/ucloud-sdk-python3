@@ -3,18 +3,6 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class IPSetSchema(schema.ResponseSchema):
-    """IPSet - 节点的IP信息"""
-
-    fields = {
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "Default": fields.Str(required=False, load_from="Default"),
-        "IP": fields.Str(required=False, load_from="IP"),
-        "IPId": fields.Str(required=False, load_from="IPId"),
-        "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
 class DiskSetSchema(schema.ResponseSchema):
     """DiskSet - 节点磁盘信息"""
 
@@ -28,6 +16,18 @@ class DiskSetSchema(schema.ResponseSchema):
         "IsBoot": fields.Str(required=False, load_from="IsBoot"),
         "Name": fields.Str(required=False, load_from="Name"),
         "Size": fields.Int(required=False, load_from="Size"),
+        "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
+class IPSetSchema(schema.ResponseSchema):
+    """IPSet - 节点的IP信息"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "Default": fields.Str(required=False, load_from="Default"),
+        "IP": fields.Str(required=False, load_from="IP"),
+        "IPId": fields.Str(required=False, load_from="IPId"),
         "Type": fields.Str(required=False, load_from="Type"),
     }
 
@@ -77,14 +77,6 @@ class K8SNodeConditionSchema(schema.ResponseSchema):
     }
 
 
-class KubeProxySchema(schema.ResponseSchema):
-    """KubeProxy - KubeProxy信息"""
-
-    fields = {
-        "Mode": fields.Str(required=False, load_from="Mode"),
-    }
-
-
 class UHostIPSetSchema(schema.ResponseSchema):
     """UHostIPSet - 云主机IP信息"""
 
@@ -99,6 +91,14 @@ class UHostIPSetSchema(schema.ResponseSchema):
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
         "Type": fields.Str(required=False, load_from="Type"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
+    }
+
+
+class KubeProxySchema(schema.ResponseSchema):
+    """KubeProxy - KubeProxy信息"""
+
+    fields = {
+        "Mode": fields.Str(required=False, load_from="Mode"),
     }
 
 
@@ -151,4 +151,28 @@ class ClusterSetSchema(schema.ResponseSchema):
         "Status": fields.Str(required=False, load_from="Status"),
         "SubnetId": fields.Str(required=True, load_from="SubnetId"),
         "VPCId": fields.Str(required=True, load_from="VPCId"),
+    }
+
+
+class NodeGroupSetSchema(schema.ResponseSchema):
+    """NodeGroupSet - 节点池配置"""
+
+    fields = {
+        "BootDiskType": fields.Str(required=False, load_from="BootDiskType"),
+        "CPU": fields.Int(required=False, load_from="CPU"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "DataDiskSize": fields.Int(required=False, load_from="DataDiskSize"),
+        "DataDiskType": fields.Str(required=False, load_from="DataDiskType"),
+        "GPU": fields.Int(required=False, load_from="GPU"),
+        "GpuType": fields.Str(required=False, load_from="GpuType"),
+        "ImageId": fields.Str(required=False, load_from="ImageId"),
+        "MachineType": fields.Str(required=False, load_from="MachineType"),
+        "Mem": fields.Int(required=False, load_from="Mem"),
+        "MinimalCpuPlatform": fields.Str(
+            required=False, load_from="MinimalCpuPlatform"
+        ),
+        "NodeGroupId": fields.Str(required=False, load_from="NodeGroupId"),
+        "NodeGroupName": fields.Str(required=False, load_from="NodeGroupName"),
+        "NodeList": fields.List(fields.Str()),
+        "Tag": fields.Str(required=False, load_from="Tag"),
     }
