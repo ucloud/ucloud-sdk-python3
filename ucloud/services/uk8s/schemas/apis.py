@@ -46,6 +46,48 @@ class AddUK8SExistingUHostResponseSchema(schema.ResponseSchema):
 
 
 """
+API: AddUK8SNodeGroup
+
+添加UK8S节点池
+"""
+
+
+class AddUK8SNodeGroupRequestSchema(schema.RequestSchema):
+    """AddUK8SNodeGroup - 添加UK8S节点池"""
+
+    fields = {
+        "BootDiskType": fields.Str(required=False, dump_to="BootDiskType"),
+        "CPU": fields.Int(required=False, dump_to="CPU"),
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "ClusterId": fields.Str(required=True, dump_to="ClusterId"),
+        "DataDiskSize": fields.Int(required=False, dump_to="DataDiskSize"),
+        "DataDiskType": fields.Str(required=False, dump_to="DataDiskType"),
+        "GPU": fields.Int(required=False, dump_to="GPU"),
+        "GpuType": fields.Str(required=False, dump_to="GpuType"),
+        "ImageId": fields.Str(required=False, dump_to="ImageId"),
+        "MachineType": fields.Str(required=False, dump_to="MachineType"),
+        "Mem": fields.Int(required=False, dump_to="Mem"),
+        "MinimalCpuPlatform": fields.Str(
+            required=False, dump_to="MinimalCpuPlatform"
+        ),
+        "NodeGroupName": fields.Str(required=True, dump_to="NodeGroupName"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class AddUK8SNodeGroupResponseSchema(schema.ResponseSchema):
+    """AddUK8SNodeGroup - 添加UK8S节点池"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "NodeGroupId": fields.Str(required=True, load_from="NodeGroupId"),
+    }
+
+
+"""
 API: AddUK8SPHostNode
 
 为UK8S集群添加一台或多台物理云主机类型的节点。
@@ -514,3 +556,58 @@ class ListUK8SClusterV2ResponseSchema(schema.ResponseSchema):
             models.ClusterSetSchema(), required=False, load_from="ClusterSet"
         ),
     }
+
+
+"""
+API: ListUK8SNodeGroup
+
+列出UK8S节点池
+"""
+
+
+class ListUK8SNodeGroupRequestSchema(schema.RequestSchema):
+    """ListUK8SNodeGroup - 列出UK8S节点池"""
+
+    fields = {
+        "ClusterId": fields.Str(required=True, dump_to="ClusterId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class ListUK8SNodeGroupResponseSchema(schema.ResponseSchema):
+    """ListUK8SNodeGroup - 列出UK8S节点池"""
+
+    fields = {
+        "NodeGroupList": fields.List(
+            models.NodeGroupSetSchema(),
+            required=False,
+            load_from="NodeGroupList",
+        ),
+    }
+
+
+"""
+API: RemoveUK8SNodeGroup
+
+删除UK8S节点池
+"""
+
+
+class RemoveUK8SNodeGroupRequestSchema(schema.RequestSchema):
+    """RemoveUK8SNodeGroup - 删除UK8S节点池"""
+
+    fields = {
+        "ClusterId": fields.Str(required=True, dump_to="ClusterId"),
+        "NodeGroupId": fields.Str(required=True, dump_to="NodeGroupId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class RemoveUK8SNodeGroupResponseSchema(schema.ResponseSchema):
+    """RemoveUK8SNodeGroup - 删除UK8S节点池"""
+
+    fields = {}
