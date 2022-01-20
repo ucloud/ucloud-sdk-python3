@@ -150,13 +150,6 @@ class UFileClient(Client):
 
         **Response Model**
 
-        **UFileDomainSet**
-        - **Cdn** (list) - UCDN加速域名
-        - **CustomCdn** (list) - 用户自定义CDN加速域名
-        - **CustomSrc** (list) - 用户自定义源站域名
-        - **Src** (list) - 源站域名
-
-
         **UFileBucketSet**
         - **Biz** (str) - Bucket所属业务, general或vod或udb general: 普通业务； vod: 视频云业务; udb: 云数据库业务
         - **BucketId** (str) - Bucket的ID
@@ -169,6 +162,13 @@ class UFileClient(Client):
         - **Region** (str) - Bucket所属地域
         - **Tag** (str) - 所属业务组
         - **Type** (str) - Bucket访问类型
+
+
+        **UFileDomainSet**
+        - **Cdn** (list) - UCDN加速域名
+        - **CustomCdn** (list) - 用户自定义CDN加速域名
+        - **CustomSrc** (list) - 用户自定义源站域名
+        - **Src** (list) - 源站域名
 
 
         """
@@ -228,6 +228,64 @@ class UFileClient(Client):
         resp = self.invoke("DescribeUFileToken", d, **kwargs)
         return apis.DescribeUFileTokenResponseSchema().loads(resp)
 
+    def get_ufile_daily_report(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUFileDailyReport - 查看日消费报表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **EndTime** (int) - (Required) 查询结束时间;unix时间戳,单位s
+        - **StartTime** (int) - (Required) 查询开始时间;unix时间戳，单位s
+        - **BucketName** (str) - 空间名称。此字段不为空，返回此Bucket日使用量；否则，返回这个项目的日使用量
+
+        **Response**
+
+        - **DataSet** (list) - 见 **UFileReportItem** 模型定义
+
+        **Response Model**
+
+        **UFileDailyReportItem**
+        - **AcRestore** (float) - 冷存激活量，即归档数据取回量；单位byte
+        - **AcStorage** (float) - 冷存（归档）存储量；单位byte
+        - **ApiTimes** (float) - API请求次数（次）
+        - **BusyFlow** (float) - 忙时流量；单位byte；海外无此字段
+        - **CdnFlow** (float) - cdn回源流量;单位byte
+        - **Date** (int) - 配额消费时间，unix时间戳（单位s），精确到日期
+        - **Flow** (float) - 下载流量：单位byte；国内无此字段
+        - **IaGetSize** (float) - 低频数据取回量；单位byte
+        - **IaStorage** (float) - 低频存储量；单位byte
+        - **IdleFlow** (float) - 闲时流量；单位byte；海外无此字段
+        - **Storage** (float) - 标准存储量；单位byte
+
+
+        **UFileTotalReportItem**
+        - **ApiTimes** (float) - API请求次数（次）
+        - **BusyFlow** (float) - 忙时流量；单位byte；海外无此字段
+        - **CdnFlow** (float) - cdn回源流量;单位byte
+        - **Flow** (float) - 下载流量：单位byte；国内无此字段
+        - **IdleFlow** (float) - 闲时流量；单位byte；海外无此字段
+
+
+        **UFileReportItem**
+        - **Daily** (list) - 见 **UFileDailyReportItem** 模型定义
+        - **Total** (list) - 见 **UFileTotalReportItem** 模型定义
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetUFileDailyReportRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUFileDailyReport", d, **kwargs)
+        return apis.GetUFileDailyReportResponseSchema().loads(resp)
+
     def get_ufile_quota(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -270,16 +328,16 @@ class UFileClient(Client):
 
         **Response Model**
 
-        **UFileQuotaLeft**
-        - **Left** (float) - 配额剩余量
-
-
         **UFileQuotaDataSetItem**
         - **DownloadFlow** (dict) - 见 **UFileQuotaLeft** 模型定义
         - **Owe** (int) - 是否欠费：1表示欠费；0表示未欠费
         - **Region** (str) - 可用地域
         - **RequestCnt** (dict) - 见 **UFileQuotaLeft** 模型定义
         - **Storage** (dict) - 见 **UFileQuotaLeft** 模型定义
+
+
+        **UFileQuotaLeft**
+        - **Left** (float) - 配额剩余量
 
 
         """

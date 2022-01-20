@@ -50,6 +50,45 @@ class UFileTokenSetSchema(schema.ResponseSchema):
     }
 
 
+class UFileTotalReportItemSchema(schema.ResponseSchema):
+    """UFileTotalReportItem - 总消费信息"""
+
+    fields = {
+        "ApiTimes": fields.Float(required=False, load_from="ApiTimes"),
+        "BusyFlow": fields.Float(required=False, load_from="BusyFlow"),
+        "CdnFlow": fields.Float(required=False, load_from="CdnFlow"),
+        "Flow": fields.Float(required=False, load_from="Flow"),
+        "IdleFlow": fields.Float(required=False, load_from="IdleFlow"),
+    }
+
+
+class UFileDailyReportItemSchema(schema.ResponseSchema):
+    """UFileDailyReportItem -"""
+
+    fields = {
+        "AcRestore": fields.Float(required=False, load_from="AcRestore"),
+        "AcStorage": fields.Float(required=False, load_from="AcStorage"),
+        "ApiTimes": fields.Float(required=False, load_from="ApiTimes"),
+        "BusyFlow": fields.Float(required=False, load_from="BusyFlow"),
+        "CdnFlow": fields.Float(required=False, load_from="CdnFlow"),
+        "Date": fields.Int(required=False, load_from="Date"),
+        "Flow": fields.Float(required=False, load_from="Flow"),
+        "IaGetSize": fields.Float(required=False, load_from="IaGetSize"),
+        "IaStorage": fields.Float(required=False, load_from="IaStorage"),
+        "IdleFlow": fields.Float(required=False, load_from="IdleFlow"),
+        "Storage": fields.Float(required=False, load_from="Storage"),
+    }
+
+
+class UFileReportItemSchema(schema.ResponseSchema):
+    """UFileReportItem -"""
+
+    fields = {
+        "Daily": fields.List(UFileDailyReportItemSchema()),
+        "Total": fields.List(UFileTotalReportItemSchema()),
+    }
+
+
 class UFileQuotaLeftSchema(schema.ResponseSchema):
     """UFileQuotaLeft - 配额剩余量"""
 
