@@ -9,12 +9,12 @@ def get_skip_reason():
 
 
 def is_acc() -> bool:
-    """ check test env is acceptance testing or not """
+    """check test env is acceptance testing or not"""
     return os.getenv(ACC_ENV_KEY)
 
 
 def is_ut() -> bool:
-    """ check test env is unit testing or not """
+    """check test env is unit testing or not"""
     return not is_acc()
 
 
