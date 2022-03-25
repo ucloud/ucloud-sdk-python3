@@ -25,6 +25,13 @@ class Client(client.Client):
 
     
     
+    def iam(self):
+        from ucloud.services.iam.client import IAMClient
+        return IAMClient(self._auto_config('iam'), self.transport, self.middleware, self.logger)
+    
+
+    
+    
     def ipsecvpn(self):
         from ucloud.services.ipsecvpn.client import IPSecVPNClient
         return IPSecVPNClient(self._auto_config('ipsecvpn'), self.transport, self.middleware, self.logger)

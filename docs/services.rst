@@ -94,6 +94,13 @@ Cube
    :members:
 
 
+IAM
+---
+
+.. autoclass:: ucloud.services.iam.client.IAMClient
+   :members:
+
+
 IPSecVPN
 --------
 
