@@ -192,6 +192,13 @@ UTSDB
    :members:
 
 
+UVMS
+----
+
+.. autoclass:: ucloud.services.uvms.client.UVMSClient
+   :members:
+
+
 VPC
 ---
 

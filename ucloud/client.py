@@ -210,6 +210,13 @@ class Client(client.Client):
 
     
     
+    def uvms(self):
+        from ucloud.services.uvms.client import UVMSClient
+        return UVMSClient(self._auto_config('uvms'), self.transport, self.middleware, self.logger)
+    
+
+    
+    
 
 
     def vpc(self):
