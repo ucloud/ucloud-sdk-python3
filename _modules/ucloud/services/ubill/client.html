@@ -82,10 +82,12 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **BillPeriod** (int) - (Required) 账期（时间戳格式）</span>
 <span class="sd">        - **BillType** (int) - (Required) 账单类型，传 0 时获取账单总览报表，传 1 获取账单明细报表</span>
+<span class="sd">        - **BillingCycle** (str) - (Required) 账期(字符串格式，YYYY-MM，例如2021-08).   若BillingCycle 和 BillPeriod同时存在，BillingCycle 优先</span>
+<span class="sd">        - **BillPeriod** (int) - 此字段不推荐使用，建议使用BillingCycle.   若BillingCycle 和 BillPeriod同时存在，BillingCycle 优先</span>
 <span class="sd">        - **PaidType** (int) - 获取账单总览报表时，账单的支付状态，传 0 时获取待支付账单，传 1 时获取已支付账单。获取账单明细报表时该参数无效</span>
 <span class="sd">        - **RequireVersion** (str) - 如需求其他语言版本的账单则使用此参数。默认中文。如 RequireVersion = &quot;EN&quot;，则提供英文版本账单。</span>
+<span class="sd">        - **Version** (str) - 文件版本，若为&quot;v1&quot;表示获取带有子用户信息的账单，可以为空</span>
 
 <span class="sd">        **Response**</span>
 
@@ -99,7 +101,122 @@
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetBillDataFileUrlRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetBillDataFileUrl&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetBillDataFileUrlResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetBillDataFileUrlResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UBillClient.list_u_bill_detail"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ubill.client.UBillClient.list_u_bill_detail">[docs]</a>    <span class="k">def</span> <span class="nf">list_u_bill_detail</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;ListUBillDetail - 获取某个账期内的所有消费。</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **BillingCycle** (str) - (Required) 账期，YYYY-MM，比如2021-08，只支持2018-05之后的查询</span>
+<span class="sd">        - **ChargeType** (str) - 计费方式 (筛选项, 默认全部)</span>
+<span class="sd">        - **Limit** (int) - 每页数量，默认值25，最大值：100。</span>
+<span class="sd">        - **Offset** (int) - 数据偏移量 (默认0)</span>
+<span class="sd">        - **OrderType** (str) - 订单类型 (筛选项, 默认全部)</span>
+<span class="sd">        - **PaidState** (int) - 支付状态 (筛选项, 1:仅显示未支付订单; 2:仅显示已支付订单; 0:两者都显示)</span>
+<span class="sd">        - **ProjectName** (str) - 项目名称 (筛选项, 默认全部)</span>
+<span class="sd">        - **ResourceIds** (list) - 资源ID(筛选项, 默认全部)	支持多筛选，多筛选请在请求参数中添加多个字段例ResourceIds.0: uhost-bzgf1gh5，ResourceIds.1: uhost-gu1xpspa，</span>
+<span class="sd">        - **ResourceTypes** (list) - 产品类型 (筛选项, 默认全部),支持多筛选，多筛选请在请求参数中添加多个字段例ResourceTypes.0: uhost，ResourceTypes.1: udisk，ResourceTypes.2: udb，</span>
+<span class="sd">        - **ShowZero** (int) - 是否显示0元订单 (0 不显示, 1 显示, 默认0)</span>
+<span class="sd">        - **UserEmail** (str) - 用户邮箱，可以根据用户邮箱来进行筛选</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **Items** (list) - 见 **BillDetailItem** 模型定义</span>
+<span class="sd">        - **TotalCount** (int) - 账单明细总长度</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **ResourceExtendInfo**</span>
+<span class="sd">        - **KeyId** (str) - 资源标识健</span>
+<span class="sd">        - **Value** (str) - 资源标识值</span>
+
+
+<span class="sd">        **ItemDetail**</span>
+<span class="sd">        - **ProductName** (str) - 产品小类名称</span>
+<span class="sd">        - **Value** (str) - 产品小类规格</span>
+
+
+<span class="sd">        **BillDetailItem**</span>
+<span class="sd">        - **Admin** (int) - 是否为主账号</span>
+<span class="sd">        - **Amount** (str) - 订单总金额</span>
+<span class="sd">        - **AmountCoupon** (str) - 代金券抵扣</span>
+<span class="sd">        - **AmountFree** (str) - 赠送金额抵扣</span>
+<span class="sd">        - **AmountReal** (str) - 现金账户支付</span>
+<span class="sd">        - **AzGroupCName** (str) - 可用区</span>
+<span class="sd">        - **ChargeType** (str) - 计费方式</span>
+<span class="sd">        - **CreateTime** (int) - 创建时间（时间戳）</span>
+<span class="sd">        - **ItemDetails** (list) - 见 **ItemDetail** 模型定义</span>
+<span class="sd">        - **OrderNo** (str) - 订单号</span>
+<span class="sd">        - **OrderType** (str) - 订单类型</span>
+<span class="sd">        - **ProjectName** (str) - 项目名称</span>
+<span class="sd">        - **ResourceExtendInfo** (list) - 见 **ResourceExtendInfo** 模型定义</span>
+<span class="sd">        - **ResourceId** (str) - 资源ID</span>
+<span class="sd">        - **ResourceType** (str) - 产品类型</span>
+<span class="sd">        - **ResourceTypeCode** (int) - 产品类型代码</span>
+<span class="sd">        - **ShowHover** (int) - 订单支付状态</span>
+<span class="sd">        - **StartTime** (int) - 开始时间（时间戳）</span>
+<span class="sd">        - **UserDisplayName** (str) - 账户昵称</span>
+<span class="sd">        - **UserEmail** (str) - 账户邮箱</span>
+<span class="sd">        - **UserName** (str) - 账户名</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ListUBillDetailRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ListUBillDetail&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ListUBillDetailResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UBillClient.list_u_bill_overview"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ubill.client.UBillClient.list_u_bill_overview">[docs]</a>    <span class="k">def</span> <span class="nf">list_u_bill_overview</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;ListUBillOverview - 账单总览。可按产品/项目/用户纬度获取某个账期内账单总览信息。</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **BillingCycle** (str) - (Required) 账期，YYYY-MM格式，例如2022-02，只支持2018-05之后的查询</span>
+<span class="sd">        - **Dimension** (str) - (Required) 账单维度, product 按产品聚合,project 按项目聚合，user 按子账号聚合</span>
+<span class="sd">        - **HideUnpaid** (int) - 是否显示已入账账单, 1 已入账, 0 待入账 (默认0 )</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **Items** (list) - 见 **BillOverviewItem** 模型定义</span>
+<span class="sd">        - **TotalCount** (int) - 账单总览数据总数</span>
+<span class="sd">        - **TotalPaidAmount** (str) - 已入账订单总额（已入账时显示）</span>
+<span class="sd">        - **TotalPaidAmountReal** (str) - 现金账户扣款总额	（已入账时显示）</span>
+<span class="sd">        - **TotalUnpaidAmount** (str) - 待入账订单总额（待入账时显示）</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **BillOverviewItem**</span>
+<span class="sd">        - **Admin** (int) - 该账户是否为主账号，1 主账号，0 子账号（账单维度按子账号筛选时显示）</span>
+<span class="sd">        - **Amount** (str) - 订单总金额</span>
+<span class="sd">        - **AmountCoupon** (str) - 代金券抵扣（已入账时显示）</span>
+<span class="sd">        - **AmountFree** (str) - 赠送金额抵扣（已入账时显示）</span>
+<span class="sd">        - **AmountReal** (str) - 现金账户支付（已入账时显示）</span>
+<span class="sd">        - **Dimension** (str) - 账单维度, product 按产品维度聚合,project 按项目维度聚合，user 按子账号维度聚合</span>
+<span class="sd">        - **ProductCategory** (str) - 产品分类	（账单维度按产品筛选时显示）</span>
+<span class="sd">        - **ProjectName** (str) - 项目名称（账单维度按项目筛选时显示）</span>
+<span class="sd">        - **ResourceType** (str) - 产品类型	（账单维度按产品筛选时显示）</span>
+<span class="sd">        - **ResourceTypeCode** (int) - 产品类型代码（账单维度按产品筛选时显示）</span>
+<span class="sd">        - **UserDisplayName** (str) - 账户昵称（账单维度按子账号筛选时显示）</span>
+<span class="sd">        - **UserEmail** (str) - 账户邮箱（账单维度按子账号筛选时显示）</span>
+<span class="sd">        - **UserName** (str) - 账户名   （账单维度按子账号筛选时显示）</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ListUBillOverviewRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ListUBillOverview&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ListUBillOverviewResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -163,7 +280,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

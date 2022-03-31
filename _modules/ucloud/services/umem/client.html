@@ -380,6 +380,43 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DeleteURedisGroup&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteURedisGroupResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="UMemClient.describe_ud_redis_proxy_info"><a class="viewcode-back" href="../../../../services.html#ucloud.services.umem.client.UMemClient.describe_ud_redis_proxy_info">[docs]</a>    <span class="k">def</span> <span class="nf">describe_ud_redis_proxy_info</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DescribeUDRedisProxyInfo - 拉取udredis所有的代理信息</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **SpaceId** (str) - (Required) udredis实例id</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **DataSet** (list) - 见 **UDRedisProxyInfo** 模型定义</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **UDRedisProxyInfo**</span>
+<span class="sd">        - **ProxyId** (str) - 代理id</span>
+<span class="sd">        - **ResourceId** (str) - 代理资源id</span>
+<span class="sd">        - **State** (str) - 代理状态</span>
+<span class="sd">        - **Vip** (str) - 代理ip</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeUDRedisProxyInfoRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeUDRedisProxyInfo&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeUDRedisProxyInfoResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="UMemClient.describe_ud_redis_slowlog"><a class="viewcode-back" href="../../../../services.html#ucloud.services.umem.client.UMemClient.describe_ud_redis_slowlog">[docs]</a>    <span class="k">def</span> <span class="nf">describe_ud_redis_slowlog</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -1660,7 +1697,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

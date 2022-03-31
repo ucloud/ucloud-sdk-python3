@@ -1070,13 +1070,13 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **BeginTime** (int) - (Required) 查询的日志开始的时间戳（Unix Timestamp）。对于实时查询，这个参数应该是上次轮询请求时的时间戳，后台会返回从该值到当前时间的日志内容。</span>
 <span class="sd">        - **DBId** (str) - (Required) 实例ID</span>
 <span class="sd">        - **EndTime** (int) - (Required) 查询日志的结束时间戳(Unix Timestamp），对于实时查询不传该值，与BeginTime的差值不超过24小时：(EndTime-BeginTime) &lt; 24*60*60</span>
-<span class="sd">        - **LogType** (str) - (Required) 查询日志的类型</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **LogType** (str) - (Required) 查询日志的类型error：错误日志；slow：慢日志</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 
 <span class="sd">        **Response**</span>
 
@@ -1203,18 +1203,21 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **BackupId** (int) - (Required) DB实例备份ID</span>
 <span class="sd">        - **DBId** (str) - (Required) DB实例Id</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 
 <span class="sd">        **Response**</span>
 
-<span class="sd">        - **BackupPath** (str) - DB实例备份文件的地址</span>
+<span class="sd">        - **BackupPath** (str) - 备份外网URL</span>
+<span class="sd">        - **UsernetPath** (str) - 备份用户网URL</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
             <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
@@ -1548,6 +1551,41 @@
             <span class="n">resp</span>
         <span class="p">)</span></div>
 
+<div class="viewcode-block" id="UDBClient.get_udb_client_conn_num"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udb.client.UDBClient.get_udb_client_conn_num">[docs]</a>    <span class="k">def</span> <span class="nf">get_udb_client_conn_num</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;GetUDBClientConnNum - 输入一个DBID，能够获取客户端来源IP以及对应的连接数</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **DBId** (str) - (Required) DB实例id</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **DataSet** (list) - 见 **ConnNumMap** 模型定义</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **ConnNumMap**</span>
+<span class="sd">        - **Ip** (str) - 客户端IP</span>
+<span class="sd">        - **Num** (int) - 该Ip连接数</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetUDBClientConnNumRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetUDBClientConnNum&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetUDBClientConnNumResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="UDBClient.modify_udb_instance_name"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udb.client.UDBClient.modify_udb_instance_name">[docs]</a>    <span class="k">def</span> <span class="nf">modify_udb_instance_name</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -1608,7 +1646,7 @@
 <div class="viewcode-block" id="UDBClient.promote_udb_instance_to_ha"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udb.client.UDBClient.promote_udb_instance_to_ha">[docs]</a>    <span class="k">def</span> <span class="nf">promote_udb_instance_to_ha</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;PromoteUDBInstanceToHA - 普通db升级为高可用(只针对mysql5.5及以上版本)</span>
+        <span class="sd">&quot;&quot;&quot;PromoteUDBInstanceToHA - 普通db升级为高可用(只针对mysql5.5及以上版本SSD机型的实例)  ，对于NVMe机型的单点升级高可用，虽然也能使用该操作再加上SwitchUDBInstanceToHA，但是更建议直接调用新的API接口（UpgradeUDBInstanceToHA）</span>
 
 <span class="sd">        **Request**</span>
 
@@ -1834,14 +1872,15 @@
 <div class="viewcode-block" id="UDBClient.switch_udb_ha_to_sentinel"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udb.client.UDBClient.switch_udb_ha_to_sentinel">[docs]</a>    <span class="k">def</span> <span class="nf">switch_udb_ha_to_sentinel</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;SwitchUDBHAToSentinel - UDB高可用实例从HAProxy版本升级为Sentinel版本（不带HAProxy）升级耗时30-70秒</span>
+        <span class="sd">&quot;&quot;&quot;SwitchUDBHAToSentinel - UDB高可用实例从HAProxy版本升级为Sentinel版本（不带HAProxy）升级耗时5-10秒</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **DBId** (str) - (Required) UDB的实例ID</span>
-<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **ForceSwitch** (bool) - 是否跳过预检查强制升级。</span>
 
 <span class="sd">        **Response**</span>
 
@@ -1861,13 +1900,16 @@
 <div class="viewcode-block" id="UDBClient.switch_udb_instance_to_ha"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udb.client.UDBClient.switch_udb_instance_to_ha">[docs]</a>    <span class="k">def</span> <span class="nf">switch_udb_instance_to_ha</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;SwitchUDBInstanceToHA - 普通UDB切换为高可用，原db状态为WaitForSwitch时，调用改api</span>
+        <span class="sd">&quot;&quot;&quot;SwitchUDBInstanceToHA - 普通UDB切换为高可用(只针对mysql5.5及以上版本SSD机型的实例) ，原db状态为WaitForSwitch时，调用该api； 对于NVMe机型的单点升级高可用，虽然也能使用PromoteUDBInstanceToHA再加上该操作，但是更建议直接调用新的API接口（UpgradeUDBInstanceToHA）</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **DBId** (str) - (Required) 实例的Id,该值可以通过DescribeUDBInstance获取</span>
+<span class="sd">        - **ChargeType** (str) - Year， Month， Dynamic，Trial，不填则按现在单点计费执行</span>
+<span class="sd">        - **Quantity** (str) - 购买时长，需要和 ChargeType 搭配使用，否则使用单点计费策略的值</span>
+<span class="sd">        - **Tag** (str) - 业务组</span>
 
 <span class="sd">        **Response**</span>
 
@@ -1979,6 +2021,33 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;UpdateUDBParamGroup&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">UpdateUDBParamGroupResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="UDBClient.upgrade_udb_instance_to_ha"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udb.client.UDBClient.upgrade_udb_instance_to_ha">[docs]</a>    <span class="k">def</span> <span class="nf">upgrade_udb_instance_to_ha</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;UpgradeUDBInstanceToHA - 快杰普通db升级为高可用(只针对mysql5.5及以上版本Nvme机型的实例)</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **DBId** (str) - (Required) 实例的Id,该值可以通过DescribeUDBInstance获取</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">UpgradeUDBInstanceToHARequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;UpgradeUDBInstanceToHA&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">UpgradeUDBInstanceToHAResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="UDBClient.upload_udb_param_group"><a class="viewcode-back" href="../../../../services.html#ucloud.services.udb.client.UDBClient.upload_udb_param_group">[docs]</a>    <span class="k">def</span> <span class="nf">upload_udb_param_group</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -2073,7 +2142,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

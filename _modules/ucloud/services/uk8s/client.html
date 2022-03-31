@@ -86,6 +86,51 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;AddUK8SExistingUHost&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">AddUK8SExistingUHostResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="UK8SClient.add_uk8s_node_group"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uk8s.client.UK8SClient.add_uk8s_node_group">[docs]</a>    <span class="k">def</span> <span class="nf">add_uk8s_node_group</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;AddUK8SNodeGroup - 添加UK8S节点池</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **ClusterId** (str) - (Required) 集群ID</span>
+<span class="sd">        - **NodeGroupName** (str) - (Required) 节点池名字</span>
+<span class="sd">        - **BootDiskType** (str) - 磁盘类型</span>
+<span class="sd">        - **CPU** (int) - GPU卡核心数。仅GPU机型支持此字段（可选范围与MachineType+GpuType相关）</span>
+<span class="sd">        - **ChargeType** (str) - 计费模式</span>
+<span class="sd">        - **DataDiskSize** (int) - 数据磁盘大小</span>
+<span class="sd">        - **DataDiskType** (str) - 磁盘类型</span>
+<span class="sd">        - **GPU** (int) - GPU卡核心数</span>
+<span class="sd">        - **GpuType** (str) - GPU类型</span>
+<span class="sd">        - **ImageId** (str) - 镜像ID</span>
+<span class="sd">        - **MachineType** (str) - 云主机机型。枚举值[&quot;N&quot;, &quot;C&quot;, &quot;G&quot;, &quot;O&quot;, &quot;OS&quot;]。参考 `云主机机型说明 &lt;https://docs.ucloud.cn/api/uhost-api/uhost_type&gt;`_ 。</span>
+<span class="sd">        - **Mem** (int) - 内存大小。单位：MB</span>
+<span class="sd">        - **MinimalCpuPlatform** (str) - 最低cpu平台，枚举值[&quot;Intel/Auto&quot;, &quot;Intel/IvyBridge&quot;, &quot;Intel/Haswell&quot;, &quot;Intel/Broadwell&quot;, &quot;Intel/Skylake&quot;, &quot;Intel/Cascadelake&quot;；&quot;Intel/CascadelakeR&quot;; “Amd/Epyc2”,&quot;Amd/Auto&quot;],默认值是&quot;Intel/Auto&quot;</span>
+<span class="sd">        - **Tag** (str) - 业务组</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息。</span>
+<span class="sd">        - **NodeGroupId** (str) - 节点池ID</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">AddUK8SNodeGroupRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># build options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;AddUK8SNodeGroup&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">AddUK8SNodeGroupResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="UK8SClient.add_uk8s_phost_node"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uk8s.client.UK8SClient.add_uk8s_phost_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_uk8s_phost_node</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -317,6 +362,90 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DelUK8SClusterNodeV2&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DelUK8SClusterNodeV2ResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="UK8SClient.describe_uk8s_cluster"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uk8s.client.UK8SClient.describe_uk8s_cluster">[docs]</a>    <span class="k">def</span> <span class="nf">describe_uk8s_cluster</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DescribeUK8SCluster - 获取集群信息</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目id</span>
+<span class="sd">        - **Region** (str) - (Config) 所属区域</span>
+<span class="sd">        - **ClusterId** (str) - (Required) k8s集群ID</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **ApiServer** (str) - 集群apiserver地址</span>
+<span class="sd">        - **CACert** (str) - 集群CA根证书</span>
+<span class="sd">        - **ClusterDomain** (str) - 自定义或者默认的clusterdomain</span>
+<span class="sd">        - **ClusterId** (str) - 集群ID</span>
+<span class="sd">        - **ClusterName** (str) - 资源名字</span>
+<span class="sd">        - **CreateTime** (int) - 创建时间</span>
+<span class="sd">        - **EtcdCert** (str) - 集群etcd服务证书</span>
+<span class="sd">        - **EtcdKey** (str) - 集群etcd服务密钥</span>
+<span class="sd">        - **ExternalApiServer** (str) - 集群外部apiserver地址</span>
+<span class="sd">        - **KubeProxy** (dict) - kube-proxy配置</span>
+<span class="sd">        - **MasterCount** (int) - Master 节点数量</span>
+<span class="sd">        - **MasterList** (list) - 见 **UhostInfo** 模型定义</span>
+<span class="sd">        - **NodeCount** (int) - Node节点数量</span>
+<span class="sd">        - **NodeList** (list) - 见 **UhostInfo** 模型定义</span>
+<span class="sd">        - **PodCIDR** (str) - Pod网段</span>
+<span class="sd">        - **ServiceCIDR** (str) - 服务网段</span>
+<span class="sd">        - **Status** (str) - 状态</span>
+<span class="sd">        - **SubnetId** (str) - 所属子网</span>
+<span class="sd">        - **VPCId** (str) - 所属VPC</span>
+<span class="sd">        - **Version** (str) - K8S版本</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **UhostInfo**</span>
+<span class="sd">        - **CPU** (int) - Cpu数量</span>
+<span class="sd">        - **CreateTime** (int) - 创建时间</span>
+<span class="sd">        - **DiskSet** (list) - 见 **DiskSet** 模型定义</span>
+<span class="sd">        - **ExpireTime** (int) - 到期时间</span>
+<span class="sd">        - **IPSet** (list) - 见 **IPSet** 模型定义</span>
+<span class="sd">        - **Memory** (int) - 内存</span>
+<span class="sd">        - **Name** (str) - 主机名称</span>
+<span class="sd">        - **NodeId** (str) - 主机ID</span>
+<span class="sd">        - **NodeType** (str) - 节点类型：uhost表示云主机;uphost表示物理云主机</span>
+<span class="sd">        - **OsName** (str) - 镜像信息</span>
+<span class="sd">        - **State** (str) - 主机状态</span>
+<span class="sd">        - **Zone** (str) - 所在机房</span>
+
+
+<span class="sd">        **DiskSet**</span>
+<span class="sd">        - **BackupType** (str) - 备份方案，枚举类型：BASIC_SNAPSHOT,普通快照；DATAARK,方舟。无快照则不返回该字段。</span>
+<span class="sd">        - **DiskId** (str) - 磁盘长ID</span>
+<span class="sd">        - **DiskType** (str) - LOCAL_NOMAL| CLOUD_NORMAL| LOCAL_SSD| CLOUD_SSD|EXCLUSIVE_LOCAL_DISK</span>
+<span class="sd">        - **Drive** (str) - 磁盘盘符</span>
+<span class="sd">        - **Encrypted** (str) - Yes: 加密 No: 非加密</span>
+<span class="sd">        - **IOPS** (int) - 当前主机的IOPS值</span>
+<span class="sd">        - **IsBoot** (str) - True| False</span>
+<span class="sd">        - **Name** (str) - UDisk名字（仅当磁盘是UDisk时返回）</span>
+<span class="sd">        - **Size** (int) - 磁盘大小，单位: GB</span>
+<span class="sd">        - **Type** (str) - 磁盘类型。系统盘: Boot，数据盘: Data,网络盘：Udisk</span>
+
+
+<span class="sd">        **IPSet**</span>
+<span class="sd">        - **Bandwidth** (int) - IP对应的带宽, 单位: Mb (内网IP不显示带宽信息)</span>
+<span class="sd">        - **Default** (str) - 是否默认的弹性网卡的信息。true: 是默认弹性网卡；其他值：不是。</span>
+<span class="sd">        - **IP** (str) - IP地址</span>
+<span class="sd">        - **IPId** (str) - IP资源ID (内网IP无对应的资源ID)</span>
+<span class="sd">        - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeUK8SClusterRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeUK8SCluster&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeUK8SClusterResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="UK8SClient.describe_uk8s_image"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uk8s.client.UK8SClient.describe_uk8s_image">[docs]</a>    <span class="k">def</span> <span class="nf">describe_uk8s_image</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -538,7 +667,83 @@
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ListUK8SClusterV2RequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ListUK8SClusterV2&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ListUK8SClusterV2ResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ListUK8SClusterV2ResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UK8SClient.list_uk8s_node_group"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uk8s.client.UK8SClient.list_uk8s_node_group">[docs]</a>    <span class="k">def</span> <span class="nf">list_uk8s_node_group</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;ListUK8SNodeGroup - 列出UK8S节点池</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **ClusterId** (str) - (Required) 集群ID</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **NodeGroupList** (list) - 见 **NodeGroupSet** 模型定义</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **NodeGroupSet**</span>
+<span class="sd">        - **BootDiskType** (str) - 系统盘类型</span>
+<span class="sd">        - **CPU** (int) - 虚拟CPU核数</span>
+<span class="sd">        - **ChargeType** (str) - 付费方式</span>
+<span class="sd">        - **DataDiskSize** (int) - 数据盘大小</span>
+<span class="sd">        - **DataDiskType** (str) - 数据盘类型</span>
+<span class="sd">        - **GPU** (int) - GPU卡核心数</span>
+<span class="sd">        - **GpuType** (str) - GPU类型</span>
+<span class="sd">        - **ImageId** (str) - 镜像ID</span>
+<span class="sd">        - **MachineType** (str) - 机型</span>
+<span class="sd">        - **Mem** (int) - 内存大小</span>
+<span class="sd">        - **MinimalCpuPlatform** (str) - cpu平台</span>
+<span class="sd">        - **NodeGroupId** (str) - 节点池ID</span>
+<span class="sd">        - **NodeGroupName** (str) - 节点池名字</span>
+<span class="sd">        - **NodeList** (list) - 节点id列表</span>
+<span class="sd">        - **Tag** (str) - 业务组</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ListUK8SNodeGroupRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ListUK8SNodeGroup&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ListUK8SNodeGroupResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UK8SClient.remove_uk8s_node_group"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uk8s.client.UK8SClient.remove_uk8s_node_group">[docs]</a>    <span class="k">def</span> <span class="nf">remove_uk8s_node_group</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;RemoveUK8SNodeGroup - 删除UK8S节点池</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **ClusterId** (str) - (Required) 集群id</span>
+<span class="sd">        - **NodeGroupId** (str) - (Required) 节点池Id</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">RemoveUK8SNodeGroupRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;RemoveUK8SNodeGroup&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">RemoveUK8SNodeGroupResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -602,7 +807,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

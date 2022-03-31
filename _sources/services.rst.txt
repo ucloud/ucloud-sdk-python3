@@ -94,10 +94,31 @@ Cube
    :members:
 
 
+IAM
+---
+
+.. autoclass:: ucloud.services.iam.client.IAMClient
+   :members:
+
+
 IPSecVPN
 --------
 
 .. autoclass:: ucloud.services.ipsecvpn.client.IPSecVPNClient
+   :members:
+
+
+ISMS
+----
+
+.. autoclass:: ucloud.services.isms.client.ISMSClient
+   :members:
+
+
+TiDB
+----
+
+.. autoclass:: ucloud.services.tidb.client.TiDBClient
    :members:
 
 
@@ -154,6 +175,27 @@ UK8S
 ----
 
 .. autoclass:: ucloud.services.uk8s.client.UK8SClient
+   :members:
+
+
+UNVS
+----
+
+.. autoclass:: ucloud.services.unvs.client.UNVSClient
+   :members:
+
+
+UTSDB
+-----
+
+.. autoclass:: ucloud.services.utsdb.client.UTSDBClient
+   :members:
+
+
+UVMS
+----
+
+.. autoclass:: ucloud.services.uvms.client.UVMSClient
    :members:
 
 

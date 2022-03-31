@@ -129,7 +129,7 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
 <span class="sd">        - **ImageName** (str) - (Required) 镜像名称</span>
 <span class="sd">        - **RepoName** (str) - (Required) 镜像仓库名称</span>
 <span class="sd">        - **Limit** (int) - 每次获取数量，默认为20</span>
@@ -144,9 +144,10 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **TagSet**</span>
-
+<span class="sd">        - **Digest** (str) - 镜像digest值</span>
 <span class="sd">        - **TagName** (str) - Tag名称</span>
 <span class="sd">        - **UpdateTime** (str) - 镜像更新时间</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -177,13 +178,13 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **RepoSet**</span>
-
 <span class="sd">        - **CreateTime** (str) - 仓库创建时间</span>
 <span class="sd">        - **Description** (str) - 镜像仓库描述</span>
 <span class="sd">        - **IsOutSide** (str) - 镜像仓库是否外网可以访问，可以为ture,不可以为false</span>
 <span class="sd">        - **IsShared** (str) - 镜像仓库类型,false为私有；true为公有</span>
 <span class="sd">        - **RepoName** (str) - 镜像仓库名称</span>
 <span class="sd">        - **UpdateTime** (str) - 仓库更新时间</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -216,13 +217,13 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **ImageSet**</span>
-
 <span class="sd">        - **CreateTime** (str) - 创建时间</span>
 <span class="sd">        - **ImageName** (str) - 镜像名称</span>
 <span class="sd">        - **LatestTag** (str) - 最新push的Tag</span>
 <span class="sd">        - **PullCount** (int) - 镜像被下载次数</span>
 <span class="sd">        - **RepoName** (str) - 镜像仓库名称</span>
 <span class="sd">        - **UpdateTime** (str) - 修改时间</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -322,7 +323,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

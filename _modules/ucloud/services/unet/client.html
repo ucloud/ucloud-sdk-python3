@@ -55,7 +55,7 @@
 <span class="sd">        - **Region** (str) - (Config) 地域。</span>
 <span class="sd">        - **Bandwidth** (int) - (Required) 弹性IP的外网带宽, 单位为Mbps. 共享带宽模式必须指定0M带宽, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-10000]</span>
 <span class="sd">        - **OperatorName** (str) - (Required) 弹性IP线路，枚举值：国际线路， International；BGP线路：Bgp。使用BGP线路的地域：北京二、上海金融云、上海二、广州等，其他地域均使用国际线路。</span>
-<span class="sd">        - **ChargeType** (str) - 付费方式, 枚举值为: Year, 按年付费; Month, 按月付费; Dynamic, 按需付费(需开启权限); Trial, 试用(需开启权限) 默认为按月付费</span>
+<span class="sd">        - **ChargeType** (str) - 付费方式, 枚举值为: Year, 按年付费; Month, 按月付费; Dynamic, 按时付费，默认为按月付费。</span>
 <span class="sd">        - **CouponId** (str) - 代金券ID, 默认不使用</span>
 <span class="sd">        - **Name** (str) - 弹性IP的名称, 默认为 &quot;EIP&quot;</span>
 <span class="sd">        - **PayMode** (str) - 弹性IP的计费模式. 枚举值: &quot;Traffic&quot;, 流量计费; &quot;Bandwidth&quot;, 带宽计费; &quot;ShareBandwidth&quot;,共享带宽模式. 默认为 &quot;Bandwidth&quot;.“PostAccurateBandwidth”：带宽后付费模式</span>
@@ -103,7 +103,7 @@
 <span class="sd">        **Request**</span>
 
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **ChargeType** (str) - (Required) 付费方式:Year 按年,Month 按月,Dynamic 按时;</span>
 <span class="sd">        - **Name** (str) - (Required) 共享带宽名字</span>
 <span class="sd">        - **ShareBandwidth** (int) - (Required) 共享带宽值</span>
@@ -128,51 +128,6 @@
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;AllocateShareBandwidth&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">AllocateShareBandwidthResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="UNetClient.allocate_vip"><a class="viewcode-back" href="../../../../services.html#ucloud.services.unet.client.UNetClient.allocate_vip">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_vip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;AllocateVIP -</span>
-
-<span class="sd">        **Request**</span>
-
-<span class="sd">        - **ProjectId** (str) - (Config)</span>
-<span class="sd">        - **Region** (str) - (Config)</span>
-<span class="sd">        - **SubnetId** (str) - (Required)</span>
-<span class="sd">        - **VPCId** (str) - (Required)</span>
-<span class="sd">        - **BusinessId** (str) -</span>
-<span class="sd">        - **Count** (int) -</span>
-<span class="sd">        - **Ip** (str) -</span>
-<span class="sd">        - **Name** (str) -</span>
-<span class="sd">        - **Remark** (str) -</span>
-<span class="sd">        - **Tag** (str) -</span>
-<span class="sd">        - **Zone** (str) -</span>
-
-<span class="sd">        **Response**</span>
-
-<span class="sd">        - **DataSet** (list) -</span>
-<span class="sd">        - **VIPSet** (list) - 见 **VIPSet** 模型定义</span>
-
-<span class="sd">        **Response Model**</span>
-
-<span class="sd">        **VIPSet**</span>
-<span class="sd">        - **VIP** (str) -</span>
-<span class="sd">        - **VIPId** (str) -</span>
-<span class="sd">        - **VPCId** (str) -</span>
-
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
-            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
-        <span class="p">}</span>
-        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">AllocateVIPRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-
-        <span class="c1"># build options</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
-
-        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;AllocateVIP&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">AllocateVIPResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UNetClient.associate_eip_with_share_bandwidth"><a class="viewcode-back" href="../../../../services.html#ucloud.services.unet.client.UNetClient.associate_eip_with_share_bandwidth">[docs]</a>    <span class="k">def</span> <span class="nf">associate_eip_with_share_bandwidth</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -516,12 +471,12 @@
 <span class="sd">        - **Limit** (int) - 返回数据长度，默认为20，最大10000000</span>
 <span class="sd">        - **Offset** (int) - 列表起始位置偏移量，默认为0</span>
 <span class="sd">        - **ResourceId** (str) - 绑定防火墙组的资源ID</span>
-<span class="sd">        - **ResourceType** (str) - 绑定防火墙组的资源类型，默认为全部资源类型。枚举值为：&quot;unatgw&quot;，NAT网关； &quot;uhost&quot;，云主机； &quot;upm&quot;，物理云主机； &quot;hadoophost&quot;，hadoop节点； &quot;fortresshost&quot;，堡垒机； &quot;udhost&quot;，私有专区主机；&quot;udockhost&quot;，容器；&quot;dbaudit&quot;，数据库审计.</span>
+<span class="sd">        - **ResourceType** (str) - 绑定防火墙组的资源类型，默认为全部资源类型。枚举值为：&quot;unatgw&quot;，NAT网关； &quot;uhost&quot;，云主机；“uni”，虚拟网卡； &quot;upm&quot;，物理云主机； &quot;hadoophost&quot;，hadoop节点； &quot;fortresshost&quot;，堡垒机； &quot;udhost&quot;，私有专区主机；&quot;udockhost&quot;，容器；&quot;dbaudit&quot;，数据库审计.</span>
 
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **DataSet** (list) - 见 **FirewallDataSet** 模型定义</span>
-<span class="sd">        - **TotalCount** (int) -</span>
+<span class="sd">        - **TotalCount** (int) - 防火墙资源数量</span>
 
 <span class="sd">        **Response Model**</span>
 
@@ -565,10 +520,10 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **FWId** (str) - (Required) 防火墙ID</span>
-<span class="sd">        - **Limit** (int) - 返回数据长度，默认为20，最大10000000</span>
+<span class="sd">        - **Limit** (int) - 返回数据长度，默认为20，最大1000</span>
 <span class="sd">        - **Offset** (int) - 列表起始位置偏移量，默认为0</span>
 
 <span class="sd">        **Response**</span>
@@ -583,8 +538,11 @@
 <span class="sd">        - **PrivateIP** (str) - 内网IP</span>
 <span class="sd">        - **Remark** (str) - 备注</span>
 <span class="sd">        - **ResourceID** (str) - 绑定该防火墙的资源id</span>
-<span class="sd">        - **ResourceType** (str) - 绑定防火墙组的资源类型。&quot;unatgw&quot;，NAT网关； &quot;uhost&quot;，云主机； &quot;upm&quot;，物理云主机； &quot;hadoophost&quot;，hadoop节点； &quot;fortresshost&quot;，堡垒机； &quot;udhost&quot;，私有专区主机；&quot;udockhost&quot;，容器；&quot;dbaudit&quot;，数据库审计.</span>
+<span class="sd">        - **ResourceType** (str) - 绑定防火墙组的资源类型。&quot;unatgw&quot;，NAT网关； &quot;uhost&quot;，云主机； &quot;upm&quot;，物理云主机； &quot;hadoophost&quot;，hadoop节点； &quot;fortresshost&quot;，堡垒机； &quot;udhost&quot;，私有专区主机；&quot;udockhost&quot;，容器；&quot;dbaudit&quot;，数据库审计，“uni”，虚拟网卡。</span>
 <span class="sd">        - **Status** (int) - 状态</span>
+<span class="sd">        - **SubResourceId** (str) - 资源绑定的虚拟网卡的ID</span>
+<span class="sd">        - **SubResourceName** (str) - 资源绑定的虚拟网卡的名称</span>
+<span class="sd">        - **SubResourceType** (str) - 资源绑定的虚拟网卡的类型，“uni”，虚拟网卡。</span>
 <span class="sd">        - **Tag** (str) - 业务组</span>
 <span class="sd">        - **Zone** (int) - 可用区</span>
 
@@ -653,37 +611,23 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeShareBandwidth&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeShareBandwidthResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="UNetClient.describe_vip"><a class="viewcode-back" href="../../../../services.html#ucloud.services.unet.client.UNetClient.describe_vip">[docs]</a>    <span class="k">def</span> <span class="nf">describe_vip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;DescribeVIP -</span>
+<div class="viewcode-block" id="UNetClient.describe_share_bandwidth_price"><a class="viewcode-back" href="../../../../services.html#ucloud.services.unet.client.UNetClient.describe_share_bandwidth_price">[docs]</a>    <span class="k">def</span> <span class="nf">describe_share_bandwidth_price</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DescribeShareBandwidthPrice - 获取共享带宽价格</span>
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config)</span>
-<span class="sd">        - **Region** (str) - (Config)</span>
-<span class="sd">        - **BusinessId** (str) -</span>
-<span class="sd">        - **SubnetId** (str) -</span>
-<span class="sd">        - **Tag** (str) -</span>
-<span class="sd">        - **VPCId** (str) -</span>
-<span class="sd">        - **Zone** (str) -</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **ChargeType** (str) - (Required) 付费方式, 预付费:Year 按年,Month 按月,Dynamic 按需;</span>
+<span class="sd">        - **ShareBandwidth** (int) - (Required) 共享带宽值</span>
+<span class="sd">        - **OperatorName** (str) - 香港地域支持：BGPPro和International。其他地域无需填写该字段</span>
+<span class="sd">        - **Quantity** (int) - 购买数量</span>
 
 <span class="sd">        **Response**</span>
 
-<span class="sd">        - **DataSet** (list) -</span>
-<span class="sd">        - **TotalCount** (int) -</span>
-<span class="sd">        - **VIPSet** (list) - 见 **VIPDetailSet** 模型定义</span>
-
-<span class="sd">        **Response Model**</span>
-
-<span class="sd">        **VIPDetailSet**</span>
-<span class="sd">        - **CreateTime** (int) -</span>
-<span class="sd">        - **Name** (str) -</span>
-<span class="sd">        - **RealIp** (str) -</span>
-<span class="sd">        - **SubnetId** (str) -</span>
-<span class="sd">        - **VIP** (str) -</span>
-<span class="sd">        - **VIPId** (str) -</span>
-<span class="sd">        - **VPCId** (str) -</span>
-<span class="sd">        - **Zone** (str) -</span>
-
+<span class="sd">        - **TotalPrice** (int) - 共享带宽总价格</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
@@ -692,13 +636,38 @@
             <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeVIPRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeShareBandwidthPriceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
-        <span class="c1"># build options</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeShareBandwidthPrice&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeShareBandwidthPriceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeVIP&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeVIPResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+<div class="viewcode-block" id="UNetClient.describe_share_bandwidth_update_price"><a class="viewcode-back" href="../../../../services.html#ucloud.services.unet.client.UNetClient.describe_share_bandwidth_update_price">[docs]</a>    <span class="k">def</span> <span class="nf">describe_share_bandwidth_update_price</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DescribeShareBandwidthUpdatePrice - 获取共享带宽升级价格</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **ShareBandwidth** (int) - (Required) 共享带宽值</span>
+<span class="sd">        - **ShareBandwidthId** (str) - (Required) 共享带宽Id</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **Price** (float) - 共享带宽升降级价格</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeShareBandwidthUpdatePriceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeShareBandwidthUpdatePrice&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeShareBandwidthUpdatePriceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span>
+            <span class="n">resp</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="UNetClient.disassociate_eip_with_share_bandwidth"><a class="viewcode-back" href="../../../../services.html#ucloud.services.unet.client.UNetClient.disassociate_eip_with_share_bandwidth">[docs]</a>    <span class="k">def</span> <span class="nf">disassociate_eip_with_share_bandwidth</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -731,6 +700,34 @@
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DisassociateEIPWithShareBandwidthResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span>
             <span class="n">resp</span>
         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="UNetClient.disassociate_firewall"><a class="viewcode-back" href="../../../../services.html#ucloud.services.unet.client.UNetClient.disassociate_firewall">[docs]</a>    <span class="k">def</span> <span class="nf">disassociate_firewall</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DisassociateFirewall - 解绑资源上的防火墙</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **FWId** (str) - (Required) 防火墙ID</span>
+<span class="sd">        - **ResourceId** (str) - (Required) 需要解绑的资源ID</span>
+<span class="sd">        - **ResourceType** (str) - (Required) 资源类型：ULB 表示负载均衡</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DisassociateFirewallRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DisassociateFirewall&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DisassociateFirewallResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UNetClient.get_eip_pay_mode"><a class="viewcode-back" href="../../../../services.html#ucloud.services.unet.client.UNetClient.get_eip_pay_mode">[docs]</a>    <span class="k">def</span> <span class="nf">get_eip_pay_mode</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -834,6 +831,46 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetEIPUpgradePrice&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetEIPUpgradePriceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="UNetClient.get_throughput_daily_billing_info"><a class="viewcode-back" href="../../../../services.html#ucloud.services.unet.client.UNetClient.get_throughput_daily_billing_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_throughput_daily_billing_info</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;GetThroughputDailyBillingInfo - 获取流量计费EIP每日流量计费信息</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **EIPId** (str) - (Required) EIP的资源ID</span>
+<span class="sd">        - **EndTime** (int) - (Required) 查询结束时间时间戳</span>
+<span class="sd">        - **StartTime** (int) - (Required) 查询开始时间时间戳</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **EIPId** (str) - 资源ID</span>
+<span class="sd">        - **Stats** (list) - 见 **ThroughputDailyBillingInfo** 模型定义</span>
+<span class="sd">        - **TotalOut** (int) - 计费总流量</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **ThroughputDailyBillingInfo**</span>
+<span class="sd">        - **BillingState** (str) - 是否已计费，“Yes”或者“No”</span>
+<span class="sd">        - **EndTime** (int) - 计费结束时间</span>
+<span class="sd">        - **QuantityOut** (int) - 计费流量，单位“GB”</span>
+<span class="sd">        - **StartTime** (int) - 计费开始时间</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetThroughputDailyBillingInfoRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetThroughputDailyBillingInfo&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetThroughputDailyBillingInfoResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="UNetClient.grant_firewall"><a class="viewcode-back" href="../../../../services.html#ucloud.services.unet.client.UNetClient.grant_firewall">[docs]</a>    <span class="k">def</span> <span class="nf">grant_firewall</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -841,11 +878,11 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **FWId** (str) - (Required) 防火墙资源ID</span>
 <span class="sd">        - **ResourceId** (str) - (Required) 所应用资源ID</span>
-<span class="sd">        - **ResourceType** (str) - (Required) 绑定防火墙组的资源类型，默认为全部资源类型。枚举值为：&quot;unatgw&quot;，NAT网关； &quot;uhost&quot;，云主机； &quot;upm&quot;，物理云主机； &quot;hadoophost&quot;，hadoop节点； &quot;fortresshost&quot;，堡垒机； &quot;udhost&quot;，私有专区主机；&quot;udockhost&quot;，容器；&quot;dbaudit&quot;，数据库审计.</span>
+<span class="sd">        - **ResourceType** (str) - (Required) 绑定防火墙组的资源类型，默认为全部资源类型。枚举值为：&quot;unatgw&quot;，NAT网关； &quot;uhost&quot;，云主机； &quot;upm&quot;，物理云主机； &quot;hadoophost&quot;，hadoop节点； &quot;fortresshost&quot;，堡垒机； &quot;udhost&quot;，私有专区主机；&quot;udockhost&quot;，容器；&quot;dbaudit&quot;，数据库审计，”uni“，虚拟网卡，“cube”，Cube容器实例。</span>
 
 <span class="sd">        **Response**</span>
 
@@ -968,34 +1005,6 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ReleaseShareBandwidth&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ReleaseShareBandwidthResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="UNetClient.release_vip"><a class="viewcode-back" href="../../../../services.html#ucloud.services.unet.client.UNetClient.release_vip">[docs]</a>    <span class="k">def</span> <span class="nf">release_vip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;ReleaseVIP -</span>
-
-<span class="sd">        **Request**</span>
-
-<span class="sd">        - **ProjectId** (str) - (Config)</span>
-<span class="sd">        - **Region** (str) - (Config)</span>
-<span class="sd">        - **VIPId** (str) - (Required)</span>
-<span class="sd">        - **Zone** (str) -</span>
-
-<span class="sd">        **Response**</span>
-
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
-            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
-        <span class="p">}</span>
-        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ReleaseVIPRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-
-        <span class="c1"># build options</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
-
-        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ReleaseVIP&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ReleaseVIPResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="UNetClient.resize_share_bandwidth"><a class="viewcode-back" href="../../../../services.html#ucloud.services.unet.client.UNetClient.resize_share_bandwidth">[docs]</a>    <span class="k">def</span> <span class="nf">resize_share_bandwidth</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -1003,8 +1012,8 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **ShareBandwidth** (int) - (Required) 带宽值，单位为Mb，范围 [20-5000] (最大值受地域限制)</span>
 <span class="sd">        - **ShareBandwidthId** (str) - (Required) 共享带宽的Id</span>
 
@@ -1264,7 +1273,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

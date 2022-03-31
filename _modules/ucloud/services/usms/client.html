@@ -96,6 +96,7 @@
 <span class="sd">        - **TemplateName** (str) - (Required) 短信模板名称，不超过32个字符，每个中文、符号、英文、数字等都计为1个字。</span>
 <span class="sd">        - **International** (bool) - 标记是否为国际短信。true:国际短信，false:国内短信，若不传值则默认该值为false</span>
 <span class="sd">        - **Remark** (str) - 短信模板申请原因说明，字数不超过128，每个中文、符号、英文、数字等都计为1个字。</span>
+<span class="sd">        - **UnsubscribeInfo** (str) - 当Purpose为3时，也即会员推广类短信模板，该项必填。枚举值：TD退订、回T退订、回N退订、回TD退订、退订回T、退订回D、退订回TD、退订回复T、退订回复D、退订回复N、退订回复TD、拒收回T</span>
 
 <span class="sd">        **Response**</span>
 
@@ -178,7 +179,7 @@
 
 <span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
-<span class="sd">        - **SessionNoSet** (list) - (Required) 发送短信时返回的SessionNo集合，SessionNoSet.0,SessionNoSet.1....格式</span>
+<span class="sd">        - **SessionNoSet** (list) - (Required) 发送短信时返回的SessionNo集合，SessionNoSet.0,SessionNoSet.1....格式，单次调用集合数需控制在100个以内</span>
 <span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 
 <span class="sd">        **Response**</span>
@@ -314,19 +315,19 @@
 
 <span class="sd">        **Response Model**</span>
 
+<span class="sd">        **BatchInfo**</span>
+<span class="sd">        - **FailureDetails** (str) - 未能成功发送的详情。注：模板/签名检验失败时，该字段有效</span>
+<span class="sd">        - **SigContent** (str) - 签名</span>
+<span class="sd">        - **Target** (list) - 见 **FailPhoneDetail** 模型定义</span>
+<span class="sd">        - **TemplateId** (str) - 模板ID</span>
+
+
 <span class="sd">        **FailPhoneDetail**</span>
 <span class="sd">        - **ExtendCode** (str) - 扩展号码</span>
 <span class="sd">        - **FailureDetails** (str) - 发送失败原因。注：若模板/签名校验失败，该字段为空</span>
 <span class="sd">        - **Phone** (str) - 手机号</span>
 <span class="sd">        - **TemplateParams** (list) - 模板参数</span>
 <span class="sd">        - **UserId** (str) - 用户自定义ID</span>
-
-
-<span class="sd">        **BatchInfo**</span>
-<span class="sd">        - **FailureDetails** (str) - 未能成功发送的详情。注：模板/签名检验失败时，该字段有效</span>
-<span class="sd">        - **SigContent** (str) - 签名</span>
-<span class="sd">        - **Target** (list) - 见 **FailPhoneDetail** 模型定义</span>
-<span class="sd">        - **TemplateId** (str) - 模板ID</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -506,7 +507,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

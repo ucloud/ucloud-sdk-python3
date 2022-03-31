@@ -53,37 +53,141 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
-<span class="sd">        - **ImageId** (str) - (Required) 镜像ID。 请通过 [DescribePHostImage]获取</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **ImageId** (str) - (Required) ImageId，可以通过接口  `DescribePHostImage &lt;https://docs.ucloud.cn/api/uphost-api/api/uphost-api/describe_phost_image.html&gt;`_ 获取</span>
 <span class="sd">        - **Password** (str) - (Required) 密码（密码需使用base64进行编码）</span>
-<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
-<span class="sd">        - **ChargeType** (str) - 计费模式，枚举值为：year, 按年付费； month,按月付费；dynamic，按需付费，（需开启权限） trial, 试用（需开启权限）。默认为按月付费</span>
-<span class="sd">        - **Cluster** (str) - 网络环境，可选千兆：1G ，万兆：10G， 默认1G</span>
-<span class="sd">        - **Count** (int) - 购买数量，默认为1，（暂不支持）</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **ChargeType** (str) - 计费模式，枚举值为：year, 按年付费； month,按月付费；默认为按月付费</span>
+<span class="sd">        - **Cluster** (str) - 网络环境，可选千兆：1G ，万兆：10G， 默认1G。智能网卡可以选择25G。</span>
 <span class="sd">        - **CouponId** (str) - 代金券</span>
+<span class="sd">        - **Disks** (list) - 见 **CreatePHostParamDisks** 模型定义</span>
 <span class="sd">        - **Name** (str) - 物理机名称，默认为phost</span>
-<span class="sd">        - **Quantity** (str) - 购买时长，默认为1，范围[1-10]</span>
+<span class="sd">        - **Quantity** (str) - 购买时长，1-10个月或1-10年；默认值为1。月付时，此参数传0，代表购买至月末，1代表整月。</span>
 <span class="sd">        - **Raid** (str) - Raid配置，默认Raid10  支持:Raid0、Raid1、Raid5、Raid10，NoRaid</span>
 <span class="sd">        - **Remark** (str) - 物理机备注，默认为空</span>
-<span class="sd">        - **SecurityGroupId** (str) - 防火墙Id，默认：Web推荐防火墙。如何查询SecurityGroupId请参见  `DescribeSecurityGroup &lt;https://docs.ucloud.cn/api/unet-api/describe_security_group.html&gt;`_</span>
+<span class="sd">        - **SecurityGroupId** (str) - 防火墙ID，默认：Web推荐防火墙。如何查询SecurityGroupId请参见  `DescribeFirewall &lt;https://docs.ucloud.cn/api/uphost-api/api/unet-api/describe_firewall.html&gt;`_ 。</span>
 <span class="sd">        - **SubnetId** (str) - 子网ID，不填为默认，VPC2.0下需要填写此字段。</span>
 <span class="sd">        - **Tag** (str) - 业务组，默认为default</span>
 <span class="sd">        - **Type** (str) - 物理机类型，默认为：db-2(基础型-SAS-V3)</span>
 <span class="sd">        - **VPCId** (str) - VPC ID，不填为默认，VPC2.0下需要填写此字段。</span>
+<span class="sd">        - **VpcIp** (str) - 指定内网ip创建</span>
 
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **PHostId** (list) - PHost的资源ID数组</span>
 
+<span class="sd">        **Request Model**</span>
+
+<span class="sd">        **CreatePHostParamDisks**</span>
+<span class="sd">        - **CouponId** (str) - 裸金属机型参数-&gt;云盘代金券id。不适用于系统盘。请通过DescribeCoupon接口查询，或登录用户中心查看</span>
+<span class="sd">        - **IsBoot** (str) - 裸金属机型参数-&gt;是否是系统盘。枚举值： True，是系统盘。 False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。</span>
+<span class="sd">        - **Size** (int) - 裸金属机型参数-&gt;磁盘大小，单位GB，必须是10GB的整数倍。系统盘20-500GB，数据盘单块盘20-32000GB。</span>
+<span class="sd">        - **Type** (str) - 裸金属机型参数-&gt;磁盘类型：枚举值：CLOUD_RSSD</span>
+
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreatePHostRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
+        <span class="c1"># build options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
+
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;CreatePHost&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreatePHostResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UPHostClient.create_phost_image"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.create_phost_image">[docs]</a>    <span class="k">def</span> <span class="nf">create_phost_image</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;CreatePHostImage - 创建裸金属2.0用户自定义镜像</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **ImageName** (str) - (Required) 镜像名称</span>
+<span class="sd">        - **PHostId** (str) - (Required) UPHost实例ID</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **ImageDescription** (str) - 镜像描述</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **ImageId** (str) - 镜像ID</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreatePHostImageRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># build options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;CreatePHostImage&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">CreatePHostImageResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UPHostClient.describe_baremetal_machine_type"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.describe_baremetal_machine_type">[docs]</a>    <span class="k">def</span> <span class="nf">describe_baremetal_machine_type</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DescribeBaremetalMachineType - 获取裸金属机型的详细描述信息</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **Type** (str) - 具体机型。若不填写，则返回全部机型</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **MachineTypes** (list) - 见 **PHostCloudMachineTypeSet** 模型定义</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **PHostClusterSet**</span>
+<span class="sd">        - **Name** (str) - 集群名。枚举值：千兆网络集群：1G；万兆网络集群：10G；智能网卡网络：25G；</span>
+<span class="sd">        - **StockStatus** (str) - 库存状态。枚举值：有库存：Available；无库存：SoldOut</span>
+
+
+<span class="sd">        **PHostComponentSet**</span>
+<span class="sd">        - **Count** (int) - 组件数量</span>
+<span class="sd">        - **Name** (str) - 组件名称</span>
+
+
+<span class="sd">        **PHostCPUSet**</span>
+<span class="sd">        - **CoreCount** (int) - CPU核数</span>
+<span class="sd">        - **Count** (int) - CPU个数</span>
+<span class="sd">        - **Frequence** (float) - CPU主频</span>
+<span class="sd">        - **Model** (str) - CPU型号</span>
+
+
+<span class="sd">        **PHostCloudMachineTypeSet**</span>
+<span class="sd">        - **CPU** (dict) - 见 **PHostCPUSet** 模型定义</span>
+<span class="sd">        - **Clusters** (list) - 见 **PHostClusterSet** 模型定义</span>
+<span class="sd">        - **Components** (dict) - 见 **PHostComponentSet** 模型定义</span>
+<span class="sd">        - **Memory** (int) - 内存大小，单位MB</span>
+<span class="sd">        - **Type** (str) - 物理云主机机型别名，全网唯一。</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeBaremetalMachineTypeRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeBaremetalMachineType&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeBaremetalMachineTypeResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UPHostClient.describe_phost"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.describe_phost">[docs]</a>    <span class="k">def</span> <span class="nf">describe_phost</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -92,12 +196,14 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **Limit** (int) - 返回数据长度，默认为20</span>
 <span class="sd">        - **Offset** (int) - 数据偏移量，默认为0</span>
 <span class="sd">        - **PHostId** (list) - PHost资源ID，若为空，则返回当前Region所有PHost。</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **UDiskIdForAttachment** (str) - 要挂载的云盘id，过滤返回能被UDiskId挂载的云主机。目前主要针对rssd云盘使用</span>
+<span class="sd">        - **VPCId** (str) - ULB使用参数，获取同VPC下机器信息。</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 
 <span class="sd">        **Response**</span>
 
@@ -106,40 +212,14 @@
 
 <span class="sd">        **Response Model**</span>
 
-<span class="sd">        **PHostCPUSet**</span>
-
-<span class="sd">        - **CoreCount** (int) - CPU核数</span>
-<span class="sd">        - **Count** (int) - CPU个数</span>
-<span class="sd">        - **Frequence** (float) - CPU主频</span>
-<span class="sd">        - **Model** (str) - CPU型号</span>
-
-<span class="sd">        **PHostDiskSet**</span>
-
-<span class="sd">        - **Count** (int) - 磁盘数量</span>
-<span class="sd">        - **IOCap** (int) - 磁盘IO性能，单位MB/s（待废弃）</span>
-<span class="sd">        - **Name** (str) - 磁盘名称，sys/data</span>
-<span class="sd">        - **Space** (int) - 单盘大小，单位GB</span>
-<span class="sd">        - **Type** (str) - 磁盘属性</span>
-
-<span class="sd">        **PHostIPSet**</span>
-
-<span class="sd">        - **Bandwidth** (int) - IP对应带宽，单位Mb，内网IP不显示带宽信息</span>
-<span class="sd">        - **IPAddr** (str) - IP地址，</span>
-<span class="sd">        - **IPId** (str) - IP资源ID(内网IP无资源ID)（待废弃）</span>
-<span class="sd">        - **MACAddr** (str) - MAC地址</span>
-<span class="sd">        - **OperatorName** (str) - 国际: Internation， BGP: BGP， 内网: Private</span>
-<span class="sd">        - **SubnetId** (str) - 子网ID</span>
-<span class="sd">        - **VPCId** (str) - VPC ID</span>
-
 <span class="sd">        **PHostSet**</span>
-
 <span class="sd">        - **AutoRenew** (str) - 自动续费</span>
 <span class="sd">        - **CPUSet** (dict) - 见 **PHostCPUSet** 模型定义</span>
-<span class="sd">        - **ChargeType** (str) - 计费模式，枚举值为： Year，按年付费； Month，按月付费； Dynamic，按需付费（需开启权限）； Trial，试用（需开启权限）默认为月付</span>
+<span class="sd">        - **ChargeType** (str) - 计费模式，枚举值为： Year，按年付费； Month，按月付费；默认为月付</span>
 <span class="sd">        - **Cluster** (str) - 网络环境。枚举值：千兆：1G ，万兆：10G</span>
 <span class="sd">        - **Components** (str) - 组件信息（暂不支持）</span>
 <span class="sd">        - **CreateTime** (int) - 创建时间</span>
-<span class="sd">        - **DiskSet** (list) - 见 **PHostDiskSet** 模型定义</span>
+<span class="sd">        - **DiskSet** (list) - 见 **PHostDescDiskSet** 模型定义</span>
 <span class="sd">        - **ExpireTime** (int) - 到期时间</span>
 <span class="sd">        - **IPSet** (list) - 见 **PHostIPSet** 模型定义</span>
 <span class="sd">        - **ImageName** (str) - 镜像名称</span>
@@ -150,7 +230,8 @@
 <span class="sd">        - **OSname** (str) - 操作系统名称</span>
 <span class="sd">        - **PHostId** (str) - PHost资源ID</span>
 <span class="sd">        - **PHostType** (str) - 物理机类型，参见DescribePHostMachineType返回值</span>
-<span class="sd">        - **PMStatus** (str) - 物理云主机状态。枚举值：\\ &gt; 初始化:Initializing; \\ &gt; 启动中：Starting； \\ &gt; 运行中：Running；\\ &gt; 关机中：Stopping； \\ &gt; 安装失败：InstallFailed； \\ &gt; 重启中：Rebooting；\\ &gt; 关机：Stopped；</span>
+<span class="sd">        - **PMStatus** (str) - 物理云主机状态。枚举值：\\ &gt; 初始化:Initializing; \\ &gt; 启动中：Starting； \\ &gt; 运行中：Running；\\ &gt; 关机中：Stopping； \\ &gt; 安装失败：InstallFailed； \\ &gt; 重启中：Rebooting；\\ &gt; 关机：Stopped； \\ &gt; 迁移中(裸金属云盘)：Migrating</span>
+<span class="sd">        - **PhostClass** (str) - 物理云产品类型，枚举值：LocalDisk=&gt;代表传统本地盘机型， CloudDisk=&gt;云盘裸金属机型</span>
 <span class="sd">        - **PowerState** (str) - 电源状态，on 或 off</span>
 <span class="sd">        - **RaidSupported** (str) - 是否支持Raid。枚举值：Yes：支持；No：不支持。</span>
 <span class="sd">        - **Remark** (str) - 物理机备注</span>
@@ -158,9 +239,49 @@
 <span class="sd">        - **Tag** (str) - 业务组</span>
 <span class="sd">        - **Zone** (str) - 可用区，参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 
+
+<span class="sd">        **PHostCPUSet**</span>
+<span class="sd">        - **CoreCount** (int) - CPU核数</span>
+<span class="sd">        - **Count** (int) - CPU个数</span>
+<span class="sd">        - **Frequence** (float) - CPU主频</span>
+<span class="sd">        - **Model** (str) - CPU型号</span>
+
+
+<span class="sd">        **PHostDiskSet**</span>
+<span class="sd">        - **Count** (int) -</span>
+<span class="sd">        - **IOCap** (int) -</span>
+<span class="sd">        - **Name** (str) -</span>
+<span class="sd">        - **Space** (int) -</span>
+<span class="sd">        - **Type** (str) -</span>
+
+
+<span class="sd">        **PHostIPSet**</span>
+<span class="sd">        - **Bandwidth** (int) - IP对应带宽，单位Mb，内网IP不显示带宽信息</span>
+<span class="sd">        - **IPAddr** (str) - IP地址，</span>
+<span class="sd">        - **IPId** (str) - IP资源ID(内网IP无资源ID)（待废弃）</span>
+<span class="sd">        - **MACAddr** (str) - MAC地址</span>
+<span class="sd">        - **OperatorName** (str) - 国际: Internation， BGP: BGP， 内网: Private</span>
+<span class="sd">        - **SubnetId** (str) - 子网ID</span>
+<span class="sd">        - **VPCId** (str) - VPC ID</span>
+
+
+<span class="sd">        **PHostDescDiskSet**</span>
+<span class="sd">        - **Count** (int) - 磁盘数量</span>
+<span class="sd">        - **DiskId** (str) - 裸金属机型参数：磁盘ID</span>
+<span class="sd">        - **Drive** (str) - 裸金属机型参数：磁盘盘符</span>
+<span class="sd">        - **IOCap** (int) - 磁盘IO性能，单位MB/s（待废弃）</span>
+<span class="sd">        - **IsBoot** (str) - 裸金属机型参数：是否是启动盘。True/False</span>
+<span class="sd">        - **Name** (str) - 磁盘名称，sys/data</span>
+<span class="sd">        - **Space** (int) - 单盘大小，单位GB</span>
+<span class="sd">        - **Type** (str) - 磁盘属性</span>
+
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribePHostRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -174,12 +295,13 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
-<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 <span class="sd">        - **ImageId** (list) - 镜像ID</span>
-<span class="sd">        - **ImageType** (str) - 镜像类别，枚举为：Base,标准镜像；默认为标准镜像。</span>
+<span class="sd">        - **ImageType** (str) - 镜像类别，枚举值，Base是基础镜像；Custom是自制镜像。</span>
 <span class="sd">        - **Limit** (int) - 返回数据长度，默认为20</span>
+<span class="sd">        - **MachineType** (str) - 机器型号，只支持当前zone的展示机型</span>
 <span class="sd">        - **Offset** (int) - 数据偏移量，默认为0</span>
 
 <span class="sd">        **Response**</span>
@@ -190,20 +312,95 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **PHostImageSet**</span>
-
+<span class="sd">        - **CreateTime** (int) - 裸金属2.0参数。镜像创建时间。</span>
+<span class="sd">        - **ImageDescription** (str) - 镜像描述</span>
 <span class="sd">        - **ImageId** (str) - 镜像ID</span>
 <span class="sd">        - **ImageName** (str) - 镜像名称</span>
+<span class="sd">        - **ImageSize** (int) - 裸金属2.0参数。镜像大小。</span>
+<span class="sd">        - **ImageType** (str) - 枚举值：Base=&gt;基础镜像，Custom=&gt;自制镜像。</span>
 <span class="sd">        - **OsName** (str) - 操作系统名称</span>
 <span class="sd">        - **OsType** (str) - 操作系统类型</span>
+<span class="sd">        - **State** (str) - 裸金属2.0参数。镜像当前状态。</span>
+<span class="sd">        - **Support** (list) - 支持的机型</span>
+<span class="sd">        - **Version** (str) - 当前版本</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribePHostImageRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribePHostImage&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribePHostImageResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UPHostClient.describe_phost_machine_type"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.describe_phost_machine_type">[docs]</a>    <span class="k">def</span> <span class="nf">describe_phost_machine_type</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DescribePHostMachineType - 获取物理云机型的详细描述信息</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **Type** (str) - 具体机型。若不填写，则返回全部机型</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **MachineTypes** (list) - 见 **PHostMachineTypeSet** 模型定义</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **PHostClusterSet**</span>
+<span class="sd">        - **Name** (str) - 集群名。枚举值：千兆网络集群：1G；万兆网络集群：10G；智能网卡网络：25G；</span>
+<span class="sd">        - **StockStatus** (str) - 库存状态。枚举值：有库存：Available；无库存：SoldOut</span>
+
+
+<span class="sd">        **PHostComponentSet**</span>
+<span class="sd">        - **Count** (int) - 组件数量</span>
+<span class="sd">        - **Name** (str) - 组件名称</span>
+
+
+<span class="sd">        **PHostDiskSet**</span>
+<span class="sd">        - **Count** (int) - 磁盘数量</span>
+<span class="sd">        - **IOCap** (int) - 磁盘IO性能，单位MB/s（待废弃）</span>
+<span class="sd">        - **Name** (str) - 磁盘名称，sys/data</span>
+<span class="sd">        - **Space** (int) - 单盘大小，单位GB</span>
+<span class="sd">        - **Type** (str) - 磁盘属性</span>
+
+
+<span class="sd">        **PHostCPUSet**</span>
+<span class="sd">        - **CoreCount** (int) - CPU核数</span>
+<span class="sd">        - **Count** (int) - CPU个数</span>
+<span class="sd">        - **Frequence** (float) - CPU主频</span>
+<span class="sd">        - **Model** (str) - CPU型号</span>
+
+
+<span class="sd">        **PHostMachineTypeSet**</span>
+<span class="sd">        - **CPU** (dict) - 见 **PHostCPUSet** 模型定义</span>
+<span class="sd">        - **Clusters** (list) - 见 **PHostClusterSet** 模型定义</span>
+<span class="sd">        - **Components** (dict) - 见 **PHostComponentSet** 模型定义</span>
+<span class="sd">        - **Disks** (list) - 见 **PHostDiskSet** 模型定义</span>
+<span class="sd">        - **Memory** (int) - 内存大小，单位MB</span>
+<span class="sd">        - **RaidSupported** (str) - 是否支持Raid。枚举值：支持：YES；不支持：NO</span>
+<span class="sd">        - **Type** (str) - 物理云主机机型别名，全网唯一。</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribePHostMachineTypeRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribePHostMachineType&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribePHostMachineTypeResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UPHostClient.describe_phost_tags"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.describe_phost_tags">[docs]</a>    <span class="k">def</span> <span class="nf">describe_phost_tags</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -224,18 +421,53 @@
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **PHostTagSet**</span>
-
 <span class="sd">        - **Tag** (str) - 业务组名称</span>
 <span class="sd">        - **TotalCount** (int) - 该业务组中包含的主机个数</span>
 
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribePHostTagsRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribePHostTags&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribePHostTagsResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">get_phost_disk_upgrade_price</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;GetPHostDiskUpgradePrice - 获取物理云裸金属挂载磁盘的升级价格</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **DiskSpace** (int) - (Required) 磁盘大小，单位GB，必须是10GB的整数倍。系统盘20-500GB，数据盘单块盘20-32000GB。</span>
+<span class="sd">        - **PHostId** (str) - (Required) UPHost实例ID。</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **ReinstallTag** (bool) - 是否重装价格获取。复用此接口。扩容只能增加云盘大小。重装不限制。枚举值：true/false</span>
+<span class="sd">        - **UDiskId** (str) - 磁盘 ID。获取扩容价格必填（只能扩不能减）；重装时候不需要填（根据所选盘大小决定）</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **OriginalPrice** (float) - 升价差价原价。精度为小数点后2位。</span>
+<span class="sd">        - **Price** (float) - 升级差价。精度为小数点后2位。</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetPHostDiskUpgradePriceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetPHostDiskUpgradePrice&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetPHostDiskUpgradePriceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
 
 <div class="viewcode-block" id="UPHostClient.get_phost_price"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.get_phost_price">[docs]</a>    <span class="k">def</span> <span class="nf">get_phost_price</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -244,34 +476,108 @@
 
 <span class="sd">        **Request**</span>
 
-<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
-<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
-<span class="sd">        - **ChargeType** (str) - (Required) 计费模式，枚举值为： Year/Month/Trial/Dynamic</span>
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **ChargeType** (str) - (Required) 计费模式，枚举值为： Year/Month</span>
 <span class="sd">        - **Count** (int) - (Required) 购买数量，范围[1-5]</span>
-<span class="sd">        - **Quantity** (int) - (Required) 购买时长，1-10个月或1-10年</span>
-<span class="sd">        - **Cluster** (str) - 网络环境，可选千兆：1G ，万兆：10G</span>
-<span class="sd">        - **Type** (str) - 默认为：DB(数据库型)</span>
-<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **Quantity** (int) - (Required) 购买时长，1-10个月或1-10年；默认值为1。月付时，此参数传0，代表购买至月末，1代表整月。</span>
+<span class="sd">        - **Cluster** (str) - 网络环境，可选千兆：1G ；万兆：10G；25G网络：25G。</span>
+<span class="sd">        - **Disks** (list) - 见 **GetPHostPriceParamDisks** 模型定义</span>
+<span class="sd">        - **Type** (str) - 默认为：DB(数据库型)，可以通过接口  `DescribePHostMachineType &lt;https://docs.ucloud.cn/api/uphost-api/api/uphost-api/describe_phost_machine_type.html&gt;`_ 获取</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
 
 <span class="sd">        **Response**</span>
 
 <span class="sd">        - **PriceSet** (list) - 见 **PHostPriceSet** 模型定义</span>
 
+<span class="sd">        **Request Model**</span>
+
+<span class="sd">        **GetPHostPriceParamDisks**</span>
+<span class="sd">        - **IsBoot** (str) - 裸金属机型参数-&gt;枚举值：\\ &gt; True，是系统盘 \\ &gt; False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。</span>
+<span class="sd">        - **Size** (str) - 裸金属机型参数-&gt;磁盘大小，单位GB，必须是10GB的整数倍。系统盘20-500GB。数据盘是20-32000G。</span>
+<span class="sd">        - **Type** (str) - 裸金属机型参数-&gt;磁盘类型：枚举值：CLOUD_RSSD</span>
+
+
 <span class="sd">        **Response Model**</span>
 
 <span class="sd">        **PHostPriceSet**</span>
-
-<span class="sd">        - **ChargeType** (str) - Year/Month/Trial/Dynamic</span>
+<span class="sd">        - **ChargeType** (str) - Year/Month</span>
+<span class="sd">        - **OriginalPrice** (float) - 原价格, 单位:元, 保留小数点后两位有效数字</span>
 <span class="sd">        - **Price** (float) - 价格, 单位:元, 保留小数点后两位有效数字</span>
+<span class="sd">        - **Product** (str) - 枚举值：phost=&gt;为主机价格，如果是云盘包括了系统盘价格。cloudDisk=&gt;所有数据盘价格，只是裸金属机型才返回此参数。</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetPHostPriceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetPHostPrice&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetPHostPriceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UPHostClient.get_phost_disk_upgrade_price"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.get_phost_disk_upgrade_price">[docs]</a>    <span class="k">def</span> <span class="nf">get_phost_disk_upgrade_price</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;GetPhostDiskUpgradePrice - 获取物理云裸金属挂载磁盘的升级价格</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **DiskId** (str) - (Required) 磁盘ID。</span>
+<span class="sd">        - **DiskSpace** (int) - (Required) 裸金属机型参数-&gt;磁盘大小，单位GB，必须是10GB的整数倍。系统盘20-500GB，数据盘单块盘20-32000GB。</span>
+<span class="sd">        - **PHostId** (str) - (Required) UPHost实例ID。</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **Price** (float) - 升级差价。精度为小数点后2位。</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetPhostDiskUpgradePriceRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetPhostDiskUpgradePrice&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetPhostDiskUpgradePriceResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UPHostClient.modify_phost_image_info"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.modify_phost_image_info">[docs]</a>    <span class="k">def</span> <span class="nf">modify_phost_image_info</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;ModifyPHostImageInfo - 修改自定义镜像名称和备注</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **ImageId** (str) - (Required) 镜像ID</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **Name** (str) - 镜像名称</span>
+<span class="sd">        - **Remark** (str) - 备注</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **ImageId** (str) - 镜像ID</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyPHostImageInfoRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ModifyPHostImageInfo&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyPHostImageInfoResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UPHostClient.modify_phost_info"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.modify_phost_info">[docs]</a>    <span class="k">def</span> <span class="nf">modify_phost_info</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -294,7 +600,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ModifyPHostInfoRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -319,7 +628,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">PoweroffPHostRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -342,7 +654,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">RebootPHostRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
@@ -361,6 +676,7 @@
 <span class="sd">        - **PHostId** (str) - (Required) PHost资源ID</span>
 <span class="sd">        - **Password** (str) - (Required) 密码</span>
 <span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **BootDiskSpace** (int) - 裸金属机型参数-&gt;系统盘大小。 单位：GB， 范围[20,500]， 步长：10</span>
 <span class="sd">        - **ImageId** (str) - 镜像Id，参考镜像列表，默认使用原镜像</span>
 <span class="sd">        - **Name** (str) - 物理机名称，默认不更改</span>
 <span class="sd">        - **Raid** (str) - 不保留数据盘重装，可选Raid</span>
@@ -374,12 +690,74 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ReinstallPHostRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ReinstallPHost&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ReinstallPHostResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UPHostClient.reset_phost_password"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.reset_phost_password">[docs]</a>    <span class="k">def</span> <span class="nf">reset_phost_password</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;ResetPHostPassword - 重置裸金属实例的管理员密码</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list.html&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+<span class="sd">        - **PHostId** (str) - (Required) 裸金属实例ID</span>
+<span class="sd">        - **Password** (str) - (Required) PHost新密码（密码格式使用BASE64编码）</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **PHostId** (str) - 裸金属实例ID</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ResetPHostPasswordRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ResetPHostPassword&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ResetPHostPasswordResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UPHostClient.resize_phost_attached_disk"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.resize_phost_attached_disk">[docs]</a>    <span class="k">def</span> <span class="nf">resize_phost_attached_disk</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;ResizePHostAttachedDisk - 修改裸金属物理云已经挂载的云盘容量大小</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **DiskSpace** (int) - 裸金属机型参数-&gt;磁盘大小，单位GB，必须是10GB的整数倍。系统盘20-500GB，数据盘单块盘20-32000GB。</span>
+<span class="sd">        - **PHostId** (str) - UPHost实例ID。</span>
+<span class="sd">        - **UDiskId** (str) - 磁盘ID。</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **UDiskId** (str) - 改配成功的磁盘id</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ResizePHostAttachedDiskRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ResizePHostAttachedDisk&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ResizePHostAttachedDiskResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UPHostClient.start_phost"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.start_phost">[docs]</a>    <span class="k">def</span> <span class="nf">start_phost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;StartPHost - 启动物理机</span>
@@ -397,12 +775,41 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">StartPHostRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;StartPHost&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">StartPHostResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UPHostClient.stop_phost"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.stop_phost">[docs]</a>    <span class="k">def</span> <span class="nf">stop_phost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;StopPHost - 关闭物理机</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **PHostId** (str) - (Required) PHost资源ID</span>
+<span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **PHostId** (str) - PHost 的资源ID</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">StopPHostRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;StopPHost&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">StopPHostResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UPHostClient.terminate_phost"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.terminate_phost">[docs]</a>    <span class="k">def</span> <span class="nf">terminate_phost</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -415,6 +822,7 @@
 <span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 <span class="sd">        - **PHostId** (str) - (Required) PHost资源ID</span>
 <span class="sd">        - **ReleaseEIP** (bool) - 是否释放绑定的EIP。true: 解绑EIP后，并释放；其他值或不填：解绑EIP。</span>
+<span class="sd">        - **ReleaseUDisk** (bool) - 裸金属机型参数-&gt;删除主机时是否同时删除挂载的数据盘。默认为false。</span>
 <span class="sd">        - **Zone** (str) - 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist.html&gt;`_</span>
 
 <span class="sd">        **Response**</span>
@@ -423,12 +831,43 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># build request</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">TerminatePHostRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;TerminatePHost&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">TerminatePHostResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">TerminatePHostResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UPHostClient.terminate_phost_image"><a class="viewcode-back" href="../../../../services.html#ucloud.services.uphost.client.UPHostClient.terminate_phost_image">[docs]</a>    <span class="k">def</span> <span class="nf">terminate_phost_image</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;TerminatePHostImage - 删除裸金属2.0用户自定义镜像</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **ImageId** (str) - (Required) 自制镜像ID</span>
+<span class="sd">        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **ImageId** (str) - 自制镜像ID</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">TerminatePHostImageRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;TerminatePHostImage&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">TerminatePHostImageResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -492,7 +931,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

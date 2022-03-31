@@ -46,6 +46,36 @@
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">UCDNClient</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">transport</span><span class="p">,</span> <span class="n">middleware</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span>
 
+<div class="viewcode-block" id="UCDNClient.add_certificate"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ucdn.client.UCDNClient.add_certificate">[docs]</a>    <span class="k">def</span> <span class="nf">add_certificate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;AddCertificate - 添加证书</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **CertName** (str) - (Required) 证书名称</span>
+<span class="sd">        - **PrivateKey** (str) - (Required) 用户私钥</span>
+<span class="sd">        - **UserCert** (str) - (Required) 用户证书</span>
+<span class="sd">        - **CaCert** (str) - Ca证书，默认为空</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">AddCertificateRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># build options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;max_retries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore retry when api is not idempotent</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;AddCertificate&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">AddCertificateResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="UCDNClient.batch_describe_new_ucdn_domain"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ucdn.client.UCDNClient.batch_describe_new_ucdn_domain">[docs]</a>    <span class="k">def</span> <span class="nf">batch_describe_new_ucdn_domain</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -150,6 +180,55 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;BatchRefreshNewUcdnDomainCache&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">BatchRefreshNewUcdnDomainCacheResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="UCDNClient.control_ucdn_domain_cache_access"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ucdn.client.UCDNClient.control_ucdn_domain_cache_access">[docs]</a>    <span class="k">def</span> <span class="nf">control_ucdn_domain_cache_access</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;ControlUcdnDomainCacheAccess - 封禁解封缓存访问</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Type** (str) - (Required) forbid=封禁   unforbid=解封  其他值非法</span>
+<span class="sd">        - **UrlList** (list) - (Required) 待封禁的Url，一次封禁多个Url时最多一次30条，只能对表示文件的Url进行操作</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">ControlUcdnDomainCacheAccessRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;ControlUcdnDomainCacheAccess&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">ControlUcdnDomainCacheAccessResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UCDNClient.delete_certificate"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ucdn.client.UCDNClient.delete_certificate">[docs]</a>    <span class="k">def</span> <span class="nf">delete_certificate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;DeleteCertificate - 删除证书</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **CertName** (str) - (Required) 证书名称</span>
+
+<span class="sd">        **Response**</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteCertificateRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DeleteCertificate&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DeleteCertificateResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="UCDNClient.describe_new_ucdn_prefetch_cache_task"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ucdn.client.UCDNClient.describe_new_ucdn_prefetch_cache_task">[docs]</a>    <span class="k">def</span> <span class="nf">describe_new_ucdn_prefetch_cache_task</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -245,6 +324,47 @@
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeNewUcdnRefreshCacheTask&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeNewUcdnRefreshCacheTaskResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UCDNClient.get_certificate_v2"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ucdn.client.UCDNClient.get_certificate_v2">[docs]</a>    <span class="k">def</span> <span class="nf">get_certificate_v2</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;GetCertificateV2 - 获取证书列表(新)</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Limit** (int) - 长度，默认为全部，非负整数</span>
+<span class="sd">        - **Offset** (int) - 偏移，默认为0，非负整数</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **CertList** (list) - 见 **CertList** 模型定义</span>
+<span class="sd">        - **TotalCount** (int) - 证书数量</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **CertList**</span>
+<span class="sd">        - **BeginTime** (int) - 证书开始时间</span>
+<span class="sd">        - **CaCert** (str) - ca证内容</span>
+<span class="sd">        - **CertName** (str) - 证书名</span>
+<span class="sd">        - **CommonName** (str) - 通用名</span>
+<span class="sd">        - **DnsName** (str) - dns名称</span>
+<span class="sd">        - **DomainCount** (int) - 已配置域名个数</span>
+<span class="sd">        - **Domains** (list) - 已配置的域名列表</span>
+<span class="sd">        - **EndTime** (int) - 证书获取时间</span>
+<span class="sd">        - **UserCert** (str) - 证书内容</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetCertificateV2RequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetCertificateV2&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetCertificateV2ResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UCDNClient.get_new_ucdn_domain_bandwidth"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ucdn.client.UCDNClient.get_new_ucdn_domain_bandwidth">[docs]</a>    <span class="k">def</span> <span class="nf">get_new_ucdn_domain_bandwidth</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -488,6 +608,90 @@
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetNewUcdnDomainRequestNum&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetNewUcdnDomainRequestNumResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UCDNClient.get_new_ucdn_log_referer_statistics"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ucdn.client.UCDNClient.get_new_ucdn_log_referer_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">get_new_ucdn_log_referer_statistics</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;GetNewUcdnLogRefererStatistics - 获取热点referer统计</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外 ；目前只支持国内</span>
+<span class="sd">        - **BeginTime** (int) - 查询带宽的起始时间，格式：时间戳</span>
+<span class="sd">        - **DomainId** (str) - 域名id，创建域名时生成的id</span>
+<span class="sd">        - **EndTime** (int) - 查询统计日志的结束时间，格式：时间戳。最大时间间隔30天</span>
+<span class="sd">        - **Limit** (int) - 返回的结果数量限制，默认1000</span>
+<span class="sd">        - **OrderBy** (int) - 0表示按流量降序排列，1表示按照下载次数降序排列，默认为0</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **RefererStatistics** (list) - 见 **RefererStatistics** 模型定义</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **RefererList**</span>
+<span class="sd">        - **Percent** (float) - 次数占比，单位%</span>
+<span class="sd">        - **Referer** (str) - 客户端请求的referer</span>
+<span class="sd">        - **RequestTimes** (int) - 次数</span>
+
+
+<span class="sd">        **RefererStatistics**</span>
+<span class="sd">        - **Date** (str) - 日期</span>
+<span class="sd">        - **RefererList** (list) - 见 **RefererList** 模型定义</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetNewUcdnLogRefererStatisticsRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetNewUcdnLogRefererStatistics&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetNewUcdnLogRefererStatisticsResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UCDNClient.get_new_ucdn_log_url_statistics"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ucdn.client.UCDNClient.get_new_ucdn_log_url_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">get_new_ucdn_log_url_statistics</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;GetNewUcdnLogUrlStatistics - 获取日志url统计</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **DomainId** (str) - (Required) 域名Id</span>
+<span class="sd">        - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外 只支持国内</span>
+<span class="sd">        - **BeginTime** (int) - 查询带宽的起始时间，格式：时间戳。BeginTime和EndTime必须同时赋值</span>
+<span class="sd">        - **EndTime** (int) - 查询统计日志的结束时间，格式：时间戳,最多可拉取30天</span>
+<span class="sd">        - **Limit** (int) - 返回的结果数量限制，默认1000</span>
+<span class="sd">        - **OrderBy** (int) - 0表示按流量降序排列，1表示按照下载次数降序排列，默认为0</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **UrlStatisticsList** (list) - 见 **UrlStatistics** 模型定义</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **DownloadStatisticInfo**</span>
+<span class="sd">        - **DownloadTimes** (int) - 下载次数</span>
+<span class="sd">        - **Percent** (float) - 流量占比，单位%</span>
+<span class="sd">        - **Traffic** (float) - 流量（单位为G）</span>
+<span class="sd">        - **Url** (str) - 下载链接的url</span>
+
+
+<span class="sd">        **UrlStatistics**</span>
+<span class="sd">        - **Date** (str) - 日期</span>
+<span class="sd">        - **UrlList** (list) - 见 **DownloadStatisticInfo** 模型定义</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetNewUcdnLogUrlStatisticsRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetNewUcdnLogUrlStatistics&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetNewUcdnLogUrlStatisticsResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UCDNClient.get_ucdn_domain_95bandwidth_v2"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ucdn.client.UCDNClient.get_ucdn_domain_95bandwidth_v2">[docs]</a>    <span class="k">def</span> <span class="nf">get_ucdn_domain_95bandwidth_v2</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -1573,7 +1777,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

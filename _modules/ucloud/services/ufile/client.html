@@ -183,13 +183,6 @@
 
 <span class="sd">        **Response Model**</span>
 
-<span class="sd">        **UFileDomainSet**</span>
-<span class="sd">        - **Cdn** (list) - UCDN加速域名</span>
-<span class="sd">        - **CustomCdn** (list) - 用户自定义CDN加速域名</span>
-<span class="sd">        - **CustomSrc** (list) - 用户自定义源站域名</span>
-<span class="sd">        - **Src** (list) - 源站域名</span>
-
-
 <span class="sd">        **UFileBucketSet**</span>
 <span class="sd">        - **Biz** (str) - Bucket所属业务, general或vod或udb general: 普通业务； vod: 视频云业务; udb: 云数据库业务</span>
 <span class="sd">        - **BucketId** (str) - Bucket的ID</span>
@@ -202,6 +195,13 @@
 <span class="sd">        - **Region** (str) - Bucket所属地域</span>
 <span class="sd">        - **Tag** (str) - 所属业务组</span>
 <span class="sd">        - **Type** (str) - Bucket访问类型</span>
+
+
+<span class="sd">        **UFileDomainSet**</span>
+<span class="sd">        - **Cdn** (list) - UCDN加速域名</span>
+<span class="sd">        - **CustomCdn** (list) - 用户自定义CDN加速域名</span>
+<span class="sd">        - **CustomSrc** (list) - 用户自定义源站域名</span>
+<span class="sd">        - **Src** (list) - 源站域名</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -261,6 +261,64 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;DescribeUFileToken&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">DescribeUFileTokenResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="UFileClient.get_ufile_daily_report"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ufile.client.UFileClient.get_ufile_daily_report">[docs]</a>    <span class="k">def</span> <span class="nf">get_ufile_daily_report</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;GetUFileDailyReport - 查看日消费报表</span>
+
+<span class="sd">        **Request**</span>
+
+<span class="sd">        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 &lt;https://docs.ucloud.cn/api/summary/get_project_list&gt;`_</span>
+<span class="sd">        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 &lt;https://docs.ucloud.cn/api/summary/regionlist&gt;`_</span>
+<span class="sd">        - **EndTime** (int) - (Required) 查询结束时间;unix时间戳,单位s</span>
+<span class="sd">        - **StartTime** (int) - (Required) 查询开始时间;unix时间戳，单位s</span>
+<span class="sd">        - **BucketName** (str) - 空间名称。此字段不为空，返回此Bucket日使用量；否则，返回这个项目的日使用量</span>
+
+<span class="sd">        **Response**</span>
+
+<span class="sd">        - **DataSet** (list) - 见 **UFileReportItem** 模型定义</span>
+
+<span class="sd">        **Response Model**</span>
+
+<span class="sd">        **UFileDailyReportItem**</span>
+<span class="sd">        - **AcRestore** (float) - 冷存激活量，即归档数据取回量；单位byte</span>
+<span class="sd">        - **AcStorage** (float) - 冷存（归档）存储量；单位byte</span>
+<span class="sd">        - **ApiTimes** (float) - API请求次数（次）</span>
+<span class="sd">        - **BusyFlow** (float) - 忙时流量；单位byte；海外无此字段</span>
+<span class="sd">        - **CdnFlow** (float) - cdn回源流量;单位byte</span>
+<span class="sd">        - **Date** (int) - 配额消费时间，unix时间戳（单位s），精确到日期</span>
+<span class="sd">        - **Flow** (float) - 下载流量：单位byte；国内无此字段</span>
+<span class="sd">        - **IaGetSize** (float) - 低频数据取回量；单位byte</span>
+<span class="sd">        - **IaStorage** (float) - 低频存储量；单位byte</span>
+<span class="sd">        - **IdleFlow** (float) - 闲时流量；单位byte；海外无此字段</span>
+<span class="sd">        - **Storage** (float) - 标准存储量；单位byte</span>
+
+
+<span class="sd">        **UFileTotalReportItem**</span>
+<span class="sd">        - **ApiTimes** (float) - API请求次数（次）</span>
+<span class="sd">        - **BusyFlow** (float) - 忙时流量；单位byte；海外无此字段</span>
+<span class="sd">        - **CdnFlow** (float) - cdn回源流量;单位byte</span>
+<span class="sd">        - **Flow** (float) - 下载流量：单位byte；国内无此字段</span>
+<span class="sd">        - **IdleFlow** (float) - 闲时流量；单位byte；海外无此字段</span>
+
+
+<span class="sd">        **UFileReportItem**</span>
+<span class="sd">        - **Daily** (list) - 见 **UFileDailyReportItem** 模型定义</span>
+<span class="sd">        - **Total** (list) - 见 **UFileTotalReportItem** 模型定义</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build request</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ProjectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">req</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetUFileDailyReportRequestSchema</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;GetUFileDailyReport&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">apis</span><span class="o">.</span><span class="n">GetUFileDailyReportResponseSchema</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="UFileClient.get_ufile_quota"><a class="viewcode-back" href="../../../../services.html#ucloud.services.ufile.client.UFileClient.get_ufile_quota">[docs]</a>    <span class="k">def</span> <span class="nf">get_ufile_quota</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -303,16 +361,16 @@
 
 <span class="sd">        **Response Model**</span>
 
-<span class="sd">        **UFileQuotaLeft**</span>
-<span class="sd">        - **Left** (float) - 配额剩余量</span>
-
-
 <span class="sd">        **UFileQuotaDataSetItem**</span>
 <span class="sd">        - **DownloadFlow** (dict) - 见 **UFileQuotaLeft** 模型定义</span>
 <span class="sd">        - **Owe** (int) - 是否欠费：1表示欠费；0表示未欠费</span>
 <span class="sd">        - **Region** (str) - 可用地域</span>
 <span class="sd">        - **RequestCnt** (dict) - 见 **UFileQuotaLeft** 模型定义</span>
 <span class="sd">        - **Storage** (dict) - 见 **UFileQuotaLeft** 模型定义</span>
+
+
+<span class="sd">        **UFileQuotaLeft**</span>
+<span class="sd">        - **Left** (float) - 配额剩余量</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -541,7 +599,7 @@
       &copy;2019, ucloud.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
