@@ -1,3 +1,9 @@
+## 0.11.29 (2022-04-28)
+
+ENHANCEMENTS:
+
+- Update all APIs of `UHost` (#219)
+
 ## 0.11.28 (2022-03-30)
 
 ENHANCEMENTS:
