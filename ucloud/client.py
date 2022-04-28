@@ -272,6 +272,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def uphone(self):
+        from ucloud.services.uphone.client import UPhoneClient
+
+        return UPhoneClient(
+            self._auto_config("uphone"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def usms(self):
         from ucloud.services.usms.client import USMSClient
 
