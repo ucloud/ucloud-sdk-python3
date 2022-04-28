@@ -185,6 +185,13 @@ UNVS
    :members:
 
 
+UPhone
+------
+
+.. autoclass:: ucloud.services.uphone.client.UPhoneClient
+   :members:
+
+
 UTSDB
 -----
 
