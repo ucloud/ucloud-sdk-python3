@@ -139,7 +139,7 @@ class CreateUHostInstanceParamNetworkInterfaceEIPSchema(schema.RequestSchema):
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
         "GlobalSSH": CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSHSchema(
             required=False, dump_to="GlobalSSH"
-        ),
+        ),  # Deprecated, will be removed at 1.0
         "OperatorName": fields.Str(required=False, dump_to="OperatorName"),
         "PayMode": fields.Str(required=False, dump_to="PayMode"),
         "ShareBandwidthId": fields.Str(
@@ -195,6 +195,14 @@ class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
     fields = {}
 
 
+class CreateUHostInstanceParamFeaturesSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamFeatures -"""
+
+    fields = {
+        "UNI": fields.Bool(required=False, dump_to="UNI"),
+    }
+
+
 class CreateUHostInstanceRequestSchema(schema.RequestSchema):
     """CreateUHostInstance - 创建UHost实例。"""
 
@@ -218,6 +226,9 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
             required=False, dump_to="DiskSpace"
         ),  # Deprecated, will be removed at 1.0
         "Disks": fields.List(CreateUHostInstanceParamDisksSchema()),
+        "Features": CreateUHostInstanceParamFeaturesSchema(
+            required=False, dump_to="Features"
+        ),
         "GPU": fields.Int(required=False, dump_to="GPU"),
         "GpuType": fields.Str(required=False, dump_to="GpuType"),
         "HostIp": fields.Str(
@@ -376,6 +387,35 @@ class DeleteUHostKeyPairsResponseSchema(schema.ResponseSchema):
     """DeleteUHostKeyPairs - 删除一对或者多对密钥对。"""
 
     fields = {}
+
+
+"""
+API: DescribeAvailableInstanceTypes
+
+DescribeAvailableInstanceTypes
+"""
+
+
+class DescribeAvailableInstanceTypesRequestSchema(schema.RequestSchema):
+    """DescribeAvailableInstanceTypes - DescribeAvailableInstanceTypes"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DescribeAvailableInstanceTypesResponseSchema(schema.ResponseSchema):
+    """DescribeAvailableInstanceTypes - DescribeAvailableInstanceTypes"""
+
+    fields = {
+        "AvailableInstanceTypes": fields.List(
+            models.AvailableInstanceTypesSchema(),
+            required=True,
+            load_from="AvailableInstanceTypes",
+        ),
+    }
 
 
 """
@@ -627,14 +667,14 @@ class GetUHostInstancePriceParamDisksSchema(schema.RequestSchema):
     }
 
 
-class GetUHostInstancePriceParamVolumesSchema(schema.RequestSchema):
-    """GetUHostInstancePriceParamVolumes -"""
+class GetUHostInstancePriceParamVirtualGpuSchema(schema.RequestSchema):
+    """GetUHostInstancePriceParamVirtualGpu -"""
 
     fields = {}
 
 
-class GetUHostInstancePriceParamVirtualGpuSchema(schema.RequestSchema):
-    """GetUHostInstancePriceParamVirtualGpu -"""
+class GetUHostInstancePriceParamVolumesSchema(schema.RequestSchema):
+    """GetUHostInstancePriceParamVolumes -"""
 
     fields = {}
 
