@@ -20,6 +20,22 @@ class KeyPairSchema(schema.ResponseSchema):
     }
 
 
+class AvailableInstanceTypesSchema(schema.ResponseSchema):
+    """AvailableInstanceTypes - https://ushare.ucloudadmin.com/pages/viewpage.action?pageId=104662646"""
+
+    fields = {
+        "CpuPlatforms": fields.List(fields.Str()),
+        "Disks": fields.List(fields.Str()),
+        "Features": fields.List(fields.Str()),
+        "GraphicsMemory": fields.Str(),
+        "MachineClass": fields.Str(required=False, load_from="MachineClass"),
+        "MachineSizes": fields.List(fields.Str()),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Performance": fields.Str(),
+        "Status": fields.Str(required=False, load_from="Status"),
+    }
+
+
 class UHostImageSetSchema(schema.ResponseSchema):
     """UHostImageSet - DescribeImage"""
 
