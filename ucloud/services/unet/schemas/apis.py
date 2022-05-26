@@ -21,6 +21,7 @@ class AllocateEIPRequestSchema(schema.RequestSchema):
     fields = {
         "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "Count": fields.Int(required=False, dump_to="Count"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
         "Name": fields.Str(required=False, dump_to="Name"),
         "OperatorName": fields.Str(required=True, dump_to="OperatorName"),
@@ -124,6 +125,7 @@ class BindEIPRequestSchema(schema.RequestSchema):
 
     fields = {
         "EIPId": fields.Str(required=True, dump_to="EIPId"),
+        "PrivateIP": fields.Str(required=False, dump_to="PrivateIP"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
