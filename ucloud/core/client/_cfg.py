@@ -10,7 +10,7 @@ class ConfigSchema(schema.Schema):
         "base_url": fields.Str(default="https://api.ucloud.cn"),
         "user_agent": fields.Str(),
         "timeout": fields.Int(default=30),
-        "max_retries": fields.Int(default=3),
+        "max_retries": fields.Int(default=0),
         "log_level": fields.Int(default=logging.INFO),
         "validate_request": fields.Bool(default=True),
         "ssl_verify": fields.Bool(default=True),
