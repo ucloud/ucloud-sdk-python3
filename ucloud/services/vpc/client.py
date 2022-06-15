@@ -105,6 +105,59 @@ class VPCClient(Client):
         resp = self.invoke("AddWhiteListResource", d, **kwargs)
         return apis.AddWhiteListResourceResponseSchema().loads(resp)
 
+    def allocate_batch_secondary_ip(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """AllocateBatchSecondaryIp - 批量申请虚拟网卡辅助IP
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Mac** (str) - (Required) 节点mac
+        - **ObjectId** (str) - (Required) 资源Id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Count** (int) - 申请的内网IP数量
+        - **Ip** (list) - 【arry】支持按如下方式申请：①按网段：如192.168.1.32/27，掩码数字最小为27   ②指定IP地址，如192.168.1.3
+        - **SubnetId** (str) - 子网Id（若未指定，则根据zone获取默认子网进行创建）
+        - **VPCId** (str) - vpcId
+
+        **Response**
+
+        - **IpsInfo** (list) - 见 **IpsInfo** 模型定义
+
+        **Response Model**
+
+        **StatusInfo**
+        - **Message** (str) - IP分配失败原因
+        - **StatusCode** (str) - 枚举值：Succeeded，Failed
+
+
+        **IpsInfo**
+        - **Gateway** (str) - 网关
+        - **Ip** (str) - 内网IP地址
+        - **Mac** (str) - MAC地址
+        - **Mask** (str) - 掩码
+        - **Status** (dict) - 见 **StatusInfo** 模型定义
+        - **SubnetId** (str) - 子网资源ID
+        - **VPCId** (str) - VPC资源ID
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.AllocateBatchSecondaryIpRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("AllocateBatchSecondaryIp", d, **kwargs)
+        return apis.AllocateBatchSecondaryIpResponseSchema().loads(resp)
+
     def allocate_secondary_ip(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -223,6 +276,33 @@ class VPCClient(Client):
         resp = self.invoke("AssociateRouteTable", d, **kwargs)
         return apis.AssociateRouteTableResponseSchema().loads(resp)
 
+    def attach_network_interface(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """AttachNetworkInterface - 绑定网卡到云主机
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **InstanceId** (str) - (Required) 云主机ID（仅支持绑定开启网卡功能，且未开启网络增强的云主机）
+        - **InterfaceId** (str) - (Required) 虚拟网卡ID
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.AttachNetworkInterfaceRequestSchema().dumps(d)
+
+        resp = self.invoke("AttachNetworkInterface", d, **kwargs)
+        return apis.AttachNetworkInterfaceResponseSchema().loads(resp)
+
     def clone_route_table(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -255,14 +335,14 @@ class VPCClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **EIPIds** (list) - (Required) NAT网关绑定的EIPId
         - **FirewallId** (str) - (Required) NAT网关绑定的防火墙Id
         - **NATGWName** (str) - (Required) NAT网关名称
-        - **SubnetworkIds** (list) - (Required) NAT网关绑定的子网Id
         - **IfOpen** (int) - 白名单开关标记。0表示关闭，1表示开启。默认为0
         - **Remark** (str) - 备注。默认为空
+        - **SubnetworkIds** (list) - NAT网关绑定的子网Id，默认为空。
         - **Tag** (str) - 业务组。默认为空
         - **VPCId** (str) - NAT网关所属的VPC Id。默认为Default VPC Id
 
@@ -433,6 +513,61 @@ class VPCClient(Client):
         resp = self.invoke("CreateNetworkAclEntry", d, **kwargs)
         return apis.CreateNetworkAclEntryResponseSchema().loads(resp)
 
+    def create_network_interface(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateNetworkInterface - 创建虚拟网卡
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **SubnetId** (str) - (Required) 所属子网ID
+        - **VPCId** (str) - (Required) 所属VPCID
+        - **Name** (str) - 虚拟网卡名称，默认为 NetworkInterface
+        - **PrivateIp** (list) - 指定内网IP。当前一个网卡仅支持绑定一个内网IP
+        - **Remark** (str) - 备注
+        - **SecurityGroupId** (str) - 防火墙GroupId，默认：Web推荐防火墙 可由DescribeSecurityGroupResponse中的GroupId取得
+        - **Tag** (str) - 业务组
+
+        **Response**
+
+        - **NetworkInterface** (dict) - 见 **NetworkInterfaceInfo** 模型定义
+
+        **Response Model**
+
+        **NetworkInterfaceInfo**
+        - **AttachInstanceId** (str) - 绑定实例资源ID
+        - **CreateTime** (int) - 创建时间
+        - **Default** (bool) - 是否是绑定实例的默认网卡 false:不是 true:是
+        - **Gateway** (str) - 默认网关
+        - **InterfaceId** (str) - 虚拟网卡资源ID
+        - **MacAddress** (str) - 关联Mac
+        - **Name** (str) - 虚拟网卡名称
+        - **Netmask** (str) - 内网IP掩码
+        - **PrivateIpSet** (list) - 关联内网IP。当前一个网卡仅支持绑定一个内网IP
+        - **Remark** (str) - 备注
+        - **Status** (int) - 绑定状态
+        - **SubnetId** (str) - 所属子网
+        - **Tag** (str) - 业务组
+        - **VPCId** (str) - 所属VPC
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateNetworkInterfaceRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateNetworkInterface", d, **kwargs)
+        return apis.CreateNetworkInterfaceResponseSchema().loads(resp)
+
     def create_route_table(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -465,6 +600,37 @@ class VPCClient(Client):
 
         resp = self.invoke("CreateRouteTable", d, **kwargs)
         return apis.CreateRouteTableResponseSchema().loads(resp)
+
+    def create_snat_dnat_rule(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateSnatDnatRule - 调用接口后会自动创建内外网IP之间的SNAT和DNAT规则，支持TCP、UDP协议全端口
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **EIP** (list) - (Required) EIP的IP地址。按入参顺序，PrivateIp与EIP一一对应建立映射关系。
+        - **NATGWId** (str) - (Required) 映射所使用的NAT网关资源ID
+        - **PrivateIp** (list) - (Required) 内网P地址
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateSnatDnatRuleRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateSnatDnatRule", d, **kwargs)
+        return apis.CreateSnatDnatRuleResponseSchema().loads(resp)
 
     def create_subnet(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -569,8 +735,8 @@ class VPCClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **NATGWId** (str) - (Required) NAT网关Id
         - **ReleaseEip** (bool) - 是否释放绑定的EIP。true：解绑并释放；false：只解绑不释放。默认为false
 
@@ -753,6 +919,34 @@ class VPCClient(Client):
         resp = self.invoke("DeleteSecondaryIp", d, **kwargs)
         return apis.DeleteSecondaryIpResponseSchema().loads(resp)
 
+    def delete_snat_dnat_rule(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteSnatDnatRule - 删除NAT创建内外网IP映射规则
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **EIP** (list) - (Required) EIP的IP地址,PrivateIp与EIP需一一对应
+        - **NATGWId** (str) - (Required) 映射所使用的NAT网关资源ID
+        - **PrivateIp** (list) - (Required) 内网P地址
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteSnatDnatRuleRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteSnatDnatRule", d, **kwargs)
+        return apis.DeleteSnatDnatRuleResponseSchema().loads(resp)
+
     def delete_snat_rule(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -886,6 +1080,56 @@ class VPCClient(Client):
         resp = self.invoke("DeleteWhiteListResource", d, **kwargs)
         return apis.DeleteWhiteListResourceResponseSchema().loads(resp)
 
+    def describe_instance_network_interface(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeInstanceNetworkInterface - 展示云主机绑定的网卡信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **InstanceId** (str) - (Required) 云主机ID
+        - **Limit** (int) - 默认为20
+        - **Offset** (int) - 默认为0
+
+        **Response**
+
+        - **NetworkInterfaceSet** (list) - 见 **InstanceNetworkInterface** 模型定义
+
+        **Response Model**
+
+        **InstanceNetworkInterface**
+        - **AttachInstanceId** (str) - 绑定实例资源ID
+        - **CreateTime** (int) - 创建时间
+        - **Default** (bool) - 是否是绑定实例的默认网卡 false:不是 true:是
+        - **EIPIdSet** (list) - 虚拟网卡绑定的EIP ID信息
+        - **FirewallIdSet** (list) - 虚拟网卡绑定的防火墙ID信息
+        - **Gateway** (str) - 默认网关
+        - **InterfaceId** (str) - 虚拟网卡资源ID
+        - **MacAddress** (str) - 关联Mac
+        - **Name** (str) - 虚拟网卡名称
+        - **Netmask** (str) - 内网IP掩码
+        - **PrivateIpSet** (list) - 关联内网IP。当前一个网卡仅支持绑定一个内网IP
+        - **Remark** (str) - 备注
+        - **Status** (int) - 绑定状态
+        - **SubnetId** (str) - 所属子网
+        - **Tag** (str) - 业务组
+        - **VPCId** (str) - 所属VPC
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeInstanceNetworkInterfaceRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeInstanceNetworkInterface", d, **kwargs)
+        return apis.DescribeInstanceNetworkInterfaceResponseSchema().loads(resp)
+
     def describe_natgw(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -893,8 +1137,8 @@ class VPCClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Limit** (int) - 数据分页值。默认为20
         - **NATGWIds** (list) - NAT网关Id。默认为该项目下所有NAT网关
         - **Offset** (int) - 数据偏移量。默认为0
@@ -906,9 +1150,19 @@ class VPCClient(Client):
 
         **Response Model**
 
-        **NatGWIPResInfo**
-        - **EIP** (str) - 外网IP
-        - **OperatorName** (str) - IP的运营商信息
+        **NatGatewayDataSet**
+        - **CreateTime** (int) - natgw创建时间
+        - **FirewallId** (str) - 绑定的防火墙Id
+        - **IPSet** (list) - 见 **NatGatewayIPSet** 模型定义
+        - **IsSnatpoolEnabled** (str) - 枚举值，“enable”，默认出口规则使用了负载均衡；“disable”，默认出口规则未使用负载均衡。
+        - **NATGWId** (str) - natgw id
+        - **NATGWName** (str) - natgw名称
+        - **PolicyId** (list) - 转发策略Id
+        - **Remark** (str) - 备注
+        - **SubnetSet** (list) - 见 **NatGatewaySubnetSet** 模型定义
+        - **Tag** (str) - 业务组
+        - **VPCId** (str) - 所属VPC Id
+        - **VPCName** (str) - VPC名称
 
 
         **NatGatewayIPSet**
@@ -919,23 +1173,15 @@ class VPCClient(Client):
         - **Weight** (int) - 权重为100的为出口
 
 
+        **NatGWIPResInfo**
+        - **EIP** (str) - 外网IP
+        - **OperatorName** (str) - IP的运营商信息
+
+
         **NatGatewaySubnetSet**
         - **Subnet** (str) - 子网网段
         - **SubnetName** (str) - 子网名字
         - **SubnetworkId** (str) - 子网id
-
-
-        **NatGatewayDataSet**
-        - **CreateTime** (int) - natgw创建时间
-        - **FirewallId** (str) - 绑定的防火墙Id
-        - **IPSet** (list) - 见 **NatGatewayIPSet** 模型定义
-        - **NATGWId** (str) - natgw id
-        - **NATGWName** (str) - natgw名称
-        - **PolicyId** (list) - 转发策略Id
-        - **Remark** (str) - 备注
-        - **SubnetSet** (list) - 见 **NatGatewaySubnetSet** 模型定义
-        - **Tag** (str) - 业务组
-        - **VPCId** (str) - 所属VPC Id
 
 
         """
@@ -1013,15 +1259,15 @@ class VPCClient(Client):
 
         **Response Model**
 
-        **TargetResourceInfo**
-        - **PrivateIp** (str) - 资源内网IP
-        - **ResourceId** (str) - 资源ID
-        - **ResourceName** (str) - 资源名称
-        - **ResourceType** (int) - 资源类型
-        - **SubResourceId** (str) - 资源绑定的虚拟网卡的ID
-        - **SubResourceName** (str) - 资源绑定的虚拟网卡的名称
-        - **SubResourceType** (int) - 资源绑定虚拟网卡的类型
-        - **SubnetworkId** (str) - 子网ID
+        **AclInfo**
+        - **AclId** (str) - ACL的ID
+        - **AclName** (str) - 名称
+        - **Associations** (list) - 见 **AssociationInfo** 模型定义
+        - **CreateTime** (int) - 创建的Unix时间戳
+        - **Description** (str) - 描述
+        - **Entries** (list) - 见 **AclEntryInfo** 模型定义
+        - **UpdateTime** (int) - 更改的Unix时间戳
+        - **VpcId** (str) - ACL所属的VPC ID
 
 
         **AssociationInfo**
@@ -1046,15 +1292,15 @@ class VPCClient(Client):
         - **UpdateTime** (int) - 更改的Unix时间戳
 
 
-        **AclInfo**
-        - **AclId** (str) - ACL的ID
-        - **AclName** (str) - 名称
-        - **Associations** (list) - 见 **AssociationInfo** 模型定义
-        - **CreateTime** (int) - 创建的Unix时间戳
-        - **Description** (str) - 描述
-        - **Entries** (list) - 见 **AclEntryInfo** 模型定义
-        - **UpdateTime** (int) - 更改的Unix时间戳
-        - **VpcId** (str) - ACL所属的VPC ID
+        **TargetResourceInfo**
+        - **PrivateIp** (str) - 资源内网IP
+        - **ResourceId** (str) - 资源ID
+        - **ResourceName** (str) - 资源名称
+        - **ResourceType** (int) - 资源类型
+        - **SubResourceId** (str) - 资源绑定的虚拟网卡的ID
+        - **SubResourceName** (str) - 资源绑定的虚拟网卡的名称
+        - **SubResourceType** (int) - 资源绑定虚拟网卡的类型
+        - **SubnetworkId** (str) - 子网ID
 
 
         """
@@ -1162,17 +1408,6 @@ class VPCClient(Client):
 
         **Response Model**
 
-        **TargetResourceInfo**
-        - **PrivateIp** (str) - 资源内网IP
-        - **ResourceId** (str) - 资源ID
-        - **ResourceName** (str) - 资源名称
-        - **ResourceType** (int) - 资源类型
-        - **SubResourceId** (str) - 资源绑定的虚拟网卡的ID
-        - **SubResourceName** (str) - 资源绑定的虚拟网卡的名称
-        - **SubResourceType** (int) - 资源绑定虚拟网卡的类型
-        - **SubnetworkId** (str) - 子网ID
-
-
         **AclEntryInfo**
         - **CidrBlock** (str) - IP段的CIDR信息
         - **CreateTime** (int) - 创建的Unix时间戳
@@ -1188,6 +1423,17 @@ class VPCClient(Client):
         - **UpdateTime** (int) - 更改的Unix时间戳
 
 
+        **TargetResourceInfo**
+        - **PrivateIp** (str) - 资源内网IP
+        - **ResourceId** (str) - 资源ID
+        - **ResourceName** (str) - 资源名称
+        - **ResourceType** (int) - 资源类型
+        - **SubResourceId** (str) - 资源绑定的虚拟网卡的ID
+        - **SubResourceName** (str) - 资源绑定的虚拟网卡的名称
+        - **SubResourceType** (int) - 资源绑定虚拟网卡的类型
+        - **SubnetworkId** (str) - 子网ID
+
+
         """
         # build request
         d = {
@@ -1200,6 +1446,74 @@ class VPCClient(Client):
         resp = self.invoke("DescribeNetworkAclEntry", d, **kwargs)
         return apis.DescribeNetworkAclEntryResponseSchema().loads(resp)
 
+    def describe_network_interface(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeNetworkInterface - 展示虚拟网卡信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **InterfaceId** (list) - 虚拟网卡ID,可指定 0~n
+        - **Limit** (int) - 默认为20
+        - **NoRecycled** (bool) - 若为true 过滤绑定在回收站主机中的网卡。默认为false。
+        - **Offset** (int) - 默认为0
+        - **OnlyDefault** (bool) - 若为true 只返回默认网卡默认为false
+        - **SubnetId** (str) - 所属子网
+        - **Tag** (str) - 业务组
+        - **VPCId** (str) - 所属VPC
+
+        **Response**
+
+        - **NetworkInterfaceSet** (list) - 见 **NetworkInterface** 模型定义
+        - **TotalCount** (int) - 虚拟网卡总数
+
+        **Response Model**
+
+        **UNIQuotaInfo**
+        - **PrivateIpCount** (int) - 网卡拥有的内网IP数量
+        - **PrivateIpQuota** (int) - 网卡内网IP配额
+
+
+        **UNIIpInfo**
+        - **IpAddr** (list) - ip 地址
+        - **IpType** (str) - ip类型 SecondaryIp/PrimaryIp
+
+
+        **NetworkInterface**
+        - **AttachInstanceId** (str) - 绑定实例资源ID
+        - **CreateTime** (int) - 创建时间
+        - **Default** (bool) - 是否是绑定实例的默认网卡 false:不是 true:是
+        - **EIPIdSet** (list) - 虚拟网卡绑定的EIP ID信息
+        - **FirewallIdSet** (list) - 虚拟网卡绑定的防火墙ID信息
+        - **Gateway** (str) - 默认网关
+        - **InterfaceId** (str) - 虚拟网卡资源ID
+        - **MacAddress** (str) - 关联Mac
+        - **Name** (str) - 虚拟网卡名称
+        - **Netmask** (str) - 内网IP掩码
+        - **PrivateIp** (list) - 见 **UNIIpInfo** 模型定义
+        - **PrivateIpLimit** (dict) - 见 **UNIQuotaInfo** 模型定义
+        - **PrivateIpSet** (list) - 关联内网IP。当前一个网卡仅支持绑定一个内网IP
+        - **Remark** (str) - 备注
+        - **Status** (int) - 绑定状态
+        - **SubnetId** (str) - 所属子网
+        - **Tag** (str) - 业务组
+        - **VPCId** (str) - 所属VPC
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeNetworkInterfaceRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeNetworkInterface", d, **kwargs)
+        return apis.DescribeNetworkInterfaceResponseSchema().loads(resp)
+
     def describe_route_table(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1207,10 +1521,12 @@ class VPCClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Brief** (bool) - 默认为 false, 返回详细路由规则信息
         - **BusinessId** (str) - 业务组ID
         - **Limit** (int) - 数据分页值。默认为20
+        - **LongId** (str) - 默认为 false, 表示路由表是短 ID
         - **OffSet** (int) - 数据偏移量。默认为0
         - **RouteTableId** (str) - 路由表资源ID
         - **VPCId** (str) - 所属VPC的资源ID
@@ -1229,6 +1545,7 @@ class VPCClient(Client):
         - **RouteTableId** (str) - 路由表资源ID
         - **RouteTableType** (int) - 路由表类型。1为默认路由表，0为自定义路由表
         - **SubnetCount** (int) - 绑定该路由表的子网数量
+        - **SubnetIds** (list) - 绑定该路由表的子网
         - **Tag** (str) - 路由表所属业务组
         - **VPCId** (str) - 路由表所属的VPC资源ID
         - **VPCName** (str) - 路由表所属的VPC资源名称
@@ -1238,6 +1555,7 @@ class VPCClient(Client):
         - **AccountId** (int) - 项目ID信息
         - **DstAddr** (str) - 目的地址
         - **DstPort** (int) - 保留字段，暂未使用
+        - **InstanceType** (str) - 实例类型，枚举值：UHOST，云主机；UNI，虚拟网卡；PHOST，物理云主机
         - **NexthopId** (str) - 路由下一跳资源ID
         - **NexthopType** (str) - 路由表下一跳类型。LOCAL，本VPC内部通信路由；PUBLIC，公共服务路由；CNAT，外网路由；UDPN，跨域高速通道路由；HYBRIDGW，混合云路由；INSTANCE，实例路由；VNET，VPC联通路由；IPSEC VPN，指向VPN网关的路由。
         - **OriginAddr** (str) - 保留字段，暂未使用
@@ -1270,11 +1588,11 @@ class VPCClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **SubnetId** (str) - (Required) 子网Id
         - **VPCId** (str) - (Required) VPCId
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required)
         - **Ip** (str) - Ip
         - **Mac** (str) - Mac
 
@@ -1304,6 +1622,42 @@ class VPCClient(Client):
 
         resp = self.invoke("DescribeSecondaryIp", d, **kwargs)
         return apis.DescribeSecondaryIpResponseSchema().loads(resp)
+
+    def describe_snat_dnat_rule(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeSnatDnatRule - 获取基于NAT创建的内外网IP映射规则信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **EIP** (list) - 获取EIP对应的SnatDnatRule信息
+        - **NATGWId** (list) - 获取NAT上添加的所有SnatDnatRule信息
+
+        **Response**
+
+        - **DataSet** (list) - 见 **SnatDnatRuleInfo** 模型定义
+
+        **Response Model**
+
+        **SnatDnatRuleInfo**
+        - **EIP** (str) - EIP的IP地址
+        - **NATGWId** (str) - 映射所使用的NAT网关资源ID
+        - **PrivateIp** (str) - 内网IP地址
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeSnatDnatRuleRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeSnatDnatRule", d, **kwargs)
+        return apis.DescribeSnatDnatRuleResponseSchema().loads(resp)
 
     def describe_snat_rule(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1599,6 +1953,12 @@ class VPCClient(Client):
 
         **Response Model**
 
+        **NatGWWhitelistDataSet**
+        - **IfOpen** (int) - 白名单开关标记
+        - **NATGWId** (str) - NATGateWay Id
+        - **ObjectIPInfo** (list) - 见 **DescribeWhiteListResourceObjectIPInfo** 模型定义
+
+
         **DescribeWhiteListResourceObjectIPInfo**
         - **GwType** (str) - natgw字符串
         - **PrivateIP** (str) - 白名单资源的内网IP
@@ -1609,12 +1969,6 @@ class VPCClient(Client):
         - **SubResourceName** (str) - 资源绑定的虚拟网卡的实例名称
         - **SubResourceType** (str) - 资源绑定的虚拟网卡的类型
         - **VPCId** (str) - 白名单资源所属VPCId
-
-
-        **NatGWWhitelistDataSet**
-        - **IfOpen** (int) - 白名单开关标记
-        - **NATGWId** (str) - NATGateWay Id
-        - **ObjectIPInfo** (list) - 见 **DescribeWhiteListResourceObjectIPInfo** 模型定义
 
 
         """
@@ -1885,6 +2239,35 @@ class VPCClient(Client):
         resp = self.invoke("ModifyRouteRule", d, **kwargs)
         return apis.ModifyRouteRuleResponseSchema().loads(resp)
 
+    def move_secondary_ip_mac(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """MoveSecondaryIPMac - 把 Secondary IP 从旧 MAC 迁移到新 MAC
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Ip** (str) - (Required) Secondary IP
+        - **NewMac** (str) - (Required) 新 Mac。Secondary IP 迁移的目的 Mac
+        - **OldMac** (str) - (Required) 旧 Mac。Secondary IP 当前所绑定的 Mac
+        - **SubnetId** (str) - (Required) 子网 ID。IP/OldMac/NewMac 三者必须在同一子网
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.MoveSecondaryIPMacRequestSchema().dumps(d)
+
+        resp = self.invoke("MoveSecondaryIPMac", d, **kwargs)
+        return apis.MoveSecondaryIPMacResponseSchema().loads(resp)
+
     def release_vip(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """ReleaseVIP - 释放VIP资源
 
@@ -1945,9 +2328,9 @@ class VPCClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **DstIP** (str) - (Required) 目标IP。填写对饮的目标IP地址
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **DstIP** (str) - (Required) 目标IP。填写对应的目标IP地址
         - **DstPort** (str) - (Required) 目标端口。可填写固定端口，也可填写端口范围。支持的端口范围为1-65535
         - **NATGWId** (str) - (Required) NAT网关Id
         - **PolicyId** (str) - (Required) 转发策略Id
@@ -1978,10 +2361,10 @@ class VPCClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **NATGWId** (str) - (Required) NAT网关Id
-        - **SubnetworkIds** (list) - (Required) NAT网关绑定的子网Id
+        - **SubnetworkIds** (list) - NAT网关绑定的子网Id
 
         **Response**
 
