@@ -3,6 +3,29 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class StatusInfoSchema(schema.ResponseSchema):
+    """StatusInfo -"""
+
+    fields = {
+        "Message": fields.Str(required=False, load_from="Message"),
+        "StatusCode": fields.Str(required=False, load_from="StatusCode"),
+    }
+
+
+class IpsInfoSchema(schema.ResponseSchema):
+    """IpsInfo -"""
+
+    fields = {
+        "Gateway": fields.Str(required=False, load_from="Gateway"),
+        "Ip": fields.Str(required=False, load_from="Ip"),
+        "Mac": fields.Str(required=False, load_from="Mac"),
+        "Mask": fields.Str(required=False, load_from="Mask"),
+        "Status": StatusInfoSchema(),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+    }
+
+
 class IpInfoSchema(schema.ResponseSchema):
     """IpInfo -"""
 
@@ -34,6 +57,54 @@ class AssociationInfoSchema(schema.ResponseSchema):
         "AssociationId": fields.Str(required=True, load_from="AssociationId"),
         "CreateTime": fields.Int(required=True, load_from="CreateTime"),
         "SubnetworkId": fields.Str(required=True, load_from="SubnetworkId"),
+    }
+
+
+class NetworkInterfaceInfoSchema(schema.ResponseSchema):
+    """NetworkInterfaceInfo - 虚拟网卡信息"""
+
+    fields = {
+        "AttachInstanceId": fields.Str(
+            required=False, load_from="AttachInstanceId"
+        ),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "Default": fields.Bool(required=False, load_from="Default"),
+        "Gateway": fields.Str(required=False, load_from="Gateway"),
+        "InterfaceId": fields.Str(required=True, load_from="InterfaceId"),
+        "MacAddress": fields.Str(required=True, load_from="MacAddress"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Netmask": fields.Str(required=False, load_from="Netmask"),
+        "PrivateIpSet": fields.List(fields.Str()),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "Status": fields.Int(required=True, load_from="Status"),
+        "SubnetId": fields.Str(required=True, load_from="SubnetId"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "VPCId": fields.Str(required=True, load_from="VPCId"),
+    }
+
+
+class InstanceNetworkInterfaceSchema(schema.ResponseSchema):
+    """InstanceNetworkInterface - 实例绑定的虚拟网卡信息"""
+
+    fields = {
+        "AttachInstanceId": fields.Str(
+            required=False, load_from="AttachInstanceId"
+        ),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "Default": fields.Bool(required=False, load_from="Default"),
+        "EIPIdSet": fields.List(fields.Str()),
+        "FirewallIdSet": fields.List(fields.Str()),
+        "Gateway": fields.Str(required=False, load_from="Gateway"),
+        "InterfaceId": fields.Str(required=True, load_from="InterfaceId"),
+        "MacAddress": fields.Str(required=True, load_from="MacAddress"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Netmask": fields.Str(required=False, load_from="Netmask"),
+        "PrivateIpSet": fields.List(fields.Str()),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "Status": fields.Int(required=True, load_from="Status"),
+        "SubnetId": fields.Str(required=True, load_from="SubnetId"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "VPCId": fields.Str(required=True, load_from="VPCId"),
     }
 
 
@@ -75,6 +146,9 @@ class NatGatewayDataSetSchema(schema.ResponseSchema):
         "CreateTime": fields.Int(required=True, load_from="CreateTime"),
         "FirewallId": fields.Str(required=True, load_from="FirewallId"),
         "IPSet": fields.List(NatGatewayIPSetSchema()),
+        "IsSnatpoolEnabled": fields.Str(
+            required=True, load_from="IsSnatpoolEnabled"
+        ),
         "NATGWId": fields.Str(required=True, load_from="NATGWId"),
         "NATGWName": fields.Str(required=True, load_from="NATGWName"),
         "PolicyId": fields.List(fields.Str()),
@@ -82,6 +156,7 @@ class NatGatewayDataSetSchema(schema.ResponseSchema):
         "SubnetSet": fields.List(NatGatewaySubnetSetSchema()),
         "Tag": fields.Str(required=True, load_from="Tag"),
         "VPCId": fields.Str(required=True, load_from="VPCId"),
+        "VPCName": fields.Str(required=True, load_from="VPCName"),
     }
 
 
@@ -156,6 +231,55 @@ class AclInfoSchema(schema.ResponseSchema):
     }
 
 
+class UNIQuotaInfoSchema(schema.ResponseSchema):
+    """UNIQuotaInfo - 虚拟网卡内网IP配额使用情况"""
+
+    fields = {
+        "PrivateIpCount": fields.Int(
+            required=False, load_from="PrivateIpCount"
+        ),
+        "PrivateIpQuota": fields.Int(
+            required=False, load_from="PrivateIpQuota"
+        ),
+    }
+
+
+class UNIIpInfoSchema(schema.ResponseSchema):
+    """UNIIpInfo - 虚拟网卡内网IP信息"""
+
+    fields = {
+        "IpAddr": fields.List(fields.Str()),
+        "IpType": fields.Str(required=False, load_from="IpType"),
+    }
+
+
+class NetworkInterfaceSchema(schema.ResponseSchema):
+    """NetworkInterface - 虚拟网卡信息"""
+
+    fields = {
+        "AttachInstanceId": fields.Str(
+            required=False, load_from="AttachInstanceId"
+        ),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "Default": fields.Bool(required=False, load_from="Default"),
+        "EIPIdSet": fields.List(fields.Str()),
+        "FirewallIdSet": fields.List(fields.Str()),
+        "Gateway": fields.Str(required=False, load_from="Gateway"),
+        "InterfaceId": fields.Str(required=True, load_from="InterfaceId"),
+        "MacAddress": fields.Str(required=True, load_from="MacAddress"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Netmask": fields.Str(required=False, load_from="Netmask"),
+        "PrivateIp": fields.List(UNIIpInfoSchema()),
+        "PrivateIpLimit": UNIQuotaInfoSchema(),
+        "PrivateIpSet": fields.List(fields.Str()),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "Status": fields.Int(required=True, load_from="Status"),
+        "SubnetId": fields.Str(required=True, load_from="SubnetId"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "VPCId": fields.Str(required=True, load_from="VPCId"),
+    }
+
+
 class RouteRuleInfoSchema(schema.ResponseSchema):
     """RouteRuleInfo - 路由规则信息"""
 
@@ -163,6 +287,7 @@ class RouteRuleInfoSchema(schema.ResponseSchema):
         "AccountId": fields.Int(required=False, load_from="AccountId"),
         "DstAddr": fields.Str(required=False, load_from="DstAddr"),
         "DstPort": fields.Int(required=False, load_from="DstPort"),
+        "InstanceType": fields.Str(required=False, load_from="InstanceType"),
         "NexthopId": fields.Str(required=False, load_from="NexthopId"),
         "NexthopType": fields.Str(required=False, load_from="NexthopType"),
         "OriginAddr": fields.Str(required=False, load_from="OriginAddr"),
@@ -189,9 +314,20 @@ class RouteTableInfoSchema(schema.ResponseSchema):
             required=False, load_from="RouteTableType"
         ),
         "SubnetCount": fields.Int(required=False, load_from="SubnetCount"),
+        "SubnetIds": fields.List(fields.Str()),
         "Tag": fields.Str(required=False, load_from="Tag"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
         "VPCName": fields.Str(required=False, load_from="VPCName"),
+    }
+
+
+class SnatDnatRuleInfoSchema(schema.ResponseSchema):
+    """SnatDnatRuleInfo -"""
+
+    fields = {
+        "EIP": fields.Str(required=False, load_from="EIP"),
+        "NATGWId": fields.Str(required=False, load_from="NATGWId"),
+        "PrivateIp": fields.Str(required=False, load_from="PrivateIp"),
     }
 
 

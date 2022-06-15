@@ -83,6 +83,39 @@ class AddWhiteListResourceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: AllocateBatchSecondaryIp
+
+批量申请虚拟网卡辅助IP
+"""
+
+
+class AllocateBatchSecondaryIpRequestSchema(schema.RequestSchema):
+    """AllocateBatchSecondaryIp - 批量申请虚拟网卡辅助IP"""
+
+    fields = {
+        "Count": fields.Int(required=False, dump_to="Count"),
+        "Ip": fields.List(fields.Str()),
+        "Mac": fields.Str(required=True, dump_to="Mac"),
+        "ObjectId": fields.Str(required=True, dump_to="ObjectId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
+        "VPCId": fields.Str(required=False, dump_to="VPCId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class AllocateBatchSecondaryIpResponseSchema(schema.ResponseSchema):
+    """AllocateBatchSecondaryIp - 批量申请虚拟网卡辅助IP"""
+
+    fields = {
+        "IpsInfo": fields.List(
+            models.IpsInfoSchema(), required=True, load_from="IpsInfo"
+        ),
+    }
+
+
+"""
 API: AllocateSecondaryIp
 
 分配ip（用于uk8s使用）
@@ -170,6 +203,30 @@ class AssociateRouteTableRequestSchema(schema.RequestSchema):
 
 class AssociateRouteTableResponseSchema(schema.ResponseSchema):
     """AssociateRouteTable - 绑定子网的路由表"""
+
+    fields = {}
+
+
+"""
+API: AttachNetworkInterface
+
+绑定网卡到云主机
+"""
+
+
+class AttachNetworkInterfaceRequestSchema(schema.RequestSchema):
+    """AttachNetworkInterface - 绑定网卡到云主机"""
+
+    fields = {
+        "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
+        "InterfaceId": fields.Str(required=True, dump_to="InterfaceId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class AttachNetworkInterfaceResponseSchema(schema.ResponseSchema):
+    """AttachNetworkInterface - 绑定网卡到云主机"""
 
     fields = {}
 
@@ -351,6 +408,39 @@ class CreateNetworkAclEntryResponseSchema(schema.ResponseSchema):
 
 
 """
+API: CreateNetworkInterface
+
+创建虚拟网卡
+"""
+
+
+class CreateNetworkInterfaceRequestSchema(schema.RequestSchema):
+    """CreateNetworkInterface - 创建虚拟网卡"""
+
+    fields = {
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "PrivateIp": fields.List(fields.Str()),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "SecurityGroupId": fields.Str(
+            required=False, dump_to="SecurityGroupId"
+        ),
+        "SubnetId": fields.Str(required=True, dump_to="SubnetId"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "VPCId": fields.Str(required=True, dump_to="VPCId"),
+    }
+
+
+class CreateNetworkInterfaceResponseSchema(schema.ResponseSchema):
+    """CreateNetworkInterface - 创建虚拟网卡"""
+
+    fields = {
+        "NetworkInterface": models.NetworkInterfaceInfoSchema(),
+    }
+
+
+"""
 API: CreateRouteTable
 
 创建路由表
@@ -376,6 +466,31 @@ class CreateRouteTableResponseSchema(schema.ResponseSchema):
     fields = {
         "RouteTableId": fields.Str(required=False, load_from="RouteTableId"),
     }
+
+
+"""
+API: CreateSnatDnatRule
+
+调用接口后会自动创建内外网IP之间的SNAT和DNAT规则，支持TCP、UDP协议全端口
+"""
+
+
+class CreateSnatDnatRuleRequestSchema(schema.RequestSchema):
+    """CreateSnatDnatRule - 调用接口后会自动创建内外网IP之间的SNAT和DNAT规则，支持TCP、UDP协议全端口"""
+
+    fields = {
+        "EIP": fields.List(fields.Str()),
+        "NATGWId": fields.Str(required=True, dump_to="NATGWId"),
+        "PrivateIp": fields.List(fields.Str()),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class CreateSnatDnatRuleResponseSchema(schema.ResponseSchema):
+    """CreateSnatDnatRule - 调用接口后会自动创建内外网IP之间的SNAT和DNAT规则，支持TCP、UDP协议全端口"""
+
+    fields = {}
 
 
 """
@@ -636,6 +751,31 @@ class DeleteSecondaryIpResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DeleteSnatDnatRule
+
+删除NAT创建内外网IP映射规则
+"""
+
+
+class DeleteSnatDnatRuleRequestSchema(schema.RequestSchema):
+    """DeleteSnatDnatRule - 删除NAT创建内外网IP映射规则"""
+
+    fields = {
+        "EIP": fields.List(fields.Str()),
+        "NATGWId": fields.Str(required=True, dump_to="NATGWId"),
+        "PrivateIp": fields.List(fields.Str()),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DeleteSnatDnatRuleResponseSchema(schema.ResponseSchema):
+    """DeleteSnatDnatRule - 删除NAT创建内外网IP映射规则"""
+
+    fields = {}
+
+
+"""
 API: DeleteSnatRule
 
 删除指定的出口规则（SNAT规则）
@@ -756,6 +896,37 @@ class DeleteWhiteListResourceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeInstanceNetworkInterface
+
+展示云主机绑定的网卡信息
+"""
+
+
+class DescribeInstanceNetworkInterfaceRequestSchema(schema.RequestSchema):
+    """DescribeInstanceNetworkInterface - 展示云主机绑定的网卡信息"""
+
+    fields = {
+        "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DescribeInstanceNetworkInterfaceResponseSchema(schema.ResponseSchema):
+    """DescribeInstanceNetworkInterface - 展示云主机绑定的网卡信息"""
+
+    fields = {
+        "NetworkInterfaceSet": fields.List(
+            models.InstanceNetworkInterfaceSchema(),
+            required=True,
+            load_from="NetworkInterfaceSet",
+        ),
+    }
+
+
+"""
 API: DescribeNATGW
 
 获取NAT网关信息
@@ -779,7 +950,9 @@ class DescribeNATGWResponseSchema(schema.ResponseSchema):
 
     fields = {
         "DataSet": fields.List(
-            models.NatGatewayDataSetSchema(), required=True, load_from="DataSet"
+            models.NatGatewayDataSetSchema(),
+            required=False,
+            load_from="DataSet",
         ),
         "TotalCount": fields.Int(required=True, load_from="TotalCount"),
     }
@@ -932,6 +1105,43 @@ class DescribeNetworkAclEntryResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeNetworkInterface
+
+展示虚拟网卡信息
+"""
+
+
+class DescribeNetworkInterfaceRequestSchema(schema.RequestSchema):
+    """DescribeNetworkInterface - 展示虚拟网卡信息"""
+
+    fields = {
+        "InterfaceId": fields.List(fields.Str()),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "NoRecycled": fields.Bool(required=False, dump_to="NoRecycled"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "OnlyDefault": fields.Bool(required=False, dump_to="OnlyDefault"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "VPCId": fields.Str(required=False, dump_to="VPCId"),
+    }
+
+
+class DescribeNetworkInterfaceResponseSchema(schema.ResponseSchema):
+    """DescribeNetworkInterface - 展示虚拟网卡信息"""
+
+    fields = {
+        "NetworkInterfaceSet": fields.List(
+            models.NetworkInterfaceSchema(),
+            required=True,
+            load_from="NetworkInterfaceSet",
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
 API: DescribeRouteTable
 
 获取路由表详细信息(包括路由策略)
@@ -942,8 +1152,10 @@ class DescribeRouteTableRequestSchema(schema.RequestSchema):
     """DescribeRouteTable - 获取路由表详细信息(包括路由策略)"""
 
     fields = {
+        "Brief": fields.Bool(required=False, dump_to="Brief"),
         "BusinessId": fields.Str(required=False, dump_to="BusinessId"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
+        "LongId": fields.Str(required=False, dump_to="LongId"),
         "OffSet": fields.Int(required=False, dump_to="OffSet"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
@@ -982,7 +1194,9 @@ class DescribeSecondaryIpRequestSchema(schema.RequestSchema):
         "Region": fields.Str(required=True, dump_to="Region"),
         "SubnetId": fields.Str(required=True, dump_to="SubnetId"),
         "VPCId": fields.Str(required=True, dump_to="VPCId"),
-        "Zone": fields.Str(required=True, dump_to="Zone"),
+        "Zone": fields.Str(
+            required=True, dump_to="Zone"
+        ),  # Deprecated, will be removed at 1.0
     }
 
 
@@ -992,6 +1206,34 @@ class DescribeSecondaryIpResponseSchema(schema.ResponseSchema):
     fields = {
         "DataSet": fields.List(
             models.IpInfoSchema(), required=False, load_from="DataSet"
+        ),
+    }
+
+
+"""
+API: DescribeSnatDnatRule
+
+获取基于NAT创建的内外网IP映射规则信息
+"""
+
+
+class DescribeSnatDnatRuleRequestSchema(schema.RequestSchema):
+    """DescribeSnatDnatRule - 获取基于NAT创建的内外网IP映射规则信息"""
+
+    fields = {
+        "EIP": fields.List(fields.Str()),
+        "NATGWId": fields.List(fields.Str()),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DescribeSnatDnatRuleResponseSchema(schema.ResponseSchema):
+    """DescribeSnatDnatRule - 获取基于NAT创建的内外网IP映射规则信息"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.SnatDnatRuleInfoSchema(), required=False, load_from="DataSet"
         ),
     }
 
@@ -1426,6 +1668,32 @@ class ModifyRouteRuleRequestSchema(schema.RequestSchema):
 
 class ModifyRouteRuleResponseSchema(schema.ResponseSchema):
     """ModifyRouteRule - 路由策略增、删、改"""
+
+    fields = {}
+
+
+"""
+API: MoveSecondaryIPMac
+
+把 Secondary IP 从旧 MAC 迁移到新 MAC
+"""
+
+
+class MoveSecondaryIPMacRequestSchema(schema.RequestSchema):
+    """MoveSecondaryIPMac - 把 Secondary IP 从旧 MAC 迁移到新 MAC"""
+
+    fields = {
+        "Ip": fields.Str(required=True, dump_to="Ip"),
+        "NewMac": fields.Str(required=True, dump_to="NewMac"),
+        "OldMac": fields.Str(required=True, dump_to="OldMac"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SubnetId": fields.Str(required=True, dump_to="SubnetId"),
+    }
+
+
+class MoveSecondaryIPMacResponseSchema(schema.ResponseSchema):
+    """MoveSecondaryIPMac - 把 Secondary IP 从旧 MAC 迁移到新 MAC"""
 
     fields = {}
 
