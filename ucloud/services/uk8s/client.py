@@ -351,9 +351,10 @@ class UK8SClient(Client):
         - **EtcdCert** (str) - 集群etcd服务证书
         - **EtcdKey** (str) - 集群etcd服务密钥
         - **ExternalApiServer** (str) - 集群外部apiserver地址
-        - **KubeProxy** (dict) - kube-proxy配置
+        - **KubeProxy** (dict) - 见 **KubeProxy** 模型定义
         - **MasterCount** (int) - Master 节点数量
         - **MasterList** (list) - 见 **UhostInfo** 模型定义
+        - **MasterResourceStatus** (str) - Master配置预警：Normal正常；Warning 需要升级；Error    需要紧急升级；
         - **NodeCount** (int) - Node节点数量
         - **NodeList** (list) - 见 **UhostInfo** 模型定义
         - **PodCIDR** (str) - Pod网段
@@ -399,6 +400,10 @@ class UK8SClient(Client):
         - **IP** (str) - IP地址
         - **IPId** (str) - IP资源ID (内网IP无对应的资源ID)
         - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
+
+
+        **KubeProxy**
+        - **Mode** (str) - KubeProxy模式，枚举值为[ipvs,iptables]
 
 
         """
@@ -646,7 +651,6 @@ class UK8SClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterId** (str) - (Required) 集群ID
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -695,7 +699,6 @@ class UK8SClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterId** (str) - (Required) 集群id
         - **NodeGroupId** (str) - (Required) 节点池Id
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 

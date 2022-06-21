@@ -89,6 +89,126 @@ class PathXSSLSetSchema(schema.ResponseSchema):
     }
 
 
+class ForwardAreaSchema(schema.ResponseSchema):
+    """ForwardArea - 全地域加速源站区域"""
+
+    fields = {
+        "Area": fields.Str(required=True, load_from="Area"),
+        "AreaCode": fields.Str(required=True, load_from="AreaCode"),
+        "ContinentCode": fields.Str(required=True, load_from="ContinentCode"),
+        "CountryCode": fields.Str(required=True, load_from="CountryCode"),
+        "FlagEmoji": fields.Str(required=True, load_from="FlagEmoji"),
+        "FlagUnicode": fields.Str(required=True, load_from="FlagUnicode"),
+    }
+
+
+class SrcAreaInfoSchema(schema.ResponseSchema):
+    """SrcAreaInfo - 接入地域信息"""
+
+    fields = {
+        "Area": fields.Str(required=True, load_from="Area"),
+        "AreaCode": fields.Str(required=True, load_from="AreaCode"),
+        "FlagEmoji": fields.Str(required=True, load_from="FlagEmoji"),
+        "FlagUnicode": fields.Str(required=True, load_from="FlagUnicode"),
+    }
+
+
+class AccelerationAreaInfosSchema(schema.ResponseSchema):
+    """AccelerationAreaInfos - 加速大区信息"""
+
+    fields = {
+        "AccelerationArea": fields.Str(
+            required=True, load_from="AccelerationArea"
+        ),
+        "AccelerationNodes": fields.List(SrcAreaInfoSchema()),
+    }
+
+
+class ForwardTaskSchema(schema.ResponseSchema):
+    """ForwardTask - 全球统一接入转发端口任务信息"""
+
+    fields = {
+        "Port": fields.Int(required=True, load_from="Port"),
+        "Protocol": fields.Str(required=True, load_from="Protocol"),
+        "RSPort": fields.Int(required=True, load_from="RSPort"),
+    }
+
+
+class OutPublicIpInfoSchema(schema.ResponseSchema):
+    """OutPublicIpInfo - 线路回源IP信息"""
+
+    fields = {
+        "Area": fields.Str(required=False, load_from="Area"),
+        "IP": fields.Str(required=False, load_from="IP"),
+    }
+
+
+class ForwardInfoSchema(schema.ResponseSchema):
+    """ForwardInfo - 全球统一接入加速实例配置信息"""
+
+    fields = {
+        "AccelerationArea": fields.Str(
+            required=True, load_from="AccelerationArea"
+        ),
+        "AccelerationAreaInfos": fields.List(AccelerationAreaInfosSchema()),
+        "AccelerationAreaName": fields.Str(
+            required=True, load_from="AccelerationAreaName"
+        ),
+        "Bandwidth": fields.Int(required=True, load_from="Bandwidth"),
+        "CName": fields.Str(required=True, load_from="CName"),
+        "ChargeType": fields.Str(required=True, load_from="ChargeType"),
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "Domain": fields.Str(required=False, load_from="Domain"),
+        "EgressIpList": fields.List(OutPublicIpInfoSchema()),
+        "ExpireTime": fields.Int(required=True, load_from="ExpireTime"),
+        "IPList": fields.List(fields.Str()),
+        "InstanceId": fields.Str(required=True, load_from="InstanceId"),
+        "Name": fields.Str(required=True, load_from="Name"),
+        "OriginArea": fields.Str(required=True, load_from="OriginArea"),
+        "OriginAreaCode": fields.Str(required=True, load_from="OriginAreaCode"),
+        "PortSets": fields.List(ForwardTaskSchema()),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+    }
+
+
+class NodeDelaysSchema(schema.ResponseSchema):
+    """NodeDelays - 全地域加速各个区域加速延迟情况"""
+
+    fields = {
+        "Area": fields.Str(required=True, load_from="Area"),
+        "AreaCode": fields.Str(required=True, load_from="AreaCode"),
+        "CountryCode": fields.Str(required=True, load_from="CountryCode"),
+        "FlagEmoji": fields.Str(required=True, load_from="FlagEmoji"),
+        "FlagUnicode": fields.Str(required=True, load_from="FlagUnicode"),
+        "Latency": fields.Float(required=True, load_from="Latency"),
+        "LatencyInternet": fields.Float(
+            required=True, load_from="LatencyInternet"
+        ),
+        "LatencyOptimization": fields.Float(
+            required=True, load_from="LatencyOptimization"
+        ),
+        "Loss": fields.Float(required=True, load_from="Loss"),
+        "LossInternet": fields.Float(required=True, load_from="LossInternet"),
+        "LossOptimization": fields.Float(
+            required=True, load_from="LossOptimization"
+        ),
+    }
+
+
+class AccelerationInfoSchema(schema.ResponseSchema):
+    """AccelerationInfo - 加速提升信息"""
+
+    fields = {
+        "AccelerationArea": fields.Str(
+            required=True, load_from="AccelerationArea"
+        ),
+        "AccelerationName": fields.Str(
+            required=True, load_from="AccelerationName"
+        ),
+        "NodeInfo": fields.List(NodeDelaysSchema()),
+    }
+
+
 class UPathSetSchema(schema.ResponseSchema):
     """UPathSet - uga关联的upath信息"""
 
@@ -104,18 +224,6 @@ class UPathSetSchema(schema.ResponseSchema):
     }
 
 
-class UGAL7ForwarderSchema(schema.ResponseSchema):
-    """UGAL7Forwarder - UGA实例 7层转发器信息"""
-
-    fields = {
-        "Port": fields.Int(required=True, load_from="Port"),
-        "Protocol": fields.Str(required=True, load_from="Protocol"),
-        "RSPort": fields.Int(required=True, load_from="RSPort"),
-        "SSLId": fields.Str(required=False, load_from="SSLId"),
-        "SSLName": fields.Str(required=False, load_from="SSLName"),
-    }
-
-
 class UGAATaskSchema(schema.ResponseSchema):
     """UGAATask - 用户在UGAA实例下配置的多端口任务"""
 
@@ -125,12 +233,15 @@ class UGAATaskSchema(schema.ResponseSchema):
     }
 
 
-class OutPublicIpInfoSchema(schema.ResponseSchema):
-    """OutPublicIpInfo - 线路出口IP信息"""
+class UGAL7ForwarderSchema(schema.ResponseSchema):
+    """UGAL7Forwarder - UGA实例 7层转发器信息"""
 
     fields = {
-        "Area": fields.Str(required=False, load_from="Area"),
-        "IP": fields.Str(required=False, load_from="IP"),
+        "Port": fields.Int(required=True, load_from="Port"),
+        "Protocol": fields.Str(required=True, load_from="Protocol"),
+        "RSPort": fields.Int(required=True, load_from="RSPort"),
+        "SSLId": fields.Str(required=False, load_from="SSLId"),
+        "SSLName": fields.Str(required=False, load_from="SSLName"),
     }
 
 
@@ -226,4 +337,42 @@ class MetricPeriodSchema(schema.ResponseSchema):
         "NetworkInUsage": fields.List(MatricPointSchema()),
         "NetworkOut": fields.List(MatricPointSchema()),
         "NetworkOutUsage": fields.List(MatricPointSchema()),
+    }
+
+
+class UGA3MetricSchema(schema.ResponseSchema):
+    """UGA3Metric - 一段时间内的监控数据"""
+
+    fields = {
+        "ConnectCount": fields.List(MatricPointSchema()),
+        "ConnectCountSubline": fields.List(MatricPointSchema()),
+        "Delay": fields.List(MatricPointSchema()),
+        "DelayPromote": fields.List(MatricPointSchema()),
+        "DelayPromoteSubline": fields.List(MatricPointSchema()),
+        "DelaySubline": fields.List(MatricPointSchema()),
+        "NetworkIn": fields.List(MatricPointSchema()),
+        "NetworkInSubline": fields.List(MatricPointSchema()),
+        "NetworkInUsage": fields.List(MatricPointSchema()),
+        "NetworkOut": fields.List(MatricPointSchema()),
+        "NetworkOutSubline": fields.List(MatricPointSchema()),
+        "NetworkOutUsage": fields.List(MatricPointSchema()),
+    }
+
+
+class UGA3PriceSchema(schema.ResponseSchema):
+    """UGA3Price -"""
+
+    fields = {
+        "AccelerationArea": fields.Str(
+            required=True, load_from="AccelerationArea"
+        ),
+        "AccelerationAreaName": fields.Str(
+            required=True, load_from="AccelerationAreaName"
+        ),
+        "AccelerationBandwidthPrice": fields.Float(
+            required=True, load_from="AccelerationBandwidthPrice"
+        ),
+        "AccelerationForwarderPrice": fields.Float(
+            required=True, load_from="AccelerationForwarderPrice"
+        ),
     }

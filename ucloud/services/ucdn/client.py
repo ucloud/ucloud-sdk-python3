@@ -596,15 +596,15 @@ class UCDNClient(Client):
 
         **Response Model**
 
+        **RefererStatistics**
+        - **Date** (str) - 日期
+        - **RefererList** (list) - 见 **RefererList** 模型定义
+
+
         **RefererList**
         - **Percent** (float) - 次数占比，单位%
         - **Referer** (str) - 客户端请求的referer
         - **RequestTimes** (int) - 次数
-
-
-        **RefererStatistics**
-        - **Date** (str) - 日期
-        - **RefererList** (list) - 见 **RefererList** 模型定义
 
 
         """
@@ -637,16 +637,16 @@ class UCDNClient(Client):
 
         **Response Model**
 
+        **UrlStatistics**
+        - **Date** (str) - 日期
+        - **UrlList** (list) - 见 **DownloadStatisticInfo** 模型定义
+
+
         **DownloadStatisticInfo**
         - **DownloadTimes** (int) - 下载次数
         - **Percent** (float) - 流量占比，单位%
         - **Traffic** (float) - 流量（单位为G）
         - **Url** (str) - 下载链接的url
-
-
-        **UrlStatistics**
-        - **Date** (str) - 日期
-        - **UrlList** (list) - 见 **DownloadStatisticInfo** 模型定义
 
 
         """
@@ -1046,6 +1046,45 @@ class UCDNClient(Client):
 
         resp = self.invoke("GetUcdnDomainLog", d, **kwargs)
         return apis.GetUcdnDomainLogResponseSchema().loads(resp)
+
+    def get_ucdn_domain_log_v2(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUcdnDomainLogV2 - 获取域名5分钟日志
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **BeginTime** (int) - (Required) 查询的起始时间，格式为Unix Timestamp
+        - **EndTime** (int) - (Required) 查询的结束时间，格式为Unix Timestamp
+        - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
+
+        **Response**
+
+        - **DomainLogSet** (list) - 见 **DomanLogList** 模型定义
+
+        **Response Model**
+
+        **LogInfo**
+        - **LogTime** (int) - Unix时间戳
+        - **LogUrl** (str) - 日志url地址
+
+
+        **DomanLogList**
+        - **Domain** (str) - 域名
+        - **LogList** (list) - 见 **LogInfo** 模型定义
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUcdnDomainLogV2RequestSchema().dumps(d)
+
+        resp = self.invoke("GetUcdnDomainLogV2", d, **kwargs)
+        return apis.GetUcdnDomainLogV2ResponseSchema().loads(resp)
 
     def get_ucdn_domain_origin_http_code(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1640,8 +1679,8 @@ class UCDNClient(Client):
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Type** (str) - (Required) 刷新类型，file代表文件刷新，dir 代表路径刷新
-        - **UrlList** (list) - (Required) 需要刷新的URL，n 从自然数0开始，刷新多个URL列表时，一次最多提交30个。必须以”http://域名/”开始。目录要以”/”结尾， 如刷新目录a下所有文件，格式为：http://abc.ucloud.cn/a/；如刷新文件目录a下面img.png文件， 格式为http://abc.ucloud.cn/a/img.png。请正确提交需要刷新的域名
+        - **Type** (str) - (Required) 刷新类型，file代表文件刷新，dir 代表路径刷新，m3u8带表m3u8刷新
+        - **UrlList** (list) - (Required) 需要刷新的URL，n 从自然数0开始，刷新多个URL列表时，一次最多提交100个。必须以”http://域名/”开始。目录要以”/”结尾， 如刷新目录a下所有文件，格式为：http://abc.ucloud.cn/a/；如刷新文件目录a下面img.png文件， 格式为http://abc.ucloud.cn/a/img.png。请正确提交需要刷新的域名
 
         **Response**
 

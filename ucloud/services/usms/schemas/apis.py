@@ -54,6 +54,7 @@ class CreateUSMSTemplateRequestSchema(schema.RequestSchema):
     """CreateUSMSTemplate - 调用接口CreateUSMSTemplate申请短信模板"""
 
     fields = {
+        "Instruction": fields.Str(required=False, dump_to="Instruction"),
         "International": fields.Bool(required=False, dump_to="International"),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "Purpose": fields.Int(required=True, dump_to="Purpose"),
@@ -235,13 +236,11 @@ class SendBatchUSMSMessageResponseSchema(schema.ResponseSchema):
     """SendBatchUSMSMessage - 调用SendBatchUSMSMessage接口批量发送短信"""
 
     fields = {
-        "Action": fields.Str(required=True, load_from="Action"),
         "FailContent": fields.List(
             models.BatchInfoSchema(), required=False, load_from="FailContent"
         ),
         "Message": fields.Str(required=True, load_from="Message"),
         "ReqUuid": fields.Str(required=False, load_from="ReqUuid"),
-        "RetCode": fields.Int(required=True, load_from="RetCode"),
         "SessionNo": fields.Str(required=False, load_from="SessionNo"),
         "SuccessCount": fields.Int(required=False, load_from="SuccessCount"),
     }
@@ -329,6 +328,7 @@ class UpdateUSMSTemplateRequestSchema(schema.RequestSchema):
     """UpdateUSMSTemplate - 调用接口UpdateUSMSTemplate修改未通过审核的短信模板，并重新提交审核"""
 
     fields = {
+        "Instruction": fields.Str(required=False, dump_to="Instruction"),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "Region": fields.Str(
             required=False, dump_to="Region"

@@ -267,16 +267,6 @@ class BandwidthTrafficInfoSchema(schema.ResponseSchema):
     }
 
 
-class CacheKeyInfoSchema(schema.ResponseSchema):
-    """CacheKeyInfo - 忽略参数缓存配置"""
-
-    fields = {
-        "Ignore": fields.Bool(required=False, load_from="Ignore"),
-        "PathPattern": fields.Str(required=False, load_from="PathPattern"),
-        "QueryString": fields.Str(required=False, load_from="QueryString"),
-    }
-
-
 class ReferConfSchema(schema.ResponseSchema):
     """ReferConf - refer配置"""
 
@@ -287,14 +277,22 @@ class ReferConfSchema(schema.ResponseSchema):
     }
 
 
-class CacheAllConfigSchema(schema.ResponseSchema):
-    """CacheAllConfig - 缓存相关的配置"""
+class CacheKeyInfoSchema(schema.ResponseSchema):
+    """CacheKeyInfo - 忽略参数缓存配置"""
 
     fields = {
-        "CacheHost": fields.Str(required=False, load_from="CacheHost"),
-        "CacheKeyList": fields.List(CacheKeyInfoSchema()),
-        "CacheList": fields.List(CacheConfSchema()),
-        "HttpCodeCacheList": fields.List(CacheConfSchema()),
+        "Ignore": fields.Bool(required=False, load_from="Ignore"),
+        "PathPattern": fields.Str(required=False, load_from="PathPattern"),
+        "QueryString": fields.Str(required=False, load_from="QueryString"),
+    }
+
+
+class AccessControlConfSchema(schema.ResponseSchema):
+    """AccessControlConf - 访问控制配置参数"""
+
+    fields = {
+        "IpBlackList": fields.List(fields.Str()),
+        "ReferConf": ReferConfSchema(),
     }
 
 
@@ -337,12 +335,14 @@ class OriginConfSchema(schema.ResponseSchema):
     }
 
 
-class AccessControlConfSchema(schema.ResponseSchema):
-    """AccessControlConf - 访问控制配置参数"""
+class CacheAllConfigSchema(schema.ResponseSchema):
+    """CacheAllConfig - 缓存相关的配置"""
 
     fields = {
-        "IpBlackList": fields.List(fields.Str()),
-        "ReferConf": ReferConfSchema(),
+        "CacheHost": fields.Str(required=False, load_from="CacheHost"),
+        "CacheKeyList": fields.List(CacheKeyInfoSchema()),
+        "CacheList": fields.List(CacheConfSchema()),
+        "HttpCodeCacheList": fields.List(CacheConfSchema()),
     }
 
 
@@ -423,6 +423,24 @@ class LogSetListSchema(schema.ResponseSchema):
     fields = {
         "Domain": fields.Str(required=False, load_from="Domain"),
         "Logs": fields.List(LogSetInfoSchema()),
+    }
+
+
+class LogInfoSchema(schema.ResponseSchema):
+    """LogInfo - 日志信息"""
+
+    fields = {
+        "LogTime": fields.Int(required=True, load_from="LogTime"),
+        "LogUrl": fields.Str(required=True, load_from="LogUrl"),
+    }
+
+
+class DomanLogListSchema(schema.ResponseSchema):
+    """DomanLogList - 域名日志列表"""
+
+    fields = {
+        "Domain": fields.Str(required=False, load_from="Domain"),
+        "LogList": fields.List(LogInfoSchema()),
     }
 
 

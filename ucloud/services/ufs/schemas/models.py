@@ -25,3 +25,28 @@ class UFSVolumeInfo2Schema(schema.ResponseSchema):
         "VolumeId": fields.Str(required=True, load_from="VolumeId"),
         "VolumeName": fields.Str(required=True, load_from="VolumeName"),
     }
+
+
+class MountPointInfoSchema(schema.ResponseSchema):
+    """MountPointInfo - 挂载点信息"""
+
+    fields = {
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "MountPointIp": fields.Str(required=True, load_from="MountPointIp"),
+        "MountPointName": fields.Str(required=True, load_from="MountPointName"),
+        "SubnetDescription": fields.Str(
+            required=True, load_from="SubnetDescription"
+        ),
+        "SubnetId": fields.Str(required=True, load_from="SubnetId"),
+        "VpcId": fields.Str(required=True, load_from="VpcId"),
+    }
+
+
+class UFSPriceDataSetSchema(schema.ResponseSchema):
+    """UFSPriceDataSet - ufs 价格信息"""
+
+    fields = {
+        "ChargeName": fields.Str(required=False, load_from="ChargeName"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "Price": fields.Float(required=False, load_from="Price"),
+    }

@@ -128,11 +128,6 @@ class VPCClient(Client):
 
         **Response Model**
 
-        **StatusInfo**
-        - **Message** (str) - IP分配失败原因
-        - **StatusCode** (str) - 枚举值：Succeeded，Failed
-
-
         **IpsInfo**
         - **Gateway** (str) - 网关
         - **Ip** (str) - 内网IP地址
@@ -141,6 +136,11 @@ class VPCClient(Client):
         - **Status** (dict) - 见 **StatusInfo** 模型定义
         - **SubnetId** (str) - 子网资源ID
         - **VPCId** (str) - VPC资源ID
+
+
+        **StatusInfo**
+        - **Message** (str) - IP分配失败原因
+        - **StatusCode** (str) - 枚举值：Succeeded，Failed
 
 
         """
@@ -1471,16 +1471,6 @@ class VPCClient(Client):
 
         **Response Model**
 
-        **UNIQuotaInfo**
-        - **PrivateIpCount** (int) - 网卡拥有的内网IP数量
-        - **PrivateIpQuota** (int) - 网卡内网IP配额
-
-
-        **UNIIpInfo**
-        - **IpAddr** (list) - ip 地址
-        - **IpType** (str) - ip类型 SecondaryIp/PrimaryIp
-
-
         **NetworkInterface**
         - **AttachInstanceId** (str) - 绑定实例资源ID
         - **CreateTime** (int) - 创建时间
@@ -1500,6 +1490,16 @@ class VPCClient(Client):
         - **SubnetId** (str) - 所属子网
         - **Tag** (str) - 业务组
         - **VPCId** (str) - 所属VPC
+
+
+        **UNIIpInfo**
+        - **IpAddr** (list) - ip 地址
+        - **IpType** (str) - ip类型 SecondaryIp/PrimaryIp
+
+
+        **UNIQuotaInfo**
+        - **PrivateIpCount** (int) - 网卡拥有的内网IP数量
+        - **PrivateIpQuota** (int) - 网卡内网IP配额
 
 
         """

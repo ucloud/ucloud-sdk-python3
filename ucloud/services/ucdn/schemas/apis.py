@@ -675,6 +675,34 @@ class GetUcdnDomainLogResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetUcdnDomainLogV2
+
+获取域名5分钟日志
+"""
+
+
+class GetUcdnDomainLogV2RequestSchema(schema.RequestSchema):
+    """GetUcdnDomainLogV2 - 获取域名5分钟日志"""
+
+    fields = {
+        "BeginTime": fields.Int(required=True, dump_to="BeginTime"),
+        "DomainId": fields.List(fields.Str()),
+        "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+    }
+
+
+class GetUcdnDomainLogV2ResponseSchema(schema.ResponseSchema):
+    """GetUcdnDomainLogV2 - 获取域名5分钟日志"""
+
+    fields = {
+        "DomainLogSet": fields.List(
+            models.DomanLogListSchema(), required=True, load_from="DomainLogSet"
+        ),
+    }
+
+
+"""
 API: GetUcdnDomainOriginHttpCode
 
 获取域名源站状态码监控

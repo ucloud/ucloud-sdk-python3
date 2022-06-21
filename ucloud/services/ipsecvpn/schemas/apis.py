@@ -105,6 +105,9 @@ class CreateVPNTunnelRequestSchema(schema.RequestSchema):
         "IPSecAuthenticationAlgorithm": fields.Str(
             required=False, dump_to="IPSecAuthenticationAlgorithm"
         ),
+        "IPSecCloseAction": fields.Str(
+            required=False, dump_to="IPSecCloseAction"
+        ),
         "IPSecEncryptionAlgorithm": fields.Str(
             required=False, dump_to="IPSecEncryptionAlgorithm"
         ),
@@ -422,6 +425,9 @@ class UpdateVPNTunnelAttributeRequestSchema(schema.RequestSchema):
         "IKEVersion": fields.Str(required=False, dump_to="IKEVersion"),
         "IPSecAuthenticationAlgorithm": fields.Str(
             required=False, dump_to="IPSecAuthenticationAlgorithm"
+        ),
+        "IPSecCloseAction": fields.Str(
+            required=False, dump_to="IPSecCloseAction"
         ),
         "IPSecEncryptionAlgorithm": fields.Str(
             required=False, dump_to="IPSecEncryptionAlgorithm"

@@ -36,6 +36,37 @@ class CreateBucketResponseSchema(schema.ResponseSchema):
 
 
 """
+API: CreateUFileLifeCycle
+
+创建生命周期管理
+"""
+
+
+class CreateUFileLifeCycleRequestSchema(schema.RequestSchema):
+    """CreateUFileLifeCycle - 创建生命周期管理"""
+
+    fields = {
+        "ArchivalDays": fields.Int(required=False, dump_to="ArchivalDays"),
+        "BucketName": fields.Str(required=True, dump_to="BucketName"),
+        "Days": fields.Int(required=False, dump_to="Days"),
+        "IADays": fields.Int(required=False, dump_to="IADays"),
+        "LifeCycleName": fields.Str(required=True, dump_to="LifeCycleName"),
+        "Prefix": fields.Str(required=True, dump_to="Prefix"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Status": fields.Str(required=True, dump_to="Status"),
+    }
+
+
+class CreateUFileLifeCycleResponseSchema(schema.ResponseSchema):
+    """CreateUFileLifeCycle - 创建生命周期管理"""
+
+    fields = {
+        "LifeCycleId": fields.Str(required=True, load_from="LifeCycleId"),
+    }
+
+
+"""
 API: CreateUFileToken
 
 创建US3令牌
@@ -49,10 +80,12 @@ class CreateUFileTokenRequestSchema(schema.RequestSchema):
         "AllowedBuckets": fields.List(fields.Str()),
         "AllowedOps": fields.List(fields.Str()),
         "AllowedPrefixes": fields.List(fields.Str()),
+        "BlackIPList": fields.List(fields.Str()),
         "ExpireTime": fields.Int(required=False, dump_to="ExpireTime"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=False, dump_to="Region"),
         "TokenName": fields.Str(required=True, dump_to="TokenName"),
+        "WhiteIPList": fields.List(fields.Str()),
     }
 
 
@@ -61,6 +94,7 @@ class CreateUFileTokenResponseSchema(schema.ResponseSchema):
 
     fields = {
         "TokenId": fields.Str(required=False, load_from="TokenId"),
+        "UFileTokenSet": models.UFileTokenSetSchema(),
     }
 
 
@@ -87,6 +121,30 @@ class DeleteBucketResponseSchema(schema.ResponseSchema):
         "BucketId": fields.Str(required=False, load_from="BucketId"),
         "BucketName": fields.Str(required=False, load_from="BucketName"),
     }
+
+
+"""
+API: DeleteUFileLifeCycle
+
+删除生命周期管理
+"""
+
+
+class DeleteUFileLifeCycleRequestSchema(schema.RequestSchema):
+    """DeleteUFileLifeCycle - 删除生命周期管理"""
+
+    fields = {
+        "BucketName": fields.Str(required=True, dump_to="BucketName"),
+        "LifeCycleId": fields.Str(required=True, dump_to="LifeCycleId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+    }
+
+
+class DeleteUFileLifeCycleResponseSchema(schema.ResponseSchema):
+    """DeleteUFileLifeCycle - 删除生命周期管理"""
+
+    fields = {}
 
 
 """
@@ -137,6 +195,34 @@ class DescribeBucketResponseSchema(schema.ResponseSchema):
     fields = {
         "DataSet": fields.List(
             models.UFileBucketSetSchema(), required=False, load_from="DataSet"
+        ),
+    }
+
+
+"""
+API: DescribeUFileLifeCycle
+
+获取生命周期信息
+"""
+
+
+class DescribeUFileLifeCycleRequestSchema(schema.RequestSchema):
+    """DescribeUFileLifeCycle - 获取生命周期信息"""
+
+    fields = {
+        "BucketName": fields.Str(required=True, dump_to="BucketName"),
+        "LifeCycleId": fields.Str(required=False, dump_to="LifeCycleId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+    }
+
+
+class DescribeUFileLifeCycleResponseSchema(schema.ResponseSchema):
+    """DescribeUFileLifeCycle - 获取生命周期信息"""
+
+    fields = {
+        "DateSet": fields.List(
+            models.LifeCycleItemSchema(), required=True, load_from="DateSet"
         ),
     }
 
@@ -364,6 +450,36 @@ class UpdateBucketResponseSchema(schema.ResponseSchema):
 
 
 """
+API: UpdateUFileLifeCycle
+
+更新生命周期管理
+"""
+
+
+class UpdateUFileLifeCycleRequestSchema(schema.RequestSchema):
+    """UpdateUFileLifeCycle - 更新生命周期管理"""
+
+    fields = {
+        "ArchivalDays": fields.Int(required=False, dump_to="ArchivalDays"),
+        "BucketName": fields.Str(required=True, dump_to="BucketName"),
+        "Days": fields.Int(required=False, dump_to="Days"),
+        "IADays": fields.Int(required=False, dump_to="IADays"),
+        "LifeCycleId": fields.Str(required=True, dump_to="LifeCycleId"),
+        "LifeCycleName": fields.Str(required=True, dump_to="LifeCycleName"),
+        "Prefix": fields.Str(required=True, dump_to="Prefix"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Status": fields.Str(required=True, dump_to="Status"),
+    }
+
+
+class UpdateUFileLifeCycleResponseSchema(schema.ResponseSchema):
+    """UpdateUFileLifeCycle - 更新生命周期管理"""
+
+    fields = {}
+
+
+"""
 API: UpdateUFileToken
 
 更新令牌的操作权限，可操作key的前缀，可操作bucket和令牌超时时间点
@@ -389,3 +505,39 @@ class UpdateUFileTokenResponseSchema(schema.ResponseSchema):
     """UpdateUFileToken - 更新令牌的操作权限，可操作key的前缀，可操作bucket和令牌超时时间点"""
 
     fields = {}
+
+
+"""
+API: UpdateUdsRule
+
+针对对象存储的文件，进行自动触发解压。
+"""
+
+
+class UpdateUdsRuleRequestSchema(schema.RequestSchema):
+    """UpdateUdsRule - 针对对象存储的文件，进行自动触发解压。"""
+
+    fields = {
+        "ContactGroupId": fields.Str(required=False, dump_to="ContactGroupId"),
+        "DstBucket": fields.Str(required=True, dump_to="DstBucket"),
+        "DstDirectory": fields.Str(required=True, dump_to="DstDirectory"),
+        "DstTokenId": fields.Str(required=True, dump_to="DstTokenId"),
+        "Events": fields.List(fields.Str()),
+        "KeepUS3Name": fields.Bool(required=True, dump_to="KeepUS3Name"),
+        "NotificationTypes": fields.List(fields.Str()),
+        "Ops": fields.List(fields.Str()),
+        "Prefixes": fields.Str(required=True, dump_to="Prefixes"),
+        "RuleId": fields.Str(required=True, dump_to="RuleId"),
+        "RuleName": fields.Str(required=True, dump_to="RuleName"),
+        "SrcBucket": fields.Str(required=True, dump_to="SrcBucket"),
+        "SrcTokenId": fields.Str(required=True, dump_to="SrcTokenId"),
+    }
+
+
+class UpdateUdsRuleResponseSchema(schema.ResponseSchema):
+    """UpdateUdsRule - 针对对象存储的文件，进行自动触发解压。"""
+
+    fields = {
+        "Mesage": fields.Str(required=False, load_from="Mesage"),
+        "RuleId": fields.Str(required=True, load_from="RuleId"),
+    }

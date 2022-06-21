@@ -61,6 +61,7 @@ class USMSClient(Client):
         - **Purpose** (int) - (Required) 短信模板用途类型：1-验证码类短信模板；2-系统通知类短信模板；3-会员推广类短信模板；
         - **Template** (str) - (Required) 短信模板内容，说明如下：字数不超过500，每个中文、符号、英文、数组等都计为一个字；模板中的变量填写格式：{N}，其中N为大于1的整数，有多个参数时，建议N从1开始顺次，例如：{1}、{2}等；短信模板禁止仅包括变量的情况；
         - **TemplateName** (str) - (Required) 短信模板名称，不超过32个字符，每个中文、符号、英文、数字等都计为1个字。
+        - **Instruction** (str) - 模板变量属性说明
         - **International** (bool) - 标记是否为国际短信。true:国际短信，false:国内短信，若不传值则默认该值为false
         - **Remark** (str) - 短信模板申请原因说明，字数不超过128，每个中文、符号、英文、数字等都计为1个字。
         - **UnsubscribeInfo** (str) - 当Purpose为3时，也即会员推广类短信模板，该项必填。枚举值：TD退订、回T退订、回N退订、回TD退订、退订回T、退订回D、退订回TD、退订回复T、退订回复D、退订回复N、退订回复TD、拒收回T
@@ -226,7 +227,7 @@ class USMSClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **TemplateId** (str) - (Required) 模板ID
 
         **Response**
@@ -239,6 +240,7 @@ class USMSClient(Client):
         **OutTemplate**
         - **CreateTime** (int) - 创建时间
         - **ErrDesc** (str) - 审核失败原因
+        - **Instruction** (str) - 模板变量属性说明
         - **Purpose** (int) - 模板类型，选项：1-验证码类 2-通知类 3-会员推广类
         - **Remark** (str) - 模板说明
         - **Status** (int) - 短信模板状态；状态说明：0-待审核，1-审核中，2-审核通过，3-审核未通过，4-被禁用
@@ -272,11 +274,9 @@ class USMSClient(Client):
 
         **Response**
 
-        - **Action** (str) - 操作名称
         - **FailContent** (list) - 见 **BatchInfo** 模型定义
         - **Message** (str) - 发生错误时表示错误描述
         - **ReqUuid** (str) - 本次请求Uuid
-        - **RetCode** (int) - 返回码。0表示成功，非0表示失败。
         - **SessionNo** (str) - 本次提交发送任务的唯一ID，可根据该值查询本次发送的短信列表。注：成功提交短信数大于0时，才返回该字段
         - **SuccessCount** (int) - 成功提交短信（未拆分）条数
 
@@ -325,7 +325,7 @@ class USMSClient(Client):
         - **SigContent** (str) - (Required) 短信签名内容，请到 `USMS控制台 <https://console.ucloud.cn/usms>`_ 的签名管理页面查看；使用的短信签名必须是已申请并且通过审核；
         - **TemplateId** (str) - (Required) 模板ID（也即短信模板申请时的工单ID），请到 `USMS控制台 <https://console.ucloud.cn/usms>`_ 的模板管理页面查看；使用的短信模板必须是已申请并通过审核；
         - **ExtendCode** (str) - 短信扩展码，格式为阿拉伯数字串，默认不开通，如需开通请联系 UCloud技术支持
-        - **TemplateParams** (list) - 模板可变参数，以数组的方式填写，举例，TempalteParams.0，TempalteParams.1，... 若模板中无可变参数，则该项可不填写；若模板中有可变参数，则该项为必填项，参数个数需与变量个数保持一致，否则无法发送；
+        - **TemplateParams** (list) - 模板可变参数，以数组的方式填写，举例，TemplateParams.0，TemplateParams.1，... 若模板中无可变参数，则该项可不填写；若模板中有可变参数，则该项为必填项，参数个数需与变量个数保持一致，否则无法发送；
         - **UserId** (str) - 自定义的业务标识ID，字符串（ 长度不能超过32 位），不支持 单引号、表情包符号等特殊字符
 
         **Response**
@@ -389,10 +389,11 @@ class USMSClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Template** (str) - (Required) 新的模板内容。模板名称和模板内容必须提供一个，否则会报错。小于等于600个字
         - **TemplateId** (str) - (Required) 短信模板ID
+        - **Instruction** (str) - 模板变量属性说明
         - **Remark** (str) - 短信模板申请原因说明，字数不超过128，每个中文、符号、英文、数字等都计为1个字。
         - **TemplateName** (str) - 新的模板名称。小于等于32个字，每个中文、英文、数组、符合都计为一个字
 

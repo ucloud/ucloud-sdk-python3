@@ -117,16 +117,6 @@ class NatGWIPResInfoSchema(schema.ResponseSchema):
     }
 
 
-class NatGatewaySubnetSetSchema(schema.ResponseSchema):
-    """NatGatewaySubnetSet - natgw里面的子网信息"""
-
-    fields = {
-        "Subnet": fields.Str(required=True, load_from="Subnet"),
-        "SubnetName": fields.Str(required=True, load_from="SubnetName"),
-        "SubnetworkId": fields.Str(required=True, load_from="SubnetworkId"),
-    }
-
-
 class NatGatewayIPSetSchema(schema.ResponseSchema):
     """NatGatewayIPSet - IPSet信息"""
 
@@ -136,6 +126,16 @@ class NatGatewayIPSetSchema(schema.ResponseSchema):
         "EIPId": fields.Str(required=True, load_from="EIPId"),
         "IPResInfo": fields.List(NatGWIPResInfoSchema()),
         "Weight": fields.Int(required=True, load_from="Weight"),
+    }
+
+
+class NatGatewaySubnetSetSchema(schema.ResponseSchema):
+    """NatGatewaySubnetSet - natgw里面的子网信息"""
+
+    fields = {
+        "Subnet": fields.Str(required=True, load_from="Subnet"),
+        "SubnetName": fields.Str(required=True, load_from="SubnetName"),
+        "SubnetworkId": fields.Str(required=True, load_from="SubnetworkId"),
     }
 
 
@@ -231,6 +231,15 @@ class AclInfoSchema(schema.ResponseSchema):
     }
 
 
+class UNIIpInfoSchema(schema.ResponseSchema):
+    """UNIIpInfo - 虚拟网卡内网IP信息"""
+
+    fields = {
+        "IpAddr": fields.List(fields.Str()),
+        "IpType": fields.Str(required=False, load_from="IpType"),
+    }
+
+
 class UNIQuotaInfoSchema(schema.ResponseSchema):
     """UNIQuotaInfo - 虚拟网卡内网IP配额使用情况"""
 
@@ -241,15 +250,6 @@ class UNIQuotaInfoSchema(schema.ResponseSchema):
         "PrivateIpQuota": fields.Int(
             required=False, load_from="PrivateIpQuota"
         ),
-    }
-
-
-class UNIIpInfoSchema(schema.ResponseSchema):
-    """UNIIpInfo - 虚拟网卡内网IP信息"""
-
-    fields = {
-        "IpAddr": fields.List(fields.Str()),
-        "IpType": fields.Str(required=False, load_from="IpType"),
     }
 
 

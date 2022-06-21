@@ -60,7 +60,7 @@ class UDiskClient(Client):
         - **CouponId** (str) - 使用的代金券id
         - **HostId** (str) - Host实例ID。克隆出的云盘可直接挂载到该主机上。
         - **Quantity** (int) - 购买时长 默认: 1
-        - **RdmaClusterId** (str) - 【已废弃】RDMA集群id。指定RSSD云盘克隆到对应的RDMA集群。
+        - **RdmaClusterId** (str) - RDMA集群id。指定RSSD云盘克隆到对应的RDMA集群。
         - **SnapshotService** (str) - 是否开启快照服务（开启快照服务，可免费开启数据方舟）。Yes：开启，No：不开启，默认值：No
         - **Tag** (str) - 业务组 默认：Default
         - **UDataArkMode** (str) - 【开启数据方舟入口已关闭】是否开启数据方舟。Yes：开启，No：不开启，默认值：No
@@ -98,7 +98,7 @@ class UDiskClient(Client):
         - **CouponId** (str) - 使用的代金券id
         - **HostId** (str) - Host实例ID。克隆出的云盘可直接挂载到该主机上。
         - **Quantity** (int) - 购买时长 默认: 1
-        - **RdmaClusterId** (str) - 【已废弃】RDMA集群id。指定RSSD云盘克隆到对应的RDMA集群。
+        - **RdmaClusterId** (str) - RDMA集群id。指定RSSD云盘克隆到对应的RDMA集群。
         - **Size** (int) - 购买UDisk大小,单位:GB,范围[1~8000]。(UDisk大小设定对本地盘快照有效，对云盘快照无效)
         - **SnapshotService** (str) - 是否开启快照服务（开启快照服务，可免费开启数据方舟）。Yes：开启，No：不开启，默认值：No
         - **Tag** (str) - 业务组 默认：Default
@@ -138,7 +138,7 @@ class UDiskClient(Client):
         - **CouponId** (str) - 使用的代金券id
         - **HostId** (str) - Host实例ID。克隆出的云盘可直接挂载到该主机上。
         - **Quantity** (int) - 购买时长 默认: 1
-        - **RdmaClusterId** (str) - 【已废弃】RDMA集群id。指定RSSD云盘克隆到对应的RDMA集群。
+        - **RdmaClusterId** (str) - RDMA集群id。指定RSSD云盘克隆到对应的RDMA集群。
         - **Size** (int) - 购买UDisk大小,单位:GB,范围[1~8000]。(UDisk大小设定对本地盘备份有效，对云盘备份无效)
         - **SnapshotService** (str) - 是否开启快照服务（开启快照服务，可免费开启数据方舟）。Yes：开启，No：不开启，默认值：No
         - **Tag** (str) - 业务组 默认：Default

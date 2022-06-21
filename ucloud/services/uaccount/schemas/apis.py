@@ -64,12 +64,12 @@ class CreateCharacterResponseSchema(schema.ResponseSchema):
 """
 API: CreateProject
 
-创建项目
+
 """
 
 
 class CreateProjectRequestSchema(schema.RequestSchema):
-    """CreateProject - 创建项目"""
+    """CreateProject -"""
 
     fields = {
         "ProjectName": fields.Str(required=True, dump_to="ProjectName"),
@@ -77,7 +77,7 @@ class CreateProjectRequestSchema(schema.RequestSchema):
 
 
 class CreateProjectResponseSchema(schema.ResponseSchema):
-    """CreateProject - 创建项目"""
+    """CreateProject -"""
 
     fields = {
         "ProjectId": fields.Str(required=True, load_from="ProjectId"),

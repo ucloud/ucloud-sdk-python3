@@ -43,6 +43,7 @@ class OutTemplateSchema(schema.ResponseSchema):
     fields = {
         "CreateTime": fields.Int(required=True, load_from="CreateTime"),
         "ErrDesc": fields.Str(required=True, load_from="ErrDesc"),
+        "Instruction": fields.Str(required=False, load_from="Instruction"),
         "Purpose": fields.Int(required=True, load_from="Purpose"),
         "Remark": fields.Str(required=True, load_from="Remark"),
         "Status": fields.Int(required=True, load_from="Status"),

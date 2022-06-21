@@ -119,14 +119,12 @@ class UPHostClient(Client):
 
         **Response Model**
 
-        **PHostClusterSet**
-        - **Name** (str) - 集群名。枚举值：千兆网络集群：1G；万兆网络集群：10G；智能网卡网络：25G；
-        - **StockStatus** (str) - 库存状态。枚举值：有库存：Available；无库存：SoldOut
-
-
-        **PHostComponentSet**
-        - **Count** (int) - 组件数量
-        - **Name** (str) - 组件名称
+        **PHostCloudMachineTypeSet**
+        - **CPU** (dict) - 见 **PHostCPUSet** 模型定义
+        - **Clusters** (list) - 见 **PHostClusterSet** 模型定义
+        - **Components** (dict) - 见 **PHostComponentSet** 模型定义
+        - **Memory** (int) - 内存大小，单位MB
+        - **Type** (str) - 物理云主机机型别名，全网唯一。
 
 
         **PHostCPUSet**
@@ -136,12 +134,14 @@ class UPHostClient(Client):
         - **Model** (str) - CPU型号
 
 
-        **PHostCloudMachineTypeSet**
-        - **CPU** (dict) - 见 **PHostCPUSet** 模型定义
-        - **Clusters** (list) - 见 **PHostClusterSet** 模型定义
-        - **Components** (dict) - 见 **PHostComponentSet** 模型定义
-        - **Memory** (int) - 内存大小，单位MB
-        - **Type** (str) - 物理云主机机型别名，全网唯一。
+        **PHostClusterSet**
+        - **Name** (str) - 集群名。枚举值：千兆网络集群：1G；万兆网络集群：10G；智能网卡网络：25G；
+        - **StockStatus** (str) - 库存状态。枚举值：有库存：Available；无库存：SoldOut
+
+
+        **PHostComponentSet**
+        - **Count** (int) - 组件数量
+        - **Name** (str) - 组件名称
 
 
         """
@@ -214,12 +214,15 @@ class UPHostClient(Client):
         - **Model** (str) - CPU型号
 
 
-        **PHostDiskSet**
-        - **Count** (int) -
-        - **IOCap** (int) -
-        - **Name** (str) -
-        - **Space** (int) -
-        - **Type** (str) -
+        **PHostDescDiskSet**
+        - **Count** (int) - 磁盘数量
+        - **DiskId** (str) - 裸金属机型参数：磁盘ID
+        - **Drive** (str) - 裸金属机型参数：磁盘盘符
+        - **IOCap** (int) - 磁盘IO性能，单位MB/s（待废弃）
+        - **IsBoot** (str) - 裸金属机型参数：是否是启动盘。True/False
+        - **Name** (str) - 磁盘名称，sys/data
+        - **Space** (int) - 单盘大小，单位GB
+        - **Type** (str) - 磁盘属性
 
 
         **PHostIPSet**
@@ -230,17 +233,6 @@ class UPHostClient(Client):
         - **OperatorName** (str) - 国际: Internation， BGP: BGP， 内网: Private
         - **SubnetId** (str) - 子网ID
         - **VPCId** (str) - VPC ID
-
-
-        **PHostDescDiskSet**
-        - **Count** (int) - 磁盘数量
-        - **DiskId** (str) - 裸金属机型参数：磁盘ID
-        - **Drive** (str) - 裸金属机型参数：磁盘盘符
-        - **IOCap** (int) - 磁盘IO性能，单位MB/s（待废弃）
-        - **IsBoot** (str) - 裸金属机型参数：是否是启动盘。True/False
-        - **Name** (str) - 磁盘名称，sys/data
-        - **Space** (int) - 单盘大小，单位GB
-        - **Type** (str) - 磁盘属性
 
 
         """
@@ -322,6 +314,23 @@ class UPHostClient(Client):
 
         **Response Model**
 
+        **PHostMachineTypeSet**
+        - **CPU** (dict) - 见 **PHostCPUSet** 模型定义
+        - **Clusters** (list) - 见 **PHostClusterSet** 模型定义
+        - **Components** (dict) - 见 **PHostComponentSet** 模型定义
+        - **Disks** (list) - 见 **PHostDiskSet** 模型定义
+        - **Memory** (int) - 内存大小，单位MB
+        - **RaidSupported** (str) - 是否支持Raid。枚举值：支持：YES；不支持：NO
+        - **Type** (str) - 物理云主机机型别名，全网唯一。
+
+
+        **PHostCPUSet**
+        - **CoreCount** (int) - CPU核数
+        - **Count** (int) - CPU个数
+        - **Frequence** (float) - CPU主频
+        - **Model** (str) - CPU型号
+
+
         **PHostClusterSet**
         - **Name** (str) - 集群名。枚举值：千兆网络集群：1G；万兆网络集群：10G；智能网卡网络：25G；
         - **StockStatus** (str) - 库存状态。枚举值：有库存：Available；无库存：SoldOut
@@ -338,23 +347,6 @@ class UPHostClient(Client):
         - **Name** (str) - 磁盘名称，sys/data
         - **Space** (int) - 单盘大小，单位GB
         - **Type** (str) - 磁盘属性
-
-
-        **PHostCPUSet**
-        - **CoreCount** (int) - CPU核数
-        - **Count** (int) - CPU个数
-        - **Frequence** (float) - CPU主频
-        - **Model** (str) - CPU型号
-
-
-        **PHostMachineTypeSet**
-        - **CPU** (dict) - 见 **PHostCPUSet** 模型定义
-        - **Clusters** (list) - 见 **PHostClusterSet** 模型定义
-        - **Components** (dict) - 见 **PHostComponentSet** 模型定义
-        - **Disks** (list) - 见 **PHostDiskSet** 模型定义
-        - **Memory** (int) - 内存大小，单位MB
-        - **RaidSupported** (str) - 是否支持Raid。枚举值：支持：YES；不支持：NO
-        - **Type** (str) - 物理云主机机型别名，全网唯一。
 
 
         """
