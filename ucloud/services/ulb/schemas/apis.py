@@ -451,7 +451,7 @@ class DescribeVServerRequestSchema(schema.RequestSchema):
         "Offset": fields.Int(required=False, dump_to="Offset"),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "ULBId": fields.Str(required=True, dump_to="ULBId"),
+        "ULBId": fields.Str(required=False, dump_to="ULBId"),
         "VServerId": fields.Str(required=False, dump_to="VServerId"),
     }
 
@@ -574,6 +574,30 @@ class UpdatePolicyResponseSchema(schema.ResponseSchema):
             required=False, load_from="PolicyId"
         ),  # Deprecated, will be removed at 1.0
     }
+
+
+"""
+API: UpdateSSLAttribute
+
+更新修改SSL的属性，如：修改SSLName
+"""
+
+
+class UpdateSSLAttributeRequestSchema(schema.RequestSchema):
+    """UpdateSSLAttribute - 更新修改SSL的属性，如：修改SSLName"""
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SSLId": fields.Str(required=True, dump_to="SSLId"),
+        "SSLName": fields.Str(required=True, dump_to="SSLName"),
+    }
+
+
+class UpdateSSLAttributeResponseSchema(schema.ResponseSchema):
+    """UpdateSSLAttribute - 更新修改SSL的属性，如：修改SSLName"""
+
+    fields = {}
 
 
 """

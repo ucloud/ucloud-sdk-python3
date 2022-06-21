@@ -94,8 +94,8 @@ class IPSecVPNClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **IKEPreSharedKey** (str) - (Required) 预共享密钥
         - **IKEVersion** (str) - (Required) ike版本，枚举值： "IKE V1"，"IKE V2"，默认v1
         - **IPSecLocalSubnetIds** (list) - (Required) 指定VPN连接的本地子网的资源ID，最多可填写10个。
@@ -111,7 +111,8 @@ class IPSecVPNClient(Client):
         - **IKELocalId** (str) - 本端标识。枚举值，自动识别，“auto”；IP地址或域名。默认为自动识别“auto”。IKEV2必填该参数
         - **IKERemoteId** (str) - 客户端标识。枚举值，自动识别，“auto”；IP地址或域名。默认为“自动识别“auto”。IKEV2必填该参数
         - **IKESALifetime** (str) - IKE中SA的生存时间，可填写范围为600-604800。默认为86400。
-        - **IPSecAuthenticationAlgorithm** (str) - IPSec隧道中使用的认证算法，枚举值，"md5", "sha1"。默认值为“sha1”
+        - **IPSecAuthenticationAlgorithm** (str) - IPSec隧道中使用的认证算法，枚举值，"md5", "sha1","sha2-256"。默认值为“sha1”
+        - **IPSecCloseAction** (str) - IPSec隧道关闭后的处理动作，枚举值：“none”，流量触发；“restart”，自动重联，默认为none
         - **IPSecEncryptionAlgorithm** (str) - IPSec隧道中使用的加密算法，枚举值，"aes128", "aes192", "aes256", "aes512", "3des"。默认值为“aes128”
         - **IPSecPFSDhGroup** (str) - IPSec的PFS是否开启，枚举值，，不开启，"disable"；数字表示DH组, "1", "2", "5", "14", "15", "16"。默认为“disable”。
         - **IPSecProtocol** (str) - 使用的安全协议，枚举值，“esp”，“ah”。默认为“esp”
@@ -483,8 +484,8 @@ class IPSecVPNClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **VPNTunnelId** (str) - (Required) VPN隧道的资源ID
         - **IKEAuthenticationAlgorithm** (str) - IKE协商过程中使用的认证算法
         - **IKEDhGroup** (str) - IKE协商过程中使用的DH组
@@ -496,6 +497,7 @@ class IPSecVPNClient(Client):
         - **IKESALifetime** (str) - IKE中SA的生存时间
         - **IKEVersion** (str) - 枚举值："IKE V1","IKE V2"
         - **IPSecAuthenticationAlgorithm** (str) - IPSec隧道中使用的认证算法
+        - **IPSecCloseAction** (str) - IPSec隧道关闭后的处理动作，默认与原本一致，若原本为空，必传。枚举值：“none”,不处理（推荐为none，流量会自动触发隧道重建）；“restart”重建
         - **IPSecEncryptionAlgorithm** (str) - IPSec隧道中使用的加密算法
         - **IPSecLocalSubnetIds** (list) - 指定VPN连接的本地子网的id，用逗号分隔
         - **IPSecPFSDhGroup** (str) - IPSec中的PFS是否开启

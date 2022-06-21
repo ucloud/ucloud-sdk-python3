@@ -165,23 +165,6 @@ class UDDBClient(Client):
 
         **Response Model**
 
-        **SlaveInfo**
-        - **DataNodeId** (str) - 对应数据节点的ID
-        - **Id** (str) - 只读实例ID
-        - **State** (str) - 只读实例状态, 状态列表如下: Init: 初始化中 Fail: 安装失败 Starting: 启动中 Running: 系统正常运行中 Shutdown: 关闭中 Shutoff: 已关闭 Deleted: 已删除 Upgrading: 系统升级中
-
-
-        **DataNodeInfo**
-        - **CreateTime** (str) - 节点的创建时间
-        - **DiskSpace** (str) - 数据节点的磁盘大小配置. 单位: GB
-        - **Id** (str) - 数据节点ID
-        - **LastTransTaskId** (str) - 最近一次数据迁移任务id
-        - **Memory** (str) - 数据节点的内存配置, 单位：MB
-        - **SlaveCount** (str) - 数据节点的只读实例个数.
-        - **SlaveInfos** (list) - 见 **SlaveInfo** 模型定义
-        - **State** (str) - 数据分片状态, 状态列表如下: Init: 初始化中 Fail: 安装失败 Starting: 启动中 Running: 系统正常运行中 Shutdown: 关闭中 Shutoff: 已关闭 Deleted: 已删除 Upgrading: 系统升级中
-
-
         **DataSetUDDB**
         - **AdminUser** (str) - 管理员帐户名，默认root
         - **ChargeType** (str) - 付费类型，可选值如下: Year: 按年付费 Month: 按月付费 Dynamic: 按需付费(单位: 小时) Trial: 免费试用
@@ -204,6 +187,23 @@ class UDDBClient(Client):
         - **UDDBId** (str) - UDDB实例ID
         - **VirtualIP** (str) - UDDB实例访问的虚IP
         - **Zone** (str) - UDDB实例对应的可用区
+
+
+        **DataNodeInfo**
+        - **CreateTime** (str) - 节点的创建时间
+        - **DiskSpace** (str) - 数据节点的磁盘大小配置. 单位: GB
+        - **Id** (str) - 数据节点ID
+        - **LastTransTaskId** (str) - 最近一次数据迁移任务id
+        - **Memory** (str) - 数据节点的内存配置, 单位：MB
+        - **SlaveCount** (str) - 数据节点的只读实例个数.
+        - **SlaveInfos** (list) - 见 **SlaveInfo** 模型定义
+        - **State** (str) - 数据分片状态, 状态列表如下: Init: 初始化中 Fail: 安装失败 Starting: 启动中 Running: 系统正常运行中 Shutdown: 关闭中 Shutoff: 已关闭 Deleted: 已删除 Upgrading: 系统升级中
+
+
+        **SlaveInfo**
+        - **DataNodeId** (str) - 对应数据节点的ID
+        - **Id** (str) - 只读实例ID
+        - **State** (str) - 只读实例状态, 状态列表如下: Init: 初始化中 Fail: 安装失败 Starting: 启动中 Running: 系统正常运行中 Shutdown: 关闭中 Shutoff: 已关闭 Deleted: 已删除 Upgrading: 系统升级中
 
 
         """

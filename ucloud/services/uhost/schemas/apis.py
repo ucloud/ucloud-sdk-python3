@@ -119,6 +119,14 @@ class CreateUHostInstanceParamDisksSchema(schema.RequestSchema):
     }
 
 
+class CreateUHostInstanceParamFeaturesSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamFeatures -"""
+
+    fields = {
+        "UNI": fields.Bool(required=False, dump_to="UNI"),
+    }
+
+
 class CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSHSchema(
     schema.RequestSchema
 ):
@@ -195,12 +203,16 @@ class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
     fields = {}
 
 
-class CreateUHostInstanceParamFeaturesSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamFeatures -"""
+class CreateUHostInstanceParamDisksCustomBackupSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamDisksCustomBackup -"""
 
-    fields = {
-        "UNI": fields.Bool(required=False, dump_to="UNI"),
-    }
+    fields = {}
+
+
+class CreateUHostInstanceParamSecGroupIdSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamSecGroupId -"""
+
+    fields = {}
 
 
 class CreateUHostInstanceRequestSchema(schema.RequestSchema):

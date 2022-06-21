@@ -15,6 +15,50 @@ class UPhoneClient(Client):
             config, transport, middleware, logger
         )
 
+    def create_u_phone(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateUPhone - 创建云手机
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
+        - **ImageId** (str) - (Required) 云手机镜像ID，不超过32个字节。可通过[查询手机镜像]()查询云手机规格对应的镜像ID。
+        - **MediaBandwidth** (int) - (Required) 云手机画面带宽，默认2M
+        - **Name** (str) - (Required) 云手机实例名称，默认：UPhone。如果同时创建多个，则增加数字后缀，如UPhone-1
+        - **UPhoneCount** (int) - (Required) 创建云手机的个数
+        - **UPhoneModelName** (str) - (Required) 云手机规格名称，不超过64个字节。可通过[查询云手机规格列表]()查询支持的云手机规格。
+        - **Bandwidth** (int) - 共享带宽大小
+        - **BindIp** (bool) - 绑定独立IP
+        - **ChargeType** (str) - 计费模式。枚举值为： > 年 Year，按年付费； > Month，按月付费； > Dynamic，按小时预付费; 默认为月付
+        - **CouponId** (str) - 云手机代金券ID。请通过DescribeCoupon接口查询，或登录用户中心查看。注：代金券对带宽不适用，仅适用于云手机计费
+        - **IpDestRegion** (str) - 购买独立IP必须有此参数。绑定的目的地域。参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **IpProportion** (int) - 独立IP参数。需要独立IP的比例。eg: [4:1]->4， [3:1]->3。
+        - **Quantity** (str) - 购买时长。默认值: 1。月付时，此参数传0，代表购买至月末。
+        - **ShareBandwidthId** (str) - 共享带宽ID，使用现有共享带宽时需要传入此参数
+        - **ShareBandwidthName** (str) - 共享带宽名称，可以在创建新的共享带宽时指定一个名称
+        - **Tag** (str) - 业务组。默认：Default（Default即为未分组）。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定业务组。
+
+        **Response**
+
+        - **JobId** (str) - 任务ID，用来查询创建云手机任务状态
+        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.CreateUPhoneRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateUPhone", d, **kwargs)
+        return apis.CreateUPhoneResponseSchema().loads(resp)
+
     def create_u_phone_app(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -25,6 +69,7 @@ class UPhoneClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Name** (str) - (Required) 应用名称。
         - **Description** (str) - 应用描述。
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
 
         **Response**
 
@@ -57,6 +102,7 @@ class UPhoneClient(Client):
         - **Name** (str) - (Required) 应用版本名称，最大字符长度为255。
         - **URL** (str) - (Required) 应用版本相关的Apk文件存放的公网URL地址。
         - **Description** (str) - 应用版本描述。
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
 
         **Response**
 
@@ -84,14 +130,16 @@ class UPhoneClient(Client):
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
+        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://cms-docs.ucloudadmin.com/api/uphone-api/describe_u_phone_cities>`_ 获取
         - **UPhoneId** (str) - (Required) 手机实例的资源ID
         - **Description** (str) - 镜像的描述信息。长度为2~256个英文或中文字符
         - **Name** (str) - 镜像名称。长度为2~128个英文或中文字符。
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
 
         **Response**
 
         - **ImageId** (str) - 云手机自定义镜像资源 ID
+        - **JobId** (str) - 请求的唯一标识Id，`RetCode`为0时返回，可根据此ID查询请求的执行状态
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
 
         """
@@ -116,11 +164,11 @@ class UPhoneClient(Client):
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
-        - **ImageId** (str) - (Required) 云手机镜像ID，不超过32个字节。可通过[查询手机镜像]()查询云手机规格对应的镜像ID。
+        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_cities>`_ 获取
+        - **ImageId** (str) - (Required) 云手机镜像ID，不超过32个字节。可通过 `查询手机镜像 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_image>`_ 查询云手机规格对应的镜像ID。
         - **Name** (str) - (Required) 云手机服务器实例名称。默认：UPhone。请遵照字段规范设定实例名称。
-        - **ServerModelName** (str) - (Required) 云手机服务器规格名称，不超过64个字节。可通过[查询云手机服务器规格列表]()查询支持的云手机服务器规格。
-        - **UPhoneModelName** (str) - (Required) 云手机规格名称，不超过64个字节。可通过[查询云手机规格列表]()查询支持的云手机规格。
+        - **ServerModelName** (str) - (Required) 云手机服务器规格名称，不超过64个字节。可通过 `查询云手机服务器规格列表 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_server_model>`_ 查询支持的云手机服务器规格。
+        - **UPhoneModelName** (str) - (Required) 云手机规格名称，不超过64个字节。可通过 `查询云手机规格列表 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_model>`_ 查询支持的云手机规格。
         - **ChargeType** (str) - 计费模式。枚举值为：> 年 Year，按年付费；> Month，按月付费；> Dynamic，按小时预付费;默认为月付
         - **CouponId** (str) - 云手机服务器代金券ID。请通过DescribeCoupon接口查询，或登录用户中心查看。注：代金券对带宽不适用，仅适用于云手机服务器计费
         - **IpDestRegion** (str) - 购买独立IP必须此参数。绑定的目的地域。参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
@@ -153,6 +201,33 @@ class UPhoneClient(Client):
         resp = self.invoke("CreateUPhoneServer", d, **kwargs)
         return apis.CreateUPhoneServerResponseSchema().loads(resp)
 
+    def delete_u_phone(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteUPhone - 删除云手机
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
+        - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望获取信息的云手机 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
+
+        **Response**
+
+        - **JobId** (str) - 任务ID，用来查询删除云手机任务状态
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.DeleteUPhoneRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteUPhone", d, **kwargs)
+        return apis.DeleteUPhoneResponseSchema().loads(resp)
+
     def delete_u_phone_image(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -182,7 +257,7 @@ class UPhoneClient(Client):
     def delete_u_phone_server(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DeleteUPhoneServer - 删除云手机服务器。 注：关机状态下才能执行删除操作。
+        """DeleteUPhoneServer - 删除云手机服务器。
 
         **Request**
 
@@ -217,8 +292,9 @@ class UPhoneClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **IsAll** (bool) - 是否返回全部。如果有此参数，分页不生效。
-        - **Limit** (int) - 返回数据长度，默认为20，最大100
+        - **Limit** (int) - 返回数据长度，默认为200，最大200
         - **Offset** (int) - 列表起始位置偏移量，默认为0
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
         - **ServerId** (str) - 云手机服务器的资源ID。
         - **Tag** (str) - 要查询的业务组名称
         - **UPhoneIds** (list) - 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望获取信息的云手机 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。如果都不传入，则返回当前 城市 所有符合条件的云手机列表。
@@ -234,11 +310,15 @@ class UPhoneClient(Client):
         **UPhoneInstance**
         - **CPU** (int) - 虚拟CPU核数。
         - **Callback** (str) - 云手机异步任务回调
+        - **ChargeType** (str) - 计费模式。枚举值为： > 年 Year，按年付费； > Month，按月付费； > Dynamic，按小时预付费; 默认为月付
         - **CityId** (str) - 城市Id，eg: cn-shanghai, cn-jinan
         - **CityName** (str) - 城市名称，eg:上海二、济南市
         - **CreateTime** (int) - 创建时间，格式为Unix时间戳。
         - **DiskSize** (int) - 磁盘大小，单位: GB
+        - **ExpireTime** (int) - 到期时间；格式为Unix时间戳
         - **ImageId** (str) - 云手机镜像ID，不超过32个字节。
+        - **Ip** (str) - 云手机IP地址
+        - **IpRegion** (str) - IP所属地域Id，eg: hk，th-bkk
         - **Memory** (int) - 内存大小。单位MB
         - **OsType** (str) - 云手机镜像系统，如"Android armv8"
         - **Refresh** (int) - 刷新率
@@ -275,6 +355,7 @@ class UPhoneClient(Client):
         - **AppIds** (list) - 数组】应用的唯一标识 ID，调用方式举例：AppIds.0=希望获取应用信息的应用 1，AppIds.1=应用 2。 如果不传入，则返回当前 城市 所有符合条件的应用列表。
         - **Limit** (int) - 返回数据长度，默认为20，最大100
         - **Offset** (int) - 列表起始位置偏移量，默认为0
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
 
         **Response**
 
@@ -315,6 +396,7 @@ class UPhoneClient(Client):
         - **AppVersionIds** (list) - 【数组】应用版本的唯一标识 ID，调用方式举例：AppVersionIds.0=希望获取应用版本信息的应用版本 1，AppVersionIds.1=应用版本 2。 如果不传入，则返回当前 城市 所有符合条件的应用版本列表。
         - **Limit** (int) - 返回数据长度，默认为20，最大100
         - **Offset** (int) - 列表起始位置偏移量，默认为0
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
         - **UPhoneId** (str) - 云手机Id。此参数表示查询手机上所安装的应用版本。
 
         **Response**
@@ -355,6 +437,7 @@ class UPhoneClient(Client):
         **Request**
 
         - **ProjectId** (str) - (Config)
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
 
         **Response**
 
@@ -393,6 +476,7 @@ class UPhoneClient(Client):
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **Limit** (int) - 返回数据长度，默认为20，最大100
         - **Offset** (int) - 列表起始位置偏移量，默认为0
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
 
         **Response**
 
@@ -401,17 +485,6 @@ class UPhoneClient(Client):
         - **UPhoneDetails** (list) - 见 **UPhoneDetailInstance** 模型定义
 
         **Response Model**
-
-        **AppVersionInstance**
-        - **AppId** (str) - 应用的唯一标识ID
-        - **AppVersionId** (str) - 应用版本的唯一标识ID
-        - **AppVersionName** (str) - 应用版本名。
-        - **CreateTime** (int) - 创建时间，格式为Unix时间戳。
-        - **Description** (str) - 应用版本描述。
-        - **ModifyTime** (int) - 修改时间，格式为Unix时间戳。
-        - **PackageName** (str) - 应用包名。
-        - **URL** (str) - 应用版本相关的Apk文件存放的公网URL地址。
-
 
         **UPhoneDetailInstance**
         - **AppVersion** (dict) - 见 **AppVersionInstance** 模型定义
@@ -428,8 +501,20 @@ class UPhoneClient(Client):
         - **Resolution** (str) - 分辨率
         - **ServerId** (str) - 云手机所在的服务器ID，不超过32个字节。
         - **State** (str) - 云手机状态<br />* 启动中: STARTING; <br />* 运行中: RUNNING; <br />* 关机中: STOPPING; <br />* 关机: STOPPED <br />* 重启中: REBOOTING; <br />* 重置中: RESETTING; <br />* 启动失败: START_FAILED; <br />* 关机失败: STOP_FAILED; <br />* 重启失败: REBOOT_FAILED; <br />* 重置失败: RESET_FAILED; <br />* 未知状态：UNDEFINED或""
-        - **UPhoneId** (str) - 云手机规格名称
+        - **UPhoneId** (str) - 云手机的唯一标识，不超过32个字节。
+        - **UPhoneModelName** (str) - 云手机规格名称
         - **UPhoneName** (str) - 云手机的名称，不超过65个字符。
+
+
+        **AppVersionInstance**
+        - **AppId** (str) - 应用的唯一标识ID
+        - **AppVersionId** (str) - 应用版本的唯一标识ID
+        - **AppVersionName** (str) - 应用版本名。
+        - **CreateTime** (int) - 创建时间，格式为Unix时间戳。
+        - **Description** (str) - 应用版本描述。
+        - **ModifyTime** (int) - 修改时间，格式为Unix时间戳。
+        - **PackageName** (str) - 应用包名。
+        - **URL** (str) - 应用版本相关的Apk文件存放的公网URL地址。
 
 
         """
@@ -454,6 +539,7 @@ class UPhoneClient(Client):
         - **ImageIds** (list) - 【数组】云手机镜像资源 ID，调用方式举例：ImageIds.0=希望获取信息的云手机镜像 1，ImageIds.1=云手机镜像 2。 如果不传入，则返回当前 城市 所有符合条件的云手机镜像。
         - **Limit** (str) - 最大返回镜像数量，默认为20，最大100
         - **Offset** (str) - 列表起始位置偏移量，默认为0
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
         - **Type** (str) - 希望获取的镜像类型，枚举值，不传则返回全部类型的镜像： <br /> >标准镜像: BASE; <br />>自制镜像: CUSTOM;  <br />
 
         **Response**
@@ -463,17 +549,6 @@ class UPhoneClient(Client):
         - **TotalCount** (int) - UPhoneImageInstance总数
 
         **Response Model**
-
-        **AppVersionInstance**
-        - **AppId** (str) - 应用的唯一标识ID
-        - **AppVersionId** (str) - 应用版本的唯一标识ID
-        - **AppVersionName** (str) - 应用版本名。
-        - **CreateTime** (int) - 创建时间，格式为Unix时间戳。
-        - **Description** (str) - 应用版本描述。
-        - **ModifyTime** (int) - 修改时间，格式为Unix时间戳。
-        - **PackageName** (str) - 应用包名。
-        - **URL** (str) - 应用版本相关的Apk文件存放的公网URL地址。
-
 
         **UPhoneImageInstance**
         - **AppVersions** (list) - 见 **AppVersionInstance** 模型定义
@@ -486,6 +561,17 @@ class UPhoneClient(Client):
         - **ModifyTime** (int) - 修改时间，格式为Unix时间戳。
         - **OsType** (str) - 云手机镜像系统
         - **UPhoneId** (str) - 云手机镜像创建时所属云手机资源 Id
+
+
+        **AppVersionInstance**
+        - **AppId** (str) - 应用的唯一标识ID
+        - **AppVersionId** (str) - 应用版本的唯一标识ID
+        - **AppVersionName** (str) - 应用版本名。
+        - **CreateTime** (int) - 创建时间，格式为Unix时间戳。
+        - **Description** (str) - 应用版本描述。
+        - **ModifyTime** (int) - 修改时间，格式为Unix时间戳。
+        - **PackageName** (str) - 应用包名。
+        - **URL** (str) - 应用版本相关的Apk文件存放的公网URL地址。
 
 
         """
@@ -502,12 +588,13 @@ class UPhoneClient(Client):
     def describe_u_phone_ip_regions(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DescribeUPhoneIpRegions - 获取云手机支持绑定独立IP的城市列表
+        """DescribeUPhoneIpRegions - 获取云手机所在城市支持绑定独立IP的地域列表
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **CityId** (str) - (Required) 城市Id，eg: cn-shanghai, cn-hangzhou
+        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_cities>`_ 获取
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
 
         **Response**
 
@@ -541,9 +628,10 @@ class UPhoneClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
-        - **JobIds** (list) - 【数组】Job 的唯一标识 Id，调用方式举例：ServerIds.0=希望查询状态的 Job1，ServerIds.1=Job2。 如果不传入，则返回当前 城市 所有符合条件的 Job 。
+        - **JobIds** (list) - 【数组】Job 的唯一标识 Id，调用方式举例：JobIds.0=希望查询状态的 Job1，JobIds.1=Job2。 如果不传入，则返回当前 城市 所有符合条件的 Job 。
         - **Limit** (int) - 返回数据长度，默认为20，最大100
         - **Offset** (int) - 列表起始位置偏移量，默认为0
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
         - **State** (str) - Job状态，枚举值：* 等待状态: PENDING;* 运行状态: RUNNING;* 成功状态: SUCCESS* 失败状态: FAILED* 部分成功状态：PARTIAL_SUCCESS
         - **Types** (list) - 【数组】Job 类型，调用方式举例：JobTypes.0=希望查询的 Job 类型 1，JobTypes.1=Job 类型 2。 如果不传入，则返回当前 城市 所有符合条件的 Job 类型。Job 类型仅支持 INSTALL_APP、UNINSTALL_APP、RUN_ASYNC_COMMAND、CREATE_SERVER_AND_UPHONE、SET_UPHONE_GPS、SET_UPHONE_CONFIG、UPLOAD_FILE、DELETE_UPHONE
 
@@ -555,17 +643,6 @@ class UPhoneClient(Client):
 
         **Response Model**
 
-        **Task**
-        - **AppVersionId** (str) - 安装/卸载任务相关的应用版本唯一标识ID
-        - **BeginTime** (int) - 任务处理开始时间，格式为Unix时间戳。
-        - **EndTime** (int) - 任务处理结束时间，格式为Unix时间戳。
-        - **ErrorMsg** (str) - Task错误信息
-        - **ExecuteMsg** (str) - 异步任务执行结果
-        - **State** (str) - 任务状态* 等待中：PENDING* 运行中：RUNNING* 成功：SUCCESS* 失败：FAILED
-        - **TaskId** (str) - Task的唯一标识
-        - **UPhoneId** (str) - 云手机的唯一标识，云手机相关任务包含此字段。
-
-
         **Job**
         - **AppVersionId** (str) - 安装/卸载Job相关的应用版本唯一标识
         - **BeginTime** (int) - Job处理开始时间，格式为Unix时间戳。
@@ -576,6 +653,17 @@ class UPhoneClient(Client):
         - **State** (str) - 任务状态* 等待中：PENDING* 运行中：RUNNING* 成功：SUCCESS* 部分成功：PARTIAL_SUCCESS* 失败：FAILED
         - **Tasks** (list) - 见 **Task** 模型定义
         - **UPhoneIds** (list) - 此Job相关的云手机唯一标识
+
+
+        **Task**
+        - **AppVersionId** (str) - 安装/卸载任务相关的应用版本唯一标识ID
+        - **BeginTime** (int) - 任务处理开始时间，格式为Unix时间戳。
+        - **EndTime** (int) - 任务处理结束时间，格式为Unix时间戳。
+        - **ErrorMsg** (str) - Task错误信息
+        - **ExecuteMsg** (str) - 异步任务执行结果
+        - **State** (str) - 任务状态* 等待中：PENDING* 运行中：RUNNING* 成功：SUCCESS* 失败：FAILED
+        - **TaskId** (str) - Task的唯一标识
+        - **UPhoneId** (str) - 云手机的唯一标识，云手机相关任务包含此字段。
 
 
         """
@@ -592,13 +680,14 @@ class UPhoneClient(Client):
     def describe_u_phone_model(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DescribeUPhoneModel -
+        """DescribeUPhoneModel - 获取云手机规格列表。两种类型：uphone代表单云手机场景、uphone-server代表云手机服务器场景。
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Limit** (int) - 返回数据长度，默认为20，最大100
         - **Offset** (int) - 列表起始位置偏移量，默认为0
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
         - **UPhoneModelNames** (list) - 【数组】要获得信息的 UPhoneModel 名称。调用方式举例：UPhoneModelNames.0=希望获取信息的 UPhoneModel1，UPhoneModelNames.1=UPhoneModel2。 如果不传入，则返回当前 城市 所有符合条件的 UPhoneModel。
 
         **Response**
@@ -611,7 +700,9 @@ class UPhoneClient(Client):
 
         **UPhoneModelInstance**
         - **CPU** (int) - 虚拟CPU核数。
+        - **Description** (str) - 型号描述信息
         - **DiskSize** (int) - 磁盘大小，单位: GB
+        - **Dpi** (int) - DPI
         - **Memory** (int) - 内存大小。单位MB
         - **Refresh** (int) - 刷新率
         - **Resolution** (str) - 分辨率
@@ -650,35 +741,6 @@ class UPhoneClient(Client):
 
         **Response Model**
 
-        **UPhoneSpec**
-        - **UPhoneCount** (int) - 手机开数，即该服务器规格能生成对应手机规格的云手机个数
-        - **UPhoneModelName** (str) - 手机规格名
-
-
-        **ServerDiskSet**
-        - **DiskType** (str) - 磁盘类型。请参考磁盘类型。
-        - **IsBoot** (bool) - 是否是系统盘。枚举值：> True，是系统盘> False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
-        - **Size** (int) - 磁盘大小，单位: GB
-
-
-        **ServerModelInstance**
-        - **CPU** (int) - 虚拟CPU核数。可选参数：1-64（具体机型与CPU的对应关系参照控制台）。
-        - **DiskSet** (list) - 见 **ServerDiskSet** 模型定义
-        - **GPU** (int) - GPU个数
-        - **GPUType** (str) - GPU类型
-        - **Memory** (int) - 内存大小。单位：MB。
-        - **ServerModelName** (str) - ServerModel名称
-        - **ServerModelState** (str) - 表示该机型是否上线，用于前端判断是否开放给用户。枚举值：>AVAILABLE，开放>UNAVAILABLE, 不开放
-        - **UPhoneSpecs** (list) - 见 **UPhoneSpec** 模型定义
-
-
-        **IpSet**
-        - **Ip** (str) - IP地址
-        - **IpMode** (str) - ipv4或者ipv6
-        - **IpType** (str) - 共有或私有
-        - **Isp** (str) - 运营商
-
-
         **ServerInstance**
         - **ChargeType** (str) - 计费模式。枚举值为：<br />  *Year，按年付费；<br />*  Month，按月付费；<br />默认为月付
         - **CityId** (str) - 城市Id，eg: cn-shanghai, cn-jinan
@@ -694,6 +756,35 @@ class UPhoneClient(Client):
         - **State** (str) - 实例状态，枚举值： * 初始化: Initializing; * 云手机创建中: UPhoneCreating;* 运行中: Running; * 删除中: Deleting; * 创建失败: CreateFailed * 未知(空字符串，获取状态超时或出错)：""
         - **UPhoneCount** (int) - 云手机开数。
         - **UPhoneModelName** (str) - 云手机规格名称。
+
+
+        **IpSet**
+        - **Ip** (str) - IP地址
+        - **IpMode** (str) - ipv4或者ipv6
+        - **IpType** (str) - 共有或私有
+        - **Isp** (str) - 运营商
+
+
+        **ServerModelInstance**
+        - **CPU** (int) - 虚拟CPU核数。可选参数：1-64（具体机型与CPU的对应关系参照控制台）。
+        - **DiskSet** (list) - 见 **ServerDiskSet** 模型定义
+        - **GPU** (int) - GPU个数
+        - **GPUType** (str) - GPU类型
+        - **Memory** (int) - 内存大小。单位：MB。
+        - **ServerModelName** (str) - ServerModel名称
+        - **ServerModelState** (str) - 表示该机型是否上线，用于前端判断是否开放给用户。枚举值：>AVAILABLE，开放>UNAVAILABLE, 不开放
+        - **UPhoneSpecs** (list) - 见 **UPhoneSpec** 模型定义
+
+
+        **ServerDiskSet**
+        - **DiskType** (str) - 磁盘类型。请参考磁盘类型。
+        - **IsBoot** (bool) - 是否是系统盘。枚举值：> True，是系统盘> False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
+        - **Size** (int) - 磁盘大小，单位: GB
+
+
+        **UPhoneSpec**
+        - **UPhoneCount** (int) - 手机开数，即该服务器规格能生成对应手机规格的云手机个数
+        - **UPhoneModelName** (str) - 手机规格名
 
 
         """
@@ -724,20 +815,10 @@ class UPhoneClient(Client):
 
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
         - **ServerModels** (list) - 见 **ServerModelInstance** 模型定义
+        - **Stock** (list) - 见 **StockInfo** 模型定义
         - **TotalCount** (int) - ServerModelInstance总数
 
         **Response Model**
-
-        **UPhoneSpec**
-        - **UPhoneCount** (int) - 手机开数，即该服务器规格能生成对应手机规格的云手机个数
-        - **UPhoneModelName** (str) - 手机规格名
-
-
-        **ServerDiskSet**
-        - **DiskType** (str) - 磁盘类型。请参考磁盘类型。
-        - **IsBoot** (bool) - 是否是系统盘。枚举值：> True，是系统盘> False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
-        - **Size** (int) - 磁盘大小，单位: GB
-
 
         **ServerModelInstance**
         - **CPU** (int) - 虚拟CPU核数。可选参数：1-64（具体机型与CPU的对应关系参照控制台）。
@@ -748,6 +829,22 @@ class UPhoneClient(Client):
         - **ServerModelName** (str) - ServerModel名称
         - **ServerModelState** (str) - 表示该机型是否上线，用于前端判断是否开放给用户。枚举值：>AVAILABLE，开放>UNAVAILABLE, 不开放
         - **UPhoneSpecs** (list) - 见 **UPhoneSpec** 模型定义
+
+
+        **ServerDiskSet**
+        - **DiskType** (str) - 磁盘类型。请参考磁盘类型。
+        - **IsBoot** (bool) - 是否是系统盘。枚举值：> True，是系统盘> False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
+        - **Size** (int) - 磁盘大小，单位: GB
+
+
+        **UPhoneSpec**
+        - **UPhoneCount** (int) - 手机开数，即该服务器规格能生成对应手机规格的云手机个数
+        - **UPhoneModelName** (str) - 手机规格名
+
+
+        **StockInfo**
+        - **ModelName** (str) - ServerModel名称
+        - **StockCount** (int) - 资源余量
 
 
         """
@@ -761,6 +858,116 @@ class UPhoneClient(Client):
         resp = self.invoke("DescribeUPhoneServerModel", d, **kwargs)
         return apis.DescribeUPhoneServerModelResponseSchema().loads(resp)
 
+    def get_u_phone_allowance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUPhoneAllowance - 获取云手机创建余量
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
+
+        **Response**
+
+        - **UPhoneAllowance** (list) - 见 **UPhoneAllowance** 模型定义
+
+        **Response Model**
+
+        **UPhoneAllowance**
+        - **Allowance** (int) - 可创建云手机个数
+        - **ModelName** (str) - 枚举值，云手机型号名称，取值：UPhone X，UPhone Plus，UPhone Pro
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUPhoneAllowanceRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUPhoneAllowance", d, **kwargs)
+        return apis.GetUPhoneAllowanceResponseSchema().loads(resp)
+
+    def get_u_phone_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUPhonePrice - 根据云手机规格名称，获取UPhone实例的价格。
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
+        - **ChargeType** (str) - 计费模式。枚举值为： > Year，按年付费； > Month，按月付费； > Dynamic，按小时预付费; 如果不传某个枚举值，默认返回年付、月付的价格组合集。
+        - **INetBandwidth** (int) - 购买独立IP需要此参数，其中一个ip的带宽值。
+        - **IpCount** (int) - 购买独立IP需要此参数。需要的eip数量。
+        - **IpDestRegion** (str) - 购买独立IP必须此参数。绑定的目的地域。参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **MediaBandwidth** (int) - 云手机画面带宽值，画面带宽和手机强绑定关系，必须和手机数量对应。
+        - **Quantity** (int) - 购买时长。默认: 1。 月付时，此参数传0，代表了购买至月末。
+        - **UPhoneCount** (int) - 云手机个数
+        - **UPhoneModelName** (int) - 云手机规格名称
+
+        **Response**
+
+        - **PriceSet** (list) - 见 **UPhonePriceSet** 模型定义
+
+        **Response Model**
+
+        **UPhonePriceSet**
+        - **ChargeType** (str) - 计费类型，枚举值：Year，Month，Dynamic
+        - **ListPrice** (float) - 产品列表价
+        - **OriginalPrice** (float) - 限时优惠的折前原价（即列表价乘以商务折扣后的单价）
+        - **Price** (float) - 价格，单位: 元，保留小数点后两位有效数字
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUPhonePriceRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUPhonePrice", d, **kwargs)
+        return apis.GetUPhonePriceResponseSchema().loads(resp)
+
+    def get_u_phone_renew_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUPhoneRenewPrice - 获取云手机续费价格，不包括独立ip价格。
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
+        - **UPhoneId** (str) - (Required) 云手机的唯一标识，可通过[查询云手机列表]获取。
+        - **ChargeType** (str) - 计费模式。枚举值为： > Year，按年付费； > Month，按月付费； > Dynamic，按小时预付费; 默认返回全部计费方式对应的价格
+
+        **Response**
+
+        - **PriceSet** (list) - 见 **UPhonePriceSet** 模型定义
+
+        **Response Model**
+
+        **UPhonePriceSet**
+        - **ChargeType** (str) - 计费类型，枚举值：Year，Month，Dynamic
+        - **ListPrice** (float) - 产品列表价
+        - **OriginalPrice** (float) - 限时优惠的折前原价（即列表价乘以商务折扣后的单价）
+        - **Price** (float) - 价格，单位: 元，保留小数点后两位有效数字
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUPhoneRenewPriceRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUPhoneRenewPrice", d, **kwargs)
+        return apis.GetUPhoneRenewPriceResponseSchema().loads(resp)
+
     def get_u_phone_screen_capture(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -769,8 +976,9 @@ class UPhoneClient(Client):
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
+        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_cities>`_ 获取
         - **UPhoneID** (str) - (Required) 云手机ID
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
 
         **Response**
 
@@ -811,7 +1019,7 @@ class UPhoneClient(Client):
         **Response Model**
 
         **UPhoneServerPriceSet**
-        - **ChargeType** (str) - 计费类型，枚举值：Year，Month
+        - **ChargeType** (str) - 计费类型，枚举值：Year，Month, Dynamic
         - **ListPrice** (float) - 产品列表价
         - **OriginalPrice** (float) - 限时优惠的折前原价（即列表价乘以商务折扣后的单价）
         - **Price** (float) - 价格，单位: 元，保留小数点后两位有效数字
@@ -848,7 +1056,7 @@ class UPhoneClient(Client):
         **Response Model**
 
         **UPhoneServerPriceSet**
-        - **ChargeType** (str) - 计费类型，枚举值：Year，Month
+        - **ChargeType** (str) - 计费类型，枚举值：Year，Month, Dynamic
         - **ListPrice** (float) - 产品列表价
         - **OriginalPrice** (float) - 限时优惠的折前原价（即列表价乘以商务折扣后的单价）
         - **Price** (float) - 价格，单位: 元，保留小数点后两位有效数字
@@ -865,6 +1073,36 @@ class UPhoneClient(Client):
         resp = self.invoke("GetUPhoneServerRenewPrice", d, **kwargs)
         return apis.GetUPhoneServerRenewPriceResponseSchema().loads(resp)
 
+    def import_file(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ImportFile - 上传文件到云手机目录/sdcard/Download/并自动安装APK文件
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **CityId** (str) - (Required) 城市。 参见  `云手机城市列表 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_cities>`_
+        - **FileName** (str) - (Required) 文件名
+        - **UPhoneIds** (list) - (Required) 云手机ID
+        - **URL** (str) - (Required) 文件下载链接
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
+
+        **Response**
+
+        - **JobId** (str) - 请求的唯一标识Id，`RetCode`为0时返回，可根据此ID查询请求的执行状态
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.ImportFileRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("ImportFile", d, **kwargs)
+        return apis.ImportFileResponseSchema().loads(resp)
+
     def install_u_phone_app_version(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -876,6 +1114,7 @@ class UPhoneClient(Client):
         - **AppVersionId** (str) - (Required) 应用版本的唯一标识ID
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望安装应用的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
 
         **Response**
 
@@ -1015,6 +1254,7 @@ class UPhoneClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望关闭的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
 
         **Response**
 
@@ -1041,6 +1281,7 @@ class UPhoneClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源ID，调用方式举例：UPhoneIds.0=希望开启的云手机实例1的UPhoneId，UPhoneIds.1=云手机实例2的UPhoneId。
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
 
         **Response**
 
@@ -1067,9 +1308,11 @@ class UPhoneClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望重启的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
 
         **Response**
 
+        - **JobId** (str) - 异步请求成功后返回JobId，用以查询Job状态
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
 
         """
@@ -1083,6 +1326,58 @@ class UPhoneClient(Client):
         resp = self.invoke("RebootUPhone", d, **kwargs)
         return apis.RebootUPhoneResponseSchema().loads(resp)
 
+    def renew_u_phone(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """RenewUPhone - 修改UPhone的device_id、imei、meid 以及其他相关配置，达到一键新机的效果
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
+        - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望重启的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
+        - **AndroidID** (str) - AOSP唯一标识
+        - **BSSID** (str) - Wi-Fi 物理地址
+        - **BaseBand** (str) - 基带版本
+        - **Board** (str) - 主板名
+        - **BootLoader** (str) - bootloader版本号
+        - **Brand** (str) - 品牌
+        - **BuildHost** (str) - 固件编译主机
+        - **BuildID** (str) - build的版本号
+        - **BuildTags** (str) - 系统标记
+        - **BuildVersionInc** (str) - 版本增加说明
+        - **Customize** (bool) - 自定义设备参数设置的开关，true时会读取用户设置的下列设备参数信息；false时随机读取ucloud内置设备参数。默认false
+        - **Device** (str) - 设备名
+        - **DisplayID** (str) - 显示的版本号
+        - **FingerPrint** (str) - 系统指纹
+        - **ICCID** (str) - SIM卡唯一标识
+        - **IMEI** (str) - 串号
+        - **IMEISV** (str) - 移动设备标识码软件
+        - **IMSI** (str) - 移动识别码
+        - **Manufacture** (str) - 厂商
+        - **Model** (str) - 设备型号
+        - **PhoneNumber** (str) - 手机号码
+        - **ProductName** (str) - 产品名称
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
+        - **RadioMac** (str) - 移动网络mac地址
+        - **SerialNumber** (str) - 序列号
+        - **WiFiName** (str) - 当前连接Wi-Fi名称
+
+        **Response**
+
+        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.RenewUPhoneRequestSchema().dumps(d)
+
+        resp = self.invoke("RenewUPhone", d, **kwargs)
+        return apis.RenewUPhoneResponseSchema().loads(resp)
+
     def reset_u_phone(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1093,9 +1388,11 @@ class UPhoneClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望重置的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
 
         **Response**
 
+        - **JobId** (str) - 异步请求成功后返回JobId，用以查询Job状态
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
 
         """
@@ -1120,6 +1417,7 @@ class UPhoneClient(Client):
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **Content** (str) - (Required) 待执行的命令。
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望执行命令的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
 
         **Response**
 
@@ -1151,6 +1449,7 @@ class UPhoneClient(Client):
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **Content** (str) - (Required) 待执行的命令。
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望执行命令的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
 
         **Response**
 
@@ -1178,6 +1477,33 @@ class UPhoneClient(Client):
         resp = self.invoke("RunSyncCommand", d, **kwargs)
         return apis.RunSyncCommandResponseSchema().loads(resp)
 
+    def set_u_phone_callback(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """SetUPhoneCallback - 设置云手机异步操作以及状态更新回调，支持云手机重置，安装应用，卸载应用，设备占用状态回调
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **CityId** (str) - (Required) 城市ID
+        - **UPhoneId** (str) - (Required) 云手机ID。
+        - **URL** (str) - (Required) 接收POST请求的http接口。Content-Type：application/json; charset=UTF-8，Accept：application/json。
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.SetUPhoneCallbackRequestSchema().dumps(d)
+
+        resp = self.invoke("SetUPhoneCallback", d, **kwargs)
+        return apis.SetUPhoneCallbackResponseSchema().loads(resp)
+
     def set_u_phone_config(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1187,10 +1513,11 @@ class UPhoneClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
-        - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望重启的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
+        - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
         - **Async** (str) - 异步请求开关，只有为1的时候才是异步，不填或者其他数值为同步
-        - **Bitrate** (str) - 云手机画面传输码率（例，8000）取值范围[100,5000]
+        - **Bitrate** (str) - 云手机画面传输码率（例，8000）取值范围[100,50000]
         - **Dpi** (str) - 云手机dpi，取值范围[100,1000]
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
         - **Refresh** (str) - 云手机画面刷新率，即帧率（例，30）取值范围[1,200]
         - **Resolution** (str) - 云手机画面分辨率（宽x高） （例，1920x1080，中间是字母x）宽和高的取值范围[100,5000]
 
@@ -1228,6 +1555,7 @@ class UPhoneClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
         - **UPhoneGPSs** (list) - 见 **SetUPhoneGPSParamUPhoneGPSs** 模型定义
 
         **Response**
@@ -1266,6 +1594,7 @@ class UPhoneClient(Client):
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **Mode** (str) - (Required) 管理模式：管理员admin，普通用户user
         - **UPhoneId** (str) - (Required) 云手机实例的资源ID
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
 
         **Response**
 
@@ -1281,6 +1610,35 @@ class UPhoneClient(Client):
         resp = self.invoke("SetUPhoneManagerMode", d, **kwargs)
         return apis.SetUPhoneManagerModeResponseSchema().loads(resp)
 
+    def set_u_phone_root_mode(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """SetUPhoneRootMode - 设置云手机Root模式
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
+        - **Root** (bool) - (Required) true则打开Root权限；false则关闭Root权限
+        - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望重启的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
+
+        **Response**
+
+        - **JobId** (str) - 异步请求成功后返回JobId，用以查询Job状态
+        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.SetUPhoneRootModeRequestSchema().dumps(d)
+
+        resp = self.invoke("SetUPhoneRootMode", d, **kwargs)
+        return apis.SetUPhoneRootModeResponseSchema().loads(resp)
+
     def set_u_phone_splash_screen(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1292,6 +1650,7 @@ class UPhoneClient(Client):
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **UPhoneId** (str) - (Required) 云手机ID
         - **URL** (str) - (Required) 启动画面下载地址
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
 
         **Response**
 
@@ -1307,6 +1666,33 @@ class UPhoneClient(Client):
         resp = self.invoke("SetUPhoneSplashScreen", d, **kwargs)
         return apis.SetUPhoneSplashScreenResponseSchema().loads(resp)
 
+    def set_u_phone_token(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """SetUPhoneToken - 设置云手机RTC连接Token提高安全性
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_cities>`_ 获取
+        - **UPhoneId** (str) - (Required) 云手机ID
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
+        - **Token** (str) - RTC连接Token，为空表示清空Token
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.SetUPhoneTokenRequestSchema().dumps(d)
+
+        resp = self.invoke("SetUPhoneToken", d, **kwargs)
+        return apis.SetUPhoneTokenResponseSchema().loads(resp)
+
     def un_install_u_phone_app_version(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1318,6 +1704,7 @@ class UPhoneClient(Client):
         - **AppVersionId** (str) - (Required) 应用版本的唯一标识ID
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望卸载应用的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
 
         **Response**
 
@@ -1346,6 +1733,7 @@ class UPhoneClient(Client):
         - **ImageId** (str) - (Required) 云手机自定义镜像资源ID
         - **Description** (str) - 镜像的描述信息。长度为2~256个英文或中文字符
         - **Name** (str) - 镜像名称。长度为2~128个英文或中文字符。
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
 
         **Response**
 

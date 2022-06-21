@@ -9,11 +9,15 @@ class UPhoneInstanceSchema(schema.ResponseSchema):
     fields = {
         "CPU": fields.Int(required=True, load_from="CPU"),
         "Callback": fields.Str(required=True, load_from="Callback"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
         "CityId": fields.Str(required=True, load_from="CityId"),
         "CityName": fields.Str(required=True, load_from="CityName"),
         "CreateTime": fields.Int(required=True, load_from="CreateTime"),
         "DiskSize": fields.Int(required=True, load_from="DiskSize"),
+        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
         "ImageId": fields.Str(required=True, load_from="ImageId"),
+        "Ip": fields.Str(required=False, load_from="Ip"),
+        "IpRegion": fields.Str(required=False, load_from="IpRegion"),
         "Memory": fields.Int(required=True, load_from="Memory"),
         "OsType": fields.Str(required=True, load_from="OsType"),
         "Refresh": fields.Int(required=True, load_from="Refresh"),
@@ -89,6 +93,9 @@ class UPhoneDetailInstanceSchema(schema.ResponseSchema):
         "ServerId": fields.Str(required=False, load_from="ServerId"),
         "State": fields.Str(required=False, load_from="State"),
         "UPhoneId": fields.Str(required=False, load_from="UPhoneId"),
+        "UPhoneModelName": fields.Str(
+            required=False, load_from="UPhoneModelName"
+        ),
         "UPhoneName": fields.Str(required=False, load_from="UPhoneName"),
     }
 
@@ -155,7 +162,9 @@ class UPhoneModelInstanceSchema(schema.ResponseSchema):
 
     fields = {
         "CPU": fields.Int(required=True, load_from="CPU"),
+        "Description": fields.Str(required=False, load_from="Description"),
         "DiskSize": fields.Int(required=True, load_from="DiskSize"),
+        "Dpi": fields.Int(required=False, load_from="Dpi"),
         "Memory": fields.Int(required=True, load_from="Memory"),
         "Refresh": fields.Int(required=True, load_from="Refresh"),
         "Resolution": fields.Str(required=True, load_from="Resolution"),
@@ -236,6 +245,35 @@ class ServerInstanceSchema(schema.ResponseSchema):
         "UPhoneModelName": fields.Str(
             required=True, load_from="UPhoneModelName"
         ),
+    }
+
+
+class StockInfoSchema(schema.ResponseSchema):
+    """StockInfo - model的可用量信息"""
+
+    fields = {
+        "ModelName": fields.Str(required=False, load_from="ModelName"),
+        "StockCount": fields.Int(required=False, load_from="StockCount"),
+    }
+
+
+class UPhoneAllowanceSchema(schema.ResponseSchema):
+    """UPhoneAllowance - 云手机余量结构体"""
+
+    fields = {
+        "Allowance": fields.Int(required=True, load_from="Allowance"),
+        "ModelName": fields.Str(required=True, load_from="ModelName"),
+    }
+
+
+class UPhonePriceSetSchema(schema.ResponseSchema):
+    """UPhonePriceSet - 云手机价格列表"""
+
+    fields = {
+        "ChargeType": fields.Str(required=True, load_from="ChargeType"),
+        "ListPrice": fields.Float(required=False, load_from="ListPrice"),
+        "OriginalPrice": fields.Float(required=True, load_from="OriginalPrice"),
+        "Price": fields.Float(required=True, load_from="Price"),
     }
 
 

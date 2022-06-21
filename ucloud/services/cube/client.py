@@ -521,6 +521,33 @@ class CubeClient(Client):
         resp = self.invoke("ModifyCubeTag", d, **kwargs)
         return apis.ModifyCubeTagResponseSchema().loads(resp)
 
+    def reboot_cube_pod(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """RebootCubePod - 重启Cube Pod
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CubeId** (str) - (Required) cube资源id（cube-xxxxxx）
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.RebootCubePodRequestSchema().dumps(d)
+
+        resp = self.invoke("RebootCubePod", d, **kwargs)
+        return apis.RebootCubePodResponseSchema().loads(resp)
+
     def renew_cube_pod(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:

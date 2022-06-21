@@ -76,15 +76,15 @@ class UAccountClient(Client):
     def create_project(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """CreateProject - 创建项目
+        """CreateProject -
 
         **Request**
 
-        - **ProjectName** (str) - (Required) 项目名称，不得与现有项目重名
+        - **ProjectName** (str) - (Required)
 
         **Response**
 
-        - **ProjectId** (str) - 所创建项目的Id
+        - **ProjectId** (str) -
 
         """
         # build request
@@ -115,19 +115,19 @@ class UAccountClient(Client):
 
         **Response Model**
 
-        **PermissionSet**
-        - **Add** (list) - 有增权限的产品列表
-        - **Del** (list) - 有删权限的产品列表
-        - **Get** (list) - 有查权限的产品列表
-        - **Mod** (list) - 有改权限的产品列表
-
-
         **CharacterSet**
         - **CharacterDescription** (str) - 角色描述
         - **CharacterId** (str) - 角色ID
         - **CharacterName** (str) - 角色名
         - **Modifiable** (bool) - 可修改性
         - **PermissionSet** (list) - 见 **PermissionSet** 模型定义
+
+
+        **PermissionSet**
+        - **Add** (list) - 有增权限的产品列表
+        - **Del** (list) - 有删权限的产品列表
+        - **Get** (list) - 有查权限的产品列表
+        - **Mod** (list) - 有改权限的产品列表
 
 
         """
@@ -157,12 +157,6 @@ class UAccountClient(Client):
 
         **Response Model**
 
-        **ProjectInfo**
-        - **CharacterId** (str) - 角色ID
-        - **ProjectId** (str) - 项目ID，请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **ProjectName** (str) - 项目名
-
-
         **MemberInfo**
         - **ActivateFlag** (int) - 激活状态（0：未激活，1：已激活）
         - **Created** (int) - 创建时间
@@ -181,6 +175,12 @@ class UAccountClient(Client):
         - **PublicKey** (str) - 公钥
         - **State** (str) - 状态
         - **TOTPStatus** (int) - TOTP状态（0：未开启，1：已开启）
+
+
+        **ProjectInfo**
+        - **CharacterId** (str) - 角色ID
+        - **ProjectId** (str) - 项目ID，请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **ProjectName** (str) - 项目名
 
 
         """

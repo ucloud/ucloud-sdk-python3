@@ -3,6 +3,24 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class UFileTokenSetSchema(schema.ResponseSchema):
+    """UFileTokenSet - ufile令牌集合"""
+
+    fields = {
+        "AllowedBuckets": fields.List(fields.Str()),
+        "AllowedOps": fields.List(fields.Str()),
+        "AllowedPrefixes": fields.List(fields.Str()),
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "ExpireTime": fields.Int(required=True, load_from="ExpireTime"),
+        "ModifyTime": fields.Int(required=True, load_from="ModifyTime"),
+        "PrivateKey": fields.Str(required=True, load_from="PrivateKey"),
+        "PublicKey": fields.Str(required=True, load_from="PublicKey"),
+        "Region": fields.Str(required=True, load_from="Region"),
+        "TokenId": fields.Str(required=True, load_from="TokenId"),
+        "TokenName": fields.Str(required=True, load_from="TokenName"),
+    }
+
+
 class UFileDomainSetSchema(schema.ResponseSchema):
     """UFileDomainSet - DescribeBucket"""
 
@@ -32,21 +50,18 @@ class UFileBucketSetSchema(schema.ResponseSchema):
     }
 
 
-class UFileTokenSetSchema(schema.ResponseSchema):
-    """UFileTokenSet - ufile令牌集合"""
+class LifeCycleItemSchema(schema.ResponseSchema):
+    """LifeCycleItem - 生命周期信息"""
 
     fields = {
-        "AllowedBuckets": fields.List(fields.Str()),
-        "AllowedOps": fields.List(fields.Str()),
-        "AllowedPrefixes": fields.List(fields.Str()),
-        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
-        "ExpireTime": fields.Int(required=True, load_from="ExpireTime"),
-        "ModifyTime": fields.Int(required=True, load_from="ModifyTime"),
-        "PrivateKey": fields.Str(required=True, load_from="PrivateKey"),
-        "PublicKey": fields.Str(required=True, load_from="PublicKey"),
-        "Region": fields.Str(required=True, load_from="Region"),
-        "TokenId": fields.Str(required=True, load_from="TokenId"),
-        "TokenName": fields.Str(required=True, load_from="TokenName"),
+        "ArchivalDays": fields.Int(required=False, load_from="ArchivalDays"),
+        "BucketName": fields.Str(required=False, load_from="BucketName"),
+        "Days": fields.Int(required=False, load_from="Days"),
+        "IADays": fields.Int(required=False, load_from="IADays"),
+        "LifeCycleId": fields.Str(required=False, load_from="LifeCycleId"),
+        "LifeCycleName": fields.Str(required=False, load_from="LifeCycleName"),
+        "Prefix": fields.Str(required=False, load_from="Prefix"),
+        "Status": fields.Str(required=False, load_from="Status"),
     }
 
 

@@ -371,10 +371,13 @@ class DescribeUK8SClusterResponseSchema(schema.ResponseSchema):
         "ExternalApiServer": fields.Str(
             required=False, load_from="ExternalApiServer"
         ),
-        "KubeProxy": fields.Str(),
+        "KubeProxy": models.KubeProxySchema(),
         "MasterCount": fields.Int(required=True, load_from="MasterCount"),
         "MasterList": fields.List(
             models.UhostInfoSchema(), required=False, load_from="MasterList"
+        ),
+        "MasterResourceStatus": fields.Str(
+            required=False, load_from="MasterResourceStatus"
         ),
         "NodeCount": fields.Int(required=False, load_from="NodeCount"),
         "NodeList": fields.List(
@@ -572,7 +575,9 @@ class ListUK8SNodeGroupRequestSchema(schema.RequestSchema):
         "ClusterId": fields.Str(required=True, dump_to="ClusterId"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
+        "Zone": fields.Str(
+            required=False, dump_to="Zone"
+        ),  # Deprecated, will be removed at 1.0
     }
 
 
@@ -603,7 +608,9 @@ class RemoveUK8SNodeGroupRequestSchema(schema.RequestSchema):
         "NodeGroupId": fields.Str(required=True, dump_to="NodeGroupId"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
+        "Zone": fields.Str(
+            required=False, dump_to="Zone"
+        ),  # Deprecated, will be removed at 1.0
     }
 
 

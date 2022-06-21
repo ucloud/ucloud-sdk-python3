@@ -9,6 +9,32 @@ from ucloud.services.ufs.schemas import models
 
 
 """
+API: AddUFSVolumeMountPoint
+
+添加文件系统挂载点
+"""
+
+
+class AddUFSVolumeMountPointRequestSchema(schema.RequestSchema):
+    """AddUFSVolumeMountPoint - 添加文件系统挂载点"""
+
+    fields = {
+        "MountPointName": fields.Str(required=True, dump_to="MountPointName"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SubnetId": fields.Str(required=True, dump_to="SubnetId"),
+        "VolumeId": fields.Str(required=True, dump_to="VolumeId"),
+        "VpcId": fields.Str(required=True, dump_to="VpcId"),
+    }
+
+
+class AddUFSVolumeMountPointResponseSchema(schema.ResponseSchema):
+    """AddUFSVolumeMountPoint - 添加文件系统挂载点"""
+
+    fields = {}
+
+
+"""
 API: CreateUFSVolume
 
 创建文件系统
@@ -74,6 +100,70 @@ class DescribeUFSVolume2ResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeUFSVolumeMountpoint
+
+获取文件系统挂载点信息
+"""
+
+
+class DescribeUFSVolumeMountpointRequestSchema(schema.RequestSchema):
+    """DescribeUFSVolumeMountpoint - 获取文件系统挂载点信息"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "VolumeId": fields.Str(required=True, dump_to="VolumeId"),
+    }
+
+
+class DescribeUFSVolumeMountpointResponseSchema(schema.ResponseSchema):
+    """DescribeUFSVolumeMountpoint - 获取文件系统挂载点信息"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.MountPointInfoSchema(), required=True, load_from="DataSet"
+        ),
+        "MaxMountPointNum": fields.Int(
+            required=True, load_from="MaxMountPointNum"
+        ),
+        "TotalMountPointNum": fields.Int(
+            required=True, load_from="TotalMountPointNum"
+        ),
+    }
+
+
+"""
+API: DescribeUFSVolumePrice
+
+获取文件系统价格
+"""
+
+
+class DescribeUFSVolumePriceRequestSchema(schema.RequestSchema):
+    """DescribeUFSVolumePrice - 获取文件系统价格"""
+
+    fields = {
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Size": fields.Int(required=True, dump_to="Size"),
+        "StorageType": fields.Str(required=True, dump_to="StorageType"),
+        "VolumeId": fields.Str(required=False, dump_to="VolumeId"),
+    }
+
+
+class DescribeUFSVolumePriceResponseSchema(schema.ResponseSchema):
+    """DescribeUFSVolumePrice - 获取文件系统价格"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.UFSPriceDataSetSchema(), required=False, load_from="DataSet"
+        ),
+    }
+
+
+"""
 API: ExtendUFSVolume
 
 文件系统扩容
@@ -116,5 +206,55 @@ class RemoveUFSVolumeRequestSchema(schema.RequestSchema):
 
 class RemoveUFSVolumeResponseSchema(schema.ResponseSchema):
     """RemoveUFSVolume - 删除UFS文件系统"""
+
+    fields = {}
+
+
+"""
+API: RemoveUFSVolumeMountPoint
+
+删除文件系统挂载点
+"""
+
+
+class RemoveUFSVolumeMountPointRequestSchema(schema.RequestSchema):
+    """RemoveUFSVolumeMountPoint - 删除文件系统挂载点"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SubnetId": fields.Str(required=True, dump_to="SubnetId"),
+        "VolumeId": fields.Str(required=True, dump_to="VolumeId"),
+        "VpcId": fields.Str(required=True, dump_to="VpcId"),
+    }
+
+
+class RemoveUFSVolumeMountPointResponseSchema(schema.ResponseSchema):
+    """RemoveUFSVolumeMountPoint - 删除文件系统挂载点"""
+
+    fields = {}
+
+
+"""
+API: UpdateUFSVolumeInfo
+
+更改文件系统相关信息（名称／备注）
+"""
+
+
+class UpdateUFSVolumeInfoRequestSchema(schema.RequestSchema):
+    """UpdateUFSVolumeInfo - 更改文件系统相关信息（名称／备注）"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "VolumeId": fields.Str(required=True, dump_to="VolumeId"),
+        "VolumeName": fields.Str(required=False, dump_to="VolumeName"),
+    }
+
+
+class UpdateUFSVolumeInfoResponseSchema(schema.ResponseSchema):
+    """UpdateUFSVolumeInfo - 更改文件系统相关信息（名称／备注）"""
 
     fields = {}

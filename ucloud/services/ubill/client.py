@@ -78,14 +78,14 @@ class UBillClient(Client):
         **Request**
 
         - **BillingCycle** (str) - (Required) 账期，YYYY-MM，比如2021-08，只支持2018-05之后的查询
-        - **ChargeType** (str) - 计费方式 (筛选项, 默认全部)
+        - **ChargeType** (str) - 计费方式 (筛选项, 默认全部)。枚举值：\\ > Dynamic:按时 \\ > Month:按月 \\ > Year:按年 \\ > Once:一次性按量 \\ > Used:按量 \\ > Post:后付费
         - **Limit** (int) - 每页数量，默认值25，最大值：100。
         - **Offset** (int) - 数据偏移量 (默认0)
-        - **OrderType** (str) - 订单类型 (筛选项, 默认全部)
+        - **OrderType** (str) - 订单类型 (筛选项, 默认全部) 。枚举值：\\ > OT_BUY:新购 \\ > OT_RENEW:续费 \\ > OT_UPGRADE:升级 \\ > OT_REFUND:退费 \\ > OT_DOWNGRADE:降级 \\ > OT_SUSPEND:结算 \\ > OT_PAYMENT:删除资源回款 \\ > OT_POSTPAID_PAYMENT:后付费回款 \\ > OT_RECOVER:删除恢复 \\ > OT_POSTPAID_RENEW:过期续费回款
         - **PaidState** (int) - 支付状态 (筛选项, 1:仅显示未支付订单; 2:仅显示已支付订单; 0:两者都显示)
         - **ProjectName** (str) - 项目名称 (筛选项, 默认全部)
         - **ResourceIds** (list) - 资源ID(筛选项, 默认全部)	支持多筛选，多筛选请在请求参数中添加多个字段例ResourceIds.0: uhost-bzgf1gh5，ResourceIds.1: uhost-gu1xpspa，
-        - **ResourceTypes** (list) - 产品类型 (筛选项, 默认全部),支持多筛选，多筛选请在请求参数中添加多个字段例ResourceTypes.0: uhost，ResourceTypes.1: udisk，ResourceTypes.2: udb，
+        - **ResourceTypes** (list) - 产品类型 (筛选项, 默认全部),支持多筛选，多筛选请在请求参数中添加多个字段。枚举值：\\ > uhost:云主机 \\ > udisk:普通云硬盘 \\ > udb:云数据库 \\ > eip:弹性IP \\ > ufile:对象存储 \\ > fortress_host:堡垒机 \\ > ufs:文件存储 \\ > waf:WEB应用防火墙 \\ > ues:弹性搜索 \\ > udisk_ssd:SSD云硬盘 \\ > rssd:RSSD云硬盘
         - **ShowZero** (int) - 是否显示0元订单 (0 不显示, 1 显示, 默认0)
         - **UserEmail** (str) - 用户邮箱，可以根据用户邮箱来进行筛选
 
@@ -96,9 +96,28 @@ class UBillClient(Client):
 
         **Response Model**
 
-        **ResourceExtendInfo**
-        - **KeyId** (str) - 资源标识健
-        - **Value** (str) - 资源标识值
+        **BillDetailItem**
+        - **Admin** (int) - 是否为主账号。枚举值：\\ > 0:子账号 \\ > 1:主账号
+        - **Amount** (str) - 订单总金额
+        - **AmountCoupon** (str) - 代金券抵扣
+        - **AmountFree** (str) - 赠送金额抵扣
+        - **AmountReal** (str) - 现金账户支付
+        - **AzGroupCName** (str) - 可用区
+        - **ChargeType** (str) - 计费方式 (筛选项, 默认全部)。枚举值：\\ > Dynamic:按时 \\ > Month:按月 \\ > Year:按年 \\ > Once:一次性按量 \\ > Used:按量 \\ > Post:后付费
+        - **CreateTime** (int) - 创建时间（时间戳）
+        - **ItemDetails** (list) - 见 **ItemDetail** 模型定义
+        - **OrderNo** (str) - 订单号
+        - **OrderType** (str) - 订单类型 (筛选项, 默认全部) 。枚举值：\\ > OT_BUY:新购 \\ > OT_RENEW:续费 \\ > OT_UPGRADE:升级 \\ > OT_REFUND:退费 \\ > OT_DOWNGRADE:降级 \\ > OT_SUSPEND:结算 \\ > OT_PAYMENT:删除资源回款 \\ > OT_POSTPAID_PAYMENT:后付费回款 \\ > OT_RECOVER:删除恢复 \\ > OT_POSTPAID_RENEW:过期续费回款
+        - **ProjectName** (str) - 项目名称
+        - **ResourceExtendInfo** (list) - 见 **ResourceExtendInfo** 模型定义
+        - **ResourceId** (str) - 资源ID
+        - **ResourceType** (str) - 产品类型。枚举值：\\ > uhost:云主机 \\ > udisk:普通云硬盘 \\ > udb:云数据库 \\ > eip:弹性IP \\ > ufile:对象存储 \\ > fortress_host:堡垒机 \\ > ufs:文件存储 \\ > waf:WEB应用防火墙 \\ > ues:弹性搜索 \\ > udisk_ssd:SSD云硬盘 \\ > rssd:RSSD云硬盘
+        - **ResourceTypeCode** (int) - 产品类型代码
+        - **ShowHover** (int) - 订单支付状态。枚举值：\\> 0:未支付 \\ > 1:已支付
+        - **StartTime** (int) - 开始时间（时间戳）
+        - **UserDisplayName** (str) - 账户昵称
+        - **UserEmail** (str) - 账户邮箱
+        - **UserName** (str) - 账户名
 
 
         **ItemDetail**
@@ -106,28 +125,9 @@ class UBillClient(Client):
         - **Value** (str) - 产品小类规格
 
 
-        **BillDetailItem**
-        - **Admin** (int) - 是否为主账号
-        - **Amount** (str) - 订单总金额
-        - **AmountCoupon** (str) - 代金券抵扣
-        - **AmountFree** (str) - 赠送金额抵扣
-        - **AmountReal** (str) - 现金账户支付
-        - **AzGroupCName** (str) - 可用区
-        - **ChargeType** (str) - 计费方式
-        - **CreateTime** (int) - 创建时间（时间戳）
-        - **ItemDetails** (list) - 见 **ItemDetail** 模型定义
-        - **OrderNo** (str) - 订单号
-        - **OrderType** (str) - 订单类型
-        - **ProjectName** (str) - 项目名称
-        - **ResourceExtendInfo** (list) - 见 **ResourceExtendInfo** 模型定义
-        - **ResourceId** (str) - 资源ID
-        - **ResourceType** (str) - 产品类型
-        - **ResourceTypeCode** (int) - 产品类型代码
-        - **ShowHover** (int) - 订单支付状态
-        - **StartTime** (int) - 开始时间（时间戳）
-        - **UserDisplayName** (str) - 账户昵称
-        - **UserEmail** (str) - 账户邮箱
-        - **UserName** (str) - 账户名
+        **ResourceExtendInfo**
+        - **KeyId** (str) - 资源标识健
+        - **Value** (str) - 资源标识值
 
 
         """

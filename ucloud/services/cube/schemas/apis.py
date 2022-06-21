@@ -447,6 +447,30 @@ class ModifyCubeTagResponseSchema(schema.ResponseSchema):
 
 
 """
+API: RebootCubePod
+
+重启Cube Pod
+"""
+
+
+class RebootCubePodRequestSchema(schema.RequestSchema):
+    """RebootCubePod - 重启Cube Pod"""
+
+    fields = {
+        "CubeId": fields.Str(required=True, dump_to="CubeId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class RebootCubePodResponseSchema(schema.ResponseSchema):
+    """RebootCubePod - 重启Cube Pod"""
+
+    fields = {}
+
+
+"""
 API: RenewCubePod
 
 更新Pod
