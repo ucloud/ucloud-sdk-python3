@@ -3,18 +3,6 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class IPSetSchema(schema.ResponseSchema):
-    """IPSet - 节点的IP信息"""
-
-    fields = {
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "Default": fields.Str(required=False, load_from="Default"),
-        "IP": fields.Str(required=False, load_from="IP"),
-        "IPId": fields.Str(required=False, load_from="IPId"),
-        "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
 class DiskSetSchema(schema.ResponseSchema):
     """DiskSet - 节点磁盘信息"""
 
@@ -29,6 +17,26 @@ class DiskSetSchema(schema.ResponseSchema):
         "Name": fields.Str(required=False, load_from="Name"),
         "Size": fields.Int(required=False, load_from="Size"),
         "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
+class IPSetSchema(schema.ResponseSchema):
+    """IPSet - 节点的IP信息"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "Default": fields.Str(required=False, load_from="Default"),
+        "IP": fields.Str(required=False, load_from="IP"),
+        "IPId": fields.Str(required=False, load_from="IPId"),
+        "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
+class KubeProxySchema(schema.ResponseSchema):
+    """KubeProxy - KubeProxy信息"""
+
+    fields = {
+        "Mode": fields.Str(required=False, load_from="Mode"),
     }
 
 
@@ -48,14 +56,6 @@ class UhostInfoSchema(schema.ResponseSchema):
         "OsName": fields.Str(required=True, load_from="OsName"),
         "State": fields.Str(required=True, load_from="State"),
         "Zone": fields.Str(required=True, load_from="Zone"),
-    }
-
-
-class KubeProxySchema(schema.ResponseSchema):
-    """KubeProxy - KubeProxy信息"""
-
-    fields = {
-        "Mode": fields.Str(required=False, load_from="Mode"),
     }
 
 

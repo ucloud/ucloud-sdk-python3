@@ -20,16 +20,6 @@ class KeyPairSchema(schema.ResponseSchema):
     }
 
 
-class FeatureModesSchema(schema.ResponseSchema):
-    """FeatureModes - 可以支持的模式类别"""
-
-    fields = {
-        "MinimalCpuPlatform": fields.List(fields.Str()),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "RelatedToImageFeature": fields.List(fields.Str()),
-    }
-
-
 class CollectionSchema(schema.ResponseSchema):
     """Collection - CPU和内存可支持的规格"""
 
@@ -40,14 +30,13 @@ class CollectionSchema(schema.ResponseSchema):
     }
 
 
-class DataDiskInfoSchema(schema.ResponseSchema):
-    """DataDiskInfo - 数据盘信息"""
+class FeatureModesSchema(schema.ResponseSchema):
+    """FeatureModes - 可以支持的模式类别"""
 
     fields = {
-        "Features": fields.List(fields.Str()),
-        "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
-        "MinimalSize": fields.Int(required=False, load_from="MinimalSize"),
+        "MinimalCpuPlatform": fields.List(fields.Str()),
         "Name": fields.Str(required=False, load_from="Name"),
+        "RelatedToImageFeature": fields.List(fields.Str()),
     }
 
 
@@ -62,27 +51,19 @@ class BootDiskInfoSchema(schema.ResponseSchema):
     }
 
 
-class FeaturesSchema(schema.ResponseSchema):
-    """Features - 虚机可支持的特性"""
+class DataDiskInfoSchema(schema.ResponseSchema):
+    """DataDiskInfo - 数据盘信息"""
 
     fields = {
-        "Modes": fields.List(FeatureModesSchema()),
+        "Features": fields.List(fields.Str()),
+        "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
+        "MinimalSize": fields.Int(required=False, load_from="MinimalSize"),
         "Name": fields.Str(required=False, load_from="Name"),
     }
 
 
-class CpuPlatformsSchema(schema.ResponseSchema):
-    """CpuPlatforms - CPU平台信息"""
-
-    fields = {
-        "Amd": fields.List(fields.Str()),
-        "Ampere": fields.List(fields.Str()),
-        "Intel": fields.List(fields.Str()),
-    }
-
-
-class GraphicsMemorySchema(schema.ResponseSchema):
-    """GraphicsMemory - GPU的显存指标"""
+class PerformanceSchema(schema.ResponseSchema):
+    """Performance - GPU的性能指标"""
 
     fields = {
         "Rate": fields.Int(required=False, load_from="Rate"),
@@ -99,6 +80,24 @@ class MachineSizesSchema(schema.ResponseSchema):
     }
 
 
+class GraphicsMemorySchema(schema.ResponseSchema):
+    """GraphicsMemory - GPU的显存指标"""
+
+    fields = {
+        "Rate": fields.Int(required=False, load_from="Rate"),
+        "Value": fields.Int(required=False, load_from="Value"),
+    }
+
+
+class FeaturesSchema(schema.ResponseSchema):
+    """Features - 虚机可支持的特性"""
+
+    fields = {
+        "Modes": fields.List(FeatureModesSchema()),
+        "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
 class DisksSchema(schema.ResponseSchema):
     """Disks - 磁盘信息"""
 
@@ -109,12 +108,13 @@ class DisksSchema(schema.ResponseSchema):
     }
 
 
-class PerformanceSchema(schema.ResponseSchema):
-    """Performance - GPU的性能指标"""
+class CpuPlatformsSchema(schema.ResponseSchema):
+    """CpuPlatforms - CPU平台信息"""
 
     fields = {
-        "Rate": fields.Int(required=False, load_from="Rate"),
-        "Value": fields.Int(required=False, load_from="Value"),
+        "Amd": fields.List(fields.Str()),
+        "Ampere": fields.List(fields.Str()),
+        "Intel": fields.List(fields.Str()),
     }
 
 

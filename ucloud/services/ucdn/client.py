@@ -1065,14 +1065,14 @@ class UCDNClient(Client):
 
         **Response Model**
 
-        **LogInfo**
-        - **LogTime** (int) - Unix时间戳
-        - **LogUrl** (str) - 日志url地址
-
-
         **DomanLogList**
         - **Domain** (str) - 域名
         - **LogList** (list) - 见 **LogInfo** 模型定义
+
+
+        **LogInfo**
+        - **LogTime** (int) - Unix时间戳
+        - **LogUrl** (str) - 日志url地址
 
 
         """
