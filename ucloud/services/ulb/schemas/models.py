@@ -102,25 +102,6 @@ class ULBBackendSetSchema(schema.ResponseSchema):
     }
 
 
-class LoggerSetSchema(schema.ResponseSchema):
-    """LoggerSet - ulb日志信息"""
-
-    fields = {
-        "BucketName": fields.Str(required=False, load_from="BucketName"),
-        "TokenID": fields.Str(required=False, load_from="TokenID"),
-        "TokenName": fields.Str(required=False, load_from="TokenName"),
-    }
-
-
-class FirewallSetSchema(schema.ResponseSchema):
-    """FirewallSet - ulb防火墙信息"""
-
-    fields = {
-        "FirewallId": fields.Str(required=False, load_from="FirewallId"),
-        "FirewallName": fields.Str(required=False, load_from="FirewallName"),
-    }
-
-
 class ULBVServerSetSchema(schema.ResponseSchema):
     """ULBVServerSet - DescribeULB"""
 
@@ -151,6 +132,16 @@ class ULBVServerSetSchema(schema.ResponseSchema):
     }
 
 
+class LoggerSetSchema(schema.ResponseSchema):
+    """LoggerSet - ulb日志信息"""
+
+    fields = {
+        "BucketName": fields.Str(required=False, load_from="BucketName"),
+        "TokenID": fields.Str(required=False, load_from="TokenID"),
+        "TokenName": fields.Str(required=False, load_from="TokenName"),
+    }
+
+
 class ULBIPSetSchema(schema.ResponseSchema):
     """ULBIPSet - DescribeULB"""
 
@@ -160,6 +151,15 @@ class ULBIPSetSchema(schema.ResponseSchema):
         "EIP": fields.Str(required=False, load_from="EIP"),
         "EIPId": fields.Str(required=False, load_from="EIPId"),
         "OperatorName": fields.Str(required=False, load_from="OperatorName"),
+    }
+
+
+class FirewallSetSchema(schema.ResponseSchema):
+    """FirewallSet - ulb防火墙信息"""
+
+    fields = {
+        "FirewallId": fields.Str(required=False, load_from="FirewallId"),
+        "FirewallName": fields.Str(required=False, load_from="FirewallName"),
     }
 
 

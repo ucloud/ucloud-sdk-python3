@@ -3,15 +3,6 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class PHostComponentSetSchema(schema.ResponseSchema):
-    """PHostComponentSet - GetPHostTypeInfo"""
-
-    fields = {
-        "Count": fields.Int(required=False, load_from="Count"),
-        "Name": fields.Str(required=False, load_from="Name"),
-    }
-
-
 class PHostClusterSetSchema(schema.ResponseSchema):
     """PHostClusterSet - 物理云主机集群库存信息"""
 
@@ -29,6 +20,15 @@ class PHostCPUSetSchema(schema.ResponseSchema):
         "Count": fields.Int(required=False, load_from="Count"),
         "Frequence": fields.Float(required=False, load_from="Frequence"),
         "Model": fields.Str(required=False, load_from="Model"),
+    }
+
+
+class PHostComponentSetSchema(schema.ResponseSchema):
+    """PHostComponentSet - GetPHostTypeInfo"""
+
+    fields = {
+        "Count": fields.Int(required=False, load_from="Count"),
+        "Name": fields.Str(required=False, load_from="Name"),
     }
 
 
