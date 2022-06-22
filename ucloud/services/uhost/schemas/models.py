@@ -30,16 +30,6 @@ class FeatureModesSchema(schema.ResponseSchema):
     }
 
 
-class CollectionSchema(schema.ResponseSchema):
-    """Collection - CPU和内存可支持的规格"""
-
-    fields = {
-        "Cpu": fields.Int(required=False, load_from="Cpu"),
-        "Memory": fields.List(fields.Int()),
-        "MinimalCpuPlatform": fields.List(fields.Str()),
-    }
-
-
 class DataDiskInfoSchema(schema.ResponseSchema):
     """DataDiskInfo - 数据盘信息"""
 
@@ -62,11 +52,31 @@ class BootDiskInfoSchema(schema.ResponseSchema):
     }
 
 
+class CollectionSchema(schema.ResponseSchema):
+    """Collection - CPU和内存可支持的规格"""
+
+    fields = {
+        "Cpu": fields.Int(required=False, load_from="Cpu"),
+        "Memory": fields.List(fields.Int()),
+        "MinimalCpuPlatform": fields.List(fields.Str()),
+    }
+
+
 class FeaturesSchema(schema.ResponseSchema):
     """Features - 虚机可支持的特性"""
 
     fields = {
         "Modes": fields.List(FeatureModesSchema()),
+        "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
+class DisksSchema(schema.ResponseSchema):
+    """Disks - 磁盘信息"""
+
+    fields = {
+        "BootDisk": fields.List(BootDiskInfoSchema()),
+        "DataDisk": fields.List(DataDiskInfoSchema()),
         "Name": fields.Str(required=False, load_from="Name"),
     }
 
@@ -81,8 +91,8 @@ class CpuPlatformsSchema(schema.ResponseSchema):
     }
 
 
-class GraphicsMemorySchema(schema.ResponseSchema):
-    """GraphicsMemory - GPU的显存指标"""
+class PerformanceSchema(schema.ResponseSchema):
+    """Performance - GPU的性能指标"""
 
     fields = {
         "Rate": fields.Int(required=False, load_from="Rate"),
@@ -99,18 +109,8 @@ class MachineSizesSchema(schema.ResponseSchema):
     }
 
 
-class DisksSchema(schema.ResponseSchema):
-    """Disks - 磁盘信息"""
-
-    fields = {
-        "BootDisk": fields.List(BootDiskInfoSchema()),
-        "DataDisk": fields.List(DataDiskInfoSchema()),
-        "Name": fields.Str(required=False, load_from="Name"),
-    }
-
-
-class PerformanceSchema(schema.ResponseSchema):
-    """Performance - GPU的性能指标"""
+class GraphicsMemorySchema(schema.ResponseSchema):
+    """GraphicsMemory - GPU的显存指标"""
 
     fields = {
         "Rate": fields.Int(required=False, load_from="Rate"),
@@ -181,15 +181,6 @@ class IsolationGroupSchema(schema.ResponseSchema):
     }
 
 
-class UHostKeyPairSchema(schema.ResponseSchema):
-    """UHostKeyPair - 主机密钥信息"""
-
-    fields = {
-        "KeyPairId": fields.Str(required=False, load_from="KeyPairId"),
-        "KeyPairState": fields.Str(required=False, load_from="KeyPairState"),
-    }
-
-
 class UHostIPSetSchema(schema.ResponseSchema):
     """UHostIPSet - DescribeUHostInstance"""
 
@@ -223,6 +214,15 @@ class UHostDiskSetSchema(schema.ResponseSchema):
         "Name": fields.Str(required=False, load_from="Name"),
         "Size": fields.Int(required=False, load_from="Size"),
         "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
+class UHostKeyPairSchema(schema.ResponseSchema):
+    """UHostKeyPair - 主机密钥信息"""
+
+    fields = {
+        "KeyPairId": fields.Str(required=False, load_from="KeyPairId"),
+        "KeyPairState": fields.Str(required=False, load_from="KeyPairState"),
     }
 
 

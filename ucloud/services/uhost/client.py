@@ -160,6 +160,9 @@ class UHostClient(Client):
 
         **Request Model**
 
+        **CreateUHostInstanceParamDisksCustomBackup**
+
+
         **CreateUHostInstanceParamDisks**
         - **BackupType** (str) - 磁盘备份方案。枚举值：\\ > NONE，无备份 \\ > DATAARK，数据方舟 \\ > SNAPSHOT，快照 \\当前磁盘支持的备份模式参考  `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ ,默认值:NONE
         - **CouponId** (str) - 云盘代金券id。不适用于系统盘/本地盘。请通过DescribeCoupon接口查询，或登录用户中心查看
@@ -196,6 +199,9 @@ class UHostClient(Client):
         - **EIP** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceEIP** 模型定义
 
 
+        **CreateUHostInstanceParamSecGroupId**
+
+
         **CreateUHostInstanceParamVirtualGpuGPUVirtualGpu**
 
 
@@ -203,12 +209,6 @@ class UHostClient(Client):
 
 
         **CreateUHostInstanceParamVolumes**
-
-
-        **CreateUHostInstanceParamDisksCustomBackup**
-
-
-        **CreateUHostInstanceParamSecGroupId**
 
 
         """
@@ -351,16 +351,16 @@ class UHostClient(Client):
         - **Status** (str) - 机型状态：可售|Normal 、 公测|Beta、售罄|Soldout、隐藏|Hidden
 
 
-        **FeatureModes**
-        - **MinimalCpuPlatform** (list) - 这个特性必须是列出来的CPU平台及以上的CPU才支持
-        - **Name** (str) - 模式|特性名称
-        - **RelatedToImageFeature** (list) - 为镜像上支持这个特性的标签。例如DescribeImage返回的字段Features包含HotPlug，说明该镜像支持热升级。
+        **CpuPlatforms**
+        - **Amd** (list) - 返回AMD的CPU平台信息，例如：AMD: ['Amd/Epyc2']
+        - **Ampere** (list) - 返回Arm的CPU平台信息，例如：Ampere: ['Ampere/Altra']
+        - **Intel** (list) - 返回Intel的CPU平台信息，例如：Intel: ['Intel/CascadeLake','Intel/CascadelakeR','Intel/IceLake']
 
 
-        **Collection**
-        - **Cpu** (int) - CPU规格
-        - **Memory** (list) - 内存规格
-        - **MinimalCpuPlatform** (list) - CPU和内存规格只能在列出来的CPU平台支持
+        **Disks**
+        - **BootDisk** (list) - 见 **BootDiskInfo** 模型定义
+        - **DataDisk** (list) - 见 **DataDiskInfo** 模型定义
+        - **Name** (str) - 磁盘介质类别信息，磁盘主要分类如下：云盘|cloudDisk、普通本地盘|normalLocalDisk和SSD本地盘|ssdLocalDisk。
 
 
         **BootDiskInfo**
@@ -377,14 +377,20 @@ class UHostClient(Client):
         - **Name** (str) - 数据盘类别，包含普通云盘|CLOUD_NORMAL、SSD云盘|CLOUD_SSD和RSSD云盘|CLOUD_RSSD。普通本地盘只包含普通本地盘|LOCAL_NORMAL一种。SSD本地盘只包含SSD本地盘|LOCAL_SSD一种。
 
 
-        **Performance**
-        - **Rate** (int) - 交互展示参数，可忽略
-        - **Value** (int) - 值，单位是TFlops
-
-
         **Features**
         - **Modes** (list) - 见 **FeatureModes** 模型定义
         - **Name** (str) - 可支持的特性名称。目前支持的特性网络增强|NetCapability、热升级|Hotplug
+
+
+        **FeatureModes**
+        - **MinimalCpuPlatform** (list) - 这个特性必须是列出来的CPU平台及以上的CPU才支持
+        - **Name** (str) - 模式|特性名称
+        - **RelatedToImageFeature** (list) - 为镜像上支持这个特性的标签。例如DescribeImage返回的字段Features包含HotPlug，说明该镜像支持热升级。
+
+
+        **GraphicsMemory**
+        - **Rate** (int) - 交互展示参数，可忽略
+        - **Value** (int) - 值，单位是GB
 
 
         **MachineSizes**
@@ -392,21 +398,15 @@ class UHostClient(Client):
         - **Gpu** (int) - Gpu为GPU可支持的规格即GPU颗数，非GPU机型，Gpu为0
 
 
-        **Disks**
-        - **BootDisk** (list) - 见 **BootDiskInfo** 模型定义
-        - **DataDisk** (list) - 见 **DataDiskInfo** 模型定义
-        - **Name** (str) - 磁盘介质类别信息，磁盘主要分类如下：云盘|cloudDisk、普通本地盘|normalLocalDisk和SSD本地盘|ssdLocalDisk。
+        **Collection**
+        - **Cpu** (int) - CPU规格
+        - **Memory** (list) - 内存规格
+        - **MinimalCpuPlatform** (list) - CPU和内存规格只能在列出来的CPU平台支持
 
 
-        **CpuPlatforms**
-        - **Amd** (list) - 返回AMD的CPU平台信息，例如：AMD: ['Amd/Epyc2']
-        - **Ampere** (list) - 返回Arm的CPU平台信息，例如：Ampere: ['Ampere/Altra']
-        - **Intel** (list) - 返回Intel的CPU平台信息，例如：Intel: ['Intel/CascadeLake','Intel/CascadelakeR','Intel/IceLake']
-
-
-        **GraphicsMemory**
+        **Performance**
         - **Rate** (int) - 交互展示参数，可忽略
-        - **Value** (int) - 值，单位是GB
+        - **Value** (int) - 值，单位是TFlops
 
 
         """

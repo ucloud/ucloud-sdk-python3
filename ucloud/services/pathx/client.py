@@ -699,29 +699,6 @@ class PathXClient(Client):
 
         **Response Model**
 
-        **SrcAreaInfo**
-        - **Area** (str) - AreaCode对应城市名
-        - **AreaCode** (str) - AreaCode ,城市机场代码
-        - **FlagEmoji** (str) - 国旗Emoji
-        - **FlagUnicode** (str) - 国旗Unicode
-
-
-        **ForwardTask**
-        - **Port** (int) - 加速端口
-        - **Protocol** (str) - 转发协议，枚举值["TCP"，"UDP"，"HTTPHTTP"，"HTTPSHTTP"，"HTTPSHTTPS"，"WSWS"，"WSSWS"，"WSSWSS"]。TCP和UDP代表四层转发，其余为七层转发。
-        - **RSPort** (int) - 源站服务器监听的端口号
-
-
-        **OutPublicIpInfo**
-        - **Area** (str) - 线路回源节点机房代号
-        - **IP** (str) - 线路回源节点EIP
-
-
-        **AccelerationAreaInfos**
-        - **AccelerationArea** (str) - 加速区code
-        - **AccelerationNodes** (list) - 见 **SrcAreaInfo** 模型定义
-
-
         **ForwardInfo**
         - **AccelerationArea** (str) - 加速大区代码
         - **AccelerationAreaInfos** (list) - 见 **AccelerationAreaInfos** 模型定义
@@ -740,6 +717,29 @@ class PathXClient(Client):
         - **OriginAreaCode** (str) - 源站AreaCode
         - **PortSets** (list) - 见 **ForwardTask** 模型定义
         - **Remark** (str) - 备注
+
+
+        **AccelerationAreaInfos**
+        - **AccelerationArea** (str) - 加速区code
+        - **AccelerationNodes** (list) - 见 **SrcAreaInfo** 模型定义
+
+
+        **SrcAreaInfo**
+        - **Area** (str) - AreaCode对应城市名
+        - **AreaCode** (str) - AreaCode ,城市机场代码
+        - **FlagEmoji** (str) - 国旗Emoji
+        - **FlagUnicode** (str) - 国旗Unicode
+
+
+        **OutPublicIpInfo**
+        - **Area** (str) - 线路回源节点机房代号
+        - **IP** (str) - 线路回源节点EIP
+
+
+        **ForwardTask**
+        - **Port** (int) - 加速端口
+        - **Protocol** (str) - 转发协议，枚举值["TCP"，"UDP"，"HTTPHTTP"，"HTTPSHTTP"，"HTTPSHTTPS"，"WSWS"，"WSSWS"，"WSSWSS"]。TCP和UDP代表四层转发，其余为七层转发。
+        - **RSPort** (int) - 源站服务器监听的端口号
 
 
         """
@@ -771,6 +771,12 @@ class PathXClient(Client):
 
         **Response Model**
 
+        **AccelerationInfo**
+        - **AccelerationArea** (str) - 加速大区代码
+        - **AccelerationName** (str) - 加速大区名称
+        - **NodeInfo** (list) - 见 **NodeDelays** 模型定义
+
+
         **NodeDelays**
         - **Area** (str) - 加速区域
         - **AreaCode** (str) - 加速区域Code
@@ -783,12 +789,6 @@ class PathXClient(Client):
         - **Loss** (float) - 加速后丢包率
         - **LossInternet** (float) - 原始丢包率
         - **LossOptimization** (float) - 丢包下降比例
-
-
-        **AccelerationInfo**
-        - **AccelerationArea** (str) - 加速大区代码
-        - **AccelerationName** (str) - 加速大区名称
-        - **NodeInfo** (list) - 见 **NodeDelays** 模型定义
 
 
         """
@@ -1093,11 +1093,6 @@ class PathXClient(Client):
 
         **Response Model**
 
-        **MatricPoint**
-        - **Timestamp** (int) - 时间戳
-        - **Value** (int) - 监控点数值
-
-
         **UGA3Metric**
         - **ConnectCount** (list) - 见 **MatricPoint** 模型定义
         - **ConnectCountSubline** (list) - 见 **MatricPoint** 模型定义
@@ -1111,6 +1106,11 @@ class PathXClient(Client):
         - **NetworkOut** (list) - 见 **MatricPoint** 模型定义
         - **NetworkOutSubline** (list) - 见 **MatricPoint** 模型定义
         - **NetworkOutUsage** (list) - 见 **MatricPoint** 模型定义
+
+
+        **MatricPoint**
+        - **Timestamp** (int) - 时间戳
+        - **Value** (int) - 监控点数值
 
 
         """
