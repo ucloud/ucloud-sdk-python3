@@ -102,22 +102,15 @@ class ULBBackendSetSchema(schema.ResponseSchema):
     }
 
 
-class LoggerSetSchema(schema.ResponseSchema):
-    """LoggerSet - ulb日志信息"""
+class ULBIPSetSchema(schema.ResponseSchema):
+    """ULBIPSet - DescribeULB"""
 
     fields = {
-        "BucketName": fields.Str(required=False, load_from="BucketName"),
-        "TokenID": fields.Str(required=False, load_from="TokenID"),
-        "TokenName": fields.Str(required=False, load_from="TokenName"),
-    }
-
-
-class FirewallSetSchema(schema.ResponseSchema):
-    """FirewallSet - ulb防火墙信息"""
-
-    fields = {
-        "FirewallId": fields.Str(required=False, load_from="FirewallId"),
-        "FirewallName": fields.Str(required=False, load_from="FirewallName"),
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "BandwidthType": fields.Int(required=False, load_from="BandwidthType"),
+        "EIP": fields.Str(required=False, load_from="EIP"),
+        "EIPId": fields.Str(required=False, load_from="EIPId"),
+        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
     }
 
 
@@ -151,15 +144,22 @@ class ULBVServerSetSchema(schema.ResponseSchema):
     }
 
 
-class ULBIPSetSchema(schema.ResponseSchema):
-    """ULBIPSet - DescribeULB"""
+class LoggerSetSchema(schema.ResponseSchema):
+    """LoggerSet - ulb日志信息"""
 
     fields = {
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "BandwidthType": fields.Int(required=False, load_from="BandwidthType"),
-        "EIP": fields.Str(required=False, load_from="EIP"),
-        "EIPId": fields.Str(required=False, load_from="EIPId"),
-        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
+        "BucketName": fields.Str(required=False, load_from="BucketName"),
+        "TokenID": fields.Str(required=False, load_from="TokenID"),
+        "TokenName": fields.Str(required=False, load_from="TokenName"),
+    }
+
+
+class FirewallSetSchema(schema.ResponseSchema):
+    """FirewallSet - ulb防火墙信息"""
+
+    fields = {
+        "FirewallId": fields.Str(required=False, load_from="FirewallId"),
+        "FirewallName": fields.Str(required=False, load_from="FirewallName"),
     }
 
 

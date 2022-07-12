@@ -1065,14 +1065,14 @@ class UCDNClient(Client):
 
         **Response Model**
 
-        **LogInfo**
-        - **LogTime** (int) - Unix时间戳
-        - **LogUrl** (str) - 日志url地址
-
-
         **DomanLogList**
         - **Domain** (str) - 域名
         - **LogList** (list) - 见 **LogInfo** 模型定义
+
+
+        **LogInfo**
+        - **LogTime** (int) - Unix时间戳
+        - **LogUrl** (str) - 日志url地址
 
 
         """
@@ -1720,3 +1720,28 @@ class UCDNClient(Client):
 
         resp = self.invoke("SwitchUcdnChargeType", d, **kwargs)
         return apis.SwitchUcdnChargeTypeResponseSchema().loads(resp)
+
+    def update_ucdn_domain_status(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateUcdnDomainStatus - 更新加速域名状态
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **DomainId** (str) - (Required) 域名ID，创建加速域名时生成。
+        - **Status** (str) - (Required) 域名状态，enable代表加速中，disable代表停止加速，delete代表删除。
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.UpdateUcdnDomainStatusRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateUcdnDomainStatus", d, **kwargs)
+        return apis.UpdateUcdnDomainStatusResponseSchema().loads(resp)

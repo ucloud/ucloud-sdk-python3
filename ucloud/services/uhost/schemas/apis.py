@@ -105,6 +105,12 @@ API: CreateUHostInstance
 """
 
 
+class CreateUHostInstanceParamDisksCustomBackupSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamDisksCustomBackup -"""
+
+    fields = {}
+
+
 class CreateUHostInstanceParamDisksSchema(schema.RequestSchema):
     """CreateUHostInstanceParamDisks -"""
 
@@ -183,6 +189,12 @@ class CreateUHostInstanceParamNetworkInterfaceSchema(schema.RequestSchema):
     }
 
 
+class CreateUHostInstanceParamSecGroupIdSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamSecGroupId -"""
+
+    fields = {}
+
+
 class CreateUHostInstanceParamVirtualGpuGPUVirtualGpuSchema(
     schema.RequestSchema
 ):
@@ -199,18 +211,6 @@ class CreateUHostInstanceParamVirtualGpuSchema(schema.RequestSchema):
 
 class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
     """CreateUHostInstanceParamVolumes -"""
-
-    fields = {}
-
-
-class CreateUHostInstanceParamDisksCustomBackupSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamDisksCustomBackup -"""
-
-    fields = {}
-
-
-class CreateUHostInstanceParamSecGroupIdSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamSecGroupId -"""
 
     fields = {}
 

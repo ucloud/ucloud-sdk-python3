@@ -390,6 +390,7 @@ class DescribeUDiskRequestSchema(schema.RequestSchema):
             required=False, dump_to="ProtocolVersion"
         ),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "Status": fields.Str(required=False, dump_to="Status"),
         "UDiskBasicInfo": fields.Str(required=False, dump_to="UDiskBasicInfo"),
         "UDiskId": fields.Str(required=False, dump_to="UDiskId"),
         "UHostIdForAttachment": fields.Str(

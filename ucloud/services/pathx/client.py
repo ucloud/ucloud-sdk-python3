@@ -528,10 +528,13 @@ class PathXClient(Client):
         - **BandwidthPackage** (int) - globalssh Ultimate带宽包大小
         - **ChargeType** (str) - 支付周期，如Month,Year,Dynamic等
         - **CreateTime** (int) - 资源创建时间戳
+        - **DomainStatus** (dict) - 加速域名当前可用性检测结果 HashMap 结构 0表示可用, 1 表示有污染
         - **Expire** (bool) - 是否过期
         - **ExpireTime** (int) - 资源过期时间戳
+        - **ExtraDomain** (list) - GlobalSSH分配的其他可用加速域名列表
         - **ForwardRegion** (str) - InstanceType为Basic版本时，需要展示具体分配的转发机房
         - **GlobalSSHPort** (int) - InstanceType等于Free时，由系统自动分配，不等于源站Port值。InstanceType不等于Free时，与源站Port值相同。
+        - **IPV6Access** (bool) - 是否开启EIP IPV6 接入,Flase:未开启
         - **InstanceId** (str) - 实例ID，资源唯一标识
         - **InstanceType** (str) - 枚举值：["Enterprise","Basic","Free","Welfare"], 分别代表企业版，基础版本，免费版本，较早的公测免费版
         - **Port** (int) - 源站服务器监听的SSH端口，windows系统为RDP端口
@@ -699,29 +702,6 @@ class PathXClient(Client):
 
         **Response Model**
 
-        **SrcAreaInfo**
-        - **Area** (str) - AreaCode对应城市名
-        - **AreaCode** (str) - AreaCode ,城市机场代码
-        - **FlagEmoji** (str) - 国旗Emoji
-        - **FlagUnicode** (str) - 国旗Unicode
-
-
-        **ForwardTask**
-        - **Port** (int) - 加速端口
-        - **Protocol** (str) - 转发协议，枚举值["TCP"，"UDP"，"HTTPHTTP"，"HTTPSHTTP"，"HTTPSHTTPS"，"WSWS"，"WSSWS"，"WSSWSS"]。TCP和UDP代表四层转发，其余为七层转发。
-        - **RSPort** (int) - 源站服务器监听的端口号
-
-
-        **OutPublicIpInfo**
-        - **Area** (str) - 线路回源节点机房代号
-        - **IP** (str) - 线路回源节点EIP
-
-
-        **AccelerationAreaInfos**
-        - **AccelerationArea** (str) - 加速区code
-        - **AccelerationNodes** (list) - 见 **SrcAreaInfo** 模型定义
-
-
         **ForwardInfo**
         - **AccelerationArea** (str) - 加速大区代码
         - **AccelerationAreaInfos** (list) - 见 **AccelerationAreaInfos** 模型定义
@@ -740,6 +720,29 @@ class PathXClient(Client):
         - **OriginAreaCode** (str) - 源站AreaCode
         - **PortSets** (list) - 见 **ForwardTask** 模型定义
         - **Remark** (str) - 备注
+
+
+        **AccelerationAreaInfos**
+        - **AccelerationArea** (str) - 加速区code
+        - **AccelerationNodes** (list) - 见 **SrcAreaInfo** 模型定义
+
+
+        **SrcAreaInfo**
+        - **Area** (str) - AreaCode对应城市名
+        - **AreaCode** (str) - AreaCode ,城市机场代码
+        - **FlagEmoji** (str) - 国旗Emoji
+        - **FlagUnicode** (str) - 国旗Unicode
+
+
+        **OutPublicIpInfo**
+        - **Area** (str) - 线路回源节点机房代号
+        - **IP** (str) - 线路回源节点EIP
+
+
+        **ForwardTask**
+        - **Port** (int) - 加速端口
+        - **Protocol** (str) - 转发协议，枚举值["TCP"，"UDP"，"HTTPHTTP"，"HTTPSHTTP"，"HTTPSHTTPS"，"WSWS"，"WSSWS"，"WSSWSS"]。TCP和UDP代表四层转发，其余为七层转发。
+        - **RSPort** (int) - 源站服务器监听的端口号
 
 
         """
@@ -771,6 +774,12 @@ class PathXClient(Client):
 
         **Response Model**
 
+        **AccelerationInfo**
+        - **AccelerationArea** (str) - 加速大区代码
+        - **AccelerationName** (str) - 加速大区名称
+        - **NodeInfo** (list) - 见 **NodeDelays** 模型定义
+
+
         **NodeDelays**
         - **Area** (str) - 加速区域
         - **AreaCode** (str) - 加速区域Code
@@ -783,12 +792,6 @@ class PathXClient(Client):
         - **Loss** (float) - 加速后丢包率
         - **LossInternet** (float) - 原始丢包率
         - **LossOptimization** (float) - 丢包下降比例
-
-
-        **AccelerationInfo**
-        - **AccelerationArea** (str) - 加速大区代码
-        - **AccelerationName** (str) - 加速大区名称
-        - **NodeInfo** (list) - 见 **NodeDelays** 模型定义
 
 
         """
@@ -1093,11 +1096,6 @@ class PathXClient(Client):
 
         **Response Model**
 
-        **MatricPoint**
-        - **Timestamp** (int) - 时间戳
-        - **Value** (int) - 监控点数值
-
-
         **UGA3Metric**
         - **ConnectCount** (list) - 见 **MatricPoint** 模型定义
         - **ConnectCountSubline** (list) - 见 **MatricPoint** 模型定义
@@ -1111,6 +1109,11 @@ class PathXClient(Client):
         - **NetworkOut** (list) - 见 **MatricPoint** 模型定义
         - **NetworkOutSubline** (list) - 见 **MatricPoint** 模型定义
         - **NetworkOutUsage** (list) - 见 **MatricPoint** 模型定义
+
+
+        **MatricPoint**
+        - **Timestamp** (int) - 时间戳
+        - **Value** (int) - 监控点数值
 
 
         """

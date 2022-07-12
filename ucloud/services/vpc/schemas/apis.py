@@ -1404,6 +1404,7 @@ class DescribeVPCResponseSchema(schema.ResponseSchema):
         "DataSet": fields.List(
             models.VPCInfoSchema(), required=False, load_from="DataSet"
         ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
     }
 
 

@@ -1191,3 +1191,26 @@ class SwitchUcdnChargeTypeResponseSchema(schema.ResponseSchema):
     """SwitchUcdnChargeType - 切换账号计费方式"""
 
     fields = {}
+
+
+"""
+API: UpdateUcdnDomainStatus
+
+更新加速域名状态
+"""
+
+
+class UpdateUcdnDomainStatusRequestSchema(schema.RequestSchema):
+    """UpdateUcdnDomainStatus - 更新加速域名状态"""
+
+    fields = {
+        "DomainId": fields.Str(required=True, dump_to="DomainId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Status": fields.Str(required=True, dump_to="Status"),
+    }
+
+
+class UpdateUcdnDomainStatusResponseSchema(schema.ResponseSchema):
+    """UpdateUcdnDomainStatus - 更新加速域名状态"""
+
+    fields = {}
