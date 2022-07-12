@@ -26,10 +26,13 @@ class GlobalSSHInfoSchema(schema.ResponseSchema):
         ),
         "ChargeType": fields.Str(required=True, load_from="ChargeType"),
         "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "DomainStatus": fields.Str(),
         "Expire": fields.Bool(required=True, load_from="Expire"),
         "ExpireTime": fields.Int(required=True, load_from="ExpireTime"),
+        "ExtraDomain": fields.List(fields.Str()),
         "ForwardRegion": fields.Str(required=False, load_from="ForwardRegion"),
         "GlobalSSHPort": fields.Int(required=True, load_from="GlobalSSHPort"),
+        "IPV6Access": fields.Bool(required=False, load_from="IPV6Access"),
         "InstanceId": fields.Str(required=True, load_from="InstanceId"),
         "InstanceType": fields.Str(required=True, load_from="InstanceType"),
         "Port": fields.Int(required=True, load_from="Port"),
@@ -113,6 +116,15 @@ class SrcAreaInfoSchema(schema.ResponseSchema):
     }
 
 
+class OutPublicIpInfoSchema(schema.ResponseSchema):
+    """OutPublicIpInfo - 线路回源IP信息"""
+
+    fields = {
+        "Area": fields.Str(required=False, load_from="Area"),
+        "IP": fields.Str(required=False, load_from="IP"),
+    }
+
+
 class AccelerationAreaInfosSchema(schema.ResponseSchema):
     """AccelerationAreaInfos - 加速大区信息"""
 
@@ -131,15 +143,6 @@ class ForwardTaskSchema(schema.ResponseSchema):
         "Port": fields.Int(required=True, load_from="Port"),
         "Protocol": fields.Str(required=True, load_from="Protocol"),
         "RSPort": fields.Int(required=True, load_from="RSPort"),
-    }
-
-
-class OutPublicIpInfoSchema(schema.ResponseSchema):
-    """OutPublicIpInfo - 线路回源IP信息"""
-
-    fields = {
-        "Area": fields.Str(required=False, load_from="Area"),
-        "IP": fields.Str(required=False, load_from="IP"),
     }
 
 
@@ -224,15 +227,6 @@ class UPathSetSchema(schema.ResponseSchema):
     }
 
 
-class UGAATaskSchema(schema.ResponseSchema):
-    """UGAATask - 用户在UGAA实例下配置的多端口任务"""
-
-    fields = {
-        "Port": fields.Int(required=True, load_from="Port"),
-        "Protocol": fields.Str(required=True, load_from="Protocol"),
-    }
-
-
 class UGAL7ForwarderSchema(schema.ResponseSchema):
     """UGAL7Forwarder - UGA实例 7层转发器信息"""
 
@@ -252,6 +246,15 @@ class UGAL4ForwarderSchema(schema.ResponseSchema):
         "Port": fields.Int(required=True, load_from="Port"),
         "Protocol": fields.Str(required=True, load_from="Protocol"),
         "RSPort": fields.Int(required=True, load_from="RSPort"),
+    }
+
+
+class UGAATaskSchema(schema.ResponseSchema):
+    """UGAATask - 用户在UGAA实例下配置的多端口任务"""
+
+    fields = {
+        "Port": fields.Int(required=True, load_from="Port"),
+        "Protocol": fields.Str(required=True, load_from="Protocol"),
     }
 
 

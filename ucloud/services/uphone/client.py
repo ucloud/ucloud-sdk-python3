@@ -44,6 +44,7 @@ class UPhoneClient(Client):
 
         - **JobId** (str) - 任务ID，用来查询创建云手机任务状态
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
+        - **UPhoneIds** (list) - 【数组】创建的云手机ID
 
         """
         # build request
@@ -209,8 +210,8 @@ class UPhoneClient(Client):
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
-        - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望获取信息的云手机 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId
+        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_cities>`_ 获取
+        - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，N<200；调用方式举例：UPhoneIds.0=希望获取信息的云手机 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
 
         **Response**
@@ -282,6 +283,31 @@ class UPhoneClient(Client):
         resp = self.invoke("DeleteUPhoneServer", d, **kwargs)
         return apis.DeleteUPhoneServerResponseSchema().loads(resp)
 
+    def delete_u_phone_share_bandwidth(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteUPhoneShareBandwidth - 删除云手机共享带宽
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ShareBandwidthId** (str) - (Required) 共享带宽ID
+
+        **Response**
+
+        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.DeleteUPhoneShareBandwidthRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteUPhoneShareBandwidth", d, **kwargs)
+        return apis.DeleteUPhoneShareBandwidthResponseSchema().loads(resp)
+
     def describe_u_phone(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -315,6 +341,7 @@ class UPhoneClient(Client):
         - **CityName** (str) - 城市名称，eg:上海二、济南市
         - **CreateTime** (int) - 创建时间，格式为Unix时间戳。
         - **DiskSize** (int) - 磁盘大小，单位: GB
+        - **EipId** (str) - 云手机IP地址ID
         - **ExpireTime** (int) - 到期时间；格式为Unix时间戳
         - **ImageId** (str) - 云手机镜像ID，不超过32个字节。
         - **Ip** (str) - 云手机IP地址
@@ -325,6 +352,8 @@ class UPhoneClient(Client):
         - **Remark** (str) - 备注
         - **Resolution** (str) - 分辨率
         - **ServerId** (str) - 云手机所在的服务器ID，不超过32个字节。
+        - **ShareBandwidthId** (str) - 所属共享带宽ID
+        - **ShareBandwidthName** (str) - 所属共享带宽名称
         - **SplashScreen** (str) - 云手机启动图片URL链接
         - **State** (str) - 云手机状态<br />* 启动中: STARTING; <br />* 运行中: RUNNING; <br />* 关机中: STOPPING; <br />* 关机: STOPPED <br />* 重启中: REBOOTING; <br />* 重置中: RESETTING; <br />* 启动失败: START_FAILED; <br />* 关机失败: STOP_FAILED; <br />* 重启失败: REBOOT_FAILED; <br />* 重置失败: RESET_FAILED; <br />* 未知状态：UNDEFINED_STATE或""
         - **Tag** (str) - 业务组名称
@@ -858,6 +887,52 @@ class UPhoneClient(Client):
         resp = self.invoke("DescribeUPhoneServerModel", d, **kwargs)
         return apis.DescribeUPhoneServerModelResponseSchema().loads(resp)
 
+    def describe_u_phone_share_bandwidth(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUPhoneShareBandwidth - 获取共享带宽列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 绑定的目的地域。参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ ；不传代表获取所有区域
+        - **ShareBandwidthId** (str) - 共享带宽ID，不传表示获取所有共享带宽信息
+
+        **Response**
+
+        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
+        - **ShareBandwidth** (list) - 见 **ShareBandwidthInfo** 模型定义
+        - **TotalCount** (int) - 共享带宽总数量
+
+        **Response Model**
+
+        **ShareBandwidthInfo**
+        - **Bandwidth** (int) - 带宽大小，单位M
+        - **BindCount** (int) - 当前绑定手机数量
+        - **ChargeType** (str) - 计费模式。枚举值为： > 年 Year，按年付费； > Month，按月付费； > Dynamic，按小时预付费; 默认为月付
+        - **CreateTime** (int) - 创建时间；格式为Unix时间戳
+        - **ExpireTime** (int) - 到期时间；格式为Unix时间戳
+        - **Id** (str) - 共享带宽ID
+        - **IpCount** (int) - 当前绑定IP数量
+        - **IpProportion** (int) - 云手机IP绑定比例
+        - **Name** (str) - 共享带宽名称
+        - **Region** (str) - 绑定的目的地域。参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **RemainCount** (int) - 剩余可绑定手机数量
+        - **Remark** (str) - 备注
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeUPhoneShareBandwidthRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeUPhoneShareBandwidth", d, **kwargs)
+        return apis.DescribeUPhoneShareBandwidthResponseSchema().loads(resp)
+
     def get_u_phone_allowance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1073,6 +1148,37 @@ class UPhoneClient(Client):
         resp = self.invoke("GetUPhoneServerRenewPrice", d, **kwargs)
         return apis.GetUPhoneServerRenewPriceResponseSchema().loads(resp)
 
+    def get_u_phone_share_bandwidth_upgrade_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUPhoneShareBandwidthUpgradePrice - 获取云手机共享带宽升降级价格
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Bandwidth** (int) - (Required) 需要升降级的带宽，默认是当前带宽大小
+        - **ShareBandwidthId** (str) - (Required) 共享带宽的ID
+
+        **Response**
+
+        - **ListPrice** (float) - 产品列表价
+        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
+        - **OriginalPrice** (float) - 限时优惠的折前原价（即列表价乘以商务折扣后的单价）
+        - **Price** (float) - 规格调整差价。单位: 元，保留小数点后两位有效数字
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUPhoneShareBandwidthUpgradePriceRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUPhoneShareBandwidthUpgradePrice", d, **kwargs)
+        return apis.GetUPhoneShareBandwidthUpgradePriceResponseSchema().loads(
+            resp
+        )
+
     def import_file(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """ImportFile - 上传文件到云手机目录/sdcard/Download/并自动安装APK文件
 
@@ -1244,6 +1350,84 @@ class UPhoneClient(Client):
         resp = self.invoke("ModifyUPhoneServerRemark", d, **kwargs)
         return apis.ModifyUPhoneServerRemarkResponseSchema().loads(resp)
 
+    def modify_u_phone_share_bandwidth(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyUPhoneShareBandwidth - 修改云手机共享带宽
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Bandwidth** (str) - (Required) 共享带宽大小；单位M
+        - **ShareBandwidthId** (str) - (Required) 共享带宽ID
+
+        **Response**
+
+        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.ModifyUPhoneShareBandwidthRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyUPhoneShareBandwidth", d, **kwargs)
+        return apis.ModifyUPhoneShareBandwidthResponseSchema().loads(resp)
+
+    def modify_u_phone_share_bandwidth_name(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyUPhoneShareBandwidthName - 修改云手机共享带宽名称
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Name** (str) - (Required) 共享带宽名称
+        - **ShareBandwidthId** (str) - (Required) 共享带宽ID
+
+        **Response**
+
+        - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.ModifyUPhoneShareBandwidthNameRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyUPhoneShareBandwidthName", d, **kwargs)
+        return apis.ModifyUPhoneShareBandwidthNameResponseSchema().loads(resp)
+
+    def modify_u_phone_share_bandwidth_remark(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyUPhoneShareBandwidthRemark - 修改云手机共享带宽备注
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Remark** (str) - (Required) 共享带宽备注
+        - **ShareBandwidthId** (str) - (Required) 共享带宽ID
+
+        **Response**
+
+        - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.ModifyUPhoneShareBandwidthRemarkRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyUPhoneShareBandwidthRemark", d, **kwargs)
+        return apis.ModifyUPhoneShareBandwidthRemarkResponseSchema().loads(resp)
+
     def poweroff_u_phone(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1388,7 +1572,9 @@ class UPhoneClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望重置的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
+        - **ImageId** (str) - 镜像ID，默认为空。不为空则手机会以填写的镜像进行重置，为空则手机会以重置前的镜像重置
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
+        - **UPhoneModelName** (str) - 云手机规格名称，不超过64个字节。可通过[查询云手机规格列表]()查询支持的云手机规格。
 
         **Response**
 
@@ -1642,15 +1828,15 @@ class UPhoneClient(Client):
     def set_u_phone_splash_screen(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """SetUPhoneSplashScreen - 设置云手机启动画面，通过DescribeUPhone接口可以查询该地址
+        """SetUPhoneSplashScreen -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
-        - **UPhoneId** (str) - (Required) 云手机ID
-        - **URL** (str) - (Required) 启动画面下载地址
-        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
+        - **ProjectId** (str) - (Config)
+        - **CityId** (str) - (Required)
+        - **UPhoneId** (str) - (Required)
+        - **URL** (str) - (Required)
+        - **ProductType** (str) -
 
         **Response**
 
@@ -1662,6 +1848,9 @@ class UPhoneClient(Client):
         }
         req and d.update(req)
         d = apis.SetUPhoneSplashScreenRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("SetUPhoneSplashScreen", d, **kwargs)
         return apis.SetUPhoneSplashScreenResponseSchema().loads(resp)
@@ -1692,6 +1881,32 @@ class UPhoneClient(Client):
 
         resp = self.invoke("SetUPhoneToken", d, **kwargs)
         return apis.SetUPhoneTokenResponseSchema().loads(resp)
+
+    def switch_u_phone_independent_ip(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """SwitchUPhoneIndependentIp - 更换云手机独立IP
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **EipId** (str) - (Required) 云手机独立IP地址ID
+
+        **Response**
+
+        - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
+        - **NewIp** (str) - 更换后的新IP地址
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.SwitchUPhoneIndependentIpRequestSchema().dumps(d)
+
+        resp = self.invoke("SwitchUPhoneIndependentIp", d, **kwargs)
+        return apis.SwitchUPhoneIndependentIpResponseSchema().loads(resp)
 
     def un_install_u_phone_app_version(
         self, req: typing.Optional[dict] = None, **kwargs

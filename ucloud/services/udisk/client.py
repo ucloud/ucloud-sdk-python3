@@ -397,6 +397,7 @@ class UDiskClient(Client):
         - **Limit** (int) - 返回数据长度, 默认为20
         - **Offset** (int) - 数据偏移量, 默认为0
         - **ProtocolVersion** (int) - 请求协议版本，建议升级为1，为1时DiskType与UHost磁盘类型定义一致；默认为0
+        - **Status** (str) - 云盘状态。All(所有状态)，Available(可用)，Attaching(挂载中)，InUse(已挂载)， Detaching(卸载中)， Initializating(分配中)，Failed(创建失败)，Cloning(克隆中)，Restoring(恢复中)，RestoreFailed(恢复失败)。默认值：All
         - **UDiskBasicInfo** (str) - 是否只返回云盘基础信息（只包含云盘及关联主机的资源信息）。Yes：是，No：否，默认值（No）。（如仅需要基础信息，建议选填“Yes”，可降低请求延时）
         - **UDiskId** (str) - UDisk Id(留空返回全部)
         - **UHostIdForAttachment** (str) - 根据传入的UHostIdForAttachment，筛选出能被挂载在该主机上的云盘【本字段即将废弃，建议使用HostIdForAttachment】
@@ -433,7 +434,7 @@ class UDiskClient(Client):
         - **SnapEnable** (int) - 是否支持快照，1支持 ，0不支持
         - **SnapshotCount** (int) - 该盘快照个数
         - **SnapshotLimit** (int) - 该盘快照上限
-        - **Status** (str) - 状态:Available(可用),Attaching(挂载中), InUse(已挂载), Detaching(卸载中), Initializating(分配中), Failed(创建失败),Cloning(克隆中),Restoring(恢复中),RestoreFailed(恢复失败),
+        - **Status** (str) - 状态:Available(可用),Attaching(挂载中), InUse(已挂载), Detaching(卸载中), Initializating(分配中), Failed(创建失败),Cloning(克隆中),Restoring(恢复中),RestoreFailed(恢复失败)
         - **Tag** (str) - 业务组名称
         - **UDataArkMode** (str) - 是否开启数据方舟，开启:"Yes", 不支持:"No"
         - **UDiskId** (str) - UDisk实例Id

@@ -14,6 +14,7 @@ class UPhoneInstanceSchema(schema.ResponseSchema):
         "CityName": fields.Str(required=True, load_from="CityName"),
         "CreateTime": fields.Int(required=True, load_from="CreateTime"),
         "DiskSize": fields.Int(required=True, load_from="DiskSize"),
+        "EipId": fields.Str(required=False, load_from="EipId"),
         "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
         "ImageId": fields.Str(required=True, load_from="ImageId"),
         "Ip": fields.Str(required=False, load_from="Ip"),
@@ -24,6 +25,12 @@ class UPhoneInstanceSchema(schema.ResponseSchema):
         "Remark": fields.Str(required=False, load_from="Remark"),
         "Resolution": fields.Str(required=True, load_from="Resolution"),
         "ServerId": fields.Str(required=True, load_from="ServerId"),
+        "ShareBandwidthId": fields.Str(
+            required=False, load_from="ShareBandwidthId"
+        ),
+        "ShareBandwidthName": fields.Str(
+            required=False, load_from="ShareBandwidthName"
+        ),
         "SplashScreen": fields.Str(required=True, load_from="SplashScreen"),
         "State": fields.Str(required=True, load_from="State"),
         "Tag": fields.Str(required=True, load_from="Tag"),
@@ -254,6 +261,25 @@ class StockInfoSchema(schema.ResponseSchema):
     fields = {
         "ModelName": fields.Str(required=False, load_from="ModelName"),
         "StockCount": fields.Int(required=False, load_from="StockCount"),
+    }
+
+
+class ShareBandwidthInfoSchema(schema.ResponseSchema):
+    """ShareBandwidthInfo - 共享带宽信息"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=True, load_from="Bandwidth"),
+        "BindCount": fields.Int(required=False, load_from="BindCount"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "Id": fields.Str(required=True, load_from="Id"),
+        "IpCount": fields.Int(required=False, load_from="IpCount"),
+        "IpProportion": fields.Int(required=True, load_from="IpProportion"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Region": fields.Str(required=True, load_from="Region"),
+        "RemainCount": fields.Int(required=False, load_from="RemainCount"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
     }
 
 

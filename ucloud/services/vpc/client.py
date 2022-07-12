@@ -1848,30 +1848,32 @@ class VPCClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **Limit** (int) -
-        - **Offset** (int) -
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Limit** (int) - 数据分页值
+        - **Offset** (int) - 数据偏移量，默认为0
         - **Tag** (str) - 业务组名称
         - **VPCIds** (list) - VPCId
 
         **Response**
 
         - **DataSet** (list) - 见 **VPCInfo** 模型定义
+        - **TotalCount** (int) -
 
         **Response Model**
 
         **VPCInfo**
-        - **CreateTime** (int) -
+        - **CreateTime** (int) - 创建时间
         - **IPv6Network** (str) - VPC关联的IPv6网段
-        - **Name** (str) -
-        - **Network** (list) -
+        - **Name** (str) - VPC名称
+        - **Network** (list) - VPC网段
         - **NetworkInfo** (list) - 见 **VPCNetworkInfo** 模型定义
         - **OperatorName** (str) - VPC关联的IPv6网段所属运营商
-        - **SubnetCount** (int) -
-        - **Tag** (str) -
-        - **UpdateTime** (int) -
-        - **VPCId** (str) - VPCId
+        - **SubnetCount** (int) - 子网数
+        - **Tag** (str) - 业务组
+        - **UpdateTime** (int) - 更新时间
+        - **VPCId** (str) - VPC资源ID
+        - **VPCType** (str) - DefaultVPC 默认VPC，DefinedVPC，自定义VPC
 
 
         **VPCNetworkInfo**

@@ -366,6 +366,10 @@ class UK8SClient(Client):
 
         **Response Model**
 
+        **KubeProxy**
+        - **Mode** (str) - KubeProxy模式，枚举值为[ipvs,iptables]
+
+
         **UhostInfo**
         - **CPU** (int) - Cpu数量
         - **CreateTime** (int) - 创建时间
@@ -400,10 +404,6 @@ class UK8SClient(Client):
         - **IP** (str) - IP地址
         - **IPId** (str) - IP资源ID (内网IP无对应的资源ID)
         - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
-
-
-        **KubeProxy**
-        - **Mode** (str) - KubeProxy模式，枚举值为[ipvs,iptables]
 
 
         """

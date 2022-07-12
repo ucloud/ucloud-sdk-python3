@@ -3,6 +3,14 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class AccessConfSchema(schema.ResponseSchema):
+    """AccessConf - 访问控制"""
+
+    fields = {
+        "IpBlacklist": fields.Str(required=False, load_from="IpBlacklist"),
+    }
+
+
 class CacheConfSchema(schema.ResponseSchema):
     """CacheConf - 缓存配置"""
 
@@ -18,14 +26,6 @@ class CacheConfSchema(schema.ResponseSchema):
             required=False, load_from="HttpCodePattern"
         ),
         "PathPattern": fields.Str(required=True, load_from="PathPattern"),
-    }
-
-
-class AccessConfSchema(schema.ResponseSchema):
-    """AccessConf - 访问控制"""
-
-    fields = {
-        "IpBlacklist": fields.Str(required=False, load_from="IpBlacklist"),
     }
 
 
@@ -267,16 +267,6 @@ class BandwidthTrafficInfoSchema(schema.ResponseSchema):
     }
 
 
-class ReferConfSchema(schema.ResponseSchema):
-    """ReferConf - refer配置"""
-
-    fields = {
-        "NullRefer": fields.Int(required=False, load_from="NullRefer"),
-        "ReferList": fields.List(fields.Str()),
-        "ReferType": fields.Int(required=False, load_from="ReferType"),
-    }
-
-
 class CacheKeyInfoSchema(schema.ResponseSchema):
     """CacheKeyInfo - 忽略参数缓存配置"""
 
@@ -287,12 +277,13 @@ class CacheKeyInfoSchema(schema.ResponseSchema):
     }
 
 
-class AccessControlConfSchema(schema.ResponseSchema):
-    """AccessControlConf - 访问控制配置参数"""
+class ReferConfSchema(schema.ResponseSchema):
+    """ReferConf - refer配置"""
 
     fields = {
-        "IpBlackList": fields.List(fields.Str()),
-        "ReferConf": ReferConfSchema(),
+        "NullRefer": fields.Int(required=False, load_from="NullRefer"),
+        "ReferList": fields.List(fields.Str()),
+        "ReferType": fields.Int(required=False, load_from="ReferType"),
     }
 
 
@@ -343,6 +334,15 @@ class CacheAllConfigSchema(schema.ResponseSchema):
         "CacheKeyList": fields.List(CacheKeyInfoSchema()),
         "CacheList": fields.List(CacheConfSchema()),
         "HttpCodeCacheList": fields.List(CacheConfSchema()),
+    }
+
+
+class AccessControlConfSchema(schema.ResponseSchema):
+    """AccessControlConf - 访问控制配置参数"""
+
+    fields = {
+        "IpBlackList": fields.List(fields.Str()),
+        "ReferConf": ReferConfSchema(),
     }
 
 

@@ -49,6 +49,9 @@ class CreateUPhoneResponseSchema(schema.ResponseSchema):
     fields = {
         "JobId": fields.Str(required=True, load_from="JobId"),
         "Message": fields.Str(required=False, load_from="Message"),
+        "UPhoneIds": fields.List(
+            fields.Str(), required=False, load_from="UPhoneIds"
+        ),
     }
 
 
@@ -256,6 +259,32 @@ class DeleteUPhoneServerRequestSchema(schema.RequestSchema):
 
 class DeleteUPhoneServerResponseSchema(schema.ResponseSchema):
     """DeleteUPhoneServer - 删除云手机服务器。"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: DeleteUPhoneShareBandwidth
+
+删除云手机共享带宽
+"""
+
+
+class DeleteUPhoneShareBandwidthRequestSchema(schema.RequestSchema):
+    """DeleteUPhoneShareBandwidth - 删除云手机共享带宽"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "ShareBandwidthId": fields.Str(
+            required=True, dump_to="ShareBandwidthId"
+        ),
+    }
+
+
+class DeleteUPhoneShareBandwidthResponseSchema(schema.ResponseSchema):
+    """DeleteUPhoneShareBandwidth - 删除云手机共享带宽"""
 
     fields = {
         "Message": fields.Str(required=True, load_from="Message"),
@@ -620,6 +649,39 @@ class DescribeUPhoneServerModelResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeUPhoneShareBandwidth
+
+获取共享带宽列表
+"""
+
+
+class DescribeUPhoneShareBandwidthRequestSchema(schema.RequestSchema):
+    """DescribeUPhoneShareBandwidth - 获取共享带宽列表"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ShareBandwidthId": fields.Str(
+            required=False, dump_to="ShareBandwidthId"
+        ),
+    }
+
+
+class DescribeUPhoneShareBandwidthResponseSchema(schema.ResponseSchema):
+    """DescribeUPhoneShareBandwidth - 获取共享带宽列表"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "ShareBandwidth": fields.List(
+            models.ShareBandwidthInfoSchema(),
+            required=True,
+            load_from="ShareBandwidth",
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
 API: GetUPhoneAllowance
 
 获取云手机创建余量
@@ -812,6 +874,36 @@ class GetUPhoneServerRenewPriceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetUPhoneShareBandwidthUpgradePrice
+
+获取云手机共享带宽升降级价格
+"""
+
+
+class GetUPhoneShareBandwidthUpgradePriceRequestSchema(schema.RequestSchema):
+    """GetUPhoneShareBandwidthUpgradePrice - 获取云手机共享带宽升降级价格"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "ShareBandwidthId": fields.Str(
+            required=True, dump_to="ShareBandwidthId"
+        ),
+    }
+
+
+class GetUPhoneShareBandwidthUpgradePriceResponseSchema(schema.ResponseSchema):
+    """GetUPhoneShareBandwidthUpgradePrice - 获取云手机共享带宽升降级价格"""
+
+    fields = {
+        "ListPrice": fields.Float(required=True, load_from="ListPrice"),
+        "Message": fields.Str(required=True, load_from="Message"),
+        "OriginalPrice": fields.Float(required=True, load_from="OriginalPrice"),
+        "Price": fields.Float(required=True, load_from="Price"),
+    }
+
+
+"""
 API: ImportFile
 
 上传文件到云手机目录/sdcard/Download/并自动安装APK文件
@@ -976,6 +1068,87 @@ class ModifyUPhoneServerRemarkResponseSchema(schema.ResponseSchema):
 
 
 """
+API: ModifyUPhoneShareBandwidth
+
+修改云手机共享带宽
+"""
+
+
+class ModifyUPhoneShareBandwidthRequestSchema(schema.RequestSchema):
+    """ModifyUPhoneShareBandwidth - 修改云手机共享带宽"""
+
+    fields = {
+        "Bandwidth": fields.Str(required=True, dump_to="Bandwidth"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "ShareBandwidthId": fields.Str(
+            required=True, dump_to="ShareBandwidthId"
+        ),
+    }
+
+
+class ModifyUPhoneShareBandwidthResponseSchema(schema.ResponseSchema):
+    """ModifyUPhoneShareBandwidth - 修改云手机共享带宽"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: ModifyUPhoneShareBandwidthName
+
+修改云手机共享带宽名称
+"""
+
+
+class ModifyUPhoneShareBandwidthNameRequestSchema(schema.RequestSchema):
+    """ModifyUPhoneShareBandwidthName - 修改云手机共享带宽名称"""
+
+    fields = {
+        "Name": fields.Str(required=True, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "ShareBandwidthId": fields.Str(
+            required=True, dump_to="ShareBandwidthId"
+        ),
+    }
+
+
+class ModifyUPhoneShareBandwidthNameResponseSchema(schema.ResponseSchema):
+    """ModifyUPhoneShareBandwidthName - 修改云手机共享带宽名称"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: ModifyUPhoneShareBandwidthRemark
+
+修改云手机共享带宽备注
+"""
+
+
+class ModifyUPhoneShareBandwidthRemarkRequestSchema(schema.RequestSchema):
+    """ModifyUPhoneShareBandwidthRemark - 修改云手机共享带宽备注"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Remark": fields.Str(required=True, dump_to="Remark"),
+        "ShareBandwidthId": fields.Str(
+            required=True, dump_to="ShareBandwidthId"
+        ),
+    }
+
+
+class ModifyUPhoneShareBandwidthRemarkResponseSchema(schema.ResponseSchema):
+    """ModifyUPhoneShareBandwidthRemark - 修改云手机共享带宽备注"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
 API: PoweroffUPhone
 
 关闭处于运行状态的云手机实例
@@ -1119,9 +1292,13 @@ class ResetUPhoneRequestSchema(schema.RequestSchema):
 
     fields = {
         "CityId": fields.Str(required=True, dump_to="CityId"),
+        "ImageId": fields.Str(required=False, dump_to="ImageId"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "UPhoneIds": fields.List(fields.Str()),
+        "UPhoneModelName": fields.Str(
+            required=False, dump_to="UPhoneModelName"
+        ),
     }
 
 
@@ -1349,12 +1526,12 @@ class SetUPhoneRootModeResponseSchema(schema.ResponseSchema):
 """
 API: SetUPhoneSplashScreen
 
-设置云手机启动画面，通过DescribeUPhone接口可以查询该地址
+
 """
 
 
 class SetUPhoneSplashScreenRequestSchema(schema.RequestSchema):
-    """SetUPhoneSplashScreen - 设置云手机启动画面，通过DescribeUPhone接口可以查询该地址"""
+    """SetUPhoneSplashScreen -"""
 
     fields = {
         "CityId": fields.Str(required=True, dump_to="CityId"),
@@ -1366,7 +1543,7 @@ class SetUPhoneSplashScreenRequestSchema(schema.RequestSchema):
 
 
 class SetUPhoneSplashScreenResponseSchema(schema.ResponseSchema):
-    """SetUPhoneSplashScreen - 设置云手机启动画面，通过DescribeUPhone接口可以查询该地址"""
+    """SetUPhoneSplashScreen -"""
 
     fields = {}
 
@@ -1394,6 +1571,31 @@ class SetUPhoneTokenResponseSchema(schema.ResponseSchema):
     """SetUPhoneToken - 设置云手机RTC连接Token提高安全性"""
 
     fields = {}
+
+
+"""
+API: SwitchUPhoneIndependentIp
+
+更换云手机独立IP
+"""
+
+
+class SwitchUPhoneIndependentIpRequestSchema(schema.RequestSchema):
+    """SwitchUPhoneIndependentIp - 更换云手机独立IP"""
+
+    fields = {
+        "EipId": fields.Str(required=True, dump_to="EipId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+    }
+
+
+class SwitchUPhoneIndependentIpResponseSchema(schema.ResponseSchema):
+    """SwitchUPhoneIndependentIp - 更换云手机独立IP"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "NewIp": fields.Str(required=True, load_from="NewIp"),
+    }
 
 
 """
