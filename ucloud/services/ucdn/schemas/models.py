@@ -3,14 +3,6 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class AccessConfSchema(schema.ResponseSchema):
-    """AccessConf - 访问控制"""
-
-    fields = {
-        "IpBlacklist": fields.Str(required=False, load_from="IpBlacklist"),
-    }
-
-
 class CacheConfSchema(schema.ResponseSchema):
     """CacheConf - 缓存配置"""
 
@@ -26,6 +18,14 @@ class CacheConfSchema(schema.ResponseSchema):
             required=False, load_from="HttpCodePattern"
         ),
         "PathPattern": fields.Str(required=True, load_from="PathPattern"),
+    }
+
+
+class AccessConfSchema(schema.ResponseSchema):
+    """AccessConf - 访问控制"""
+
+    fields = {
+        "IpBlacklist": fields.Str(required=False, load_from="IpBlacklist"),
     }
 
 
@@ -287,16 +287,6 @@ class ReferConfSchema(schema.ResponseSchema):
     }
 
 
-class AdvancedConfSchema(schema.ResponseSchema):
-    """AdvancedConf - 域名高级配置"""
-
-    fields = {
-        "Http2Https": fields.Bool(required=False, load_from="Http2Https"),
-        "HttpClientHeader": fields.List(fields.Str()),
-        "HttpOriginHeader": fields.List(fields.Str()),
-    }
-
-
 class OriginConfSchema(schema.ResponseSchema):
     """OriginConf - 回源配置"""
 
@@ -323,6 +313,16 @@ class OriginConfSchema(schema.ResponseSchema):
         "OriginProtocol": fields.Str(
             required=False, load_from="OriginProtocol"
         ),
+    }
+
+
+class AdvancedConfSchema(schema.ResponseSchema):
+    """AdvancedConf - 域名高级配置"""
+
+    fields = {
+        "Http2Https": fields.Bool(required=False, load_from="Http2Https"),
+        "HttpClientHeader": fields.List(fields.Str()),
+        "HttpOriginHeader": fields.List(fields.Str()),
     }
 
 

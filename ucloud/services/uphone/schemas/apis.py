@@ -1298,7 +1298,7 @@ class ResetUPhoneRequestSchema(schema.RequestSchema):
         "UPhoneIds": fields.List(fields.Str()),
         "UPhoneModelName": fields.Str(
             required=False, dump_to="UPhoneModelName"
-        ),
+        ),  # Deprecated, will be removed at 1.0
     }
 
 
@@ -1595,6 +1595,43 @@ class SwitchUPhoneIndependentIpResponseSchema(schema.ResponseSchema):
     fields = {
         "Message": fields.Str(required=True, load_from="Message"),
         "NewIp": fields.Str(required=True, load_from="NewIp"),
+    }
+
+
+"""
+API: SwitchUPhoneInstance
+
+故障更换云手机
+"""
+
+
+class SwitchUPhoneInstanceParamSwitchInfosSchema(schema.RequestSchema):
+    """SwitchUPhoneInstanceParamSwitchInfos -"""
+
+    fields = {
+        "ImageId": fields.Str(required=False, dump_to="ImageId"),
+        "UPhoneId": fields.Str(required=True, dump_to="UPhoneId"),
+    }
+
+
+class SwitchUPhoneInstanceRequestSchema(schema.RequestSchema):
+    """SwitchUPhoneInstance - 故障更换云手机"""
+
+    fields = {
+        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "SwitchInfos": fields.List(
+            SwitchUPhoneInstanceParamSwitchInfosSchema()
+        ),
+    }
+
+
+class SwitchUPhoneInstanceResponseSchema(schema.ResponseSchema):
+    """SwitchUPhoneInstance - 故障更换云手机"""
+
+    fields = {
+        "JobId": fields.Str(required=True, load_from="JobId"),
+        "Message": fields.Str(required=True, load_from="Message"),
     }
 
 

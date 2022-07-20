@@ -187,6 +187,38 @@ class ULBClient(Client):
         resp = self.invoke("CreateSSL", d, **kwargs)
         return apis.CreateSSLResponseSchema().loads(resp)
 
+    def create_security_policy(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateSecurityPolicy - 创建安全策略
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **SSLCiphers** (list) - (Required) 加密套件
+        - **SecurityPolicyName** (str) - (Required) 安全策略名称
+        - **TLSVersion** (str) - (Required) TLS版本
+
+        **Response**
+
+        - **SecurityPolicyId** (str) - 安全策略ID
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateSecurityPolicyRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateSecurityPolicy", d, **kwargs)
+        return apis.CreateSecurityPolicyResponseSchema().loads(resp)
+
     def create_ulb(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """CreateULB - 创建负载均衡实例，可以选择内网或者外网
 
@@ -238,6 +270,9 @@ class ULBClient(Client):
         - **ULBId** (str) - (Required) 负载均衡实例ID
         - **ClientTimeout** (int) - ListenType为RequestProxy时表示空闲连接的回收时间，单位：秒，取值范围：时(0，86400]，默认值为60；ListenType为PacketsTransmit时表示连接保持的时间，单位：秒，取值范围：[60，900]，0 表示禁用连接保持
         - **Domain** (str) - 根据MonitorType确认； 当MonitorType为Path时，此字段有意义，代表HTTP检查域名
+        - **EnableCompression** (int) - 0:关闭 1:开启，用于数据压缩功能
+        - **EnableHTTP2** (int) - 0:关闭 1:开启，用于开启http2功能；默认值为0
+        - **ForwardPort** (int) - 重定向端口，取值范围[0-65535]；默认值为0，代表关闭；仅HTTP协议支持开启重定向功能
         - **FrontendPort** (int) - VServer后端端口，取值范围[1-65535]；默认值为80
         - **ListenType** (str) - 监听器类型，枚举值，RequestProxy ，请求代理；PacketsTransmit ，报文转发。默认为RequestProxy
         - **Method** (str) - VServer负载均衡模式，枚举值：Roundrobin -> 轮询;Source -> 源地址；ConsistentHash -> 一致性哈希；SourcePort -> 源地址（计算端口）；ConsistentHashPort -> 一致性哈希（计算端口）; WeightRoundrobin -> 加权轮询; Leastconn -> 最小连接数;Backup ->主备模式。ConsistentHash，SourcePort，ConsistentHashPort 只在报文转发中使用；Leastconn只在请求代理中使用；Roundrobin、Source和WeightRoundrobin,Backup在请求代理和报文转发中使用。默认为："Roundrobin"
@@ -248,6 +283,7 @@ class ULBClient(Client):
         - **Protocol** (str) - VServer实例的协议，请求代理模式下有 HTTP、HTTPS、TCP，报文转发下有 TCP，UDP。默认为“HTTP"
         - **RequestMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查发出的请求报文
         - **ResponseMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查请求应收到的响应报文
+        - **SecurityPolicyId** (str) - 安全策略组ID，默认值'Default'
         - **VServerName** (str) - VServer实例名称，默认为"VServer"
 
         **Response**
@@ -319,6 +355,32 @@ class ULBClient(Client):
 
         resp = self.invoke("DeleteSSL", d, **kwargs)
         return apis.DeleteSSLResponseSchema().loads(resp)
+
+    def delete_security_policy(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteSecurityPolicy - 删除安全策略
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **SecurityPolicyId** (str) - (Required) 安全策略ID
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteSecurityPolicyRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteSecurityPolicy", d, **kwargs)
+        return apis.DeleteSecurityPolicyResponseSchema().loads(resp)
 
     def delete_ulb(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """DeleteULB - 删除负载均衡实例
@@ -419,6 +481,87 @@ class ULBClient(Client):
         resp = self.invoke("DescribeSSL", d, **kwargs)
         return apis.DescribeSSLResponseSchema().loads(resp)
 
+    def describe_security_policies(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeSecurityPolicies - 获取安全策略的信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Limit** (int) - 数据分页值
+        - **Offset** (int) - 数据偏移量
+        - **SecurityPolicyId** (str) - 安全策略ID
+
+        **Response**
+
+        - **DataSet** (list) - 见 **SecurityPolicy** 模型定义
+        - **TotalCount** (int) - 满足条件的安全策略总数
+
+        **Response Model**
+
+        **BindVServerInfo**
+        - **Port** (int) - VServer端口
+        - **ULBId** (str) - ULB的ID
+        - **VServerId** (str) - 绑定的VServerId
+        - **VServerName** (str) - 绑定的VServer名称
+
+
+        **SecurityPolicy**
+        - **SSLCiphers** (list) - 加密套件
+        - **SecurityPolicyId** (str) - 安全策略ID
+        - **SecurityPolicyName** (str) - 安全策略名称
+        - **SecurityPolicyType** (int) - 安全策略类型 0：预定义 1：自定义
+        - **TLSVersion** (str) - TLS最低版本
+        - **VServerSet** (list) - 见 **BindVServerInfo** 模型定义
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeSecurityPoliciesRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeSecurityPolicies", d, **kwargs)
+        return apis.DescribeSecurityPoliciesResponseSchema().loads(resp)
+
+    def describe_support_ciphers(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeSupportCiphers - 返回安全策略所有支持的加密套件
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **DataSet** (list) - 见 **TLSAndCiphers** 模型定义
+
+        **Response Model**
+
+        **TLSAndCiphers**
+        - **SSLCiphers** (list) - 加密套件
+        - **TLSVersion** (str) - TLS最低版本
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeSupportCiphersRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeSupportCiphers", d, **kwargs)
+        return apis.DescribeSupportCiphersResponseSchema().loads(resp)
+
     def describe_ulb(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """DescribeULB - 获取ULB详细信息
 
@@ -485,6 +628,9 @@ class ULBClient(Client):
         - **BackendSet** (list) - 见 **ULBBackendSet** 模型定义
         - **ClientTimeout** (int) - 空闲连接的回收时间，单位：秒。
         - **Domain** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查域名
+        - **EnableCompression** (int) - 数据压缩开关，0:关闭 1:开启
+        - **EnableHTTP2** (int) - 0:关闭 1:开启，用于开启http2功能；默认值为0
+        - **ForwardPort** (int) - 重定向端口，取值范围[0-65535]；默认值为0，代表关闭；仅HTTP协议支持开启重定向功能
         - **FrontendPort** (int) - VServer服务端口
         - **ListenType** (str) - 监听器类型，枚举值为: RequestProxy -> 请求代理；PacketsTransmit -> 报文转发
         - **Method** (str) - VServer负载均衡的模式，枚举值：Roundrobin -> 轮询;Source -> 源地址；ConsistentHash -> 一致性哈希；SourcePort -> 源地址（计算端口）；ConsistentHashPort -> 一致性哈希（计算端口）。
@@ -497,6 +643,7 @@ class ULBClient(Client):
         - **RequestMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查发出的请求报文
         - **ResponseMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查请求应收到的响应报文
         - **SSLSet** (list) - 见 **ULBSSLSet** 模型定义
+        - **SecurityPolicy** (dict) - 见 **BindSecurityPolicy** 模型定义
         - **Status** (int) - VServer的运行状态。枚举值： 0 -> rs全部运行正常;1 -> rs全部运行异常；2 -> rs部分运行异常。
         - **ULBId** (str) - 负载均衡实例的Id
         - **VServerId** (str) - VServer实例的Id
@@ -517,7 +664,8 @@ class ULBClient(Client):
         - **SubResourceName** (str) - 资源绑定的虚拟网卡实例的资源名称
         - **SubResourceType** (str) - 资源绑定的虚拟网卡实例的类型
         - **SubnetId** (str) - 后端提供服务的资源所在的子网的ID
-        - **Weight** (int) -
+        - **VPCId** (str) - 后端服务器所在的VPC
+        - **Weight** (int) - 后端RS权重（在加权轮询算法下有效）
 
 
         **ULBPolicySet**
@@ -559,6 +707,14 @@ class ULBClient(Client):
         - **ULBName** (str) - ULB实例的名称
         - **VServerId** (str) - SSL证书绑定到的VServer的资源ID
         - **VServerName** (str) - 对应的VServer的名字
+
+
+        **BindSecurityPolicy**
+        - **SSLCiphers** (list) - 加密套件
+        - **SecurityPolicyId** (str) - 安全策略组ID
+        - **SecurityPolicyName** (str) - 安全策略组名称
+        - **SecurityPolicyType** (int) - 安全策略类型 0：预定义 1：自定义
+        - **TLSVersion** (str) - TLS最低版本
 
 
         """
@@ -674,6 +830,9 @@ class ULBClient(Client):
         - **BackendSet** (list) - 见 **ULBBackendSet** 模型定义
         - **ClientTimeout** (int) - 空闲连接的回收时间，单位：秒。
         - **Domain** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查域名
+        - **EnableCompression** (int) - 数据压缩开关，0:关闭 1:开启
+        - **EnableHTTP2** (int) - 0:关闭 1:开启，用于开启http2功能；默认值为0
+        - **ForwardPort** (int) - 重定向端口，取值范围[0-65535]；默认值为0，代表关闭；仅HTTP协议支持开启重定向功能
         - **FrontendPort** (int) - VServer服务端口
         - **ListenType** (str) - 监听器类型，枚举值为: RequestProxy -> 请求代理；PacketsTransmit -> 报文转发
         - **Method** (str) - VServer负载均衡的模式，枚举值：Roundrobin -> 轮询;Source -> 源地址；ConsistentHash -> 一致性哈希；SourcePort -> 源地址（计算端口）；ConsistentHashPort -> 一致性哈希（计算端口）。
@@ -686,6 +845,7 @@ class ULBClient(Client):
         - **RequestMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查发出的请求报文
         - **ResponseMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查请求应收到的响应报文
         - **SSLSet** (list) - 见 **ULBSSLSet** 模型定义
+        - **SecurityPolicy** (dict) - 见 **BindSecurityPolicy** 模型定义
         - **Status** (int) - VServer的运行状态。枚举值： 0 -> rs全部运行正常;1 -> rs全部运行异常；2 -> rs部分运行异常。
         - **ULBId** (str) - 负载均衡实例的Id
         - **VServerId** (str) - VServer实例的Id
@@ -706,7 +866,8 @@ class ULBClient(Client):
         - **SubResourceName** (str) - 资源绑定的虚拟网卡实例的资源名称
         - **SubResourceType** (str) - 资源绑定的虚拟网卡实例的类型
         - **SubnetId** (str) - 后端提供服务的资源所在的子网的ID
-        - **Weight** (int) -
+        - **VPCId** (str) - 后端服务器所在的VPC
+        - **Weight** (int) - 后端RS权重（在加权轮询算法下有效）
 
 
         **ULBPolicySet**
@@ -750,6 +911,14 @@ class ULBClient(Client):
         - **VServerName** (str) - 对应的VServer的名字
 
 
+        **BindSecurityPolicy**
+        - **SSLCiphers** (list) - 加密套件
+        - **SecurityPolicyId** (str) - 安全策略组ID
+        - **SecurityPolicyName** (str) - 安全策略组名称
+        - **SecurityPolicyType** (int) - 安全策略类型 0：预定义 1：自定义
+        - **TLSVersion** (str) - TLS最低版本
+
+
         """
         # build request
         d = {
@@ -788,6 +957,32 @@ class ULBClient(Client):
 
         resp = self.invoke("ReleaseBackend", d, **kwargs)
         return apis.ReleaseBackendResponseSchema().loads(resp)
+
+    def un_bind_security_policy(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UnBindSecurityPolicy - 批量解绑安全策略
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **SecurityPolicyId** (str) - (Required) 安全策略ID
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UnBindSecurityPolicyRequestSchema().dumps(d)
+
+        resp = self.invoke("UnBindSecurityPolicy", d, **kwargs)
+        return apis.UnBindSecurityPolicyResponseSchema().loads(resp)
 
     def unbind_ssl(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """UnbindSSL - 从VServer解绑SSL证书
@@ -904,6 +1099,35 @@ class ULBClient(Client):
         resp = self.invoke("UpdateSSLAttribute", d, **kwargs)
         return apis.UpdateSSLAttributeResponseSchema().loads(resp)
 
+    def update_security_policy(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateSecurityPolicy - 更新安全策略
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **SecurityPolicyId** (str) - (Required) 安全策略ID
+        - **SSLCiphers** (list) - 加密套件，TLS最低版本和加密套件必须全不为空或全为空
+        - **SecurityPolicyName** (str) - 安全策略名称
+        - **TLSVersion** (str) - TLS最低版本，TLS最低版本和加密套件必须全不为空或全为空
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateSecurityPolicyRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateSecurityPolicy", d, **kwargs)
+        return apis.UpdateSecurityPolicyResponseSchema().loads(resp)
+
     def update_ulb_attribute(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -946,6 +1170,9 @@ class ULBClient(Client):
         - **VServerId** (str) - (Required) VServer实例ID
         - **ClientTimeout** (int) - 请求代理的VServer下表示空闲连接的回收时间，单位：秒，取值范围：时(0，86400]，默认值为60；报文转发的VServer下表示回话保持的时间，单位：秒，取值范围：[60，900]，0 表示禁用连接保持
         - **Domain** (str) - MonitorType 为 Path 时指定健康检查发送请求时HTTP HEADER 里的域名
+        - **EnableCompression** (int) - 0:关闭 1:开启，用于数据压缩功能
+        - **EnableHTTP2** (int) - 0:关闭 1:开启，用于开启http2功能；默认值为0
+        - **ForwardPort** (int) - 重定向端口，取值范围[0-65535]；默认值为0，代表关闭；仅HTTP协议支持开启重定向功能
         - **Method** (str) - VServer负载均衡模式，枚举值：Roundrobin -> 轮询;Source -> 源地址；ConsistentHash -> 一致性哈希；SourcePort -> 源地址（计算端口）；ConsistentHashPort -> 一致性哈希（计算端口）; WeightRoundrobin -> 加权轮询; Leastconn -> 最小连接数；Backup -> 主备模式。ConsistentHash，SourcePort，ConsistentHashPort 只在报文转发中使用；Leastconn只在请求代理中使用；Roundrobin、Source和WeightRoundrobin,Backup在请求代理和报文转发中使用。默认为："Roundrobin"
         - **MonitorType** (str) - 健康检查类型，枚举值：Port -> 端口检查；Path -> 路径检查；Ping -> Ping探测，Customize -> UDP检查请求代理型默认值为Port，其中TCP协议仅支持Port，其他协议支持Port和Path;报文转发型TCP协议仅支持Port，UDP协议支持Ping、Port和Customize，默认值为Ping
         - **Path** (str) - MonitorType 为 Path 时指定健康检查发送请求时的路径，默认为 /
@@ -953,6 +1180,7 @@ class ULBClient(Client):
         - **PersistenceType** (str) - VServer会话保持模式，若无此字段则不做修改。枚举值：None：关闭；ServerInsert：自动生成KEY；UserDefined：用户自定义KEY。
         - **RequestMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查发出的请求报文
         - **ResponseMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查请求应收到的响应报文
+        - **SecurityPolicyId** (str) - 安全策略组ID
         - **VServerName** (str) - VServer实例名称，若无此字段则不做修改
 
         **Response**
