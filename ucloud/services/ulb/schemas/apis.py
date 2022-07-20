@@ -159,6 +159,37 @@ class CreateSSLResponseSchema(schema.ResponseSchema):
 
 
 """
+API: CreateSecurityPolicy
+
+创建安全策略
+"""
+
+
+class CreateSecurityPolicyRequestSchema(schema.RequestSchema):
+    """CreateSecurityPolicy - 创建安全策略"""
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SSLCiphers": fields.List(fields.Str()),
+        "SecurityPolicyName": fields.Str(
+            required=True, dump_to="SecurityPolicyName"
+        ),
+        "TLSVersion": fields.Str(required=True, dump_to="TLSVersion"),
+    }
+
+
+class CreateSecurityPolicyResponseSchema(schema.ResponseSchema):
+    """CreateSecurityPolicy - 创建安全策略"""
+
+    fields = {
+        "SecurityPolicyId": fields.Str(
+            required=True, load_from="SecurityPolicyId"
+        ),
+    }
+
+
+"""
 API: CreateULB
 
 创建负载均衡实例，可以选择内网或者外网
@@ -213,6 +244,11 @@ class CreateVServerRequestSchema(schema.RequestSchema):
     fields = {
         "ClientTimeout": fields.Int(required=False, dump_to="ClientTimeout"),
         "Domain": fields.Str(required=False, dump_to="Domain"),
+        "EnableCompression": fields.Int(
+            required=False, dump_to="EnableCompression"
+        ),
+        "EnableHTTP2": fields.Int(required=False, dump_to="EnableHTTP2"),
+        "ForwardPort": fields.Int(required=False, dump_to="ForwardPort"),
         "FrontendPort": fields.Int(required=False, dump_to="FrontendPort"),
         "ListenType": fields.Str(required=False, dump_to="ListenType"),
         "Method": fields.Str(required=False, dump_to="Method"),
@@ -229,6 +265,9 @@ class CreateVServerRequestSchema(schema.RequestSchema):
         "Region": fields.Str(required=True, dump_to="Region"),
         "RequestMsg": fields.Str(required=False, dump_to="RequestMsg"),
         "ResponseMsg": fields.Str(required=False, dump_to="ResponseMsg"),
+        "SecurityPolicyId": fields.Str(
+            required=False, dump_to="SecurityPolicyId"
+        ),
         "ULBId": fields.Str(required=True, dump_to="ULBId"),
         "VServerName": fields.Str(required=False, dump_to="VServerName"),
     }
@@ -288,6 +327,31 @@ class DeleteSSLRequestSchema(schema.RequestSchema):
 
 class DeleteSSLResponseSchema(schema.ResponseSchema):
     """DeleteSSL - 删除SSL证书"""
+
+    fields = {}
+
+
+"""
+API: DeleteSecurityPolicy
+
+删除安全策略
+"""
+
+
+class DeleteSecurityPolicyRequestSchema(schema.RequestSchema):
+    """DeleteSecurityPolicy - 删除安全策略"""
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SecurityPolicyId": fields.Str(
+            required=True, dump_to="SecurityPolicyId"
+        ),
+    }
+
+
+class DeleteSecurityPolicyResponseSchema(schema.ResponseSchema):
+    """DeleteSecurityPolicy - 删除安全策略"""
 
     fields = {}
 
@@ -367,6 +431,64 @@ class DescribeSSLResponseSchema(schema.ResponseSchema):
             models.ULBSSLSetSchema(), required=False, load_from="DataSet"
         ),
         "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
+API: DescribeSecurityPolicies
+
+获取安全策略的信息
+"""
+
+
+class DescribeSecurityPoliciesRequestSchema(schema.RequestSchema):
+    """DescribeSecurityPolicies - 获取安全策略的信息"""
+
+    fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SecurityPolicyId": fields.Str(
+            required=False, dump_to="SecurityPolicyId"
+        ),
+    }
+
+
+class DescribeSecurityPoliciesResponseSchema(schema.ResponseSchema):
+    """DescribeSecurityPolicies - 获取安全策略的信息"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.SecurityPolicySchema(), required=False, load_from="DataSet"
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
+API: DescribeSupportCiphers
+
+返回安全策略所有支持的加密套件
+"""
+
+
+class DescribeSupportCiphersRequestSchema(schema.RequestSchema):
+    """DescribeSupportCiphers - 返回安全策略所有支持的加密套件"""
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DescribeSupportCiphersResponseSchema(schema.ResponseSchema):
+    """DescribeSupportCiphers - 返回安全策略所有支持的加密套件"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.TLSAndCiphersSchema(), required=False, load_from="DataSet"
+        ),
     }
 
 
@@ -492,6 +614,31 @@ class ReleaseBackendResponseSchema(schema.ResponseSchema):
 
 
 """
+API: UnBindSecurityPolicy
+
+批量解绑安全策略
+"""
+
+
+class UnBindSecurityPolicyRequestSchema(schema.RequestSchema):
+    """UnBindSecurityPolicy - 批量解绑安全策略"""
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SecurityPolicyId": fields.Str(
+            required=True, dump_to="SecurityPolicyId"
+        ),
+    }
+
+
+class UnBindSecurityPolicyResponseSchema(schema.ResponseSchema):
+    """UnBindSecurityPolicy - 批量解绑安全策略"""
+
+    fields = {}
+
+
+"""
 API: UnbindSSL
 
 从VServer解绑SSL证书
@@ -601,6 +748,36 @@ class UpdateSSLAttributeResponseSchema(schema.ResponseSchema):
 
 
 """
+API: UpdateSecurityPolicy
+
+更新安全策略
+"""
+
+
+class UpdateSecurityPolicyRequestSchema(schema.RequestSchema):
+    """UpdateSecurityPolicy - 更新安全策略"""
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SSLCiphers": fields.List(fields.Str()),
+        "SecurityPolicyId": fields.Str(
+            required=True, dump_to="SecurityPolicyId"
+        ),
+        "SecurityPolicyName": fields.Str(
+            required=False, dump_to="SecurityPolicyName"
+        ),
+        "TLSVersion": fields.Str(required=False, dump_to="TLSVersion"),
+    }
+
+
+class UpdateSecurityPolicyResponseSchema(schema.ResponseSchema):
+    """UpdateSecurityPolicy - 更新安全策略"""
+
+    fields = {}
+
+
+"""
 API: UpdateULBAttribute
 
 更新ULB名字业务组备注等属性字段
@@ -639,6 +816,11 @@ class UpdateVServerAttributeRequestSchema(schema.RequestSchema):
     fields = {
         "ClientTimeout": fields.Int(required=False, dump_to="ClientTimeout"),
         "Domain": fields.Str(required=False, dump_to="Domain"),
+        "EnableCompression": fields.Int(
+            required=False, dump_to="EnableCompression"
+        ),
+        "EnableHTTP2": fields.Int(required=False, dump_to="EnableHTTP2"),
+        "ForwardPort": fields.Int(required=False, dump_to="ForwardPort"),
         "Method": fields.Str(required=False, dump_to="Method"),
         "MonitorType": fields.Str(required=False, dump_to="MonitorType"),
         "Path": fields.Str(required=False, dump_to="Path"),
@@ -655,6 +837,9 @@ class UpdateVServerAttributeRequestSchema(schema.RequestSchema):
         "Region": fields.Str(required=True, dump_to="Region"),
         "RequestMsg": fields.Str(required=False, dump_to="RequestMsg"),
         "ResponseMsg": fields.Str(required=False, dump_to="ResponseMsg"),
+        "SecurityPolicyId": fields.Str(
+            required=False, dump_to="SecurityPolicyId"
+        ),
         "ULBId": fields.Str(required=True, dump_to="ULBId"),
         "VServerId": fields.Str(required=True, dump_to="VServerId"),
         "VServerName": fields.Str(required=False, dump_to="VServerName"),

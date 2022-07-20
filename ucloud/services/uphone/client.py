@@ -1574,7 +1574,6 @@ class UPhoneClient(Client):
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望重置的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
         - **ImageId** (str) - 镜像ID，默认为空。不为空则手机会以填写的镜像进行重置，为空则手机会以重置前的镜像重置
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-        - **UPhoneModelName** (str) - 云手机规格名称，不超过64个字节。可通过[查询云手机规格列表]()查询支持的云手机规格。
 
         **Response**
 
@@ -1907,6 +1906,40 @@ class UPhoneClient(Client):
 
         resp = self.invoke("SwitchUPhoneIndependentIp", d, **kwargs)
         return apis.SwitchUPhoneIndependentIpResponseSchema().loads(resp)
+
+    def switch_u_phone_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """SwitchUPhoneInstance - 故障更换云手机
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://cms-docs.ucloudadmin.com/api/uphone-api/describe_u_phone_cities>`_ 获取
+        - **SwitchInfos** (list) - 见 **SwitchUPhoneInstanceParamSwitchInfos** 模型定义
+
+        **Response**
+
+        - **JobId** (str) - 任务ID，用来查询故障更换云手机任务状态
+        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
+
+        **Request Model**
+
+        **SwitchUPhoneInstanceParamSwitchInfos**
+        - **ImageId** (str) - 【数组】云手机实例的镜像ID，N<200，该值为空时，默认使用云手机之前的镜像ID，如果镜像ID已经不存在了则会返回错误
+        - **UPhoneId** (str) - 【数组】云手机实例的资源 ID，N<200
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.SwitchUPhoneInstanceRequestSchema().dumps(d)
+
+        resp = self.invoke("SwitchUPhoneInstance", d, **kwargs)
+        return apis.SwitchUPhoneInstanceResponseSchema().loads(resp)
 
     def un_install_u_phone_app_version(
         self, req: typing.Optional[dict] = None, **kwargs

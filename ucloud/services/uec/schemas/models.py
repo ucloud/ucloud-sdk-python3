@@ -78,17 +78,6 @@ class IpListSchema(schema.ResponseSchema):
     }
 
 
-class StorVolumeInfoSchema(schema.ResponseSchema):
-    """StorVolumeInfo - 容器组存储卷信息"""
-
-    fields = {
-        "DiskSize": fields.Int(required=False, load_from="DiskSize"),
-        "MountPoint": fields.Str(required=False, load_from="MountPoint"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
-    }
-
-
 class ImageListSchema(schema.ResponseSchema):
     """ImageList - 容器组镜像密钥列表"""
 
@@ -113,6 +102,17 @@ class DockerInfoSchema(schema.ResponseSchema):
         "Name": fields.Str(required=False, load_from="Name"),
         "State": fields.Int(required=False, load_from="State"),
         "WorkDir": fields.Str(required=False, load_from="WorkDir"),
+    }
+
+
+class StorVolumeInfoSchema(schema.ResponseSchema):
+    """StorVolumeInfo - 容器组存储卷信息"""
+
+    fields = {
+        "DiskSize": fields.Int(required=False, load_from="DiskSize"),
+        "MountPoint": fields.Str(required=False, load_from="MountPoint"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
     }
 
 
