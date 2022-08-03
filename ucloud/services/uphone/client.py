@@ -334,7 +334,8 @@ class UPhoneClient(Client):
         **Response Model**
 
         **UPhoneInstance**
-        - **CPU** (int) - 虚拟CPU核数。
+        - **ADB** (str) - 云手机的ADB信息
+        - **CPU** (float) - 虚拟CPU核数。
         - **Callback** (str) - 云手机异步任务回调
         - **ChargeType** (str) - 计费模式。枚举值为： > 年 Year，按年付费； > Month，按月付费； > Dynamic，按小时预付费; 默认为月付
         - **CityId** (str) - 城市Id，eg: cn-shanghai, cn-jinan

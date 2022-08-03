@@ -3,6 +3,14 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class AccessConfSchema(schema.ResponseSchema):
+    """AccessConf - 访问控制"""
+
+    fields = {
+        "IpBlacklist": fields.Str(required=False, load_from="IpBlacklist"),
+    }
+
+
 class CacheConfSchema(schema.ResponseSchema):
     """CacheConf - 缓存配置"""
 
@@ -18,14 +26,6 @@ class CacheConfSchema(schema.ResponseSchema):
             required=False, load_from="HttpCodePattern"
         ),
         "PathPattern": fields.Str(required=True, load_from="PathPattern"),
-    }
-
-
-class AccessConfSchema(schema.ResponseSchema):
-    """AccessConf - 访问控制"""
-
-    fields = {
-        "IpBlacklist": fields.Str(required=False, load_from="IpBlacklist"),
     }
 
 
@@ -287,6 +287,17 @@ class ReferConfSchema(schema.ResponseSchema):
     }
 
 
+class CacheAllConfigSchema(schema.ResponseSchema):
+    """CacheAllConfig - 缓存相关的配置"""
+
+    fields = {
+        "CacheHost": fields.Str(required=False, load_from="CacheHost"),
+        "CacheKeyList": fields.List(CacheKeyInfoSchema()),
+        "CacheList": fields.List(CacheConfSchema()),
+        "HttpCodeCacheList": fields.List(CacheConfSchema()),
+    }
+
+
 class OriginConfSchema(schema.ResponseSchema):
     """OriginConf - 回源配置"""
 
@@ -323,17 +334,6 @@ class AdvancedConfSchema(schema.ResponseSchema):
         "Http2Https": fields.Bool(required=False, load_from="Http2Https"),
         "HttpClientHeader": fields.List(fields.Str()),
         "HttpOriginHeader": fields.List(fields.Str()),
-    }
-
-
-class CacheAllConfigSchema(schema.ResponseSchema):
-    """CacheAllConfig - 缓存相关的配置"""
-
-    fields = {
-        "CacheHost": fields.Str(required=False, load_from="CacheHost"),
-        "CacheKeyList": fields.List(CacheKeyInfoSchema()),
-        "CacheList": fields.List(CacheConfSchema()),
-        "HttpCodeCacheList": fields.List(CacheConfSchema()),
     }
 
 
@@ -408,7 +408,7 @@ class DomainBaseInfoSchema(schema.ResponseSchema):
 
 
 class LogSetInfoSchema(schema.ResponseSchema):
-    """LogSetInfo - 日志信息"""
+    """LogSetInfo -"""
 
     fields = {
         "AbroadLog": fields.List(fields.Str()),
@@ -418,7 +418,7 @@ class LogSetInfoSchema(schema.ResponseSchema):
 
 
 class LogSetListSchema(schema.ResponseSchema):
-    """LogSetList - 日志信息列表"""
+    """LogSetList -"""
 
     fields = {
         "Domain": fields.Str(required=False, load_from="Domain"),

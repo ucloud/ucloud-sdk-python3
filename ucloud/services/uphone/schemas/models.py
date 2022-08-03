@@ -7,7 +7,8 @@ class UPhoneInstanceSchema(schema.ResponseSchema):
     """UPhoneInstance -"""
 
     fields = {
-        "CPU": fields.Int(required=True, load_from="CPU"),
+        "ADB": fields.Str(required=False, load_from="ADB"),
+        "CPU": fields.Float(required=True, load_from="CPU"),
         "Callback": fields.Str(required=True, load_from="Callback"),
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
         "CityId": fields.Str(required=True, load_from="CityId"),
@@ -202,17 +203,6 @@ class UPhoneSpecSchema(schema.ResponseSchema):
     }
 
 
-class IpSetSchema(schema.ResponseSchema):
-    """IpSet -"""
-
-    fields = {
-        "Ip": fields.Str(required=False, load_from="Ip"),
-        "IpMode": fields.Str(required=False, load_from="IpMode"),
-        "IpType": fields.Str(required=False, load_from="IpType"),
-        "Isp": fields.Str(required=False, load_from="Isp"),
-    }
-
-
 class ServerModelInstanceSchema(schema.ResponseSchema):
     """ServerModelInstance -"""
 
@@ -229,6 +219,17 @@ class ServerModelInstanceSchema(schema.ResponseSchema):
             required=False, load_from="ServerModelState"
         ),
         "UPhoneSpecs": fields.List(UPhoneSpecSchema()),
+    }
+
+
+class IpSetSchema(schema.ResponseSchema):
+    """IpSet -"""
+
+    fields = {
+        "Ip": fields.Str(required=False, load_from="Ip"),
+        "IpMode": fields.Str(required=False, load_from="IpMode"),
+        "IpType": fields.Str(required=False, load_from="IpType"),
+        "Isp": fields.Str(required=False, load_from="Isp"),
     }
 
 

@@ -1009,15 +1009,15 @@ class UCDNClient(Client):
     def get_ucdn_domain_log(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """GetUcdnDomainLog - 获取加速域名原始日志
+        """GetUcdnDomainLog -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。
-        - **DomainId** (list) - 域名ID，创建加速域名时生成。默认全部域名
-        - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。
-        - **Type** (int) - 查询粒度  0=default(没有粒度) 1=按小时  2=按天
+        - **ProjectId** (str) - (Config)
+        - **BeginTime** (int) -
+        - **DomainId** (list) -
+        - **EndTime** (int) -
+        - **Type** (int) -
 
         **Response**
 
@@ -1026,14 +1026,14 @@ class UCDNClient(Client):
         **Response Model**
 
         **LogSetList**
-        - **Domain** (str) - 域名
+        - **Domain** (str) -
         - **Logs** (list) - 见 **LogSetInfo** 模型定义
 
 
         **LogSetInfo**
-        - **AbroadLog** (list) - 国外日志url列表
-        - **CnLog** (list) - 国内日志url列表
-        - **Time** (int) - 日志时间UnixTime
+        - **AbroadLog** (list) -
+        - **CnLog** (list) -
+        - **Time** (int) -
 
 
         """
@@ -1043,6 +1043,9 @@ class UCDNClient(Client):
         }
         req and d.update(req)
         d = apis.GetUcdnDomainLogRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("GetUcdnDomainLog", d, **kwargs)
         return apis.GetUcdnDomainLogResponseSchema().loads(resp)

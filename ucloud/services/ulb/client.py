@@ -166,6 +166,7 @@ class ULBClient(Client):
         - **PrivateKey** (str) - 加密证书的私钥
         - **SSLContent** (str) - SSL证书的完整内容，包括用户证书、加密证书的私钥、CA证书
         - **SSLType** (str) - 所添加的SSL证书类型，目前只支持Pem格式
+        - **USSLId** (str) - USSL证书的ID
         - **UserCert** (str) - 用户的证书
 
         **Response**
@@ -439,8 +440,8 @@ class ULBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Limit** (int) - 数据分页值，默认为20
         - **Offset** (int) - 数据偏移量，默认值为0
         - **SSLId** (str) - SSL证书的Id
@@ -455,11 +456,14 @@ class ULBClient(Client):
         **ULBSSLSet**
         - **BindedTargetSet** (list) - 见 **SSLBindedTargetSet** 模型定义
         - **CreateTime** (int) - SSL证书的创建时间
+        - **Domains** (str) - USSL证书平台的域名,只有当SSLSource为1时才出现
         - **HashValue** (str) - SSL证书的HASH值
         - **SSLContent** (str) - SSL证书的内容
         - **SSLId** (str) - SSL证书的Id
         - **SSLName** (str) - SSL证书的名字
+        - **SSLSource** (int) - SSL证书来源，SSL证书来源，0代表证书来自于ULB平台，1代表证书来自于USSL平台
         - **SSLType** (str) - SSL证书类型，暂时只有 Pem 一种类型
+        - **USSLId** (str) - USSL证书平台的编号,只有当SSLSource为1时才出现
 
 
         **SSLBindedTargetSet**
@@ -501,13 +505,6 @@ class ULBClient(Client):
 
         **Response Model**
 
-        **BindVServerInfo**
-        - **Port** (int) - VServer端口
-        - **ULBId** (str) - ULB的ID
-        - **VServerId** (str) - 绑定的VServerId
-        - **VServerName** (str) - 绑定的VServer名称
-
-
         **SecurityPolicy**
         - **SSLCiphers** (list) - 加密套件
         - **SecurityPolicyId** (str) - 安全策略ID
@@ -515,6 +512,13 @@ class ULBClient(Client):
         - **SecurityPolicyType** (int) - 安全策略类型 0：预定义 1：自定义
         - **TLSVersion** (str) - TLS最低版本
         - **VServerSet** (list) - 见 **BindVServerInfo** 模型定义
+
+
+        **BindVServerInfo**
+        - **Port** (int) - VServer端口
+        - **ULBId** (str) - ULB的ID
+        - **VServerId** (str) - 绑定的VServerId
+        - **VServerName** (str) - 绑定的VServer名称
 
 
         """
@@ -695,11 +699,14 @@ class ULBClient(Client):
         **ULBSSLSet**
         - **BindedTargetSet** (list) - 见 **SSLBindedTargetSet** 模型定义
         - **CreateTime** (int) - SSL证书的创建时间
+        - **Domains** (str) - USSL证书平台的域名,只有当SSLSource为1时才出现
         - **HashValue** (str) - SSL证书的HASH值
         - **SSLContent** (str) - SSL证书的内容
         - **SSLId** (str) - SSL证书的Id
         - **SSLName** (str) - SSL证书的名字
+        - **SSLSource** (int) - SSL证书来源，SSL证书来源，0代表证书来自于ULB平台，1代表证书来自于USSL平台
         - **SSLType** (str) - SSL证书类型，暂时只有 Pem 一种类型
+        - **USSLId** (str) - USSL证书平台的编号,只有当SSLSource为1时才出现
 
 
         **SSLBindedTargetSet**
@@ -897,11 +904,14 @@ class ULBClient(Client):
         **ULBSSLSet**
         - **BindedTargetSet** (list) - 见 **SSLBindedTargetSet** 模型定义
         - **CreateTime** (int) - SSL证书的创建时间
+        - **Domains** (str) - USSL证书平台的域名,只有当SSLSource为1时才出现
         - **HashValue** (str) - SSL证书的HASH值
         - **SSLContent** (str) - SSL证书的内容
         - **SSLId** (str) - SSL证书的Id
         - **SSLName** (str) - SSL证书的名字
+        - **SSLSource** (int) - SSL证书来源，SSL证书来源，0代表证书来自于ULB平台，1代表证书来自于USSL平台
         - **SSLType** (str) - SSL证书类型，暂时只有 Pem 一种类型
+        - **USSLId** (str) - USSL证书平台的编号,只有当SSLSource为1时才出现
 
 
         **SSLBindedTargetSet**
