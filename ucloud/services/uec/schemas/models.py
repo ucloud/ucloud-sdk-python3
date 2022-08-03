@@ -69,25 +69,6 @@ class CfgDictListSchema(schema.ResponseSchema):
     }
 
 
-class IpListSchema(schema.ResponseSchema):
-    """IpList - 容器组外网ip列表"""
-
-    fields = {
-        "Ip": fields.Str(required=False, load_from="Ip"),
-        "Isp": fields.Str(required=False, load_from="Isp"),
-    }
-
-
-class ImageListSchema(schema.ResponseSchema):
-    """ImageList - 容器组镜像密钥列表"""
-
-    fields = {
-        "ImageKey": fields.Str(required=False, load_from="ImageKey"),
-        "StoreAddr": fields.Str(required=False, load_from="StoreAddr"),
-        "UserName": fields.Str(required=False, load_from="UserName"),
-    }
-
-
 class DockerInfoSchema(schema.ResponseSchema):
     """DockerInfo - 容器信息"""
 
@@ -113,6 +94,25 @@ class StorVolumeInfoSchema(schema.ResponseSchema):
         "MountPoint": fields.Str(required=False, load_from="MountPoint"),
         "Name": fields.Str(required=False, load_from="Name"),
         "ResourceId": fields.Str(required=False, load_from="ResourceId"),
+    }
+
+
+class IpListSchema(schema.ResponseSchema):
+    """IpList - 容器组外网ip列表"""
+
+    fields = {
+        "Ip": fields.Str(required=False, load_from="Ip"),
+        "Isp": fields.Str(required=False, load_from="Isp"),
+    }
+
+
+class ImageListSchema(schema.ResponseSchema):
+    """ImageList - 容器组镜像密钥列表"""
+
+    fields = {
+        "ImageKey": fields.Str(required=False, load_from="ImageKey"),
+        "StoreAddr": fields.Str(required=False, load_from="StoreAddr"),
+        "UserName": fields.Str(required=False, load_from="UserName"),
     }
 
 

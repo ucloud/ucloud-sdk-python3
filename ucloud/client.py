@@ -282,6 +282,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def uslk(self):
+        from ucloud.services.uslk.client import USLKClient
+
+        return USLKClient(
+            self._auto_config("uslk"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def usms(self):
         from ucloud.services.usms.client import USMSClient
 

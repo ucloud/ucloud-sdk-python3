@@ -146,6 +146,7 @@ class CreateSSLRequestSchema(schema.RequestSchema):
         "SSLContent": fields.Str(required=False, dump_to="SSLContent"),
         "SSLName": fields.Str(required=True, dump_to="SSLName"),
         "SSLType": fields.Str(required=False, dump_to="SSLType"),
+        "USSLId": fields.Str(required=False, dump_to="USSLId"),
         "UserCert": fields.Str(required=False, dump_to="UserCert"),
     }
 

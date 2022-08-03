@@ -648,12 +648,12 @@ class GetUcdnDomainInfoListResponseSchema(schema.ResponseSchema):
 """
 API: GetUcdnDomainLog
 
-获取加速域名原始日志
+
 """
 
 
 class GetUcdnDomainLogRequestSchema(schema.RequestSchema):
-    """GetUcdnDomainLog - 获取加速域名原始日志"""
+    """GetUcdnDomainLog -"""
 
     fields = {
         "BeginTime": fields.Int(required=False, dump_to="BeginTime"),
@@ -665,7 +665,7 @@ class GetUcdnDomainLogRequestSchema(schema.RequestSchema):
 
 
 class GetUcdnDomainLogResponseSchema(schema.ResponseSchema):
-    """GetUcdnDomainLog - 获取加速域名原始日志"""
+    """GetUcdnDomainLog -"""
 
     fields = {
         "LogSet": fields.List(
