@@ -24,15 +24,6 @@ class UDBBackupSetSchema(schema.ResponseSchema):
     }
 
 
-class UFileDataSetSchema(schema.ResponseSchema):
-    """UFileDataSet - 增加ufile的描述"""
-
-    fields = {
-        "Bucket": fields.Str(required=False, load_from="Bucket"),
-        "TokenID": fields.Str(required=False, load_from="TokenID"),
-    }
-
-
 class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
     """UDBSlaveInstanceSet - DescribeUDBSlaveInstance"""
 
@@ -84,6 +75,15 @@ class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
         "VirtualIP": fields.Str(required=False, load_from="VirtualIP"),
         "VirtualIPMac": fields.Str(required=False, load_from="VirtualIPMac"),
         "Zone": fields.Str(required=False, load_from="Zone"),
+    }
+
+
+class UFileDataSetSchema(schema.ResponseSchema):
+    """UFileDataSet - 增加ufile的描述"""
+
+    fields = {
+        "Bucket": fields.Str(required=False, load_from="Bucket"),
+        "TokenID": fields.Str(required=False, load_from="TokenID"),
     }
 
 
@@ -177,6 +177,7 @@ class LogPackageDataSetSchema(schema.ResponseSchema):
         "BackupTime": fields.Int(required=False, load_from="BackupTime"),
         "BackupType": fields.Int(required=False, load_from="BackupType"),
         "BackupZone": fields.Str(required=False, load_from="BackupZone"),
+        "BinlogType": fields.Str(required=False, load_from="BinlogType"),
         "DBId": fields.Str(required=False, load_from="DBId"),
         "DBName": fields.Str(required=False, load_from="DBName"),
         "State": fields.Str(required=False, load_from="State"),

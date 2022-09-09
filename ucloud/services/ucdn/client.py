@@ -1075,7 +1075,7 @@ class UCDNClient(Client):
 
         **LogInfo**
         - **LogTime** (int) - Unix时间戳
-        - **LogUrl** (str) - 日志url地址
+        - **LogUrl** (str) - 日志url地址，多个URL用分号隔开
 
 
         """

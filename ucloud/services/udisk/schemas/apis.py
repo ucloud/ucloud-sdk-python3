@@ -51,15 +51,20 @@ class CloneUDiskRequestSchema(schema.RequestSchema):
     """CloneUDisk - 从UDisk创建UDisk克隆"""
 
     fields = {
+        "BackupMode": fields.Str(required=False, dump_to="BackupMode"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "Comment": fields.Str(required=False, dump_to="Comment"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "Day": fields.Int(required=False, dump_to="Day"),
         "HostId": fields.Str(required=False, dump_to="HostId"),
+        "Hour": fields.Int(required=False, dump_to="Hour"),
+        "Journal": fields.Int(required=False, dump_to="Journal"),
         "Name": fields.Str(required=True, dump_to="Name"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "RdmaClusterId": fields.Str(required=False, dump_to="RdmaClusterId"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "Size": fields.Int(required=False, dump_to="Size"),
         "SnapshotService": fields.Str(
             required=False, dump_to="SnapshotService"
         ),
@@ -91,10 +96,14 @@ class CloneUDiskSnapshotRequestSchema(schema.RequestSchema):
     """CloneUDiskSnapshot - 从快照创建UDisk克隆"""
 
     fields = {
+        "BackupMode": fields.Str(required=False, dump_to="BackupMode"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "Comment": fields.Str(required=False, dump_to="Comment"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "Day": fields.Int(required=False, dump_to="Day"),
         "HostId": fields.Str(required=False, dump_to="HostId"),
+        "Hour": fields.Int(required=False, dump_to="Hour"),
+        "Journal": fields.Int(required=False, dump_to="Journal"),
         "Name": fields.Str(required=True, dump_to="Name"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
@@ -132,10 +141,14 @@ class CloneUDiskUDataArkRequestSchema(schema.RequestSchema):
     """CloneUDiskUDataArk - 从数据方舟的备份创建UDisk"""
 
     fields = {
+        "BackupMode": fields.Str(required=False, dump_to="BackupMode"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "Comment": fields.Str(required=False, dump_to="Comment"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "Day": fields.Int(required=False, dump_to="Day"),
         "HostId": fields.Str(required=False, dump_to="HostId"),
+        "Hour": fields.Int(required=False, dump_to="Hour"),
+        "Journal": fields.Int(required=False, dump_to="Journal"),
         "Name": fields.Str(required=True, dump_to="Name"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
@@ -174,11 +187,15 @@ class CreateAttachUDiskRequestSchema(schema.RequestSchema):
     """CreateAttachUDisk - 创建并挂载UDisk磁盘"""
 
     fields = {
+        "BackupMode": fields.Str(required=False, dump_to="BackupMode"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "CmkId": fields.Str(required=False, dump_to="CmkId"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "Day": fields.Int(required=False, dump_to="Day"),
         "DiskType": fields.Str(required=False, dump_to="DiskType"),
         "HostId": fields.Str(required=False, dump_to="HostId"),
+        "Hour": fields.Int(required=False, dump_to="Hour"),
+        "Journal": fields.Int(required=False, dump_to="Journal"),
         "MultiAttach": fields.Str(required=False, dump_to="MultiAttach"),
         "Name": fields.Str(required=True, dump_to="Name"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -218,10 +235,14 @@ class CreateUDiskRequestSchema(schema.RequestSchema):
     """CreateUDisk - 创建UDisk磁盘"""
 
     fields = {
+        "BackupMode": fields.Str(required=False, dump_to="BackupMode"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "CmkId": fields.Str(required=False, dump_to="CmkId"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "Day": fields.Int(required=False, dump_to="Day"),
         "DiskType": fields.Str(required=False, dump_to="DiskType"),
+        "Hour": fields.Int(required=False, dump_to="Hour"),
+        "Journal": fields.Int(required=False, dump_to="Journal"),
         "Name": fields.Str(required=True, dump_to="Name"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
@@ -422,9 +443,13 @@ class DescribeUDiskPriceRequestSchema(schema.RequestSchema):
     """DescribeUDiskPrice - 获取UDisk实例价格信息"""
 
     fields = {
+        "BackupMode": fields.Str(required=False, dump_to="BackupMode"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "Day": fields.Int(required=False, dump_to="Day"),
         "DiskType": fields.Str(required=False, dump_to="DiskType"),
+        "Hour": fields.Int(required=False, dump_to="Hour"),
         "IsTotalPrice": fields.Str(required=False, dump_to="IsTotalPrice"),
+        "Journal": fields.Int(required=False, dump_to="Journal"),
         "MachineType": fields.Str(required=False, dump_to="MachineType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
@@ -493,7 +518,11 @@ class DescribeUDiskUpgradePriceRequestSchema(schema.RequestSchema):
     """DescribeUDiskUpgradePrice - 获取UDisk升级价格信息"""
 
     fields = {
+        "BackupMode": fields.Str(required=False, dump_to="BackupMode"),
+        "Day": fields.Int(required=False, dump_to="Day"),
         "DiskType": fields.Str(required=False, dump_to="DiskType"),
+        "Hour": fields.Int(required=False, dump_to="Hour"),
+        "Journal": fields.Int(required=False, dump_to="Journal"),
         "MachineType": fields.Str(required=False, dump_to="MachineType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),

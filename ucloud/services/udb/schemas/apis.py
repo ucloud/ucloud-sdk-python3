@@ -238,7 +238,9 @@ class CreateMongoDBReplicaSetRequestSchema(schema.RequestSchema):
         "CouponId": fields.List(fields.Str()),
         "DBTypeId": fields.Str(required=True, dump_to="DBTypeId"),
         "DiskSpace": fields.Int(required=True, dump_to="DiskSpace"),
-        "InstanceType": fields.Str(required=False, dump_to="InstanceType"),
+        "InstanceType": fields.Str(
+            required=False, dump_to="InstanceType"
+        ),  # Deprecated, will be removed at 1.0
         "MemoryLimit": fields.Int(required=True, dump_to="MemoryLimit"),
         "Name": fields.Str(required=True, dump_to="Name"),
         "ParamGroupId": fields.Int(required=True, dump_to="ParamGroupId"),
@@ -246,9 +248,13 @@ class CreateMongoDBReplicaSetRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "SSDType": fields.Str(required=False, dump_to="SSDType"),
+        "SSDType": fields.Str(
+            required=False, dump_to="SSDType"
+        ),  # Deprecated, will be removed at 1.0
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
-        "UseSSD": fields.Bool(required=False, dump_to="UseSSD"),
+        "UseSSD": fields.Bool(
+            required=False, dump_to="UseSSD"
+        ),  # Deprecated, will be removed at 1.0
         "VPCId": fields.Str(required=False, dump_to="VPCId"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
     }
@@ -258,9 +264,7 @@ class CreateMongoDBReplicaSetResponseSchema(schema.ResponseSchema):
     """CreateMongoDBReplicaSet - 一键创建DB副本集"""
 
     fields = {
-        "Action": fields.Str(required=True, load_from="Action"),
         "DBIds": fields.List(fields.Str(), required=False, load_from="DBIds"),
-        "RetCode": fields.Int(required=True, load_from="RetCode"),
     }
 
 
@@ -292,7 +296,9 @@ class CreateUDBInstanceRequestSchema(schema.RequestSchema):
         ),
         "DiskSpace": fields.Int(required=True, dump_to="DiskSpace"),
         "EnableIpV6": fields.Bool(required=False, dump_to="EnableIpV6"),
-        "HAArch": fields.Str(required=False, dump_to="HAArch"),
+        "HAArch": fields.Str(
+            required=False, dump_to="HAArch"
+        ),  # Deprecated, will be removed at 1.0
         "InstanceMode": fields.Str(required=False, dump_to="InstanceMode"),
         "InstanceType": fields.Str(
             required=False, dump_to="InstanceType"
@@ -307,8 +313,12 @@ class CreateUDBInstanceRequestSchema(schema.RequestSchema):
         "SSDType": fields.Str(required=False, dump_to="SSDType"),
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
         "Tag": fields.Str(required=False, dump_to="Tag"),
-        "UDBCId": fields.Str(required=False, dump_to="UDBCId"),
-        "UseSSD": fields.Bool(required=False, dump_to="UseSSD"),
+        "UDBCId": fields.Str(
+            required=False, dump_to="UDBCId"
+        ),  # Deprecated, will be removed at 1.0
+        "UseSSD": fields.Bool(
+            required=False, dump_to="UseSSD"
+        ),  # Deprecated, will be removed at 1.0
         "VPCId": fields.Str(required=False, dump_to="VPCId"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
     }
@@ -468,9 +478,17 @@ class CreateUDBSlaveRequestSchema(schema.RequestSchema):
     fields = {
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "DelaySeconds": fields.Int(required=False, dump_to="DelaySeconds"),
         "DiskSpace": fields.Int(required=False, dump_to="DiskSpace"),
-        "InstanceMode": fields.Str(required=False, dump_to="InstanceMode"),
-        "InstanceType": fields.Str(required=False, dump_to="InstanceType"),
+        "InstanceMode": fields.Str(
+            required=False, dump_to="InstanceMode"
+        ),  # Deprecated, will be removed at 1.0
+        "InstanceType": fields.Str(
+            required=False, dump_to="InstanceType"
+        ),  # Deprecated, will be removed at 1.0
+        "IsCreatePhysically": fields.Bool(
+            required=False, dump_to="IsCreatePhysically"
+        ),
         "IsLock": fields.Bool(required=False, dump_to="IsLock"),
         "MemoryLimit": fields.Int(required=False, dump_to="MemoryLimit"),
         "Name": fields.Str(required=True, dump_to="Name"),
@@ -482,7 +500,9 @@ class CreateUDBSlaveRequestSchema(schema.RequestSchema):
         "SSDType": fields.Str(required=False, dump_to="SSDType"),
         "SrcId": fields.Str(required=True, dump_to="SrcId"),
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
-        "UseSSD": fields.Bool(required=False, dump_to="UseSSD"),
+        "UseSSD": fields.Bool(
+            required=False, dump_to="UseSSD"
+        ),  # Deprecated, will be removed at 1.0
         "VPCId": fields.Str(required=False, dump_to="VPCId"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
     }
@@ -665,12 +685,12 @@ class DescribeUDBBackupBlacklistResponseSchema(schema.ResponseSchema):
 """
 API: DescribeUDBBinlogBackupURL
 
-获取UDB的Binlog备份地址
+获取UDB的Binlog或者错误日志或者慢查询日志的备份地址
 """
 
 
 class DescribeUDBBinlogBackupURLRequestSchema(schema.RequestSchema):
-    """DescribeUDBBinlogBackupURL - 获取UDB的Binlog备份地址"""
+    """DescribeUDBBinlogBackupURL - 获取UDB的Binlog或者错误日志或者慢查询日志的备份地址"""
 
     fields = {
         "BackupId": fields.Int(required=True, dump_to="BackupId"),
@@ -681,7 +701,7 @@ class DescribeUDBBinlogBackupURLRequestSchema(schema.RequestSchema):
 
 
 class DescribeUDBBinlogBackupURLResponseSchema(schema.ResponseSchema):
-    """DescribeUDBBinlogBackupURL - 获取UDB的Binlog备份地址"""
+    """DescribeUDBBinlogBackupURL - 获取UDB的Binlog或者错误日志或者慢查询日志的备份地址"""
 
     fields = {
         "BackupPath": fields.Str(required=False, load_from="BackupPath"),
@@ -888,6 +908,7 @@ class DescribeUDBInstancePriceRequestSchema(schema.RequestSchema):
     """DescribeUDBInstancePrice - 获取UDB实例价格信息"""
 
     fields = {
+        "CPU": fields.Int(required=False, dump_to="CPU"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "Count": fields.Int(required=False, dump_to="Count"),
         "DBTypeId": fields.Str(required=True, dump_to="DBTypeId"),
@@ -897,7 +918,9 @@ class DescribeUDBInstancePriceRequestSchema(schema.RequestSchema):
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SSDType": fields.Str(required=False, dump_to="SSDType"),
-        "UseSSD": fields.Str(required=False, dump_to="UseSSD"),
+        "UseSSD": fields.Str(
+            required=False, dump_to="UseSSD"
+        ),  # Deprecated, will be removed at 1.0
         "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
@@ -954,10 +977,13 @@ class DescribeUDBInstanceUpgradePriceRequestSchema(schema.RequestSchema):
         "DBId": fields.Str(required=True, dump_to="DBId"),
         "DiskSpace": fields.Int(required=True, dump_to="DiskSpace"),
         "MemoryLimit": fields.Int(required=True, dump_to="MemoryLimit"),
+        "OrderStartTime": fields.Int(required=False, dump_to="OrderStartTime"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SSDType": fields.Str(required=False, dump_to="SSDType"),
-        "UseSSD": fields.Bool(required=False, dump_to="UseSSD"),
+        "UseSSD": fields.Bool(
+            required=False, dump_to="UseSSD"
+        ),  # Deprecated, will be removed at 1.0
         "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
@@ -973,12 +999,12 @@ class DescribeUDBInstanceUpgradePriceResponseSchema(schema.ResponseSchema):
 """
 API: DescribeUDBLogBackupURL
 
-获取UDB的slowlog备份地址
+获取UDB的错误日志或者慢查询日志备份地址
 """
 
 
 class DescribeUDBLogBackupURLRequestSchema(schema.RequestSchema):
-    """DescribeUDBLogBackupURL - 获取UDB的slowlog备份地址"""
+    """DescribeUDBLogBackupURL - 获取UDB的错误日志或者慢查询日志备份地址"""
 
     fields = {
         "BackupId": fields.Int(required=True, dump_to="BackupId"),
@@ -990,7 +1016,7 @@ class DescribeUDBLogBackupURLRequestSchema(schema.RequestSchema):
 
 
 class DescribeUDBLogBackupURLResponseSchema(schema.ResponseSchema):
-    """DescribeUDBLogBackupURL - 获取UDB的slowlog备份地址"""
+    """DescribeUDBLogBackupURL - 获取UDB的错误日志或者慢查询日志备份地址"""
 
     fields = {
         "BackupPath": fields.Str(required=False, load_from="BackupPath"),
@@ -1049,8 +1075,8 @@ class DescribeUDBParamGroupRequestSchema(schema.RequestSchema):
         "ClassType": fields.Str(required=False, dump_to="ClassType"),
         "GroupId": fields.Int(required=False, dump_to="GroupId"),
         "IsInUDBC": fields.Bool(required=False, dump_to="IsInUDBC"),
-        "Limit": fields.Int(required=False, dump_to="Limit"),
-        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "Limit": fields.Int(required=True, dump_to="Limit"),
+        "Offset": fields.Int(required=True, dump_to="Offset"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "RegionFlag": fields.Bool(required=False, dump_to="RegionFlag"),
@@ -1418,8 +1444,12 @@ class ResizeUDBInstanceRequestSchema(schema.RequestSchema):
         "StartAfterUpgrade": fields.Bool(
             required=False, dump_to="StartAfterUpgrade"
         ),
-        "UDBCId": fields.Str(required=False, dump_to="UDBCId"),
-        "UseSSD": fields.Bool(required=False, dump_to="UseSSD"),
+        "UDBCId": fields.Str(
+            required=False, dump_to="UDBCId"
+        ),  # Deprecated, will be removed at 1.0
+        "UseSSD": fields.Bool(
+            required=False, dump_to="UseSSD"
+        ),  # Deprecated, will be removed at 1.0
         "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 

@@ -1327,6 +1327,37 @@ class UMemClient(Client):
         resp = self.invoke("ModifyUMemSpaceName", d, **kwargs)
         return apis.ModifyUMemSpaceNameResponseSchema().loads(resp)
 
+    def modify_uredis_config(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyURedisConfig - 修改主备Redis配置文件参数
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ConfigId** (str) - (Required) 配置文件的ID
+        - **Key** (str) - (Required) 参数名称
+        - **Value** (str) - (Required) 对应参数的值
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **GroupId** (str) - 如果实例使用默认配置创建，修改配置信息需要填写GroupId
+        - **RegionFlag** (bool) - 是否是跨机房URedis(默认false)
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ModifyURedisConfigRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyURedisConfig", d, **kwargs)
+        return apis.ModifyURedisConfigResponseSchema().loads(resp)
+
     def modify_uredis_group_name(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1579,13 +1610,13 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BackupTime** (str) - (Required) 备份时间，默认为0
         - **GroupId** (str) - (Required) 组的ID
         - **AutoBackup** (str) - 是否打开默认备份功能。enable(打开)，disable(关闭)，默认enable
         - **SlaveZone** (str) - 跨机房URedis，slave所在可用区（必须和Zone在同一Region，且不可相同）
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 

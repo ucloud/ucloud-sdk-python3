@@ -19,7 +19,9 @@ class CreateUPhoneRequestSchema(schema.RequestSchema):
     """CreateUPhone - 创建云手机"""
 
     fields = {
-        "Bandwidth": fields.Int(required=False, dump_to="Bandwidth"),
+        "Bandwidth": fields.Int(
+            required=False, dump_to="Bandwidth"
+        ),  # Deprecated, will be removed at 1.0
         "BindIp": fields.Bool(required=False, dump_to="BindIp"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "CityId": fields.Str(required=True, dump_to="CityId"),
@@ -27,7 +29,9 @@ class CreateUPhoneRequestSchema(schema.RequestSchema):
         "ImageId": fields.Str(required=True, dump_to="ImageId"),
         "IpDestRegion": fields.Str(required=False, dump_to="IpDestRegion"),
         "IpProportion": fields.Int(required=False, dump_to="IpProportion"),
-        "MediaBandwidth": fields.Int(required=True, dump_to="MediaBandwidth"),
+        "MediaBandwidth": fields.Int(
+            required=False, dump_to="MediaBandwidth"
+        ),  # Deprecated, will be removed at 1.0
         "Name": fields.Str(required=True, dump_to="Name"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Str(required=False, dump_to="Quantity"),
@@ -40,6 +44,7 @@ class CreateUPhoneRequestSchema(schema.RequestSchema):
         "Tag": fields.Str(required=False, dump_to="Tag"),
         "UPhoneCount": fields.Int(required=True, dump_to="UPhoneCount"),
         "UPhoneModelName": fields.Str(required=True, dump_to="UPhoneModelName"),
+        "UseGlobalBws": fields.Bool(required=False, dump_to="UseGlobalBws"),
     }
 
 
@@ -126,9 +131,9 @@ class CreateUPhoneImageRequestSchema(schema.RequestSchema):
     """CreateUPhoneImage - 创建云手机镜像。"""
 
     fields = {
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "Description": fields.Str(required=False, dump_to="Description"),
-        "Name": fields.Str(required=False, dump_to="Name"),
+        "Name": fields.Str(required=True, dump_to="Name"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "UPhoneId": fields.Str(required=True, dump_to="UPhoneId"),
@@ -198,7 +203,7 @@ class DeleteUPhoneRequestSchema(schema.RequestSchema):
     """DeleteUPhone - 删除云手机"""
 
     fields = {
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "UPhoneIds": fields.List(fields.Str()),
@@ -302,7 +307,7 @@ class DescribeUPhoneRequestSchema(schema.RequestSchema):
     """DescribeUPhone - 获取云手机列表信息。"""
 
     fields = {
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "IsAll": fields.Bool(required=False, dump_to="IsAll"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
@@ -430,7 +435,7 @@ class DescribeUPhoneDetailByAppRequestSchema(schema.RequestSchema):
 
     fields = {
         "AppId": fields.Str(required=True, dump_to="AppId"),
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
@@ -449,6 +454,35 @@ class DescribeUPhoneDetailByAppResponseSchema(schema.ResponseSchema):
             required=True,
             load_from="UPhoneDetails",
         ),
+    }
+
+
+"""
+API: DescribeUPhoneEipList
+
+获取云手机Eip列表
+"""
+
+
+class DescribeUPhoneEipListRequestSchema(schema.RequestSchema):
+    """DescribeUPhoneEipList - 获取云手机Eip列表"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Proportion": fields.Str(required=False, dump_to="Proportion"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+    }
+
+
+class DescribeUPhoneEipListResponseSchema(schema.ResponseSchema):
+    """DescribeUPhoneEipList - 获取云手机Eip列表"""
+
+    fields = {
+        "EipInfos": fields.List(
+            models.EipInfoSchema(), required=True, load_from="EipInfos"
+        ),
+        "Message": fields.Str(required=True, load_from="Message"),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
     }
 
 
@@ -525,7 +559,7 @@ class DescribeUPhoneJobRequestSchema(schema.RequestSchema):
     """DescribeUPhoneJob - 查询Job的执行状态。"""
 
     fields = {
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "JobIds": fields.List(fields.Str()),
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
@@ -720,12 +754,15 @@ class GetUPhonePriceRequestSchema(schema.RequestSchema):
     """GetUPhonePrice - 根据云手机规格名称，获取UPhone实例的价格。"""
 
     fields = {
+        "BandwidthLine": fields.Int(required=False, dump_to="BandwidthLine"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "CityId": fields.Str(required=True, dump_to="CityId"),
         "INetBandwidth": fields.Int(required=False, dump_to="INetBandwidth"),
         "IpCount": fields.Int(required=False, dump_to="IpCount"),
         "IpDestRegion": fields.Str(required=False, dump_to="IpDestRegion"),
-        "MediaBandwidth": fields.Int(required=False, dump_to="MediaBandwidth"),
+        "MediaBandwidth": fields.Int(
+            required=False, dump_to="MediaBandwidth"
+        ),  # Deprecated, will be removed at 1.0
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "UPhoneCount": fields.Int(required=False, dump_to="UPhoneCount"),
@@ -757,7 +794,7 @@ class GetUPhoneRenewPriceRequestSchema(schema.RequestSchema):
 
     fields = {
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "UPhoneId": fields.Str(required=True, dump_to="UPhoneId"),
     }
@@ -784,7 +821,7 @@ class GetUPhoneScreenCaptureRequestSchema(schema.RequestSchema):
     """GetUPhoneScreenCapture - 云手机截屏"""
 
     fields = {
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "UPhoneID": fields.Str(required=True, dump_to="UPhoneID"),
@@ -914,7 +951,7 @@ class ImportFileRequestSchema(schema.RequestSchema):
     """ImportFile - 上传文件到云手机目录/sdcard/Download/并自动安装APK文件"""
 
     fields = {
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "FileName": fields.Str(required=True, dump_to="FileName"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -943,7 +980,7 @@ class InstallUPhoneAppVersionRequestSchema(schema.RequestSchema):
 
     fields = {
         "AppVersionId": fields.Str(required=True, dump_to="AppVersionId"),
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "UPhoneIds": fields.List(fields.Str()),
@@ -970,7 +1007,7 @@ class ModifyUPhoneNameRequestSchema(schema.RequestSchema):
     """ModifyUPhoneName - 修改指定云手机实例名称。"""
 
     fields = {
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "Name": fields.Str(required=True, dump_to="Name"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "UPhoneId": fields.Str(required=True, dump_to="UPhoneId"),
@@ -997,7 +1034,7 @@ class ModifyUPhoneRemarkRequestSchema(schema.RequestSchema):
     """ModifyUPhoneRemark - 修改指定云手机实例备注信息。"""
 
     fields = {
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Remark": fields.Str(required=False, dump_to="Remark"),
         "UPhoneId": fields.Str(required=True, dump_to="UPhoneId"),
@@ -1159,7 +1196,7 @@ class PoweroffUPhoneRequestSchema(schema.RequestSchema):
     """PoweroffUPhone - 关闭处于运行状态的云手机实例"""
 
     fields = {
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "UPhoneIds": fields.List(fields.Str()),
@@ -1170,6 +1207,7 @@ class PoweroffUPhoneResponseSchema(schema.ResponseSchema):
     """PoweroffUPhone - 关闭处于运行状态的云手机实例"""
 
     fields = {
+        "JobId": fields.Str(required=False, load_from="JobId"),
         "Message": fields.Str(required=True, load_from="Message"),
     }
 
@@ -1185,7 +1223,7 @@ class PoweronUPhoneRequestSchema(schema.RequestSchema):
     """PoweronUPhone - 启动处于关闭状态的云手机实例"""
 
     fields = {
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "UPhoneIds": fields.List(fields.Str()),
@@ -1196,6 +1234,7 @@ class PoweronUPhoneResponseSchema(schema.ResponseSchema):
     """PoweronUPhone - 启动处于关闭状态的云手机实例"""
 
     fields = {
+        "JobId": fields.Str(required=False, load_from="JobId"),
         "Message": fields.Str(required=True, load_from="Message"),
     }
 
@@ -1211,7 +1250,7 @@ class RebootUPhoneRequestSchema(schema.RequestSchema):
     """RebootUPhone - 重新启动云手机实例"""
 
     fields = {
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "UPhoneIds": fields.List(fields.Str()),
@@ -1250,7 +1289,7 @@ class RenewUPhoneRequestSchema(schema.RequestSchema):
         "BuildVersionInc": fields.Str(
             required=False, dump_to="BuildVersionInc"
         ),
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "Customize": fields.Bool(required=False, dump_to="Customize"),
         "Device": fields.Str(required=False, dump_to="Device"),
         "DisplayID": fields.Str(required=False, dump_to="DisplayID"),
@@ -1276,6 +1315,7 @@ class RenewUPhoneResponseSchema(schema.ResponseSchema):
     """RenewUPhone - 修改UPhone的device_id、imei、meid 以及其他相关配置，达到一键新机的效果"""
 
     fields = {
+        "JobId": fields.Str(required=False, load_from="JobId"),
         "Message": fields.Str(required=True, load_from="Message"),
     }
 
@@ -1291,7 +1331,7 @@ class ResetUPhoneRequestSchema(schema.RequestSchema):
     """ResetUPhone - 将云手机恢复为创建时的状态。"""
 
     fields = {
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "ImageId": fields.Str(required=False, dump_to="ImageId"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -1322,7 +1362,7 @@ class RunAsyncCommandRequestSchema(schema.RequestSchema):
     """RunAsyncCommand - 在云手机中执行异步shell命令。"""
 
     fields = {
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "Content": fields.Str(required=True, dump_to="Content"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -1350,7 +1390,7 @@ class RunSyncCommandRequestSchema(schema.RequestSchema):
     """RunSyncCommand - 在云手机中执行同步shell命令。"""
 
     fields = {
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "Content": fields.Str(required=True, dump_to="Content"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -1382,7 +1422,7 @@ class SetUPhoneCallbackRequestSchema(schema.RequestSchema):
     """SetUPhoneCallback - 设置云手机异步操作以及状态更新回调，支持云手机重置，安装应用，卸载应用，设备占用状态回调"""
 
     fields = {
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "UPhoneId": fields.Str(required=True, dump_to="UPhoneId"),
@@ -1409,7 +1449,7 @@ class SetUPhoneConfigRequestSchema(schema.RequestSchema):
     fields = {
         "Async": fields.Str(required=False, dump_to="Async"),
         "Bitrate": fields.Str(required=False, dump_to="Bitrate"),
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "Dpi": fields.Str(required=False, dump_to="Dpi"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -1444,6 +1484,7 @@ class SetUPhoneGPSParamUPhoneGPSsSchema(schema.RequestSchema):
 
     fields = {
         "Altitude": fields.Float(required=False, dump_to="Altitude"),
+        "Enabled": fields.Bool(required=False, dump_to="Enabled"),
         "Latitude": fields.Float(required=False, dump_to="Latitude"),
         "Longitude": fields.Float(required=False, dump_to="Longitude"),
         "UPhoneId": fields.Str(required=False, dump_to="UPhoneId"),
@@ -1454,7 +1495,7 @@ class SetUPhoneGPSRequestSchema(schema.RequestSchema):
     """SetUPhoneGPS - 设置云手机GPS信息"""
 
     fields = {
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "UPhoneGPSs": fields.List(SetUPhoneGPSParamUPhoneGPSsSchema()),
@@ -1481,7 +1522,7 @@ class SetUPhoneManagerModeRequestSchema(schema.RequestSchema):
     """SetUPhoneManagerMode - 管理员模式支持所有按键，普通用户模式禁用返回桌面"""
 
     fields = {
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "Mode": fields.Str(required=True, dump_to="Mode"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -1506,7 +1547,8 @@ class SetUPhoneRootModeRequestSchema(schema.RequestSchema):
     """SetUPhoneRootMode - 设置云手机Root模式"""
 
     fields = {
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
+        "PkgNames": fields.List(fields.Str()),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "Root": fields.Bool(required=True, dump_to="Root"),
@@ -1559,7 +1601,7 @@ class SetUPhoneTokenRequestSchema(schema.RequestSchema):
     """SetUPhoneToken - 设置云手机RTC连接Token提高安全性"""
 
     fields = {
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Token": fields.Str(required=False, dump_to="Token"),
@@ -1601,7 +1643,7 @@ class SwitchUPhoneIndependentIpResponseSchema(schema.ResponseSchema):
 """
 API: SwitchUPhoneInstance
 
-故障更换云手机
+
 """
 
 
@@ -1615,7 +1657,7 @@ class SwitchUPhoneInstanceParamSwitchInfosSchema(schema.RequestSchema):
 
 
 class SwitchUPhoneInstanceRequestSchema(schema.RequestSchema):
-    """SwitchUPhoneInstance - 故障更换云手机"""
+    """SwitchUPhoneInstance -"""
 
     fields = {
         "CityId": fields.Str(required=True, dump_to="CityId"),
@@ -1627,7 +1669,7 @@ class SwitchUPhoneInstanceRequestSchema(schema.RequestSchema):
 
 
 class SwitchUPhoneInstanceResponseSchema(schema.ResponseSchema):
-    """SwitchUPhoneInstance - 故障更换云手机"""
+    """SwitchUPhoneInstance -"""
 
     fields = {
         "JobId": fields.Str(required=True, load_from="JobId"),
@@ -1647,7 +1689,7 @@ class UnInstallUPhoneAppVersionRequestSchema(schema.RequestSchema):
 
     fields = {
         "AppVersionId": fields.Str(required=True, dump_to="AppVersionId"),
-        "CityId": fields.Str(required=True, dump_to="CityId"),
+        "CityId": fields.Str(required=False, dump_to="CityId"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "UPhoneIds": fields.List(fields.Str()),
