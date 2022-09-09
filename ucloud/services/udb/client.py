@@ -250,16 +250,16 @@ class UDBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **AdminPassword** (str) - (Required) 管理员密码
-        - **DBTypeId** (str) - (Required) DB类型id对应的字符串形式（例如：mongodb-2.6）注意：当前仅支持mongodb
+        - **DBTypeId** (str) - (Required) DB类型id对应的字符串形式 mongodb-3.4,mongodb-3.6,mongodb-4.0
         - **DiskSpace** (int) - (Required) 磁盘空间(GB), 暂时支持20G - 3000G
-        - **MemoryLimit** (int) - (Required) 内存限制(MB)，目前支持以下几档 1000M/2000M/4000M/ 6000M/8000M/12000M/16000M/ 24000M/32000M/48000M/ 64000M/96000M
+        - **MemoryLimit** (int) - (Required) 内存限制(MB)，目前支持以下几档 2000M/4000M/ 6000M/8000M/12000M/16000M/ 24000M/32000M/48000M/ 64000M/96000M
         - **Name** (str) - (Required) PrimaryDB实例名称，至少6位
         - **ParamGroupId** (int) - (Required) DB实例使用的配置参数组id
         - **Port** (int) - (Required) 端口号
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **AdminUser** (str) - 管理员帐户名，默认root
         - **BackupCount** (int) - 备份策略，每周备份数量，默认7次
         - **BackupDuration** (int) - 备份策略，备份时间间隔，单位小时计，默认24小时
@@ -268,18 +268,13 @@ class UDBClient(Client):
         - **ChargeType** (str) - Year， Month， Dynamic，Trial，默认: Month
         - **ClusterId** (str) - 所属分片集群的ID
         - **CouponId** (list) - CouponId.0 代表第一个代金券id，对于传入多个代金券id，后面为 CouponId.1, CouponId.2 以此类推
-        - **InstanceType** (str) - UDB数据库机型
         - **Quantity** (int) - 购买时长(N个月)，默认值1个月。如果为0，代表购买到月底。
-        - **SSDType** (str) - SSD类型，可选值为"SATA"、"PCI-E"，如果UseSSD为true ，则必选
         - **SubnetId** (str) - 子网ID
-        - **UseSSD** (bool) - 是否使用SSD，默认为true
         - **VPCId** (str) - VPC的ID
 
         **Response**
 
-        - **Action** (str) - 操作名称
         - **DBIds** (list) - 返回所有副本集成员的Id
-        - **RetCode** (int) - 返回码
 
         """
         # build request
@@ -303,36 +298,33 @@ class UDBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **AdminPassword** (str) - (Required) 管理员密码
-        - **DBTypeId** (str) - (Required) DB类型id，mysql/mongodb/postgesql按版本细分 1：mysql-5.1，2：mysql-5.5，3：percona-5.5，4：mysql-5.6，5：percona-5.6，6：mysql-5.7，7：percona-5.7，8：mariadb-10.0，9：mongodb-2.4，10：mongodb-2.6，11：mongodb-3.0，12：mongodb-3.2,13：postgresql-9.4，14：postgresql-9.6，14：postgresql-10.4
+        - **DBTypeId** (str) - (Required) DB类型，mysql/mongodb/postgesql/sqlserver按版本细分 mysql-8.0, mysql-5.5, percona-5.5, mysql-5.6, percona-5.6, mysql-5.7, percona-5.7, mariadb-10.0, postgresql-9.6, postgresql-10.4, postgresql-12.8, postgresql-13.4，mongodb-2.6, mongodb-3.0, mongodb-3.6, mongodb-4.0, sqlserver-2017
         - **DiskSpace** (int) - (Required) 磁盘空间(GB), 暂时支持20G - 32T
-        - **MemoryLimit** (int) - (Required) 内存限制(MB)，目前支持以下几档 1000M/2000M/4000M/ 6000M/8000M/12000M/16000M/ 24000M/32000M/48000M/ 64000M/96000M/128000M/192000M/256000M/320000M
+        - **MemoryLimit** (int) - (Required) 内存限制(MB)，目前支持以下几档 2000M/4000M/ 6000M/8000M/12000M/16000M/ 24000M/32000M/48000M/ 64000M/96000M/128000M/192000M/256000M/320000M
         - **Name** (str) - (Required) 实例名称，至少6位
         - **ParamGroupId** (int) - (Required) DB实例使用的配置参数组id
         - **Port** (int) - (Required) 端口号，mysql默认3306，mongodb默认27017，postgresql默认5432
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **AdminUser** (str) - 管理员帐户名，默认root
         - **BackupCount** (int) - 备份策略，每周备份数量，默认7次
         - **BackupDuration** (int) - 备份策略，备份时间间隔，单位小时计，默认24小时
         - **BackupId** (int) - 备份id，如果指定，则表明从备份恢复实例
         - **BackupTime** (int) - 备份策略，备份开始时间，单位小时计，默认1点
-        - **BackupZone** (str) - 跨可用区高可用备库所在可用区，参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **CPU** (int) - cpu核数
+        - **BackupZone** (str) - 跨可用区高可用备库所在可用区，参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CPU** (int) - cpu核数，如果db类型为sqlserver，必传参数
         - **ChargeType** (str) - Year， Month， Dynamic，Trial，默认: Month
         - **ClusterRole** (str) - 当DB类型(DBTypeId)为mongodb时，需要指定mongo的角色，可选值为configsrv (配置节点)，shardsrv (数据节点)
         - **CouponId** (str) - 使用的代金券id
         - **DisableSemisync** (bool) - 是否开启异步高可用，默认不填，可置为true
         - **EnableIpV6** (bool) - 是否创建使用ipv6 资源， 默认为false， 或者不填， 创建ipv6为true
-        - **HAArch** (str) - 高可用架构:1） haproxy（默认）: 当前仅支持mysql。2） sentinel: 基于vip和哨兵节点的架构，当前支持mysql和pg。
         - **InstanceMode** (str) - UDB实例模式类型, 可选值如下: "Normal": 普通版UDB实例 "HA": 高可用版UDB实例 默认是"Normal"
         - **Quantity** (int) - 购买时长，默认值1
-        - **SSDType** (str) - SSD类型，可选值为"SATA"、“NVMe”，如果UseSSD为true ，则必选
+        - **SSDType** (str) - SSD类型，可选值为"SATA"、“NVMe”，默认为“SATA”
         - **SubnetId** (str) - 子网ID
         - **Tag** (str) - 实例所在的业务组名称
-        - **UDBCId** (str) - 专区ID信息（如果这个参数存在这说明是在专区中创建DB）
-        - **UseSSD** (bool) - 是否使用SSD，默认为true。目前主要可用区、海外机房、新机房只提供SSD资源，非SSD资源不再提供。
         - **VPCId** (str) - VPC的ID
 
         **Response**
@@ -514,25 +506,24 @@ class UDBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Name** (str) - (Required) 实例名称，至少6位
         - **SrcId** (str) - (Required) master实例的DBId,该值可以通过DescribeUDBInstance获取
         - **ChargeType** (str) - Year， Month， Dynamic，Trial，默认和主库保持一致
         - **CouponId** (str) - 使用的代金券id
+        - **DelaySeconds** (int) - 设置从库的延时复制时长（单位秒）
         - **DiskSpace** (int) - 磁盘空间(GB), 暂时支持20G - 3000G（API支持，前端暂时只开放内存定制）
-        - **InstanceMode** (str) - UDB实例部署模式，可选值如下：Normal: 普通单点实例HA: 高可用部署实例
-        - **InstanceType** (str) - UDB实例类型：Normal、SATA_SSD、NVMe_SSD
+        - **IsCreatePhysically** (bool) - 使用物理方式创建从库，目前仅限创建快杰从库，默认为false
         - **IsLock** (bool) - 是否锁主库，默认为true
-        - **MemoryLimit** (int) - 内存限制(MB)，目前支持以下几档 1000M/2000M/4000M/ 6000M/8000M/12000M/16000M/ 24000M/32000M/48000M/ 64000M/96000M/128000M/192000M/256000M/320000M
+        - **MemoryLimit** (int) - 内存限制(MB)，目前支持以下几档 2000M/4000M/ 6000M/8000M/12000M/16000M/ 24000M/32000M/48000M/ 64000M/96000M/128000M/192000M/256000M/320000M
         - **ParamGroupId** (int) - DB实例使用的配置参数组id，默认和主库保持一致
         - **Port** (int) - 端口号
         - **Quantity** (int) - 购买时长，默认默认和主库保持一致
-        - **SSDType** (str) - SSD类型，可选值为"SATA"、"PCI-E"、“NVMe”，如果UseSSD为true ，则必选
+        - **SSDType** (str) - 仅对主为SSD型实例有效。 可选值"SATA","NVMe"
         - **SubnetId** (str) - 子网ID（如果不传用默认子网）
-        - **UseSSD** (bool) - 是否使用SSD，默认为true
         - **VPCId** (str) - VPCID（如果不传用默认的VPC）
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -749,14 +740,14 @@ class UDBClient(Client):
     def describe_udb_binlog_backup_url(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DescribeUDBBinlogBackupURL - 获取UDB的Binlog备份地址
+        """DescribeUDBBinlogBackupURL - 获取UDB的Binlog或者错误日志或者慢查询日志的备份地址
 
         **Request**
 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **BackupId** (int) - (Required) DB实例binlog备份ID，可以从DescribeUDBLogPackage结果当中获得
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **BackupId** (int) - (Required) DB实例日志备份ID，可以从DescribeUDBLogPackage结果当中获得
         - **DBId** (str) - (Required) DB实例Id
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -1069,17 +1060,17 @@ class UDBClient(Client):
 
         **Request**
 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **DBTypeId** (str) - (Required) UDB实例的DB版本字符串
         - **DiskSpace** (int) - (Required) 磁盘空间(GB),暂时支持20(GB) - 3000(GB), 输入不带单位
-        - **MemoryLimit** (int) - (Required) 内存限制(MB)，单位为MB.目前支持：1000-96000
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **MemoryLimit** (int) - (Required) 内存限制(MB)，单位为MB.目前支持：2000-96000
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CPU** (int) - CPU个数，如果db类型为sqlserver，则为必填参数
         - **ChargeType** (str) - Year，按年付费； Month，按月付费 Dynamic，按需付费（需开启权限) Trial，试用（需开启权限）默认为月付
         - **Count** (int) - 购买DB实例数量,最大数量为10台, 默认为1台
-        - **InstanceMode** (str) - 实例的部署类型。可选值为：Normal: 普通单点实例，Slave: 从库实例,HA: 高可用部署实例，默认是Normal
+        - **InstanceMode** (str) - 实例的部署类型。可选值为：Normal: 普通单点实例，Slave: 从库实例，HA: 高可用部署实例，默认是Normal
         - **Quantity** (int) - DB购买多少个"计费时间单位"，默认值为1。比如：买2个月，Quantity就是2。如果计费单位是“按月”，并且Quantity为0，表示“购买到月底”
-        - **SSDType** (str) - SSD类型，可选值为"SATA"、"PCI-E"，如果UseSSD为true ，则必填
-        - **UseSSD** (str) - 是否使用SSD，只能填true或false，默认为false
+        - **SSDType** (str) - SSD类型，可选值为"SATA"、“NVMe”. 默认为“SATA”
 
         **Response**
 
@@ -1138,14 +1129,14 @@ class UDBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **DBId** (str) - (Required) 实例的Id
         - **DiskSpace** (int) - (Required) 磁盘空间(GB), 暂时支持20G - 500G
         - **MemoryLimit** (int) - (Required) 内存限制(MB)
-        - **SSDType** (str) - SSD类型，可选值为"SATA"、"PCI-E"，如果UseSSD为true ，则必选
-        - **UseSSD** (bool) - 是否使用SSD，默认为false
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **OrderStartTime** (int) - 获取指定时间开始后面的升级价格， 不填的话 是默认当前时间
+        - **SSDType** (str) - "SATA", "NVMe"
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -1166,13 +1157,13 @@ class UDBClient(Client):
     def describe_udb_log_backup_url(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DescribeUDBLogBackupURL - 获取UDB的slowlog备份地址
+        """DescribeUDBLogBackupURL - 获取UDB的错误日志或者慢查询日志备份地址
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **BackupId** (int) - (Required) DB实例备份ID
+        - **BackupId** (int) - (Required) DB实例日志备份ID, 可以从DescribeUDBLogPackage结果当中获得。
         - **DBId** (str) - (Required) DB实例Id
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
@@ -1200,16 +1191,16 @@ class UDBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Limit** (int) - (Required) 分页显示的条目数，列表操作则指定
         - **Offset** (int) - (Required) 分页显示的起始偏移，列表操作则指定
         - **BeginTime** (int) - 过滤条件:起始时间(时间戳)
-        - **DBId** (str) - DB实例Id，如果指定，则只获取该db的备份信息
+        - **DBId** (str) - DB实例Id，如果指定，则只获取该db的备份信息; 当Type为2时必填
         - **EndTime** (int) - 过滤条件:结束时间(时间戳)
-        - **Type** (int) - 需要列出的备份文件类型，每种文件的值如下 2 : BINLOG\_BACKUP 3 : SLOW\_QUERY\_BACKUP 4 : ERRORLOG\_BACKUP
+        - **Type** (int) - 需要列出的备份文件类型，每种类型的值如下： 2 代表 BINLOG_BACKUP； 3 代表 SLOW_QUERY_BACKUP； 4 代表 ERRORLOG_BACKUP。
         - **Types** (list) - Types作为Type的补充，支持多值传入，可以获取多个类型的日志记录，如：Types.0=2&Types.1=3
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -1225,6 +1216,7 @@ class UDBClient(Client):
         - **BackupTime** (int) - 备份时间
         - **BackupType** (int) - 备份类型，包括2-binlog备份，3-slowlog备份
         - **BackupZone** (str) - 跨可用区高可用备库所在可用区
+        - **BinlogType** (str) - binlog备份类型 Manual //手动备份 Auto //自动备份
         - **DBId** (str) - dbid
         - **DBName** (str) - 对应的db名称
         - **State** (str) - 备份状态 Backuping // 备份中 Success // 备份成功 Failed // 备份失败 Expired // 备份过期
@@ -1252,11 +1244,11 @@ class UDBClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Limit** (int) - (Required) 分页显示的条目数，列表操作则指定
+        - **Offset** (int) - (Required) 分页显示的起始偏移，列表操作则指定
         - **ClassType** (str) - 如果未指定GroupId，则可选是否选取特定DB类型的配置(sql, nosql, postgresql, sqlserver)
         - **GroupId** (int) - 参数组id，如果指定则获取描述，否则是列表操作，需要 指定Offset/Limit
         - **IsInUDBC** (bool) - 是否选取专区中配置
-        - **Limit** (int) - 分页显示的条目数，列表操作则指定
-        - **Offset** (int) - 分页显示的起始偏移，列表操作则指定
         - **RegionFlag** (bool) - 当请求没有填写Zone时，如果指定为true，表示只拉取跨可用区的相关配置文件，否则，拉取所有机房的配置文件（包括每个单可用区和跨可用区）
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
@@ -1671,19 +1663,17 @@ class UDBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **DBId** (str) - (Required) 实例的Id
         - **DiskSpace** (int) - (Required) 磁盘空间(GB), 暂时支持20G-32T
-        - **MemoryLimit** (int) - (Required) 内存限制(MB)，目前支持以下几档 1000M/2000M/4000M/ 6000M/8000M/ 12000M/16000M/ 24000M/32000M/ 48000M/64000M/96000M/128000M/192000M/256000M/320000M。
+        - **MemoryLimit** (int) - (Required) 内存限制(MB)，目前支持以下几档 2000M/4000M/ 6000M/8000M/ 12000M/16000M/ 24000M/32000M/ 48000M/64000M/96000M/128000M/192000M/256000M/320000M。
         - **CouponId** (str) - 使用的代金券id
         - **InstanceMode** (str) - UDB实例模式类型, 可选值如下: "Normal": 普通版UDB实例 "HA": 高可用版UDB实例 默认是"Normal"
         - **InstanceType** (str) - UDB数据库机型: "Normal": "标准机型" ,  "SATA_SSD": "SSD机型" , "PCIE_SSD": "SSD高性能机型" ,  "Normal_Volume": "标准大容量机型",  "SATA_SSD_Volume": "SSD大容量机型" ,  "PCIE_SSD_Volume": "SSD高性能大容量机型"，“NVMe_SSD”：“快杰机型”
-        - **SSDType** (str) - SSD类型，可选值为"SATA"、"PCI-E"、“NVMe”，如果UseSSD为true ，则必选
+        - **SSDType** (str) - SSD类型，可选值为"SATA"、“NVMe”
         - **StartAfterUpgrade** (bool) - DB关闭状态下升降级，升降级后是否启动DB，默认为false
-        - **UDBCId** (str) - 专区的ID，如果有值表示专区中的DB配置升降级
-        - **UseSSD** (bool) - 是否使用SSD，默认为true
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 

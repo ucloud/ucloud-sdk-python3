@@ -204,17 +204,6 @@ class USLKClient(Client):
 
         **Response Model**
 
-        **SecondaryLinkForQuery**
-        - **IsSecondary** (bool) - 是否是次链接
-        - **LongLink** (str) - 长链接
-        - **LongLinkID** (int) - 长链接ID
-        - **Oses** (str) - 操作系统,例如: Windows,Android,多个以逗号分隔
-        - **ProvinceCodes** (str) - 省份codes，例如: Hebei,Shandong,多个以逗号分隔
-        - **Scenario** (str) - 场景名称
-        - **ScenarioID** (int) - 场景ID
-        - **ShortLongMapID** (int) - 长短链接映射ID
-
-
         **ShortLink**
         - **ClickCount** (int) - 累计访问量
         - **ClickCountToday** (int) - 当日访问量
@@ -237,6 +226,17 @@ class USLKClient(Client):
         - **UniqueClickCount** (int) - 累计独立访问量
         - **UniqueClickCountToday** (int) - 今日独立访问量
         - **UpdateTime** (int) - 更新时间戳
+
+
+        **SecondaryLinkForQuery**
+        - **IsSecondary** (bool) - 是否是次链接
+        - **LongLink** (str) - 长链接
+        - **LongLinkID** (int) - 长链接ID
+        - **Oses** (str) - 操作系统,例如: Windows,Android,多个以逗号分隔
+        - **ProvinceCodes** (str) - 省份codes，例如: Hebei,Shandong,多个以逗号分隔
+        - **Scenario** (str) - 场景名称
+        - **ScenarioID** (int) - 场景ID
+        - **ShortLongMapID** (int) - 长短链接映射ID
 
 
         """

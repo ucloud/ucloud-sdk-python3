@@ -1022,6 +1022,34 @@ class ModifyUMemSpaceNameResponseSchema(schema.ResponseSchema):
 
 
 """
+API: ModifyURedisConfig
+
+修改主备Redis配置文件参数
+"""
+
+
+class ModifyURedisConfigRequestSchema(schema.RequestSchema):
+    """ModifyURedisConfig - 修改主备Redis配置文件参数"""
+
+    fields = {
+        "ConfigId": fields.Str(required=True, dump_to="ConfigId"),
+        "GroupId": fields.Str(required=False, dump_to="GroupId"),
+        "Key": fields.Str(required=True, dump_to="Key"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "RegionFlag": fields.Bool(required=False, dump_to="RegionFlag"),
+        "Value": fields.Str(required=True, dump_to="Value"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ModifyURedisConfigResponseSchema(schema.ResponseSchema):
+    """ModifyURedisConfig - 修改主备Redis配置文件参数"""
+
+    fields = {}
+
+
+"""
 API: ModifyURedisGroupName
 
 修改主备redis名称

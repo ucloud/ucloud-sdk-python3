@@ -108,6 +108,25 @@ class UPhoneDetailInstanceSchema(schema.ResponseSchema):
     }
 
 
+class EipInfoSchema(schema.ResponseSchema):
+    """EipInfo - EIP信息"""
+
+    fields = {
+        "BindCount": fields.Int(required=False, load_from="BindCount"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "EipId": fields.Str(required=True, load_from="EipId"),
+        "EipIp": fields.Str(required=True, load_from="EipIp"),
+        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Proportion": fields.Int(required=False, load_from="Proportion"),
+        "Region": fields.Str(required=True, load_from="Region"),
+        "RemainCount": fields.Int(required=False, load_from="RemainCount"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "UPhoneIds": fields.List(fields.Str()),
+    }
+
+
 class UPhoneImageInstanceSchema(schema.ResponseSchema):
     """UPhoneImageInstance -"""
 
@@ -203,6 +222,17 @@ class UPhoneSpecSchema(schema.ResponseSchema):
     }
 
 
+class IpSetSchema(schema.ResponseSchema):
+    """IpSet -"""
+
+    fields = {
+        "Ip": fields.Str(required=False, load_from="Ip"),
+        "IpMode": fields.Str(required=False, load_from="IpMode"),
+        "IpType": fields.Str(required=False, load_from="IpType"),
+        "Isp": fields.Str(required=False, load_from="Isp"),
+    }
+
+
 class ServerModelInstanceSchema(schema.ResponseSchema):
     """ServerModelInstance -"""
 
@@ -219,17 +249,6 @@ class ServerModelInstanceSchema(schema.ResponseSchema):
             required=False, load_from="ServerModelState"
         ),
         "UPhoneSpecs": fields.List(UPhoneSpecSchema()),
-    }
-
-
-class IpSetSchema(schema.ResponseSchema):
-    """IpSet -"""
-
-    fields = {
-        "Ip": fields.Str(required=False, load_from="Ip"),
-        "IpMode": fields.Str(required=False, load_from="IpMode"),
-        "IpType": fields.Str(required=False, load_from="IpType"),
-        "Isp": fields.Str(required=False, load_from="Isp"),
     }
 
 

@@ -412,9 +412,10 @@ class DescribeAvailableInstanceTypesRequestSchema(schema.RequestSchema):
     """DescribeAvailableInstanceTypes - DescribeAvailableInstanceTypes"""
 
     fields = {
+        "MachineTypes": fields.List(fields.Str()),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "Zone": fields.Str(required=True, dump_to="Zone"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
 
@@ -427,6 +428,7 @@ class DescribeAvailableInstanceTypesResponseSchema(schema.ResponseSchema):
             required=True,
             load_from="AvailableInstanceTypes",
         ),
+        "Status": fields.Str(required=False, load_from="Status"),
     }
 
 

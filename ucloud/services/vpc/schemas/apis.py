@@ -1470,6 +1470,30 @@ class DescribeWhiteListResourceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DetachNetworkInterface
+
+解绑云主机关联网卡
+"""
+
+
+class DetachNetworkInterfaceRequestSchema(schema.RequestSchema):
+    """DetachNetworkInterface - 解绑云主机关联网卡"""
+
+    fields = {
+        "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
+        "InterfaceId": fields.Str(required=True, dump_to="InterfaceId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DetachNetworkInterfaceResponseSchema(schema.ResponseSchema):
+    """DetachNetworkInterface - 解绑云主机关联网卡"""
+
+    fields = {}
+
+
+"""
 API: EnableWhiteList
 
 修改NAT网关白名单开关

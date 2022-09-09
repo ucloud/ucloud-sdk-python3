@@ -17,20 +17,20 @@ class AccountInfoSchema(schema.ResponseSchema):
     }
 
 
-class ItemDetailSchema(schema.ResponseSchema):
-    """ItemDetail - 产品配置"""
-
-    fields = {
-        "ProductName": fields.Str(required=True, load_from="ProductName"),
-        "Value": fields.Str(required=True, load_from="Value"),
-    }
-
-
 class ResourceExtendInfoSchema(schema.ResponseSchema):
     """ResourceExtendInfo - 资源标识"""
 
     fields = {
         "KeyId": fields.Str(required=True, load_from="KeyId"),
+        "Value": fields.Str(required=True, load_from="Value"),
+    }
+
+
+class ItemDetailSchema(schema.ResponseSchema):
+    """ItemDetail - 产品配置"""
+
+    fields = {
+        "ProductName": fields.Str(required=True, load_from="ProductName"),
         "Value": fields.Str(required=True, load_from="Value"),
     }
 
@@ -90,4 +90,14 @@ class BillOverviewItemSchema(schema.ResponseSchema):
         ),
         "UserEmail": fields.Str(required=False, load_from="UserEmail"),
         "UserName": fields.Str(required=False, load_from="UserName"),
+    }
+
+
+class ResultSetSchema(schema.ResponseSchema):
+    """ResultSet - 结果集"""
+
+    fields = {
+        "Message": fields.Str(required=False, load_from="Message"),
+        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
+        "RetCode": fields.Int(required=False, load_from="RetCode"),
     }

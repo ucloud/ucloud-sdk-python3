@@ -9,6 +9,30 @@ from ucloud.services.ubill.schemas import models
 
 
 """
+API: CreateRenew
+
+创建单个续费订单
+"""
+
+
+class CreateRenewRequestSchema(schema.RequestSchema):
+    """CreateRenew - 创建单个续费订单"""
+
+    fields = {
+        "Quantity": fields.Int(required=True, dump_to="Quantity"),
+        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
+    }
+
+
+class CreateRenewResponseSchema(schema.ResponseSchema):
+    """CreateRenew - 创建单个续费订单"""
+
+    fields = {
+        "OrderNo": fields.Str(required=True, load_from="OrderNo"),
+    }
+
+
+"""
 API: GetBalance
 
 获取账户余额
@@ -128,4 +152,32 @@ class ListUBillOverviewResponseSchema(schema.ResponseSchema):
         "TotalUnpaidAmount": fields.Str(
             required=False, load_from="TotalUnpaidAmount"
         ),
+    }
+
+
+"""
+API: ModifyAutoRenewFlag
+
+修改资源自动续费标识
+"""
+
+
+class ModifyAutoRenewFlagRequestSchema(schema.RequestSchema):
+    """ModifyAutoRenewFlag - 修改资源自动续费标识"""
+
+    fields = {
+        "Flag": fields.Str(required=True, dump_to="Flag"),
+        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
+    }
+
+
+class ModifyAutoRenewFlagResponseSchema(schema.ResponseSchema):
+    """ModifyAutoRenewFlag - 修改资源自动续费标识"""
+
+    fields = {
+        "Fail": fields.Int(required=True, load_from="Fail"),
+        "ResultSet": fields.List(
+            models.ResultSetSchema(), required=True, load_from="ResultSet"
+        ),
+        "Success": fields.Int(required=True, load_from="Success"),
     }

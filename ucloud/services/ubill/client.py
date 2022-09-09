@@ -13,6 +13,30 @@ class UBillClient(Client):
     ):
         super(UBillClient, self).__init__(config, transport, middleware, logger)
 
+    def create_renew(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """CreateRenew - 创建单个续费订单
+
+        **Request**
+
+        - **Quantity** (int) - (Required) 续费周期数[1~10]，按月计费资源可传值为0，表示续费到月底
+        - **ResourceId** (str) - (Required) 需要续费资源ID
+
+        **Response**
+
+        - **OrderNo** (str) - 订单号
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.CreateRenewRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateRenew", d, **kwargs)
+        return apis.CreateRenewResponseSchema().loads(resp)
+
     def get_balance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """GetBalance - 获取账户余额
 
@@ -184,3 +208,36 @@ class UBillClient(Client):
 
         resp = self.invoke("ListUBillOverview", d, **kwargs)
         return apis.ListUBillOverviewResponseSchema().loads(resp)
+
+    def modify_auto_renew_flag(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyAutoRenewFlag - 修改资源自动续费标识
+
+        **Request**
+
+        - **Flag** (str) - (Required) 开关标识(TURN_ON: 打开; TURN_OFF: 关闭)
+        - **ResourceId** (str) - (Required) 资源ID
+
+        **Response**
+
+        - **Fail** (int) - 操作失败资源数量
+        - **ResultSet** (list) - 见 **ResultSet** 模型定义
+        - **Success** (int) - 操作成功资源数量
+
+        **Response Model**
+
+        **ResultSet**
+        - **Message** (str) - 错误信息描述
+        - **ResourceId** (str) - 资源ID
+        - **RetCode** (int) - 续费结果(0:成功，失败返回错误码)
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.ModifyAutoRenewFlagRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyAutoRenewFlag", d, **kwargs)
+        return apis.ModifyAutoRenewFlagResponseSchema().loads(resp)

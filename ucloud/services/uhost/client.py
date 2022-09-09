@@ -132,14 +132,14 @@ class UHostClient(Client):
         - **Disks** (list) - 见 **CreateUHostInstanceParamDisks** 模型定义
         - **Features** (dict) - 见 **CreateUHostInstanceParamFeatures** 模型定义
         - **GPU** (int) - GPU卡核心数。仅GPU机型支持此字段（可选范围与MachineType+GpuType相关）
-        - **GpuType** (str) - GPU类型，枚举值["K80", "P40", "V100", "T4", "T4S","2080Ti","2080Ti-4C","1080Ti", "T4/4", "MI100", "V100S"]，MachineType为G时必填
+        - **GpuType** (str) - GPU类型，枚举值["K80", "P40", "V100", "T4","T4A", "T4S","2080Ti","2080Ti-4C","1080Ti", "T4/4", "MI100", "V100S",2080","2080TiS","2080TiPro","3090","A100"]，MachineType为G时必填
         - **HotplugFeature** (bool) - 热升级特性。True为开启，False为未开启，默认False。
         - **IsolationGroup** (str) - 硬件隔离组id。可通过DescribeIsolationGroup获取。
         - **KeyPairId** (str) - KeypairId 密钥对ID，LoginMode为KeyPair时此项必须。
         - **MachineType** (str) - 云主机机型（V2.0），在本字段和字段UHostType中，仅需要其中1个字段即可。枚举值["N", "C", "G", "O", "OS", "OM", "OPRO", "OMAX", "O.BM", "O.EPC"]。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
         - **MaxCount** (int) - 本次最大创建主机数量，取值范围是[1,100]，默认值为1。
         - **Memory** (int) - 内存大小。单位：MB。范围 ：[1024, 262144]，取值为1024的倍数（可选范围参考控制台）。默认值：8192
-        - **MinimalCpuPlatform** (str) - 最低cpu平台，枚举值["Intel/Auto", "Intel/IvyBridge", "Intel/Haswell", "Intel/Broadwell", "Intel/Skylake", "Intel/Cascadelake", "Intel/CascadelakeR", "Intel/IceLake", "Amd/Epyc2", "Amd/Auto"],默认值是"Intel/Auto"。
+        - **MinimalCpuPlatform** (str) - 最低cpu平台，枚举值["Intel/Auto", "Intel/IvyBridge", "Intel/Haswell", "Intel/Broadwell", "Intel/Skylake", "Intel/Cascadelake", "Intel/CascadelakeR", "Intel/IceLake", "Amd/Epyc2", "Amd/Auto","Ampere/Auto","Ampere/Altra"],默认值是"Intel/Auto"。
         - **Name** (str) - UHost实例名称。默认：UHost。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定实例名称。
         - **NetCapability** (str) - 网络增强特性。枚举值：Normal，不开启;  Super，开启网络增强1.0； Ultra，开启网络增强2.0（详情参考官网文档）
         - **NetworkInterface** (list) - 见 **CreateUHostInstanceParamNetworkInterface** 模型定义
@@ -331,11 +331,13 @@ class UHostClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **MachineTypes** (list) - 指定机型列表
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
         - **AvailableInstanceTypes** (list) - 见 **AvailableInstanceTypes** 模型定义
+        - **Status** (str) - 当前区域是否可售
 
         **Response Model**
 
@@ -349,6 +351,7 @@ class UHostClient(Client):
         - **Name** (str) - 机型名称：快杰O型|O 、快杰共享型|OM 、快杰内存型|OMEM 、 快杰PRO型|OPRO、通用N型|N、高主频C型|C和GPU G型|G等
         - **Performance** (dict) - 见 **Performance** 模型定义
         - **Status** (str) - 机型状态：可售|Normal 、 公测|Beta、售罄|Soldout、隐藏|Hidden
+        - **Zone** (str) - 可用区信息
 
 
         **CpuPlatforms**
