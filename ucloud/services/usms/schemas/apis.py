@@ -263,7 +263,7 @@ class SendUSMSMessageRequestSchema(schema.RequestSchema):
         "Region": fields.Str(
             required=False, dump_to="Region"
         ),  # Deprecated, will be removed at 1.0
-        "SigContent": fields.Str(required=True, dump_to="SigContent"),
+        "SigContent": fields.Str(required=False, dump_to="SigContent"),
         "TemplateId": fields.Str(required=True, dump_to="TemplateId"),
         "TemplateParams": fields.List(fields.Str()),
         "UserId": fields.Str(required=False, dump_to="UserId"),

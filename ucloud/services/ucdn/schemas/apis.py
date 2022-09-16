@@ -207,6 +207,36 @@ class DescribeNewUcdnRefreshCacheTaskResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetAuthConfig
+
+接口获取鉴权信息（非标使用）
+"""
+
+
+class GetAuthConfigRequestSchema(schema.RequestSchema):
+    """GetAuthConfig - 接口获取鉴权信息（非标使用）"""
+
+    fields = {
+        "Domain": fields.Str(required=False, dump_to="Domain"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class GetAuthConfigResponseSchema(schema.ResponseSchema):
+    """GetAuthConfig - 接口获取鉴权信息（非标使用）"""
+
+    fields = {
+        "AuthConfigs": fields.List(
+            models.KwaiDomainAuthConfigSchema(),
+            required=False,
+            load_from="AuthConfigs",
+        ),
+    }
+
+
+"""
 API: GetCertificateV2
 
 获取证书列表(新)

@@ -69,12 +69,13 @@ class CfgDictListSchema(schema.ResponseSchema):
     }
 
 
-class IpListSchema(schema.ResponseSchema):
-    """IpList - 容器组外网ip列表"""
+class ImageListSchema(schema.ResponseSchema):
+    """ImageList - 容器组镜像密钥列表"""
 
     fields = {
-        "Ip": fields.Str(required=False, load_from="Ip"),
-        "Isp": fields.Str(required=False, load_from="Isp"),
+        "ImageKey": fields.Str(required=False, load_from="ImageKey"),
+        "StoreAddr": fields.Str(required=False, load_from="StoreAddr"),
+        "UserName": fields.Str(required=False, load_from="UserName"),
     }
 
 
@@ -95,13 +96,12 @@ class DockerInfoSchema(schema.ResponseSchema):
     }
 
 
-class ImageListSchema(schema.ResponseSchema):
-    """ImageList - 容器组镜像密钥列表"""
+class IpListSchema(schema.ResponseSchema):
+    """IpList - 容器组外网ip列表"""
 
     fields = {
-        "ImageKey": fields.Str(required=False, load_from="ImageKey"),
-        "StoreAddr": fields.Str(required=False, load_from="StoreAddr"),
-        "UserName": fields.Str(required=False, load_from="UserName"),
+        "Ip": fields.Str(required=False, load_from="Ip"),
+        "Isp": fields.Str(required=False, load_from="Isp"),
     }
 
 

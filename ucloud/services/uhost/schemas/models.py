@@ -30,6 +30,16 @@ class FeatureModesSchema(schema.ResponseSchema):
     }
 
 
+class CollectionSchema(schema.ResponseSchema):
+    """Collection - CPU和内存可支持的规格"""
+
+    fields = {
+        "Cpu": fields.Int(required=False, load_from="Cpu"),
+        "Memory": fields.List(fields.Int()),
+        "MinimalCpuPlatform": fields.List(fields.Str()),
+    }
+
+
 class BootDiskInfoSchema(schema.ResponseSchema):
     """BootDiskInfo - 系统盘信息"""
 
@@ -52,25 +62,6 @@ class DataDiskInfoSchema(schema.ResponseSchema):
     }
 
 
-class CollectionSchema(schema.ResponseSchema):
-    """Collection - CPU和内存可支持的规格"""
-
-    fields = {
-        "Cpu": fields.Int(required=False, load_from="Cpu"),
-        "Memory": fields.List(fields.Int()),
-        "MinimalCpuPlatform": fields.List(fields.Str()),
-    }
-
-
-class GraphicsMemorySchema(schema.ResponseSchema):
-    """GraphicsMemory - GPU的显存指标"""
-
-    fields = {
-        "Rate": fields.Int(required=False, load_from="Rate"),
-        "Value": fields.Int(required=False, load_from="Value"),
-    }
-
-
 class FeaturesSchema(schema.ResponseSchema):
     """Features - 虚机可支持的特性"""
 
@@ -86,6 +77,24 @@ class PerformanceSchema(schema.ResponseSchema):
     fields = {
         "Rate": fields.Int(required=False, load_from="Rate"),
         "Value": fields.Float(required=False, load_from="Value"),
+    }
+
+
+class MachineSizesSchema(schema.ResponseSchema):
+    """MachineSizes - GPU、CPU和内存信息"""
+
+    fields = {
+        "Collection": fields.List(CollectionSchema()),
+        "Gpu": fields.Int(required=False, load_from="Gpu"),
+    }
+
+
+class GraphicsMemorySchema(schema.ResponseSchema):
+    """GraphicsMemory - GPU的显存指标"""
+
+    fields = {
+        "Rate": fields.Int(required=False, load_from="Rate"),
+        "Value": fields.Int(required=False, load_from="Value"),
     }
 
 
@@ -106,15 +115,6 @@ class CpuPlatformsSchema(schema.ResponseSchema):
         "Amd": fields.List(fields.Str()),
         "Ampere": fields.List(fields.Str()),
         "Intel": fields.List(fields.Str()),
-    }
-
-
-class MachineSizesSchema(schema.ResponseSchema):
-    """MachineSizes - GPU、CPU和内存信息"""
-
-    fields = {
-        "Collection": fields.List(CollectionSchema()),
-        "Gpu": fields.Int(required=False, load_from="Gpu"),
     }
 
 
@@ -198,15 +198,6 @@ class UHostDiskSetSchema(schema.ResponseSchema):
     }
 
 
-class UHostKeyPairSchema(schema.ResponseSchema):
-    """UHostKeyPair - 主机密钥信息"""
-
-    fields = {
-        "KeyPairId": fields.Str(required=False, load_from="KeyPairId"),
-        "KeyPairState": fields.Str(required=False, load_from="KeyPairState"),
-    }
-
-
 class UHostIPSetSchema(schema.ResponseSchema):
     """UHostIPSet - DescribeUHostInstance"""
 
@@ -224,6 +215,15 @@ class UHostIPSetSchema(schema.ResponseSchema):
         "Type": fields.Str(required=False, load_from="Type"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
         "Weight": fields.Int(required=False, load_from="Weight"),
+    }
+
+
+class UHostKeyPairSchema(schema.ResponseSchema):
+    """UHostKeyPair - 主机密钥信息"""
+
+    fields = {
+        "KeyPairId": fields.Str(required=False, load_from="KeyPairId"),
+        "KeyPairState": fields.Str(required=False, load_from="KeyPairState"),
     }
 
 

@@ -292,6 +292,51 @@ class UCDNClient(Client):
         resp = self.invoke("DescribeNewUcdnRefreshCacheTask", d, **kwargs)
         return apis.DescribeNewUcdnRefreshCacheTaskResponseSchema().loads(resp)
 
+    def get_auth_config(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetAuthConfig - 接口获取鉴权信息（非标使用）
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Domain** (str) - 希望获取的域名，不传则获取所有
+
+        **Response**
+
+        - **AuthConfigs** (list) - 见 **KwaiDomainAuthConfig** 模型定义
+
+        **Response Model**
+
+        **KwaiAuthKv**
+        - **Iv** (str) - iv信息
+        - **Key** (str) - key信息
+
+
+        **KwaiAuthConfig**
+        - **Keys** (list) - 见 **KwaiAuthKv** 模型定义
+        - **Type** (str) - 类型  pkey / ksc / typeA
+
+
+        **KwaiDomainAuthConfig**
+        - **Config** (list) - 见 **KwaiAuthConfig** 模型定义
+        - **Domain** (str) - 域名
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetAuthConfigRequestSchema().dumps(d)
+
+        resp = self.invoke("GetAuthConfig", d, **kwargs)
+        return apis.GetAuthConfigResponseSchema().loads(resp)
+
     def get_certificate_v2(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:

@@ -201,16 +201,6 @@ class UPhoneModelInstanceSchema(schema.ResponseSchema):
     }
 
 
-class ServerDiskSetSchema(schema.ResponseSchema):
-    """ServerDiskSet -"""
-
-    fields = {
-        "DiskType": fields.Str(required=True, load_from="DiskType"),
-        "IsBoot": fields.Bool(required=True, load_from="IsBoot"),
-        "Size": fields.Int(required=True, load_from="Size"),
-    }
-
-
 class UPhoneSpecSchema(schema.ResponseSchema):
     """UPhoneSpec -"""
 
@@ -222,14 +212,13 @@ class UPhoneSpecSchema(schema.ResponseSchema):
     }
 
 
-class IpSetSchema(schema.ResponseSchema):
-    """IpSet -"""
+class ServerDiskSetSchema(schema.ResponseSchema):
+    """ServerDiskSet -"""
 
     fields = {
-        "Ip": fields.Str(required=False, load_from="Ip"),
-        "IpMode": fields.Str(required=False, load_from="IpMode"),
-        "IpType": fields.Str(required=False, load_from="IpType"),
-        "Isp": fields.Str(required=False, load_from="Isp"),
+        "DiskType": fields.Str(required=True, load_from="DiskType"),
+        "IsBoot": fields.Bool(required=True, load_from="IsBoot"),
+        "Size": fields.Int(required=True, load_from="Size"),
     }
 
 
@@ -249,6 +238,17 @@ class ServerModelInstanceSchema(schema.ResponseSchema):
             required=False, load_from="ServerModelState"
         ),
         "UPhoneSpecs": fields.List(UPhoneSpecSchema()),
+    }
+
+
+class IpSetSchema(schema.ResponseSchema):
+    """IpSet -"""
+
+    fields = {
+        "Ip": fields.Str(required=False, load_from="Ip"),
+        "IpMode": fields.Str(required=False, load_from="IpMode"),
+        "IpType": fields.Str(required=False, load_from="IpType"),
+        "Isp": fields.Str(required=False, load_from="Isp"),
     }
 
 
