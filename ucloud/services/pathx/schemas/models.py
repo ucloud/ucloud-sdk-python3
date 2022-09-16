@@ -116,15 +116,6 @@ class SrcAreaInfoSchema(schema.ResponseSchema):
     }
 
 
-class OutPublicIpInfoSchema(schema.ResponseSchema):
-    """OutPublicIpInfo - 线路回源IP信息"""
-
-    fields = {
-        "Area": fields.Str(required=False, load_from="Area"),
-        "IP": fields.Str(required=False, load_from="IP"),
-    }
-
-
 class ForwardTaskSchema(schema.ResponseSchema):
     """ForwardTask - 全球统一接入转发端口任务信息"""
 
@@ -143,6 +134,15 @@ class AccelerationAreaInfosSchema(schema.ResponseSchema):
             required=True, load_from="AccelerationArea"
         ),
         "AccelerationNodes": fields.List(SrcAreaInfoSchema()),
+    }
+
+
+class OutPublicIpInfoSchema(schema.ResponseSchema):
+    """OutPublicIpInfo - 线路回源IP信息"""
+
+    fields = {
+        "Area": fields.Str(required=False, load_from="Area"),
+        "IP": fields.Str(required=False, load_from="IP"),
     }
 
 
@@ -212,6 +212,21 @@ class AccelerationInfoSchema(schema.ResponseSchema):
     }
 
 
+class UPathSetSchema(schema.ResponseSchema):
+    """UPathSet - uga关联的upath信息"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "LineFrom": fields.Str(required=False, load_from="LineFrom"),
+        "LineFromName": fields.Str(required=False, load_from="LineFromName"),
+        "LineId": fields.Str(required=False, load_from="LineId"),
+        "LineTo": fields.Str(required=False, load_from="LineTo"),
+        "LineToName": fields.Str(required=False, load_from="LineToName"),
+        "UPathId": fields.Str(required=False, load_from="UPathId"),
+        "UPathName": fields.Str(required=False, load_from="UPathName"),
+    }
+
+
 class UGAL7ForwarderSchema(schema.ResponseSchema):
     """UGAL7Forwarder - UGA实例 7层转发器信息"""
 
@@ -240,21 +255,6 @@ class UGAATaskSchema(schema.ResponseSchema):
     fields = {
         "Port": fields.Int(required=True, load_from="Port"),
         "Protocol": fields.Str(required=True, load_from="Protocol"),
-    }
-
-
-class UPathSetSchema(schema.ResponseSchema):
-    """UPathSet - uga关联的upath信息"""
-
-    fields = {
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "LineFrom": fields.Str(required=False, load_from="LineFrom"),
-        "LineFromName": fields.Str(required=False, load_from="LineFromName"),
-        "LineId": fields.Str(required=False, load_from="LineId"),
-        "LineTo": fields.Str(required=False, load_from="LineTo"),
-        "LineToName": fields.Str(required=False, load_from="LineToName"),
-        "UPathId": fields.Str(required=False, load_from="UPathId"),
-        "UPathName": fields.Str(required=False, load_from="UPathName"),
     }
 
 
