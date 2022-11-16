@@ -3,137 +3,225 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class UFileTokenSetSchema(schema.ResponseSchema):
-    """UFileTokenSet - ufile令牌集合"""
 
+
+
+
+
+
+
+
+
+class UFileTokenSetSchema(schema.ResponseSchema):
+    """ UFileTokenSet - ufile令牌集合
+    """
     fields = {
-        "AllowedBuckets": fields.List(fields.Str()),
-        "AllowedOps": fields.List(fields.Str()),
-        "AllowedPrefixes": fields.List(fields.Str()),
-        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
-        "ExpireTime": fields.Int(required=True, load_from="ExpireTime"),
-        "ModifyTime": fields.Int(required=True, load_from="ModifyTime"),
-        "PrivateKey": fields.Str(required=True, load_from="PrivateKey"),
-        "PublicKey": fields.Str(required=True, load_from="PublicKey"),
-        "Region": fields.Str(required=True, load_from="Region"),
-        "TokenId": fields.Str(required=True, load_from="TokenId"),
-        "TokenName": fields.Str(required=True, load_from="TokenName"),
+    
+        'AllowedBuckets': fields.List(fields.Str()), 
+    
+        'AllowedOps': fields.List(fields.Str()), 
+    
+        'AllowedPrefixes': fields.List(fields.Str()), 
+    
+        'CreateTime': fields.Int(required=True, load_from='CreateTime'), 
+    
+        'ExpireTime': fields.Int(required=True, load_from='ExpireTime'), 
+    
+        'ModifyTime': fields.Int(required=True, load_from='ModifyTime'), 
+    
+        'PrivateKey': fields.Str(required=True, load_from='PrivateKey'), 
+    
+        'PublicKey': fields.Str(required=True, load_from='PublicKey'), 
+    
+        'Region': fields.Str(required=True, load_from='Region'), 
+    
+        'TokenId': fields.Str(required=True, load_from='TokenId'), 
+    
+        'TokenName': fields.Str(required=True, load_from='TokenName'), 
+    
     }
+
 
 
 class UFileDomainSetSchema(schema.ResponseSchema):
-    """UFileDomainSet - DescribeBucket"""
-
+    """ UFileDomainSet - DescribeBucket
+    """
     fields = {
-        "Cdn": fields.List(fields.Str()),
-        "CustomCdn": fields.List(fields.Str()),
-        "CustomSrc": fields.List(fields.Str()),
-        "Src": fields.List(fields.Str()),
+    
+        'Cdn': fields.List(fields.Str()), 
+    
+        'CustomCdn': fields.List(fields.Str()), 
+    
+        'CustomSrc': fields.List(fields.Str()), 
+    
+        'Src': fields.List(fields.Str()), 
+    
     }
+
 
 
 class UFileBucketSetSchema(schema.ResponseSchema):
-    """UFileBucketSet - DescribeBucket"""
-
+    """ UFileBucketSet - DescribeBucket
+    """
     fields = {
-        "Biz": fields.Str(required=False, load_from="Biz"),
-        "BucketId": fields.Str(required=False, load_from="BucketId"),
-        "BucketName": fields.Str(required=False, load_from="BucketName"),
-        "CdnDomainId": fields.List(fields.Str()),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "Domain": UFileDomainSetSchema(),
-        "HasUserDomain": fields.Int(required=False, load_from="HasUserDomain"),
-        "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
-        "Region": fields.Str(required=False, load_from="Region"),
-        "Tag": fields.Str(required=False, load_from="Tag"),
-        "Type": fields.Str(required=False, load_from="Type"),
+    
+        'Biz': fields.Str(required=False, load_from='Biz'), 
+    
+        'BucketId': fields.Str(required=False, load_from='BucketId'), 
+    
+        'BucketName': fields.Str(required=False, load_from='BucketName'), 
+    
+        'CdnDomainId': fields.List(fields.Str()), 
+    
+        'CreateTime': fields.Int(required=False, load_from='CreateTime'), 
+    
+        'Domain':  UFileDomainSetSchema(), 
+    
+        'HasUserDomain': fields.Int(required=False, load_from='HasUserDomain'), 
+    
+        'ModifyTime': fields.Int(required=False, load_from='ModifyTime'), 
+    
+        'Region': fields.Str(required=False, load_from='Region'), 
+    
+        'Tag': fields.Str(required=False, load_from='Tag'), 
+    
+        'Type': fields.Str(required=False, load_from='Type'), 
+    
     }
+
 
 
 class LifeCycleItemSchema(schema.ResponseSchema):
-    """LifeCycleItem - 生命周期信息"""
-
+    """ LifeCycleItem - 生命周期信息
+    """
     fields = {
-        "ArchivalDays": fields.Int(required=False, load_from="ArchivalDays"),
-        "BucketName": fields.Str(required=False, load_from="BucketName"),
-        "Days": fields.Int(required=False, load_from="Days"),
-        "IADays": fields.Int(required=False, load_from="IADays"),
-        "LifeCycleId": fields.Str(required=False, load_from="LifeCycleId"),
-        "LifeCycleName": fields.Str(required=False, load_from="LifeCycleName"),
-        "Prefix": fields.Str(required=False, load_from="Prefix"),
-        "Status": fields.Str(required=False, load_from="Status"),
+    
+        'ArchivalDays': fields.Int(required=False, load_from='ArchivalDays'), 
+    
+        'BucketName': fields.Str(required=False, load_from='BucketName'), 
+    
+        'Days': fields.Int(required=False, load_from='Days'), 
+    
+        'IADays': fields.Int(required=False, load_from='IADays'), 
+    
+        'LifeCycleId': fields.Str(required=False, load_from='LifeCycleId'), 
+    
+        'LifeCycleName': fields.Str(required=False, load_from='LifeCycleName'), 
+    
+        'Prefix': fields.Str(required=False, load_from='Prefix'), 
+    
+        'Status': fields.Str(required=False, load_from='Status'), 
+    
     }
+
 
 
 class UFileTotalReportItemSchema(schema.ResponseSchema):
-    """UFileTotalReportItem - 总消费信息"""
-
+    """ UFileTotalReportItem - 总消费信息
+    """
     fields = {
-        "ApiTimes": fields.Float(required=False, load_from="ApiTimes"),
-        "BusyFlow": fields.Float(required=False, load_from="BusyFlow"),
-        "CdnFlow": fields.Float(required=False, load_from="CdnFlow"),
-        "Flow": fields.Float(required=False, load_from="Flow"),
-        "IdleFlow": fields.Float(required=False, load_from="IdleFlow"),
+    
+        'ApiTimes': fields.Float(required=False, load_from='ApiTimes'), 
+    
+        'BusyFlow': fields.Float(required=False, load_from='BusyFlow'), 
+    
+        'CdnFlow': fields.Float(required=False, load_from='CdnFlow'), 
+    
+        'Flow': fields.Float(required=False, load_from='Flow'), 
+    
+        'IdleFlow': fields.Float(required=False, load_from='IdleFlow'), 
+    
     }
+
 
 
 class UFileDailyReportItemSchema(schema.ResponseSchema):
-    """UFileDailyReportItem -"""
-
+    """ UFileDailyReportItem - 
+    """
     fields = {
-        "AcRestore": fields.Float(required=False, load_from="AcRestore"),
-        "AcStorage": fields.Float(required=False, load_from="AcStorage"),
-        "ApiTimes": fields.Float(required=False, load_from="ApiTimes"),
-        "BusyFlow": fields.Float(required=False, load_from="BusyFlow"),
-        "CdnFlow": fields.Float(required=False, load_from="CdnFlow"),
-        "Date": fields.Int(required=False, load_from="Date"),
-        "Flow": fields.Float(required=False, load_from="Flow"),
-        "IaGetSize": fields.Float(required=False, load_from="IaGetSize"),
-        "IaStorage": fields.Float(required=False, load_from="IaStorage"),
-        "IdleFlow": fields.Float(required=False, load_from="IdleFlow"),
-        "Storage": fields.Float(required=False, load_from="Storage"),
+    
+        'AcRestore': fields.Float(required=False, load_from='AcRestore'), 
+    
+        'AcStorage': fields.Float(required=False, load_from='AcStorage'), 
+    
+        'ApiTimes': fields.Float(required=False, load_from='ApiTimes'), 
+    
+        'BusyFlow': fields.Float(required=False, load_from='BusyFlow'), 
+    
+        'CdnFlow': fields.Float(required=False, load_from='CdnFlow'), 
+    
+        'Date': fields.Int(required=False, load_from='Date'), 
+    
+        'Flow': fields.Float(required=False, load_from='Flow'), 
+    
+        'IaGetSize': fields.Float(required=False, load_from='IaGetSize'), 
+    
+        'IaStorage': fields.Float(required=False, load_from='IaStorage'), 
+    
+        'IdleFlow': fields.Float(required=False, load_from='IdleFlow'), 
+    
+        'Storage': fields.Float(required=False, load_from='Storage'), 
+    
     }
+
 
 
 class UFileReportItemSchema(schema.ResponseSchema):
-    """UFileReportItem -"""
-
+    """ UFileReportItem - 
+    """
     fields = {
-        "Daily": fields.List(UFileDailyReportItemSchema()),
-        "Total": fields.List(UFileTotalReportItemSchema()),
+    
+        'Daily': fields.List(UFileDailyReportItemSchema()), 
+    
+        'Total': fields.List(UFileTotalReportItemSchema()), 
+    
     }
+
 
 
 class UFileQuotaLeftSchema(schema.ResponseSchema):
-    """UFileQuotaLeft - 配额剩余量"""
-
+    """ UFileQuotaLeft - 配额剩余量
+    """
     fields = {
-        "Left": fields.Float(required=False, load_from="Left"),
+    
+        'Left': fields.Float(required=False, load_from='Left'), 
+    
     }
+
 
 
 class UFileQuotaDataSetItemSchema(schema.ResponseSchema):
-    """UFileQuotaDataSetItem - 配额信息"""
-
+    """ UFileQuotaDataSetItem - 配额信息
+    """
     fields = {
-        "DownloadFlow": UFileQuotaLeftSchema(),
-        "Owe": fields.Int(required=False, load_from="Owe"),
-        "Region": fields.Str(required=False, load_from="Region"),
-        "RequestCnt": UFileQuotaLeftSchema(),
-        "Storage": UFileQuotaLeftSchema(),
+    
+        'DownloadFlow':  UFileQuotaLeftSchema(), 
+    
+        'Owe': fields.Int(required=False, load_from='Owe'), 
+    
+        'Region': fields.Str(required=False, load_from='Region'), 
+    
+        'RequestCnt':  UFileQuotaLeftSchema(), 
+    
+        'Storage':  UFileQuotaLeftSchema(), 
+    
     }
+
 
 
 class UFileReportSetSchema(schema.ResponseSchema):
-    """UFileReportSet - GetUFileReport"""
-
+    """ UFileReportSet - GetUFileReport
+    """
     fields = {
-        "DownloadTraffic": fields.Float(
-            required=False, load_from="DownloadTraffic"
-        ),
-        "RequestCount": fields.Float(required=False, load_from="RequestCount"),
-        "StorageVolume": fields.Float(
-            required=False, load_from="StorageVolume"
-        ),
-        "Time": fields.Int(required=False, load_from="Time"),
+    
+        'DownloadTraffic': fields.Float(required=False, load_from='DownloadTraffic'), 
+    
+        'RequestCount': fields.Float(required=False, load_from='RequestCount'), 
+    
+        'StorageVolume': fields.Float(required=False, load_from='StorageVolume'), 
+    
+        'Time': fields.Int(required=False, load_from='Time'), 
+    
     }
+
+

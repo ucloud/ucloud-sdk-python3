@@ -3,50 +3,82 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class UFSVolumeInfo2Schema(schema.ResponseSchema):
-    """UFSVolumeInfo2 - 文件系统信息"""
 
+
+
+
+
+
+
+
+
+class UFSVolumeInfo2Schema(schema.ResponseSchema):
+    """ UFSVolumeInfo2 - 文件系统信息
+    """
     fields = {
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "ExpiredTime": fields.Int(required=False, load_from="ExpiredTime"),
-        "IsExpired": fields.Str(required=False, load_from="IsExpired"),
-        "MaxMountPointNum": fields.Int(
-            required=True, load_from="MaxMountPointNum"
-        ),
-        "ProtocolType": fields.Str(required=True, load_from="ProtocolType"),
-        "Remark": fields.Str(required=False, load_from="Remark"),
-        "Size": fields.Int(required=False, load_from="Size"),
-        "StorageType": fields.Str(required=True, load_from="StorageType"),
-        "Tag": fields.Str(required=False, load_from="Tag"),
-        "TotalMountPointNum": fields.Int(
-            required=True, load_from="TotalMountPointNum"
-        ),
-        "UsedSize": fields.Int(required=False, load_from="UsedSize"),
-        "VolumeId": fields.Str(required=True, load_from="VolumeId"),
-        "VolumeName": fields.Str(required=True, load_from="VolumeName"),
+    
+        'CreateTime': fields.Int(required=False, load_from='CreateTime'), 
+    
+        'ExpiredTime': fields.Int(required=False, load_from='ExpiredTime'), 
+    
+        'IsExpired': fields.Str(required=False, load_from='IsExpired'), 
+    
+        'MaxMountPointNum': fields.Int(required=True, load_from='MaxMountPointNum'), 
+    
+        'ProtocolType': fields.Str(required=True, load_from='ProtocolType'), 
+    
+        'Remark': fields.Str(required=False, load_from='Remark'), 
+    
+        'Size': fields.Int(required=False, load_from='Size'), 
+    
+        'StorageType': fields.Str(required=True, load_from='StorageType'), 
+    
+        'Tag': fields.Str(required=False, load_from='Tag'), 
+    
+        'TotalMountPointNum': fields.Int(required=True, load_from='TotalMountPointNum'), 
+    
+        'UsedSize': fields.Int(required=False, load_from='UsedSize'), 
+    
+        'VolumeId': fields.Str(required=True, load_from='VolumeId'), 
+    
+        'VolumeName': fields.Str(required=True, load_from='VolumeName'), 
+    
     }
+
 
 
 class MountPointInfoSchema(schema.ResponseSchema):
-    """MountPointInfo - 挂载点信息"""
-
+    """ MountPointInfo - 挂载点信息
+    """
     fields = {
-        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
-        "MountPointIp": fields.Str(required=True, load_from="MountPointIp"),
-        "MountPointName": fields.Str(required=True, load_from="MountPointName"),
-        "SubnetDescription": fields.Str(
-            required=True, load_from="SubnetDescription"
-        ),
-        "SubnetId": fields.Str(required=True, load_from="SubnetId"),
-        "VpcId": fields.Str(required=True, load_from="VpcId"),
+    
+        'CreateTime': fields.Int(required=True, load_from='CreateTime'), 
+    
+        'MountPointIp': fields.Str(required=True, load_from='MountPointIp'), 
+    
+        'MountPointName': fields.Str(required=True, load_from='MountPointName'), 
+    
+        'SubnetDescription': fields.Str(required=True, load_from='SubnetDescription'), 
+    
+        'SubnetId': fields.Str(required=True, load_from='SubnetId'), 
+    
+        'VpcId': fields.Str(required=True, load_from='VpcId'), 
+    
     }
+
 
 
 class UFSPriceDataSetSchema(schema.ResponseSchema):
-    """UFSPriceDataSet - ufs 价格信息"""
-
+    """ UFSPriceDataSet - ufs 价格信息
+    """
     fields = {
-        "ChargeName": fields.Str(required=False, load_from="ChargeName"),
-        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "Price": fields.Float(required=False, load_from="Price"),
+    
+        'ChargeName': fields.Str(required=False, load_from='ChargeName'), 
+    
+        'ChargeType': fields.Str(required=False, load_from='ChargeType'), 
+    
+        'Price': fields.Float(required=False, load_from='Price'), 
+    
     }
+
+

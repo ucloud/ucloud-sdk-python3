@@ -3,27 +3,37 @@
 import typing
 
 
+
+
 from ucloud.core.client import Client
 from ucloud.services.uphone.schemas import apis
 
 
-class UPhoneClient(Client):
-    def __init__(
-        self, config: dict, transport=None, middleware=None, logger=None
-    ):
-        super(UPhoneClient, self).__init__(
-            config, transport, middleware, logger
-        )
 
-    def create_u_phone(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreateUPhone - 创建云手机
+
+
+
+
+
+
+class UPhoneClient(Client):
+    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
+        super(UPhoneClient, self).__init__(config, transport, middleware, logger)
+
+    
+    
+    
+    
+    
+    
+    
+    def create_u_phone(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateUPhone - 创建云手机
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取；新增一个oversea虚拟城市，可以用来绑定所有支持的海外独立IP
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取；新增一个oversea虚拟城市，可以用来绑定海外独立IP
         - **ImageId** (str) - (Required) 云手机镜像ID，不超过32个字节。可通过[查询手机镜像]()查询云手机规格对应的镜像ID。
         - **Name** (str) - (Required) 云手机实例名称，默认：UPhone。如果同时创建多个，则增加数字后缀，如UPhone-1
         - **UPhoneCount** (int) - (Required) 创建云手机的个数
@@ -31,139 +41,157 @@ class UPhoneClient(Client):
         - **BindIp** (bool) - 绑定独立IP
         - **ChargeType** (str) - 计费模式。枚举值为： > 年 Year，按年付费； > Month，按月付费； > Dynamic，按小时预付费; 默认为月付
         - **CouponId** (str) - 云手机代金券ID。请通过DescribeCoupon接口查询，或登录用户中心查看。注：代金券对带宽不适用，仅适用于云手机计费
-        - **IpDestRegion** (str) - 购买独立IP必须有此参数。绑定的目的地域。参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **IpDestRegion** (str) - 购买独立IP必须有此参数。绑定的目的地域。参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **IpProportion** (int) - 独立IP参数。需要独立IP的比例。eg: [4:1]->4， [3:1]->3。
         - **Quantity** (str) - 购买时长。默认值: 1。月付时，此参数传0，代表购买至月末。
         - **ShareBandwidthId** (str) - 共享带宽ID，使用现有共享带宽时需要传入此参数
         - **ShareBandwidthName** (str) - 共享带宽名称，可以在创建新的共享带宽时指定一个名称
         - **Tag** (str) - 业务组。默认：Default（Default即为未分组）。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定业务组。
+        - **UPhoneBandwidth** (int) - 单个云手机独立IP网络带宽，单位Kbps；CityId为oversea时不生效；手机规格为UPhone Store和UPhone Live时不生效
         - **UseGlobalBws** (bool) - 使用区域全局共享带宽
-
+        - **UseKbps** (bool) - 使用Kbps限速
+        
         **Response**
 
         - **JobId** (str) - 任务ID，用来查询创建云手机任务状态
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
         - **UPhoneIds** (list) - 【数组】创建的云手机ID
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.CreateUPhoneRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateUPhone", d, **kwargs)
         return apis.CreateUPhoneResponseSchema().loads(resp)
-
-    def create_u_phone_app(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreateUPhoneApp - 一个 app 对应多个 app_version。
+    
+    
+    
+    
+    
+    
+    
+    def create_u_phone_app(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateUPhoneApp - 一个 app 对应多个 app_version。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **Name** (str) - (Required) 应用名称。
         - **Description** (str) - 应用描述。
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        
         **Response**
 
         - **AppId** (str) - 应用的唯一标识ID
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.CreateUPhoneAppRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateUPhoneApp", d, **kwargs)
         return apis.CreateUPhoneAppResponseSchema().loads(resp)
-
-    def create_u_phone_app_version(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreateUPhoneAppVersion - 创建云手机应用版本。注：一个 app 对应多个 app_version。
+    
+    
+    
+    
+    
+    
+    
+    def create_u_phone_app_version(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateUPhoneAppVersion - 创建云手机应用版本。注：一个 app 对应多个 app_version。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **AppId** (str) - (Required) 应用的唯一标识ID。
         - **Name** (str) - (Required) 应用版本名称，最大字符长度为255。
         - **URL** (str) - (Required) 应用版本相关的Apk文件存放的公网URL地址。
         - **Description** (str) - 应用版本描述。
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        
         **Response**
 
         - **AppVersionId** (str) - 应用版本的唯一标识ID
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.CreateUPhoneAppVersionRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateUPhoneAppVersion", d, **kwargs)
         return apis.CreateUPhoneAppVersionResponseSchema().loads(resp)
-
-    def create_u_phone_image(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreateUPhoneImage - 创建云手机镜像。
+    
+    
+    
+    
+    
+    
+    
+    def create_u_phone_image(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateUPhoneImage - 创建云手机镜像。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **Name** (str) - (Required) 镜像名称。长度为2~128个英文或中文字符。
         - **UPhoneId** (str) - (Required) 手机实例的资源ID
         - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://cms-docs.ucloudadmin.com/api/uphone-api/describe_u_phone_cities>`_ 获取
         - **Description** (str) - 镜像的描述信息。长度为2~256个英文或中文字符
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        
         **Response**
 
         - **ImageId** (str) - 云手机自定义镜像资源 ID
         - **JobId** (str) - 请求的唯一标识Id，`RetCode`为0时返回，可根据此ID查询请求的执行状态
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.CreateUPhoneImageRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateUPhoneImage", d, **kwargs)
         return apis.CreateUPhoneImageResponseSchema().loads(resp)
-
-    def create_u_phone_server(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreateUPhoneServer - 创建云手机服务器
+    
+    
+    
+    
+    
+    
+    
+    def create_u_phone_server(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateUPhoneServer - 创建云手机服务器
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_cities>`_ 获取
         - **ImageId** (str) - (Required) 云手机镜像ID，不超过32个字节。可通过 `查询手机镜像 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_image>`_ 查询云手机规格对应的镜像ID。
         - **Name** (str) - (Required) 云手机服务器实例名称。默认：UPhone。请遵照字段规范设定实例名称。
@@ -171,168 +199,189 @@ class UPhoneClient(Client):
         - **UPhoneModelName** (str) - (Required) 云手机规格名称，不超过64个字节。可通过 `查询云手机规格列表 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_model>`_ 查询支持的云手机规格。
         - **ChargeType** (str) - 计费模式。枚举值为：> 年 Year，按年付费；> Month，按月付费；> Dynamic，按小时预付费;默认为月付
         - **CouponId** (str) - 云手机服务器代金券ID。请通过DescribeCoupon接口查询，或登录用户中心查看。注：代金券对带宽不适用，仅适用于云手机服务器计费
-        - **IpDestRegion** (str) - 购买独立IP必须此参数。绑定的目的地域。参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **IpDestRegion** (str) - 购买独立IP必须此参数。绑定的目的地域。参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **IpProportion** (int) - 独立IP参数。需要独立IP的比例。eg: [4:1]->4， [3:1]->3。
         - **Quantity** (str) - 购买时长。默认值: 1。月付时，此参数传0，代表购买至月末。
         - **ShareBandwidth** (int) - 独立IP参数。共享带宽值大小。传此参数需要和IpProportion同时传。
         - **Tag** (str) - 业务组。默认：Default（Default即为未分组）。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定业务组。
-
+        
         **Response**
 
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
         - **ServerId** (str) - 云手机服务器的实例 ID
-
+        
         **Request Model**
-
-        **CreateUPhoneServerParamNetworkInterface**
-
+        
+        **CreateUPhoneServerParamNetworkInterface** 
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.CreateUPhoneServerRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateUPhoneServer", d, **kwargs)
         return apis.CreateUPhoneServerResponseSchema().loads(resp)
-
-    def delete_u_phone(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DeleteUPhone - 删除云手机
+    
+    
+    
+    
+    
+    
+    
+    def delete_u_phone(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeleteUPhone - 删除云手机
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，N<200；调用方式举例：UPhoneIds.0=希望获取信息的云手机 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId
         - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_cities>`_ 获取
-        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        - **ProductType** (str) - 枚举值。表示当前操作的产品类型，目前固定值【uphone】，表示云手机场景。
+        
         **Response**
 
         - **JobId** (str) - 任务ID，用来查询删除云手机任务状态
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.DeleteUPhoneRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteUPhone", d, **kwargs)
         return apis.DeleteUPhoneResponseSchema().loads(resp)
-
-    def delete_u_phone_image(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DeleteUPhoneImage - 删除自制云手机镜像。
+    
+    
+    
+    
+    
+    
+    
+    def delete_u_phone_image(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeleteUPhoneImage - 删除自制云手机镜像。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **ImageId** (str) - (Required) 云手机自定义镜像资源ID
-
+        - **ProductType** (str) - 枚举值【必填项】。表示当前操作的产品类型，目前固定值【uphone】，表示云手机场景。
+        
         **Response**
 
         - **ImageId** (str) - 云手机自定义镜像资源ID
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.DeleteUPhoneImageRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteUPhoneImage", d, **kwargs)
         return apis.DeleteUPhoneImageResponseSchema().loads(resp)
-
-    def delete_u_phone_server(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DeleteUPhoneServer - 删除云手机服务器。
+    
+    
+    
+    
+    
+    
+    
+    def delete_u_phone_server(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeleteUPhoneServer - 删除云手机服务器。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **ServerId** (str) - (Required) 云手机服务器的实例ID 可通过 [DescribeUPhoneServer]()获取
         - **ReleaseEIP** (bool) - 删除云手机服务器时是否释放绑定的EIP。默认为false。
         - **ReleaseUDisk** (bool) - 删除云手机服务器时是否同时删除挂载的数据盘。默认为false。
-
+        
         **Response**
 
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.DeleteUPhoneServerRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteUPhoneServer", d, **kwargs)
         return apis.DeleteUPhoneServerResponseSchema().loads(resp)
-
-    def delete_u_phone_share_bandwidth(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DeleteUPhoneShareBandwidth - 删除云手机共享带宽
+    
+    
+    
+    
+    
+    
+    
+    def delete_u_phone_share_bandwidth(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeleteUPhoneShareBandwidth - 删除云手机共享带宽
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **ShareBandwidthId** (str) - (Required) 共享带宽ID
-
+        
         **Response**
 
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.DeleteUPhoneShareBandwidthRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteUPhoneShareBandwidth", d, **kwargs)
         return apis.DeleteUPhoneShareBandwidthResponseSchema().loads(resp)
-
-    def describe_u_phone(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeUPhone - 获取云手机列表信息。
+    
+    
+    
+    
+    
+    
+    
+    def describe_u_phone(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeUPhone - 获取云手机列表信息。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取，没有该参数表示获取所有城市
         - **IsAll** (bool) - 是否返回全部。如果有此参数，分页不生效。
         - **Limit** (int) - 返回数据长度，默认为200，最大200
         - **Offset** (int) - 列表起始位置偏移量，默认为0
-        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
+        - **ProductType** (str) - 枚举值。【必填项】表示当前操作的产品类型，目前固定值【uphone】，表示云手机场景。
         - **ServerId** (str) - 云手机服务器的资源ID。
         - **Tag** (str) - 要查询的业务组名称
         - **UPhoneIds** (list) - 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望获取信息的云手机 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。如果都不传入，则返回当前 城市 所有符合条件的云手机列表。
-
+        
         **Response**
 
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
         - **TotalCount** (int) - UPhoneInstance总数
         - **UPhones** (list) - 见 **UPhoneInstance** 模型定义
-
+        
         **Response Model**
-
-        **UPhoneInstance**
+        
+        **UPhoneInstance** 
         - **ADB** (str) - 云手机的ADB信息
         - **CPU** (float) - 虚拟CPU核数。
         - **Callback** (str) - 云手机异步任务回调
@@ -346,6 +395,7 @@ class UPhoneClient(Client):
         - **ImageId** (str) - 云手机镜像ID，不超过32个字节。
         - **Ip** (str) - 云手机IP地址
         - **IpRegion** (str) - IP所属地域Id，eg: hk，th-bkk
+        - **LockBandwidth** (bool) - 是否锁定带宽，true代表锁定不可更改，false代表未锁定可以修改带宽
         - **Memory** (int) - 内存大小。单位MB
         - **OsType** (str) - 云手机镜像系统，如"Android armv8"
         - **Refresh** (int) - 刷新率
@@ -357,86 +407,96 @@ class UPhoneClient(Client):
         - **SplashScreen** (str) - 云手机启动图片URL链接
         - **State** (str) - 云手机状态<br />* 启动中: STARTING; <br />* 运行中: RUNNING; <br />* 关机中: STOPPING; <br />* 关机: STOPPED <br />* 重启中: REBOOTING; <br />* 重置中: RESETTING; <br />* 启动失败: START_FAILED; <br />* 关机失败: STOP_FAILED; <br />* 重启失败: REBOOT_FAILED; <br />* 重置失败: RESET_FAILED; <br />* 未知状态：UNDEFINED_STATE或""
         - **Tag** (str) - 业务组名称
+        - **UPhoneBandwidth** (int) - 云手机带宽，单位Kbps
         - **UPhoneId** (str) - 云手机的唯一标识，不超过32个字节。
         - **UPhoneModelName** (str) - 云手机规格名称
         - **UPhoneName** (str) - 云手机的名称，不超过65个字符。
-
+        - **UPhoneScene** (str) - 云手机场景
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.DescribeUPhoneRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeUPhone", d, **kwargs)
         return apis.DescribeUPhoneResponseSchema().loads(resp)
-
-    def describe_u_phone_app(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeUPhoneApp - 获取应用列表。
+    
+    
+    
+    
+    
+    
+    
+    def describe_u_phone_app(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeUPhoneApp - 获取应用列表。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **AppIds** (list) - 数组】应用的唯一标识 ID，调用方式举例：AppIds.0=希望获取应用信息的应用 1，AppIds.1=应用 2。 如果不传入，则返回当前 城市 所有符合条件的应用列表。
         - **Limit** (int) - 返回数据长度，默认为20，最大100
         - **Offset** (int) - 列表起始位置偏移量，默认为0
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        
         **Response**
 
         - **Apps** (list) - 见 **AppInstance** 模型定义
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
         - **TotalCount** (int) - AppInstance总数
-
+        
         **Response Model**
-
-        **AppInstance**
+        
+        **AppInstance** 
         - **AppId** (str) - 应用的唯一标识ID
         - **AppName** (str) - 应用名称。
         - **CreateTime** (int) - 创建时间，格式为Unix时间戳。
         - **Description** (str) - 应用描述。
         - **ModifyTime** (int) - 修改时间，格式为Unix时间戳。
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.DescribeUPhoneAppRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeUPhoneApp", d, **kwargs)
         return apis.DescribeUPhoneAppResponseSchema().loads(resp)
-
-    def describe_u_phone_app_version(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeUPhoneAppVersion - 获取应用版本列表。
+    
+    
+    
+    
+    
+    
+    
+    def describe_u_phone_app_version(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeUPhoneAppVersion - 获取应用版本列表。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **AppId** (str) - 应用的唯一标识ID
         - **AppVersionIds** (list) - 【数组】应用版本的唯一标识 ID，调用方式举例：AppVersionIds.0=希望获取应用版本信息的应用版本 1，AppVersionIds.1=应用版本 2。 如果不传入，则返回当前 城市 所有符合条件的应用版本列表。
         - **Limit** (int) - 返回数据长度，默认为20，最大100
         - **Offset** (int) - 列表起始位置偏移量，默认为0
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
         - **UPhoneId** (str) - 云手机Id。此参数表示查询手机上所安装的应用版本。
-
+        
         **Response**
 
         - **AppVersions** (list) - 见 **AppVersionInstance** 模型定义
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
         - **TotalCount** (int) - AppVersionInstance总数
-
+        
         **Response Model**
-
-        **AppVersionInstance**
+        
+        **AppVersionInstance** 
         - **AppId** (str) - 应用的唯一标识ID
         - **AppVersionId** (str) - 应用版本的唯一标识ID
         - **AppVersionName** (str) - 应用版本名。
@@ -445,77 +505,85 @@ class UPhoneClient(Client):
         - **ModifyTime** (int) - 修改时间，格式为Unix时间戳。
         - **PackageName** (str) - 应用包名。
         - **URL** (str) - 应用版本相关的Apk文件存放的公网URL地址。
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.DescribeUPhoneAppVersionRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeUPhoneAppVersion", d, **kwargs)
         return apis.DescribeUPhoneAppVersionResponseSchema().loads(resp)
-
-    def describe_u_phone_cities(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeUPhoneCities - 获取云手机提供服务的城市列表
+    
+    
+    
+    
+    
+    
+    
+    def describe_u_phone_cities(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeUPhoneCities - 获取云手机提供服务的城市列表
 
         **Request**
 
-        - **ProjectId** (str) - (Config)
+        - **ProjectId** (str) - (Config) 
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        
         **Response**
 
         - **UPhoneCities** (list) - 见 **CityInstance** 模型定义
-
+        
         **Response Model**
-
-        **CityInstance**
+        
+        **CityInstance** 
         - **CityAlias** (str) - 城市别名。如cn-sh2
         - **CityId** (str) - 城市Id，eg: cn-shanghai, cn-jinan
         - **CityName** (str) - 城市名称，eg:上海二、济南市
         - **CityType** (str) - 城市类型。枚举值： <br /> * CENTER，中心城市  <br />* EDGE，边缘计算城市
         - **IsSoldOut** (bool) - 表示该城市资源是否售罄
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.DescribeUPhoneCitiesRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeUPhoneCities", d, **kwargs)
         return apis.DescribeUPhoneCitiesResponseSchema().loads(resp)
-
-    def describe_u_phone_detail_by_app(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeUPhoneDetailByApp - 根据AppId，查询安装该应用的云手机以及相关的应用版本信息
+    
+    
+    
+    
+    
+    
+    
+    def describe_u_phone_detail_by_app(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeUPhoneDetailByApp - 根据AppId，查询安装该应用的云手机以及相关的应用版本信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **AppId** (str) - (Required) 应用的唯一标识ID
         - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **Limit** (int) - 返回数据长度，默认为20，最大100
         - **Offset** (int) - 列表起始位置偏移量，默认为0
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        
         **Response**
 
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
         - **TotalCount** (int) - UPhoneWithAppVersion总数
         - **UPhoneDetails** (list) - 见 **UPhoneDetailInstance** 模型定义
-
+        
         **Response Model**
-
-        **UPhoneDetailInstance**
+        
+        **UPhoneDetailInstance** 
         - **AppVersion** (dict) - 见 **AppVersionInstance** 模型定义
         - **CPU** (int) - 虚拟CPU核数。
         - **CityId** (str) - 城市Id，eg: cn-shanghai, cn-jinan
@@ -533,9 +601,9 @@ class UPhoneClient(Client):
         - **UPhoneId** (str) - 云手机的唯一标识，不超过32个字节。
         - **UPhoneModelName** (str) - 云手机规格名称
         - **UPhoneName** (str) - 云手机的名称，不超过65个字符。
+        
 
-
-        **AppVersionInstance**
+        **AppVersionInstance** 
         - **AppId** (str) - 应用的唯一标识ID
         - **AppVersionId** (str) - 应用版本的唯一标识ID
         - **AppVersionName** (str) - 应用版本名。
@@ -544,39 +612,43 @@ class UPhoneClient(Client):
         - **ModifyTime** (int) - 修改时间，格式为Unix时间戳。
         - **PackageName** (str) - 应用包名。
         - **URL** (str) - 应用版本相关的Apk文件存放的公网URL地址。
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.DescribeUPhoneDetailByAppRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeUPhoneDetailByApp", d, **kwargs)
         return apis.DescribeUPhoneDetailByAppResponseSchema().loads(resp)
-
-    def describe_u_phone_eip_list(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeUPhoneEipList - 获取云手机Eip列表
+    
+    
+    
+    
+    
+    
+    
+    def describe_u_phone_eip_list(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeUPhoneEipList - 获取云手机Eip列表
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **Region** (str) - (Config) Eip所属区域，没有该参数表示获取所有区域
         - **Proportion** (str) - 云手机与Eip绑定比例，没有该参数表示获取所有绑定比例
-
+        
         **Response**
 
         - **EipInfos** (list) - 见 **EipInfo** 模型定义
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
         - **TotalCount** (int) - Eip信息数量
-
+        
         **Response Model**
-
-        **EipInfo**
+        
+        **EipInfo** 
         - **BindCount** (int) - 当前绑定云手机数量
         - **ChargeType** (str) - 计费模式。枚举值为： > 年 Year，按年付费； > Month，按月付费； > Dynamic，按小时预付费; 默认为月付
         - **CreateTime** (int) - 创建时间；格式为Unix时间戳
@@ -589,43 +661,46 @@ class UPhoneClient(Client):
         - **RemainCount** (int) - 剩余可绑定手机数量
         - **Remark** (str) - Eip备注
         - **UPhoneIds** (list) - 绑定的云手机ID
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeUPhoneEipListRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeUPhoneEipList", d, **kwargs)
         return apis.DescribeUPhoneEipListResponseSchema().loads(resp)
-
-    def describe_u_phone_image(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeUPhoneImage - 获取云手机镜像信息列表。
+    
+    
+    
+    
+    
+    
+    
+    def describe_u_phone_image(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeUPhoneImage - 获取云手机镜像信息列表。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **ImageIds** (list) - 【数组】云手机镜像资源 ID，调用方式举例：ImageIds.0=希望获取信息的云手机镜像 1，ImageIds.1=云手机镜像 2。 如果不传入，则返回当前 城市 所有符合条件的云手机镜像。
         - **Limit** (str) - 最大返回镜像数量，默认为20，最大100
         - **Offset** (str) - 列表起始位置偏移量，默认为0
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
         - **Type** (str) - 希望获取的镜像类型，枚举值，不传则返回全部类型的镜像： <br /> >标准镜像: BASE; <br />>自制镜像: CUSTOM;  <br />
-
+        
         **Response**
 
         - **Images** (list) - 见 **UPhoneImageInstance** 模型定义
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
         - **TotalCount** (int) - UPhoneImageInstance总数
-
+        
         **Response Model**
-
-        **UPhoneImageInstance**
+        
+        **UPhoneImageInstance** 
         - **AppVersions** (list) - 见 **AppVersionInstance** 模型定义
         - **CreateTime** (int) - 创建时间，格式为Unix时间戳。
         - **Description** (str) - 云手机镜像描述信息
@@ -636,9 +711,9 @@ class UPhoneClient(Client):
         - **ModifyTime** (int) - 修改时间，格式为Unix时间戳。
         - **OsType** (str) - 云手机镜像系统
         - **UPhoneId** (str) - 云手机镜像创建时所属云手机资源 Id
+        
 
-
-        **AppVersionInstance**
+        **AppVersionInstance** 
         - **AppId** (str) - 应用的唯一标识ID
         - **AppVersionId** (str) - 应用版本的唯一标识ID
         - **AppVersionName** (str) - 应用版本名。
@@ -647,78 +722,86 @@ class UPhoneClient(Client):
         - **ModifyTime** (int) - 修改时间，格式为Unix时间戳。
         - **PackageName** (str) - 应用包名。
         - **URL** (str) - 应用版本相关的Apk文件存放的公网URL地址。
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.DescribeUPhoneImageRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeUPhoneImage", d, **kwargs)
         return apis.DescribeUPhoneImageResponseSchema().loads(resp)
-
-    def describe_u_phone_ip_regions(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeUPhoneIpRegions - 获取云手机所在城市支持绑定独立IP的地域列表
+    
+    
+    
+    
+    
+    
+    
+    def describe_u_phone_ip_regions(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeUPhoneIpRegions - 获取云手机所在城市支持绑定独立IP的地域列表
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_cities>`_ 获取；新增一个oversea虚拟城市，用来获取所有支持的海外独立IP地域
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        
         **Response**
 
         - **Regions** (list) - 见 **IpRegion** 模型定义
         - **TotalCount** (int) - 总数量
-
+        
         **Response Model**
-
-        **IpRegion**
-        - **Id** (str) - 已开通地域。参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        
+        **IpRegion** 
+        - **Id** (str) - 已开通地域。参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **StockStatus** (str) - 库存状态。枚举值：有库存：Available；无库存：SoldOut
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.DescribeUPhoneIpRegionsRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeUPhoneIpRegions", d, **kwargs)
         return apis.DescribeUPhoneIpRegionsResponseSchema().loads(resp)
-
-    def describe_u_phone_job(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeUPhoneJob - 查询Job的执行状态。
+    
+    
+    
+    
+    
+    
+    
+    def describe_u_phone_job(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeUPhoneJob - 查询Job的执行状态。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **JobIds** (list) - 【数组】Job 的唯一标识 Id，调用方式举例：JobIds.0=希望查询状态的 Job1，JobIds.1=Job2。 如果不传入，则返回当前 城市 所有符合条件的 Job 。
         - **Limit** (int) - 返回数据长度，默认为20，最大100
         - **Offset** (int) - 列表起始位置偏移量，默认为0
-        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
+        - **ProductType** (str) - 枚举值。表示当前操作的产品类型，目前固定值【uphone】，表示云手机场景。
         - **State** (str) - Job状态，枚举值：* 等待状态: PENDING;* 运行状态: RUNNING;* 成功状态: SUCCESS* 失败状态: FAILED* 部分成功状态：PARTIAL_SUCCESS
         - **Types** (list) - 【数组】Job 类型，调用方式举例：JobTypes.0=希望查询的 Job 类型 1，JobTypes.1=Job 类型 2。 如果不传入，则返回当前 城市 所有符合条件的 Job 类型。Job 类型仅支持 INSTALL_APP、UNINSTALL_APP、RUN_ASYNC_COMMAND、CREATE_SERVER_AND_UPHONE、SET_UPHONE_GPS、SET_UPHONE_CONFIG、UPLOAD_FILE、DELETE_UPHONE
-
+        
         **Response**
 
         - **Jobs** (list) - 见 **Job** 模型定义
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
         - **TotalCount** (int) - Job总数
-
+        
         **Response Model**
-
-        **Job**
+        
+        **Job** 
         - **AppVersionId** (str) - 安装/卸载Job相关的应用版本唯一标识
         - **BeginTime** (int) - Job处理开始时间，格式为Unix时间戳。
         - **CreateTime** (int) - Job创建时间，格式为Unix时间戳。
@@ -728,9 +811,9 @@ class UPhoneClient(Client):
         - **State** (str) - 任务状态* 等待中：PENDING* 运行中：RUNNING* 成功：SUCCESS* 部分成功：PARTIAL_SUCCESS* 失败：FAILED
         - **Tasks** (list) - 见 **Task** 模型定义
         - **UPhoneIds** (list) - 此Job相关的云手机唯一标识
+        
 
-
-        **Task**
+        **Task** 
         - **AppVersionId** (str) - 安装/卸载任务相关的应用版本唯一标识ID
         - **BeginTime** (int) - 任务处理开始时间，格式为Unix时间戳。
         - **EndTime** (int) - 任务处理结束时间，格式为Unix时间戳。
@@ -739,41 +822,46 @@ class UPhoneClient(Client):
         - **State** (str) - 任务状态* 等待中：PENDING* 运行中：RUNNING* 成功：SUCCESS* 失败：FAILED
         - **TaskId** (str) - Task的唯一标识
         - **UPhoneId** (str) - 云手机的唯一标识，云手机相关任务包含此字段。
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.DescribeUPhoneJobRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeUPhoneJob", d, **kwargs)
         return apis.DescribeUPhoneJobResponseSchema().loads(resp)
-
-    def describe_u_phone_model(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeUPhoneModel - 获取云手机规格列表。两种类型：uphone代表单云手机场景、uphone-server代表云手机服务器场景。
+    
+    
+    
+    
+    
+    
+    
+    def describe_u_phone_model(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeUPhoneModel - 获取云手机规格列表。两种类型：uphone代表单云手机场景、uphone-server代表云手机服务器场景。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **Limit** (int) - 返回数据长度，默认为20，最大100
         - **Offset** (int) - 列表起始位置偏移量，默认为0
-        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
+        - **ProductType** (str) - 枚举值。表示当前操作的产品类型，目前固定值【uphone】，表示云手机场景。
+        - **Scene** (str) - 使用场景：海外(OVERSEA)，境内(INLAND)
         - **UPhoneModelNames** (list) - 【数组】要获得信息的 UPhoneModel 名称。调用方式举例：UPhoneModelNames.0=希望获取信息的 UPhoneModel1，UPhoneModelNames.1=UPhoneModel2。 如果不传入，则返回当前 城市 所有符合条件的 UPhoneModel。
-
+        
         **Response**
 
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
         - **TotalCount** (int) - UPhoneModelInstance总数
         - **UPhoneModels** (list) - 见 **UPhoneModelInstance** 模型定义
-
+        
         **Response Model**
-
-        **UPhoneModelInstance**
+        
+        **UPhoneModelInstance** 
         - **CPU** (int) - 虚拟CPU核数。
         - **Description** (str) - 型号描述信息
         - **DiskSize** (int) - 磁盘大小，单位: GB
@@ -782,41 +870,45 @@ class UPhoneClient(Client):
         - **Refresh** (int) - 刷新率
         - **Resolution** (str) - 分辨率
         - **UPhoneModelName** (str) - UPhoneModel名称
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.DescribeUPhoneModelRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeUPhoneModel", d, **kwargs)
         return apis.DescribeUPhoneModelResponseSchema().loads(resp)
-
-    def describe_u_phone_server(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeUPhoneServer - 获取云手机服务器列表信息。
+    
+    
+    
+    
+    
+    
+    
+    def describe_u_phone_server(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeUPhoneServer - 获取云手机服务器列表信息。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **Limit** (int) - 返回数据长度，默认为20，最大100
         - **Offset** (int) - 列表起始位置偏移量，默认为0
         - **ServerIds** (list) - 【数组】云手机服务器的资源 ID，调用方式举例：ServerIds.0=希望获取信息的服务器 1，ServerIds.1=服务器 2。 如果不传入，则返回当前 城市 所有符合条件的云手机服务器。
-
+        
         **Response**
 
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
         - **Servers** (list) - 见 **ServerInstance** 模型定义
         - **TotalCount** (int) - ServerInstance总数
-
+        
         **Response Model**
-
-        **ServerInstance**
+        
+        **ServerInstance** 
         - **ChargeType** (str) - 计费模式。枚举值为：<br />  *Year，按年付费；<br />*  Month，按月付费；<br />默认为月付
         - **CityId** (str) - 城市Id，eg: cn-shanghai, cn-jinan
         - **CityName** (str) - 城市名称，eg:上海二、济南市
@@ -831,16 +923,16 @@ class UPhoneClient(Client):
         - **State** (str) - 实例状态，枚举值： * 初始化: Initializing; * 云手机创建中: UPhoneCreating;* 运行中: Running; * 删除中: Deleting; * 创建失败: CreateFailed * 未知(空字符串，获取状态超时或出错)：""
         - **UPhoneCount** (int) - 云手机开数。
         - **UPhoneModelName** (str) - 云手机规格名称。
+        
 
-
-        **IpSet**
+        **IpSet** 
         - **Ip** (str) - IP地址
         - **IpMode** (str) - ipv4或者ipv6
         - **IpType** (str) - 共有或私有
         - **Isp** (str) - 运营商
+        
 
-
-        **ServerModelInstance**
+        **ServerModelInstance** 
         - **CPU** (int) - 虚拟CPU核数。可选参数：1-64（具体机型与CPU的对应关系参照控制台）。
         - **DiskSet** (list) - 见 **ServerDiskSet** 模型定义
         - **GPU** (int) - GPU个数
@@ -849,53 +941,57 @@ class UPhoneClient(Client):
         - **ServerModelName** (str) - ServerModel名称
         - **ServerModelState** (str) - 表示该机型是否上线，用于前端判断是否开放给用户。枚举值：>AVAILABLE，开放>UNAVAILABLE, 不开放
         - **UPhoneSpecs** (list) - 见 **UPhoneSpec** 模型定义
+        
 
-
-        **ServerDiskSet**
+        **ServerDiskSet** 
         - **DiskType** (str) - 磁盘类型。请参考磁盘类型。
         - **IsBoot** (bool) - 是否是系统盘。枚举值：> True，是系统盘> False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
         - **Size** (int) - 磁盘大小，单位: GB
+        
 
-
-        **UPhoneSpec**
+        **UPhoneSpec** 
         - **UPhoneCount** (int) - 手机开数，即该服务器规格能生成对应手机规格的云手机个数
         - **UPhoneModelName** (str) - 手机规格名
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.DescribeUPhoneServerRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeUPhoneServer", d, **kwargs)
         return apis.DescribeUPhoneServerResponseSchema().loads(resp)
-
-    def describe_u_phone_server_model(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeUPhoneServerModel - 获取ServerModel列表。
+    
+    
+    
+    
+    
+    
+    
+    def describe_u_phone_server_model(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeUPhoneServerModel - 获取ServerModel列表。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **Limit** (int) - 返回数据长度，默认为20，最大100
         - **Offset** (int) - 列表起始位置偏移量，默认为0
         - **ServerModelNames** (list) - 【数组】要获得信息的 ServerModel 名称。调用方式举例：ServerModelNames.0=希望获取信息的 ServerModel1，ServerModelNames.1=ServerModel2。 如果不传入，则返回当前 城市 所有符合条件的 ServerModel。
-
+        
         **Response**
 
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
         - **ServerModels** (list) - 见 **ServerModelInstance** 模型定义
         - **Stock** (list) - 见 **StockInfo** 模型定义
         - **TotalCount** (int) - ServerModelInstance总数
-
+        
         **Response Model**
-
-        **ServerModelInstance**
+        
+        **ServerModelInstance** 
         - **CPU** (int) - 虚拟CPU核数。可选参数：1-64（具体机型与CPU的对应关系参照控制台）。
         - **DiskSet** (list) - 见 **ServerDiskSet** 模型定义
         - **GPU** (int) - GPU个数
@@ -904,55 +1000,59 @@ class UPhoneClient(Client):
         - **ServerModelName** (str) - ServerModel名称
         - **ServerModelState** (str) - 表示该机型是否上线，用于前端判断是否开放给用户。枚举值：>AVAILABLE，开放>UNAVAILABLE, 不开放
         - **UPhoneSpecs** (list) - 见 **UPhoneSpec** 模型定义
+        
 
-
-        **ServerDiskSet**
+        **ServerDiskSet** 
         - **DiskType** (str) - 磁盘类型。请参考磁盘类型。
         - **IsBoot** (bool) - 是否是系统盘。枚举值：> True，是系统盘> False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
         - **Size** (int) - 磁盘大小，单位: GB
+        
 
-
-        **UPhoneSpec**
+        **UPhoneSpec** 
         - **UPhoneCount** (int) - 手机开数，即该服务器规格能生成对应手机规格的云手机个数
         - **UPhoneModelName** (str) - 手机规格名
+        
 
-
-        **StockInfo**
+        **StockInfo** 
         - **ModelName** (str) - ServerModel名称
         - **StockCount** (int) - 资源余量
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.DescribeUPhoneServerModelRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeUPhoneServerModel", d, **kwargs)
         return apis.DescribeUPhoneServerModelResponseSchema().loads(resp)
-
-    def describe_u_phone_share_bandwidth(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeUPhoneShareBandwidth - 获取共享带宽列表
+    
+    
+    
+    
+    
+    
+    
+    def describe_u_phone_share_bandwidth(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeUPhoneShareBandwidth - 获取共享带宽列表
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **Region** (str) - (Config) 绑定的目的地域。参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ ；不传代表获取所有区域
         - **ShareBandwidthId** (str) - 共享带宽ID，不传表示获取所有共享带宽信息
-
+        
         **Response**
 
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
         - **ShareBandwidth** (list) - 见 **ShareBandwidthInfo** 模型定义
         - **TotalCount** (int) - 共享带宽总数量
-
+        
         **Response Model**
-
-        **ShareBandwidthInfo**
+        
+        **ShareBandwidthInfo** 
         - **Bandwidth** (int) - 带宽大小，单位M
         - **BindCount** (int) - 当前绑定手机数量
         - **ChargeType** (str) - 计费模式。枚举值为： > 年 Year，按年付费； > Month，按月付费； > Dynamic，按小时预付费; 默认为月付
@@ -962,610 +1062,758 @@ class UPhoneClient(Client):
         - **IpCount** (int) - 当前绑定IP数量
         - **IpProportion** (int) - 云手机IP绑定比例
         - **Name** (str) - 共享带宽名称
-        - **Region** (str) - 绑定的目的地域。参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Region** (str) - 绑定的目的地域。参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **RemainCount** (int) - 剩余可绑定手机数量
         - **Remark** (str) - 备注
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeUPhoneShareBandwidthRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeUPhoneShareBandwidth", d, **kwargs)
         return apis.DescribeUPhoneShareBandwidthResponseSchema().loads(resp)
-
-    def get_u_phone_allowance(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """GetUPhoneAllowance - 获取云手机创建余量
+    
+    
+    
+    
+    
+    
+    
+    def get_u_phone_allowance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ GetUPhoneAllowance - 获取云手机创建余量
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
-
+        
         **Response**
 
         - **UPhoneAllowance** (list) - 见 **UPhoneAllowance** 模型定义
-
+        
         **Response Model**
-
-        **UPhoneAllowance**
+        
+        **UPhoneAllowance** 
         - **Allowance** (int) - 可创建云手机个数
         - **ModelName** (str) - 枚举值，云手机型号名称，取值：UPhone X，UPhone Plus，UPhone Pro
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.GetUPhoneAllowanceRequestSchema().dumps(d)
-
+        
         resp = self.invoke("GetUPhoneAllowance", d, **kwargs)
         return apis.GetUPhoneAllowanceResponseSchema().loads(resp)
-
-    def get_u_phone_price(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """GetUPhonePrice - 根据云手机规格名称，获取UPhone实例的价格。
-
-        **Request**
-
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
-        - **BandwidthLine** (int) - 购买独立IP时需要此参数，带宽线路数量，与云手机数量一致
-        - **ChargeType** (str) - 计费模式。枚举值为： > Year，按年付费； > Month，按月付费； > Dynamic，按小时预付费; 如果不传某个枚举值，默认返回年付、月付的价格组合集。
-        - **INetBandwidth** (int) - 购买独立IP需要此参数，其中一个ip的带宽值。
-        - **IpCount** (int) - 购买独立IP需要此参数。需要的eip数量。
-        - **IpDestRegion** (str) - 购买独立IP必须此参数。绑定的目的地域。参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **Quantity** (int) - 购买时长。默认: 1。 月付时，此参数传0，代表了购买至月末。
-        - **UPhoneCount** (int) - 云手机个数
-        - **UPhoneModelName** (int) - 云手机规格名称
-
-        **Response**
-
-        - **PriceSet** (list) - 见 **UPhonePriceSet** 模型定义
-
-        **Response Model**
-
-        **UPhonePriceSet**
-        - **ChargeType** (str) - 计费类型，枚举值：Year，Month，Dynamic
-        - **ListPrice** (float) - 产品列表价
-        - **OriginalPrice** (float) - 限时优惠的折前原价（即列表价乘以商务折扣后的单价）
-        - **Price** (float) - 价格，单位: 元，保留小数点后两位有效数字
-
-
-        """
-        # build request
-        d = {
-            "ProjectId": self.config.project_id,
-        }
-        req and d.update(req)
-        d = apis.GetUPhonePriceRequestSchema().dumps(d)
-
-        resp = self.invoke("GetUPhonePrice", d, **kwargs)
-        return apis.GetUPhonePriceResponseSchema().loads(resp)
-
-    def get_u_phone_renew_price(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """GetUPhoneRenewPrice - 获取云手机续费价格，不包括独立ip价格。
+    
+    
+    
+    
+    
+    
+    
+    def get_u_phone_bandwidth_upgrade_price(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ GetUPhoneBandwidthUpgradePrice - 获取云手机带宽升降级价格
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **UPhoneId** (str) - (Required) 云手机的唯一标识，可通过[查询云手机列表]获取。
-        - **ChargeType** (str) - 计费模式。枚举值为： > Year，按年付费； > Month，按月付费； > Dynamic，按小时预付费; 默认返回全部计费方式对应的价格
-        - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
-
-        **Response**
-
-        - **PriceSet** (list) - 见 **UPhonePriceSet** 模型定义
-
-        **Response Model**
-
-        **UPhonePriceSet**
-        - **ChargeType** (str) - 计费类型，枚举值：Year，Month，Dynamic
-        - **ListPrice** (float) - 产品列表价
-        - **OriginalPrice** (float) - 限时优惠的折前原价（即列表价乘以商务折扣后的单价）
-        - **Price** (float) - 价格，单位: 元，保留小数点后两位有效数字
-
-
-        """
-        # build request
-        d = {
-            "ProjectId": self.config.project_id,
-        }
-        req and d.update(req)
-        d = apis.GetUPhoneRenewPriceRequestSchema().dumps(d)
-
-        resp = self.invoke("GetUPhoneRenewPrice", d, **kwargs)
-        return apis.GetUPhoneRenewPriceResponseSchema().loads(resp)
-
-    def get_u_phone_screen_capture(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """GetUPhoneScreenCapture - 云手机截屏
-
-        **Request**
-
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **UPhoneID** (str) - (Required) 云手机ID
-        - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_cities>`_ 获取
-        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
-        **Response**
-
-        - **URL** (str) - 云手机截图URL
-
-        """
-        # build request
-        d = {
-            "ProjectId": self.config.project_id,
-        }
-        req and d.update(req)
-        d = apis.GetUPhoneScreenCaptureRequestSchema().dumps(d)
-
-        resp = self.invoke("GetUPhoneScreenCapture", d, **kwargs)
-        return apis.GetUPhoneScreenCaptureResponseSchema().loads(resp)
-
-    def get_u_phone_server_price(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """GetUPhoneServerPrice - 根据服务器规格名称，获取UPhoneServer实例的价格。
-
-        **Request**
-
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
-        - **ServerModelName** (str) - (Required) 服务器规格名称
-        - **Bandwidth** (int) - 购买独立IP需要此参数。共享带宽总值。
-        - **ChargeType** (str) - 计费模式。枚举值为：> Year，按年付费；> Month，按月付费；> Dynamic，按小时预付费; 如果不传某个枚举值，默认返回年付、月付的价格组合集。
-        - **IpCount** (int) - 购买独立IP需要此参数。需要的eip数量。
-        - **IpDestRegion** (str) - 购买独立IP必须此参数。绑定的目的地域。参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **Quantity** (int) - 购买时长。默认: 1。 月付时，此参数传0，代表了购买至月末。
-
-        **Response**
-
-        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
-        - **PriceSet** (list) - 见 **UPhoneServerPriceSet** 模型定义
-
-        **Response Model**
-
-        **UPhoneServerPriceSet**
-        - **ChargeType** (str) - 计费类型，枚举值：Year，Month, Dynamic
-        - **ListPrice** (float) - 产品列表价
-        - **OriginalPrice** (float) - 限时优惠的折前原价（即列表价乘以商务折扣后的单价）
-        - **Price** (float) - 价格，单位: 元，保留小数点后两位有效数字
-
-
-        """
-        # build request
-        d = {
-            "ProjectId": self.config.project_id,
-        }
-        req and d.update(req)
-        d = apis.GetUPhoneServerPriceRequestSchema().dumps(d)
-
-        resp = self.invoke("GetUPhoneServerPrice", d, **kwargs)
-        return apis.GetUPhoneServerPriceResponseSchema().loads(resp)
-
-    def get_u_phone_server_renew_price(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """GetUPhoneServerRenewPrice - 获取云手机服务器续费价格提示信息: 须按照控制台服务器模型配置创建服务器。详情请参考控制台。
-
-        **Request**
-
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
-        - **ServerId** (str) - (Required) 云手机服务器的唯一标识，可通过[查询云手机服务器列表]()获取。
-        - **ChargeType** (str) - 计费模式。枚举值为：> Year，按年付费；> Month，按月付费； > Dynamic，按小时预付费; 默认返回全部计费方式对应的价格
-
-        **Response**
-
-        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
-        - **PriceSet** (list) - 见 **UPhoneServerPriceSet** 模型定义
-
-        **Response Model**
-
-        **UPhoneServerPriceSet**
-        - **ChargeType** (str) - 计费类型，枚举值：Year，Month, Dynamic
-        - **ListPrice** (float) - 产品列表价
-        - **OriginalPrice** (float) - 限时优惠的折前原价（即列表价乘以商务折扣后的单价）
-        - **Price** (float) - 价格，单位: 元，保留小数点后两位有效数字
-
-
-        """
-        # build request
-        d = {
-            "ProjectId": self.config.project_id,
-        }
-        req and d.update(req)
-        d = apis.GetUPhoneServerRenewPriceRequestSchema().dumps(d)
-
-        resp = self.invoke("GetUPhoneServerRenewPrice", d, **kwargs)
-        return apis.GetUPhoneServerRenewPriceResponseSchema().loads(resp)
-
-    def get_u_phone_share_bandwidth_upgrade_price(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """GetUPhoneShareBandwidthUpgradePrice - 获取云手机共享带宽升降级价格
-
-        **Request**
-
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Bandwidth** (int) - (Required) 需要升降级的带宽，默认是当前带宽大小
-        - **ShareBandwidthId** (str) - (Required) 共享带宽的ID
-
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Bandwidth** (int) - (Required) 带宽大小，单位Kbps，必须是100的整数倍
+        - **ProductType** (str) - (Required) 枚举值。表示当前操作的产品类型，目前固定值【uphone】，表示云手机场景。
+        - **UPhoneId** (str) - (Required) 云手机ID
+        
         **Response**
 
         - **ListPrice** (float) - 产品列表价
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
         - **OriginalPrice** (float) - 限时优惠的折前原价（即列表价乘以商务折扣后的单价）
         - **Price** (float) - 规格调整差价。单位: 元，保留小数点后两位有效数字
+        
+        """
+        # build request
+        d = {
+            'ProjectId': self.config.project_id, 
+        }
+        req and d.update(req)
+        d = apis.GetUPhoneBandwidthUpgradePriceRequestSchema().dumps(d)
+        
+        resp = self.invoke("GetUPhoneBandwidthUpgradePrice", d, **kwargs)
+        return apis.GetUPhoneBandwidthUpgradePriceResponseSchema().loads(resp)
+    
+    
+    
+    
+    
+    
+    
+    def get_u_phone_price(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ GetUPhonePrice - 根据云手机规格名称，获取UPhone实例的价格。
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
+        - **BandwidthLine** (int) - 购买独立IP并且使用全局共享带宽时需要此参数，带宽线路数量，与云手机数量一致
+        - **ChargeType** (str) - 计费模式。枚举值为： > Year，按年付费； > Month，按月付费；> Day，按天付费； > Dynamic，按小时预付费; 如果不传某个枚举值，默认返回年付、月付的价格组合集。
+        - **INetBandwidth** (int) - 购买独立IP需要此参数，其中一个ip的带宽值。
+        - **IpCount** (int) - 购买独立IP需要此参数。需要的eip数量。
+        - **IpDestRegion** (str) - 购买独立IP必须此参数。绑定的目的地域。参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **Quantity** (int) - 购买时长。默认: 1。 月付时，此参数传0，代表了购买至月末。
+        - **UPhoneBandwidth** (int) - 单个云手机带宽大小，单位Kbps，仅在UseKbps为true时生效
+        - **UPhoneCount** (int) - 云手机个数
+        - **UPhoneModelName** (int) - 云手机规格名称
+        - **UseGlobalBws** (bool) - 使用全局共享带宽
+        - **UseKbps** (bool) - 使用Kbps单位带宽，仅在使用全局共享带宽时生效，值为true时BandwidthLine参数不再生效
+        
+        **Response**
+
+        - **PriceSet** (list) - 见 **UPhonePriceSet** 模型定义
+        
+        **Response Model**
+        
+        **UPhonePriceSet** 
+        - **ChargeType** (str) - 计费类型，枚举值：Year，Month，Dynamic
+        - **ListPrice** (float) - 产品列表价
+        - **OriginalPrice** (float) - 限时优惠的折前原价（即列表价乘以商务折扣后的单价）
+        - **Price** (float) - 价格，单位: 元，保留小数点后两位有效数字
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
+        }
+        req and d.update(req)
+        d = apis.GetUPhonePriceRequestSchema().dumps(d)
+        
+        resp = self.invoke("GetUPhonePrice", d, **kwargs)
+        return apis.GetUPhonePriceResponseSchema().loads(resp)
+    
+    
+    
+    
+    
+    
+    
+    def get_u_phone_renew_price(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ GetUPhoneRenewPrice - 获取云手机续费价格，不包括独立ip价格。
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **UPhoneId** (str) - (Required) 云手机的唯一标识，可通过[查询云手机列表]获取。
+        - **ChargeType** (str) - 计费模式。枚举值为： > Year，按年付费； > Month，按月付费； > Dynamic，按小时预付费; 默认返回全部计费方式对应的价格
+        - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
+        
+        **Response**
+
+        - **PriceSet** (list) - 见 **UPhonePriceSet** 模型定义
+        
+        **Response Model**
+        
+        **UPhonePriceSet** 
+        - **ChargeType** (str) - 计费类型，枚举值：Year，Month，Dynamic
+        - **ListPrice** (float) - 产品列表价
+        - **OriginalPrice** (float) - 限时优惠的折前原价（即列表价乘以商务折扣后的单价）
+        - **Price** (float) - 价格，单位: 元，保留小数点后两位有效数字
+        
+
+        """
+        # build request
+        d = {
+            'ProjectId': self.config.project_id, 
+        }
+        req and d.update(req)
+        d = apis.GetUPhoneRenewPriceRequestSchema().dumps(d)
+        
+        resp = self.invoke("GetUPhoneRenewPrice", d, **kwargs)
+        return apis.GetUPhoneRenewPriceResponseSchema().loads(resp)
+    
+    
+    
+    
+    
+    
+    
+    def get_u_phone_screen_capture(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ GetUPhoneScreenCapture - 云手机截屏
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **UPhoneID** (str) - (Required) 云手机ID
+        - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_cities>`_ 获取
+        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
+        
+        **Response**
+
+        - **URL** (str) - 云手机截图URL
+        
+        """
+        # build request
+        d = {
+            'ProjectId': self.config.project_id, 
+        }
+        req and d.update(req)
+        d = apis.GetUPhoneScreenCaptureRequestSchema().dumps(d)
+        
+        resp = self.invoke("GetUPhoneScreenCapture", d, **kwargs)
+        return apis.GetUPhoneScreenCaptureResponseSchema().loads(resp)
+    
+    
+    
+    
+    
+    
+    
+    def get_u_phone_server_price(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ GetUPhoneServerPrice - 根据服务器规格名称，获取UPhoneServer实例的价格。
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
+        - **ServerModelName** (str) - (Required) 服务器规格名称
+        - **Bandwidth** (int) - 购买独立IP需要此参数。共享带宽总值。
+        - **ChargeType** (str) - 计费模式。枚举值为：> Year，按年付费；> Month，按月付费；> Dynamic，按小时预付费; 如果不传某个枚举值，默认返回年付、月付的价格组合集。
+        - **IpCount** (int) - 购买独立IP需要此参数。需要的eip数量。
+        - **IpDestRegion** (str) - 购买独立IP必须此参数。绑定的目的地域。参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **Quantity** (int) - 购买时长。默认: 1。 月付时，此参数传0，代表了购买至月末。
+        
+        **Response**
+
+        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
+        - **PriceSet** (list) - 见 **UPhoneServerPriceSet** 模型定义
+        
+        **Response Model**
+        
+        **UPhoneServerPriceSet** 
+        - **ChargeType** (str) - 计费类型，枚举值：Year，Month, Dynamic
+        - **ListPrice** (float) - 产品列表价
+        - **OriginalPrice** (float) - 限时优惠的折前原价（即列表价乘以商务折扣后的单价）
+        - **Price** (float) - 价格，单位: 元，保留小数点后两位有效数字
+        
+
+        """
+        # build request
+        d = {
+            'ProjectId': self.config.project_id, 
+        }
+        req and d.update(req)
+        d = apis.GetUPhoneServerPriceRequestSchema().dumps(d)
+        
+        resp = self.invoke("GetUPhoneServerPrice", d, **kwargs)
+        return apis.GetUPhoneServerPriceResponseSchema().loads(resp)
+    
+    
+    
+    
+    
+    
+    
+    def get_u_phone_server_renew_price(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ GetUPhoneServerRenewPrice - 获取云手机服务器续费价格提示信息: 须按照控制台服务器模型配置创建服务器。详情请参考控制台。
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
+        - **ServerId** (str) - (Required) 云手机服务器的唯一标识，可通过[查询云手机服务器列表]()获取。
+        - **ChargeType** (str) - 计费模式。枚举值为：> Year，按年付费；> Month，按月付费； > Dynamic，按小时预付费; 默认返回全部计费方式对应的价格
+        
+        **Response**
+
+        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
+        - **PriceSet** (list) - 见 **UPhoneServerPriceSet** 模型定义
+        
+        **Response Model**
+        
+        **UPhoneServerPriceSet** 
+        - **ChargeType** (str) - 计费类型，枚举值：Year，Month, Dynamic
+        - **ListPrice** (float) - 产品列表价
+        - **OriginalPrice** (float) - 限时优惠的折前原价（即列表价乘以商务折扣后的单价）
+        - **Price** (float) - 价格，单位: 元，保留小数点后两位有效数字
+        
+
+        """
+        # build request
+        d = {
+            'ProjectId': self.config.project_id, 
+        }
+        req and d.update(req)
+        d = apis.GetUPhoneServerRenewPriceRequestSchema().dumps(d)
+        
+        resp = self.invoke("GetUPhoneServerRenewPrice", d, **kwargs)
+        return apis.GetUPhoneServerRenewPriceResponseSchema().loads(resp)
+    
+    
+    
+    
+    
+    
+    
+    def get_u_phone_share_bandwidth_upgrade_price(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ GetUPhoneShareBandwidthUpgradePrice - 获取云手机共享带宽升降级价格
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Bandwidth** (int) - (Required) 需要升降级的带宽，默认是当前带宽大小
+        - **ShareBandwidthId** (str) - (Required) 共享带宽的ID
+        
+        **Response**
+
+        - **ListPrice** (float) - 产品列表价
+        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
+        - **OriginalPrice** (float) - 限时优惠的折前原价（即列表价乘以商务折扣后的单价）
+        - **Price** (float) - 规格调整差价。单位: 元，保留小数点后两位有效数字
+        
+        """
+        # build request
+        d = {
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.GetUPhoneShareBandwidthUpgradePriceRequestSchema().dumps(d)
-
+        
         resp = self.invoke("GetUPhoneShareBandwidthUpgradePrice", d, **kwargs)
-        return apis.GetUPhoneShareBandwidthUpgradePriceResponseSchema().loads(
-            resp
-        )
-
+        return apis.GetUPhoneShareBandwidthUpgradePriceResponseSchema().loads(resp)
+    
+    
+    
+    
+    
+    
+    
     def import_file(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ImportFile - 上传文件到云手机目录/sdcard/Download/并自动安装APK文件
+        """ ImportFile - 上传文件到云手机目录/sdcard/Download/并自动安装APK文件
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **FileName** (str) - (Required) 文件名
         - **UPhoneIds** (list) - (Required) 云手机ID
         - **URL** (str) - (Required) 文件下载链接
-        - **CityId** (str) - 城市。 参见  `云手机城市列表 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_cities>`_
-        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        - **ABI** (str) - 上传文件为apk时，可强制指定32位还是64位运行。armeabi-v7a（32位）;不填为系统默认值（64位）
+        - **CityId** (str) - 城市。 参见  `云手机城市列表 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_cities>`_ 
+        - **ProductType** (str) - 枚举值。表示当前操作的产品类型，目前固定值【uphone】，表示云手机场景。
+        
         **Response**
 
         - **JobId** (str) - 请求的唯一标识Id，`RetCode`为0时返回，可根据此ID查询请求的执行状态
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.ImportFileRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("ImportFile", d, **kwargs)
         return apis.ImportFileResponseSchema().loads(resp)
-
-    def install_u_phone_app_version(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """InstallUPhoneAppVersion - 在云手机中安装应用版本相关的Apk文件。系统会根据AppVersionId将对应的Apk文件下载后安装到云手机中。一次只支持安装一个Apk。
+    
+    
+    
+    
+    
+    
+    
+    def install_u_phone_app_version(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ InstallUPhoneAppVersion - 在云手机中安装应用版本相关的Apk文件。系统会根据AppVersionId将对应的Apk文件下载后安装到云手机中。一次只支持安装一个Apk。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **AppVersionId** (str) - (Required) 应用版本的唯一标识ID
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望安装应用的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
         - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        
         **Response**
 
         - **JobId** (str) - 请求的唯一标识Id，`RetCode`为0时返回，可根据此ID查询请求的执行状态
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.InstallUPhoneAppVersionRequestSchema().dumps(d)
-
+        
         resp = self.invoke("InstallUPhoneAppVersion", d, **kwargs)
         return apis.InstallUPhoneAppVersionResponseSchema().loads(resp)
-
-    def modify_u_phone_name(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """ModifyUPhoneName - 修改指定云手机实例名称。
+    
+    
+    
+    
+    
+    
+    
+    def modify_u_phone_bandwidth(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ ModifyUPhoneBandwidth - 修改云手机带宽
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Bandwidth** (int) - (Required) 带宽大小，单位Kbps，必须是100的整数倍
+        - **ProductType** (str) - (Required) 枚举值。表示当前操作的产品类型，目前固定值【uphone】，表示云手机场景。
+        - **UPhoneId** (str) - (Required) 云手机ID
+        
+        **Response**
+
+        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
+        
+        """
+        # build request
+        d = {
+            'ProjectId': self.config.project_id, 
+        }
+        req and d.update(req)
+        d = apis.ModifyUPhoneBandwidthRequestSchema().dumps(d)
+        
+        resp = self.invoke("ModifyUPhoneBandwidth", d, **kwargs)
+        return apis.ModifyUPhoneBandwidthResponseSchema().loads(resp)
+    
+    
+    
+    
+    
+    
+    
+    def modify_u_phone_name(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ ModifyUPhoneName - 修改指定云手机实例名称。
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **Name** (str) - (Required) 云手机实例名称
         - **UPhoneId** (str) - (Required) 云手机实例的资源ID
         - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
-
+        
         **Response**
 
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
         - **UPhoneId** (str) - 云手机实例的资源ID
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.ModifyUPhoneNameRequestSchema().dumps(d)
-
+        
         resp = self.invoke("ModifyUPhoneName", d, **kwargs)
         return apis.ModifyUPhoneNameResponseSchema().loads(resp)
-
-    def modify_u_phone_remark(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """ModifyUPhoneRemark - 修改指定云手机实例备注信息。
+    
+    
+    
+    
+    
+    
+    
+    def modify_u_phone_remark(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ ModifyUPhoneRemark - 修改指定云手机实例备注信息。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **UPhoneId** (str) - (Required) 云手机实例的资源ID
         - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **Remark** (str) - 备注
-
+        
         **Response**
 
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
         - **UPhoneId** (str) - 云手机实例的资源ID
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.ModifyUPhoneRemarkRequestSchema().dumps(d)
-
+        
         resp = self.invoke("ModifyUPhoneRemark", d, **kwargs)
         return apis.ModifyUPhoneRemarkResponseSchema().loads(resp)
-
-    def modify_u_phone_server_name(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """ModifyUPhoneServerName - 修改指定云手机服务器实例名称。
+    
+    
+    
+    
+    
+    
+    
+    def modify_u_phone_server_name(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ ModifyUPhoneServerName - 修改指定云手机服务器实例名称。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **ServerId** (str) - (Required) 云手机服务器的唯一标识
         - **Name** (str) - 云手机服务器实例名称
-
+        
         **Response**
 
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
         - **ServerId** (str) - 云手机服务器的唯一标识
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.ModifyUPhoneServerNameRequestSchema().dumps(d)
-
+        
         resp = self.invoke("ModifyUPhoneServerName", d, **kwargs)
         return apis.ModifyUPhoneServerNameResponseSchema().loads(resp)
-
-    def modify_u_phone_server_remark(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """ModifyUPhoneServerRemark - 修改指定云手机实例备注信息。
+    
+    
+    
+    
+    
+    
+    
+    def modify_u_phone_server_remark(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ ModifyUPhoneServerRemark - 修改指定云手机实例备注信息。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **ServerId** (str) - (Required) 云手机服务器的唯一标识
         - **Remark** (str) - 备注
-
+        
         **Response**
 
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
         - **ServerId** (str) - 云手机服务器的唯一标识
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.ModifyUPhoneServerRemarkRequestSchema().dumps(d)
-
+        
         resp = self.invoke("ModifyUPhoneServerRemark", d, **kwargs)
         return apis.ModifyUPhoneServerRemarkResponseSchema().loads(resp)
-
-    def modify_u_phone_share_bandwidth(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """ModifyUPhoneShareBandwidth - 修改云手机共享带宽
+    
+    
+    
+    
+    
+    
+    
+    def modify_u_phone_share_bandwidth(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ ModifyUPhoneShareBandwidth - 修改云手机共享带宽
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **Bandwidth** (str) - (Required) 共享带宽大小；单位M
         - **ShareBandwidthId** (str) - (Required) 共享带宽ID
-
+        
         **Response**
 
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.ModifyUPhoneShareBandwidthRequestSchema().dumps(d)
-
+        
         resp = self.invoke("ModifyUPhoneShareBandwidth", d, **kwargs)
         return apis.ModifyUPhoneShareBandwidthResponseSchema().loads(resp)
-
-    def modify_u_phone_share_bandwidth_name(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """ModifyUPhoneShareBandwidthName - 修改云手机共享带宽名称
+    
+    
+    
+    
+    
+    
+    
+    def modify_u_phone_share_bandwidth_name(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ ModifyUPhoneShareBandwidthName - 修改云手机共享带宽名称
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **Name** (str) - (Required) 共享带宽名称
         - **ShareBandwidthId** (str) - (Required) 共享带宽ID
-
+        
         **Response**
 
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.ModifyUPhoneShareBandwidthNameRequestSchema().dumps(d)
-
+        
         resp = self.invoke("ModifyUPhoneShareBandwidthName", d, **kwargs)
         return apis.ModifyUPhoneShareBandwidthNameResponseSchema().loads(resp)
-
-    def modify_u_phone_share_bandwidth_remark(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """ModifyUPhoneShareBandwidthRemark - 修改云手机共享带宽备注
+    
+    
+    
+    
+    
+    
+    
+    def modify_u_phone_share_bandwidth_remark(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ ModifyUPhoneShareBandwidthRemark - 修改云手机共享带宽备注
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **Remark** (str) - (Required) 共享带宽备注
         - **ShareBandwidthId** (str) - (Required) 共享带宽ID
-
+        
         **Response**
 
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.ModifyUPhoneShareBandwidthRemarkRequestSchema().dumps(d)
-
+        
         resp = self.invoke("ModifyUPhoneShareBandwidthRemark", d, **kwargs)
         return apis.ModifyUPhoneShareBandwidthRemarkResponseSchema().loads(resp)
-
-    def poweroff_u_phone(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """PoweroffUPhone - 关闭处于运行状态的云手机实例
+    
+    
+    
+    
+    
+    
+    
+    def poweroff_u_phone(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ PoweroffUPhone - 关闭处于运行状态的云手机实例
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望关闭的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
         - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        
         **Response**
 
         - **JobId** (str) - 任务ID，用来查询当前任务状态
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.PoweroffUPhoneRequestSchema().dumps(d)
-
+        
         resp = self.invoke("PoweroffUPhone", d, **kwargs)
         return apis.PoweroffUPhoneResponseSchema().loads(resp)
-
-    def poweron_u_phone(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """PoweronUPhone - 启动处于关闭状态的云手机实例
+    
+    
+    
+    
+    
+    
+    
+    def poweron_u_phone(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ PoweronUPhone - 启动处于关闭状态的云手机实例
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源ID，调用方式举例：UPhoneIds.0=希望开启的云手机实例1的UPhoneId，UPhoneIds.1=云手机实例2的UPhoneId。
         - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        
         **Response**
 
         - **JobId** (str) - 任务ID，用来查询当前任务状态
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.PoweronUPhoneRequestSchema().dumps(d)
-
+        
         resp = self.invoke("PoweronUPhone", d, **kwargs)
         return apis.PoweronUPhoneResponseSchema().loads(resp)
-
-    def reboot_u_phone(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """RebootUPhone - 重新启动云手机实例
+    
+    
+    
+    
+    
+    
+    
+    def reboot_u_phone(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ RebootUPhone - 重新启动云手机实例
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望重启的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
         - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        
         **Response**
 
         - **JobId** (str) - 异步请求成功后返回JobId，用以查询Job状态
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.RebootUPhoneRequestSchema().dumps(d)
-
+        
         resp = self.invoke("RebootUPhone", d, **kwargs)
         return apis.RebootUPhoneResponseSchema().loads(resp)
-
-    def renew_u_phone(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """RenewUPhone - 修改UPhone的device_id、imei、meid 以及其他相关配置，达到一键新机的效果
+    
+    
+    
+    
+    
+    
+    
+    def renew_u_phone(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ RenewUPhone - 修改UPhone的device_id、imei、meid 以及其他相关配置，达到一键新机的效果
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望重启的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
         - **AndroidID** (str) - AOSP唯一标识
         - **BSSID** (str) - Wi-Fi 物理地址
@@ -1594,158 +1842,178 @@ class UPhoneClient(Client):
         - **RadioMac** (str) - 移动网络mac地址
         - **SerialNumber** (str) - 序列号
         - **WiFiName** (str) - 当前连接Wi-Fi名称
-
+        
         **Response**
 
         - **JobId** (str) - 任务ID，用来查询一键新机任务状态
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.RenewUPhoneRequestSchema().dumps(d)
-
+        
         resp = self.invoke("RenewUPhone", d, **kwargs)
         return apis.RenewUPhoneResponseSchema().loads(resp)
-
-    def reset_u_phone(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """ResetUPhone - 将云手机恢复为创建时的状态。
+    
+    
+    
+    
+    
+    
+    
+    def reset_u_phone(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ ResetUPhone - 将云手机恢复为创建时的状态。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望重置的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
         - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **ImageId** (str) - 镜像ID，默认为空。不为空则手机会以填写的镜像进行重置，为空则手机会以重置前的镜像重置
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        
         **Response**
 
         - **JobId** (str) - 异步请求成功后返回JobId，用以查询Job状态
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.ResetUPhoneRequestSchema().dumps(d)
-
+        
         resp = self.invoke("ResetUPhone", d, **kwargs)
         return apis.ResetUPhoneResponseSchema().loads(resp)
-
-    def run_async_command(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """RunAsyncCommand - 在云手机中执行异步shell命令。
+    
+    
+    
+    
+    
+    
+    
+    def run_async_command(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ RunAsyncCommand - 在云手机中执行异步shell命令。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **Content** (str) - (Required) 待执行的命令。
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望执行命令的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
         - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        
         **Response**
 
         - **JobId** (str) - 请求的唯一标识Id，`RetCode`为0时返回，可根据此ID查询请求的执行状态
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.RunAsyncCommandRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("RunAsyncCommand", d, **kwargs)
         return apis.RunAsyncCommandResponseSchema().loads(resp)
-
-    def run_sync_command(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """RunSyncCommand - 在云手机中执行同步shell命令。
+    
+    
+    
+    
+    
+    
+    
+    def run_sync_command(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ RunSyncCommand - 在云手机中执行同步shell命令。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **Content** (str) - (Required) 待执行的命令。
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望执行命令的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
         - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        
         **Response**
 
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
         - **Results** (list) - 见 **UPhoneCommandResult** 模型定义
-
+        
         **Response Model**
-
-        **UPhoneCommandResult**
+        
+        **UPhoneCommandResult** 
         - **ExecuteMsg** (str) - 同步shell命令的执行结果。
         - **UPhoneId** (str) - 云手机实例的资源ID。
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.RunSyncCommandRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("RunSyncCommand", d, **kwargs)
         return apis.RunSyncCommandResponseSchema().loads(resp)
-
-    def set_u_phone_callback(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """SetUPhoneCallback - 设置云手机异步操作以及状态更新回调，支持云手机重置，安装应用，卸载应用，设备占用状态回调
+    
+    
+    
+    
+    
+    
+    
+    def set_u_phone_callback(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ SetUPhoneCallback - 设置云手机异步操作以及状态更新回调，支持云手机重置，安装应用，卸载应用，设备占用状态回调
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **UPhoneId** (str) - (Required) 云手机ID。
         - **URL** (str) - (Required) 接收POST请求的http接口。Content-Type：application/json; charset=UTF-8，Accept：application/json。
         - **CityId** (str) - 城市ID
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.SetUPhoneCallbackRequestSchema().dumps(d)
-
+        
         resp = self.invoke("SetUPhoneCallback", d, **kwargs)
         return apis.SetUPhoneCallbackResponseSchema().loads(resp)
-
-    def set_u_phone_config(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """SetUPhoneConfig - 设置云手机画面参数（分辨率、DPI、帧率、码率）
+    
+    
+    
+    
+    
+    
+    
+    def set_u_phone_config(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ SetUPhoneConfig - 设置云手机画面参数（分辨率、DPI、帧率、码率）
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
         - **Async** (str) - 异步请求开关，只有为1的时候才是异步，不填或者其他数值为同步
         - **Bitrate** (str) - 云手机画面传输码率（例，8000）取值范围[100,50000]
@@ -1754,301 +2022,340 @@ class UPhoneClient(Client):
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
         - **Refresh** (str) - 云手机画面刷新率，即帧率（例，30）取值范围[1,200]
         - **Resolution** (str) - 云手机画面分辨率（宽x高） （例，1920x1080，中间是字母x）宽和高的取值范围[100,5000]
-
+        
         **Response**
 
         - **JobId** (str) - 异步请求成功后返回JobId，用以查询Job状态
         - **Message** (str) - 失败后返回Message，错误信息
         - **RequestId** (str) - request_uuid，唯一值，用于区分request
         - **Results** (list) - 见 **Results** 模型定义
-
+        
         **Response Model**
-
-        **Results**
-        - **ExecuteMsg** (str) -
-        - **UPhoneId** (str) -
-
+        
+        **Results** 
+        - **ExecuteMsg** (str) - 
+        - **UPhoneId** (str) - 
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.SetUPhoneConfigRequestSchema().dumps(d)
-
+        
         resp = self.invoke("SetUPhoneConfig", d, **kwargs)
         return apis.SetUPhoneConfigResponseSchema().loads(resp)
-
-    def set_u_phone_gps(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """SetUPhoneGPS - 设置云手机GPS信息
+    
+    
+    
+    
+    
+    
+    
+    def set_u_phone_gps(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ SetUPhoneGPS - 设置云手机GPS信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
         - **UPhoneGPSs** (list) - 见 **SetUPhoneGPSParamUPhoneGPSs** 模型定义
-
+        
         **Response**
 
         - **JobId** (str) - 请求的唯一标识Id，`RetCode`为0时返回，可根据此ID查询请求的执行状态
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
-
+        
         **Request Model**
-
-        **SetUPhoneGPSParamUPhoneGPSs**
+        
+        **SetUPhoneGPSParamUPhoneGPSs** 
         - **Altitude** (float) - 海拔
         - **Enabled** (bool) - GPS开关，true开启，false关闭，默认false
         - **Latitude** (float) - 纬度：-90~90
         - **Longitude** (float) - 经度：-180~180
         - **UPhoneId** (str) - 云手机ID
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.SetUPhoneGPSRequestSchema().dumps(d)
-
+        
         resp = self.invoke("SetUPhoneGPS", d, **kwargs)
         return apis.SetUPhoneGPSResponseSchema().loads(resp)
-
-    def set_u_phone_manager_mode(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """SetUPhoneManagerMode - 管理员模式支持所有按键，普通用户模式禁用返回桌面
+    
+    
+    
+    
+    
+    
+    
+    def set_u_phone_manager_mode(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ SetUPhoneManagerMode - 管理员模式支持所有按键，普通用户模式禁用返回桌面
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **Mode** (str) - (Required) 管理模式：管理员admin，普通用户user
         - **UPhoneId** (str) - (Required) 云手机实例的资源ID
         - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.SetUPhoneManagerModeRequestSchema().dumps(d)
-
+        
         resp = self.invoke("SetUPhoneManagerMode", d, **kwargs)
         return apis.SetUPhoneManagerModeResponseSchema().loads(resp)
-
-    def set_u_phone_root_mode(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """SetUPhoneRootMode - 设置云手机Root模式
+    
+    
+    
+    
+    
+    
+    
+    def set_u_phone_root_mode(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ SetUPhoneRootMode - 设置云手机Root模式
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **Root** (bool) - (Required) true则打开Root权限；false则关闭Root权限
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望重启的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
         - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **PkgNames** (list) - 【数组】加入应用白名单的包名
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        
         **Response**
 
         - **JobId** (str) - 异步请求成功后返回JobId，用以查询Job状态
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.SetUPhoneRootModeRequestSchema().dumps(d)
-
+        
         resp = self.invoke("SetUPhoneRootMode", d, **kwargs)
         return apis.SetUPhoneRootModeResponseSchema().loads(resp)
-
-    def set_u_phone_splash_screen(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """SetUPhoneSplashScreen -
+    
+    
+    
+    
+    
+    
+    
+    def set_u_phone_splash_screen(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ SetUPhoneSplashScreen - 
 
         **Request**
 
-        - **ProjectId** (str) - (Config)
-        - **CityId** (str) - (Required)
-        - **UPhoneId** (str) - (Required)
-        - **URL** (str) - (Required)
-        - **ProductType** (str) -
-
+        - **ProjectId** (str) - (Config) 
+        - **CityId** (str) - (Required) 
+        - **UPhoneId** (str) - (Required) 
+        - **URL** (str) - (Required) 
+        - **ProductType** (str) - 
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.SetUPhoneSplashScreenRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("SetUPhoneSplashScreen", d, **kwargs)
         return apis.SetUPhoneSplashScreenResponseSchema().loads(resp)
-
-    def set_u_phone_token(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """SetUPhoneToken - 设置云手机RTC连接Token提高安全性
+    
+    
+    
+    
+    
+    
+    
+    def set_u_phone_token(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ SetUPhoneToken - 设置云手机RTC连接Token提高安全性
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **UPhoneId** (str) - (Required) 云手机ID
         - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_cities>`_ 获取
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
         - **Token** (str) - RTC连接Token，为空表示清空Token
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.SetUPhoneTokenRequestSchema().dumps(d)
-
+        
         resp = self.invoke("SetUPhoneToken", d, **kwargs)
         return apis.SetUPhoneTokenResponseSchema().loads(resp)
-
-    def switch_u_phone_independent_ip(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """SwitchUPhoneIndependentIp - 更换云手机独立IP
+    
+    
+    
+    
+    
+    
+    
+    def switch_u_phone_independent_ip(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ SwitchUPhoneIndependentIp - 更换云手机独立IP
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **EipId** (str) - (Required) 云手机独立IP地址ID
-
+        
         **Response**
 
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
         - **NewIp** (str) - 更换后的新IP地址
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.SwitchUPhoneIndependentIpRequestSchema().dumps(d)
-
+        
         resp = self.invoke("SwitchUPhoneIndependentIp", d, **kwargs)
         return apis.SwitchUPhoneIndependentIpResponseSchema().loads(resp)
-
-    def switch_u_phone_instance(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """SwitchUPhoneInstance -
+    
+    
+    
+    
+    
+    
+    
+    def switch_u_phone_instance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ SwitchUPhoneInstance - 
 
         **Request**
 
-        - **ProjectId** (str) - (Config)
-        - **CityId** (str) - (Required)
+        - **ProjectId** (str) - (Config) 
+        - **CityId** (str) - (Required) 
         - **SwitchInfos** (list) - 见 **SwitchUPhoneInstanceParamSwitchInfos** 模型定义
-
+        
         **Response**
 
-        - **JobId** (str) -
-        - **Message** (str) -
-
+        - **JobId** (str) - 
+        - **Message** (str) - 
+        
         **Request Model**
-
-        **SwitchUPhoneInstanceParamSwitchInfos**
-        - **ImageId** (str) -
-        - **UPhoneId** (str) -
-
+        
+        **SwitchUPhoneInstanceParamSwitchInfos** 
+        - **ImageId** (str) - 
+        - **UPhoneId** (str) - 
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.SwitchUPhoneInstanceRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("SwitchUPhoneInstance", d, **kwargs)
         return apis.SwitchUPhoneInstanceResponseSchema().loads(resp)
-
-    def un_install_u_phone_app_version(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """UnInstallUPhoneAppVersion - 传入应用版本Id，在云手机中根据应用版本的PackageName卸载相关应用。一次只支持卸载一个应用。
+    
+    
+    
+    
+    
+    
+    
+    def un_install_u_phone_app_version(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ UnInstallUPhoneAppVersion - 传入应用版本Id，在云手机中根据应用版本的PackageName卸载相关应用。一次只支持卸载一个应用。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **AppVersionId** (str) - (Required) 应用版本的唯一标识ID
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望卸载应用的云手机实例 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。
         - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        
         **Response**
 
         - **JobId** (str) - 请求的唯一标识Id，`RetCode`为0时返回，可根据此ID查询请求的执行状态
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.UnInstallUPhoneAppVersionRequestSchema().dumps(d)
-
+        
         resp = self.invoke("UnInstallUPhoneAppVersion", d, **kwargs)
         return apis.UnInstallUPhoneAppVersionResponseSchema().loads(resp)
-
-    def update_u_phone_image(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """UpdateUPhoneImage - 更新云手机镜像信息。
+    
+    
+    
+    
+    
+    
+    
+    def update_u_phone_image(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ UpdateUPhoneImage - 更新云手机镜像信息。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **ImageId** (str) - (Required) 云手机自定义镜像资源ID
         - **Description** (str) - 镜像的描述信息。长度为2~256个英文或中文字符
         - **Name** (str) - 镜像名称。长度为2~128个英文或中文字符。
         - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
-
+        
         **Response**
 
         - **ImageId** (str) - 云手机自定义镜像资源ID
         - **Message** (str) - 返回错误消息，当 `RetCode` 非 0 时提供详细的描述信息
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.UpdateUPhoneImageRequestSchema().dumps(d)
-
+        
         resp = self.invoke("UpdateUPhoneImage", d, **kwargs)
         return apis.UpdateUPhoneImageResponseSchema().loads(resp)
+    
+
+

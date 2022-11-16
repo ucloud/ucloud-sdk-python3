@@ -3,132 +3,153 @@
 import typing
 
 
+
+
 from ucloud.core.client import Client
 from ucloud.services.vpc.schemas import apis
 
 
+
+
+
+
+
+
+
 class VPCClient(Client):
-    def __init__(
-        self, config: dict, transport=None, middleware=None, logger=None
-    ):
+    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
         super(VPCClient, self).__init__(config, transport, middleware, logger)
 
-    def add_snat_rule(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """AddSnatRule - 对于绑定了多个EIP的NAT网关，您可以将一个子网下的某台云主机映射到某个特定的EIP上，规则生效后，则该云主机通过该特定的EIP访问互联网。
+    
+    
+    
+    
+    
+    
+    
+    def add_snat_rule(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ AddSnatRule - 对于绑定了多个EIP的NAT网关，您可以将一个子网下的某台云主机映射到某个特定的EIP上，规则生效后，则该云主机通过该特定的EIP访问互联网。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **NATGWId** (str) - (Required) NAT网关的ID
         - **SnatIp** (str) - (Required) EIP的ip地址,例如106.75.xx.xx
         - **SourceIp** (str) - (Required) 需要出外网的私网IP地址，例如10.9.7.xx
         - **Name** (str) - snat规则名称，默认为“出口规则”
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.AddSnatRuleRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("AddSnatRule", d, **kwargs)
         return apis.AddSnatRuleResponseSchema().loads(resp)
-
-    def add_vpc_network(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """AddVPCNetwork - 添加VPC网段
+    
+    
+    
+    
+    
+    
+    
+    def add_vpc_network(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ AddVPCNetwork - 添加VPC网段
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **Network** (list) - (Required) 增加网段
         - **VPCId** (str) - (Required) 源VPC短ID
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.AddVPCNetworkRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("AddVPCNetwork", d, **kwargs)
         return apis.AddVPCNetworkResponseSchema().loads(resp)
-
-    def add_white_list_resource(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """AddWhiteListResource - 添加NAT网关白名单
+    
+    
+    
+    
+    
+    
+    
+    def add_white_list_resource(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ AddWhiteListResource - 添加NAT网关白名单
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **NATGWId** (str) - (Required) NAT网关Id
         - **ResourceIds** (list) - (Required) 可添加白名单的资源Id
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.AddWhiteListResourceRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("AddWhiteListResource", d, **kwargs)
         return apis.AddWhiteListResourceResponseSchema().loads(resp)
-
-    def allocate_batch_secondary_ip(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """AllocateBatchSecondaryIp - 批量申请虚拟网卡辅助IP
+    
+    
+    
+    
+    
+    
+    
+    def allocate_batch_secondary_ip(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ AllocateBatchSecondaryIp - 批量申请虚拟网卡辅助IP
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **Mac** (str) - (Required) 节点mac
         - **ObjectId** (str) - (Required) 资源Id
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **Count** (int) - 申请的内网IP数量
         - **Ip** (list) - 【arry】支持按如下方式申请：①按网段：如192.168.1.32/27，掩码数字最小为27   ②指定IP地址，如192.168.1.3
         - **SubnetId** (str) - 子网Id（若未指定，则根据zone获取默认子网进行创建）
         - **VPCId** (str) - vpcId
-
+        
         **Response**
 
         - **IpsInfo** (list) - 见 **IpsInfo** 模型定义
-
+        
         **Response Model**
-
-        **IpsInfo**
+        
+        **IpsInfo** 
         - **Gateway** (str) - 网关
         - **Ip** (str) - 内网IP地址
         - **Mac** (str) - MAC地址
@@ -136,80 +157,88 @@ class VPCClient(Client):
         - **Status** (dict) - 见 **StatusInfo** 模型定义
         - **SubnetId** (str) - 子网资源ID
         - **VPCId** (str) - VPC资源ID
+        
 
-
-        **StatusInfo**
+        **StatusInfo** 
         - **Message** (str) - IP分配失败原因
         - **StatusCode** (str) - 枚举值：Succeeded，Failed
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.AllocateBatchSecondaryIpRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("AllocateBatchSecondaryIp", d, **kwargs)
         return apis.AllocateBatchSecondaryIpResponseSchema().loads(resp)
-
-    def allocate_secondary_ip(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """AllocateSecondaryIp - 分配ip（用于uk8s使用）
+    
+    
+    
+    
+    
+    
+    
+    def allocate_secondary_ip(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ AllocateSecondaryIp - 分配ip（用于uk8s使用）
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **Mac** (str) - (Required) 节点mac
         - **ObjectId** (str) - (Required) 资源Id
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **Ip** (str) - 指定Ip分配
         - **SubnetId** (str) - 子网Id（若未指定，则根据zone获取默认子网进行创建）
         - **VPCId** (str) - vpcId
-
+        
         **Response**
 
         - **IpInfo** (dict) - 见 **IpInfo** 模型定义
-
+        
         **Response Model**
-
-        **IpInfo**
-        - **Gateway** (str) -
-        - **Ip** (str) -
-        - **Mac** (str) -
-        - **Mask** (str) -
-        - **SubnetId** (str) -
-        - **VPCId** (str) -
-
+        
+        **IpInfo** 
+        - **Gateway** (str) - 
+        - **Ip** (str) - 
+        - **Mac** (str) - 
+        - **Mask** (str) - 
+        - **SubnetId** (str) - 
+        - **VPCId** (str) - 
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.AllocateSecondaryIpRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("AllocateSecondaryIp", d, **kwargs)
         return apis.AllocateSecondaryIpResponseSchema().loads(resp)
-
+    
+    
+    
+    
+    
+    
+    
     def allocate_vip(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """AllocateVIP - 根据提供信息，申请内网VIP(Virtual IP），多用于高可用程序作为漂移IP。
+        """ AllocateVIP - 根据提供信息，申请内网VIP(Virtual IP），多用于高可用程序作为漂移IP。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
         - **Region** (str) - (Config) 地域
         - **SubnetId** (str) - (Required) 子网id
         - **VPCId** (str) - (Required) 指定vip所属的VPC
@@ -220,123 +249,137 @@ class VPCClient(Client):
         - **Remark** (str) - 备注
         - **Tag** (str) - 业务组名称，默认为Default
         - **Zone** (str) - 可用区
-
+        
         **Response**
 
         - **DataSet** (list) - 申请到的VIP地址
         - **VIPSet** (list) - 见 **VIPSet** 模型定义
-
+        
         **Response Model**
-
-        **VIPSet**
+        
+        **VIPSet** 
         - **VIP** (str) - 虚拟ip
         - **VIPId** (str) - 虚拟ip id
         - **VPCId** (str) - VPC id
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.AllocateVIPRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("AllocateVIP", d, **kwargs)
         return apis.AllocateVIPResponseSchema().loads(resp)
-
-    def associate_route_table(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """AssociateRouteTable - 绑定子网的路由表
+    
+    
+    
+    
+    
+    
+    
+    def associate_route_table(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ AssociateRouteTable - 绑定子网的路由表
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **RouteTableId** (str) - (Required) 路由表资源ID
         - **SubnetId** (str) - (Required) 子网ID
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.AssociateRouteTableRequestSchema().dumps(d)
-
+        
         resp = self.invoke("AssociateRouteTable", d, **kwargs)
         return apis.AssociateRouteTableResponseSchema().loads(resp)
-
-    def attach_network_interface(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """AttachNetworkInterface - 绑定网卡到云主机
+    
+    
+    
+    
+    
+    
+    
+    def attach_network_interface(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ AttachNetworkInterface - 绑定网卡到云主机
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **InstanceId** (str) - (Required) 云主机ID（仅支持绑定开启网卡功能，且未开启网络增强的云主机）
         - **InterfaceId** (str) - (Required) 虚拟网卡ID
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.AttachNetworkInterfaceRequestSchema().dumps(d)
-
+        
         resp = self.invoke("AttachNetworkInterface", d, **kwargs)
         return apis.AttachNetworkInterfaceResponseSchema().loads(resp)
-
-    def clone_route_table(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CloneRouteTable - 将现有的路由表复制为一张新的路由表
+    
+    
+    
+    
+    
+    
+    
+    def clone_route_table(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CloneRouteTable - 将现有的路由表复制为一张新的路由表
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **RouteTableId** (str) - (Required) 被克隆的路由表ID
-
+        
         **Response**
 
         - **RouteTableId** (str) - 复制后新的路由表资源ID
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.CloneRouteTableRequestSchema().dumps(d)
-
+        
         resp = self.invoke("CloneRouteTable", d, **kwargs)
         return apis.CloneRouteTableResponseSchema().loads(resp)
-
+    
+    
+    
+    
+    
+    
+    
     def create_natgw(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """CreateNATGW - 创建NAT网关
+        """ CreateNATGW - 创建NAT网关
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **EIPIds** (list) - (Required) NAT网关绑定的EIPId
         - **FirewallId** (str) - (Required) NAT网关绑定的防火墙Id
         - **NATGWName** (str) - (Required) NAT网关名称
@@ -345,35 +388,38 @@ class VPCClient(Client):
         - **SubnetworkIds** (list) - NAT网关绑定的子网Id，默认为空。
         - **Tag** (str) - 业务组。默认为空
         - **VPCId** (str) - NAT网关所属的VPC Id。默认为Default VPC Id
-
+        
         **Response**
 
         - **NATGWId** (str) - 申请到的NATGateWay Id
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.CreateNATGWRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateNATGW", d, **kwargs)
         return apis.CreateNATGWResponseSchema().loads(resp)
-
-    def create_natgw_policy(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreateNATGWPolicy - 添加NAT网关端口转发规则
+    
+    
+    
+    
+    
+    
+    
+    def create_natgw_policy(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateNATGWPolicy - 添加NAT网关端口转发规则
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **DstIP** (str) - (Required) 目标IP。填写对应的目标IP地址
         - **DstPort** (str) - (Required) 目标端口。可填写固定端口，也可填写端口范围。支持的端口范围为1-65535
         - **NATGWId** (str) - (Required) NAT网关Id
@@ -381,108 +427,117 @@ class VPCClient(Client):
         - **SrcEIPId** (str) - (Required) 源IP。填写对应的EIP Id
         - **SrcPort** (str) - (Required) 源端口。可填写固定端口，也可填写端口范围。支持的端口范围为1-65535
         - **PolicyName** (str) - 转发策略名称。默认为空
-
+        
         **Response**
 
         - **PolicyId** (str) - 创建时分配的策略Id
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.CreateNATGWPolicyRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateNATGWPolicy", d, **kwargs)
         return apis.CreateNATGWPolicyResponseSchema().loads(resp)
-
-    def create_network_acl(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreateNetworkAcl - 创建网络ACL
+    
+    
+    
+    
+    
+    
+    
+    def create_network_acl(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateNetworkAcl - 创建网络ACL
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **AclName** (str) - (Required) ACL的名称
         - **VpcId** (str) - (Required) 将要创建的ACL所属VPC的ID
         - **Description** (str) - ACL的描述
-
+        
         **Response**
 
         - **AclId** (str) - 创建的ACL的ID
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.CreateNetworkAclRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateNetworkAcl", d, **kwargs)
         return apis.CreateNetworkAclResponseSchema().loads(resp)
-
-    def create_network_acl_association(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreateNetworkAclAssociation - 创建ACL的绑定关系
+    
+    
+    
+    
+    
+    
+    
+    def create_network_acl_association(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateNetworkAclAssociation - 创建ACL的绑定关系
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **AclId** (str) - (Required) ACL的ID
         - **SubnetworkId** (str) - (Required) 需要绑定的子网ID
-
+        
         **Response**
 
         - **AssociationId** (str) - 创建的绑定关系的ID
         - **PrevAssociation** (dict) - 见 **AssociationInfo** 模型定义
-
+        
         **Response Model**
-
-        **AssociationInfo**
+        
+        **AssociationInfo** 
         - **AclId** (str) - ACL的ID
         - **AssociationId** (str) - 绑定ID
         - **CreateTime** (int) - 创建的Unix时间戳
         - **SubnetworkId** (str) - 绑定的子网ID
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.CreateNetworkAclAssociationRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateNetworkAclAssociation", d, **kwargs)
         return apis.CreateNetworkAclAssociationResponseSchema().loads(resp)
-
-    def create_network_acl_entry(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreateNetworkAclEntry - 创建ACL的规则
+    
+    
+    
+    
+    
+    
+    
+    def create_network_acl_entry(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateNetworkAclEntry - 创建ACL的规则
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **AclId** (str) - (Required) ACL的ID
         - **CidrBlock** (str) - (Required) IPv4段的CIDR表示
         - **Direction** (str) - (Required) 出向或者入向（“Ingress”, "Egress")
@@ -493,35 +548,38 @@ class VPCClient(Client):
         - **Description** (str) - 描述。长度限制为不超过32字节。
         - **TargetResourceIds** (list) - 应用目标资源列表。默认为全部资源生效。TargetType为0时不用填写该值。
         - **TargetType** (int) - 应用目标类型。0代表“子网内全部资源”，1代表“子网内指定资源”，默认为0
-
+        
         **Response**
 
         - **EntryId** (str) - 创建的Entry的ID
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.CreateNetworkAclEntryRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateNetworkAclEntry", d, **kwargs)
         return apis.CreateNetworkAclEntryResponseSchema().loads(resp)
-
-    def create_network_interface(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreateNetworkInterface - 创建虚拟网卡
+    
+    
+    
+    
+    
+    
+    
+    def create_network_interface(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateNetworkInterface - 创建虚拟网卡
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **SubnetId** (str) - (Required) 所属子网ID
         - **VPCId** (str) - (Required) 所属VPCID
         - **Name** (str) - 虚拟网卡名称，默认为 NetworkInterface
@@ -529,14 +587,14 @@ class VPCClient(Client):
         - **Remark** (str) - 备注
         - **SecurityGroupId** (str) - 防火墙GroupId，默认：Web推荐防火墙 可由DescribeSecurityGroupResponse中的GroupId取得
         - **Tag** (str) - 业务组
-
+        
         **Response**
 
         - **NetworkInterface** (dict) - 见 **NetworkInterfaceInfo** 模型定义
-
+        
         **Response Model**
-
-        **NetworkInterfaceInfo**
+        
+        **NetworkInterfaceInfo** 
         - **AttachInstanceId** (str) - 绑定实例资源ID
         - **CreateTime** (int) - 创建时间
         - **Default** (bool) - 是否是绑定实例的默认网卡 false:不是 true:是
@@ -551,555 +609,647 @@ class VPCClient(Client):
         - **SubnetId** (str) - 所属子网
         - **Tag** (str) - 业务组
         - **VPCId** (str) - 所属VPC
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.CreateNetworkInterfaceRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateNetworkInterface", d, **kwargs)
         return apis.CreateNetworkInterfaceResponseSchema().loads(resp)
-
-    def create_route_table(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreateRouteTable - 创建路由表
+    
+    
+    
+    
+    
+    
+    
+    def create_route_table(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateRouteTable - 创建路由表
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **VPCId** (str) - (Required) 所属的VPC资源ID
         - **Name** (str) - 路由表名称。默认为RouteTable
         - **Remark** (str) - 备注
         - **Tag** (str) - 路由表所属业务组
-
+        
         **Response**
 
         - **RouteTableId** (str) - 路由表ID
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.CreateRouteTableRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateRouteTable", d, **kwargs)
         return apis.CreateRouteTableResponseSchema().loads(resp)
-
-    def create_snat_dnat_rule(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreateSnatDnatRule - 调用接口后会自动创建内外网IP之间的SNAT和DNAT规则，支持TCP、UDP协议全端口
+    
+    
+    
+    
+    
+    
+    
+    def create_snat_dnat_rule(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateSnatDnatRule - 调用接口后会自动创建内外网IP之间的SNAT和DNAT规则，支持TCP、UDP协议全端口
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **EIP** (list) - (Required) EIP的IP地址。按入参顺序，PrivateIp与EIP一一对应建立映射关系。
         - **NATGWId** (str) - (Required) 映射所使用的NAT网关资源ID
         - **PrivateIp** (list) - (Required) 内网P地址
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.CreateSnatDnatRuleRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateSnatDnatRule", d, **kwargs)
         return apis.CreateSnatDnatRuleResponseSchema().loads(resp)
-
-    def create_subnet(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreateSubnet - 创建子网
+    
+    
+    
+    
+    
+    
+    
+    def create_subnet(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateSubnet - 创建子网
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **Subnet** (str) - (Required) 子网网络地址，例如192.168.0.0
         - **VPCId** (str) - (Required) VPC资源ID
         - **Netmask** (int) - 子网网络号位数，默认为24
         - **Remark** (str) - 备注
         - **SubnetName** (str) - 子网名称，默认为Subnet
         - **Tag** (str) - 业务组名称，默认为Default
-
+        
         **Response**
 
         - **SubnetId** (str) - 子网ID
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.CreateSubnetRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateSubnet", d, **kwargs)
         return apis.CreateSubnetResponseSchema().loads(resp)
-
+    
+    
+    
+    
+    
+    
+    
     def create_vpc(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """CreateVPC - 创建VPC
+        """ CreateVPC - 创建VPC
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **Name** (str) - (Required) VPC名称
         - **Network** (list) - (Required) VPC网段
         - **Remark** (str) - 备注
         - **Tag** (str) - 业务组名称
-
+        
         **Response**
 
         - **VPCId** (str) - VPC资源Id
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.CreateVPCRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateVPC", d, **kwargs)
         return apis.CreateVPCResponseSchema().loads(resp)
-
-    def create_vpc_intercom(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreateVPCIntercom - 新建VPC互通关系
+    
+    
+    
+    
+    
+    
+    
+    def create_vpc_intercom(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateVPCIntercom - 新建VPC互通关系
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 源VPC所在项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 源VPC所在地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 源VPC所在项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 源VPC所在地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **DstVPCId** (str) - (Required) 目的VPC短ID
         - **VPCId** (str) - (Required) 源VPC短ID
         - **DstProjectId** (str) - 目的VPC项目ID。默认与源VPC同项目。
         - **DstRegion** (str) - 目的VPC所在地域，默认与源VPC同地域。
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.CreateVPCIntercomRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateVPCIntercom", d, **kwargs)
         return apis.CreateVPCIntercomResponseSchema().loads(resp)
-
+    
+    
+    
+    
+    
+    
+    
     def delete_natgw(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """DeleteNATGW - 删除NAT网关
+        """ DeleteNATGW - 删除NAT网关
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **NATGWId** (str) - (Required) NAT网关Id
         - **ReleaseEip** (bool) - 是否释放绑定的EIP。true：解绑并释放；false：只解绑不释放。默认为false
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DeleteNATGWRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteNATGW", d, **kwargs)
         return apis.DeleteNATGWResponseSchema().loads(resp)
-
-    def delete_natgw_policy(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DeleteNATGWPolicy - 删除NAT网关端口转发规则
+    
+    
+    
+    
+    
+    
+    
+    def delete_natgw_policy(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeleteNATGWPolicy - 删除NAT网关端口转发规则
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **NATGWId** (str) - (Required) NAT网关Id
         - **PolicyId** (str) - (Required) 端口转发规则Id
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DeleteNATGWPolicyRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteNATGWPolicy", d, **kwargs)
         return apis.DeleteNATGWPolicyResponseSchema().loads(resp)
-
-    def delete_network_acl(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DeleteNetworkAcl - 删除网络ACL
+    
+    
+    
+    
+    
+    
+    
+    def delete_network_acl(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeleteNetworkAcl - 删除网络ACL
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **AclId** (str) - (Required) 需要删除的AclId
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DeleteNetworkAclRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteNetworkAcl", d, **kwargs)
         return apis.DeleteNetworkAclResponseSchema().loads(resp)
-
-    def delete_network_acl_association(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DeleteNetworkAclAssociation - 删除网络ACL绑定关系
+    
+    
+    
+    
+    
+    
+    
+    def delete_network_acl_association(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeleteNetworkAclAssociation - 删除网络ACL绑定关系
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **AclId** (str) - (Required) 需要删除的AclId
         - **SubnetworkId** (str) - (Required) 绑定的子网ID
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DeleteNetworkAclAssociationRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteNetworkAclAssociation", d, **kwargs)
         return apis.DeleteNetworkAclAssociationResponseSchema().loads(resp)
-
-    def delete_network_acl_entry(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DeleteNetworkAclEntry - 删除ACL的规则
+    
+    
+    
+    
+    
+    
+    
+    def delete_network_acl_entry(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeleteNetworkAclEntry - 删除ACL的规则
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **AclId** (str) - (Required) Acl的ID
         - **EntryId** (str) - (Required) 需要删除的EntryId
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DeleteNetworkAclEntryRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteNetworkAclEntry", d, **kwargs)
         return apis.DeleteNetworkAclEntryResponseSchema().loads(resp)
-
-    def delete_route_table(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DeleteRouteTable - 删除自定义路由表
+    
+    
+    
+    
+    
+    
+    
+    def delete_network_interface(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeleteNetworkInterface - 删除网卡
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **RouteTableId** (str) - (Required) 路由表资源ID
-
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **InterfaceId** (str) - (Required) 虚拟网卡ID
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+        }
+        req and d.update(req)
+        d = apis.DeleteNetworkInterfaceRequestSchema().dumps(d)
+        
+        resp = self.invoke("DeleteNetworkInterface", d, **kwargs)
+        return apis.DeleteNetworkInterfaceResponseSchema().loads(resp)
+    
+    
+    
+    
+    
+    
+    
+    def delete_route_table(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeleteRouteTable - 删除自定义路由表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **RouteTableId** (str) - (Required) 路由表资源ID
+        
+        **Response**
+
+        
+        """
+        # build request
+        d = {
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DeleteRouteTableRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteRouteTable", d, **kwargs)
         return apis.DeleteRouteTableResponseSchema().loads(resp)
-
-    def delete_secondary_ip(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DeleteSecondaryIp - 删除ip（用于uk8s使用）
+    
+    
+    
+    
+    
+    
+    
+    def delete_secondary_ip(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeleteSecondaryIp - 删除ip（用于uk8s使用）
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **Ip** (str) - (Required) ip
         - **Mac** (str) - (Required) mac
         - **SubnetId** (str) - (Required) 子网Id
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **ObjectId** (str) - 资源Id
         - **VPCId** (str) - VPCId
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DeleteSecondaryIpRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteSecondaryIp", d, **kwargs)
         return apis.DeleteSecondaryIpResponseSchema().loads(resp)
-
-    def delete_snat_dnat_rule(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DeleteSnatDnatRule - 删除NAT创建内外网IP映射规则
+    
+    
+    
+    
+    
+    
+    
+    def delete_snat_dnat_rule(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeleteSnatDnatRule - 删除NAT创建内外网IP映射规则
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **EIP** (list) - (Required) EIP的IP地址,PrivateIp与EIP需一一对应
         - **NATGWId** (str) - (Required) 映射所使用的NAT网关资源ID
         - **PrivateIp** (list) - (Required) 内网P地址
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DeleteSnatDnatRuleRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteSnatDnatRule", d, **kwargs)
         return apis.DeleteSnatDnatRuleResponseSchema().loads(resp)
-
-    def delete_snat_rule(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DeleteSnatRule - 删除指定的出口规则（SNAT规则）
+    
+    
+    
+    
+    
+    
+    
+    def delete_snat_rule(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeleteSnatRule - 删除指定的出口规则（SNAT规则）
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **NATGWId** (str) - (Required) NAT网关的ID
         - **SourceIp** (str) - (Required) 需要出外网的私网IP地址，例如10.9.7.xx
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DeleteSnatRuleRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteSnatRule", d, **kwargs)
         return apis.DeleteSnatRuleResponseSchema().loads(resp)
-
-    def delete_subnet(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DeleteSubnet - 删除子网
+    
+    
+    
+    
+    
+    
+    
+    def delete_subnet(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeleteSubnet - 删除子网
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **SubnetId** (str) - (Required) 子网ID
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DeleteSubnetRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteSubnet", d, **kwargs)
         return apis.DeleteSubnetResponseSchema().loads(resp)
-
+    
+    
+    
+    
+    
+    
+    
     def delete_vpc(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """DeleteVPC - 删除VPC
+        """ DeleteVPC - 删除VPC
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **VPCId** (str) - (Required) VPC资源Id
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DeleteVPCRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteVPC", d, **kwargs)
         return apis.DeleteVPCResponseSchema().loads(resp)
-
-    def delete_vpc_intercom(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DeleteVPCIntercom - 删除VPC互通关系
+    
+    
+    
+    
+    
+    
+    
+    def delete_vpc_intercom(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeleteVPCIntercom - 删除VPC互通关系
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 源VPC所在项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 源VPC所在地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 源VPC所在项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 源VPC所在地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **DstVPCId** (str) - (Required) 目的VPC短ID
         - **VPCId** (str) - (Required) 源VPC短ID
         - **DstProjectId** (str) - 目的VPC所在项目ID，默认为源VPC所在项目ID
         - **DstRegion** (str) - 目的VPC所在地域，默认为源VPC所在地域
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DeleteVPCIntercomRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteVPCIntercom", d, **kwargs)
         return apis.DeleteVPCIntercomResponseSchema().loads(resp)
-
-    def delete_white_list_resource(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DeleteWhiteListResource - 删除NAT网关白名单列表
+    
+    
+    
+    
+    
+    
+    
+    def delete_white_list_resource(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeleteWhiteListResource - 删除NAT网关白名单列表
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **NATGWId** (str) - (Required) NAT网关Id
         - **ResourceIds** (list) - (Required) 删除白名单的资源Id
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DeleteWhiteListResourceRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteWhiteListResource", d, **kwargs)
         return apis.DeleteWhiteListResourceResponseSchema().loads(resp)
-
-    def describe_instance_network_interface(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeInstanceNetworkInterface - 展示云主机绑定的网卡信息
+    
+    
+    
+    
+    
+    
+    
+    def describe_instance_network_interface(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeInstanceNetworkInterface - 展示云主机绑定的网卡信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **InstanceId** (str) - (Required) 云主机ID
         - **Limit** (int) - 默认为20
         - **Offset** (int) - 默认为0
-
+        
         **Response**
 
         - **NetworkInterfaceSet** (list) - 见 **InstanceNetworkInterface** 模型定义
-
+        
         **Response Model**
-
-        **InstanceNetworkInterface**
+        
+        **InstanceNetworkInterface** 
         - **AttachInstanceId** (str) - 绑定实例资源ID
         - **CreateTime** (int) - 创建时间
         - **Default** (bool) - 是否是绑定实例的默认网卡 false:不是 true:是
@@ -1116,41 +1266,44 @@ class VPCClient(Client):
         - **SubnetId** (str) - 所属子网
         - **Tag** (str) - 业务组
         - **VPCId** (str) - 所属VPC
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeInstanceNetworkInterfaceRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeInstanceNetworkInterface", d, **kwargs)
         return apis.DescribeInstanceNetworkInterfaceResponseSchema().loads(resp)
-
-    def describe_natgw(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeNATGW - 获取NAT网关信息
+    
+    
+    
+    
+    
+    
+    
+    def describe_natgw(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeNATGW - 获取NAT网关信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **Limit** (int) - 数据分页值。默认为20
         - **NATGWIds** (list) - NAT网关Id。默认为该项目下所有NAT网关
         - **Offset** (int) - 数据偏移量。默认为0
-
+        
         **Response**
 
         - **DataSet** (list) - 见 **NatGatewayDataSet** 模型定义
         - **TotalCount** (int) - 满足条件的实例的总数
-
+        
         **Response Model**
-
-        **NatGatewayDataSet**
+        
+        **NatGatewayDataSet** 
         - **CreateTime** (int) - natgw创建时间
         - **FirewallId** (str) - 绑定的防火墙Id
         - **IPSet** (list) - 见 **NatGatewayIPSet** 模型定义
@@ -1163,60 +1316,63 @@ class VPCClient(Client):
         - **Tag** (str) - 业务组
         - **VPCId** (str) - 所属VPC Id
         - **VPCName** (str) - VPC名称
+        
 
-
-        **NatGatewayIPSet**
+        **NatGatewayIPSet** 
         - **Bandwidth** (int) - 带宽
         - **BandwidthType** (str) - EIP带宽类型
         - **EIPId** (str) - 外网IP的 EIPId
         - **IPResInfo** (list) - 见 **NatGWIPResInfo** 模型定义
         - **Weight** (int) - 权重为100的为出口
+        
 
-
-        **NatGWIPResInfo**
+        **NatGWIPResInfo** 
         - **EIP** (str) - 外网IP
         - **OperatorName** (str) - IP的运营商信息
+        
 
-
-        **NatGatewaySubnetSet**
+        **NatGatewaySubnetSet** 
         - **Subnet** (str) - 子网网段
         - **SubnetName** (str) - 子网名字
         - **SubnetworkId** (str) - 子网id
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeNATGWRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeNATGW", d, **kwargs)
         return apis.DescribeNATGWResponseSchema().loads(resp)
-
-    def describe_natgw_policy(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeNATGWPolicy - 展示NAT网关端口转发规则
+    
+    
+    
+    
+    
+    
+    
+    def describe_natgw_policy(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeNATGWPolicy - 展示NAT网关端口转发规则
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **NATGWId** (str) - (Required) NAT网关Id
         - **Limit** (int) - 返回数据长度，默认为10000
         - **Offset** (int) - 列表起始位置偏移量，默认为0
-
+        
         **Response**
 
         - **DataSet** (list) - 见 **NATGWPolicyDataSet** 模型定义
         - **TotalCount** (int) - 满足条件的转发策略总数
-
+        
         **Response Model**
-
-        **NATGWPolicyDataSet**
+        
+        **NATGWPolicyDataSet** 
         - **DstIP** (str) - 目的地址
         - **DstPort** (str) - 目的端口
         - **NATGWId** (str) - NAT网关Id
@@ -1226,40 +1382,43 @@ class VPCClient(Client):
         - **SrcEIP** (str) - 端口转发前端EIP
         - **SrcEIPId** (str) - 端口转发前端EIP Id
         - **SrcPort** (str) - 源端口
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeNATGWPolicyRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeNATGWPolicy", d, **kwargs)
         return apis.DescribeNATGWPolicyResponseSchema().loads(resp)
-
-    def describe_network_acl(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeNetworkAcl - 获取网络ACL
+    
+    
+    
+    
+    
+    
+    
+    def describe_network_acl(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeNetworkAcl - 获取网络ACL
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **Limit** (str) - 列表获取的个数限制
         - **Offset** (int) - 列表偏移量
         - **VpcId** (str) - 需要获取的ACL所属的VPC的ID
-
+        
         **Response**
 
         - **AclList** (list) - 见 **AclInfo** 模型定义
-
+        
         **Response Model**
-
-        **AclInfo**
+        
+        **AclInfo** 
         - **AclId** (str) - ACL的ID
         - **AclName** (str) - 名称
         - **Associations** (list) - 见 **AssociationInfo** 模型定义
@@ -1268,16 +1427,16 @@ class VPCClient(Client):
         - **Entries** (list) - 见 **AclEntryInfo** 模型定义
         - **UpdateTime** (int) - 更改的Unix时间戳
         - **VpcId** (str) - ACL所属的VPC ID
+        
 
-
-        **AssociationInfo**
+        **AssociationInfo** 
         - **AclId** (str) - ACL的ID
         - **AssociationId** (str) - 绑定ID
         - **CreateTime** (int) - 创建的Unix时间戳
         - **SubnetworkId** (str) - 绑定的子网ID
+        
 
-
-        **AclEntryInfo**
+        **AclEntryInfo** 
         - **CidrBlock** (str) - IP段的CIDR信息
         - **CreateTime** (int) - 创建的Unix时间戳
         - **Direction** (str) - 出向或者入向
@@ -1290,9 +1449,9 @@ class VPCClient(Client):
         - **TargetResourceList** (list) - 见 **TargetResourceInfo** 模型定义
         - **TargetType** (int) - 应用目标类型。 0代表“子网内全部资源” ，1代表“子网内指定资源” 。
         - **UpdateTime** (int) - 更改的Unix时间戳
+        
 
-
-        **TargetResourceInfo**
+        **TargetResourceInfo** 
         - **PrivateIp** (str) - 资源内网IP
         - **ResourceId** (str) - 资源ID
         - **ResourceName** (str) - 资源名称
@@ -1301,114 +1460,121 @@ class VPCClient(Client):
         - **SubResourceName** (str) - 资源绑定的虚拟网卡的名称
         - **SubResourceType** (int) - 资源绑定虚拟网卡的类型
         - **SubnetworkId** (str) - 子网ID
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeNetworkAclRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeNetworkAcl", d, **kwargs)
         return apis.DescribeNetworkAclResponseSchema().loads(resp)
-
-    def describe_network_acl_association(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeNetworkAclAssociation - 获取网络ACL的绑定关系列表
+    
+    
+    
+    
+    
+    
+    
+    def describe_network_acl_association(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeNetworkAclAssociation - 获取网络ACL的绑定关系列表
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **AclId** (str) - (Required) Acl的ID
         - **Limit** (str) - 列表获取的个数限制
         - **Offset** (int) - 列表偏移量
-
+        
         **Response**
 
         - **AssociationList** (list) - 见 **AssociationInfo** 模型定义
-
+        
         **Response Model**
-
-        **AssociationInfo**
+        
+        **AssociationInfo** 
         - **AclId** (str) - ACL的ID
         - **AssociationId** (str) - 绑定ID
         - **CreateTime** (int) - 创建的Unix时间戳
         - **SubnetworkId** (str) - 绑定的子网ID
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeNetworkAclAssociationRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeNetworkAclAssociation", d, **kwargs)
         return apis.DescribeNetworkAclAssociationResponseSchema().loads(resp)
-
-    def describe_network_acl_association_by_subnet(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeNetworkAclAssociationBySubnet - 获取子网的ACL绑定信息
+    
+    
+    
+    
+    
+    
+    
+    def describe_network_acl_association_by_subnet(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeNetworkAclAssociationBySubnet - 获取子网的ACL绑定信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **SubnetworkId** (str) - (Required) 子网的ID
-
+        
         **Response**
 
         - **Association** (dict) - 见 **AssociationInfo** 模型定义
-
+        
         **Response Model**
-
-        **AssociationInfo**
+        
+        **AssociationInfo** 
         - **AclId** (str) - ACL的ID
         - **AssociationId** (str) - 绑定ID
         - **CreateTime** (int) - 创建的Unix时间戳
         - **SubnetworkId** (str) - 绑定的子网ID
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeNetworkAclAssociationBySubnetRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeNetworkAclAssociationBySubnet", d, **kwargs)
-        return apis.DescribeNetworkAclAssociationBySubnetResponseSchema().loads(
-            resp
-        )
-
-    def describe_network_acl_entry(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeNetworkAclEntry - 获取ACL的规则信息
+        return apis.DescribeNetworkAclAssociationBySubnetResponseSchema().loads(resp)
+    
+    
+    
+    
+    
+    
+    
+    def describe_network_acl_entry(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeNetworkAclEntry - 获取ACL的规则信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **AclId** (str) - (Required) ACL的ID
-
+        
         **Response**
 
         - **EntryList** (list) - 见 **AclEntryInfo** 模型定义
-
+        
         **Response Model**
-
-        **AclEntryInfo**
+        
+        **AclEntryInfo** 
         - **CidrBlock** (str) - IP段的CIDR信息
         - **CreateTime** (int) - 创建的Unix时间戳
         - **Direction** (str) - 出向或者入向
@@ -1421,9 +1587,9 @@ class VPCClient(Client):
         - **TargetResourceList** (list) - 见 **TargetResourceInfo** 模型定义
         - **TargetType** (int) - 应用目标类型。 0代表“子网内全部资源” ，1代表“子网内指定资源” 。
         - **UpdateTime** (int) - 更改的Unix时间戳
+        
 
-
-        **TargetResourceInfo**
+        **TargetResourceInfo** 
         - **PrivateIp** (str) - 资源内网IP
         - **ResourceId** (str) - 资源ID
         - **ResourceName** (str) - 资源名称
@@ -1432,29 +1598,32 @@ class VPCClient(Client):
         - **SubResourceName** (str) - 资源绑定的虚拟网卡的名称
         - **SubResourceType** (int) - 资源绑定虚拟网卡的类型
         - **SubnetworkId** (str) - 子网ID
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeNetworkAclEntryRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeNetworkAclEntry", d, **kwargs)
         return apis.DescribeNetworkAclEntryResponseSchema().loads(resp)
-
-    def describe_network_interface(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeNetworkInterface - 展示虚拟网卡信息
+    
+    
+    
+    
+    
+    
+    
+    def describe_network_interface(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeNetworkInterface - 展示虚拟网卡信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **InterfaceId** (list) - 虚拟网卡ID,可指定 0~n
         - **Limit** (int) - 默认为20
         - **NoRecycled** (bool) - 若为true 过滤绑定在回收站主机中的网卡。默认为false。
@@ -1463,15 +1632,15 @@ class VPCClient(Client):
         - **SubnetId** (str) - 所属子网
         - **Tag** (str) - 业务组
         - **VPCId** (str) - 所属VPC
-
+        
         **Response**
 
         - **NetworkInterfaceSet** (list) - 见 **NetworkInterface** 模型定义
         - **TotalCount** (int) - 虚拟网卡总数
-
+        
         **Response Model**
-
-        **NetworkInterface**
+        
+        **NetworkInterface** 
         - **AttachInstanceId** (str) - 绑定实例资源ID
         - **CreateTime** (int) - 创建时间
         - **Default** (bool) - 是否是绑定实例的默认网卡 false:不是 true:是
@@ -1490,39 +1659,42 @@ class VPCClient(Client):
         - **SubnetId** (str) - 所属子网
         - **Tag** (str) - 业务组
         - **VPCId** (str) - 所属VPC
+        
 
-
-        **UNIIpInfo**
+        **UNIIpInfo** 
         - **IpAddr** (list) - ip 地址
         - **IpType** (str) - ip类型 SecondaryIp/PrimaryIp
+        
 
-
-        **UNIQuotaInfo**
+        **UNIQuotaInfo** 
         - **PrivateIpCount** (int) - 网卡拥有的内网IP数量
         - **PrivateIpQuota** (int) - 网卡内网IP配额
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeNetworkInterfaceRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeNetworkInterface", d, **kwargs)
         return apis.DescribeNetworkInterfaceResponseSchema().loads(resp)
-
-    def describe_route_table(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeRouteTable - 获取路由表详细信息(包括路由策略)
+    
+    
+    
+    
+    
+    
+    
+    def describe_route_table(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeRouteTable - 获取路由表详细信息(包括路由策略)
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **Brief** (bool) - 默认为 false, 返回详细路由规则信息
         - **BusinessId** (str) - 业务组ID
         - **Limit** (int) - 数据分页值。默认为20
@@ -1530,15 +1702,15 @@ class VPCClient(Client):
         - **OffSet** (int) - 数据偏移量。默认为0
         - **RouteTableId** (str) - 路由表资源ID
         - **VPCId** (str) - 所属VPC的资源ID
-
+        
         **Response**
 
         - **RouteTables** (list) - 见 **RouteTableInfo** 模型定义
         - **TotalCount** (int) - RouteTables字段的数量
-
+        
         **Response Model**
-
-        **RouteTableInfo**
+        
+        **RouteTableInfo** 
         - **CreateTime** (int) - 创建时间戳
         - **Remark** (str) - 路由表备注
         - **RouteRules** (list) - 见 **RouteRuleInfo** 模型定义
@@ -1549,9 +1721,9 @@ class VPCClient(Client):
         - **Tag** (str) - 路由表所属业务组
         - **VPCId** (str) - 路由表所属的VPC资源ID
         - **VPCName** (str) - 路由表所属的VPC资源名称
+        
 
-
-        **RouteRuleInfo**
+        **RouteRuleInfo** 
         - **AccountId** (int) - 项目ID信息
         - **DstAddr** (str) - 目的地址
         - **DstPort** (int) - 保留字段，暂未使用
@@ -1567,148 +1739,160 @@ class VPCClient(Client):
         - **SrcAddr** (str) - 保留字段，暂未使用
         - **SrcPort** (int) - 保留字段，暂未使用
         - **VNetId** (str) - 所属的VPC
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeRouteTableRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeRouteTable", d, **kwargs)
         return apis.DescribeRouteTableResponseSchema().loads(resp)
-
-    def describe_secondary_ip(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeSecondaryIp - 查询SecondaryIp（uk8s使用）
+    
+    
+    
+    
+    
+    
+    
+    def describe_secondary_ip(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeSecondaryIp - 查询SecondaryIp（uk8s使用）
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **SubnetId** (str) - (Required) 子网Id
         - **VPCId** (str) - (Required) VPCId
-        - **Zone** (str) - (Required)
+        - **Zone** (str) - (Required) 
         - **Ip** (str) - Ip
         - **Mac** (str) - Mac
-
+        
         **Response**
 
         - **DataSet** (list) - 见 **IpInfo** 模型定义
-
+        
         **Response Model**
-
-        **IpInfo**
-        - **Gateway** (str) -
-        - **Ip** (str) -
-        - **Mac** (str) -
-        - **Mask** (str) -
-        - **SubnetId** (str) -
-        - **VPCId** (str) -
-
+        
+        **IpInfo** 
+        - **Gateway** (str) - 
+        - **Ip** (str) - 
+        - **Mac** (str) - 
+        - **Mask** (str) - 
+        - **SubnetId** (str) - 
+        - **VPCId** (str) - 
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeSecondaryIpRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeSecondaryIp", d, **kwargs)
         return apis.DescribeSecondaryIpResponseSchema().loads(resp)
-
-    def describe_snat_dnat_rule(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeSnatDnatRule - 获取基于NAT创建的内外网IP映射规则信息
+    
+    
+    
+    
+    
+    
+    
+    def describe_snat_dnat_rule(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeSnatDnatRule - 获取基于NAT创建的内外网IP映射规则信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **EIP** (list) - 获取EIP对应的SnatDnatRule信息
         - **NATGWId** (list) - 获取NAT上添加的所有SnatDnatRule信息
-
+        
         **Response**
 
         - **DataSet** (list) - 见 **SnatDnatRuleInfo** 模型定义
-
+        
         **Response Model**
-
-        **SnatDnatRuleInfo**
+        
+        **SnatDnatRuleInfo** 
         - **EIP** (str) - EIP的IP地址
         - **NATGWId** (str) - 映射所使用的NAT网关资源ID
         - **PrivateIp** (str) - 内网IP地址
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeSnatDnatRuleRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeSnatDnatRule", d, **kwargs)
         return apis.DescribeSnatDnatRuleResponseSchema().loads(resp)
-
-    def describe_snat_rule(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeSnatRule - 获取Nat网关的出口规则（SNAT规则）
+    
+    
+    
+    
+    
+    
+    
+    def describe_snat_rule(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeSnatRule - 获取Nat网关的出口规则（SNAT规则）
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **NATGWId** (str) - (Required) NAT网关的ID
         - **Limit** (str) - 分页，默认为20
         - **Offset** (str) - 偏移，默认为0
         - **SnatIp** (str) - EIP的ip地址,例如106.75.xx.xx
         - **SourceIp** (str) - 需要出外网的私网IP地址，例如10.9.7.xx
-
+        
         **Response**
 
         - **DataSet** (list) - 见 **NATGWSnatRule** 模型定义
         - **TotalCount** (int) - 规则数量
-
+        
         **Response Model**
-
-        **NATGWSnatRule**
+        
+        **NATGWSnatRule** 
         - **Name** (str) - snat规则名称
         - **SnatIp** (str) - EIP地址，如106.76.xx.xx
         - **SourceIp** (str) - 资源的内网IP地址
         - **SubnetworkId** (str) - SourceIp所属的子网id
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeSnatRuleRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeSnatRule", d, **kwargs)
         return apis.DescribeSnatRuleResponseSchema().loads(resp)
-
-    def describe_subnet(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeSubnet - 获取子网信息
+    
+    
+    
+    
+    
+    
+    
+    def describe_subnet(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeSubnet - 获取子网信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **Limit** (int) - 列表长度，默认为20
         - **Offset** (int) - 偏移量，默认为0
         - **RouteTableId** (str) - 路由表Id
@@ -1717,15 +1901,15 @@ class VPCClient(Client):
         - **SubnetIds** (list) - 子网id数组，适用于一次查询多个子网信息
         - **Tag** (str) - 业务组名称，默认为Default
         - **VPCId** (str) - VPC资源id
-
+        
         **Response**
 
         - **DataSet** (list) - 见 **SubnetInfo** 模型定义
         - **TotalCount** (int) - 子网总数量
-
+        
         **Response Model**
-
-        **SubnetInfo**
+        
+        **SubnetInfo** 
         - **AvailableIPs** (int) - 可用IP数量
         - **CreateTime** (int) - 创建时间
         - **Gateway** (str) - 子网网关
@@ -1742,83 +1926,91 @@ class VPCClient(Client):
         - **VPCId** (str) - VPCId
         - **VPCName** (str) - VPC名称
         - **Zone** (str) - 可用区名称
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeSubnetRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeSubnet", d, **kwargs)
         return apis.DescribeSubnetResponseSchema().loads(resp)
-
-    def describe_subnet_resource(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeSubnetResource - 展示子网资源
+    
+    
+    
+    
+    
+    
+    
+    def describe_subnet_resource(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeSubnetResource - 展示子网资源
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **SubnetId** (str) - (Required) 子网id
         - **Limit** (int) - 单页返回数据长度，默认为20
         - **Offset** (int) - 列表起始位置偏移量，默认为0
         - **ResourceType** (str) - 资源类型，默认为全部资源类型。枚举值为：UHOST，云主机；PHOST，物理云主机；ULB，负载均衡；UHADOOP_HOST，hadoop节点；UFORTRESS_HOST，堡垒机；UNATGW，NAT网关；UKAFKA，Kafka消息队列；UMEM，内存存储；DOCKER，容器集群；UDB，数据库；UDW，数据仓库；VIP，内网VIP.
-
+        
         **Response**
 
         - **DataSet** (list) - 见 **SubnetResource** 模型定义
         - **TotalCount** (int) - 总数
-
+        
         **Response Model**
-
-        **SubnetResource**
+        
+        **SubnetResource** 
         - **IP** (str) - 资源ip
         - **Name** (str) - 名称
         - **ResourceId** (str) - 资源Id
         - **ResourceType** (str) - 资源类型。对应的资源类型：UHOST，云主机；PHOST，物理云主机；ULB，负载均衡；UHADOOP_HOST，hadoop节点；UFORTRESS_HOST，堡垒机；UNATGW，NAT网关；UKAFKA，分布式消息系统；UMEM，内存存储；DOCKER，容器集群；UDB，数据库；UDW，数据仓库；VIP，内网VIP.
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeSubnetResourceRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeSubnetResource", d, **kwargs)
         return apis.DescribeSubnetResourceResponseSchema().loads(resp)
-
+    
+    
+    
+    
+    
+    
+    
     def describe_vip(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """DescribeVIP - 获取内网VIP详细信息
+        """ DescribeVIP - 获取内网VIP详细信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **BusinessId** (str) - 业务组
         - **SubnetId** (str) - 子网id，不指定则获取VPCId下的所有vip
         - **Tag** (str) - 业务组名称, 默认为 Default
         - **VIPId** (str) - VIP ID
         - **VPCId** (str) - vpc的id,指定SubnetId时必填
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        
         **Response**
 
         - **DataSet** (list) - 内网VIP地址列表
         - **TotalCount** (int) - vip数量
         - **VIPSet** (list) - 见 **VIPDetailSet** 模型定义
-
+        
         **Response Model**
-
-        **VIPDetailSet**
+        
+        **VIPDetailSet** 
         - **CreateTime** (int) - 创建时间
         - **Name** (str) - VIP名称
         - **RealIp** (str) - 真实主机ip
@@ -1829,40 +2021,45 @@ class VPCClient(Client):
         - **VIPId** (str) - 虚拟ip id
         - **VPCId** (str) - VPC id
         - **Zone** (str) - 地域
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeVIPRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeVIP", d, **kwargs)
         return apis.DescribeVIPResponseSchema().loads(resp)
-
+    
+    
+    
+    
+    
+    
+    
     def describe_vpc(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """DescribeVPC - 获取VPC信息
+        """ DescribeVPC - 获取VPC信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **Limit** (int) - 数据分页值
         - **Offset** (int) - 数据偏移量，默认为0
         - **Tag** (str) - 业务组名称
         - **VPCIds** (list) - VPCId
-
+        
         **Response**
 
         - **DataSet** (list) - 见 **VPCInfo** 模型定义
-        - **TotalCount** (int) -
-
+        - **TotalCount** (int) - 
+        
         **Response Model**
-
-        **VPCInfo**
+        
+        **VPCInfo** 
         - **CreateTime** (int) - 创建时间
         - **IPv6Network** (str) - VPC关联的IPv6网段
         - **Name** (str) - VPC名称
@@ -1874,45 +2071,48 @@ class VPCClient(Client):
         - **UpdateTime** (int) - 更新时间
         - **VPCId** (str) - VPC资源ID
         - **VPCType** (str) - DefaultVPC 默认VPC，DefinedVPC，自定义VPC
+        
 
-
-        **VPCNetworkInfo**
+        **VPCNetworkInfo** 
         - **Network** (str) - vpc地址空间
         - **SubnetCount** (int) - 地址空间中子网数量
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeVPCRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeVPC", d, **kwargs)
         return apis.DescribeVPCResponseSchema().loads(resp)
-
-    def describe_vpc_intercom(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeVPCIntercom - 获取VPC互通信息
+    
+    
+    
+    
+    
+    
+    
+    def describe_vpc_intercom(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeVPCIntercom - 获取VPC互通信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 源VPC所在项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 源VPC所在地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 源VPC所在项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 源VPC所在地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **VPCId** (str) - (Required) VPC短ID
         - **DstProjectId** (str) - 目的项目ID，默认为全部项目
         - **DstRegion** (str) - 目的VPC所在地域，默认为全部地域
-
+        
         **Response**
 
         - **DataSet** (list) - 见 **VPCIntercomInfo** 模型定义
-
+        
         **Response Model**
-
-        **VPCIntercomInfo**
+        
+        **VPCIntercomInfo** 
         - **AccountId** (int) - 项目Id（数字）
         - **DstRegion** (str) - 所属地域
         - **Name** (str) - VPC名字
@@ -1921,47 +2121,50 @@ class VPCClient(Client):
         - **Tag** (str) - 业务组（未分组显示为 Default）
         - **VPCId** (str) - VPCId
         - **VPCType** (int) - vpc类型（1表示托管VPC，0表示公有云VPC）
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeVPCIntercomRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeVPCIntercom", d, **kwargs)
         return apis.DescribeVPCIntercomResponseSchema().loads(resp)
-
-    def describe_white_list_resource(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeWhiteListResource - 展示NAT网关白名单资源列表
+    
+    
+    
+    
+    
+    
+    
+    def describe_white_list_resource(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeWhiteListResource - 展示NAT网关白名单资源列表
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目id
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **NATGWIds** (list) - (Required) NAT网关的Id
         - **Limit** (int) - 数据分页值, 默认为20
         - **Offset** (int) - 数据偏移量, 默认为0
-
+        
         **Response**
 
         - **DataSet** (list) - 见 **NatGWWhitelistDataSet** 模型定义
         - **TotalCount** (int) - 上述DataSet总数量
-
+        
         **Response Model**
-
-        **NatGWWhitelistDataSet**
+        
+        **NatGWWhitelistDataSet** 
         - **IfOpen** (int) - 白名单开关标记
         - **NATGWId** (str) - NATGateWay Id
         - **ObjectIPInfo** (list) - 见 **DescribeWhiteListResourceObjectIPInfo** 模型定义
+        
 
-
-        **DescribeWhiteListResourceObjectIPInfo**
+        **DescribeWhiteListResourceObjectIPInfo** 
         - **GwType** (str) - natgw字符串
         - **PrivateIP** (str) - 白名单资源的内网IP
         - **ResourceId** (str) - 白名单资源Id信息
@@ -1971,175 +2174,190 @@ class VPCClient(Client):
         - **SubResourceName** (str) - 资源绑定的虚拟网卡的实例名称
         - **SubResourceType** (str) - 资源绑定的虚拟网卡的类型
         - **VPCId** (str) - 白名单资源所属VPCId
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeWhiteListResourceRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeWhiteListResource", d, **kwargs)
         return apis.DescribeWhiteListResourceResponseSchema().loads(resp)
-
-    def detach_network_interface(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DetachNetworkInterface - 解绑云主机关联网卡
+    
+    
+    
+    
+    
+    
+    
+    def detach_network_interface(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DetachNetworkInterface - 解绑云主机关联网卡
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **InstanceId** (str) - (Required) 云主机ID
         - **InterfaceId** (str) - (Required) 虚拟网卡ID
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DetachNetworkInterfaceRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DetachNetworkInterface", d, **kwargs)
         return apis.DetachNetworkInterfaceResponseSchema().loads(resp)
-
-    def enable_white_list(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """EnableWhiteList - 修改NAT网关白名单开关
+    
+    
+    
+    
+    
+    
+    
+    def enable_white_list(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ EnableWhiteList - 修改NAT网关白名单开关
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **IfOpen** (int) - (Required) 白名单开关标记。0：关闭；1：开启。默认为0
         - **NATGWId** (str) - (Required) NAT网关Id
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.EnableWhiteListRequestSchema().dumps(d)
-
+        
         resp = self.invoke("EnableWhiteList", d, **kwargs)
         return apis.EnableWhiteListResponseSchema().loads(resp)
-
-    def get_available_resource_for_policy(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """GetAvailableResourceForPolicy - 获取NAT网关可配置端口转发规则的资源信息
+    
+    
+    
+    
+    
+    
+    
+    def get_available_resource_for_policy(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ GetAvailableResourceForPolicy - 获取NAT网关可配置端口转发规则的资源信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **NATGWId** (str) - (Required) NAT网关Id
         - **Limit** (int) - 返回数据长度，默认为20
         - **Offset** (int) - 列表起始位置偏移量，默认为0
-
+        
         **Response**
 
         - **DataSet** (list) - 见 **GetAvailableResourceForPolicyDataSet** 模型定义
-
+        
         **Response Model**
-
-        **GetAvailableResourceForPolicyDataSet**
+        
+        **GetAvailableResourceForPolicyDataSet** 
         - **PrivateIP** (str) - 资源对应的内网Ip
         - **ResourceId** (str) - 资源的Id
         - **ResourceType** (str) - 资源类型。"uhost"：云主机； "upm"，物理云主机； "hadoophost"：hadoop节点； "fortresshost"：堡垒机： "udockhost"，容器
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.GetAvailableResourceForPolicyRequestSchema().dumps(d)
-
+        
         resp = self.invoke("GetAvailableResourceForPolicy", d, **kwargs)
         return apis.GetAvailableResourceForPolicyResponseSchema().loads(resp)
-
-    def get_available_resource_for_snat_rule(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """GetAvailableResourceForSnatRule - 获取可用于添加snat规则（出口规则）的资源列表
+    
+    
+    
+    
+    
+    
+    
+    def get_available_resource_for_snat_rule(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ GetAvailableResourceForSnatRule - 获取可用于添加snat规则（出口规则）的资源列表
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **NATGWId** (str) - (Required) NAT网关Id
         - **Limit** (int) - 数据分页值, 默认为20
         - **Offset** (int) - 数据偏移量, 默认为0
-
+        
         **Response**
 
         - **Action** (str) - 操作名称
         - **DataSet** (list) - 见 **GetAvailableResourceForSnatRuleDataSet** 模型定义
         - **RetCode** (str) - 返回值
         - **TotalCount** (int) - 总数
-
+        
         **Response Model**
-
-        **GetAvailableResourceForSnatRuleDataSet**
+        
+        **GetAvailableResourceForSnatRuleDataSet** 
         - **PrivateIP** (str) - 资源内网IP
         - **ResourceId** (str) - 资源ID
         - **ResourceName** (str) - 资源名称
         - **ResourceType** (str) - 资源类型
         - **SubnetworkId** (str) - 资源所属VPC的ID
         - **VPCId** (str) - 资源所属子网的ID
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.GetAvailableResourceForSnatRuleRequestSchema().dumps(d)
-
+        
         resp = self.invoke("GetAvailableResourceForSnatRule", d, **kwargs)
         return apis.GetAvailableResourceForSnatRuleResponseSchema().loads(resp)
-
-    def get_available_resource_for_white_list(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """GetAvailableResourceForWhiteList - 获取NAT网关可添加白名单的资源
+    
+    
+    
+    
+    
+    
+    
+    def get_available_resource_for_white_list(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ GetAvailableResourceForWhiteList - 获取NAT网关可添加白名单的资源
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **NATGWId** (str) - (Required) NAT网关Id
         - **Limit** (int) - 数据分页值, 默认为20
         - **Offset** (int) - 数据偏移量, 默认为0
-
+        
         **Response**
 
         - **DataSet** (list) - 见 **GetAvailableResourceForWhiteListDataSet** 模型定义
         - **TotalCount** (int) - 白名单资源列表的总的个数
-
+        
         **Response Model**
-
-        **GetAvailableResourceForWhiteListDataSet**
+        
+        **GetAvailableResourceForWhiteListDataSet** 
         - **PrivateIP** (str) - 资源的内网Ip
         - **ResourceId** (str) - 资源类型Id
         - **ResourceName** (str) - 资源名称
@@ -2149,39 +2367,42 @@ class VPCClient(Client):
         - **SubResourceType** (str) - 资源绑定的虚拟网卡的实例类型
         - **SubnetworkId** (str) - 资源所属子网Id
         - **VPCId** (str) - 资源所属VPCId
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.GetAvailableResourceForWhiteListRequestSchema().dumps(d)
-
+        
         resp = self.invoke("GetAvailableResourceForWhiteList", d, **kwargs)
         return apis.GetAvailableResourceForWhiteListResponseSchema().loads(resp)
-
-    def get_network_acl_target_resource(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """GetNetworkAclTargetResource - 获取ACL规则应用目标列表
+    
+    
+    
+    
+    
+    
+    
+    def get_network_acl_target_resource(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ GetNetworkAclTargetResource - 获取ACL规则应用目标列表
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **SubnetworkId** (list) - (Required) 子网ID。
-
+        
         **Response**
 
         - **TargetResourceList** (list) - 见 **TargetResourceInfo** 模型定义
         - **TotalCount** (int) - ACL规则应用目标资源总数
-
+        
         **Response Model**
-
-        **TargetResourceInfo**
+        
+        **TargetResourceInfo** 
         - **PrivateIp** (str) - 资源内网IP
         - **ResourceId** (str) - 资源ID
         - **ResourceName** (str) - 资源名称
@@ -2190,115 +2411,129 @@ class VPCClient(Client):
         - **SubResourceName** (str) - 资源绑定的虚拟网卡的名称
         - **SubResourceType** (int) - 资源绑定虚拟网卡的类型
         - **SubnetworkId** (str) - 子网ID
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.GetNetworkAclTargetResourceRequestSchema().dumps(d)
-
+        
         resp = self.invoke("GetNetworkAclTargetResource", d, **kwargs)
         return apis.GetNetworkAclTargetResourceResponseSchema().loads(resp)
-
-    def list_subnet_for_natgw(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """ListSubnetForNATGW - 展示NAT网关可绑定的子网列表
+    
+    
+    
+    
+    
+    
+    
+    def list_subnet_for_natgw(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ ListSubnetForNATGW - 展示NAT网关可绑定的子网列表
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **VPCId** (str) - NAT网关所属VPC Id。默认值为Default VPC Id
-
+        
         **Response**
 
         - **DataSet** (list) - 见 **NatgwSubnetDataSet** 模型定义
-
+        
         **Response Model**
-
-        **NatgwSubnetDataSet**
+        
+        **NatgwSubnetDataSet** 
         - **HasNATGW** (bool) - 是否绑定NATGW
         - **Netmask** (str) - 掩码
         - **Subnet** (str) - 子网网段
         - **SubnetId** (str) - 子网id
         - **SubnetName** (str) - 子网名字
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.ListSubnetForNATGWRequestSchema().dumps(d)
-
+        
         resp = self.invoke("ListSubnetForNATGW", d, **kwargs)
         return apis.ListSubnetForNATGWResponseSchema().loads(resp)
-
-    def modify_route_rule(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """ModifyRouteRule - 路由策略增、删、改
+    
+    
+    
+    
+    
+    
+    
+    def modify_route_rule(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ ModifyRouteRule - 路由策略增、删、改
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **RouteRule** (list) - (Required) 格式: RouteRuleId | 目的网段 | 下一跳类型（支持INSTANCE、VIP） | 下一跳 |优先级（保留字段，填写0即可）| 备注 | 增、删、改标志（add/delete/update） 。"添加"示例: test_id | 10.8.0.0/16 | instance | uhost-xd8ja | 0 | Default Route Rule| add (添加的RouteRuleId填任意非空字符串) 。"删除"示例: routerule-xk3jxa | 10.8.0.0/16 | instance | uhost-xd8ja | 0 | Default Route Rule| delete (RouteRuleId来自DescribeRouteTable中)     。“修改”示例: routerule-xk3jxa | 10.8.0.0/16 | instance | uhost-cjksa2 | 0 | Default Route Rule| update (RouteRuleId来自DescribeRouteTable中)
         - **RouteTableId** (str) - (Required) 通过DescribeRouteTable拿到
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.ModifyRouteRuleRequestSchema().dumps(d)
-
+        
         resp = self.invoke("ModifyRouteRule", d, **kwargs)
         return apis.ModifyRouteRuleResponseSchema().loads(resp)
-
-    def move_secondary_ip_mac(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """MoveSecondaryIPMac - 把 Secondary IP 从旧 MAC 迁移到新 MAC
+    
+    
+    
+    
+    
+    
+    
+    def move_secondary_ip_mac(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ MoveSecondaryIPMac - 把 Secondary IP 从旧 MAC 迁移到新 MAC
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **Ip** (str) - (Required) Secondary IP
         - **NewMac** (str) - (Required) 新 Mac。Secondary IP 迁移的目的 Mac
         - **OldMac** (str) - (Required) 旧 Mac。Secondary IP 当前所绑定的 Mac
         - **SubnetId** (str) - (Required) 子网 ID。IP/OldMac/NewMac 三者必须在同一子网
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.MoveSecondaryIPMacRequestSchema().dumps(d)
-
+        
         resp = self.invoke("MoveSecondaryIPMac", d, **kwargs)
         return apis.MoveSecondaryIPMacResponseSchema().loads(resp)
-
+    
+    
+    
+    
+    
+    
+    
     def release_vip(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ReleaseVIP - 释放VIP资源
+        """ ReleaseVIP - 释放VIP资源
 
         **Request**
 
@@ -2306,59 +2541,65 @@ class VPCClient(Client):
         - **Region** (str) - (Config) 地域
         - **VIPId** (str) - (Required) 内网VIP的id
         - **Zone** (str) - 可用区
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.ReleaseVIPRequestSchema().dumps(d)
-
+        
         resp = self.invoke("ReleaseVIP", d, **kwargs)
         return apis.ReleaseVIPResponseSchema().loads(resp)
-
-    def set_gw_default_export(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """SetGwDefaultExport - 设置NAT网关的默认出口
+    
+    
+    
+    
+    
+    
+    
+    def set_gw_default_export(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ SetGwDefaultExport - 设置NAT网关的默认出口
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **NATGWId** (str) - (Required) NAT网关Id
         - **ExportEipId** (str) - NAT网关绑定的EIP Id。ExportIp和ExportEipId必填一个
         - **ExportIp** (str) - NAT网关绑定的EIP。ExportIp和ExportEipId必填一个
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.SetGwDefaultExportRequestSchema().dumps(d)
-
+        
         resp = self.invoke("SetGwDefaultExport", d, **kwargs)
         return apis.SetGwDefaultExportResponseSchema().loads(resp)
-
-    def update_natgw_policy(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """UpdateNATGWPolicy - 更新NAT网关端口转发规则
+    
+    
+    
+    
+    
+    
+    
+    def update_natgw_policy(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ UpdateNATGWPolicy - 更新NAT网关端口转发规则
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **DstIP** (str) - (Required) 目标IP。填写对应的目标IP地址
         - **DstPort** (str) - (Required) 目标端口。可填写固定端口，也可填写端口范围。支持的端口范围为1-65535
         - **NATGWId** (str) - (Required) NAT网关Id
@@ -2367,86 +2608,95 @@ class VPCClient(Client):
         - **SrcEIPId** (str) - (Required) 源IP。填写对应的EIP Id
         - **SrcPort** (str) - (Required) 源端口。可填写固定端口，也可填写端口范围。支持的端口范围为1-6553
         - **PolicyName** (str) - 转发策略名称。默认为空
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.UpdateNATGWPolicyRequestSchema().dumps(d)
-
+        
         resp = self.invoke("UpdateNATGWPolicy", d, **kwargs)
         return apis.UpdateNATGWPolicyResponseSchema().loads(resp)
-
-    def update_natgw_subnet(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """UpdateNATGWSubnet - 更新NAT网关绑定的子网
+    
+    
+    
+    
+    
+    
+    
+    def update_natgw_subnet(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ UpdateNATGWSubnet - 更新NAT网关绑定的子网
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目Id。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **NATGWId** (str) - (Required) NAT网关Id
         - **SubnetworkIds** (list) - NAT网关绑定的子网Id
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.UpdateNATGWSubnetRequestSchema().dumps(d)
-
+        
         resp = self.invoke("UpdateNATGWSubnet", d, **kwargs)
         return apis.UpdateNATGWSubnetResponseSchema().loads(resp)
-
-    def update_network_acl(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """UpdateNetworkAcl - 更改ACL
+    
+    
+    
+    
+    
+    
+    
+    def update_network_acl(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ UpdateNetworkAcl - 更改ACL
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **AclId** (str) - (Required) 需要更改的ACL ID
         - **AclName** (str) - (Required) Acl的名称
         - **Description** (str) - (Required) 描述
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.UpdateNetworkAclRequestSchema().dumps(d)
-
+        
         resp = self.invoke("UpdateNetworkAcl", d, **kwargs)
         return apis.UpdateNetworkAclResponseSchema().loads(resp)
-
-    def update_network_acl_entry(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """UpdateNetworkAclEntry - 更新ACL的规则
+    
+    
+    
+    
+    
+    
+    
+    def update_network_acl_entry(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ UpdateNetworkAclEntry - 更新ACL的规则
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **AclId** (str) - (Required) ACL的ID
         - **CidrBlock** (str) - (Required) IPv4段的CIDR表示
         - **Direction** (str) - (Required) 出向或者入向（“Ingress”, "Egress")
@@ -2458,160 +2708,177 @@ class VPCClient(Client):
         - **Description** (str) - 描述
         - **TargetResourceIds** (list) - 应用目标资源列表。默认为全部资源生效。TargetType为0时不用填写该值
         - **TargetType** (int) - 应用目标类型。0代表“子网内全部资源”， 1代表“子网内指定资源”。默认为0
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.UpdateNetworkAclEntryRequestSchema().dumps(d)
-
+        
         resp = self.invoke("UpdateNetworkAclEntry", d, **kwargs)
         return apis.UpdateNetworkAclEntryResponseSchema().loads(resp)
-
-    def update_route_table_attribute(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """UpdateRouteTableAttribute - 更新路由表基本信息
+    
+    
+    
+    
+    
+    
+    
+    def update_route_table_attribute(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ UpdateRouteTableAttribute - 更新路由表基本信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **RouteTableId** (str) - (Required) 路由表ID
         - **Name** (str) - 名称
         - **Remark** (str) - 备注
         - **Tag** (str) - 业务组名称
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.UpdateRouteTableAttributeRequestSchema().dumps(d)
-
+        
         resp = self.invoke("UpdateRouteTableAttribute", d, **kwargs)
         return apis.UpdateRouteTableAttributeResponseSchema().loads(resp)
-
-    def update_snat_rule(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """UpdateSnatRule - 更新指定的出口规则（SNAT规则）
+    
+    
+    
+    
+    
+    
+    
+    def update_snat_rule(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ UpdateSnatRule - 更新指定的出口规则（SNAT规则）
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **NATGWId** (str) - (Required) NAT网关的ID，
         - **SnatIp** (str) - (Required) EIP的ip地址,例如106.75.xx.xx
         - **SourceIp** (str) - (Required) 需要出外网的私网IP地址，例如10.9.7.xx
         - **Name** (str) - snat名称，即出口规则名称
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.UpdateSnatRuleRequestSchema().dumps(d)
-
+        
         resp = self.invoke("UpdateSnatRule", d, **kwargs)
         return apis.UpdateSnatRuleResponseSchema().loads(resp)
-
-    def update_subnet_attribute(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """UpdateSubnetAttribute - 更新子网信息
+    
+    
+    
+    
+    
+    
+    
+    def update_subnet_attribute(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ UpdateSubnetAttribute - 更新子网信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **SubnetId** (str) - (Required) 子网ID
         - **Name** (str) - 子网名称(如果Name不填写，Tag必须填写)
         - **Tag** (str) - 业务组名称(如果Tag不填写，Name必须填写)
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.UpdateSubnetAttributeRequestSchema().dumps(d)
-
+        
         resp = self.invoke("UpdateSubnetAttribute", d, **kwargs)
         return apis.UpdateSubnetAttributeResponseSchema().loads(resp)
-
-    def update_vip_attribute(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """UpdateVIPAttribute - 更新VIP信息
+    
+    
+    
+    
+    
+    
+    
+    def update_vip_attribute(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ UpdateVIPAttribute - 更新VIP信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **VIPId** (str) - (Required) 内网VIP的资源Id
         - **Name** (str) - 内网VIP的名称
         - **Remark** (str) - 内网VIP的备注
         - **Tag** (str) - 内网VIP所属的业务组
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.UpdateVIPAttributeRequestSchema().dumps(d)
-
+        
         resp = self.invoke("UpdateVIPAttribute", d, **kwargs)
         return apis.UpdateVIPAttributeResponseSchema().loads(resp)
-
-    def update_vpc_network(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """UpdateVPCNetwork - 更新VPC网段
+    
+    
+    
+    
+    
+    
+    
+    def update_vpc_network(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ UpdateVPCNetwork - 更新VPC网段
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **Network** (list) - (Required) 需要保留的VPC网段。当前仅支持删除VPC网段，添加网段请参考 `AddVPCNetwork <https://docs.ucloud.cn/api/vpc2.0-api/add_vpc_network>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **Network** (list) - (Required) 需要保留的VPC网段。当前仅支持删除VPC网段，添加网段请参考 `AddVPCNetwork <https://docs.ucloud.cn/api/vpc2.0-api/add_vpc_network>`_ 
         - **VPCId** (str) - (Required) VPC的ID
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.UpdateVPCNetworkRequestSchema().dumps(d)
-
+        
         resp = self.invoke("UpdateVPCNetwork", d, **kwargs)
         return apis.UpdateVPCNetworkResponseSchema().loads(resp)
+    
+
+
