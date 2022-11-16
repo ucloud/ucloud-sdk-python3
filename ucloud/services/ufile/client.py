@@ -92,7 +92,7 @@ class UFileClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **TokenName** (str) - (Required) 令牌名称
         - **AllowedBuckets** (list) - 令牌允许操作的bucket，默认*表示全部
-        - **AllowedOps** (list) - 令牌允许执行的操作，[ TOKEN_ALLOW_NONE , TOKEN_ALLOW_READ , TOKEN_ALLOW_WRITE , TOKEN_ALLOW_DELETE , TOKEN_ALLOW_LIST, TOKEN_ALLOW_IOP , TOKEN_ALLOW_DP  ，TOKEN_DENY_UPDATE]。默认TOKEN_ALLOW_NONE
+        - **AllowedOps** (list) - 令牌允许执行的操作[ TOKEN_ALLOW_NONE 没有权限, TOKEN_ALLOW_READ 下载权限 , TOKEN_ALLOW_WRITE 上传权限 , TOKEN_ALLOW_DELETE 删除权限 , TOKEN_ALLOW_LIST 列表权限, TOKEN_ALLOW_IOP 图片处理权限, TOKEN_DENY_UPDATE 禁止覆盖权限]。默认TOKEN_ALLOW_NONE
         - **AllowedPrefixes** (list) - 令牌允许操作的key前缀，默认*表示全部
         - **BlackIPList** (list) - 令牌黑名单，支持ipv4，ipv6格式。
         - **ExpireTime** (int) - Unix 时间戳，精确到秒，为令牌过期时间点。默认过期时间为一天（即当前Unix时间戳+86400）；注意：过期时间不能超过 4102416000
@@ -107,7 +107,7 @@ class UFileClient(Client):
 
         **UFileTokenSet**
         - **AllowedBuckets** (list) - 令牌允许操作的bucket
-        - **AllowedOps** (list) - 令牌允许执行的操作，[ TOKEN_ALLOW_NONE , TOKEN_ALLOW_READ , TOKEN_ALLOW_WRITE , TOKEN_ALLOW_DELETE , TOKEN_ALLOW_LIST, TOKEN_ALLOW_IOP , TOKEN_ALLOW_DP ]
+        - **AllowedOps** (list) - 令牌允许执行的操作，[ TOKEN_ALLOW_NONE 没有权限, TOKEN_ALLOW_READ 下载权限, TOKEN_ALLOW_WRITE 上传权限, TOKEN_ALLOW_DELETE 删除权限, TOKEN_ALLOW_LIST 列表权限, TOKEN_ALLOW_IOP 图片处理权限]
         - **AllowedPrefixes** (list) - 令牌允许操作的key前缀
         - **BlackIPList** (list) - 令牌黑名单
         - **CreateTime** (int) - 创建时间

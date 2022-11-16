@@ -23,7 +23,7 @@ class UPhoneClient(Client):
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取；新增一个oversea虚拟城市，可以用来绑定所有支持的海外独立IP
+        - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取；新增一个oversea虚拟城市，可以用来绑定海外独立IP
         - **ImageId** (str) - (Required) 云手机镜像ID，不超过32个字节。可通过[查询手机镜像]()查询云手机规格对应的镜像ID。
         - **Name** (str) - (Required) 云手机实例名称，默认：UPhone。如果同时创建多个，则增加数字后缀，如UPhone-1
         - **UPhoneCount** (int) - (Required) 创建云手机的个数
@@ -37,7 +37,9 @@ class UPhoneClient(Client):
         - **ShareBandwidthId** (str) - 共享带宽ID，使用现有共享带宽时需要传入此参数
         - **ShareBandwidthName** (str) - 共享带宽名称，可以在创建新的共享带宽时指定一个名称
         - **Tag** (str) - 业务组。默认：Default（Default即为未分组）。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定业务组。
+        - **UPhoneBandwidth** (int) - 单个云手机独立IP网络带宽，单位Kbps；CityId为oversea时不生效；手机规格为UPhone Store和UPhone Live时不生效
         - **UseGlobalBws** (bool) - 使用区域全局共享带宽
+        - **UseKbps** (bool) - 使用Kbps限速
 
         **Response**
 
@@ -211,7 +213,7 @@ class UPhoneClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **UPhoneIds** (list) - (Required) 【数组】云手机实例的资源 ID，N<200；调用方式举例：UPhoneIds.0=希望获取信息的云手机 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId
         - **CityId** (str) - 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_cities>`_ 获取
-        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
+        - **ProductType** (str) - 枚举值。表示当前操作的产品类型，目前固定值【uphone】，表示云手机场景。
 
         **Response**
 
@@ -237,6 +239,7 @@ class UPhoneClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **ImageId** (str) - (Required) 云手机自定义镜像资源ID
+        - **ProductType** (str) - 枚举值【必填项】。表示当前操作的产品类型，目前固定值【uphone】，表示云手机场景。
 
         **Response**
 
@@ -319,7 +322,7 @@ class UPhoneClient(Client):
         - **IsAll** (bool) - 是否返回全部。如果有此参数，分页不生效。
         - **Limit** (int) - 返回数据长度，默认为200，最大200
         - **Offset** (int) - 列表起始位置偏移量，默认为0
-        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
+        - **ProductType** (str) - 枚举值。【必填项】表示当前操作的产品类型，目前固定值【uphone】，表示云手机场景。
         - **ServerId** (str) - 云手机服务器的资源ID。
         - **Tag** (str) - 要查询的业务组名称
         - **UPhoneIds** (list) - 【数组】云手机实例的资源 ID，调用方式举例：UPhoneIds.0=希望获取信息的云手机 1 的 UPhoneId，UPhoneIds.1=云手机实例 2 的 UPhoneId。如果都不传入，则返回当前 城市 所有符合条件的云手机列表。
@@ -346,6 +349,7 @@ class UPhoneClient(Client):
         - **ImageId** (str) - 云手机镜像ID，不超过32个字节。
         - **Ip** (str) - 云手机IP地址
         - **IpRegion** (str) - IP所属地域Id，eg: hk，th-bkk
+        - **LockBandwidth** (bool) - 是否锁定带宽，true代表锁定不可更改，false代表未锁定可以修改带宽
         - **Memory** (int) - 内存大小。单位MB
         - **OsType** (str) - 云手机镜像系统，如"Android armv8"
         - **Refresh** (int) - 刷新率
@@ -357,9 +361,11 @@ class UPhoneClient(Client):
         - **SplashScreen** (str) - 云手机启动图片URL链接
         - **State** (str) - 云手机状态<br />* 启动中: STARTING; <br />* 运行中: RUNNING; <br />* 关机中: STOPPING; <br />* 关机: STOPPED <br />* 重启中: REBOOTING; <br />* 重置中: RESETTING; <br />* 启动失败: START_FAILED; <br />* 关机失败: STOP_FAILED; <br />* 重启失败: REBOOT_FAILED; <br />* 重置失败: RESET_FAILED; <br />* 未知状态：UNDEFINED_STATE或""
         - **Tag** (str) - 业务组名称
+        - **UPhoneBandwidth** (int) - 云手机带宽，单位Kbps
         - **UPhoneId** (str) - 云手机的唯一标识，不超过32个字节。
         - **UPhoneModelName** (str) - 云手机规格名称
         - **UPhoneName** (str) - 云手机的名称，不超过65个字符。
+        - **UPhoneScene** (str) - 云手机场景
 
 
         """
@@ -706,7 +712,7 @@ class UPhoneClient(Client):
         - **JobIds** (list) - 【数组】Job 的唯一标识 Id，调用方式举例：JobIds.0=希望查询状态的 Job1，JobIds.1=Job2。 如果不传入，则返回当前 城市 所有符合条件的 Job 。
         - **Limit** (int) - 返回数据长度，默认为20，最大100
         - **Offset** (int) - 列表起始位置偏移量，默认为0
-        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
+        - **ProductType** (str) - 枚举值。表示当前操作的产品类型，目前固定值【uphone】，表示云手机场景。
         - **State** (str) - Job状态，枚举值：* 等待状态: PENDING;* 运行状态: RUNNING;* 成功状态: SUCCESS* 失败状态: FAILED* 部分成功状态：PARTIAL_SUCCESS
         - **Types** (list) - 【数组】Job 类型，调用方式举例：JobTypes.0=希望查询的 Job 类型 1，JobTypes.1=Job 类型 2。 如果不传入，则返回当前 城市 所有符合条件的 Job 类型。Job 类型仅支持 INSTALL_APP、UNINSTALL_APP、RUN_ASYNC_COMMAND、CREATE_SERVER_AND_UPHONE、SET_UPHONE_GPS、SET_UPHONE_CONFIG、UPLOAD_FILE、DELETE_UPHONE
 
@@ -762,7 +768,8 @@ class UPhoneClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Limit** (int) - 返回数据长度，默认为20，最大100
         - **Offset** (int) - 列表起始位置偏移量，默认为0
-        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
+        - **ProductType** (str) - 枚举值。表示当前操作的产品类型，目前固定值【uphone】，表示云手机场景。
+        - **Scene** (str) - 使用场景：海外(OVERSEA)，境内(INLAND)
         - **UPhoneModelNames** (list) - 【数组】要获得信息的 UPhoneModel 名称。调用方式举例：UPhoneModelNames.0=希望获取信息的 UPhoneModel1，UPhoneModelNames.1=UPhoneModel2。 如果不传入，则返回当前 城市 所有符合条件的 UPhoneModel。
 
         **Response**
@@ -1011,6 +1018,36 @@ class UPhoneClient(Client):
         resp = self.invoke("GetUPhoneAllowance", d, **kwargs)
         return apis.GetUPhoneAllowanceResponseSchema().loads(resp)
 
+    def get_u_phone_bandwidth_upgrade_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUPhoneBandwidthUpgradePrice - 获取云手机带宽升降级价格
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Bandwidth** (int) - (Required) 带宽大小，单位Kbps，必须是100的整数倍
+        - **ProductType** (str) - (Required) 枚举值。表示当前操作的产品类型，目前固定值【uphone】，表示云手机场景。
+        - **UPhoneId** (str) - (Required) 云手机ID
+
+        **Response**
+
+        - **ListPrice** (float) - 产品列表价
+        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
+        - **OriginalPrice** (float) - 限时优惠的折前原价（即列表价乘以商务折扣后的单价）
+        - **Price** (float) - 规格调整差价。单位: 元，保留小数点后两位有效数字
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUPhoneBandwidthUpgradePriceRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUPhoneBandwidthUpgradePrice", d, **kwargs)
+        return apis.GetUPhoneBandwidthUpgradePriceResponseSchema().loads(resp)
+
     def get_u_phone_price(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1020,14 +1057,17 @@ class UPhoneClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **CityId** (str) - (Required) 城市Id，通过 `获取城市列表 <https://docs.ucloud.cn/api/uphone-api/#DescribeUPhoneCities>`_ 获取
-        - **BandwidthLine** (int) - 购买独立IP时需要此参数，带宽线路数量，与云手机数量一致
-        - **ChargeType** (str) - 计费模式。枚举值为： > Year，按年付费； > Month，按月付费； > Dynamic，按小时预付费; 如果不传某个枚举值，默认返回年付、月付的价格组合集。
+        - **BandwidthLine** (int) - 购买独立IP并且使用全局共享带宽时需要此参数，带宽线路数量，与云手机数量一致
+        - **ChargeType** (str) - 计费模式。枚举值为： > Year，按年付费； > Month，按月付费；> Day，按天付费； > Dynamic，按小时预付费; 如果不传某个枚举值，默认返回年付、月付的价格组合集。
         - **INetBandwidth** (int) - 购买独立IP需要此参数，其中一个ip的带宽值。
         - **IpCount** (int) - 购买独立IP需要此参数。需要的eip数量。
         - **IpDestRegion** (str) - 购买独立IP必须此参数。绑定的目的地域。参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Quantity** (int) - 购买时长。默认: 1。 月付时，此参数传0，代表了购买至月末。
+        - **UPhoneBandwidth** (int) - 单个云手机带宽大小，单位Kbps，仅在UseKbps为true时生效
         - **UPhoneCount** (int) - 云手机个数
         - **UPhoneModelName** (int) - 云手机规格名称
+        - **UseGlobalBws** (bool) - 使用全局共享带宽
+        - **UseKbps** (bool) - 使用Kbps单位带宽，仅在使用全局共享带宽时生效，值为true时BandwidthLine参数不再生效
 
         **Response**
 
@@ -1234,8 +1274,9 @@ class UPhoneClient(Client):
         - **FileName** (str) - (Required) 文件名
         - **UPhoneIds** (list) - (Required) 云手机ID
         - **URL** (str) - (Required) 文件下载链接
+        - **ABI** (str) - 上传文件为apk时，可强制指定32位还是64位运行。armeabi-v7a（32位）;不填为系统默认值（64位）
         - **CityId** (str) - 城市。 参见  `云手机城市列表 <https://docs.ucloud.cn/api/uphone-api/describe_u_phone_cities>`_
-        - **ProductType** (str) - 枚举值。当前操作的产品类型，1、uphone：云手机场景；2、uphone-server：云手机服务器场景。默认云手机服务器场景。
+        - **ProductType** (str) - 枚举值。表示当前操作的产品类型，目前固定值【uphone】，表示云手机场景。
 
         **Response**
 
@@ -1283,6 +1324,33 @@ class UPhoneClient(Client):
 
         resp = self.invoke("InstallUPhoneAppVersion", d, **kwargs)
         return apis.InstallUPhoneAppVersionResponseSchema().loads(resp)
+
+    def modify_u_phone_bandwidth(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyUPhoneBandwidth - 修改云手机带宽
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Bandwidth** (int) - (Required) 带宽大小，单位Kbps，必须是100的整数倍
+        - **ProductType** (str) - (Required) 枚举值。表示当前操作的产品类型，目前固定值【uphone】，表示云手机场景。
+        - **UPhoneId** (str) - (Required) 云手机ID
+
+        **Response**
+
+        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.ModifyUPhoneBandwidthRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyUPhoneBandwidth", d, **kwargs)
+        return apis.ModifyUPhoneBandwidthResponseSchema().loads(resp)
 
     def modify_u_phone_name(
         self, req: typing.Optional[dict] = None, **kwargs

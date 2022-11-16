@@ -156,7 +156,7 @@ class HitRateInfoSchema(schema.ResponseSchema):
 
 
 class HttpCodeInfoSchema(schema.ResponseSchema):
-    """HttpCodeInfo - HttpCodeInfo"""
+    """HttpCodeInfo -"""
 
     fields = {
         "HttpFiveXX": fields.Int(required=False, load_from="HttpFiveXX"),
@@ -169,7 +169,7 @@ class HttpCodeInfoSchema(schema.ResponseSchema):
 
 
 class HttpCodeV2DetailSchema(schema.ResponseSchema):
-    """HttpCodeV2Detail - HTTP状态码详细信息"""
+    """HttpCodeV2Detail -"""
 
     fields = {
         "Http100": fields.Int(required=False, load_from="Http100"),
@@ -314,6 +314,15 @@ class CacheKeyInfoSchema(schema.ResponseSchema):
     }
 
 
+class AccessControlConfSchema(schema.ResponseSchema):
+    """AccessControlConf - 访问控制配置参数"""
+
+    fields = {
+        "IpBlackList": fields.List(fields.Str()),
+        "ReferConf": ReferConfSchema(),
+    }
+
+
 class AdvancedConfSchema(schema.ResponseSchema):
     """AdvancedConf - 域名高级配置"""
 
@@ -321,15 +330,6 @@ class AdvancedConfSchema(schema.ResponseSchema):
         "Http2Https": fields.Bool(required=False, load_from="Http2Https"),
         "HttpClientHeader": fields.List(fields.Str()),
         "HttpOriginHeader": fields.List(fields.Str()),
-    }
-
-
-class AccessControlConfSchema(schema.ResponseSchema):
-    """AccessControlConf - 访问控制配置参数"""
-
-    fields = {
-        "IpBlackList": fields.List(fields.Str()),
-        "ReferConf": ReferConfSchema(),
     }
 
 

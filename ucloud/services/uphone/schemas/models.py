@@ -20,6 +20,7 @@ class UPhoneInstanceSchema(schema.ResponseSchema):
         "ImageId": fields.Str(required=True, load_from="ImageId"),
         "Ip": fields.Str(required=False, load_from="Ip"),
         "IpRegion": fields.Str(required=False, load_from="IpRegion"),
+        "LockBandwidth": fields.Bool(required=False, load_from="LockBandwidth"),
         "Memory": fields.Int(required=True, load_from="Memory"),
         "OsType": fields.Str(required=True, load_from="OsType"),
         "Refresh": fields.Int(required=True, load_from="Refresh"),
@@ -35,11 +36,15 @@ class UPhoneInstanceSchema(schema.ResponseSchema):
         "SplashScreen": fields.Str(required=True, load_from="SplashScreen"),
         "State": fields.Str(required=True, load_from="State"),
         "Tag": fields.Str(required=True, load_from="Tag"),
+        "UPhoneBandwidth": fields.Int(
+            required=False, load_from="UPhoneBandwidth"
+        ),
         "UPhoneId": fields.Str(required=True, load_from="UPhoneId"),
         "UPhoneModelName": fields.Str(
             required=True, load_from="UPhoneModelName"
         ),
         "UPhoneName": fields.Str(required=True, load_from="UPhoneName"),
+        "UPhoneScene": fields.Str(required=False, load_from="UPhoneScene"),
     }
 
 
@@ -201,6 +206,16 @@ class UPhoneModelInstanceSchema(schema.ResponseSchema):
     }
 
 
+class ServerDiskSetSchema(schema.ResponseSchema):
+    """ServerDiskSet -"""
+
+    fields = {
+        "DiskType": fields.Str(required=True, load_from="DiskType"),
+        "IsBoot": fields.Bool(required=True, load_from="IsBoot"),
+        "Size": fields.Int(required=True, load_from="Size"),
+    }
+
+
 class UPhoneSpecSchema(schema.ResponseSchema):
     """UPhoneSpec -"""
 
@@ -209,16 +224,6 @@ class UPhoneSpecSchema(schema.ResponseSchema):
         "UPhoneModelName": fields.Str(
             required=False, load_from="UPhoneModelName"
         ),
-    }
-
-
-class ServerDiskSetSchema(schema.ResponseSchema):
-    """ServerDiskSet -"""
-
-    fields = {
-        "DiskType": fields.Str(required=True, load_from="DiskType"),
-        "IsBoot": fields.Bool(required=True, load_from="IsBoot"),
-        "Size": fields.Int(required=True, load_from="Size"),
     }
 
 

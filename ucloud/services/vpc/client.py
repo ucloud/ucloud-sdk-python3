@@ -862,6 +862,32 @@ class VPCClient(Client):
         resp = self.invoke("DeleteNetworkAclEntry", d, **kwargs)
         return apis.DeleteNetworkAclEntryResponseSchema().loads(resp)
 
+    def delete_network_interface(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteNetworkInterface - 删除网卡
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **InterfaceId** (str) - (Required) 虚拟网卡ID
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteNetworkInterfaceRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteNetworkInterface", d, **kwargs)
+        return apis.DeleteNetworkInterfaceResponseSchema().loads(resp)
+
     def delete_route_table(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:

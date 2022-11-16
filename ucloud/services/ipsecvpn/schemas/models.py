@@ -49,30 +49,6 @@ class VPNGatewayDataSetSchema(schema.ResponseSchema):
     }
 
 
-class IKEDataSchema(schema.ResponseSchema):
-    """IKEData - IKE信息"""
-
-    fields = {
-        "IKEAuthenticationAlgorithm": fields.Str(
-            required=False, load_from="IKEAuthenticationAlgorithm"
-        ),
-        "IKEDhGroup": fields.Str(required=False, load_from="IKEDhGroup"),
-        "IKEEncryptionAlgorithm": fields.Str(
-            required=False, load_from="IKEEncryptionAlgorithm"
-        ),
-        "IKEExchangeMode": fields.Str(
-            required=False, load_from="IKEExchangeMode"
-        ),
-        "IKELocalId": fields.Str(required=False, load_from="IKELocalId"),
-        "IKEPreSharedKey": fields.Str(
-            required=False, load_from="IKEPreSharedKey"
-        ),
-        "IKERemoteId": fields.Str(required=False, load_from="IKERemoteId"),
-        "IKESALifetime": fields.Str(required=False, load_from="IKESALifetime"),
-        "IKEVersion": fields.Str(required=False, load_from="IKEVersion"),
-    }
-
-
 class IPSecDataSchema(schema.ResponseSchema):
     """IPSecData - IPSec参数"""
 
@@ -95,6 +71,30 @@ class IPSecDataSchema(schema.ResponseSchema):
         "IPSecSALifetimeBytes": fields.Str(
             required=False, load_from="IPSecSALifetimeBytes"
         ),
+    }
+
+
+class IKEDataSchema(schema.ResponseSchema):
+    """IKEData - IKE信息"""
+
+    fields = {
+        "IKEAuthenticationAlgorithm": fields.Str(
+            required=False, load_from="IKEAuthenticationAlgorithm"
+        ),
+        "IKEDhGroup": fields.Str(required=False, load_from="IKEDhGroup"),
+        "IKEEncryptionAlgorithm": fields.Str(
+            required=False, load_from="IKEEncryptionAlgorithm"
+        ),
+        "IKEExchangeMode": fields.Str(
+            required=False, load_from="IKEExchangeMode"
+        ),
+        "IKELocalId": fields.Str(required=False, load_from="IKELocalId"),
+        "IKEPreSharedKey": fields.Str(
+            required=False, load_from="IKEPreSharedKey"
+        ),
+        "IKERemoteId": fields.Str(required=False, load_from="IKERemoteId"),
+        "IKESALifetime": fields.Str(required=False, load_from="IKESALifetime"),
+        "IKEVersion": fields.Str(required=False, load_from="IKEVersion"),
     }
 
 

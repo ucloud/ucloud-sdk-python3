@@ -735,12 +735,12 @@ class GetUcdnDomainLogV2ResponseSchema(schema.ResponseSchema):
 """
 API: GetUcdnDomainOriginHttpCode
 
-获取域名源站状态码监控
+
 """
 
 
 class GetUcdnDomainOriginHttpCodeRequestSchema(schema.RequestSchema):
-    """GetUcdnDomainOriginHttpCode - 获取域名源站状态码监控"""
+    """GetUcdnDomainOriginHttpCode -"""
 
     fields = {
         "Areacode": fields.Str(required=False, dump_to="Areacode"),
@@ -753,7 +753,7 @@ class GetUcdnDomainOriginHttpCodeRequestSchema(schema.RequestSchema):
 
 
 class GetUcdnDomainOriginHttpCodeResponseSchema(schema.ResponseSchema):
-    """GetUcdnDomainOriginHttpCode - 获取域名源站状态码监控"""
+    """GetUcdnDomainOriginHttpCode -"""
 
     fields = {
         "HttpCodeDetail": fields.List(
@@ -767,12 +767,12 @@ class GetUcdnDomainOriginHttpCodeResponseSchema(schema.ResponseSchema):
 """
 API: GetUcdnDomainOriginHttpCodeDetail
 
-获取域名源站详细状态码监控
+
 """
 
 
 class GetUcdnDomainOriginHttpCodeDetailRequestSchema(schema.RequestSchema):
-    """GetUcdnDomainOriginHttpCodeDetail - 获取域名源站详细状态码监控"""
+    """GetUcdnDomainOriginHttpCodeDetail -"""
 
     fields = {
         "Areacode": fields.Str(required=False, dump_to="Areacode"),
@@ -785,7 +785,7 @@ class GetUcdnDomainOriginHttpCodeDetailRequestSchema(schema.RequestSchema):
 
 
 class GetUcdnDomainOriginHttpCodeDetailResponseSchema(schema.ResponseSchema):
-    """GetUcdnDomainOriginHttpCodeDetail - 获取域名源站详细状态码监控"""
+    """GetUcdnDomainOriginHttpCodeDetail -"""
 
     fields = {
         "HttpCodeV2Detail": fields.List(

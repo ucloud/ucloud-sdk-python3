@@ -700,6 +700,29 @@ class DeleteNetworkAclEntryResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DeleteNetworkInterface
+
+删除网卡
+"""
+
+
+class DeleteNetworkInterfaceRequestSchema(schema.RequestSchema):
+    """DeleteNetworkInterface - 删除网卡"""
+
+    fields = {
+        "InterfaceId": fields.Str(required=True, dump_to="InterfaceId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DeleteNetworkInterfaceResponseSchema(schema.ResponseSchema):
+    """DeleteNetworkInterface - 删除网卡"""
+
+    fields = {}
+
+
+"""
 API: DeleteRouteTable
 
 删除自定义路由表

@@ -704,6 +704,9 @@ class UpdatePolicyRequestSchema(schema.RequestSchema):
 
     fields = {
         "BackendId": fields.List(fields.Str()),
+        "DomainMatchMode": fields.Str(
+            required=False, dump_to="DomainMatchMode"
+        ),
         "Match": fields.Str(required=True, dump_to="Match"),
         "PolicyId": fields.Str(required=False, dump_to="PolicyId"),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),

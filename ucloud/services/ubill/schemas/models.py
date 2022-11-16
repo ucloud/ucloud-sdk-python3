@@ -17,20 +17,20 @@ class AccountInfoSchema(schema.ResponseSchema):
     }
 
 
-class ResourceExtendInfoSchema(schema.ResponseSchema):
-    """ResourceExtendInfo - 资源标识"""
-
-    fields = {
-        "KeyId": fields.Str(required=True, load_from="KeyId"),
-        "Value": fields.Str(required=True, load_from="Value"),
-    }
-
-
 class ItemDetailSchema(schema.ResponseSchema):
     """ItemDetail - 产品配置"""
 
     fields = {
         "ProductName": fields.Str(required=True, load_from="ProductName"),
+        "Value": fields.Str(required=True, load_from="Value"),
+    }
+
+
+class ResourceExtendInfoSchema(schema.ResponseSchema):
+    """ResourceExtendInfo - 资源标识"""
+
+    fields = {
+        "KeyId": fields.Str(required=True, load_from="KeyId"),
         "Value": fields.Str(required=True, load_from="Value"),
     }
 

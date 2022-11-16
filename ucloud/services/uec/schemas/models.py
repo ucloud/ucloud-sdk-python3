@@ -69,13 +69,14 @@ class CfgDictListSchema(schema.ResponseSchema):
     }
 
 
-class ImageListSchema(schema.ResponseSchema):
-    """ImageList - 容器组镜像密钥列表"""
+class StorVolumeInfoSchema(schema.ResponseSchema):
+    """StorVolumeInfo - 容器组存储卷信息"""
 
     fields = {
-        "ImageKey": fields.Str(required=False, load_from="ImageKey"),
-        "StoreAddr": fields.Str(required=False, load_from="StoreAddr"),
-        "UserName": fields.Str(required=False, load_from="UserName"),
+        "DiskSize": fields.Int(required=False, load_from="DiskSize"),
+        "MountPoint": fields.Str(required=False, load_from="MountPoint"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
     }
 
 
@@ -105,14 +106,13 @@ class IpListSchema(schema.ResponseSchema):
     }
 
 
-class StorVolumeInfoSchema(schema.ResponseSchema):
-    """StorVolumeInfo - 容器组存储卷信息"""
+class ImageListSchema(schema.ResponseSchema):
+    """ImageList - 容器组镜像密钥列表"""
 
     fields = {
-        "DiskSize": fields.Int(required=False, load_from="DiskSize"),
-        "MountPoint": fields.Str(required=False, load_from="MountPoint"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
+        "ImageKey": fields.Str(required=False, load_from="ImageKey"),
+        "StoreAddr": fields.Str(required=False, load_from="StoreAddr"),
+        "UserName": fields.Str(required=False, load_from="UserName"),
     }
 
 

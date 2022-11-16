@@ -42,9 +42,13 @@ class CreateUPhoneRequestSchema(schema.RequestSchema):
             required=False, dump_to="ShareBandwidthName"
         ),
         "Tag": fields.Str(required=False, dump_to="Tag"),
+        "UPhoneBandwidth": fields.Int(
+            required=False, dump_to="UPhoneBandwidth"
+        ),
         "UPhoneCount": fields.Int(required=True, dump_to="UPhoneCount"),
         "UPhoneModelName": fields.Str(required=True, dump_to="UPhoneModelName"),
         "UseGlobalBws": fields.Bool(required=False, dump_to="UseGlobalBws"),
+        "UseKbps": fields.Bool(required=False, dump_to="UseKbps"),
     }
 
 
@@ -230,6 +234,7 @@ class DeleteUPhoneImageRequestSchema(schema.RequestSchema):
 
     fields = {
         "ImageId": fields.Str(required=True, dump_to="ImageId"),
+        "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
     }
 
@@ -597,6 +602,7 @@ class DescribeUPhoneModelRequestSchema(schema.RequestSchema):
         "Offset": fields.Int(required=False, dump_to="Offset"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Scene": fields.Str(required=False, dump_to="Scene"),
         "UPhoneModelNames": fields.List(fields.Str()),
     }
 
@@ -744,6 +750,35 @@ class GetUPhoneAllowanceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetUPhoneBandwidthUpgradePrice
+
+获取云手机带宽升降级价格
+"""
+
+
+class GetUPhoneBandwidthUpgradePriceRequestSchema(schema.RequestSchema):
+    """GetUPhoneBandwidthUpgradePrice - 获取云手机带宽升降级价格"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
+        "ProductType": fields.Str(required=True, dump_to="ProductType"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "UPhoneId": fields.Str(required=True, dump_to="UPhoneId"),
+    }
+
+
+class GetUPhoneBandwidthUpgradePriceResponseSchema(schema.ResponseSchema):
+    """GetUPhoneBandwidthUpgradePrice - 获取云手机带宽升降级价格"""
+
+    fields = {
+        "ListPrice": fields.Float(required=True, load_from="ListPrice"),
+        "Message": fields.Str(required=True, load_from="Message"),
+        "OriginalPrice": fields.Float(required=True, load_from="OriginalPrice"),
+        "Price": fields.Float(required=True, load_from="Price"),
+    }
+
+
+"""
 API: GetUPhonePrice
 
 根据云手机规格名称，获取UPhone实例的价格。
@@ -765,10 +800,15 @@ class GetUPhonePriceRequestSchema(schema.RequestSchema):
         ),  # Deprecated, will be removed at 1.0
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "UPhoneBandwidth": fields.Int(
+            required=False, dump_to="UPhoneBandwidth"
+        ),
         "UPhoneCount": fields.Int(required=False, dump_to="UPhoneCount"),
         "UPhoneModelName": fields.Int(
             required=False, dump_to="UPhoneModelName"
         ),
+        "UseGlobalBws": fields.Bool(required=False, dump_to="UseGlobalBws"),
+        "UseKbps": fields.Bool(required=False, dump_to="UseKbps"),
     }
 
 
@@ -951,6 +991,7 @@ class ImportFileRequestSchema(schema.RequestSchema):
     """ImportFile - 上传文件到云手机目录/sdcard/Download/并自动安装APK文件"""
 
     fields = {
+        "ABI": fields.Str(required=False, dump_to="ABI"),
         "CityId": fields.Str(required=False, dump_to="CityId"),
         "FileName": fields.Str(required=True, dump_to="FileName"),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
@@ -992,6 +1033,32 @@ class InstallUPhoneAppVersionResponseSchema(schema.ResponseSchema):
 
     fields = {
         "JobId": fields.Str(required=True, load_from="JobId"),
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: ModifyUPhoneBandwidth
+
+修改云手机带宽
+"""
+
+
+class ModifyUPhoneBandwidthRequestSchema(schema.RequestSchema):
+    """ModifyUPhoneBandwidth - 修改云手机带宽"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
+        "ProductType": fields.Str(required=True, dump_to="ProductType"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "UPhoneId": fields.Str(required=True, dump_to="UPhoneId"),
+    }
+
+
+class ModifyUPhoneBandwidthResponseSchema(schema.ResponseSchema):
+    """ModifyUPhoneBandwidth - 修改云手机带宽"""
+
+    fields = {
         "Message": fields.Str(required=True, load_from="Message"),
     }
 

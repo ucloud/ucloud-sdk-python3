@@ -66,6 +66,7 @@ class AllocateShareBandwidthRequestSchema(schema.RequestSchema):
         "ChargeType": fields.Str(required=True, dump_to="ChargeType"),
         "IPVersion": fields.Str(required=False, dump_to="IPVersion"),
         "Name": fields.Str(required=True, dump_to="Name"),
+        "OperatorName": fields.Str(required=False, dump_to="OperatorName"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
