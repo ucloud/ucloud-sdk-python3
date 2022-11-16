@@ -3,27 +3,49 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class UDPNDataSchema(schema.ResponseSchema):
-    """UDPNData - UDPN 详细信息"""
 
+
+
+
+
+
+
+
+
+class UDPNDataSchema(schema.ResponseSchema):
+    """ UDPNData - UDPN 详细信息
+    """
     fields = {
-        "Bandwidth": fields.Int(required=True, load_from="Bandwidth"),
-        "ChargeType": fields.Str(required=True, load_from="ChargeType"),
-        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
-        "ExpireTime": fields.Int(required=True, load_from="ExpireTime"),
-        "Peer1": fields.Str(required=True, load_from="Peer1"),
-        "Peer2": fields.Str(required=True, load_from="Peer2"),
-        "UDPNId": fields.Str(required=True, load_from="UDPNId"),
+    
+        'Bandwidth': fields.Int(required=True, load_from='Bandwidth'), 
+    
+        'ChargeType': fields.Str(required=True, load_from='ChargeType'), 
+    
+        'CreateTime': fields.Int(required=True, load_from='CreateTime'), 
+    
+        'ExpireTime': fields.Int(required=True, load_from='ExpireTime'), 
+    
+        'Peer1': fields.Str(required=True, load_from='Peer1'), 
+    
+        'Peer2': fields.Str(required=True, load_from='Peer2'), 
+    
+        'UDPNId': fields.Str(required=True, load_from='UDPNId'), 
+    
     }
+
 
 
 class UDPNLineSetSchema(schema.ResponseSchema):
-    """UDPNLineSet - GetUDPNLineList"""
-
+    """ UDPNLineSet - GetUDPNLineList
+    """
     fields = {
-        "BandwidthUpperLimit": fields.Int(
-            required=True, load_from="BandwidthUpperLimit"
-        ),
-        "LocalRegion": fields.Str(required=True, load_from="LocalRegion"),
-        "RemoteRegion": fields.Str(required=True, load_from="RemoteRegion"),
+    
+        'BandwidthUpperLimit': fields.Int(required=True, load_from='BandwidthUpperLimit'), 
+    
+        'LocalRegion': fields.Str(required=True, load_from='LocalRegion'), 
+    
+        'RemoteRegion': fields.Str(required=True, load_from='RemoteRegion'), 
+    
     }
+
+

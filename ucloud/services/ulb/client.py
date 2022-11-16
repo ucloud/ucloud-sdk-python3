@@ -3,25 +3,37 @@
 import typing
 
 
+
+
 from ucloud.core.client import Client
 from ucloud.services.ulb.schemas import apis
 
 
+
+
+
+
+
+
+
 class ULBClient(Client):
-    def __init__(
-        self, config: dict, transport=None, middleware=None, logger=None
-    ):
+    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
         super(ULBClient, self).__init__(config, transport, middleware, logger)
 
-    def allocate_backend(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """AllocateBackend - 添加ULB后端资源实例
+    
+    
+    
+    
+    
+    
+    
+    def allocate_backend(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ AllocateBackend - 添加ULB后端资源实例
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **ResourceId** (str) - (Required) 所添加的后端资源的资源ID
         - **ResourceType** (str) - (Required) 所添加的后端资源的类型，枚举值：UHost -> 云主机；UNI -> 虚拟网卡；UPM -> 物理云主机； UDHost -> 私有专区主机；UDocker -> 容器；UHybrid->混合云主机；CUBE->Cube，USDP->智能大数据平台；默认值为UHost。报文转发模式不支持UDocker、UHybrid、CUBE
         - **ULBId** (str) - (Required) 负载均衡实例的ID
@@ -33,134 +45,150 @@ class ULBClient(Client):
         - **SubnetId** (str) - 所添加的后端服务器所在的子网，当ResourceType 为 UHybrid 时有效，且必填
         - **VPCId** (str) - 所添加的后端服务器所在的vpc，当ResourceType 为 UHybrid 时有效，且必填
         - **Weight** (int) - 所添加的后端RS权重（在加权轮询算法下有效），取值范围[1-100]，默认为1
-
+        
         **Response**
 
         - **BackendId** (str) - 所添加的后端资源在ULB中的对象ID，（为ULB系统中使用，与资源自身ID无关），可用于 UpdateBackendAttribute/UpdateBackendAttributeBatch/ReleaseBackend
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.AllocateBackendRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("AllocateBackend", d, **kwargs)
         return apis.AllocateBackendResponseSchema().loads(resp)
-
-    def allocate_backend_batch(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """AllocateBackendBatch -
+    
+    
+    
+    
+    
+    
+    
+    def allocate_backend_batch(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ AllocateBackendBatch - 
 
         **Request**
 
-        - **ProjectId** (str) - (Config)
-        - **Region** (str) - (Config)
-        - **ULBId** (str) - (Required)
-        - **VServerId** (str) - (Required)
-        - **ApiVersion** (int) -
-        - **Backends** (list) -
-
+        - **ProjectId** (str) - (Config) 
+        - **Region** (str) - (Config) 
+        - **ULBId** (str) - (Required) 
+        - **VServerId** (str) - (Required) 
+        - **ApiVersion** (int) - 
+        - **Backends** (list) - 
+        
         **Response**
 
         - **BackendSet** (list) - 见 **BackendSet** 模型定义
-
+        
         **Response Model**
-
-        **BackendSet**
-        - **BackendId** (str) -
-        - **ResourceId** (str) -
-
+        
+        **BackendSet** 
+        - **BackendId** (str) - 
+        - **ResourceId** (str) - 
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.AllocateBackendBatchRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("AllocateBackendBatch", d, **kwargs)
         return apis.AllocateBackendBatchResponseSchema().loads(resp)
-
+    
+    
+    
+    
+    
+    
+    
     def bind_ssl(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """BindSSL - 将SSL证书绑定到VServer
+        """ BindSSL - 将SSL证书绑定到VServer
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **SSLId** (str) - (Required) SSL证书的Id
         - **ULBId** (str) - (Required) 所绑定ULB实例ID
         - **VServerId** (str) - (Required) 所绑定VServer实例ID
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.BindSSLRequestSchema().dumps(d)
-
+        
         resp = self.invoke("BindSSL", d, **kwargs)
         return apis.BindSSLResponseSchema().loads(resp)
-
-    def create_policy(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreatePolicy - 创建VServer内容转发策略
+    
+    
+    
+    
+    
+    
+    
+    def create_policy(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreatePolicy - 创建VServer内容转发策略
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **BackendId** (list) - (Required) 内容转发策略应用的后端资源实例的ID，来源于 AllocateBackend 返回的 BackendId
         - **Match** (str) - (Required) 内容转发匹配字段
         - **ULBId** (str) - (Required) 需要添加内容转发策略的负载均衡实例ID
         - **VServerId** (str) - (Required) 需要添加内容转发策略的VServer实例ID
         - **PolicyPriority** (int) - 策略优先级，1-9999
         - **Type** (str) - 内容转发匹配字段的类型
-
+        
         **Response**
 
         - **PolicyId** (str) - 内容转发策略ID
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.CreatePolicyRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreatePolicy", d, **kwargs)
         return apis.CreatePolicyResponseSchema().loads(resp)
-
+    
+    
+    
+    
+    
+    
+    
     def create_ssl(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """CreateSSL - 创建SSL证书，可以把整个 Pem 证书内容传过来，或者把证书、私钥、CA证书分别传过来
+        """ CreateSSL - 创建SSL证书，可以把整个 Pem 证书内容传过来，或者把证书、私钥、CA证书分别传过来
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **SSLName** (str) - (Required) SSL证书的名字，默认值不为空
         - **CaCert** (str) - CA证书
         - **PrivateKey** (str) - 加密证书的私钥
@@ -168,65 +196,73 @@ class ULBClient(Client):
         - **SSLType** (str) - 所添加的SSL证书类型，目前只支持Pem格式
         - **USSLId** (str) - USSL证书的ID
         - **UserCert** (str) - 用户的证书
-
+        
         **Response**
 
         - **SSLId** (str) - SSL证书的Id
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.CreateSSLRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateSSL", d, **kwargs)
         return apis.CreateSSLResponseSchema().loads(resp)
-
-    def create_security_policy(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreateSecurityPolicy - 创建安全策略
+    
+    
+    
+    
+    
+    
+    
+    def create_security_policy(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateSecurityPolicy - 创建安全策略
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **SSLCiphers** (list) - (Required) 加密套件
         - **SecurityPolicyName** (str) - (Required) 安全策略名称
         - **TLSVersion** (str) - (Required) TLS版本
-
+        
         **Response**
 
         - **SecurityPolicyId** (str) - 安全策略ID
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.CreateSecurityPolicyRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateSecurityPolicy", d, **kwargs)
         return apis.CreateSecurityPolicyResponseSchema().loads(resp)
-
+    
+    
+    
+    
+    
+    
+    
     def create_ulb(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """CreateULB - 创建负载均衡实例，可以选择内网或者外网
+        """ CreateULB - 创建负载均衡实例，可以选择内网或者外网
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **BusinessId** (str) - ULB 所属的业务组ID，如果不传则使用默认的业务组
         - **ChargeType** (str) - 付费方式, 枚举值为: Year, 按年付费; Month, 按月付费; Dynamic, 按时付费
         - **FirewallId** (str) - 防火墙ID，如果不传，则默认不绑定防火墙
@@ -238,36 +274,39 @@ class ULBClient(Client):
         - **Tag** (str) - 业务组
         - **ULBName** (str) - 负载均衡的名字，默认值为“ULB”
         - **VPCId** (str) - ULB所在的VPC的ID, 如果不传则使用默认的VPC
-
+        
         **Response**
 
         - **IPv6AddressId** (str) - IPv6地址Id
         - **ULBId** (str) - 负载均衡实例的Id
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.CreateULBRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateULB", d, **kwargs)
         return apis.CreateULBResponseSchema().loads(resp)
-
-    def create_vserver(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreateVServer - 创建VServer实例，定义监听的协议和端口以及负载均衡算法
+    
+    
+    
+    
+    
+    
+    
+    def create_vserver(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateVServer - 创建VServer实例，定义监听的协议和端口以及负载均衡算法
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **ULBId** (str) - (Required) 负载均衡实例ID
         - **ClientTimeout** (int) - ListenType为RequestProxy时表示空闲连接的回收时间，单位：秒，取值范围：时(0，86400]，默认值为60；ListenType为PacketsTransmit时表示连接保持的时间，单位：秒，取值范围：[60，900]，0 表示禁用连接保持
         - **Domain** (str) - 根据MonitorType确认； 当MonitorType为Path时，此字段有意义，代表HTTP检查域名
@@ -286,174 +325,198 @@ class ULBClient(Client):
         - **ResponseMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查请求应收到的响应报文
         - **SecurityPolicyId** (str) - 安全策略组ID，默认值'Default'
         - **VServerName** (str) - VServer实例名称，默认为"VServer"
-
+        
         **Response**
 
         - **VServerId** (str) - VServer实例的Id
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.CreateVServerRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateVServer", d, **kwargs)
         return apis.CreateVServerResponseSchema().loads(resp)
-
-    def delete_policy(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DeletePolicy - 删除内容转发策略
+    
+    
+    
+    
+    
+    
+    
+    def delete_policy(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeletePolicy - 删除内容转发策略
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **PolicyId** (str) - (Required) 内容转发策略ID
         - **VServerId** (str) - VServer 资源ID
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DeletePolicyRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeletePolicy", d, **kwargs)
         return apis.DeletePolicyResponseSchema().loads(resp)
-
+    
+    
+    
+    
+    
+    
+    
     def delete_ssl(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """DeleteSSL - 删除SSL证书
+        """ DeleteSSL - 删除SSL证书
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **SSLId** (str) - (Required) SSL证书的ID
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DeleteSSLRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteSSL", d, **kwargs)
         return apis.DeleteSSLResponseSchema().loads(resp)
-
-    def delete_security_policy(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DeleteSecurityPolicy - 删除安全策略
+    
+    
+    
+    
+    
+    
+    
+    def delete_security_policy(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeleteSecurityPolicy - 删除安全策略
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **SecurityPolicyId** (str) - (Required) 安全策略ID
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DeleteSecurityPolicyRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteSecurityPolicy", d, **kwargs)
         return apis.DeleteSecurityPolicyResponseSchema().loads(resp)
-
+    
+    
+    
+    
+    
+    
+    
     def delete_ulb(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """DeleteULB - 删除负载均衡实例
+        """ DeleteULB - 删除负载均衡实例
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **ULBId** (str) - (Required) 负载均衡实例的ID
         - **ReleaseEip** (bool) - 删除ulb时是否释放绑定的EIP，false标识只解绑EIP，true表示会释放绑定的EIP，默认是false。Anycast IP 此参数无效
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DeleteULBRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteULB", d, **kwargs)
         return apis.DeleteULBResponseSchema().loads(resp)
-
-    def delete_vserver(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DeleteVServer - 删除VServer实例
+    
+    
+    
+    
+    
+    
+    
+    def delete_vserver(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeleteVServer - 删除VServer实例
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **ULBId** (str) - (Required) 负载均衡实例的ID
         - **VServerId** (str) - (Required) VServer实例的ID
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DeleteVServerRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DeleteVServer", d, **kwargs)
         return apis.DeleteVServerResponseSchema().loads(resp)
-
+    
+    
+    
+    
+    
+    
+    
     def describe_ssl(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """DescribeSSL - 获取SSL证书信息
+        """ DescribeSSL - 获取SSL证书信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **Limit** (int) - 数据分页值，默认为20
         - **Offset** (int) - 数据偏移量，默认值为0
         - **SSLId** (str) - SSL证书的Id
-
+        
         **Response**
 
         - **DataSet** (list) - 见 **ULBSSLSet** 模型定义
         - **TotalCount** (int) - 满足条件的SSL证书总数
-
+        
         **Response Model**
-
-        **ULBSSLSet**
+        
+        **ULBSSLSet** 
         - **BindedTargetSet** (list) - 见 **SSLBindedTargetSet** 模型定义
         - **CreateTime** (int) - SSL证书的创建时间
         - **Domains** (str) - USSL证书平台的域名,只有当SSLSource为1时才出现
@@ -464,130 +527,141 @@ class ULBClient(Client):
         - **SSLSource** (int) - SSL证书来源，SSL证书来源，0代表证书来自于ULB平台，1代表证书来自于USSL平台
         - **SSLType** (str) - SSL证书类型，暂时只有 Pem 一种类型
         - **USSLId** (str) - USSL证书平台的编号,只有当SSLSource为1时才出现
+        
 
-
-        **SSLBindedTargetSet**
+        **SSLBindedTargetSet** 
         - **ULBId** (str) - VServer 所属的ULB实例的资源ID
         - **ULBName** (str) - ULB实例的名称
         - **VServerId** (str) - SSL证书绑定到的VServer的资源ID
         - **VServerName** (str) - 对应的VServer的名字
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeSSLRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeSSL", d, **kwargs)
         return apis.DescribeSSLResponseSchema().loads(resp)
-
-    def describe_security_policies(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeSecurityPolicies - 获取安全策略的信息
+    
+    
+    
+    
+    
+    
+    
+    def describe_security_policies(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeSecurityPolicies - 获取安全策略的信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **Limit** (int) - 数据分页值
         - **Offset** (int) - 数据偏移量
         - **SecurityPolicyId** (str) - 安全策略ID
-
+        
         **Response**
 
         - **DataSet** (list) - 见 **SecurityPolicy** 模型定义
         - **TotalCount** (int) - 满足条件的安全策略总数
-
+        
         **Response Model**
-
-        **SecurityPolicy**
+        
+        **SecurityPolicy** 
         - **SSLCiphers** (list) - 加密套件
         - **SecurityPolicyId** (str) - 安全策略ID
         - **SecurityPolicyName** (str) - 安全策略名称
         - **SecurityPolicyType** (int) - 安全策略类型 0：预定义 1：自定义
         - **TLSVersion** (str) - TLS最低版本
         - **VServerSet** (list) - 见 **BindVServerInfo** 模型定义
+        
 
-
-        **BindVServerInfo**
+        **BindVServerInfo** 
         - **Port** (int) - VServer端口
         - **ULBId** (str) - ULB的ID
         - **VServerId** (str) - 绑定的VServerId
         - **VServerName** (str) - 绑定的VServer名称
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeSecurityPoliciesRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeSecurityPolicies", d, **kwargs)
         return apis.DescribeSecurityPoliciesResponseSchema().loads(resp)
-
-    def describe_support_ciphers(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeSupportCiphers - 返回安全策略所有支持的加密套件
+    
+    
+    
+    
+    
+    
+    
+    def describe_support_ciphers(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeSupportCiphers - 返回安全策略所有支持的加密套件
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        
         **Response**
 
         - **DataSet** (list) - 见 **TLSAndCiphers** 模型定义
-
+        
         **Response Model**
-
-        **TLSAndCiphers**
+        
+        **TLSAndCiphers** 
         - **SSLCiphers** (list) - 加密套件
         - **TLSVersion** (str) - TLS最低版本
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeSupportCiphersRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeSupportCiphers", d, **kwargs)
         return apis.DescribeSupportCiphersResponseSchema().loads(resp)
-
+    
+    
+    
+    
+    
+    
+    
     def describe_ulb(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """DescribeULB - 获取ULB详细信息
+        """ DescribeULB - 获取ULB详细信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **BusinessId** (str) - ULB所属的业务组ID
         - **Limit** (int) - 数据分页值，默认为20
         - **Offset** (int) - 数据偏移量，默认为0
         - **SubnetId** (str) - ULB所属的子网ID
         - **ULBId** (str) - 负载均衡实例的Id。 若指定则返回指定的负载均衡实例的信息； 若不指定则返回当前数据中心中所有的负载均衡实例的信息
         - **VPCId** (str) - ULB所属的VPC
-
+        
         **Response**
 
         - **DataSet** (list) - 见 **ULBSet** 模型定义
         - **TotalCount** (int) - 满足条件的ULB总数
-
+        
         **Response Model**
-
-        **ULBSet**
+        
+        **ULBSet** 
         - **Bandwidth** (int) - 带宽
         - **BandwidthType** (int) - 带宽类型，枚举值为： 0，非共享带宽； 1，共享带宽
         - **BusinessId** (str) - ULB 所属的业务组ID
@@ -607,28 +681,28 @@ class ULBClient(Client):
         - **ULBType** (str) - ULB 的类型
         - **VPCId** (str) - ULB所在的VPC的ID
         - **VServerSet** (list) - 见 **ULBVServerSet** 模型定义
+        
 
-
-        **FirewallSet**
+        **FirewallSet** 
         - **FirewallId** (str) - 防火墙ID
         - **FirewallName** (str) - 防火墙名称
+        
 
-
-        **ULBIPSet**
+        **ULBIPSet** 
         - **Bandwidth** (int) - 弹性IP的带宽值（暂未对外开放）
         - **BandwidthType** (int) - 弹性IP的带宽类型，枚举值：1 表示是共享带宽，0 普通带宽类型（暂未对外开放）
         - **EIP** (str) - 弹性IP地址
         - **EIPId** (str) - 弹性IP的ID
         - **OperatorName** (str) - 弹性IP的运营商信息，枚举值为：  Bgp：BGP IP International：国际IP
+        
 
-
-        **LoggerSet**
+        **LoggerSet** 
         - **BucketName** (str) - ulb日志上传的bucket
         - **TokenID** (str) - 上传到bucket使用的token的tokenid
         - **TokenName** (str) - bucket的token名称
+        
 
-
-        **ULBVServerSet**
+        **ULBVServerSet** 
         - **BackendSet** (list) - 见 **ULBBackendSet** 模型定义
         - **ClientTimeout** (int) - 空闲连接的回收时间，单位：秒。
         - **Domain** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查域名
@@ -652,9 +726,9 @@ class ULBClient(Client):
         - **ULBId** (str) - 负载均衡实例的Id
         - **VServerId** (str) - VServer实例的Id
         - **VServerName** (str) - VServer实例的名字
+        
 
-
-        **ULBBackendSet**
+        **ULBBackendSet** 
         - **BackendId** (str) - 后端资源实例的Id
         - **Enabled** (int) - 后端提供服务的实例启用与否，枚举值：0 禁用 1 启用
         - **IsBackup** (int) - 是否为backup，只有当vserver的Backup属性为1时才会有此字段，说明：0：主rs1：备rs
@@ -670,9 +744,9 @@ class ULBClient(Client):
         - **SubnetId** (str) - 后端提供服务的资源所在的子网的ID
         - **VPCId** (str) - 后端服务器所在的VPC
         - **Weight** (int) - 后端RS权重（在加权轮询算法下有效）
+        
 
-
-        **ULBPolicySet**
+        **ULBPolicySet** 
         - **BackendSet** (list) - 见 **PolicyBackendSet** 模型定义
         - **DomainMatchMode** (str) - 内容转发规则中域名的匹配方式。枚举值：Regular，正则；Wildcard，泛域名
         - **Match** (str) - 内容转发匹配字段;默认内容转发类型下为空。
@@ -682,9 +756,9 @@ class ULBClient(Client):
         - **TotalCount** (int) - 默认内容转发类型下返回当前rs总数
         - **Type** (str) - 内容转发匹配字段的类型，枚举值：Domain -> 域名；Path -> 路径； 默认内容转发类型下为空
         - **VServerId** (str) - 所属VServerId
+        
 
-
-        **PolicyBackendSet**
+        **PolicyBackendSet** 
         - **BackendId** (str) - 所添加的后端资源在ULB中的对象ID，（为ULB系统中使用，与资源自身ID无关
         - **ObjectId** (str) - 后端资源的对象ID
         - **Port** (int) - 所添加的后端资源服务端口
@@ -694,9 +768,9 @@ class ULBClient(Client):
         - **SubResourceId** (str) - 如果资源绑定了弹性网卡，则展示弹性网卡的资源ID
         - **SubResourceName** (str) - 如果资源绑定了弹性网卡，则展示弹性网卡的资源名称
         - **SubResourceType** (str) - "UNI"或者为空
+        
 
-
-        **ULBSSLSet**
+        **ULBSSLSet** 
         - **BindedTargetSet** (list) - 见 **SSLBindedTargetSet** 模型定义
         - **CreateTime** (int) - SSL证书的创建时间
         - **Domains** (str) - USSL证书平台的域名,只有当SSLSource为1时才出现
@@ -707,59 +781,62 @@ class ULBClient(Client):
         - **SSLSource** (int) - SSL证书来源，SSL证书来源，0代表证书来自于ULB平台，1代表证书来自于USSL平台
         - **SSLType** (str) - SSL证书类型，暂时只有 Pem 一种类型
         - **USSLId** (str) - USSL证书平台的编号,只有当SSLSource为1时才出现
+        
 
-
-        **SSLBindedTargetSet**
+        **SSLBindedTargetSet** 
         - **ULBId** (str) - VServer 所属的ULB实例的资源ID
         - **ULBName** (str) - ULB实例的名称
         - **VServerId** (str) - SSL证书绑定到的VServer的资源ID
         - **VServerName** (str) - 对应的VServer的名字
+        
 
-
-        **BindSecurityPolicy**
+        **BindSecurityPolicy** 
         - **SSLCiphers** (list) - 加密套件
         - **SecurityPolicyId** (str) - 安全策略组ID
         - **SecurityPolicyName** (str) - 安全策略组名称
         - **SecurityPolicyType** (int) - 安全策略类型 0：预定义 1：自定义
         - **TLSVersion** (str) - TLS最低版本
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeULBRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeULB", d, **kwargs)
         return apis.DescribeULBResponseSchema().loads(resp)
-
-    def describe_ulb_simple(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeULBSimple - 获取ULB信息
+    
+    
+    
+    
+    
+    
+    
+    def describe_ulb_simple(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeULBSimple - 获取ULB信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **BusinessId** (str) - ULB所属的业务组ID
         - **Limit** (int) - 数据分页值，默认为10000
         - **Offset** (int) - 数据偏移量，默认为0
         - **SubnetId** (str) - ULB所属的子网ID
         - **ULBId** (str) - 负载均衡实例的Id。 若指定则返回指定的负载均衡实例的信息； 若不指定则返回当前数据中心中所有的负载均衡实例的信息
         - **VPCId** (str) - ULB所属的VPC
-
+        
         **Response**
 
         - **DataSet** (list) - 见 **ULBSimpleSet** 模型定义
         - **TotalCount** (int) - 满足条件的ULB总数
-
+        
         **Response Model**
-
-        **ULBSimpleSet**
+        
+        **ULBSimpleSet** 
         - **Bandwidth** (int) - 带宽
         - **BandwidthType** (int) - 带宽类型，枚举值为： 0，非共享带宽； 1，共享带宽
         - **BusinessId** (str) - ULB 所属的业务组ID
@@ -779,61 +856,64 @@ class ULBClient(Client):
         - **ULBType** (str) - ULB 的类型（InnerMode or OuterMode）
         - **VPCId** (str) - ULB所在的VPC的ID
         - **VServerCount** (int) - ulb下vserver数量
+        
 
-
-        **FirewallSet**
+        **FirewallSet** 
         - **FirewallId** (str) - 防火墙ID
         - **FirewallName** (str) - 防火墙名称
+        
 
-
-        **ULBIPSet**
+        **ULBIPSet** 
         - **Bandwidth** (int) - 弹性IP的带宽值（暂未对外开放）
         - **BandwidthType** (int) - 弹性IP的带宽类型，枚举值：1 表示是共享带宽，0 普通带宽类型（暂未对外开放）
         - **EIP** (str) - 弹性IP地址
         - **EIPId** (str) - 弹性IP的ID
         - **OperatorName** (str) - 弹性IP的运营商信息，枚举值为：  Bgp：BGP IP International：国际IP
+        
 
-
-        **LoggerSet**
+        **LoggerSet** 
         - **BucketName** (str) - ulb日志上传的bucket
         - **TokenID** (str) - 上传到bucket使用的token的tokenid
         - **TokenName** (str) - bucket的token名称
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeULBSimpleRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeULBSimple", d, **kwargs)
         return apis.DescribeULBSimpleResponseSchema().loads(resp)
-
-    def describe_vserver(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeVServer - 获取ULB下的VServer的详细信息
+    
+    
+    
+    
+    
+    
+    
+    def describe_vserver(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeVServer - 获取ULB下的VServer的详细信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **Limit** (int) - 数据分页值
         - **Offset** (int) - 数据偏移量
         - **ULBId** (str) - 负载均衡实例的Id
         - **VServerId** (str) - VServer实例的Id；若指定则返回指定的VServer实例的信息； 若不指定则返回当前负载均衡实例下所有VServer的信息
-
+        
         **Response**
 
         - **DataSet** (list) - 见 **ULBVServerSet** 模型定义
         - **TotalCount** (int) - 满足条件的VServer总数
-
+        
         **Response Model**
-
-        **ULBVServerSet**
+        
+        **ULBVServerSet** 
         - **BackendSet** (list) - 见 **ULBBackendSet** 模型定义
         - **ClientTimeout** (int) - 空闲连接的回收时间，单位：秒。
         - **Domain** (str) - 根据MonitorType确认； 当MonitorType为Port时，此字段无意义。当MonitorType为Path时，代表HTTP检查域名
@@ -857,9 +937,9 @@ class ULBClient(Client):
         - **ULBId** (str) - 负载均衡实例的Id
         - **VServerId** (str) - VServer实例的Id
         - **VServerName** (str) - VServer实例的名字
+        
 
-
-        **ULBBackendSet**
+        **ULBBackendSet** 
         - **BackendId** (str) - 后端资源实例的Id
         - **Enabled** (int) - 后端提供服务的实例启用与否，枚举值：0 禁用 1 启用
         - **IsBackup** (int) - 是否为backup，只有当vserver的Backup属性为1时才会有此字段，说明：0：主rs1：备rs
@@ -875,9 +955,9 @@ class ULBClient(Client):
         - **SubnetId** (str) - 后端提供服务的资源所在的子网的ID
         - **VPCId** (str) - 后端服务器所在的VPC
         - **Weight** (int) - 后端RS权重（在加权轮询算法下有效）
+        
 
-
-        **ULBPolicySet**
+        **ULBPolicySet** 
         - **BackendSet** (list) - 见 **PolicyBackendSet** 模型定义
         - **DomainMatchMode** (str) - 内容转发规则中域名的匹配方式。枚举值：Regular，正则；Wildcard，泛域名
         - **Match** (str) - 内容转发匹配字段;默认内容转发类型下为空。
@@ -887,9 +967,9 @@ class ULBClient(Client):
         - **TotalCount** (int) - 默认内容转发类型下返回当前rs总数
         - **Type** (str) - 内容转发匹配字段的类型，枚举值：Domain -> 域名；Path -> 路径； 默认内容转发类型下为空
         - **VServerId** (str) - 所属VServerId
+        
 
-
-        **PolicyBackendSet**
+        **PolicyBackendSet** 
         - **BackendId** (str) - 所添加的后端资源在ULB中的对象ID，（为ULB系统中使用，与资源自身ID无关
         - **ObjectId** (str) - 后端资源的对象ID
         - **Port** (int) - 所添加的后端资源服务端口
@@ -899,9 +979,9 @@ class ULBClient(Client):
         - **SubResourceId** (str) - 如果资源绑定了弹性网卡，则展示弹性网卡的资源ID
         - **SubResourceName** (str) - 如果资源绑定了弹性网卡，则展示弹性网卡的资源名称
         - **SubResourceType** (str) - "UNI"或者为空
+        
 
-
-        **ULBSSLSet**
+        **ULBSSLSet** 
         - **BindedTargetSet** (list) - 见 **SSLBindedTargetSet** 模型定义
         - **CreateTime** (int) - SSL证书的创建时间
         - **Domains** (str) - USSL证书平台的域名,只有当SSLSource为1时才出现
@@ -912,270 +992,300 @@ class ULBClient(Client):
         - **SSLSource** (int) - SSL证书来源，SSL证书来源，0代表证书来自于ULB平台，1代表证书来自于USSL平台
         - **SSLType** (str) - SSL证书类型，暂时只有 Pem 一种类型
         - **USSLId** (str) - USSL证书平台的编号,只有当SSLSource为1时才出现
+        
 
-
-        **SSLBindedTargetSet**
+        **SSLBindedTargetSet** 
         - **ULBId** (str) - VServer 所属的ULB实例的资源ID
         - **ULBName** (str) - ULB实例的名称
         - **VServerId** (str) - SSL证书绑定到的VServer的资源ID
         - **VServerName** (str) - 对应的VServer的名字
+        
 
-
-        **BindSecurityPolicy**
+        **BindSecurityPolicy** 
         - **SSLCiphers** (list) - 加密套件
         - **SecurityPolicyId** (str) - 安全策略组ID
         - **SecurityPolicyName** (str) - 安全策略组名称
         - **SecurityPolicyType** (int) - 安全策略类型 0：预定义 1：自定义
         - **TLSVersion** (str) - TLS最低版本
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.DescribeVServerRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeVServer", d, **kwargs)
         return apis.DescribeVServerResponseSchema().loads(resp)
-
-    def release_backend(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """ReleaseBackend - 从VServer释放后端资源实例
+    
+    
+    
+    
+    
+    
+    
+    def release_backend(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ ReleaseBackend - 从VServer释放后端资源实例
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **BackendId** (str) - (Required) 后端资源实例的ID(ULB后端ID，非资源自身ID)
         - **ULBId** (str) - (Required) 负载均衡实例的ID
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.ReleaseBackendRequestSchema().dumps(d)
-
+        
         resp = self.invoke("ReleaseBackend", d, **kwargs)
         return apis.ReleaseBackendResponseSchema().loads(resp)
-
-    def un_bind_security_policy(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """UnBindSecurityPolicy - 批量解绑安全策略
+    
+    
+    
+    
+    
+    
+    
+    def un_bind_security_policy(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ UnBindSecurityPolicy - 批量解绑安全策略
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **SecurityPolicyId** (str) - (Required) 安全策略ID
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.UnBindSecurityPolicyRequestSchema().dumps(d)
-
+        
         resp = self.invoke("UnBindSecurityPolicy", d, **kwargs)
         return apis.UnBindSecurityPolicyResponseSchema().loads(resp)
-
+    
+    
+    
+    
+    
+    
+    
     def unbind_ssl(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """UnbindSSL - 从VServer解绑SSL证书
+        """ UnbindSSL - 从VServer解绑SSL证书
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **SSLId** (str) - (Required) SSL证书的Id
         - **ULBId** (str) - (Required) 所绑定ULB实例ID
         - **VServerId** (str) - (Required) 所绑定VServer实例ID
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.UnbindSSLRequestSchema().dumps(d)
-
+        
         resp = self.invoke("UnbindSSL", d, **kwargs)
         return apis.UnbindSSLResponseSchema().loads(resp)
-
-    def update_backend_attribute(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """UpdateBackendAttribute - 更新ULB后端资源实例(服务节点)属性
+    
+    
+    
+    
+    
+    
+    
+    def update_backend_attribute(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ UpdateBackendAttribute - 更新ULB后端资源实例(服务节点)属性
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **BackendId** (str) - (Required) 后端资源实例的ID(ULB后端ID，非资源自身ID)
         - **ULBId** (str) - (Required) 负载均衡资源ID
         - **Enabled** (int) - 后端实例状态开关
         - **IsBackup** (int) - 是否为backup0：主rs1：备rs默认为0
         - **Port** (int) - 后端资源服务端口，取值范围[1-65535]
         - **Weight** (int) - 所添加的后端RS权重（在加权轮询算法下有效），取值范围[1-100]，默认为1
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.UpdateBackendAttributeRequestSchema().dumps(d)
-
+        
         resp = self.invoke("UpdateBackendAttribute", d, **kwargs)
         return apis.UpdateBackendAttributeResponseSchema().loads(resp)
-
-    def update_policy(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """UpdatePolicy - 更新内容转发规则，包括转发规则后的服务节点
+    
+    
+    
+    
+    
+    
+    
+    def update_policy(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ UpdatePolicy - 更新内容转发规则，包括转发规则后的服务节点
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **Match** (str) - (Required) 内容转发匹配字段
         - **ULBId** (str) - (Required) 需要添加内容转发策略的负载均衡实例ID
         - **VServerId** (str) - (Required) 需要添加内容转发策略的VServer实例ID，只支持请求代理模式下，HTTP或HTTPS协议的VServer
         - **BackendId** (list) - 内容转发策略应用的后端资源实例的ID，来源于 AllocateBackend 返回的 BackendId，不传表示更新转发节点为空
+        - **DomainMatchMode** (str) - 内容转发规则中域名的匹配方式，默认与原本一致。枚举值：Regular，正则；Wildcard，泛域名
         - **PolicyId** (str) - 转发规则的ID，当Type为Default时，可以不传或为空
         - **Type** (str) - 内容转发匹配字段的类型，枚举值：Domain -> 域名转发规则；Path -> 路径转发规则；Default -> 默认转发规则，不传默认值Domain
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.UpdatePolicyRequestSchema().dumps(d)
-
+        
         resp = self.invoke("UpdatePolicy", d, **kwargs)
         return apis.UpdatePolicyResponseSchema().loads(resp)
-
-    def update_ssl_attribute(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """UpdateSSLAttribute - 更新修改SSL的属性，如：修改SSLName
+    
+    
+    
+    
+    
+    
+    
+    def update_ssl_attribute(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ UpdateSSLAttribute - 更新修改SSL的属性，如：修改SSLName
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **SSLId** (str) - (Required) SSL的资源id
         - **SSLName** (str) - (Required) SSL实例名称，不允许传空
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.UpdateSSLAttributeRequestSchema().dumps(d)
-
+        
         resp = self.invoke("UpdateSSLAttribute", d, **kwargs)
         return apis.UpdateSSLAttributeResponseSchema().loads(resp)
-
-    def update_security_policy(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """UpdateSecurityPolicy - 更新安全策略
+    
+    
+    
+    
+    
+    
+    
+    def update_security_policy(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ UpdateSecurityPolicy - 更新安全策略
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **SecurityPolicyId** (str) - (Required) 安全策略ID
         - **SSLCiphers** (list) - 加密套件，TLS最低版本和加密套件必须全不为空或全为空
         - **SecurityPolicyName** (str) - 安全策略名称
         - **TLSVersion** (str) - TLS最低版本，TLS最低版本和加密套件必须全不为空或全为空
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.UpdateSecurityPolicyRequestSchema().dumps(d)
-
+        
         resp = self.invoke("UpdateSecurityPolicy", d, **kwargs)
         return apis.UpdateSecurityPolicyResponseSchema().loads(resp)
-
-    def update_ulb_attribute(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """UpdateULBAttribute - 更新ULB名字业务组备注等属性字段
+    
+    
+    
+    
+    
+    
+    
+    def update_ulb_attribute(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ UpdateULBAttribute - 更新ULB名字业务组备注等属性字段
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
         - **ULBId** (str) - (Required) ULB资源ID
         - **Name** (str) - 名字
         - **Remark** (str) - 备注
         - **Tag** (str) - 业务
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.UpdateULBAttributeRequestSchema().dumps(d)
-
+        
         resp = self.invoke("UpdateULBAttribute", d, **kwargs)
         return apis.UpdateULBAttributeResponseSchema().loads(resp)
-
-    def update_vserver_attribute(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """UpdateVServerAttribute - 更新VServer实例属性
+    
+    
+    
+    
+    
+    
+    
+    def update_vserver_attribute(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ UpdateVServerAttribute - 更新VServer实例属性
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **ULBId** (str) - (Required) 负载均衡实例ID
         - **VServerId** (str) - (Required) VServer实例ID
         - **ClientTimeout** (int) - 请求代理的VServer下表示空闲连接的回收时间，单位：秒，取值范围：时(0，86400]，默认值为60；报文转发的VServer下表示回话保持的时间，单位：秒，取值范围：[60，900]，0 表示禁用连接保持
@@ -1192,18 +1302,20 @@ class ULBClient(Client):
         - **ResponseMsg** (str) - 根据MonitorType确认； 当MonitorType为Customize时，此字段有意义，代表UDP检查请求应收到的响应报文
         - **SecurityPolicyId** (str) - 安全策略组ID
         - **VServerName** (str) - VServer实例名称，若无此字段则不做修改
-
+        
         **Response**
 
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.UpdateVServerAttributeRequestSchema().dumps(d)
-
+        
         resp = self.invoke("UpdateVServerAttribute", d, **kwargs)
         return apis.UpdateVServerAttributeResponseSchema().loads(resp)
+    
+
+

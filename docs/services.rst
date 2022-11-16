@@ -178,6 +178,13 @@ UK8S
    :members:
 
 
+UMongoDB
+--------
+
+.. autoclass:: ucloud.services.umongodb.client.UMongoDBClient
+   :members:
+
+
 UNVS
 ----
 

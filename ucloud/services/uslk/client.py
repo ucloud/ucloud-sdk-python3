@@ -3,20 +3,32 @@
 import typing
 
 
+
+
 from ucloud.core.client import Client
 from ucloud.services.uslk.schemas import apis
 
 
+
+
+
+
+
+
+
 class USLKClient(Client):
-    def __init__(
-        self, config: dict, transport=None, middleware=None, logger=None
-    ):
+    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
         super(USLKClient, self).__init__(config, transport, middleware, logger)
 
-    def batch_create_uslk_short_link(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """BatchCreateUSLKShortLink - 批量创建短链接【免审】
+    
+    
+    
+    
+    
+    
+    
+    def batch_create_uslk_short_link(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ BatchCreateUSLKShortLink - 批量创建短链接【免审】
 
         **Request**
 
@@ -26,84 +38,102 @@ class USLKClient(Client):
         - **ScenarioID** (int) - (Required) 场景ID
         - **ShortLinkDomain** (str) - (Required) 短链接域名
         - **StartTime** (int) - (Required) 开始生效时间戳（秒级）, 传 3376656000 表示生成永久生效短链接
-
+        
         **Response**
 
         - **Message** (str) - Message
         - **ShortLinks** (list) - 创建成功的短链接，根据传LongLinks顺序排列
-
+        
         """
         # build request
-        d = {}
+        d = {
+            
+        }
         req and d.update(req)
         d = apis.BatchCreateUSLKShortLinkRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("BatchCreateUSLKShortLink", d, **kwargs)
         return apis.BatchCreateUSLKShortLinkResponseSchema().loads(resp)
-
-    def create_uslk_long_link(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreateUSLKLongLink - 报备长链接
+    
+    
+    
+    
+    
+    
+    
+    def create_uslk_long_link(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateUSLKLongLink - 报备长链接
 
         **Request**
 
         - **LongLink** (str) - (Required) 要报备的长链接
         - **ScenarioID** (int) - (Required) 场景ID
-
+        
         **Response**
 
         - **LongLinkID** (int) - 长链接ID
         - **Message** (str) - Message
         - **ReqUuid** (str) - ReqUuid
-
+        
         """
         # build request
-        d = {}
+        d = {
+            
+        }
         req and d.update(req)
         d = apis.CreateUSLKLongLinkRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateUSLKLongLink", d, **kwargs)
         return apis.CreateUSLKLongLinkResponseSchema().loads(resp)
-
-    def create_uslk_scenario(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreateUSLKScenario - 长链接报备场景创建
+    
+    
+    
+    
+    
+    
+    
+    def create_uslk_scenario(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateUSLKScenario - 长链接报备场景创建
 
         **Request**
 
         - **Scenario** (str) - (Required) 场景名称
         - **ScenarioDesc** (str) - (Required) 场景说明
-
+        
         **Response**
 
         - **Message** (str) - Message
         - **ReqUuid** (str) - ReqUuid
         - **ScenarioID** (int) - 场景ID
-
+        
         """
         # build request
-        d = {}
+        d = {
+            
+        }
         req and d.update(req)
         d = apis.CreateUSLKScenarioRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateUSLKScenario", d, **kwargs)
         return apis.CreateUSLKScenarioResponseSchema().loads(resp)
-
-    def create_uslk_short_link(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreateUSLKShortLink - 创建短链接
+    
+    
+    
+    
+    
+    
+    
+    def create_uslk_short_link(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateUSLKShortLink - 创建短链接
 
         **Request**
 
@@ -113,28 +143,34 @@ class USLKClient(Client):
         - **StartTime** (int) - (Required) 开始生效时间戳, 传 3376656000 表示生成永久生效短链接
         - **Type** (int) - (Required) 链接类型-预留：普通跳转、随机跳转，当前默认普通跳转 1: 普通跳转
         - **ShortLinkDomain** (str) - 短链接域名，默认：uslk.net
-
+        
         **Response**
 
         - **Message** (str) - Message
         - **ShortLink** (str) - 生成的短链接内容
-
+        
         """
         # build request
-        d = {}
+        d = {
+            
+        }
         req and d.update(req)
         d = apis.CreateUSLKShortLinkRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateUSLKShortLink", d, **kwargs)
         return apis.CreateUSLKShortLinkResponseSchema().loads(resp)
-
-    def describe_uslk_redirect_records(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeUSLKRedirectRecords - 查询短链接访问明细列表
+    
+    
+    
+    
+    
+    
+    
+    def describe_uslk_redirect_records(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeUSLKRedirectRecords - 查询短链接访问明细列表
 
         **Request**
 
@@ -146,16 +182,16 @@ class USLKClient(Client):
         - **OrderBy** (str) - 根据指定字段排序：默认按短链接访问时间：CreateTime 排序
         - **OrderType** (str) - 排序方式。asc-正序 desc-倒序
         - **Page** (int) - 页码，从0开始，用于分页查找
-
+        
         **Response**
 
         - **Data** (list) - 见 **RedirectRecords** 模型定义
         - **Message** (str) - Message
         - **Total** (int) - 数据总量
-
+        
         **Response Model**
-
-        **RedirectRecords**
+        
+        **RedirectRecords** 
         - **AccountID** (int) - 账户ID
         - **Browser** (str) - 访问设备
         - **ClientIP** (str) - 访问IP
@@ -167,21 +203,27 @@ class USLKClient(Client):
         - **ScenarioID** (int) - 场景ID
         - **ShortLink** (str) - 短链接
         - **ShortLinkDomain** (str) - 短链接域名
-
+        
 
         """
         # build request
-        d = {}
+        d = {
+            
+        }
         req and d.update(req)
         d = apis.DescribeUSLKRedirectRecordsRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeUSLKRedirectRecords", d, **kwargs)
         return apis.DescribeUSLKRedirectRecordsResponseSchema().loads(resp)
-
-    def describe_uslk_short_link_list(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DescribeUSLKShortLinkList - 查询短链接列表
+    
+    
+    
+    
+    
+    
+    
+    def describe_uslk_short_link_list(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DescribeUSLKShortLinkList - 查询短链接列表
 
         **Request**
 
@@ -196,15 +238,15 @@ class USLKClient(Client):
         - **ShortLink** (str) - 短链
         - **StartTime** (int) - 查询周期开始时间戳
         - **Status** (int) - 1: 待生效；2：已生效；3：已失效；4：已删除（预留）；5：已封禁
-
+        
         **Response**
 
         - **Data** (list) - 见 **ShortLink** 模型定义
         - **Message** (str) - Message
-
+        
         **Response Model**
-
-        **ShortLink**
+        
+        **ShortLink** 
         - **ClickCount** (int) - 累计访问量
         - **ClickCountToday** (int) - 当日访问量
         - **CreateTime** (int) - 短链接创建时间
@@ -226,9 +268,9 @@ class USLKClient(Client):
         - **UniqueClickCount** (int) - 累计独立访问量
         - **UniqueClickCountToday** (int) - 今日独立访问量
         - **UpdateTime** (int) - 更新时间戳
+        
 
-
-        **SecondaryLinkForQuery**
+        **SecondaryLinkForQuery** 
         - **IsSecondary** (bool) - 是否是次链接
         - **LongLink** (str) - 长链接
         - **LongLinkID** (int) - 长链接ID
@@ -237,13 +279,18 @@ class USLKClient(Client):
         - **Scenario** (str) - 场景名称
         - **ScenarioID** (int) - 场景ID
         - **ShortLongMapID** (int) - 长短链接映射ID
-
+        
 
         """
         # build request
-        d = {}
+        d = {
+            
+        }
         req and d.update(req)
         d = apis.DescribeUSLKShortLinkListRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DescribeUSLKShortLinkList", d, **kwargs)
         return apis.DescribeUSLKShortLinkListResponseSchema().loads(resp)
+    
+
+
