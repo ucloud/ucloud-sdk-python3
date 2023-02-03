@@ -3,193 +3,361 @@
 import typing
 
 
-
-
 from ucloud.core.client import Client
 from ucloud.services.umongodb.schemas import apis
 
 
-
-
-
-
-
-
-
 class UMongoDBClient(Client):
-    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
-        super(UMongoDBClient, self).__init__(config, transport, middleware, logger)
+    def __init__(
+        self, config: dict, transport=None, middleware=None, logger=None
+    ):
+        super(UMongoDBClient, self).__init__(
+            config, transport, middleware, logger
+        )
 
-    
-    
-    
-    
-    
-    
-    
-    def backup_umon_go_db_cluster(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ BackupUMongoDBCluster - 备份集群数据库
+    def backup_umon_go_db_cluster(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """BackupUMongoDBCluster - 备份集群数据库
 
         **Request**
 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BackupName** (str) - (Required) 备份名称
         - **ClusterId** (str) - (Required) 实例ID
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
-        
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
         **Response**
 
         - **BackupId** (str) - 备份ID
         - **ClusterId** (str) - 实例ID
         - **Message** (str) - 错误信息
-        
+
         """
         # build request
         d = {
-            'Region': self.config.region, 
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.BackupUMongoDBClusterRequestSchema().dumps(d)
-        
+
         resp = self.invoke("BackupUMongoDBCluster", d, **kwargs)
         return apis.BackupUMongoDBClusterResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def create_umon_go_db_config_template(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ CreateUMongoDBConfigTemplate - 创建配置模板
+
+    def create_umon_go_db_config_template(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateUMongoDBConfigTemplate - 创建配置模板
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BaseTemplateId** (str) - (Required) 基础模板
         - **ClusterType** (str) - (Required) 集群类型
         - **MongodbVersion** (str) - (Required) mongo版本
         - **TemplateName** (str) - (Required) 模板名称
         - **Description** (str) - 模板描述
-        
+
         **Response**
 
         - **Message** (str) - 错误信息
         - **TemplateId** (str) - 模板Id
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.CreateUMongoDBConfigTemplateRequestSchema().dumps(d)
-        
+
         # build options
-        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
-        
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("CreateUMongoDBConfigTemplate", d, **kwargs)
         return apis.CreateUMongoDBConfigTemplateResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def describe_umon_go_db_backup_url(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DescribeUMongoDBBackupURL - 获取实例备份下载链接
+
+    def create_umon_go_db_repl_set(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateUMongoDBReplSet - 创建一个Mongodb副本集群
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
-        - **BackupId** (str) - (Required) 文件备份ID
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **AdminPassword** (str) - (Required) 管理员密码
+        - **DBVersion** (str) - (Required) 副本集的Mongodb的版本，例如MongoDB_3_6, MongoDB_4_2
+        - **DiskSpace** (int) - (Required) 磁盘空间(GB)
+        - **MachineTypeId** (str) - (Required) 机型配置
+        - **Name** (str) - (Required) 副本集实例名称，至少6位
+        - **NodeCount** (int) - (Required) 副本集节点数量
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ChargeType** (str) - 付费方式：Year， Month， Dynamic，Trial，默认: Month
+        - **ListenPort** (int) - mongo服务端口
+        - **Quantity** (int) - 购买时长，默认值1
+        - **SubnetId** (str) - 子网ID
+        - **Tag** (str) - 实例所在的业务组名称
+        - **VPCId** (str) - VPC的ID
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateUMongoDBReplSetRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateUMongoDBReplSet", d, **kwargs)
+        return apis.CreateUMongoDBReplSetResponseSchema().loads(resp)
+
+    def create_umon_go_db_sharded_cluster(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateUMongoDBShardedCluster - 创建一个Mongodb分片集群
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **AdminPassword** (str) - (Required) 管理员密码
+        - **DBVersion** (str) - (Required) 副本集的Mongodb的版本，例如MongoDB-3.6, MongoDB-4.2
+        - **DiskSpace** (int) - (Required) 数据节点磁盘空间(GB)
+        - **MachineTypeId** (str) - (Required) 数据节点机型配置
+        - **MongosNodeCount** (int) - (Required) Mongos节点数量
+        - **Name** (str) - (Required) 副本集实例名称，至少6位
+        - **NodeCount** (int) - (Required) 每个分片中节点数量
+        - **ShardCount** (int) - (Required) 分片数量
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ChargeType** (str) - 付费方式：Year， Month， Dynamic，Trial，默认: Month
+        - **ListenPort** (int) - mongo服务端口
+        - **MongosMachineTypeId** (str) - Mongos节点机型配置
+        - **Quantity** (int) - 购买时长，默认值1
+        - **SubnetId** (str) - 子网ID
+        - **Tag** (str) - 实例所在的业务组名称
+        - **TemplateId** (str) - 参数配置模版id
+        - **VPCId** (str) - VPC的ID
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateUMongoDBShardedClusterRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateUMongoDBShardedCluster", d, **kwargs)
+        return apis.CreateUMongoDBShardedClusterResponseSchema().loads(resp)
+
+    def describe_umon_go_db_backup_url(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUMongoDBBackupURL - 获取实例备份下载链接
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterId** (str) - (Required) 集群ID
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **BackupId** (str) - 文件备份ID
+        - **PackageId** (int) - 打包ID
         - **ValidTime** (int) - 备份链接过期时间（单位秒）
-        
+
         **Response**
 
         - **InternetAddress** (str) - 备份文件公网地址
         - **IntranetAddress** (str) - 备份文件内网地址
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.DescribeUMongoDBBackupURLRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DescribeUMongoDBBackupURL", d, **kwargs)
         return apis.DescribeUMongoDBBackupURLResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def get_umon_go_db_backup_param(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ GetUMongoDBBackupParam - 获取实例备份策略
+
+    def describe_umon_go_db_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUMongoDBInstance - 描述MongoDB实例
 
         **Request**
 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ClusterId** (str) - (Required) 实例资源ID
+        - **ClusterType** (str) - 集群类型，ReplicaSet：副本集，SharedCluster：分片集群
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **ClusterInfo** (dict) - 见 **ClusterInfo** 模型定义
+
+        **Response Model**
+
+        **DiskInfo**
+        - **DiskId** (str) - 磁盘id
+        - **DiskSize** (int) - 磁盘容量单位GB
+
+
+        **ReplicaInfo**
+        - **ClusterId** (str) - 集群ID
+        - **CreateTime** (int) - 副本集创建时间
+        - **DeleteTime** (int) - 副本集删除时间
+        - **IsolationGroupId** (str) - 隔离组ID
+        - **MachineType** (str) - 机器类型
+        - **MachineTypeId** (str) - 机器类型Id
+        - **ModifyTime** (int) - 副本集修改时间
+        - **NodeCount** (int) - 副本集下的节点数量
+        - **NodeInfos** (list) - 见 **NodeInfo** 模型定义
+        - **ReplicaId** (str) - 副本集ID
+        - **ReplicaType** (str) - 副本类型,ConfigRepl或者DataRepl
+        - **State** (str) - 副本集/分片集群状态标记 Initing：初始化中，InitFailed：安装失败，Starting：启动中，StartFailed：启动失败，Running：运行，Stopping：关闭中，Stopped：已关闭, StopFailed：关闭失败，Deleting：删除中，Deleted：已删除，DeleteFailed：删除失败，Restarting：重启中，RestartFailed：重启失败。
+
+
+        **NodeInfo**
+        - **ClusterId** (str) - 节点所属副本集ID
+        - **CreateTime** (int) - DB实例创建时间
+        - **DBVersion** (str) - 副本集的Mongodb的版本
+        - **DataDisk** (dict) - 见 **DiskInfo** 模型定义
+        - **MachineType** (str) - 机型信息
+        - **MachineTypeId** (str) - 机型信息ID
+        - **NodeId** (str) - 节点ID
+        - **NodeRole** (str) - 节点角色，Primary/Secondary/Arbiter/Startup等等
+        - **NodeType** (str) - 节点类型
+        - **State** (str) - 副本集/分片集群状态标记 Initing：初始化中，InitFailed：安装失败，Starting：启动中，StartFailed：启动失败，Running：运行，Stopping：关闭中，Stopped：已关闭, StopFailed：关闭失败，Deleting：删除中，Deleted：已删除，DeleteFailed：删除失败，Restarting：重启中，RestartFailed：重启失败。
+        - **SysDisk** (dict) - 见 **DiskInfo** 模型定义
+        - **VirtualClusterId** (str) - 虚拟节点ID
+        - **Zone** (str) - 可用区
+        - **ZoneId** (int) - 可用区ID
+
+
+        **ClusterInfo**
+        - **ClusterId** (str) - 集群ID
+        - **ClusterType** (str) - 集群类型，ReplicaSet :副本集，SharedCluster：分片集
+        - **ConfigMachineType** (str) - Config配置集群节点配置，分片集有效
+        - **ConfigNodeCount** (int) - Config配置集群节点数量，分片集有效
+        - **ConfigReplicaInfo** (dict) - 见 **ReplicaInfo** 模型定义
+        - **ConnectURL** (str) - 副本集的访问地址
+        - **CreateTime** (int) - DB实例创建时间
+        - **DBVersion** (str) - 副本集的Mongodb的版本
+        - **DataReplicaInfos** (list) - 见 **ReplicaInfo** 模型定义
+        - **DeleteTime** (int) - DB实例删除时间
+        - **DiskSpace** (int) - 磁盘空间(GB), 默认根据配置机型
+        - **InstanceName** (str) - 实例名称
+        - **MachineTypeId** (str) - 计算规格
+        - **MongosCount** (int) - Mongos节点数量，分片集有效
+        - **MongosInfo** (list) - 见 **NodeInfo** 模型定义
+        - **ShardCount** (int) - 分片数量，分片集有效
+        - **ShardNodeCount** (int) - 每分片节点数量，分片集有效
+        - **State** (str) - 副本集/分片集群状态标记 Initing：初始化中，InitFailed：安装失败，Starting：启动中，StartFailed：启动失败，Running：运行，Stopping：关闭中，Stopped：已关闭, StopFailed：关闭失败，Deleting：删除中，Deleted：已删除，DeleteFailed：删除失败，Restarting：重启中，RestartFailed：重启失败。
+        - **SubnetId** (str) - 子网ID
+        - **Tag** (str) - 实例业务组
+        - **VPCId** (str) - VPC的ID
+        - **Zone** (str) - 可用区
+        - **ZoneId** (int) -
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeUMongoDBInstanceRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeUMongoDBInstance", d, **kwargs)
+        return apis.DescribeUMongoDBInstanceResponseSchema().loads(resp)
+
+    def get_umon_go_db_backup_param(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUMongoDBBackupParam - 获取实例备份策略
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterId** (str) - (Required) 实例ID
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
-        
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
         **Response**
 
         - **DataSet** (dict) - 见 **BackupParam** 模型定义
         - **Message** (str) - 错误信息
-        
+
         **Response Model**
-        
-        **BackupParam** 
+
+        **BackupParam**
         - **AutoBackupCopies** (int) - 自动备份保存份数
         - **AutoBackupToggleTime** (str) - 自动备份预期时间范围 (24小时制，精确到分钟，00:00~23:59)
         - **AutoBackupToggleWeek** (str) - 自动备份预期周几 (1-7 表示 周一到周末，多个数据用','分割，eg: 3,7)
         - **ClusterId** (str) - 实例ID
         - **ManualBackupCopies** (int) - 手动备份保存份数
-        
+
 
         """
         # build request
         d = {
-            'Region': self.config.region, 
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.GetUMongoDBBackupParamRequestSchema().dumps(d)
-        
+
         resp = self.invoke("GetUMongoDBBackupParam", d, **kwargs)
         return apis.GetUMongoDBBackupParamResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def get_umon_go_db_cfg_temp_item(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ GetUMongoDBCfgTempItem - 获取配置模板内容
+
+    def get_umon_go_db_cfg_temp_item(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUMongoDBCfgTempItem - 获取配置模板内容
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **TemplateId** (str) - (Required) 配置模板Id
-        
+
         **Response**
 
         - **DataSet** (list) - 见 **ConfigTemplateItem** 模型定义
         - **Message** (str) - 错误信息
-        
+
         **Response Model**
-        
-        **ConfigOptions** 
+
+        **ConfigTemplateItem**
+        - **ConfigName** (str) - 配置名称
+        - **ConfigOption** (dict) - 见 **ConfigOptions** 模型定义
+        - **ConfigValue** (str) - 配置值
+        - **CreateTime** (int) - 创建时间
+        - **ItemId** (str) - itemId
+        - **ModifyTime** (int) - 修改时间
+        - **NodeType** (str) - 节点类型: DataNode:数据节点 | ConfigSrvNode:配置节点 | MongosNode:路由节点
+        - **TemplateId** (str) - 模板ID
+
+
+        **ConfigOptions**
         - **AllowedApplyType** (str) - 允许应用类型
         - **Description** (str) - 描述
         - **EnableDisplay** (bool) - 是否前端展示
@@ -202,85 +370,68 @@ class UMongoDBClient(Client):
         - **OptionName** (str) - 配置选项名
         - **OptionValueType** (str) - 配置选项类型 string,int,bool
         - **OptionValues** (str) - 配置选项值范围
-        
 
-        **ConfigTemplateItem** 
-        - **ConfigName** (str) - 配置名称
-        - **ConfigOption** (dict) - 见 **ConfigOptions** 模型定义
-        - **ConfigValue** (str) - 配置值
-        - **CreateTime** (int) - 创建时间
-        - **ItemId** (str) - itemId
-        - **ModifyTime** (int) - 修改时间
-        - **NodeType** (str) - 节点类型: DataNode:数据节点 | ConfigSrvNode:配置节点 | MongosNode:路由节点
-        - **TemplateId** (str) - 模板ID
-        
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.GetUMongoDBCfgTempItemRequestSchema().dumps(d)
-        
+
         resp = self.invoke("GetUMongoDBCfgTempItem", d, **kwargs)
         return apis.GetUMongoDBCfgTempItemResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def get_umon_go_db_recover_time_range(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ GetUMongoDBRecoverTimeRange - 获取UMongoDB可回档时间范围
+
+    def get_umon_go_db_recover_time_range(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUMongoDBRecoverTimeRange - 获取UMongoDB可回档时间范围
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterId** (str) - (Required) 集群id
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
-        
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
         **Response**
 
         - **EarliestTime** (int) - 最早可回档时间点
         - **LatestTime** (int) - 最晚可回档时间点
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.GetUMongoDBRecoverTimeRangeRequestSchema().dumps(d)
-        
+
         resp = self.invoke("GetUMongoDBRecoverTimeRange", d, **kwargs)
         return apis.GetUMongoDBRecoverTimeRangeResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def list_umon_go_db_backup(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ ListUMongoDBBackup - 拉取实例备份列表
+
+    def list_umon_go_db_backup(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListUMongoDBBackup - 拉取实例备份列表
 
         **Request**
 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterId** (str) - (Required) 实例ID
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
-        
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
         **Response**
 
         - **DataSet** (list) - 见 **BackupInfo** 模型定义
         - **Message** (str) - 错误信息
-        
+
         **Response Model**
-        
-        **BackupInfo** 
+
+        **BackupInfo**
         - **BackupId** (str) - 备份ID
         - **BackupName** (str) - 备份名称
         - **BackupSize** (int) - 备份数据大小
@@ -289,41 +440,37 @@ class UMongoDBClient(Client):
         - **EndTime** (int) - 备份结束时间
         - **StartTime** (int) - 备份开始时间
         - **State** (str) - 备份状态
-        
+
 
         """
         # build request
         d = {
-            'Region': self.config.region, 
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.ListUMongoDBBackupRequestSchema().dumps(d)
-        
+
         resp = self.invoke("ListUMongoDBBackup", d, **kwargs)
         return apis.ListUMongoDBBackupResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def list_umon_go_db_config_template(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ ListUMongoDBConfigTemplate - 拉取配置模板
+
+    def list_umon_go_db_config_template(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListUMongoDBConfigTemplate - 拉取配置模板
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
-        
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
         **Response**
 
         - **DataSet** (list) - 见 **ConfigTemplate** 模型定义
         - **Message** (str) - 错误信息
-        
+
         **Response Model**
-        
-        **ConfigTemplate** 
+
+        **ConfigTemplate**
         - **ClusterType** (str) - 集群类型
         - **CreateTime** (int) - 创建时间
         - **DeleteTime** (int) - 删除时间
@@ -333,287 +480,260 @@ class UMongoDBClient(Client):
         - **TemplateId** (str) - 模板ID
         - **TemplateName** (str) - 模板名称
         - **TemplateType** (str) - 模板类型 UsersTemplate DefaultTemplate
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.ListUMongoDBConfigTemplateRequestSchema().dumps(d)
-        
+
         resp = self.invoke("ListUMongoDBConfigTemplate", d, **kwargs)
         return apis.ListUMongoDBConfigTemplateResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def list_umon_go_db_machine_type(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ ListUMongoDBMachineType - 获取UmongDB支持机器类型列表
+
+    def list_umon_go_db_machine_type(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListUMongoDBMachineType - 获取UmongDB支持机器类型列表
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
-        
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
         **Response**
 
         - **DataSet** (list) - 见 **MongodbMachineType** 模型定义
-        
+
         **Response Model**
-        
-        **MongodbMachineType** 
+
+        **MongodbMachineType**
         - **Cpu** (int) - cpu核数
         - **Description** (str) - 配置简称  2C4G
         - **Group** (str) - 配置分组，2m , 4m
         - **MachineTypeId** (str) - 机器类型ID o.mongo2m.medium，o.mongo2m.xlarge
         - **Memory** (int) - 内存用量(GB)
         - **UHhostMachineType** (str) - 机器类型，N/O
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.ListUMongoDBMachineTypeRequestSchema().dumps(d)
-        
+
         resp = self.invoke("ListUMongoDBMachineType", d, **kwargs)
         return apis.ListUMongoDBMachineTypeResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def list_umon_go_db_version(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ ListUMongoDBVersion - 获取UMongoDB支持版本列表
+
+    def list_umon_go_db_version(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListUMongoDBVersion - 获取UMongoDB支持版本列表
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
-        
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
         **Response**
 
         - **DataSet** (list) - 见 **MongoDBVersion** 模型定义
-        
+
         **Response Model**
-        
-        **MongoDBVersion** 
+
+        **MongoDBVersion**
         - **DBVersion** (str) - MongoDB版本
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.ListUMongoDBVersionRequestSchema().dumps(d)
-        
+
         resp = self.invoke("ListUMongoDBVersion", d, **kwargs)
         return apis.ListUMongoDBVersionResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def modify_umon_go_db_admin_password(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ ModifyUMongoDBAdminPassword - 修改MongoDB集群root密码
+
+    def modify_umon_go_db_admin_password(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyUMongoDBAdminPassword - 修改MongoDB集群root密码
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterId** (str) - (Required) 集群ID
         - **Password** (str) - (Required) 集群新密码(密码格式使用BASE64编码)
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
-        
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
         **Response**
 
         - **Message** (str) - 错误信息
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.ModifyUMongoDBAdminPasswordRequestSchema().dumps(d)
-        
+
         resp = self.invoke("ModifyUMongoDBAdminPassword", d, **kwargs)
         return apis.ModifyUMongoDBAdminPasswordResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def modify_umon_go_db_attribute(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ ModifyUMongoDBAttribute - 修改MongoDB集群名称
+
+    def modify_umon_go_db_attribute(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyUMongoDBAttribute - 修改MongoDB集群名称
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterId** (str) - (Required) 集群id
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Name** (str) - 集群新名称(输入长度为6~63位名称)
         - **RemarkName** (str) - 集群备注(Name和RemarkName必传其一)
-        
+
         **Response**
 
         - **Message** (str) - 返回错误信息
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.ModifyUMongoDBAttributeRequestSchema().dumps(d)
-        
+
         resp = self.invoke("ModifyUMongoDBAttribute", d, **kwargs)
         return apis.ModifyUMongoDBAttributeResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def modify_umon_go_db_backup_param(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ ModifyUMongoDBBackupParam - 修改实例备份策略
+
+    def modify_umon_go_db_backup_param(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyUMongoDBBackupParam - 修改实例备份策略
 
         **Request**
 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterId** (str) - (Required) 实例ID
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **AutoBackupToggleTime** (str) - 自动备份预期开始时间范围(00:00~23:59),默认 5:00~6:00
         - **AutoBackupToggleWeek** (str) - 自动备份预期星期几(1～7),默认 3,7 (周三，周日)
-        
+
         **Response**
 
         - **Message** (str) - 错误信息
-        
+
         """
         # build request
         d = {
-            'Region': self.config.region, 
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.ModifyUMongoDBBackupParamRequestSchema().dumps(d)
-        
+
         resp = self.invoke("ModifyUMongoDBBackupParam", d, **kwargs)
         return apis.ModifyUMongoDBBackupParamResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def restart_umon_go_db_cluster(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ RestartUMongoDBCluster - 重启集群
+
+    def restart_umon_go_db_cluster(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """RestartUMongoDBCluster - 重启集群
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterId** (str) - (Required) 集群ID
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
-        
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
         **Response**
 
         - **ClusterId** (str) - 集群ID
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.RestartUMongoDBClusterRequestSchema().dumps(d)
-        
+
         resp = self.invoke("RestartUMongoDBCluster", d, **kwargs)
         return apis.RestartUMongoDBClusterResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def start_umon_go_db_cluster(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ StartUMongoDBCluster - 启动集群
+
+    def start_umon_go_db_cluster(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """StartUMongoDBCluster - 启动集群
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterId** (str) - (Required) 集群ID
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
-        
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
         **Response**
 
         - **ClusterId** (str) - 集群ID
         - **Message** (str) - 错误信息
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.StartUMongoDBClusterRequestSchema().dumps(d)
-        
+
         resp = self.invoke("StartUMongoDBCluster", d, **kwargs)
         return apis.StartUMongoDBClusterResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def stop_umon_go_db_cluster(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ StopUMongoDBCluster - 停止集群
+
+    def stop_umon_go_db_cluster(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """StopUMongoDBCluster - 停止集群
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterId** (str) - (Required) 集群ID
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
-        
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
         **Response**
 
         - **ClusterId** (str) - 集群ID
         - **Message** (str) - 错误信息
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.StopUMongoDBClusterRequestSchema().dumps(d)
-        
+
         resp = self.invoke("StopUMongoDBCluster", d, **kwargs)
         return apis.StopUMongoDBClusterResponseSchema().loads(resp)
-    
-
-

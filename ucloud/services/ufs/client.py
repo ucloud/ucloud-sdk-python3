@@ -3,72 +3,57 @@
 import typing
 
 
-
-
 from ucloud.core.client import Client
 from ucloud.services.ufs.schemas import apis
 
 
-
-
-
-
-
-
-
 class UFSClient(Client):
-    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
+    def __init__(
+        self, config: dict, transport=None, middleware=None, logger=None
+    ):
         super(UFSClient, self).__init__(config, transport, middleware, logger)
 
-    
-    
-    
-    
-    
-    
-    
-    def add_ufs_volume_mount_point(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ AddUFSVolumeMountPoint - 添加文件系统挂载点
+    def add_ufs_volume_mount_point(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """AddUFSVolumeMountPoint - 添加文件系统挂载点
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **MountPointName** (str) - (Required) 挂载点名称
         - **SubnetId** (str) - (Required) Subnet ID
         - **VolumeId** (str) - (Required) 文件系统ID
         - **VpcId** (str) - (Required) Vpc ID
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.AddUFSVolumeMountPointRequestSchema().dumps(d)
-        
+
         # build options
-        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
-        
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("AddUFSVolumeMountPoint", d, **kwargs)
         return apis.AddUFSVolumeMountPointResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def create_ufs_volume(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ CreateUFSVolume - 创建文件系统
+
+    def create_ufs_volume(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateUFSVolume - 创建文件系统
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ProtocolType** (str) - (Required) 文件系统协议，目前仅支持NFSv4
         - **Size** (int) - (Required) 文件系统大小，单位为GB，必须为100的整数倍，容量型Size最小为500GB，性能型文件系统Size最小为100GB
         - **StorageType** (str) - (Required) 文件系统存储类型，Basic表示容量型，Advanced表示性能型
@@ -78,52 +63,49 @@ class UFSClient(Client):
         - **Remark** (str) - 备注
         - **Tag** (str) - 文件系统所属业务组
         - **VolumeName** (str) - 文件系统名称
-        
+
         **Response**
 
         - **VolumeId** (str) - 文件系统ID
         - **VolumeName** (str) - 文件系统名称
         - **VolumeStatus** (str) - 文件系统挂载点状态
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.CreateUFSVolumeRequestSchema().dumps(d)
-        
+
         # build options
-        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
-        
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("CreateUFSVolume", d, **kwargs)
         return apis.CreateUFSVolumeResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def describe_ufs_volume_2(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DescribeUFSVolume2 - 获取文件系统列表
+
+    def describe_ufs_volume_2(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUFSVolume2 - 获取文件系统列表
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Limit** (int) - 文件列表长度
         - **Offset** (int) - 文件列表起始
         - **VolumeId** (str) - 文件系统ID
-        
+
         **Response**
 
         - **DataSet** (list) - 见 **UFSVolumeInfo2** 模型定义
         - **TotalCount** (int) - 文件系统总数
-        
+
         **Response Model**
-        
-        **UFSVolumeInfo2** 
+
+        **UFSVolumeInfo2**
         - **CreateTime** (int) - 文件系统创建时间（unix时间戳）
         - **ExpiredTime** (int) - 文件系统过期时间（unix时间戳）
         - **IsExpired** (str) - 是否过期
@@ -137,224 +119,204 @@ class UFSClient(Client):
         - **UsedSize** (int) - 文件系统当前使用容量，单位GB
         - **VolumeId** (str) - 文件系统ID
         - **VolumeName** (str) - 文件系统名称
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.DescribeUFSVolume2RequestSchema().dumps(d)
-        
+
         resp = self.invoke("DescribeUFSVolume2", d, **kwargs)
         return apis.DescribeUFSVolume2ResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def describe_ufs_volume_mountpoint(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DescribeUFSVolumeMountpoint - 获取文件系统挂载点信息
+
+    def describe_ufs_volume_mountpoint(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUFSVolumeMountpoint - 获取文件系统挂载点信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **VolumeId** (str) - (Required) 文件系统ID
-        
+
         **Response**
 
         - **DataSet** (list) - 见 **MountPointInfo** 模型定义
         - **MaxMountPointNum** (int) - 文件系统能创建的最大挂载点数目
         - **TotalMountPointNum** (int) - 目前的挂载点总数
-        
+
         **Response Model**
-        
-        **MountPointInfo** 
+
+        **MountPointInfo**
         - **CreateTime** (int) - 文件系统创建时间（unix时间戳）
         - **MountPointIp** (str) - ${挂载点IP}:/
         - **MountPointName** (str) - 挂载点名称
         - **SubnetDescription** (str) - Subnet ID + 网段的形式，方便前端展示
         - **SubnetId** (str) - Subnet ID
         - **VpcId** (str) - Vpc ID
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.DescribeUFSVolumeMountpointRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DescribeUFSVolumeMountpoint", d, **kwargs)
         return apis.DescribeUFSVolumeMountpointResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def describe_ufs_volume_price(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DescribeUFSVolumePrice - 获取文件系统价格
+
+    def describe_ufs_volume_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUFSVolumePrice - 获取文件系统价格
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Size** (int) - (Required) 文件系统大小，单位为GB，新架构容量型最小容量为500GB，以100GB递增，最大不超过100TB。新架构性能型最小容量为100GB，以100GB递增，最大不超过20TB
         - **StorageType** (str) - (Required) 文件存储类型，枚举值，Basic表示容量型产品，Advanced表示性能型产品
         - **ChargeType** (str) - Year， Month， Dynamic，Trial，默认: Dynamic
         - **Quantity** (int) - 购买UFS的时长， 默认为1
         - **VolumeId** (str) - 文件系统id，第一次创建文件系统时不需要传这个参数
-        
+
         **Response**
 
         - **DataSet** (list) - 见 **UFSPriceDataSet** 模型定义
-        
+
         **Response Model**
-        
-        **UFSPriceDataSet** 
+
+        **UFSPriceDataSet**
         - **ChargeName** (str) - “UFS”
         - **ChargeType** (str) - Year， Month， Dynamic，Trial
         - **Price** (float) - 价格 (单位: 分)
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.DescribeUFSVolumePriceRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DescribeUFSVolumePrice", d, **kwargs)
         return apis.DescribeUFSVolumePriceResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def extend_ufs_volume(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ ExtendUFSVolume - 文件系统扩容
+
+    def extend_ufs_volume(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ExtendUFSVolume - 文件系统扩容
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Size** (int) - (Required) 文件系统大小，单位为GB，最大不超过20T，香港容量型必须为100的整数倍，Size最小为500GB，北京，上海，广州的容量型必须为1024的整数倍，Size最小为1024GB。性能型文件系统Size最小为100GB
         - **VolumeId** (str) - (Required) 文件系统ID
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.ExtendUFSVolumeRequestSchema().dumps(d)
-        
+
         resp = self.invoke("ExtendUFSVolume", d, **kwargs)
         return apis.ExtendUFSVolumeResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def remove_ufs_volume(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ RemoveUFSVolume - 删除UFS文件系统
+
+    def remove_ufs_volume(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """RemoveUFSVolume - 删除UFS文件系统
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **VolumeId** (str) - (Required) 文件系统ID
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.RemoveUFSVolumeRequestSchema().dumps(d)
-        
+
         resp = self.invoke("RemoveUFSVolume", d, **kwargs)
         return apis.RemoveUFSVolumeResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def remove_ufs_volume_mount_point(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ RemoveUFSVolumeMountPoint - 删除文件系统挂载点
+
+    def remove_ufs_volume_mount_point(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """RemoveUFSVolumeMountPoint - 删除文件系统挂载点
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **SubnetId** (str) - (Required) Subnet ID
         - **VolumeId** (str) - (Required) 文件系统ID
         - **VpcId** (str) - (Required) Vpc ID
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.RemoveUFSVolumeMountPointRequestSchema().dumps(d)
-        
+
         resp = self.invoke("RemoveUFSVolumeMountPoint", d, **kwargs)
         return apis.RemoveUFSVolumeMountPointResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def update_ufs_volume_info(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ UpdateUFSVolumeInfo - 更改文件系统相关信息（名称／备注）
+
+    def update_ufs_volume_info(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateUFSVolumeInfo - 更改文件系统相关信息（名称／备注）
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **VolumeId** (str) - (Required) 文件系统ID
         - **Remark** (str) - 文件系统备注（文件系统名称／备注至少传入其中一个）
         - **VolumeName** (str) - 文件系统名称（文件系统名称／备注至少传入其中一个）
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.UpdateUFSVolumeInfoRequestSchema().dumps(d)
-        
+
         resp = self.invoke("UpdateUFSVolumeInfo", d, **kwargs)
         return apis.UpdateUFSVolumeInfoResponseSchema().loads(resp)
-    
-
-

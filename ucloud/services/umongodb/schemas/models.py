@@ -3,172 +3,212 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class DiskInfoSchema(schema.ResponseSchema):
+    """DiskInfo - 磁盘信息"""
+
+    fields = {
+        "DiskId": fields.Str(required=False, load_from="DiskId"),
+        "DiskSize": fields.Int(required=False, load_from="DiskSize"),
+    }
 
 
+class NodeInfoSchema(schema.ResponseSchema):
+    """NodeInfo - 节点信息"""
+
+    fields = {
+        "ClusterId": fields.Str(required=False, load_from="ClusterId"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "DBVersion": fields.Str(required=False, load_from="DBVersion"),
+        "DataDisk": DiskInfoSchema(),
+        "MachineType": fields.Str(required=False, load_from="MachineType"),
+        "MachineTypeId": fields.Str(required=False, load_from="MachineTypeId"),
+        "NodeId": fields.Str(required=False, load_from="NodeId"),
+        "NodeRole": fields.Str(required=False, load_from="NodeRole"),
+        "NodeType": fields.Str(required=False, load_from="NodeType"),
+        "State": fields.Str(required=False, load_from="State"),
+        "SysDisk": DiskInfoSchema(),
+        "VirtualClusterId": fields.Str(
+            required=False, load_from="VirtualClusterId"
+        ),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+        "ZoneId": fields.Int(required=False, load_from="ZoneId"),
+    }
 
 
+class ReplicaInfoSchema(schema.ResponseSchema):
+    """ReplicaInfo - 副本集群信息"""
+
+    fields = {
+        "ClusterId": fields.Str(required=False, load_from="ClusterId"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "DeleteTime": fields.Int(required=False, load_from="DeleteTime"),
+        "IsolationGroupId": fields.Str(
+            required=False, load_from="IsolationGroupId"
+        ),
+        "MachineType": fields.Str(required=False, load_from="MachineType"),
+        "MachineTypeId": fields.Str(required=False, load_from="MachineTypeId"),
+        "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
+        "NodeCount": fields.Int(required=False, load_from="NodeCount"),
+        "NodeInfos": fields.List(NodeInfoSchema()),
+        "ReplicaId": fields.Str(required=False, load_from="ReplicaId"),
+        "ReplicaType": fields.Str(required=False, load_from="ReplicaType"),
+        "State": fields.Str(required=False, load_from="State"),
+    }
 
 
+class ClusterInfoSchema(schema.ResponseSchema):
+    """ClusterInfo - 集群信息"""
 
+    fields = {
+        "ClusterId": fields.Str(required=False, load_from="ClusterId"),
+        "ClusterType": fields.Str(required=False, load_from="ClusterType"),
+        "ConfigMachineType": fields.Str(
+            required=False, load_from="ConfigMachineType"
+        ),
+        "ConfigNodeCount": fields.Int(
+            required=False, load_from="ConfigNodeCount"
+        ),
+        "ConfigReplicaInfo": ReplicaInfoSchema(),
+        "ConnectURL": fields.Str(required=False, load_from="ConnectURL"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "DBVersion": fields.Str(required=False, load_from="DBVersion"),
+        "DataReplicaInfos": fields.List(ReplicaInfoSchema()),
+        "DeleteTime": fields.Int(required=False, load_from="DeleteTime"),
+        "DiskSpace": fields.Int(required=False, load_from="DiskSpace"),
+        "InstanceName": fields.Str(required=False, load_from="InstanceName"),
+        "MachineTypeId": fields.Str(required=False, load_from="MachineTypeId"),
+        "MongosCount": fields.Int(required=False, load_from="MongosCount"),
+        "MongosInfo": fields.List(NodeInfoSchema()),
+        "ShardCount": fields.Int(required=False, load_from="ShardCount"),
+        "ShardNodeCount": fields.Int(
+            required=False, load_from="ShardNodeCount"
+        ),
+        "State": fields.Str(required=False, load_from="State"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+        "ZoneId": fields.Int(required=False, load_from="ZoneId"),
+    }
 
 
 class BackupParamSchema(schema.ResponseSchema):
-    """ BackupParam - 备份策略模型
-    """
-    fields = {
-    
-        'AutoBackupCopies': fields.Int(required=False, load_from='AutoBackupCopies'), 
-    
-        'AutoBackupToggleTime': fields.Str(required=False, load_from='AutoBackupToggleTime'), 
-    
-        'AutoBackupToggleWeek': fields.Str(required=False, load_from='AutoBackupToggleWeek'), 
-    
-        'ClusterId': fields.Str(required=True, load_from='ClusterId'), 
-    
-        'ManualBackupCopies': fields.Int(required=False, load_from='ManualBackupCopies'), 
-    
-    }
+    """BackupParam - 备份策略模型"""
 
+    fields = {
+        "AutoBackupCopies": fields.Int(
+            required=False, load_from="AutoBackupCopies"
+        ),
+        "AutoBackupToggleTime": fields.Str(
+            required=False, load_from="AutoBackupToggleTime"
+        ),
+        "AutoBackupToggleWeek": fields.Str(
+            required=False, load_from="AutoBackupToggleWeek"
+        ),
+        "ClusterId": fields.Str(required=True, load_from="ClusterId"),
+        "ManualBackupCopies": fields.Int(
+            required=False, load_from="ManualBackupCopies"
+        ),
+    }
 
 
 class ConfigOptionsSchema(schema.ResponseSchema):
-    """ ConfigOptions - 配置选项
-    """
-    fields = {
-    
-        'AllowedApplyType': fields.Str(required=False, load_from='AllowedApplyType'), 
-    
-        'Description': fields.Str(required=False, load_from='Description'), 
-    
-        'EnableDisplay': fields.Bool(required=False, load_from='EnableDisplay'), 
-    
-        'EnableModify': fields.Bool(required=False, load_from='EnableModify'), 
-    
-        'ForceRestart': fields.Bool(required=False, load_from='ForceRestart'), 
-    
-        'IsDefaultOption': fields.Bool(required=False, load_from='IsDefaultOption'), 
-    
-        'MongodbVersion': fields.Str(required=False, load_from='MongodbVersion'), 
-    
-        'OptionDefaultValue': fields.Str(required=False, load_from='OptionDefaultValue'), 
-    
-        'OptionFormatType': fields.Str(required=False, load_from='OptionFormatType'), 
-    
-        'OptionName': fields.Str(required=False, load_from='OptionName'), 
-    
-        'OptionValueType': fields.Str(required=False, load_from='OptionValueType'), 
-    
-        'OptionValues': fields.Str(required=False, load_from='OptionValues'), 
-    
-    }
+    """ConfigOptions - 配置选项"""
 
+    fields = {
+        "AllowedApplyType": fields.Str(
+            required=False, load_from="AllowedApplyType"
+        ),
+        "Description": fields.Str(required=False, load_from="Description"),
+        "EnableDisplay": fields.Bool(required=False, load_from="EnableDisplay"),
+        "EnableModify": fields.Bool(required=False, load_from="EnableModify"),
+        "ForceRestart": fields.Bool(required=False, load_from="ForceRestart"),
+        "IsDefaultOption": fields.Bool(
+            required=False, load_from="IsDefaultOption"
+        ),
+        "MongodbVersion": fields.Str(
+            required=False, load_from="MongodbVersion"
+        ),
+        "OptionDefaultValue": fields.Str(
+            required=False, load_from="OptionDefaultValue"
+        ),
+        "OptionFormatType": fields.Str(
+            required=False, load_from="OptionFormatType"
+        ),
+        "OptionName": fields.Str(required=False, load_from="OptionName"),
+        "OptionValueType": fields.Str(
+            required=False, load_from="OptionValueType"
+        ),
+        "OptionValues": fields.Str(required=False, load_from="OptionValues"),
+    }
 
 
 class ConfigTemplateItemSchema(schema.ResponseSchema):
-    """ ConfigTemplateItem - 配置模板项
-    """
-    fields = {
-    
-        'ConfigName': fields.Str(required=False, load_from='ConfigName'), 
-    
-        'ConfigOption':  ConfigOptionsSchema(), 
-    
-        'ConfigValue': fields.Str(required=False, load_from='ConfigValue'), 
-    
-        'CreateTime': fields.Int(required=False, load_from='CreateTime'), 
-    
-        'ItemId': fields.Str(required=False, load_from='ItemId'), 
-    
-        'ModifyTime': fields.Int(required=False, load_from='ModifyTime'), 
-    
-        'NodeType': fields.Str(required=False, load_from='NodeType'), 
-    
-        'TemplateId': fields.Str(required=False, load_from='TemplateId'), 
-    
-    }
+    """ConfigTemplateItem - 配置模板项"""
 
+    fields = {
+        "ConfigName": fields.Str(required=False, load_from="ConfigName"),
+        "ConfigOption": ConfigOptionsSchema(),
+        "ConfigValue": fields.Str(required=False, load_from="ConfigValue"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "ItemId": fields.Str(required=False, load_from="ItemId"),
+        "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
+        "NodeType": fields.Str(required=False, load_from="NodeType"),
+        "TemplateId": fields.Str(required=False, load_from="TemplateId"),
+    }
 
 
 class BackupInfoSchema(schema.ResponseSchema):
-    """ BackupInfo - 备份数据模型
-    """
-    fields = {
-    
-        'BackupId': fields.Str(required=True, load_from='BackupId'), 
-    
-        'BackupName': fields.Str(required=False, load_from='BackupName'), 
-    
-        'BackupSize': fields.Int(required=False, load_from='BackupSize'), 
-    
-        'BackupType': fields.Str(required=False, load_from='BackupType'), 
-    
-        'ClusterId': fields.Str(required=False, load_from='ClusterId'), 
-    
-        'EndTime': fields.Int(required=False, load_from='EndTime'), 
-    
-        'StartTime': fields.Int(required=False, load_from='StartTime'), 
-    
-        'State': fields.Str(required=False, load_from='State'), 
-    
-    }
+    """BackupInfo - 备份数据模型"""
 
+    fields = {
+        "BackupId": fields.Str(required=True, load_from="BackupId"),
+        "BackupName": fields.Str(required=False, load_from="BackupName"),
+        "BackupSize": fields.Int(required=False, load_from="BackupSize"),
+        "BackupType": fields.Str(required=False, load_from="BackupType"),
+        "ClusterId": fields.Str(required=False, load_from="ClusterId"),
+        "EndTime": fields.Int(required=False, load_from="EndTime"),
+        "StartTime": fields.Int(required=False, load_from="StartTime"),
+        "State": fields.Str(required=False, load_from="State"),
+    }
 
 
 class ConfigTemplateSchema(schema.ResponseSchema):
-    """ ConfigTemplate - 配置模板
-    """
-    fields = {
-    
-        'ClusterType': fields.Str(required=False, load_from='ClusterType'), 
-    
-        'CreateTime': fields.Int(required=False, load_from='CreateTime'), 
-    
-        'DeleteTime': fields.Int(required=False, load_from='DeleteTime'), 
-    
-        'Description': fields.Str(required=False, load_from='Description'), 
-    
-        'ModifyTime': fields.Int(required=False, load_from='ModifyTime'), 
-    
-        'MongodbVersion': fields.Str(required=False, load_from='MongodbVersion'), 
-    
-        'TemplateId': fields.Str(required=False, load_from='TemplateId'), 
-    
-        'TemplateName': fields.Str(required=False, load_from='TemplateName'), 
-    
-        'TemplateType': fields.Str(required=False, load_from='TemplateType'), 
-    
-    }
+    """ConfigTemplate - 配置模板"""
 
+    fields = {
+        "ClusterType": fields.Str(required=False, load_from="ClusterType"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "DeleteTime": fields.Int(required=False, load_from="DeleteTime"),
+        "Description": fields.Str(required=False, load_from="Description"),
+        "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
+        "MongodbVersion": fields.Str(
+            required=False, load_from="MongodbVersion"
+        ),
+        "TemplateId": fields.Str(required=False, load_from="TemplateId"),
+        "TemplateName": fields.Str(required=False, load_from="TemplateName"),
+        "TemplateType": fields.Str(required=False, load_from="TemplateType"),
+    }
 
 
 class MongodbMachineTypeSchema(schema.ResponseSchema):
-    """ MongodbMachineType - 
-    """
-    fields = {
-    
-        'Cpu': fields.Int(required=True, load_from='Cpu'), 
-    
-        'Description': fields.Str(required=True, load_from='Description'), 
-    
-        'Group': fields.Str(required=False, load_from='Group'), 
-    
-        'MachineTypeId': fields.Str(required=True, load_from='MachineTypeId'), 
-    
-        'Memory': fields.Int(required=True, load_from='Memory'), 
-    
-        'UHhostMachineType': fields.Str(required=False, load_from='UHhostMachineType'), 
-    
-    }
+    """MongodbMachineType -"""
 
+    fields = {
+        "Cpu": fields.Int(required=True, load_from="Cpu"),
+        "Description": fields.Str(required=True, load_from="Description"),
+        "Group": fields.Str(required=False, load_from="Group"),
+        "MachineTypeId": fields.Str(required=True, load_from="MachineTypeId"),
+        "Memory": fields.Int(required=True, load_from="Memory"),
+        "UHhostMachineType": fields.Str(
+            required=False, load_from="UHhostMachineType"
+        ),
+    }
 
 
 class MongoDBVersionSchema(schema.ResponseSchema):
-    """ MongoDBVersion - 
-    """
+    """MongoDBVersion -"""
+
     fields = {
-    
-        'DBVersion': fields.Str(required=False, load_from='DBVersion'), 
-    
+        "DBVersion": fields.Str(required=False, load_from="DBVersion"),
     }
-
-
