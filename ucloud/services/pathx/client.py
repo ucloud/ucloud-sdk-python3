@@ -3,66 +3,50 @@
 import typing
 
 
-
-
 from ucloud.core.client import Client
 from ucloud.services.pathx.schemas import apis
 
 
-
-
-
-
-
-
-
 class PathXClient(Client):
-    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
+    def __init__(
+        self, config: dict, transport=None, middleware=None, logger=None
+    ):
         super(PathXClient, self).__init__(config, transport, middleware, logger)
 
-    
-    
-    
-    
-    
-    
-    
-    def bind_path_xssl(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ BindPathXSSL - 绑定PathX SSL证书
+    def bind_path_xssl(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """BindPathXSSL - 绑定PathX SSL证书
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **Port** (list) - (Required) 绑定SSL证书的HTTPS端口。Port.0 Port.1对应多个Port。如果Port不存在则不会绑定
         - **SSLId** (str) - (Required) 证书ID，如果没有指定证书ID也没有申请免费证书，HTTPS接入无法正常工作
         - **UGAId** (str) - (Required) UGA实例ID
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.BindPathXSSLRequestSchema().dumps(d)
-        
+
         resp = self.invoke("BindPathXSSL", d, **kwargs)
         return apis.BindPathXSSLResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def create_global_ssh_instance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ CreateGlobalSSHInstance - 创建GlobalSSH实例
+
+    def create_global_ssh_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateGlobalSSHInstance - 创建GlobalSSH实例
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Area** (str) - (Required) 填写支持SSH访问IP的地区名称，如“洛杉矶”，“新加坡”，“香港”，“东京”，“华盛顿”，“法兰克福”，“首尔”。Area和AreaCode两者必填一个
         - **AreaCode** (str) - (Required) AreaCode, 区域航空港国际通用代码。Area和AreaCode两者必填一个
         - **Port** (int) - (Required) 源站服务器监听的SSH端口，可取范围[1-65535]，不能使用80，443,  65123端口。如果InstanceType=Free，取值范围缩小为[22,3389],linux系统选择22，windows系统自动选3389。
@@ -74,75 +58,67 @@ class PathXClient(Client):
         - **InstanceType** (str) - 枚举值：["Ultimate","Enterprise","Basic","Primary"], 分别代表旗舰版，企业版，基础版，入门版
         - **Quantity** (int) - 购买数量按月购买至月底请传0
         - **Remark** (str) - 备注信息
-        
+
         **Response**
 
         - **AcceleratingDomain** (str) - 加速域名，访问该域名可就近接入
         - **InstanceId** (str) - 实例ID，资源唯一标识
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.CreateGlobalSSHInstanceRequestSchema().dumps(d)
-        
+
         # build options
-        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
-        
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("CreateGlobalSSHInstance", d, **kwargs)
         return apis.CreateGlobalSSHInstanceResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def create_path_xssl(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ CreatePathXSSL - 创建SSL证书，可以把整个 Pem 证书内容传到SSLContent，或者把证书、私钥、CA证书分别传过来
+
+    def create_path_xssl(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreatePathXSSL - 创建SSL证书，可以把整个 Pem 证书内容传到SSLContent，或者把证书、私钥、CA证书分别传过来
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID org-xxx格式。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID org-xxx格式。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **SSLName** (str) - (Required) SSL证书的名字
         - **CACert** (str) - CA颁发证书内容
         - **PrivateKey** (str) - 加密证书的私钥，不可使用密码保护，开启密码保护后，重启服务需要输入密码
         - **SSLContent** (str) - SSL证书的完整内容，私钥不可使用密码，包括加密证书的私钥、用户证书或CA证书等
         - **SSLType** (str) - 所添加的SSL证书类型，目前只支持Pem格式
         - **UserCert** (str) - 用户自签证书内容
-        
+
         **Response**
 
         - **SSLId** (str) - SSL证书的Id
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.CreatePathXSSLRequestSchema().dumps(d)
-        
+
         # build options
-        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
-        
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("CreatePathXSSL", d, **kwargs)
         return apis.CreatePathXSSLResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def create_uga_3instance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ CreateUGA3Instance - 创建全球统一接入加速配置项
+
+    def create_uga_3instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateUGA3Instance - 创建全球统一接入加速配置项
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Bandwidth** (int) - (Required) 实例的共享带宽大小，单位Mbps
         - **AccelerationArea** (str) - 加速大区,默认Global,[    "Global":"全球",    "AP":"亚太",    "EU":"欧洲",    "ME":"中东",    "OA":"大洋洲",    "AF":"非洲",    "NA":"北美洲",    "SA":"南美洲"]
         - **AreaCode** (str) - 非必填,如果不填，会根据Domain 和IPList 去选一个最近的源站区域BKK表示AreaCode;曼谷表示Area["BKK":"曼谷","DXB":"迪拜","FRA":"法兰克福","SGN":"胡志明市","HKG":"香港",CGK":"雅加达","LOS":"拉各斯","LHR":"伦敦","LAX":"洛杉矶","MNL":"马尼拉","DME":"莫斯科","BOM":"孟买","MSP":"圣保罗","ICN":"首尔","PVG":"上海","SIN":"新加坡","NRT":"东京","IAD":"华盛顿","TPE": "台北"]
@@ -153,72 +129,64 @@ class PathXClient(Client):
         - **OriginIPList** (str) - 加速源IP，多个IP用英文半角逗号(,)隔开；IPList和Domain二选一必填
         - **Quantity** (int) - 购买周期
         - **Remark** (str) - 备注项
-        
+
         **Response**
 
         - **CName** (str) - 加速域名 用户可把业务域名CName到此域名上
         - **InstanceId** (str) - 加速配置ID
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.CreateUGA3InstanceRequestSchema().dumps(d)
-        
+
         # build options
-        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
-        
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("CreateUGA3Instance", d, **kwargs)
         return apis.CreateUGA3InstanceResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def create_uga_3port(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ CreateUGA3Port - 创建统一接入加速实例端口，目前仅支持四层TCP端口
+
+    def create_uga_3port(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateUGA3Port - 创建统一接入加速实例端口，目前仅支持四层TCP端口
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **InstanceId** (str) - (Required) 加速配置实例ID
         - **TCP** (list) - TCP接入端口，禁用65123端口
         - **TCPRS** (list) - TCP回源端口
-        
+
         **Response**
 
         - **Message** (str) - 返回信息 说明
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.CreateUGA3PortRequestSchema().dumps(d)
-        
+
         # build options
-        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
-        
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("CreateUGA3Port", d, **kwargs)
         return apis.CreateUGA3PortResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def create_uga_forwarder(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ CreateUGAForwarder - 创建加速实例转发器，支持HTTPS接入HTTPS回源、HTTPS接入HTTP回源、HTTP接入HTTP回源、TCP接入TCP回源、UDP接入UDP回源、 支持WSS接入WSS回源、WSS接入WS回源、WS接入WS回源
+
+    def create_uga_forwarder(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateUGAForwarder - 创建加速实例转发器，支持HTTPS接入HTTPS回源、HTTPS接入HTTP回源、HTTP接入HTTP回源、TCP接入TCP回源、UDP接入UDP回源、 支持WSS接入WSS回源、WSS接入WS回源、WS接入WS回源
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **UGAId** (str) - (Required) 加速配置实例ID
         - **HTTPHTTP** (list) - HTTP接入HTTP回源转发，接入端口。禁用65123端口
         - **HTTPHTTPRS** (list) - HTTP接入HTTP回源转发，源站监听端口
@@ -236,74 +204,64 @@ class PathXClient(Client):
         - **WSSWSSRS** (list) - WebSocketS接入WebSocketS回源转发，源站监听端口。
         - **WSWS** (list) - WebSocket接入WebSocket回源转发，接入端口。禁用65123。
         - **WSWSRS** (list) - WebSocket接入WebSocket回源转发，源站监听端口
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.CreateUGAForwarderRequestSchema().dumps(d)
-        
+
         # build options
-        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
-        
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("CreateUGAForwarder", d, **kwargs)
         return apis.CreateUGAForwarderResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def create_uga_instance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ CreateUGAInstance - 创建全球加速配置项
+
+    def create_uga_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateUGAInstance - 创建全球加速配置项
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **Name** (str) - (Required) 加速配置实例名称
         - **Domain** (str) - 加速源域名，IPList和Domain二选一必填
         - **IPList** (str) - 加速源IP，多个IP用英文半角逗号(,)隔开；IPList和Domain二选一必填
         - **TCP** (list) - TCP端口号，已废弃。请使用 CreateUGAForwarder API 创建端口
         - **UDP** (list) - UDP端口号，已废弃。请使用 CreateUGAForwarder API 创建端口
-        
+
         **Response**
 
         - **CName** (str) - 加速域名 用户可把业务域名CName到此域名上。注意：未绑定线路情况时 加速域名解析不出IP。
         - **Message** (str) - 返回信息
         - **UGAId** (str) - 加速配置ID
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.CreateUGAInstanceRequestSchema().dumps(d)
-        
+
         # build options
-        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
-        
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("CreateUGAInstance", d, **kwargs)
         return apis.CreateUGAInstanceResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
+
     def create_upath(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ CreateUPath - 创建UPath
+        """CreateUPath - 创建UPath
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Bandwidth** (int) - (Required) 当PostPaid为false时，该值为预付费固定带宽；当PostPaid为true时，该值为后付费保底带宽，保底带宽越大可用的上限带宽越大。最小1Mbps,最大带宽由 DescribePathXLineConfig 接口获得。可联系产品团队咨询最大带宽。
         - **LineId** (str) - (Required) 选择的线路，由DescribePathXLineConfig接口提供
         - **Name** (str) - (Required) 名字，便于记忆区分
@@ -312,153 +270,133 @@ class PathXClient(Client):
         - **PathType** (str) - private:专线线路；public:海外SD-WAN。默认为private。
         - **PostPaid** (bool) - 是否开启后付费, 默认为false ，不开启后付费。当ChargeType为Dynamic时不能开启后付费。
         - **Quantity** (int) - 购买周期，ChargeType为Month时，Quantity默认为0代表购买到月底，按时和按年付费该参数必须大于0
-        
+
         **Response**
 
         - **PathId** (str) - 加速线路实例Id
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.CreateUPathRequestSchema().dumps(d)
-        
+
         # build options
-        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
-        
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("CreateUPath", d, **kwargs)
         return apis.CreateUPathResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def delete_global_ssh_instance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DeleteGlobalSSHInstance - 删除GlobalSSH实例
+
+    def delete_global_ssh_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteGlobalSSHInstance - 删除GlobalSSH实例
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **InstanceId** (str) - (Required) 实例Id,资源的唯一标识
-        
+
         **Response**
 
         - **Message** (str) - 提示信息
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.DeleteGlobalSSHInstanceRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DeleteGlobalSSHInstance", d, **kwargs)
         return apis.DeleteGlobalSSHInstanceResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def delete_path_xssl(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DeletePathXSSL - 删除PathX SSL证书
+
+    def delete_path_xssl(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeletePathXSSL - 删除PathX SSL证书
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **SSLId** (str) - (Required) SSL证书的ID
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.DeletePathXSSLRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DeletePathXSSL", d, **kwargs)
         return apis.DeletePathXSSLResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def delete_uga_3instance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DeleteUGA3Instance - 删除全球统一接入转发实例
+
+    def delete_uga_3instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteUGA3Instance - 删除全球统一接入转发实例
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **InstanceId** (str) - (Required) 实例Id,资源的唯一标识
-        
+
         **Response**
 
         - **Message** (str) - 提示信息
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.DeleteUGA3InstanceRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DeleteUGA3Instance", d, **kwargs)
         return apis.DeleteUGA3InstanceResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def delete_uga_3port(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DeleteUGA3Port - 删除统一接入加速实例转发器 按接入端口删除
+
+    def delete_uga_3port(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteUGA3Port - 删除统一接入加速实例转发器 按接入端口删除
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **InstanceId** (str) - (Required) 加速配置实例ID
         - **TCP** (list) - TCP接入端口
-        
+
         **Response**
 
         - **Message** (str) - 返回信息 说明
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.DeleteUGA3PortRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DeleteUGA3Port", d, **kwargs)
         return apis.DeleteUGA3PortResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def delete_uga_forwarder(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DeleteUGAForwarder - 删除加速实例转发器 按接入端口删除
+
+    def delete_uga_forwarder(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteUGAForwarder - 删除加速实例转发器 按接入端口删除
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **UGAId** (str) - (Required) 加速配置实例ID
         - **HTTPHTTP** (list) - HTTP接入HTTP回源，接入端口。禁用65123端口
         - **HTTPSHTTP** (list) - HTTPS接入HTTP回源， 接入端口。禁用65123端口
@@ -468,140 +406,123 @@ class PathXClient(Client):
         - **WSSWS** (list) - WebSocketS接入WebSocket回源， 接入端口。禁用65123端口。
         - **WSSWSS** (list) - WebSocketS接入WebSocketS回源， 接入端口。禁用65123端口
         - **WSWS** (list) - WebSocket接入WebSocket回源， 接入端口。禁用65123端口
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.DeleteUGAForwarderRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DeleteUGAForwarder", d, **kwargs)
         return apis.DeleteUGAForwarderResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def delete_uga_instance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DeleteUGAInstance - 删除全球加速服务加速配置
+
+    def delete_uga_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteUGAInstance - 删除全球加速服务加速配置
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **UGAId** (str) - (Required) 加速配置实例ID
-        
+
         **Response**
 
         - **Message** (str) - 消息提示
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.DeleteUGAInstanceRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DeleteUGAInstance", d, **kwargs)
         return apis.DeleteUGAInstanceResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
+
     def delete_upath(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DeleteUPath - 删除UPath
+        """DeleteUPath - 删除UPath
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **UPathId** (str) - (Required) 加速线路实例ID
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.DeleteUPathRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DeleteUPath", d, **kwargs)
         return apis.DeleteUPathResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def describe_global_ssh_area(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DescribeGlobalSSHArea - 
+
+    def describe_global_ssh_area(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeGlobalSSHArea -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 
-        - **Region** (str) - (Config) 
-        
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+
         **Response**
 
         - **AreaSet** (list) - 见 **GlobalSSHArea** 模型定义
-        - **Message** (str) - 
-        
+        - **Message** (str) -
+
         **Response Model**
-        
-        **GlobalSSHArea** 
-        - **Area** (str) - 
-        - **AreaCode** (str) - 
-        - **RegionSet** (list) - 
-        
+
+        **GlobalSSHArea**
+        - **Area** (str) -
+        - **AreaCode** (str) -
+        - **RegionSet** (list) -
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.DescribeGlobalSSHAreaRequestSchema().dumps(d)
-        
+
         # build options
-        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
-        
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("DescribeGlobalSSHArea", d, **kwargs)
         return apis.DescribeGlobalSSHAreaResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def describe_global_ssh_instance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DescribeGlobalSSHInstance - 获取GlobalSSH实例列表（传实例ID获取单个实例信息，不传获取项目下全部实例）
+
+    def describe_global_ssh_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeGlobalSSHInstance - 获取GlobalSSH实例列表（传实例ID获取单个实例信息，不传获取项目下全部实例）
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID，如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID，如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **InstanceId** (str) - 实例ID，资源唯一标识
-        
+
         **Response**
 
         - **InstanceSet** (list) - 见 **GlobalSSHInfo** 模型定义
-        
+
         **Response Model**
-        
-        **GlobalSSHInfo** 
+
+        **GlobalSSHInfo**
         - **AcceleratingDomain** (str) - GlobalSSH分配的加速域名。
         - **Area** (str) - 被SSH访问的IP所在地区
         - **BandwidthPackage** (int) - globalssh Ultimate带宽包大小
@@ -619,39 +540,35 @@ class PathXClient(Client):
         - **Port** (int) - 源站服务器监听的SSH端口，windows系统为RDP端口
         - **Remark** (str) - 备注信息
         - **TargetIP** (str) - 被SSH访问的源站 IPv4地址。
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.DescribeGlobalSSHInstanceRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DescribeGlobalSSHInstance", d, **kwargs)
         return apis.DescribeGlobalSSHInstanceResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def describe_path_x_line_config(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DescribePathXLineConfig - 获取全球加速线路信息
+
+    def describe_path_x_line_config(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribePathXLineConfig - 获取全球加速线路信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+
         **Response**
 
         - **LineSet** (list) - 见 **UGAALine** 模型定义
-        
+
         **Response Model**
-        
-        **UGAALine** 
+
+        **UGAALine**
         - **LineDetail** (list) - 见 **LineDetail** 模型定义
         - **LineFrom** (str) - 线路源
         - **LineFromName** (str) - 线路源中文名称
@@ -659,52 +576,48 @@ class PathXClient(Client):
         - **LineTo** (str) - 线路目的
         - **LineToName** (str) - 线路目的中文名称
         - **MaxBandwidth** (int) - 线路可售最大带宽
-        
 
-        **LineDetail** 
+
+        **LineDetail**
         - **LineFrom** (str) - 线路源
         - **LineFromName** (str) - 线路源中文名称
         - **LineId** (str) - 线路计费Id
         - **LineTo** (str) - 线路目的
         - **LineToName** (str) - 线路目的中文名称
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.DescribePathXLineConfigRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DescribePathXLineConfig", d, **kwargs)
         return apis.DescribePathXLineConfigResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def describe_path_xssl(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DescribePathXSSL - 获取SSL证书信息,支持分页，支持按证书名称 证书域名模糊搜索
+
+    def describe_path_xssl(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribePathXSSL - 获取SSL证书信息,支持分页，支持按证书名称 证书域名模糊搜索
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **Limit** (int) - 最大返回条数，默认100，最大400
         - **Offset** (int) - 偏移值 默认为0
         - **SSLId** (str) - SSL证书的Id，不传分页获取证书列表
         - **SearchValue** (str) - 不为空则按证书名称、证书域名模糊搜索 分页返回结果
-        
+
         **Response**
 
         - **DataSet** (list) - 见 **PathXSSLSet** 模型定义
         - **TotalCount** (int) - 符合条件的证书总数
-        
+
         **Response Model**
-        
-        **PathXSSLSet** 
+
+        **PathXSSLSet**
         - **CreateTime** (int) - SSL证书的创建时间 时间戳
         - **ExpireTime** (int) - 证书过期时间 时间戳
         - **SSLBindedTargetSet** (list) - 见 **SSLBindedTargetSet** 模型定义
@@ -714,90 +627,82 @@ class PathXClient(Client):
         - **SSLName** (str) - SSL证书的名字
         - **SourceType** (int) - 证书来源，0：用户上传 1: 免费颁发
         - **SubjectName** (str) - 证书域名
-        
 
-        **SSLBindedTargetSet** 
+
+        **SSLBindedTargetSet**
         - **ResourceId** (str) - SSL证书绑定到的实例ID
         - **ResourceName** (str) - SSL证书绑定到的实例名称
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.DescribePathXSSLRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DescribePathXSSL", d, **kwargs)
         return apis.DescribePathXSSLResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def describe_uga_3area(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DescribeUGA3Area - 获取全球接入源站可选列表
+
+    def describe_uga_3area(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUGA3Area - 获取全球接入源站可选列表
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Domain** (str) - 域名，非必填。如果填IP或者域名，会推荐一个地域在返回列表的第一个
         - **IPList** (str) - IP集合，非必填。如果填IP或者域名，会推荐一个地域在返回列表的第一个，源站IP集合，以逗号分隔[127.0.0.1,127.0.0.2]
-        
+
         **Response**
 
         - **AreaSet** (list) - 见 **ForwardArea** 模型定义
         - **Message** (str) - 提示信息
-        
+
         **Response Model**
-        
-        **ForwardArea** 
+
+        **ForwardArea**
         - **Area** (str) - 源站区域中文
         - **AreaCode** (str) - 源站区域代码
         - **ContinentCode** (str) - 大陆代码
         - **CountryCode** (str) - 国家代码
         - **FlagEmoji** (str) - 国旗 emoji
         - **FlagUnicode** (str) - 国旗unicode
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.DescribeUGA3AreaRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DescribeUGA3Area", d, **kwargs)
         return apis.DescribeUGA3AreaResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def describe_uga_3instance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DescribeUGA3Instance - 获取全球统一接入加速服务加速配置信息，指定实例ID返回单个实例。未指定实例ID时 指定分页参数 则按创建时间降序 返回记录
+
+    def describe_uga_3instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUGA3Instance - 获取全球统一接入加速服务加速配置信息，指定实例ID返回单个实例。未指定实例ID时 指定分页参数 则按创建时间降序 返回记录
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **InstanceId** (str) - 加速配置实例ID，如果传了实例ID 则返回匹配实例ID的记录；如果没传则返回 ProjectId 下全部实例且符合分页要求
         - **Limit** (int) - 返回的最大条数，默认为100，最大值400
         - **Offset** (int) - 偏移量，默认为0
-        
+
         **Response**
 
         - **ForwardInstanceInfos** (list) - 见 **ForwardInfo** 模型定义
         - **TotalCount** (int) - 符合条件的总数
-        
+
         **Response Model**
-        
-        **ForwardInfo** 
+
+        **ForwardInfo**
         - **AccelerationArea** (str) - 加速大区代码
         - **AccelerationAreaInfos** (list) - 见 **AccelerationAreaInfos** 模型定义
         - **AccelerationAreaName** (str) - 加速大区名称
@@ -815,71 +720,67 @@ class PathXClient(Client):
         - **OriginAreaCode** (str) - 源站AreaCode
         - **PortSets** (list) - 见 **ForwardTask** 模型定义
         - **Remark** (str) - 备注
-        
 
-        **AccelerationAreaInfos** 
+
+        **AccelerationAreaInfos**
         - **AccelerationArea** (str) - 加速区code
         - **AccelerationNodes** (list) - 见 **SrcAreaInfo** 模型定义
-        
 
-        **SrcAreaInfo** 
+
+        **SrcAreaInfo**
         - **Area** (str) - AreaCode对应城市名
         - **AreaCode** (str) - AreaCode ,城市机场代码
         - **FlagEmoji** (str) - 国旗Emoji
         - **FlagUnicode** (str) - 国旗Unicode
-        
 
-        **OutPublicIpInfo** 
+
+        **OutPublicIpInfo**
         - **Area** (str) - 线路回源节点机房代号
         - **IP** (str) - 线路回源节点EIP
-        
 
-        **ForwardTask** 
+
+        **ForwardTask**
         - **Port** (int) - 加速端口
         - **Protocol** (str) - 转发协议，枚举值["TCP"，"UDP"，"HTTPHTTP"，"HTTPSHTTP"，"HTTPSHTTPS"，"WSWS"，"WSSWS"，"WSSWSS"]。TCP和UDP代表四层转发，其余为七层转发。
         - **RSPort** (int) - 源站服务器监听的端口号
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.DescribeUGA3InstanceRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DescribeUGA3Instance", d, **kwargs)
         return apis.DescribeUGA3InstanceResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def describe_uga_3optimization(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DescribeUGA3Optimization - 获取全球接入UGA3线路加速化情况
+
+    def describe_uga_3optimization(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUGA3Optimization - 获取全球接入UGA3线路加速化情况
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **AreaCode** (str) - (Required) 源站AreaCode
         - **AccelerationArea** (str) - 加速大区,默认Global,[    "Global":"全球",    "AP":"亚太",    "EU":"欧洲",    "ME":"中东",    "OA":"大洋洲",    "AF":"非洲",    "NA":"北美洲",    "SA":"南美洲"]
         - **TimeRange** (str) - 默认一天 ，枚举类型["Hour","Day","Week"]
-        
+
         **Response**
 
         - **AccelerationInfos** (list) - 见 **AccelerationInfo** 模型定义
-        
+
         **Response Model**
-        
-        **AccelerationInfo** 
+
+        **AccelerationInfo**
         - **AccelerationArea** (str) - 加速大区代码
         - **AccelerationName** (str) - 加速大区名称
         - **NodeInfo** (list) - 见 **NodeDelays** 模型定义
-        
 
-        **NodeDelays** 
+
+        **NodeDelays**
         - **Area** (str) - 加速区域
         - **AreaCode** (str) - 加速区域Code
         - **CountryCode** (str) - 国家代码
@@ -891,43 +792,39 @@ class PathXClient(Client):
         - **Loss** (float) - 加速后丢包率
         - **LossInternet** (float) - 原始丢包率
         - **LossOptimization** (float) - 丢包下降比例
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.DescribeUGA3OptimizationRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DescribeUGA3Optimization", d, **kwargs)
         return apis.DescribeUGA3OptimizationResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def describe_uga_instance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DescribeUGAInstance - 获取全球加速服务加速配置信息，指定实例ID返回单个实例。未指定实例ID时 指定分页参数 则按创建时间降序 返回记录
+
+    def describe_uga_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUGAInstance - 获取全球加速服务加速配置信息，指定实例ID返回单个实例。未指定实例ID时 指定分页参数 则按创建时间降序 返回记录
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **Limit** (int) - 返回的最大条数，默认为100，最大值400
         - **Offset** (int) - 偏移量，默认为0
         - **UGAId** (str) - 加速配置实例ID，如果传了实例ID 则返回匹配实例ID的记录；如果没传则返回 ProjectId 下全部实例且符合分页要求
-        
+
         **Response**
 
         - **TotalCount** (int) - 符合条件的总数
         - **UGAList** (list) - 见 **UGAAInfo** 模型定义
-        
+
         **Response Model**
-        
-        **UGAAInfo** 
+
+        **UGAAInfo**
         - **CName** (str) - 加速域名，请在加速区域配置您的业务域名的CName记录值为加速域名
         - **Domain** (str) - 源站域名
         - **IPList** (list) - 源站IP列表，多个值由半角英文逗号相隔
@@ -939,33 +836,33 @@ class PathXClient(Client):
         - **UGAId** (str) - 加速配置实例ID
         - **UGAName** (str) - 加速配置名称
         - **UPathSet** (list) - 见 **UPathSet** 模型定义
-        
 
-        **UGAL4Forwarder** 
+
+        **UGAL4Forwarder**
         - **Port** (int) - 接入端口
         - **Protocol** (str) - 转发协议，枚举值["TCP"，"UDP"，"HTTPHTTP"，"HTTPSHTTP"，"HTTPSHTTPS"]。TCP和UDP代表四层转发，其余为七层转发
         - **RSPort** (int) - RSPort，源站监听端口
-        
 
-        **UGAL7Forwarder** 
+
+        **UGAL7Forwarder**
         - **Port** (int) - 接入端口
         - **Protocol** (str) - 转发协议，枚举值["TCP"，"UDP"，"HTTPHTTP"，"HTTPSHTTP"，"HTTPSHTTPS"]。TCP和UDP代表四层转发，其余为七层转发
         - **RSPort** (int) - RSPort，源站监听端口
         - **SSLId** (str) - 证书ID
         - **SSLName** (str) - 证书名称
-        
 
-        **OutPublicIpInfo** 
+
+        **OutPublicIpInfo**
         - **Area** (str) - 线路回源节点机房代号
         - **IP** (str) - 线路回源节点EIP
-        
 
-        **UGAATask** 
+
+        **UGAATask**
         - **Port** (int) - 接入端口
         - **Protocol** (str) - 转发协议，枚举值["TCP"，"UDP"，"HTTPHTTP"，"HTTPSHTTP"，"HTTPSHTTPS"]。TCP和UDP代表四层转发，其余为七层转发
-        
 
-        **UPathSet** 
+
+        **UPathSet**
         - **Bandwidth** (int) - 带宽 Mbps, 1~800Mbps
         - **LineFrom** (str) - 线路起点英文代号，加速区域
         - **LineFromName** (str) - 线路起点中文名字，加速区域
@@ -974,40 +871,36 @@ class PathXClient(Client):
         - **LineToName** (str) - 线路对端中文名字，源站区域
         - **UPathId** (str) - UPath 实例ID
         - **UPathName** (str) - UPath名字
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.DescribeUGAInstanceRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DescribeUGAInstance", d, **kwargs)
         return apis.DescribeUGAInstanceResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def describe_upath(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DescribeUPath - 获取加速线路信息
+
+    def describe_upath(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUPath - 获取加速线路信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **UPathId** (str) - 如果不填参数 返回 ProjectId 下所有的线路资源，填此参数则返回upath实例ID匹配的线路
-        
+
         **Response**
 
         - **UPathSet** (list) - 见 **UPathInfo** 模型定义
-        
+
         **Response Model**
-        
-        **UPathInfo** 
+
+        **UPathInfo**
         - **Bandwidth** (int) - 带宽，单位Mbps
         - **ChargeType** (str) - 计费模式，默认为Month 按月收费,可选范围['Month','Year','Dynamic']
         - **CreateTime** (int) - UPath创建的时间，10位时间戳
@@ -1020,51 +913,47 @@ class PathXClient(Client):
         - **PostPaid** (bool) - 是否为后付费实例
         - **UGAList** (list) - 见 **PathXUGAInfo** 模型定义
         - **UPathId** (str) - UPath加速线路实例ID
-        
 
-        **OutPublicIpInfo** 
+
+        **OutPublicIpInfo**
         - **Area** (str) - 线路回源节点机房代号
         - **IP** (str) - 线路回源节点EIP
-        
 
-        **PathXUGAInfo** 
+
+        **PathXUGAInfo**
         - **Domain** (str) - 源站域名
         - **IPList** (list) - 源站IP列表，多个值由半角英文逗号相隔
         - **UGAId** (str) - 加速配置ID
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.DescribeUPathRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DescribeUPath", d, **kwargs)
         return apis.DescribeUPathResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def describe_upath_template(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DescribeUPathTemplate - 查询UPath的监控模板
+
+    def describe_upath_template(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUPathTemplate - 查询UPath的监控模板
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **UPathId** (str) - (Required) 加速线路实例ID,格式 upath-xxxx
-        
+
         **Response**
 
         - **DataSet** (list) - 见 **AlarmRuler** 模型定义
-        
+
         **Response Model**
-        
-        **AlarmRuler** 
+
+        **AlarmRuler**
         - **AlarmFrequency** (int) - 告警探测周期，单位秒
         - **AlarmStrategy** (str) - 收敛策略，可选范围 ['Exponential','Continuous','Once']，分别对应指数递增、连续告警、单次告警
         - **AlarmTemplateRuleId** (int) - 告警模板策略ID
@@ -1074,156 +963,140 @@ class PathXClient(Client):
         - **ResourceType** (str) - 资源类型
         - **Threshold** (int) - 告警阈值，带宽使用率的阈值范围是[50,100]的正整数，带宽告警阈值为1000000的倍数, 如大于2Mbps则告警 阈值应该传 2000000
         - **TriggerCount** (int) - 告警触发周期（次数）
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.DescribeUPathTemplateRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DescribeUPathTemplate", d, **kwargs)
         return apis.DescribeUPathTemplateResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def get_global_ssh_price(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ GetGlobalSSHPrice - 获取GlobalSSH价格
+
+    def get_global_ssh_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetGlobalSSHPrice - 获取GlobalSSH价格
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **ChargeType** (str) - 计费类型：Dynamic，Month，Year
         - **InstanceType** (str) - 版本类型。枚举值，Enterprise:企业版；Basic:基础版。可不填，默认为Basic。
         - **Quantity** (int) - 购买周期，如果ChargeType为Month，Quantity默认为0；其他情况必须为大于0的整数
-        
+
         **Response**
 
         - **Price** (float) - 价格,返回单位为元
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.GetGlobalSSHPriceRequestSchema().dumps(d)
-        
+
         resp = self.invoke("GetGlobalSSHPrice", d, **kwargs)
         return apis.GetGlobalSSHPriceResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def get_global_ssh_update_price(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ GetGlobalSSHUpdatePrice - 获取GlobalSSH升级价格
+
+    def get_global_ssh_update_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetGlobalSSHUpdatePrice - 获取GlobalSSH升级价格
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **InstanceType** (str) - (Required) 升级后的实例类型。枚举值，Enterprise:企业版；Basic:基础版。
         - **ChargeType** (str) - 计费类型：Dynamic，Month，Year。从免费版升级到付费版必须传，其他情况不需要传
         - **InstanceId** (str) - 实例ID，唯一资源标识。从免费版升级到付费版可不填，其他情况必填。
         - **Quantity** (int) - 购买周期，如果ChargeType为Month，Quantity可以不填默认为0；其他情况必须为正整数。
-        
+
         **Response**
 
         - **Price** (float) - 价格,返回单位为元。正数表示付费升级，负数表示降级退费。
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.GetGlobalSSHUpdatePriceRequestSchema().dumps(d)
-        
+
         resp = self.invoke("GetGlobalSSHUpdatePrice", d, **kwargs)
         return apis.GetGlobalSSHUpdatePriceResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def get_path_x_metric(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ GetPathXMetric - 获取全球加速监控信息
+
+    def get_path_x_metric(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetPathXMetric - 获取全球加速监控信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **BeginTime** (int) - (Required) 查询起始时间，10位长度时间戳
         - **EndTime** (int) - (Required) 查询结束时间，10位长度时间戳
         - **LineId** (str) - (Required) 具体线路id，调用DescribePathXLineConfig接口获取线路列表
         - **MetricName** (list) - (Required) 查询监控的指标项。目前仅允许以下四项：NetworkOut:出向带宽，NetworkIn:入向带宽，NetworkOutUsage:出向带宽使用率，NetworkInUsage:入向带宽使用率
         - **ResourceId** (str) - (Required) ResourceId，如upath ID  和 uga ID
         - **ResourceType** (str) - (Required) upath:加速线路,uga:加速实例
-        
+
         **Response**
 
         - **DataSet** (dict) - 见 **MetricPeriod** 模型定义
-        
+
         **Response Model**
-        
-        **MetricPeriod** 
+
+        **MetricPeriod**
         - **NetworkIn** (list) - 见 **MatricPoint** 模型定义
         - **NetworkInUsage** (list) - 见 **MatricPoint** 模型定义
         - **NetworkOut** (list) - 见 **MatricPoint** 模型定义
         - **NetworkOutUsage** (list) - 见 **MatricPoint** 模型定义
-        
 
-        **MatricPoint** 
+
+        **MatricPoint**
         - **Timestamp** (int) - 时间戳
         - **Value** (int) - 监控点数值
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.GetPathXMetricRequestSchema().dumps(d)
-        
+
         resp = self.invoke("GetPathXMetric", d, **kwargs)
         return apis.GetPathXMetricResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def get_uga_3metric(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ GetUGA3Metric - 获取全地域加速监控信息
+
+    def get_uga_3metric(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUGA3Metric - 获取全地域加速监控信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **BeginTime** (int) - (Required) 查询起始时间，10位长度时间戳
         - **EndTime** (int) - (Required) 查询结束时间，10位长度时间戳
         - **InstanceId** (str) - (Required) 资源ID
         - **AreaCode** (str) - 子线路AreaCode ,子线路的时候传，不是子线路可以不传
         - **IsSubline** (bool) - 是否为子线路。为了简化查询,true 会返回所有子线路监控项可以，false:返回所有汇总的监控数据
         - **MetricName** (list) - 查询监控的指标项。可不传	NetworkOut:出口总带宽	NetworkIn：入口总带宽	NetworkOutUsage：出口带宽使用率	NetworkInUsage：入口总带宽使用率	NetworkOutSubline ：子线路出口带宽	NetworkInSubline：子线路入口带宽	Delay：线路平均延迟	DelaySubline：子线路延迟	ConnectCount：当前连接数	ConnectCountSubline：子线路当前连接数	DelayPromote：延迟提升	DelayPromoteSubline：子线路延迟提升
-        
+
         **Response**
 
         - **DataSet** (dict) - 见 **UGA3Metric** 模型定义
-        
+
         **Response Model**
-        
-        **UGA3Metric** 
+
+        **UGA3Metric**
         - **ConnectCount** (list) - 见 **MatricPoint** 模型定义
         - **ConnectCountSubline** (list) - 见 **MatricPoint** 模型定义
         - **Delay** (list) - 见 **MatricPoint** 模型定义
@@ -1236,358 +1109,314 @@ class PathXClient(Client):
         - **NetworkOut** (list) - 见 **MatricPoint** 模型定义
         - **NetworkOutSubline** (list) - 见 **MatricPoint** 模型定义
         - **NetworkOutUsage** (list) - 见 **MatricPoint** 模型定义
-        
 
-        **MatricPoint** 
+
+        **MatricPoint**
         - **Timestamp** (int) - 时间戳
         - **Value** (int) - 监控点数值
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.GetUGA3MetricRequestSchema().dumps(d)
-        
+
         resp = self.invoke("GetUGA3Metric", d, **kwargs)
         return apis.GetUGA3MetricResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def get_uga_3price(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ GetUGA3Price - 获取全球统一接入转发实例价格
+
+    def get_uga_3price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUGA3Price - 获取全球统一接入转发实例价格
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **AreaCode** (str) - (Required) 源站区域
         - **Bandwidth** (int) - (Required) 共享带宽大小
         - **AccelerationArea** (str) - 加速大区,默认返回所有加速大区价格
         - **ChargeType** (str) - 计费方式，默认按月支付。Month: 按月; Year: 按年; Dynamic: 按小时收
         - **Quantity** (int) - 购买时间数量，当ChargeType为Month时 Quantity默认为0，代表购买至月底。按年按小时必须为大于0
-        
+
         **Response**
 
         - **UGA3Price** (list) - 见 **UGA3Price** 模型定义
-        
+
         **Response Model**
-        
-        **UGA3Price** 
+
+        **UGA3Price**
         - **AccelerationArea** (str) - 加速大区代码
         - **AccelerationAreaName** (str) - 加速大区名称
         - **AccelerationBandwidthPrice** (float) - 加速配置带宽价格
         - **AccelerationForwarderPrice** (float) - 转发配置价格
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.GetUGA3PriceRequestSchema().dumps(d)
-        
+
         resp = self.invoke("GetUGA3Price", d, **kwargs)
         return apis.GetUGA3PriceResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def get_uga_3update_price(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ GetUGA3UpdatePrice - 全球统一接入获取实例更新价格（增加、删退）
+
+    def get_uga_3update_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUGA3UpdatePrice - 全球统一接入获取实例更新价格（增加、删退）
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **InstanceId** (str) - (Required) 资源ID
         - **AccelerationArea** (str) - 暂未支持，加速大区，在更换加速大区的时候使用
         - **AreaCode** (str) - 暂未支持，源站区域
         - **Bandwidth** (int) - 只有升级带宽的时候有价格变化
-        
+
         **Response**
 
         - **Price** (float) - 价格 元。大于0需付费，小于0则退费。
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.GetUGA3UpdatePriceRequestSchema().dumps(d)
-        
+
         resp = self.invoke("GetUGA3UpdatePrice", d, **kwargs)
         return apis.GetUGA3UpdatePriceResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def modify_global_ssh_port(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ ModifyGlobalSSHPort - 修改GlobalSSH端口
+
+    def modify_global_ssh_port(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyGlobalSSHPort - 修改GlobalSSH端口
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID，如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID，如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **InstanceId** (str) - (Required) 实例ID,资源唯一标识。当前仅收费版GlobalSSH实例可以修改端口。
         - **Port** (int) - (Required) 源站服务器监听的SSH端口号。收费版本端口范围[1,65535]且不能为80，443，65123端口。免费版不支持修改端口。
-        
+
         **Response**
 
         - **Message** (str) - 提示信息
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.ModifyGlobalSSHPortRequestSchema().dumps(d)
-        
+
         resp = self.invoke("ModifyGlobalSSHPort", d, **kwargs)
         return apis.ModifyGlobalSSHPortResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def modify_global_ssh_remark(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ ModifyGlobalSSHRemark - 修改GlobalSSH备注
+
+    def modify_global_ssh_remark(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyGlobalSSHRemark - 修改GlobalSSH备注
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID，如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID，如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **InstanceId** (str) - (Required) 实例ID,资源唯一标识
         - **Remark** (str) - 备注信息，不填默认为空字符串
-        
+
         **Response**
 
         - **Message** (str) - 接口返回消息
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.ModifyGlobalSSHRemarkRequestSchema().dumps(d)
-        
+
         resp = self.invoke("ModifyGlobalSSHRemark", d, **kwargs)
         return apis.ModifyGlobalSSHRemarkResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def modify_global_ssh_type(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ ModifyGlobalSSHType - 修改GlobalSSH实例类型，仅支持低版本升级到高版本，不支持高版本降级到低版本
+
+    def modify_global_ssh_type(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyGlobalSSHType - 修改GlobalSSH实例类型，仅支持低版本升级到高版本，不支持高版本降级到低版本
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID，如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID，如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **InstanceId** (str) - (Required) 实例ID,资源唯一标识
         - **InstanceType** (str) - (Required) 取值范围["Enterprise","Basic"]，分别对应企业版和基础版，表示升级后的实例类型。比如从Free版本升级为Basic版或Enterprise版，不可从收费版降级为免费版，或从企业版降级为基础版
         - **ChargeType** (str) - 支付方式，如按月、按年、按时
         - **CouponId** (str) - 可抵扣费用的券，通常不使用
         - **Quantity** (str) - 购买时间，当ChargeType为Month，Quantity为0代表购买到月底
-        
+
         **Response**
 
         - **Message** (str) - 提示信息
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.ModifyGlobalSSHTypeRequestSchema().dumps(d)
-        
+
         resp = self.invoke("ModifyGlobalSSHType", d, **kwargs)
         return apis.ModifyGlobalSSHTypeResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def modify_uga_3bandwidth(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ ModifyUGA3Bandwidth - 修改统一接入加速配置带宽
+
+    def modify_uga_3bandwidth(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyUGA3Bandwidth - 修改统一接入加速配置带宽
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **InstanceId** (str) - (Required) 加速配置实例ID，格式uga3-xxxx
         - **Bandwidth** (int) - 带宽大小，范围[1,100]，不传则不更新
         - **CouponId** (str) - 需要全地域可用的代金券
-        
+
         **Response**
 
         - **Message** (str) - 补充描述信息
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.ModifyUGA3BandwidthRequestSchema().dumps(d)
-        
+
         resp = self.invoke("ModifyUGA3Bandwidth", d, **kwargs)
         return apis.ModifyUGA3BandwidthResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def modify_uga_3instance(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ ModifyUGA3Instance - 修改统一接入加速配置属性，如Name，ReMark
+
+    def modify_uga_3instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyUGA3Instance - 修改统一接入加速配置属性，如Name，ReMark
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **InstanceId** (str) - (Required) 加速配置实例ID，格式uga-xxxx。不支持GlobalSSH实例。
         - **Name** (str) - 加速配置实例名称，不填或空字符串则不更新
         - **Remark** (str) - 备注信息，暂时前端为使用
-        
+
         **Response**
 
         - **Message** (str) - 补充描述信息
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.ModifyUGA3InstanceRequestSchema().dumps(d)
-        
+
         resp = self.invoke("ModifyUGA3Instance", d, **kwargs)
         return apis.ModifyUGA3InstanceResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def modify_uga_3origin_info(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ ModifyUGA3OriginInfo - Domain， IPList注意：修改Domain或IPList时， 请确保源站服务端口已经开启且外网防火墙允许pathx出口ip访问。
+
+    def modify_uga_3origin_info(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyUGA3OriginInfo - Domain， IPList注意：修改Domain或IPList时， 请确保源站服务端口已经开启且外网防火墙允许pathx出口ip访问。
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **InstanceId** (str) - (Required) 加速配置实例ID，格式uga3-xxxx。
         - **OriginDomain** (str) - (Required) 加速源域名，仅支持1个域名。修改源站时 OriginIPList和OriginDomain至少填一个。OriginIPList和OriginDomain都填时 以Domain为准,如果两个都不填，不修改
         - **OriginIPList** (str) - (Required) ，加速源IP，多个IP用英文半角逗号(,)隔开。修改源站时 ，OriginIPList和OriginDomain至少填一个。OriginIPList和OriginDomain都填时 以OriginDomain为准。如果两个都不填，不修改
-        
+
         **Response**
 
         - **Action** (str) - 操作名称
         - **Message** (str) - 补充描述信息
         - **RetCode** (int) - 返回码
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.ModifyUGA3OriginInfoRequestSchema().dumps(d)
-        
+
         resp = self.invoke("ModifyUGA3OriginInfo", d, **kwargs)
         return apis.ModifyUGA3OriginInfoResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def modify_uga_3port(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ ModifyUGA3Port - 修改统一接入加速实例端口,目前仅支持四层TCP端口
+
+    def modify_uga_3port(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyUGA3Port - 修改统一接入加速实例端口,目前仅支持四层TCP端口
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **InstanceId** (str) - (Required) 加速配置实例ID
         - **TCP** (list) - TCP接入端口，禁用65123端口
         - **TCPRS** (list) - TCP回源端口
-        
+
         **Response**
 
         - **Message** (str) - 返回信息 说明
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.ModifyUGA3PortRequestSchema().dumps(d)
-        
+
         resp = self.invoke("ModifyUGA3Port", d, **kwargs)
         return apis.ModifyUGA3PortResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def modify_upath_bandwidth(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ ModifyUPathBandwidth - 修改加速线路带宽
+
+    def modify_upath_bandwidth(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyUPathBandwidth - 修改加速线路带宽
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **Bandwidth** (int) - (Required) 线路带宽，单位Mbps。最小1Mbps,最大带宽由 DescribePathXLineConfig 接口获得。如需更大带宽，请联系产品团队。
         - **UPathId** (str) - (Required) UPath 加速线路实例Id
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.ModifyUPathBandwidthRequestSchema().dumps(d)
-        
+
         resp = self.invoke("ModifyUPathBandwidth", d, **kwargs)
         return apis.ModifyUPathBandwidthResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def modify_upath_template(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ ModifyUPathTemplate - 修改UPath监控告警项
+
+    def modify_upath_template(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyUPathTemplate - 修改UPath监控告警项
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **UPathId** (str) - (Required) 加速线路实例ID
         - **AlarmFrequency** (list) - 告警探测周期，单位：秒
         - **AlarmStrategy** (list) - 收敛策略，可选范围 ['Exponential','Continuous','Once']，分别对应指数递增、连续告警、单次告警
@@ -1596,138 +1425,119 @@ class PathXClient(Client):
         - **MetricName** (list) - 告警指标名称, 所有n的个数必须一致。目前仅允许以下四项：UpathNetworkOut:出向带宽，UpathNetworkIn:入向带宽，UpathNetworkOutUsage:出向带宽使用率，UpathNetworkInUsage:入向带宽使用率
         - **Threshold** (list) - 告警阈值，带宽使用率的阈值范围是[50,100]的正整数，带宽告警阈值为1000000的倍数, 如大于2Mbps则告警 阈值应该传 2000000
         - **TriggerCount** (list) - 告警触发周期（次数）
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.ModifyUPathTemplateRequestSchema().dumps(d)
-        
+
         resp = self.invoke("ModifyUPathTemplate", d, **kwargs)
         return apis.ModifyUPathTemplateResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def uga_bind_upath(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ UGABindUPath - UGA绑定UPath
+
+    def uga_bind_upath(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UGABindUPath - UGA绑定UPath
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **UGAId** (str) - (Required) 加速配置实例ID，格式uga-xxxx
         - **UPathId** (str) - (Required) 加速线路实例ID，格式upath-xxx
         - **CouponId** (str) - 代金券
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.UGABindUPathRequestSchema().dumps(d)
-        
+
         resp = self.invoke("UGABindUPath", d, **kwargs)
         return apis.UGABindUPathResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def uga_un_bind_upath(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ UGAUnBindUPath - UGA与UPath解绑
+
+    def uga_un_bind_upath(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UGAUnBindUPath - UGA与UPath解绑
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **UGAId** (str) - (Required) 加速配置实例ID 格式uga-xxx
         - **UPathId** (str) - (Required) 加速线路实例ID 格式upath-xxx
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.UGAUnBindUPathRequestSchema().dumps(d)
-        
+
         resp = self.invoke("UGAUnBindUPath", d, **kwargs)
         return apis.UGAUnBindUPathResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def un_bind_path_xssl(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ UnBindPathXSSL - 解绑PathX SSL 证书
+
+    def un_bind_path_xssl(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UnBindPathXSSL - 解绑PathX SSL 证书
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **Port** (list) - (Required) 解绑SSL证书的HTTPS端口。Port.0 Port.1格式 端口错误则解绑失败。
         - **SSLId** (str) - (Required) SSL证书ID。
         - **UGAId** (str) - (Required) UGA实例ID。
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.UnBindPathXSSLRequestSchema().dumps(d)
-        
+
         resp = self.invoke("UnBindPathXSSL", d, **kwargs)
         return apis.UnBindPathXSSLResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def update_path_x_whitelist(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ UpdatePathXWhitelist - 更新入口白名单,仅限GlobalSSH 实例使用。其他uga-实例不生效
+
+    def update_path_x_whitelist(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdatePathXWhitelist - 更新入口白名单,仅限GlobalSSH 实例使用。其他uga-实例不生效
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **InstanceId** (str) - (Required) GlobalSSH实例ID，资源唯一标识
         - **Whitelist** (list) - 白名单规则,例如 "Whitelist.0": "192.168.1.1/24|tcp|22"，"Whitelist.1": "192.168.1.2|tcp|8080:8090"，第一个参数为ip或ip段，第二个参数代表协议（tcp/udp），第三个参数代表端口号或端口范围（使用 ':' 隔开）；可以添加多条规则（递增Whitelist.n字段内的n值）；此接口需要列出全部规则，例如不填则为清空白名单规则，如若需要增量添加，使用InsertPathXWhitelist接口,globalssh 没有端口范围：端口设置成加速端口，协议设置成tcp:ip|tcp|加速端口
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.UpdatePathXWhitelistRequestSchema().dumps(d)
-        
+
         resp = self.invoke("UpdatePathXWhitelist", d, **kwargs)
         return apis.UpdatePathXWhitelistResponseSchema().loads(resp)
-    
-
-

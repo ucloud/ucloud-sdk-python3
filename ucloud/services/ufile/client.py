@@ -3,72 +3,57 @@
 import typing
 
 
-
-
 from ucloud.core.client import Client
 from ucloud.services.ufile.schemas import apis
 
 
-
-
-
-
-
-
-
 class UFileClient(Client):
-    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
+    def __init__(
+        self, config: dict, transport=None, middleware=None, logger=None
+    ):
         super(UFileClient, self).__init__(config, transport, middleware, logger)
 
-    
-    
-    
-    
-    
-    
-    
-    def create_bucket(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ CreateBucket - 创建Bucket
+    def create_bucket(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateBucket - 创建Bucket
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **BucketName** (str) - (Required) 待创建Bucket的名称，具有全局唯一性
         - **Type** (str) - Bucket访问类型，public或private; 默认为private
-        
+
         **Response**
 
         - **BucketId** (str) - 已创建Bucket的ID
         - **BucketName** (str) - 已创建Bucket的名称
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.CreateBucketRequestSchema().dumps(d)
-        
+
         # build options
-        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
-        
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("CreateBucket", d, **kwargs)
         return apis.CreateBucketResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def create_ufile_life_cycle(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ CreateUFileLifeCycle - 创建生命周期管理
+
+    def create_ufile_life_cycle(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateUFileLifeCycle - 创建生命周期管理
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BucketName** (str) - (Required) 存储空间名称
         - **LifeCycleName** (str) - (Required) 生命周期名称
         - **Prefix** (str) - (Required) 生命周期所适用的前缀；*为整个存储空间文件；一条规则只支持一个文件前缀；
@@ -76,38 +61,35 @@ class UFileClient(Client):
         - **ArchivalDays** (int) - 指定一个过期天数N，文件会在其最近更新时间点的N天后，自动变为归档存储类型；参数范围：[7,36500]，0代表不启用
         - **Days** (int) - 指定一个过期天数N，文件会在其最近更新时间点的N天后过期，自动删除；参数范围：[7,36500]，0代表不启用
         - **IADays** (int) - 指定一个过期天数N，文件会在其最近更新时间点的N天后，自动变为低频存储类型；参数范围：[7,36500]，0代表不启用
-        
+
         **Response**
 
         - **LifeCycleId** (str) - 生命周期Id
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.CreateUFileLifeCycleRequestSchema().dumps(d)
-        
+
         # build options
-        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
-        
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("CreateUFileLifeCycle", d, **kwargs)
         return apis.CreateUFileLifeCycleResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def create_ufile_token(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ CreateUFileToken - 创建US3令牌
+
+    def create_ufile_token(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateUFileToken - 创建US3令牌
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **TokenName** (str) - (Required) 令牌名称
         - **AllowedBuckets** (list) - 令牌允许操作的bucket，默认*表示全部
         - **AllowedOps** (list) - 令牌允许执行的操作[ TOKEN_ALLOW_NONE 没有权限, TOKEN_ALLOW_READ 下载权限 , TOKEN_ALLOW_WRITE 上传权限 , TOKEN_ALLOW_DELETE 删除权限 , TOKEN_ALLOW_LIST 列表权限, TOKEN_ALLOW_IOP 图片处理权限, TOKEN_DENY_UPDATE 禁止覆盖权限]。默认TOKEN_ALLOW_NONE
@@ -115,15 +97,15 @@ class UFileClient(Client):
         - **BlackIPList** (list) - 令牌黑名单，支持ipv4，ipv6格式。
         - **ExpireTime** (int) - Unix 时间戳，精确到秒，为令牌过期时间点。默认过期时间为一天（即当前Unix时间戳+86400）；注意：过期时间不能超过 4102416000
         - **WhiteIPList** (list) - 令牌白名单，支持ipv4，ipv6格式。
-        
+
         **Response**
 
         - **TokenId** (str) - 令牌唯一ID
         - **UFileTokenSet** (dict) - 见 **UFileTokenSet** 模型定义
-        
+
         **Response Model**
-        
-        **UFileTokenSet** 
+
+        **UFileTokenSet**
         - **AllowedBuckets** (list) - 令牌允许操作的bucket
         - **AllowedOps** (list) - 令牌允许执行的操作，[ TOKEN_ALLOW_NONE 没有权限, TOKEN_ALLOW_READ 下载权限, TOKEN_ALLOW_WRITE 上传权限, TOKEN_ALLOW_DELETE 删除权限, TOKEN_ALLOW_LIST 列表权限, TOKEN_ALLOW_IOP 图片处理权限]
         - **AllowedPrefixes** (list) - 令牌允许操作的key前缀
@@ -137,135 +119,122 @@ class UFileClient(Client):
         - **TokenId** (str) - 令牌ID
         - **TokenName** (str) - 令牌名称
         - **WhiteIPList** (list) - 令牌白名单
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.CreateUFileTokenRequestSchema().dumps(d)
-        
+
         # build options
-        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
-        
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("CreateUFileToken", d, **kwargs)
         return apis.CreateUFileTokenResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def delete_bucket(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DeleteBucket - 删除Bucket
+
+    def delete_bucket(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteBucket - 删除Bucket
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **BucketName** (str) - (Required) 待删除Bucket的名称
-        
+
         **Response**
 
         - **BucketId** (str) - Bucket的ID
         - **BucketName** (str) - Bucket的名称
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.DeleteBucketRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DeleteBucket", d, **kwargs)
         return apis.DeleteBucketResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def delete_ufile_life_cycle(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DeleteUFileLifeCycle - 删除生命周期管理
+
+    def delete_ufile_life_cycle(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteUFileLifeCycle - 删除生命周期管理
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BucketName** (str) - (Required) 存储空间名称
         - **LifeCycleId** (str) - (Required) 生命周期Id
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.DeleteUFileLifeCycleRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DeleteUFileLifeCycle", d, **kwargs)
         return apis.DeleteUFileLifeCycleResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def delete_ufile_token(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DeleteUFileToken - 删除令牌
+
+    def delete_ufile_token(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteUFileToken - 删除令牌
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **TokenId** (str) - (Required) 令牌ID
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.DeleteUFileTokenRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DeleteUFileToken", d, **kwargs)
         return apis.DeleteUFileTokenResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def describe_bucket(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DescribeBucket - 获取Bucket的描述信息
+
+    def describe_bucket(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeBucket - 获取Bucket的描述信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **Region** (str) - (Config) 如果提供此参数，则获取相应地域下所有空间的空间名称(只返回空间名称信息)
         - **BucketName** (str) - 待获取Bucket的名称，若不提供，则获取所有Bucket
         - **Limit** (int) - 获取所有Bucket列表的限制数目，默认为20
         - **Offset** (int) - 获取所有Bucket列表的偏移数目，默认为0
-        
+
         **Response**
 
         - **DataSet** (list) - 见 **UFileBucketSet** 模型定义
-        
+
         **Response Model**
-        
-        **UFileBucketSet** 
+
+        **UFileBucketSet**
         - **Biz** (str) - Bucket所属业务, general或vod或udb general: 普通业务； vod: 视频云业务; udb: 云数据库业务
         - **BucketId** (str) - Bucket的ID
         - **BucketName** (str) - Bucket名称
@@ -277,49 +246,46 @@ class UFileClient(Client):
         - **Region** (str) - Bucket所属地域
         - **Tag** (str) - 所属业务组
         - **Type** (str) - Bucket访问类型
-        
 
-        **UFileDomainSet** 
+
+        **UFileDomainSet**
         - **Cdn** (list) - UCDN加速域名
         - **CustomCdn** (list) - 用户自定义CDN加速域名
         - **CustomSrc** (list) - 用户自定义源站域名
         - **Src** (list) - 源站域名
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.DescribeBucketRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DescribeBucket", d, **kwargs)
         return apis.DescribeBucketResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def describe_ufile_life_cycle(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DescribeUFileLifeCycle - 获取生命周期信息
+
+    def describe_ufile_life_cycle(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUFileLifeCycle - 获取生命周期信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BucketName** (str) - (Required) 存储空间名称
         - **LifeCycleId** (str) - 生命周期Id；不传递此参数拉取存储空间下面的所有生命周期信息
-        
+
         **Response**
 
         - **DateSet** (list) - 见 **LifeCycleItem** 模型定义
-        
+
         **Response Model**
-        
-        **LifeCycleItem** 
+
+        **LifeCycleItem**
         - **ArchivalDays** (int) - 指定一个过期天数N，文件会在其最近更新时间点的N天后过期，自动转换为归档存储类型，0代表不启用；
         - **BucketName** (str) - 存储空间名称
         - **Days** (int) - 指定一个过期天数N，文件会在其最近更新时间点的N天后过期，自动删除，0代表不启用；
@@ -328,43 +294,40 @@ class UFileClient(Client):
         - **LifeCycleName** (str) - 生命周期名称
         - **Prefix** (str) - 生命周期所适用的前缀；*为整个存储空间文件；
         - **Status** (str) - Enabled -- 启用，Disabled -- 不启用
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.DescribeUFileLifeCycleRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DescribeUFileLifeCycle", d, **kwargs)
         return apis.DescribeUFileLifeCycleResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def describe_ufile_token(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DescribeUFileToken - 获取令牌信息
+
+    def describe_ufile_token(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUFileToken - 获取令牌信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Display** (int) - 0表示显示部分token信息；不传递和其他情况表示显示全部token信息
         - **TokenId** (str) - 令牌ID，只返回指定ID信息，否则拉取所有令牌
         - **TokenName** (str) - 令牌名称，只返回指定令牌名称信息，否则拉取所有令牌
-        
+
         **Response**
 
         - **DataSet** (list) - 见 **UFileTokenSet** 模型定义
-        
+
         **Response Model**
-        
-        **UFileTokenSet** 
+
+        **UFileTokenSet**
         - **AllowedBuckets** (list) - 令牌允许操作的bucket
         - **AllowedOps** (list) - 令牌允许执行的操作，[ TOKEN_ALLOW_NONE , TOKEN_ALLOW_READ , TOKEN_ALLOW_WRITE , TOKEN_ALLOW_DELETE , TOKEN_ALLOW_LIST, TOKEN_ALLOW_IOP , TOKEN_ALLOW_DP ]
         - **AllowedPrefixes** (list) - 令牌允许操作的key前缀
@@ -376,48 +339,45 @@ class UFileClient(Client):
         - **Region** (str) - 所属地区
         - **TokenId** (str) - 令牌ID
         - **TokenName** (str) - 令牌名称
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.DescribeUFileTokenRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DescribeUFileToken", d, **kwargs)
         return apis.DescribeUFileTokenResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def get_ufile_daily_report(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ GetUFileDailyReport - 查看日消费报表
+
+    def get_ufile_daily_report(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUFileDailyReport - 查看日消费报表
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **EndTime** (int) - (Required) 查询结束时间;unix时间戳,单位s
         - **StartTime** (int) - (Required) 查询开始时间;unix时间戳，单位s
         - **BucketName** (str) - 空间名称。此字段不为空，返回此Bucket日使用量；否则，返回这个项目的日使用量
-        
+
         **Response**
 
         - **DataSet** (list) - 见 **UFileReportItem** 模型定义
-        
+
         **Response Model**
-        
-        **UFileReportItem** 
+
+        **UFileReportItem**
         - **Daily** (list) - 见 **UFileDailyReportItem** 模型定义
         - **Total** (list) - 见 **UFileTotalReportItem** 模型定义
-        
 
-        **UFileDailyReportItem** 
+
+        **UFileDailyReportItem**
         - **AcRestore** (float) - 冷存激活量，即归档数据取回量；单位byte
         - **AcStorage** (float) - 冷存（归档）存储量；单位byte
         - **ApiTimes** (float) - API请求次数（万次）
@@ -429,248 +389,224 @@ class UFileClient(Client):
         - **IaStorage** (float) - 低频存储量；单位byte
         - **IdleFlow** (float) - 闲时流量；单位byte；海外无此字段
         - **Storage** (float) - 标准存储量；单位byte
-        
 
-        **UFileTotalReportItem** 
+
+        **UFileTotalReportItem**
         - **ApiTimes** (float) - API请求次数（万次）
         - **BusyFlow** (float) - 忙时流量；单位byte；海外无此字段
         - **CdnFlow** (float) - cdn回源流量;单位byte
         - **Flow** (float) - 下载流量：单位byte；国内无此字段
         - **IdleFlow** (float) - 闲时流量；单位byte；海外无此字段
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.GetUFileDailyReportRequestSchema().dumps(d)
-        
+
         resp = self.invoke("GetUFileDailyReport", d, **kwargs)
         return apis.GetUFileDailyReportResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def get_ufile_quota(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ GetUFileQuota - 查看配额状态
+
+    def get_ufile_quota(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUFileQuota - 查看配额状态
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **QuotaType** (str) - (Required) 配额类型，取值为storage-volume, download-traffic或request-count
-        
+
         **Response**
 
         - **LeftQuota** (float) - 剩余的配额数值
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.GetUFileQuotaRequestSchema().dumps(d)
-        
+
         resp = self.invoke("GetUFileQuota", d, **kwargs)
         return apis.GetUFileQuotaResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def get_ufile_quota_info(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ GetUFileQuotaInfo - 获取配额信息
+
+    def get_ufile_quota_info(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUFileQuotaInfo - 获取配额信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **QuotaType** (list) - (Required) 配额类型，取值为storage-volume, download-traffic或request-count
-        
+
         **Response**
 
         - **DataSet** (list) - 见 **UFileQuotaDataSetItem** 模型定义
-        
+
         **Response Model**
-        
-        **UFileQuotaDataSetItem** 
+
+        **UFileQuotaDataSetItem**
         - **DownloadFlow** (dict) - 见 **UFileQuotaLeft** 模型定义
         - **Owe** (int) - 是否欠费：1表示欠费；0表示未欠费
         - **Region** (str) - 可用地域
         - **RequestCnt** (dict) - 见 **UFileQuotaLeft** 模型定义
         - **Storage** (dict) - 见 **UFileQuotaLeft** 模型定义
-        
 
-        **UFileQuotaLeft** 
+
+        **UFileQuotaLeft**
         - **Left** (float) - 配额剩余量
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.GetUFileQuotaInfoRequestSchema().dumps(d)
-        
+
         resp = self.invoke("GetUFileQuotaInfo", d, **kwargs)
         return apis.GetUFileQuotaInfoResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def get_ufile_quota_price(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ GetUFileQuotaPrice - 根据US3的购买配额，查询需要支付的价格。
+
+    def get_ufile_quota_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUFileQuotaPrice - 根据US3的购买配额，查询需要支付的价格。
 
         **Request**
 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **DownloadTraffic** (int) - 下载流量，单位: GB，范围: [0, 60 000]，步长：1GB
         - **RequestCount** (int) - 请求次数，单位：万次，范围：[0, 1 000 000]，步长：1万次
         - **StorageVolume** (int) - 存储容量，单位: GB*天，范围: [0, 30 000 000]，步长：100GB*天
-        
+
         **Response**
 
         - **Price** (float) - 待支付价格，单位：分
-        
+
         """
         # build request
         d = {
-            'Region': self.config.region, 
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.GetUFileQuotaPriceRequestSchema().dumps(d)
-        
+
         resp = self.invoke("GetUFileQuotaPrice", d, **kwargs)
         return apis.GetUFileQuotaPriceResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def get_ufile_report(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ GetUFileReport - 查看配额使用报表
+
+    def get_ufile_report(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUFileReport - 查看配额使用报表
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **EndTime** (int) - (Required) 查询结束时间
         - **StartTime** (int) - (Required) 查询开始时间
-        
+
         **Response**
 
         - **DataSet** (list) - 见 **UFileReportSet** 模型定义
-        
+
         **Response Model**
-        
-        **UFileReportSet** 
+
+        **UFileReportSet**
         - **DownloadTraffic** (float) - 配额消费当日使用的下载流量，单位：GB
         - **RequestCount** (float) - 配额消费当日使用的请求次数，单位：万次
         - **StorageVolume** (float) - 配额消费当日使用的存储容量，单位：GB*天
         - **Time** (int) - 配额消费时间，unix时间戳，精确到日期
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.GetUFileReportRequestSchema().dumps(d)
-        
+
         resp = self.invoke("GetUFileReport", d, **kwargs)
         return apis.GetUFileReportResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def set_ufile_referer(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ SetUFileReferer - 设置对象存储防盗链
+
+    def set_ufile_referer(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """SetUFileReferer - 设置对象存储防盗链
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BucketName** (str) - (Required) 存储空间名称
         - **RefererStatus** (str) - (Required) 开启关闭referer防盗链;关闭防盗链会清空防盗链参数设置，开启防盗链必须指定 RefererType、Referers；开启：on， 关闭：off;
         - **RefererAllowNull** (bool) - RefererType为白名单时，RefererAllowNull为false代表不允许空referer访问，为true代表允许空referer访问;此参数默认为 true;
         - **RefererType** (int) - 防盗链Referer类型，支持两种类型，黑名单和白名单; 1黑名单，2白名单；RefererStatus为"on"时此参数必填；
         - **Referers** (list) - 防盗链Referer规则，支持正则表达式（不支持符号';')
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.SetUFileRefererRequestSchema().dumps(d)
-        
+
         resp = self.invoke("SetUFileReferer", d, **kwargs)
         return apis.SetUFileRefererResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def update_bucket(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ UpdateBucket - 更改Bucket的属性
+
+    def update_bucket(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateBucket - 更改Bucket的属性
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
         - **BucketName** (str) - (Required) 待修改Bucket的名称
         - **Type** (str) - (Required) Bucket访问类型;public或private
-        
+
         **Response**
 
         - **BucketId** (str) - Bucket的ID
         - **BucketName** (str) - Bucket的名称
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 
+            "ProjectId": self.config.project_id,
         }
         req and d.update(req)
         d = apis.UpdateBucketRequestSchema().dumps(d)
-        
+
         resp = self.invoke("UpdateBucket", d, **kwargs)
         return apis.UpdateBucketResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def update_ufile_life_cycle(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ UpdateUFileLifeCycle - 更新生命周期管理
+
+    def update_ufile_life_cycle(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateUFileLifeCycle - 更新生命周期管理
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BucketName** (str) - (Required) 存储空间名称
         - **LifeCycleId** (str) - (Required) 生命周期Id
         - **LifeCycleName** (str) - (Required) 生命周期名称
@@ -679,63 +615,57 @@ class UFileClient(Client):
         - **ArchivalDays** (int) - 指定一个过期天数N，文件会在其最近更新时间点的N天后过期，自动转换为归档存储类型；范围： [7,36500]，0代表不启用
         - **Days** (int) - 指定一个过期天数N，文件会在其最近更新时间点的N天后过期,自动删除；范围： [7,36500]
         - **IADays** (int) - 指定一个过期天数N，文件会在其最近更新时间点的N天后过期，自动转换为低频存储类型；范围： [7,36500]，0代表不启用
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.UpdateUFileLifeCycleRequestSchema().dumps(d)
-        
+
         resp = self.invoke("UpdateUFileLifeCycle", d, **kwargs)
         return apis.UpdateUFileLifeCycleResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def update_ufile_token(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ UpdateUFileToken - 更新令牌的操作权限，可操作key的前缀，可操作bucket和令牌超时时间点
+
+    def update_ufile_token(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateUFileToken - 更新令牌的操作权限，可操作key的前缀，可操作bucket和令牌超时时间点
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **TokenId** (str) - (Required) 令牌ID
         - **AllowedBuckets** (list) - 令牌允许操作的bucket
         - **AllowedOps** (list) - 令牌允许执行的操作，[ TOKEN_ALLOW_NONE , TOKEN_ALLOW_READ , TOKEN_ALLOW_WRITE , TOKEN_ALLOW_DELETE , TOKEN_ALLOW_LIST, TOKEN_ALLOW_IOP , TOKEN_ALLOW_DP ]
         - **AllowedPrefixes** (list) - 令牌允许操作的key前缀
         - **ExpireTime** (int) - 令牌的超时时间点（时间戳）;注意：过期时间不能超过 4102416000
         - **TokenName** (str) - 令牌名称
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.UpdateUFileTokenRequestSchema().dumps(d)
-        
+
         resp = self.invoke("UpdateUFileToken", d, **kwargs)
         return apis.UpdateUFileTokenResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def update_uds_rule(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ UpdateUdsRule - 针对对象存储的文件，进行自动触发解压。
+
+    def update_uds_rule(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateUdsRule - 针对对象存储的文件，进行自动触发解压。
 
         **Request**
 
@@ -752,22 +682,17 @@ class UFileClient(Client):
         - **Events** (list) - 通知的事件数组
         - **NotificationTypes** (list) - 通知的类型数组
         - **Ops** (list) - 操作的ops数组,"Ops.0":"unzip"
-        
+
         **Response**
 
         - **Mesage** (str) - 该请求的消息成功或者失败的描述
         - **RuleId** (str) - 返回规则的规则ID
-        
+
         """
         # build request
-        d = {
-            
-        }
+        d = {}
         req and d.update(req)
         d = apis.UpdateUdsRuleRequestSchema().dumps(d)
-        
+
         resp = self.invoke("UpdateUdsRule", d, **kwargs)
         return apis.UpdateUdsRuleResponseSchema().loads(resp)
-    
-
-

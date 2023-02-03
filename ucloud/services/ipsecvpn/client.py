@@ -3,73 +3,60 @@
 import typing
 
 
-
-
 from ucloud.core.client import Client
 from ucloud.services.ipsecvpn.schemas import apis
 
 
-
-
-
-
-
-
-
 class IPSecVPNClient(Client):
-    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
-        super(IPSecVPNClient, self).__init__(config, transport, middleware, logger)
+    def __init__(
+        self, config: dict, transport=None, middleware=None, logger=None
+    ):
+        super(IPSecVPNClient, self).__init__(
+            config, transport, middleware, logger
+        )
 
-    
-    
-    
-    
-    
-    
-    
-    def create_remote_vpn_gateway(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ CreateRemoteVPNGateway - 创建客户VPN网关
+    def create_remote_vpn_gateway(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateRemoteVPNGateway - 创建客户VPN网关
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **RemoteVPNGatewayAddr** (str) - (Required) 客户VPN网关地址
         - **RemoteVPNGatewayName** (str) - (Required) 客户VPN网关名称
         - **Remark** (str) - 备注，默认为空
         - **Tag** (str) - 业务组名称，默认为 "Default"
-        
+
         **Response**
 
         - **RemoteVPNGatewayId** (str) - 新建客户VPN网关的资源ID
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.CreateRemoteVPNGatewayRequestSchema().dumps(d)
-        
+
         # build options
-        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
-        
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("CreateRemoteVPNGateway", d, **kwargs)
         return apis.CreateRemoteVPNGatewayResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def create_vpn_gateway(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ CreateVPNGateway - 创建VPN网关
+
+    def create_vpn_gateway(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateVPNGateway - 创建VPN网关
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Grade** (str) - (Required) 购买的VPN网关规格，枚举值为: Standard, 标准型; Enhanced, 增强型
         - **VPCId** (str) - (Required) 新建VPN网关所属VPC的资源ID
         - **VPNGatewayName** (str) - (Required) 新建VPN网关名称
@@ -80,38 +67,35 @@ class IPSecVPNClient(Client):
         - **Quantity** (int) - 购买时长, 默认: 1
         - **Remark** (str) - 备注，默认为空
         - **Tag** (str) - 业务组名称，默认为 "Default"
-        
+
         **Response**
 
         - **VPNGatewayId** (str) - 新建VPN网关的资源ID
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.CreateVPNGatewayRequestSchema().dumps(d)
-        
+
         # build options
-        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
-        
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("CreateVPNGateway", d, **kwargs)
         return apis.CreateVPNGatewayResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def create_vpn_tunnel(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ CreateVPNTunnel - 创建VPN隧道
+
+    def create_vpn_tunnel(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateVPNTunnel - 创建VPN隧道
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **IKEPreSharedKey** (str) - (Required) 预共享密钥
         - **IKEVersion** (str) - (Required) ike版本，枚举值： "IKE V1"，"IKE V2"，默认v1
         - **IPSecLocalSubnetIds** (list) - (Required) 指定VPN连接的本地子网的资源ID，最多可填写10个。
@@ -136,139 +120,127 @@ class IPSecVPNClient(Client):
         - **IPSecSALifetimeBytes** (str) - IPSec中SA的生存时间（以字节计）。可选为8000 – 20000000。默认使用SA生存时间，
         - **Remark** (str) - 备注，默认为空
         - **Tag** (str) - 业务组，默认为“Default”
-        
+
         **Response**
 
         - **VPNTunnelId** (str) - VPN隧道的资源ID
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.CreateVPNTunnelRequestSchema().dumps(d)
-        
+
         # build options
-        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
-        
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("CreateVPNTunnel", d, **kwargs)
         return apis.CreateVPNTunnelResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def delete_remote_vpn_gateway(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DeleteRemoteVPNGateway - 删除客户VPN网关
+
+    def delete_remote_vpn_gateway(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteRemoteVPNGateway - 删除客户VPN网关
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **RemoteVPNGatewayId** (str) - (Required) 客户VPN网关的资源ID
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.DeleteRemoteVPNGatewayRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DeleteRemoteVPNGateway", d, **kwargs)
         return apis.DeleteRemoteVPNGatewayResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def delete_vpn_gateway(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DeleteVPNGateway - 删除VPN网关
+
+    def delete_vpn_gateway(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteVPNGateway - 删除VPN网关
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **VPNGatewayId** (str) - (Required) VPN网关的资源ID
         - **ReleaseEip** (bool) - 删除VPN时是否一并释放EIP。false，只解绑EIP不删除EIP；true，解绑并释放EIP。默认是false
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.DeleteVPNGatewayRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DeleteVPNGateway", d, **kwargs)
         return apis.DeleteVPNGatewayResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def delete_vpn_tunnel(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DeleteVPNTunnel - 删除VPN隧道
+
+    def delete_vpn_tunnel(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteVPNTunnel - 删除VPN隧道
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **VPNTunnelId** (str) - (Required) VPN隧道的资源ID
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.DeleteVPNTunnelRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DeleteVPNTunnel", d, **kwargs)
         return apis.DeleteVPNTunnelResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def describe_remote_vpn_gateway(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DescribeRemoteVPNGateway - 获取客户VPN网关信息
+
+    def describe_remote_vpn_gateway(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeRemoteVPNGateway - 获取客户VPN网关信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Limit** (int) - 数据分页值, 默认为20
         - **Offset** (int) - 数据偏移量, 默认为0
         - **RemoteVPNGatewayIds** (list) - 客户VPN网关的资源ID，例如RemoteVPNGatewayIds.0代表希望获取客户VPN网关1的信息，RemoteVPNGatewayIds.1代表客户VPN网关2，如果为空，则返回当前Region中所有客户VPN网关实例的信息
         - **Tag** (str) - 业务组名称，若指定则返回业务组下所有客户VPN网关信息
-        
+
         **Response**
 
         - **DataSet** (list) - 见 **RemoteVPNGatewayDataSet** 模型定义
         - **TotalCount** (int) - 符合条件的客户VPN网关总数
-        
+
         **Response Model**
-        
-        **RemoteVPNGatewayDataSet** 
+
+        **RemoteVPNGatewayDataSet**
         - **CreateTime** (int) - 创建时间
         - **Remark** (str) - 备注
         - **RemoteVPNGatewayAddr** (str) - 客户网关IP地址
@@ -276,46 +248,43 @@ class IPSecVPNClient(Client):
         - **RemoteVPNGatewayName** (str) - 客户网关名称
         - **Tag** (str) - 用户组
         - **TunnelCount** (int) - 活跃的隧道数量
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.DescribeRemoteVPNGatewayRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DescribeRemoteVPNGateway", d, **kwargs)
         return apis.DescribeRemoteVPNGatewayResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def describe_vpn_gateway(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DescribeVPNGateway - 获取VPN网关信息
+
+    def describe_vpn_gateway(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeVPNGateway - 获取VPN网关信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Limit** (int) - 数据分页值。默认为20
         - **Offset** (int) - 数据偏移量。默认为0
         - **Tag** (str) - 业务组名称，若指定则返回指定的业务组下的所有VPN网关的信息。
         - **VPCId** (str) - VPC的资源ID，返回指定的VPC下的所有VPN网关的信息。默认返回当前Region中所有VPN网关实例的信息
         - **VPNGatewayIds** (list) - VPN网关的资源ID，例如VPNGatewayIds.0代表希望获取VPN网关1的信息，VPNGatewayIds.1代表VPN网关2，如果为空，则返回当前Region中所有VPN网关的信息
-        
+
         **Response**
 
         - **DataSet** (list) - 见 **VPNGatewayDataSet** 模型定义
         - **TotalCount** (int) - 满足条件的VPN网关总数
-        
+
         **Response Model**
-        
-        **VPNGatewayDataSet** 
+
+        **VPNGatewayDataSet**
         - **AutoRenew** (str) - 是否自动续费
         - **ChargeType** (str) - 付费类型
         - **CreateTime** (int) - 创建时间
@@ -330,45 +299,42 @@ class IPSecVPNClient(Client):
         - **VPCName** (str) - 所属VPC名字
         - **VPNGatewayId** (str) - 网关Id
         - **VPNGatewayName** (str) - 网关名字
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.DescribeVPNGatewayRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DescribeVPNGateway", d, **kwargs)
         return apis.DescribeVPNGatewayResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def describe_vpn_tunnel(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ DescribeVPNTunnel - 获取VPN隧道信息
+
+    def describe_vpn_tunnel(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeVPNTunnel - 获取VPN隧道信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Limit** (int) - 数据分页值, 默认为20
         - **Offset** (int) - 数据偏移量, 默认为0
         - **Tag** (str) - 业务组名称，若指定则返回指定的业务组下的所有VPN网关的信息
         - **VPNTunnelIds** (list) - VPN隧道的资源ID，例如VPNTunnelIds.0代表希望获取信息的VPN隧道1，VPNTunneIds.1代表VPN隧道2，如果为空，则返回当前Region中所有的VPN隧道实例
-        
+
         **Response**
 
         - **DataSet** (list) - 见 **VPNTunnelDataSet** 模型定义
         - **TotalCount** (int) - VPN隧道总数
-        
+
         **Response Model**
-        
-        **VPNTunnelDataSet** 
+
+        **VPNTunnelDataSet**
         - **CreateTime** (int) - 创建时间
         - **IKEData** (dict) - 见 **IKEData** 模型定义
         - **IPSecData** (dict) - 见 **IPSecData** 模型定义
@@ -382,9 +348,9 @@ class IPSecVPNClient(Client):
         - **VPNGatewayName** (str) - VPN网关名字
         - **VPNTunnelId** (str) - 隧道id
         - **VPNTunnelName** (str) - 隧道名称
-        
 
-        **IKEData** 
+
+        **IKEData**
         - **IKEAuthenticationAlgorithm** (str) - IKE认证算法
         - **IKEDhGroup** (str) - IKEDH组
         - **IKEEncryptionAlgorithm** (str) - IKE加密算法
@@ -394,9 +360,9 @@ class IPSecVPNClient(Client):
         - **IKERemoteId** (str) - IKE对端ID标识
         - **IKESALifetime** (str) - IKE秘钥生存时间
         - **IKEVersion** (str) - IKE版本
-        
 
-        **IPSecData** 
+
+        **IPSecData**
         - **IPSecAuthenticationAlgorithm** (str) - IPSec通道中使用的认证算法
         - **IPSecEncryptionAlgorithm** (str) - IPSec通道中使用的加密算法
         - **IPSecLocalSubnetIds** (list) - 指定VPN连接的本地子网，用逗号分隔
@@ -405,133 +371,121 @@ class IPSecVPNClient(Client):
         - **IPSecRemoteSubnets** (list) - 指定VPN连接的客户网段，用逗号分隔
         - **IPSecSALifetime** (str) - IPSec中SA的生存时间
         - **IPSecSALifetimeBytes** (str) - IPSec中SA的生存时间（以字节计）
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.DescribeVPNTunnelRequestSchema().dumps(d)
-        
+
         resp = self.invoke("DescribeVPNTunnel", d, **kwargs)
         return apis.DescribeVPNTunnelResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def get_vpn_gateway_price(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ GetVPNGatewayPrice - 获取VPN价格
+
+    def get_vpn_gateway_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetVPNGatewayPrice - 获取VPN价格
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Grade** (str) - (Required) VPN网关规格。枚举值，包括：标准型：Standard，增强型：Enhanced。
         - **ChargeType** (str) - 付费方式, 枚举值为: Year, 按年付费; Month, 按月付费; Dynamic, 按需付费(需开启权限); 默认为获取三种价格
         - **Quantity** (int) - 购买时长, 默认: 1
-        
+
         **Response**
 
         - **PriceSet** (list) - 见 **VPNGatewayPriceSet** 模型定义
-        
+
         **Response Model**
-        
-        **VPNGatewayPriceSet** 
+
+        **VPNGatewayPriceSet**
         - **ChargeType** (str) - VPN网关付费方式
         - **Price** (float) - VPN网关价格, 单位"元"
         - **PurchaseValue** (int) - 资源有效期, 以Unix Timestamp表示
-        
+
 
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.GetVPNGatewayPriceRequestSchema().dumps(d)
-        
+
         resp = self.invoke("GetVPNGatewayPrice", d, **kwargs)
         return apis.GetVPNGatewayPriceResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def get_vpn_gateway_upgrade_price(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ GetVPNGatewayUpgradePrice - 获取VPN网关规格改动价格
+
+    def get_vpn_gateway_upgrade_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetVPNGatewayUpgradePrice - 获取VPN网关规格改动价格
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Grade** (str) - (Required) 更改的VPN网关规格，枚举值为: Standard, 标准型; Enhanced, 增强型。
         - **VPNGatewayId** (str) - (Required) VPN网关的资源ID
-        
+
         **Response**
 
         - **Price** (float) - 调整规格后的VPN网关价格, 单位为"元", 如需退费此处为负值
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.GetVPNGatewayUpgradePriceRequestSchema().dumps(d)
-        
+
         resp = self.invoke("GetVPNGatewayUpgradePrice", d, **kwargs)
         return apis.GetVPNGatewayUpgradePriceResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def update_vpn_gateway(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ UpdateVPNGateway - 更改VPN网关规格
+
+    def update_vpn_gateway(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateVPNGateway - 更改VPN网关规格
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
         - **Grade** (str) - (Required) 网关规格。枚举值为: Standard, 标准型; Enhanced, 增强型。
         - **VPNGatewayId** (str) - (Required) VPN网关的资源ID
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.UpdateVPNGatewayRequestSchema().dumps(d)
-        
+
         resp = self.invoke("UpdateVPNGateway", d, **kwargs)
         return apis.UpdateVPNGatewayResponseSchema().loads(resp)
-    
-    
-    
-    
-    
-    
-    
-    def update_vpn_tunnel_attribute(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """ UpdateVPNTunnelAttribute - 更新VPN隧道属性
+
+    def update_vpn_tunnel_attribute(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateVPNTunnelAttribute - 更新VPN隧道属性
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **VPNTunnelId** (str) - (Required) VPN隧道的资源ID
         - **IKEAuthenticationAlgorithm** (str) - IKE协商过程中使用的认证算法
         - **IKEDhGroup** (str) - IKE协商过程中使用的DH组
@@ -551,20 +505,18 @@ class IPSecVPNClient(Client):
         - **IPSecRemoteSubnets** (list) - 指定VPN连接的客户网段，用逗号分隔
         - **IPSecSALifetime** (str) - IPSec中SA的生存时间
         - **IPSecSALifetimeBytes** (str) - IPSec中SA的生存时间（以字节计）
-        
+
         **Response**
 
-        
+
         """
         # build request
         d = {
-            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.UpdateVPNTunnelAttributeRequestSchema().dumps(d)
-        
+
         resp = self.invoke("UpdateVPNTunnelAttribute", d, **kwargs)
         return apis.UpdateVPNTunnelAttributeResponseSchema().loads(resp)
-    
-
-

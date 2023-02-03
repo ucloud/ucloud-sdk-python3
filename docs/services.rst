@@ -129,6 +129,13 @@ UBill
    :members:
 
 
+UDBProxy
+--------
+
+.. autoclass:: ucloud.services.udbproxy.client.UDBProxyClient
+   :members:
+
+
 UDDB
 ----
 
@@ -189,6 +196,13 @@ UNVS
 ----
 
 .. autoclass:: ucloud.services.unvs.client.UNVSClient
+   :members:
+
+
+UPgSQL
+------
+
+.. autoclass:: ucloud.services.upgsql.client.UPgSQLClient
    :members:
 
 
