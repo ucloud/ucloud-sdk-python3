@@ -32,14 +32,6 @@ class DiskSetSchema(schema.ResponseSchema):
     }
 
 
-class KubeProxySchema(schema.ResponseSchema):
-    """KubeProxy - KubeProxy信息"""
-
-    fields = {
-        "Mode": fields.Str(required=False, load_from="Mode"),
-    }
-
-
 class UhostInfoSchema(schema.ResponseSchema):
     """UhostInfo - 机器信息"""
 
@@ -56,6 +48,14 @@ class UhostInfoSchema(schema.ResponseSchema):
         "OsName": fields.Str(required=True, load_from="OsName"),
         "State": fields.Str(required=True, load_from="State"),
         "Zone": fields.Str(required=True, load_from="Zone"),
+    }
+
+
+class KubeProxySchema(schema.ResponseSchema):
+    """KubeProxy - KubeProxy信息"""
+
+    fields = {
+        "Mode": fields.Str(required=False, load_from="Mode"),
     }
 
 

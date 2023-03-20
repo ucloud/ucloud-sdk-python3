@@ -69,17 +69,6 @@ class CfgDictListSchema(schema.ResponseSchema):
     }
 
 
-class StorVolumeInfoSchema(schema.ResponseSchema):
-    """StorVolumeInfo - 容器组存储卷信息"""
-
-    fields = {
-        "DiskSize": fields.Int(required=False, load_from="DiskSize"),
-        "MountPoint": fields.Str(required=False, load_from="MountPoint"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
-    }
-
-
 class IpListSchema(schema.ResponseSchema):
     """IpList - 容器组外网ip列表"""
 
@@ -96,6 +85,17 @@ class ImageListSchema(schema.ResponseSchema):
         "ImageKey": fields.Str(required=False, load_from="ImageKey"),
         "StoreAddr": fields.Str(required=False, load_from="StoreAddr"),
         "UserName": fields.Str(required=False, load_from="UserName"),
+    }
+
+
+class StorVolumeInfoSchema(schema.ResponseSchema):
+    """StorVolumeInfo - 容器组存储卷信息"""
+
+    fields = {
+        "DiskSize": fields.Int(required=False, load_from="DiskSize"),
+        "MountPoint": fields.Str(required=False, load_from="MountPoint"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
     }
 
 

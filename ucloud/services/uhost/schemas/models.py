@@ -20,6 +20,16 @@ class KeyPairSchema(schema.ResponseSchema):
     }
 
 
+class CollectionSchema(schema.ResponseSchema):
+    """Collection - CPU和内存可支持的规格"""
+
+    fields = {
+        "Cpu": fields.Int(required=False, load_from="Cpu"),
+        "Memory": fields.List(fields.Int()),
+        "MinimalCpuPlatform": fields.List(fields.Str()),
+    }
+
+
 class FeatureModesSchema(schema.ResponseSchema):
     """FeatureModes - 可以支持的模式类别"""
 
@@ -27,17 +37,6 @@ class FeatureModesSchema(schema.ResponseSchema):
         "MinimalCpuPlatform": fields.List(fields.Str()),
         "Name": fields.Str(required=False, load_from="Name"),
         "RelatedToImageFeature": fields.List(fields.Str()),
-    }
-
-
-class BootDiskInfoSchema(schema.ResponseSchema):
-    """BootDiskInfo - 系统盘信息"""
-
-    fields = {
-        "Features": fields.List(fields.Str()),
-        "InstantResize": fields.Bool(required=False, load_from="InstantResize"),
-        "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
-        "Name": fields.Str(required=False, load_from="Name"),
     }
 
 
@@ -52,32 +51,32 @@ class DataDiskInfoSchema(schema.ResponseSchema):
     }
 
 
-class CollectionSchema(schema.ResponseSchema):
-    """Collection - CPU和内存可支持的规格"""
+class BootDiskInfoSchema(schema.ResponseSchema):
+    """BootDiskInfo - 系统盘信息"""
 
     fields = {
-        "Cpu": fields.Int(required=False, load_from="Cpu"),
-        "Memory": fields.List(fields.Int()),
-        "MinimalCpuPlatform": fields.List(fields.Str()),
-    }
-
-
-class FeaturesSchema(schema.ResponseSchema):
-    """Features - 虚机可支持的特性"""
-
-    fields = {
-        "Modes": fields.List(FeatureModesSchema()),
+        "Features": fields.List(fields.Str()),
+        "InstantResize": fields.Bool(required=False, load_from="InstantResize"),
+        "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
         "Name": fields.Str(required=False, load_from="Name"),
     }
 
 
-class DisksSchema(schema.ResponseSchema):
-    """Disks - 磁盘信息"""
+class MachineSizesSchema(schema.ResponseSchema):
+    """MachineSizes - GPU、CPU和内存信息"""
 
     fields = {
-        "BootDisk": fields.List(BootDiskInfoSchema()),
-        "DataDisk": fields.List(DataDiskInfoSchema()),
-        "Name": fields.Str(required=False, load_from="Name"),
+        "Collection": fields.List(CollectionSchema()),
+        "Gpu": fields.Int(required=False, load_from="Gpu"),
+    }
+
+
+class GraphicsMemorySchema(schema.ResponseSchema):
+    """GraphicsMemory - GPU的显存指标"""
+
+    fields = {
+        "Rate": fields.Int(required=False, load_from="Rate"),
+        "Value": fields.Int(required=False, load_from="Value"),
     }
 
 
@@ -100,21 +99,22 @@ class PerformanceSchema(schema.ResponseSchema):
     }
 
 
-class MachineSizesSchema(schema.ResponseSchema):
-    """MachineSizes - GPU、CPU和内存信息"""
+class FeaturesSchema(schema.ResponseSchema):
+    """Features - 虚机可支持的特性"""
 
     fields = {
-        "Collection": fields.List(CollectionSchema()),
-        "Gpu": fields.Int(required=False, load_from="Gpu"),
+        "Modes": fields.List(FeatureModesSchema()),
+        "Name": fields.Str(required=False, load_from="Name"),
     }
 
 
-class GraphicsMemorySchema(schema.ResponseSchema):
-    """GraphicsMemory - GPU的显存指标"""
+class DisksSchema(schema.ResponseSchema):
+    """Disks - 磁盘信息"""
 
     fields = {
-        "Rate": fields.Int(required=False, load_from="Rate"),
-        "Value": fields.Int(required=False, load_from="Value"),
+        "BootDisk": fields.List(BootDiskInfoSchema()),
+        "DataDisk": fields.List(DataDiskInfoSchema()),
+        "Name": fields.Str(required=False, load_from="Name"),
     }
 
 
@@ -182,6 +182,15 @@ class IsolationGroupSchema(schema.ResponseSchema):
     }
 
 
+class UHostKeyPairSchema(schema.ResponseSchema):
+    """UHostKeyPair - 主机密钥信息"""
+
+    fields = {
+        "KeyPairId": fields.Str(required=False, load_from="KeyPairId"),
+        "KeyPairState": fields.Str(required=False, load_from="KeyPairState"),
+    }
+
+
 class UHostDiskSetSchema(schema.ResponseSchema):
     """UHostDiskSet - DescribeUHostInstance"""
 
@@ -195,15 +204,6 @@ class UHostDiskSetSchema(schema.ResponseSchema):
         "Name": fields.Str(required=False, load_from="Name"),
         "Size": fields.Int(required=False, load_from="Size"),
         "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
-class UHostKeyPairSchema(schema.ResponseSchema):
-    """UHostKeyPair - 主机密钥信息"""
-
-    fields = {
-        "KeyPairId": fields.Str(required=False, load_from="KeyPairId"),
-        "KeyPairState": fields.Str(required=False, load_from="KeyPairState"),
     }
 
 
@@ -320,12 +320,26 @@ class UHostTagSetSchema(schema.ResponseSchema):
     }
 
 
+class PriceDetailSchema(schema.ResponseSchema):
+    """PriceDetail - 价格详细信息"""
+
+    fields = {
+        "Snapshot": fields.Float(required=False, load_from="Snapshot"),
+        "UDisk": fields.Float(required=False, load_from="UDisk"),
+        "UHost": fields.Float(required=False, load_from="UHost"),
+        "Volume": fields.Float(required=False, load_from="Volume"),
+    }
+
+
 class UHostPriceSetSchema(schema.ResponseSchema):
     """UHostPriceSet - 主机价格"""
 
     fields = {
         "ChargeType": fields.Str(required=True, load_from="ChargeType"),
         "ListPrice": fields.Float(required=False, load_from="ListPrice"),
+        "ListPriceDetail": PriceDetailSchema(),
         "OriginalPrice": fields.Float(required=True, load_from="OriginalPrice"),
+        "OriginalPriceDetail": PriceDetailSchema(),
         "Price": fields.Float(required=True, load_from="Price"),
+        "PriceDetail": PriceDetailSchema(),
     }

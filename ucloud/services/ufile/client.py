@@ -378,25 +378,25 @@ class UFileClient(Client):
 
 
         **UFileDailyReportItem**
-        - **AcRestore** (float) - 冷存激活量，即归档数据取回量；单位byte
-        - **AcStorage** (float) - 冷存（归档）存储量；单位byte
+        - **AcRestore** (float) - 冷存激活量，即归档数据取回量；单位GB
+        - **AcStorage** (float) - 冷存（归档）存储量；单位GB
         - **ApiTimes** (float) - API请求次数（万次）
-        - **BusyFlow** (float) - 忙时流量；单位byte；海外无此字段
-        - **CdnFlow** (float) - cdn回源流量;单位byte
+        - **BusyFlow** (float) - 忙时流量；单位GB；海外无此字段
+        - **CdnFlow** (float) - cdn回源流量;单位GB
         - **Date** (int) - 配额消费时间，unix时间戳（单位s），精确到日期
-        - **Flow** (float) - 下载流量：单位byte；国内无此字段
-        - **IaGetSize** (float) - 低频数据取回量；单位byte
-        - **IaStorage** (float) - 低频存储量；单位byte
-        - **IdleFlow** (float) - 闲时流量；单位byte；海外无此字段
-        - **Storage** (float) - 标准存储量；单位byte
+        - **Flow** (float) - 下载流量：单位GB；国内无此字段
+        - **IaGetSize** (float) - 低频数据取回量；单位GB
+        - **IaStorage** (float) - 低频存储量；单位GB
+        - **IdleFlow** (float) - 闲时流量；单位GB；海外无此字段
+        - **Storage** (float) - 标准存储量；单位GB
 
 
         **UFileTotalReportItem**
         - **ApiTimes** (float) - API请求次数（万次）
-        - **BusyFlow** (float) - 忙时流量；单位byte；海外无此字段
-        - **CdnFlow** (float) - cdn回源流量;单位byte
-        - **Flow** (float) - 下载流量：单位byte；国内无此字段
-        - **IdleFlow** (float) - 闲时流量；单位byte；海外无此字段
+        - **BusyFlow** (float) - 忙时流量；单位GB；海外无此字段
+        - **CdnFlow** (float) - cdn回源流量;单位GB
+        - **Flow** (float) - 下载流量：单位GB；国内无此字段
+        - **IdleFlow** (float) - 闲时流量；单位GB；海外无此字段
 
 
         """

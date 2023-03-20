@@ -3,12 +3,21 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class ClientInfoSchema(schema.ResponseSchema):
-    """ClientInfo - ClientInfo"""
+class ProxyProcesslistSchema(schema.ResponseSchema):
+    """ProxyProcesslist - 连接代理信息"""
 
     fields = {
-        "Count": fields.Int(required=False, load_from="Count"),
-        "IP": fields.Str(required=False, load_from="IP"),
+        "ClientHost": fields.Str(required=True, load_from="ClientHost"),
+        "Command": fields.Str(required=True, load_from="Command"),
+        "DB": fields.Str(required=True, load_from="DB"),
+        "DBID": fields.Str(required=True, load_from="DBID"),
+        "Host": fields.Str(required=True, load_from="Host"),
+        "ID": fields.Int(required=True, load_from="ID"),
+        "Info": fields.Str(required=True, load_from="Info"),
+        "Role": fields.Str(required=True, load_from="Role"),
+        "State": fields.Str(required=True, load_from="State"),
+        "Time": fields.Int(required=True, load_from="Time"),
+        "User": fields.Str(required=True, load_from="User"),
     }
 
 
@@ -18,5 +27,5 @@ class NodeClientInfoSchema(schema.ResponseSchema):
     fields = {
         "ID": fields.Str(required=False, load_from="ID"),
         "IP": fields.Str(required=False, load_from="IP"),
-        "Records": fields.List(ClientInfoSchema()),
+        "Records": fields.List(ProxyProcesslistSchema()),
     }

@@ -619,12 +619,12 @@ class DeleteUDBParamGroupResponseSchema(schema.ResponseSchema):
 """
 API: DescribeMongoDBShardedCluster
 
-获取分片集群的详细信息
+
 """
 
 
 class DescribeMongoDBShardedClusterRequestSchema(schema.RequestSchema):
-    """DescribeMongoDBShardedCluster - 获取分片集群的详细信息"""
+    """DescribeMongoDBShardedCluster -"""
 
     fields = {
         "ClusterRole": fields.Str(required=False, dump_to="ClusterRole"),
@@ -638,7 +638,7 @@ class DescribeMongoDBShardedClusterRequestSchema(schema.RequestSchema):
 
 
 class DescribeMongoDBShardedClusterResponseSchema(schema.ResponseSchema):
-    """DescribeMongoDBShardedCluster - 获取分片集群的详细信息"""
+    """DescribeMongoDBShardedCluster -"""
 
     fields = {
         "DataSet": fields.List(

@@ -717,6 +717,7 @@ class UCDNClient(Client):
         - **EndTime** (int) - (Required) 查询的结束日期，格式为Unix Timestamp
         - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外 不填默认为全部区域
         - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
+        - **IsDcdn** (bool) - 是否是动态加速 默认是false
 
         **Response**
 
@@ -734,6 +735,46 @@ class UCDNClient(Client):
         resp = self.invoke("GetUcdnDomain95BandwidthV2", d, **kwargs)
         return apis.GetUcdnDomain95BandwidthV2ResponseSchema().loads(resp)
 
+    def get_ucdn_domain_bandwidth_by_ip_protocol(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUcdnDomainBandwidthByIpProtocol - 获取域名带宽数据按ip协议(新)
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **IpProtocol** (str) - (Required) 协议，ipv4、ipv6
+        - **Type** (int) - (Required) 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度，3表示按照1分钟粒度）
+        - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外 不填默认为全部区域
+        - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。如没有赋值，则返回缺少参 数错误，如果没有EndTime，BeginTime也可以不赋值，EndTime默认当前时间，BeginTime 默认前一天的当前时间。
+        - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
+        - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。
+
+        **Response**
+
+        - **BandwidthTrafficList** (list) - 见 **BandwidthTrafficInfo** 模型定义
+
+        **Response Model**
+
+        **BandwidthTrafficInfo**
+        - **CdnBandwidth** (float) - 返回值返回指定时间区间内CDN的带宽峰值，单位Mbps（如果请求参数Type为0，则Value是五分钟粒度的带宽值，如果Type为1，则Value是1小时的带宽峰值，如果Type为2，则Value是一天内的带宽峰值）
+        - **Time** (int) - 带宽获取的时间点。格式：时间戳
+        - **Traffic** (float) - 对应时间粒度的流量，单位字节
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUcdnDomainBandwidthByIpProtocolRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUcdnDomainBandwidthByIpProtocol", d, **kwargs)
+        return apis.GetUcdnDomainBandwidthByIpProtocolResponseSchema().loads(
+            resp
+        )
+
     def get_ucdn_domain_bandwidth_v2(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -744,10 +785,11 @@ class UCDNClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Areacode** (str) - 查询带宽区域 cn代表国内 abroad代表海外 不填默认为全部区域
         - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。如没有赋值，则返回缺少参 数错误，如果没有EndTime，BeginTime也可以不赋值，EndTime默认当前时间，BeginTime 默认前一天的当前时间。
-        - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
+        - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名;例(DomainId.0=ucdn-xxxxxx;DomainId.1=ucdn-xxxxxx)
         - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。
+        - **IsDcdn** (bool) - 是否全站加速，默认false
         - **Primeval** (int) - 原始带宽，不为0则获取原始带宽，默认为0
-        - **Protocol** (str) - 协议，http、https  不传则查所有协议的带宽
+        - **Protocol** (str) - 协议，http、https、websocket  不传则查所有协议的带宽，可以查多个协议，用逗号分隔
         - **Type** (int) - 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度，3表示按照1分钟粒度）
 
         **Response**
@@ -782,7 +824,9 @@ class UCDNClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **ChannelType** (str) - 产品类型ucdn，可不填，默认为ucdn
+        - **Domain** (list) - 域名
         - **DomainId** (list) - 域名id，创建域名时生成的id。默认获取账号下的所有域名信息,n为自然数,从DomainId.0开始。
+        - **IsDcdn** (bool) - 是否是动态加速 默认是false
         - **Limit** (int) - 返回数据长度， 默认全部，非负整数
         - **Offset** (int) - 数据偏移量，默认0，非负整数
 
@@ -807,7 +851,7 @@ class UCDNClient(Client):
         - **HttpsStatusAbroad** (str) - 国外https状态 enableing-开启中  fail-开启失败 enable-启用 disable-未启用
         - **HttpsStatusCn** (str) - 国内https状态 enableing-开启中 fail-开启失败 enable-启用 disable-未启用
         - **OriginConf** (dict) - 见 **OriginConf** 模型定义
-        - **Status** (str) - 创建的加速域名的当前的状态。check代表审核中，checkSuccess代表审核通过，checkFail代表审核失败，enable代表加速中，disable代表停止加速，delete代表删除加速enableing代表正在开启加速，disableing代表正在停止加速中，deleteing代表删除中
+        - **Status** (str) - 创建的加速域名的当前的状态。check代表审核中；checkSuccess代表审核通过；checkFail代表审核失败；enable代表加速中；disable代表停止加速；delete代表删除加速；enableing代表正在开启加速；disableing代表正在停止加速中；deleteing代表删除中；deploying代表部署中
         - **Tag** (str) - 业务组：Default
         - **TestUrl** (str) - 测试url。用于域名创建加速时的测试
 
@@ -827,6 +871,8 @@ class UCDNClient(Client):
         - **Http2Https** (bool) - http转https回源 true是，false否
         - **HttpClientHeader** (list) - 客户端响应http头列表
         - **HttpOriginHeader** (list) - 源站http头列表
+        - **QuicEnable** (bool) - 是否开启quic
+        - **WebSocketEnable** (bool) - 是否开启websocket
 
 
         **CacheAllConfig**
@@ -890,6 +936,7 @@ class UCDNClient(Client):
         - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
         - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。
         - **HitType** (int) - 命中类型：0=整体命中  1=边缘命中  默认是0
+        - **IsDcdn** (bool) - 是否全站加速，默认false
 
         **Response**
 
@@ -927,6 +974,7 @@ class UCDNClient(Client):
         - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。如没有赋值，则返回缺少参 数错误，如果没有EndTime，BeginTime也可以不赋值，EndTime默认当前时间，BeginTime 默认前一天的当前时间。
         - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
         - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。
+        - **IsDcdn** (bool) - 是否全站加速 默认false
         - **Layer** (str) - 指定获取的状态码是边缘还是上层    edge 表示边缘  layer 表示上层
 
         **Response**
@@ -1287,6 +1335,7 @@ class UCDNClient(Client):
         - **Type** (int) - (Required) 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度, 3=按1分钟）
         - **Areacode** (str) - 查询区域 cn代表国内 abroad代表海外，只支持国内
         - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
+        - **IsDcdn** (bool) - 是否全站加速  默认false
 
         **Response**
 
@@ -1385,7 +1434,8 @@ class UCDNClient(Client):
         - **Type** (int) - (Required) 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度, 3=按1分钟）
         - **Areacode** (str) - 查询区域 cn代表国内 abroad代表海外，只支持国内
         - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
-        - **Protocol** (str) - 协议，http、https 不传则查所有协议的带宽
+        - **IsDcdn** (bool) - 是否全站加速，默认false
+        - **Protocol** (str) - 协议，IsDcdn=false时，可传http、https不传则查所有协议的带宽。如果IsDcdn=true，这里可传http_dynamic、http_static、https_dynamic、https_static、quic_dynamic、quic_static、websocket 并支持同时查询多个协议用逗号隔开
 
         **Response**
 
@@ -1494,6 +1544,7 @@ class UCDNClient(Client):
         - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。如没有赋值，则返回缺少参 数错误，如果没有EndTime，BeginTime也可以不赋值，EndTime默认当前时间，BeginTime 默认前一天的当前时间。
         - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
         - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。
+        - **IsDcdn** (bool) - 是否全站加速 默认false
 
         **Response**
 
@@ -1642,7 +1693,8 @@ class UCDNClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **IsDcdn** (bool) - 是否dcdn域名
 
         **Response**
 
@@ -1785,6 +1837,7 @@ class UCDNClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **DomainId** (str) - (Required) 域名ID，创建加速域名时生成。
         - **Status** (str) - (Required) 域名状态，enable代表加速中，disable代表停止加速，delete代表删除。
+        - **IsDcdn** (bool) - 是否全站加速，默认false
 
         **Response**
 

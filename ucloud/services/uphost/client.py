@@ -181,6 +181,7 @@ class UPHostClient(Client):
 
         **PHostSet**
         - **AutoRenew** (str) - 自动续费
+        - **BootDiskState** (str) - 裸金属机型字段。枚举值：Normal=>正常、ImageMaking=>镜像制作中。
         - **CPUSet** (dict) - 见 **PHostCPUSet** 模型定义
         - **ChargeType** (str) - 计费模式，枚举值为： Year，按年付费； Month，按月付费；默认为月付
         - **Cluster** (str) - 网络环境。枚举值：千兆：1G ，万兆：10G
@@ -201,6 +202,7 @@ class UPHostClient(Client):
         - **PhostClass** (str) - 物理云产品类型，枚举值：LocalDisk=>代表传统本地盘机型， CloudDisk=>云盘裸金属机型
         - **PowerState** (str) - 电源状态，on 或 off
         - **RaidSupported** (str) - 是否支持Raid。枚举值：Yes：支持；No：不支持。
+        - **RdmaClusterId** (str) - RDMA集群id，仅云盘裸金属返回该值；其他类型物理云主机返回""。当物理机的此值与RSSD云盘的RdmaClusterId相同时，RSSD可以挂载到这台物理机。
         - **Remark** (str) - 物理机备注
         - **SN** (str) - 物理机序列号
         - **Tag** (str) - 业务组

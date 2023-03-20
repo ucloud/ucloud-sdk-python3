@@ -216,9 +216,30 @@ class UMongoDBClient(Client):
 
         **Response Model**
 
-        **DiskInfo**
-        - **DiskId** (str) - 磁盘id
-        - **DiskSize** (int) - 磁盘容量单位GB
+        **ClusterInfo**
+        - **ClusterId** (str) - 集群ID
+        - **ClusterType** (str) - 集群类型，ReplicaSet :副本集，SharedCluster：分片集
+        - **ConfigMachineType** (str) - Config配置集群节点配置，分片集有效
+        - **ConfigNodeCount** (int) - Config配置集群节点数量，分片集有效
+        - **ConfigReplicaInfo** (dict) - 见 **ReplicaInfo** 模型定义
+        - **ConnectURL** (str) - 副本集的访问地址
+        - **CreateTime** (int) - DB实例创建时间
+        - **DBVersion** (str) - 副本集的Mongodb的版本
+        - **DataReplicaInfos** (list) - 见 **ReplicaInfo** 模型定义
+        - **DeleteTime** (int) - DB实例删除时间
+        - **DiskSpace** (int) - 磁盘空间(GB), 默认根据配置机型
+        - **InstanceName** (str) - 实例名称
+        - **MachineTypeId** (str) - 计算规格
+        - **MongosCount** (int) - Mongos节点数量，分片集有效
+        - **MongosInfo** (list) - 见 **NodeInfo** 模型定义
+        - **ShardCount** (int) - 分片数量，分片集有效
+        - **ShardNodeCount** (int) - 每分片节点数量，分片集有效
+        - **State** (str) - 副本集/分片集群状态标记 Initing：初始化中，InitFailed：安装失败，Starting：启动中，StartFailed：启动失败，Running：运行，Stopping：关闭中，Stopped：已关闭, StopFailed：关闭失败，Deleting：删除中，Deleted：已删除，DeleteFailed：删除失败，Restarting：重启中，RestartFailed：重启失败。
+        - **SubnetId** (str) - 子网ID
+        - **Tag** (str) - 实例业务组
+        - **VPCId** (str) - VPC的ID
+        - **Zone** (str) - 可用区
+        - **ZoneId** (int) -
 
 
         **ReplicaInfo**
@@ -253,30 +274,9 @@ class UMongoDBClient(Client):
         - **ZoneId** (int) - 可用区ID
 
 
-        **ClusterInfo**
-        - **ClusterId** (str) - 集群ID
-        - **ClusterType** (str) - 集群类型，ReplicaSet :副本集，SharedCluster：分片集
-        - **ConfigMachineType** (str) - Config配置集群节点配置，分片集有效
-        - **ConfigNodeCount** (int) - Config配置集群节点数量，分片集有效
-        - **ConfigReplicaInfo** (dict) - 见 **ReplicaInfo** 模型定义
-        - **ConnectURL** (str) - 副本集的访问地址
-        - **CreateTime** (int) - DB实例创建时间
-        - **DBVersion** (str) - 副本集的Mongodb的版本
-        - **DataReplicaInfos** (list) - 见 **ReplicaInfo** 模型定义
-        - **DeleteTime** (int) - DB实例删除时间
-        - **DiskSpace** (int) - 磁盘空间(GB), 默认根据配置机型
-        - **InstanceName** (str) - 实例名称
-        - **MachineTypeId** (str) - 计算规格
-        - **MongosCount** (int) - Mongos节点数量，分片集有效
-        - **MongosInfo** (list) - 见 **NodeInfo** 模型定义
-        - **ShardCount** (int) - 分片数量，分片集有效
-        - **ShardNodeCount** (int) - 每分片节点数量，分片集有效
-        - **State** (str) - 副本集/分片集群状态标记 Initing：初始化中，InitFailed：安装失败，Starting：启动中，StartFailed：启动失败，Running：运行，Stopping：关闭中，Stopped：已关闭, StopFailed：关闭失败，Deleting：删除中，Deleted：已删除，DeleteFailed：删除失败，Restarting：重启中，RestartFailed：重启失败。
-        - **SubnetId** (str) - 子网ID
-        - **Tag** (str) - 实例业务组
-        - **VPCId** (str) - VPC的ID
-        - **Zone** (str) - 可用区
-        - **ZoneId** (int) -
+        **DiskInfo**
+        - **DiskId** (str) - 磁盘id
+        - **DiskSize** (int) - 磁盘容量单位GB
 
 
         """

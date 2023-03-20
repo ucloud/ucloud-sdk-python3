@@ -116,17 +116,6 @@ class SrcAreaInfoSchema(schema.ResponseSchema):
     }
 
 
-class AccelerationAreaInfosSchema(schema.ResponseSchema):
-    """AccelerationAreaInfos - 加速大区信息"""
-
-    fields = {
-        "AccelerationArea": fields.Str(
-            required=True, load_from="AccelerationArea"
-        ),
-        "AccelerationNodes": fields.List(SrcAreaInfoSchema()),
-    }
-
-
 class OutPublicIpInfoSchema(schema.ResponseSchema):
     """OutPublicIpInfo - 线路回源IP信息"""
 
@@ -143,6 +132,17 @@ class ForwardTaskSchema(schema.ResponseSchema):
         "Port": fields.Int(required=True, load_from="Port"),
         "Protocol": fields.Str(required=True, load_from="Protocol"),
         "RSPort": fields.Int(required=True, load_from="RSPort"),
+    }
+
+
+class AccelerationAreaInfosSchema(schema.ResponseSchema):
+    """AccelerationAreaInfos - 加速大区信息"""
+
+    fields = {
+        "AccelerationArea": fields.Str(
+            required=True, load_from="AccelerationArea"
+        ),
+        "AccelerationNodes": fields.List(SrcAreaInfoSchema()),
     }
 
 
@@ -212,12 +212,18 @@ class AccelerationInfoSchema(schema.ResponseSchema):
     }
 
 
-class UGAATaskSchema(schema.ResponseSchema):
-    """UGAATask - 用户在UGAA实例下配置的多端口任务"""
+class UPathSetSchema(schema.ResponseSchema):
+    """UPathSet - uga关联的upath信息"""
 
     fields = {
-        "Port": fields.Int(required=True, load_from="Port"),
-        "Protocol": fields.Str(required=True, load_from="Protocol"),
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "LineFrom": fields.Str(required=False, load_from="LineFrom"),
+        "LineFromName": fields.Str(required=False, load_from="LineFromName"),
+        "LineId": fields.Str(required=False, load_from="LineId"),
+        "LineTo": fields.Str(required=False, load_from="LineTo"),
+        "LineToName": fields.Str(required=False, load_from="LineToName"),
+        "UPathId": fields.Str(required=False, load_from="UPathId"),
+        "UPathName": fields.Str(required=False, load_from="UPathName"),
     }
 
 
@@ -231,18 +237,12 @@ class UGAL4ForwarderSchema(schema.ResponseSchema):
     }
 
 
-class UPathSetSchema(schema.ResponseSchema):
-    """UPathSet - uga关联的upath信息"""
+class UGAATaskSchema(schema.ResponseSchema):
+    """UGAATask - 用户在UGAA实例下配置的多端口任务"""
 
     fields = {
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "LineFrom": fields.Str(required=False, load_from="LineFrom"),
-        "LineFromName": fields.Str(required=False, load_from="LineFromName"),
-        "LineId": fields.Str(required=False, load_from="LineId"),
-        "LineTo": fields.Str(required=False, load_from="LineTo"),
-        "LineToName": fields.Str(required=False, load_from="LineToName"),
-        "UPathId": fields.Str(required=False, load_from="UPathId"),
-        "UPathName": fields.Str(required=False, load_from="UPathName"),
+        "Port": fields.Int(required=True, load_from="Port"),
+        "Protocol": fields.Str(required=True, load_from="Protocol"),
     }
 
 

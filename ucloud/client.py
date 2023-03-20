@@ -82,6 +82,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def uads(self):
+        from ucloud.services.uads.client import UADSClient
+
+        return UADSClient(
+            self._auto_config("uads"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def uaccount(self):
         from ucloud.services.uaccount.client import UAccountClient
 

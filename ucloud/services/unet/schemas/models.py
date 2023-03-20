@@ -4,7 +4,7 @@ from ucloud.core.typesystem import schema, fields
 
 
 class UnetEIPAddrSetSchema(schema.ResponseSchema):
-    """UnetEIPAddrSet - DescribeEIP"""
+    """UnetEIPAddrSet - AllocateEIP"""
 
     fields = {
         "IP": fields.Str(required=False, load_from="IP"),
@@ -92,6 +92,16 @@ class ShareBandwidthSetSchema(schema.ResponseSchema):
     }
 
 
+class EIPBindingSchema(schema.ResponseSchema):
+    """EIPBinding - EIP绑定内网IP关系数据"""
+
+    fields = {
+        "EIP": fields.Str(required=False, load_from="EIP"),
+        "PrivateIP": fields.Str(required=False, load_from="PrivateIP"),
+        "PrivateIPType": fields.Str(required=False, load_from="PrivateIPType"),
+    }
+
+
 class UnetEIPSetSchema(schema.ResponseSchema):
     """UnetEIPSet - DescribeEIP"""
 
@@ -101,6 +111,7 @@ class UnetEIPSetSchema(schema.ResponseSchema):
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "EIPAddr": fields.List(UnetEIPAddrSetSchema()),
+        "EIPBinding": EIPBindingSchema(),
         "EIPId": fields.Str(required=False, load_from="EIPId"),
         "Expire": fields.Bool(required=False, load_from="Expire"),
         "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),

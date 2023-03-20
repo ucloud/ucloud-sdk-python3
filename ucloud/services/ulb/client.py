@@ -601,6 +601,7 @@ class ULBClient(Client):
         - **Name** (str) - 负载均衡的资源名称
         - **PrivateIP** (str) - ULB的内网IP，当ULBType为OuterMode时，该值为空
         - **Remark** (str) - 负载均衡的备注
+        - **SnatIps** (list) - ULB后向代理IP，仅当有代理IP时返回否
         - **SubnetId** (str) - ULB 为 InnerMode 时，ULB 所属的子网ID，默认为空
         - **Tag** (str) - 负载均衡的业务组名称
         - **ULBId** (str) - 负载均衡的资源ID
@@ -743,8 +744,8 @@ class ULBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BusinessId** (str) - ULB所属的业务组ID
         - **Limit** (int) - 数据分页值，默认为10000
         - **Offset** (int) - 数据偏移量，默认为0
@@ -773,12 +774,14 @@ class ULBClient(Client):
         - **Name** (str) - 负载均衡的资源名称
         - **PrivateIP** (str) - ULB的内网IP，当ULBType为OuterMode时，该值为空
         - **Remark** (str) - 负载均衡的备注
+        - **SnatIps** (list) - ULB后向代理IP，仅当有代理IP时返回否
         - **SubnetId** (str) - ULB 为 InnerMode 时，ULB 所属的子网ID
         - **Tag** (str) - 负载均衡的业务组名称
         - **ULBId** (str) - 负载均衡的资源ID
         - **ULBType** (str) - ULB 的类型（InnerMode or OuterMode）
         - **VPCId** (str) - ULB所在的VPC的ID
         - **VServerCount** (int) - ulb下vserver数量
+        - **WAFMode** (str) - WAF功能状态，枚举类型：Unavailable：无法创建WAF；NoWAF：未绑定WAF；Intranet：内网回源Waf；Extranet：外网回源Waf
 
 
         **FirewallSet**
@@ -1146,12 +1149,17 @@ class ULBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ULBId** (str) - (Required) ULB资源ID
-        - **Name** (str) - 名字
-        - **Remark** (str) - 备注
-        - **Tag** (str) - 业务
+        - **BucketName** (str) - 设置用于存储ulb日志的bucket
+        - **EnableLog** (int) - 日志开关，1代表开启日志，0代表关闭日志，传1时必须同时传BucketName，TokenName与TokenId二选一
+        - **IsWAFOn** (str) - 是否开启WAF。枚举类型：Yes，No，默认值为No
+        - **Name** (str) - 名字，不传则默认不修改
+        - **Remark** (str) - 备注，不传则默认不修改
+        - **Tag** (str) - 业务，不传则默认不修改
+        - **TokenId** (str) - 用于指定上传到bucket所需的token，与TokenName选填其一即可
+        - **TokenName** (str) - 用于指定上传到bucket所需的token，与TokenId选填其一即可
 
         **Response**
 

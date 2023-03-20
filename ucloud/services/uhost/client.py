@@ -802,11 +802,13 @@ class UHostClient(Client):
         - **CpuPlatform** (str) - 取值"Intel" "Amd"，默认值“Intel”
         - **Disks** (list) - 见 **GetUHostInstancePriceParamDisks** 模型定义
         - **GPU** (int) - GPU卡核心数。仅GPU机型支持此字段。
-        - **GpuType** (str) - GPU类型，枚举值["K80", "P40", "V100", "T4","T4S","2080Ti","2080Ti-4C","1080Ti"]
+        - **GpuType** (str) - GPU类型，枚举值["K80", "P40", "V100", "T4","T4S","2080Ti","2080Ti-4C","1080Ti", "T4/4","MI100","V100S"]
         - **ImageId** (str) - 镜像Id，可通过  `DescribeImage <https://docs.ucloud.cn/api/uhost-api/describe_image.html>`_  获取镜像ID， 如果镜像ID不传，系统盘大小必传
-        - **MachineType** (str) - 云主机机型（V2版本概念）。枚举值["N", "C", "G", "O", "OS", "OPRO", "OMAX", "O.BM"]。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
+        - **MachineType** (str) - 云主机机型（V2版本概念）。枚举值["N", "C", "G", "O", "OS", "OPRO", "OMAX", "O.BM", "O.EPC"]。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
         - **NetCapability** (str) - 网络增强。枚举值：Normal，不开启; Super，开启网络增强1.0。 默认值为Normal。
         - **Quantity** (int) - 购买时长。默认: 1。按小时购买(Dynamic)时无需此参数。 月付时，此参数传0，代表了购买至月末。
+        - **ShowPriceDetails** (bool) - 返回价格详细信息
+        - **UDSetUHostInstance** (bool) - 专区云主机。如果要在专区宿主机上创建云主机，该参数可以填写为true
         - **UHostType** (str) - 【待废弃】云主机机型（V1版本概念）。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
@@ -834,8 +836,18 @@ class UHostClient(Client):
         **UHostPriceSet**
         - **ChargeType** (str) - 计费类型。Year，Month，Dynamic
         - **ListPrice** (float) - 产品列表价。
+        - **ListPriceDetail** (dict) - 见 **PriceDetail** 模型定义
         - **OriginalPrice** (float) - 限时优惠的折前原价（即列表价乘以商务折扣后的单价）。
+        - **OriginalPriceDetail** (dict) - 见 **PriceDetail** 模型定义
         - **Price** (float) - 价格，单位: 元，保留小数点后两位有效数字
+        - **PriceDetail** (dict) - 见 **PriceDetail** 模型定义
+
+
+        **PriceDetail**
+        - **Snapshot** (float) - 快照价格
+        - **UDisk** (float) - 云盘价格
+        - **UHost** (float) - 主机价格
+        - **Volume** (float) - 数据卷价格
 
 
         """
