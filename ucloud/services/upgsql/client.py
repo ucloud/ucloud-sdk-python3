@@ -580,9 +580,10 @@ class UPgSQLClient(Client):
 
         **Response Model**
 
-        **UDBReadonlyInstance**
+        **UDBInstanceSet**
         - **CreateTime** (int) - DB实例创建时间，采用UTC计时时间戳
         - **DBVersion** (str) - 实例的版本，包括postgresql-10.4,postgresql-13.4
+        - **DataSet** (list) - 见 **UDBReadonlyInstance** 模型定义
         - **ExpiredTime** (int) - DB实例过期时间，采用UTC计时时间戳
         - **IP** (str) - DB实例ip
         - **InstanceID** (str) - 资源ID
@@ -596,10 +597,9 @@ class UPgSQLClient(Client):
         - **Zone** (str) - 可用区
 
 
-        **UDBInstanceSet**
+        **UDBReadonlyInstance**
         - **CreateTime** (int) - DB实例创建时间，采用UTC计时时间戳
         - **DBVersion** (str) - 实例的版本，包括postgresql-10.4,postgresql-13.4
-        - **DataSet** (list) - 见 **UDBReadonlyInstance** 模型定义
         - **ExpiredTime** (int) - DB实例过期时间，采用UTC计时时间戳
         - **IP** (str) - DB实例ip
         - **InstanceID** (str) - 资源ID

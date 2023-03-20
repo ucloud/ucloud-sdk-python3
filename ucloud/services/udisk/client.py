@@ -551,12 +551,12 @@ class UDiskClient(Client):
         **Response Model**
 
         **UDiskSnapshotSet**
-        - **CmkId** (str) - 该快照的cmk id
-        - **CmkIdAlias** (str) - cmk id 别名
-        - **CmkIdStatus** (str) - 该快照cmk的状态, Enabled(正常)，Disabled(失效)，Deleted(删除)，NoCmkId(非加密盘)
+        - **CmkId** (str) - 【已废弃】该快照的cmk id
+        - **CmkIdAlias** (str) - 【已废弃】cmk id 别名
+        - **CmkIdStatus** (str) - 【已废弃】该快照cmk的状态, Enabled(正常)，Disabled(失效)，Deleted(删除)，NoCmkId(非加密盘)
         - **Comment** (str) - 快照描述
         - **CreateTime** (int) - 创建时间
-        - **DataKey** (str) - 该快照的密文密钥
+        - **DataKey** (str) - 【已废弃】该快照的密文密钥
         - **DiskType** (int) - 磁盘类型，0：普通数据盘；1：普通系统盘；2：SSD数据盘；3：SSD系统盘；4：RSSD数据盘；5：RSSD系统盘。
         - **ExpiredTime** (int) - 【已废弃】过期时间
         - **IsUDiskAvailable** (bool) - 对应磁盘是否处于可用状态
@@ -567,7 +567,7 @@ class UDiskClient(Client):
         - **UDiskId** (str) - 快照的源UDisk的Id
         - **UDiskName** (str) - 快照的源UDisk的Name
         - **UHostId** (str) - 对应磁盘制作快照时所挂载的主机
-        - **UKmsMode** (str) - 是否是加密盘快照，是:"Yes", 否:"No"
+        - **UKmsMode** (str) - 【已废弃】是否是加密盘快照，是:"Yes", 否:"No"
         - **Version** (str) - 快照版本
         - **Zone** (str) - 可用区
 

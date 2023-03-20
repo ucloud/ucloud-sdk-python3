@@ -382,6 +382,7 @@ class UNetClient(Client):
         - **ChargeType** (str) - 付费方式, 枚举值为: Year, 按年付费; Month, 按月付费; Dynamic, 按小时付费; Trial, 试用. 按小时付费和试用这两种付费模式需要开通权限.
         - **CreateTime** (int) - 弹性IP的创建时间, 格式为Unix Timestamp
         - **EIPAddr** (list) - 见 **UnetEIPAddrSet** 模型定义
+        - **EIPBinding** (dict) - 见 **EIPBinding** 模型定义
         - **EIPId** (str) - 弹性IP的资源ID
         - **Expire** (bool) - 弹性IP是否到期
         - **ExpireTime** (int) - 弹性IP的到期时间, 格式为Unix Timestamp
@@ -397,7 +398,7 @@ class UNetClient(Client):
 
         **UnetEIPAddrSet**
         - **IP** (str) - IP地址
-        - **OperatorName** (str) - 运营商信息如: 电信: Telecom, 联通: Unicom, 国际: International, Duplet: 双线IP（电信+联通), BGP: Bgp
+        - **OperatorName** (str) - 运营商信息如: 国际: International, BGP: BGP
 
 
         **UnetEIPResourceSet**
@@ -414,6 +415,12 @@ class UNetClient(Client):
         - **ShareBandwidth** (int) - 共享带宽带宽值
         - **ShareBandwidthId** (str) - 共享带宽ID
         - **ShareBandwidthName** (str) - 共享带宽的资源名称
+
+
+        **EIPBinding**
+        - **EIP** (str) - 外网ip
+        - **PrivateIP** (str) - 内网ip
+        - **PrivateIPType** (str) - 内网ip类型：PrimaryIP（默认）、SecondaryIP（非默认）
 
 
         """

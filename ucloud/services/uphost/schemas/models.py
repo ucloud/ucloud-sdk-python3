@@ -3,17 +3,6 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class PHostCPUSetSchema(schema.ResponseSchema):
-    """PHostCPUSet - DescribePHost"""
-
-    fields = {
-        "CoreCount": fields.Int(required=False, load_from="CoreCount"),
-        "Count": fields.Int(required=False, load_from="Count"),
-        "Frequence": fields.Float(required=False, load_from="Frequence"),
-        "Model": fields.Str(required=False, load_from="Model"),
-    }
-
-
 class PHostComponentSetSchema(schema.ResponseSchema):
     """PHostComponentSet - GetPHostTypeInfo"""
 
@@ -32,6 +21,17 @@ class PHostClusterSetSchema(schema.ResponseSchema):
     }
 
 
+class PHostCPUSetSchema(schema.ResponseSchema):
+    """PHostCPUSet - DescribePHost"""
+
+    fields = {
+        "CoreCount": fields.Int(required=False, load_from="CoreCount"),
+        "Count": fields.Int(required=False, load_from="Count"),
+        "Frequence": fields.Float(required=False, load_from="Frequence"),
+        "Model": fields.Str(required=False, load_from="Model"),
+    }
+
+
 class PHostCloudMachineTypeSetSchema(schema.ResponseSchema):
     """PHostCloudMachineTypeSet - 裸金属云盘的MachineTypeSet"""
 
@@ -41,6 +41,20 @@ class PHostCloudMachineTypeSetSchema(schema.ResponseSchema):
         "Components": PHostComponentSetSchema(),
         "Memory": fields.Int(required=False, load_from="Memory"),
         "Type": fields.Str(required=True, load_from="Type"),
+    }
+
+
+class PHostIPSetSchema(schema.ResponseSchema):
+    """PHostIPSet - DescribePHost"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "IPAddr": fields.Str(required=False, load_from="IPAddr"),
+        "IPId": fields.Str(required=False, load_from="IPId"),
+        "MACAddr": fields.Str(required=False, load_from="MACAddr"),
+        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
     }
 
 
@@ -59,25 +73,12 @@ class PHostDescDiskSetSchema(schema.ResponseSchema):
     }
 
 
-class PHostIPSetSchema(schema.ResponseSchema):
-    """PHostIPSet - DescribePHost"""
-
-    fields = {
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "IPAddr": fields.Str(required=False, load_from="IPAddr"),
-        "IPId": fields.Str(required=False, load_from="IPId"),
-        "MACAddr": fields.Str(required=False, load_from="MACAddr"),
-        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-    }
-
-
 class PHostSetSchema(schema.ResponseSchema):
     """PHostSet - DescribePHost"""
 
     fields = {
         "AutoRenew": fields.Str(required=False, load_from="AutoRenew"),
+        "BootDiskState": fields.Str(required=False, load_from="BootDiskState"),
         "CPUSet": PHostCPUSetSchema(),
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
         "Cluster": fields.Str(required=False, load_from="Cluster"),
@@ -98,6 +99,7 @@ class PHostSetSchema(schema.ResponseSchema):
         "PhostClass": fields.Str(required=False, load_from="PhostClass"),
         "PowerState": fields.Str(required=False, load_from="PowerState"),
         "RaidSupported": fields.Str(required=False, load_from="RaidSupported"),
+        "RdmaClusterId": fields.Str(required=False, load_from="RdmaClusterId"),
         "Remark": fields.Str(required=False, load_from="Remark"),
         "SN": fields.Str(required=False, load_from="SN"),
         "Tag": fields.Str(required=False, load_from="Tag"),

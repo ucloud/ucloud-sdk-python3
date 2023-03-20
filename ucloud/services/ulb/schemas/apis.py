@@ -792,11 +792,16 @@ class UpdateULBAttributeRequestSchema(schema.RequestSchema):
     """UpdateULBAttribute - 更新ULB名字业务组备注等属性字段"""
 
     fields = {
+        "BucketName": fields.Str(required=False, dump_to="BucketName"),
+        "EnableLog": fields.Int(required=False, dump_to="EnableLog"),
+        "IsWAFOn": fields.Str(required=False, dump_to="IsWAFOn"),
         "Name": fields.Str(required=False, dump_to="Name"),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Remark": fields.Str(required=False, dump_to="Remark"),
         "Tag": fields.Str(required=False, dump_to="Tag"),
+        "TokenId": fields.Str(required=False, dump_to="TokenId"),
+        "TokenName": fields.Str(required=False, dump_to="TokenName"),
         "ULBId": fields.Str(required=True, dump_to="ULBId"),
     }
 

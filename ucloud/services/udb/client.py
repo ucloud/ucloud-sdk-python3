@@ -662,127 +662,127 @@ class UDBClient(Client):
     def describe_mongo_db_sharded_cluster(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DescribeMongoDBShardedCluster - 获取分片集群的详细信息
+        """DescribeMongoDBShardedCluster -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **Limit** (int) - (Required) 分页显示数量，列表操作则指定
-        - **Offset** (int) - (Required) 分页显示起始偏移位置，列表操作则指定
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **ClusterRole** (str) - 获取相关角色的DB，包括mongos，shardsrv，configsrv
-        - **ShardedCluster** (str) - 分片集群的ID，当ClusterRole和ShardedCluster不传时，返回分片集群的列表信息
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **Limit** (int) - (Required)
+        - **Offset** (int) - (Required)
+        - **Zone** (str) - (Required)
+        - **ClusterRole** (str) -
+        - **ShardedCluster** (str) -
 
         **Response**
 
         - **DataSet** (list) - 见 **UDBInstanceSet** 模型定义
         - **ShardedClusterSet** (list) - 见 **MongoDBShardedClusterSet** 模型定义
-        - **TotalCount** (int) - 返回列表中DB信息的个数
+        - **TotalCount** (int) -
 
         **Response Model**
 
-        **UFileDataSet**
-        - **Bucket** (str) - bucket名称
-        - **TokenID** (str) - Ufile的令牌tokenid
+        **UDBInstanceSet**
+        - **AdminUser** (str) -
+        - **BackupBeginTime** (int) -
+        - **BackupBlacklist** (str) -
+        - **BackupCount** (int) -
+        - **BackupDate** (str) -
+        - **BackupDuration** (int) -
+        - **BackupZone** (str) -
+        - **ChargeType** (str) -
+        - **CluserRole** (str) -
+        - **ClusterRole** (str) -
+        - **CreateTime** (int) -
+        - **DBId** (str) -
+        - **DBTypeId** (str) -
+        - **DataFileSize** (float) -
+        - **DataSet** (list) - 见 **UDBSlaveInstanceSet** 模型定义
+        - **DiskSpace** (int) -
+        - **DiskUsedSize** (float) -
+        - **ExpiredTime** (int) -
+        - **IPv6Address** (str) -
+        - **InstanceMode** (str) -
+        - **InstanceType** (str) -
+        - **InstanceTypeId** (int) -
+        - **LogFileSize** (float) -
+        - **MemoryLimit** (int) -
+        - **ModifyTime** (int) -
+        - **Name** (str) -
+        - **ParamGroupId** (int) -
+        - **Port** (int) -
+        - **Role** (str) -
+        - **SSDType** (str) -
+        - **SrcDBId** (str) -
+        - **State** (str) -
+        - **SubnetId** (str) -
+        - **SystemFileSize** (float) -
+        - **Tag** (str) -
+        - **UseSSD** (bool) -
+        - **UserUFileData** (dict) - 见 **UFileDataSet** 模型定义
+        - **VPCId** (str) -
+        - **VirtualIP** (str) -
+        - **VirtualIPMac** (str) -
+        - **Zone** (str) -
 
 
         **UDBSlaveInstanceSet**
-        - **AdminUser** (str) - 管理员帐户名，默认root
-        - **BackupBeginTime** (int) - 备份策略，不可修改，开始时间，单位小时计，默认3点
-        - **BackupBlacklist** (str) - 备份策略，备份黑名单，mongodb则不适用
-        - **BackupCount** (int) - 备份策略，不可修改，备份文件保留的数量，默认7次
-        - **BackupDate** (str) - 备份日期标记位。共7位,每一位为一周中一天的备份情况 0表示关闭当天备份,1表示打开当天备份。最右边的一位 为星期天的备份开关，其余从右到左依次为星期一到星期 六的备份配置开关，每周必须至少设置两天备份。 例如：1100000 表示打开星期六和星期五的自动备份功能
-        - **BackupDuration** (int) - 备份策略，一天内备份时间间隔，单位小时，默认24小时
-        - **ChargeType** (str) - Year， Month， Dynamic，Trial，默认: Dynamic
-        - **ClusterRole** (str) - 当DB类型为mongodb时，返回该实例所在集群中的角色，包括：mongos、configsrv_sccc、configsrv_csrs、shardsrv_datanode、shardsrv_arbiter，其中congfigsrv分为sccc和csrs两种模式，shardsrv分为datanode和arbiter两种模式
-        - **CreateTime** (int) - DB实例创建时间，采用UTC计时时间戳
-        - **DBId** (str) - DB实例id
-        - **DBTypeId** (str) - DB类型id，mysql/mongodb按版本细分各有一个id 目前id的取值范围为[1,7],数值对应的版本如下： 1：mysql-5.5，2：mysql-5.1，3：percona-5.5 4：mongodb-2.4，5：mongodb-2.6，6：mysql-5.6， 7：percona-5.6
-        - **DataFileSize** (float) - DB实例数据文件大小，单位GB
-        - **DiskSpace** (int) - 磁盘空间(GB), 默认根据配置机型
-        - **DiskUsedSize** (float) - DB实例磁盘已使用空间，单位GB
-        - **ExpiredTime** (int) - DB实例过期时间，采用UTC计时时间戳
-        - **IPv6Address** (str) - 获取该实例的IPv6地址
-        - **InstanceMode** (str) - UDB实例模式类型, 可选值如下: "Normal": 普通版UDB实例;"HA": 高可用版UDB实例
-        - **InstanceType** (str) - UDB数据库机型
-        - **InstanceTypeId** (int) - UDB数据库机型ID
-        - **LogFileSize** (float) - DB实例日志文件大小，单位GB
-        - **MemoryLimit** (int) - 内存限制(MB)，默认根据配置机型
-        - **ModifyTime** (int) - DB实例修改时间，采用UTC计时时间戳
-        - **Name** (str) - 实例名称，至少6位
-        - **ParamGroupId** (int) - DB实例使用的配置参数组id
-        - **Port** (int) - 端口号，mysql默认3306，mongodb默认27017
-        - **ReplicationDelaySeconds** (int) - 延时从库时长
-        - **Role** (str) - DB实例角色，mysql区分master/slave，mongodb多种角色
-        - **SSDType** (str) - SSD类型，SATA/PCI-E
-        - **SrcDBId** (str) - 对mysql的slave而言是master的DBId，对master则为空， 对mongodb则是副本集id
-        - **State** (str) - DB状态标记 Init：初始化中，Fail：安装失败，Starting：启动中，Running：运行，Shutdown：关闭中，Shutoff：已关闭，Delete：已删除，Upgrading：升级中，Promoting：提升为独库进行中，Recovering：恢复中，Recover fail：恢复失败
-        - **SubnetId** (str) - 子网ID
-        - **SystemFileSize** (float) - DB实例系统文件大小，单位GB
-        - **Tag** (str) - 获取资源其他信息
-        - **UseSSD** (bool) - 是否使用SSD
-        - **VPCId** (str) - VPC的ID
-        - **VirtualIP** (str) - DB实例虚ip
-        - **VirtualIPMac** (str) - DB实例虚ip的mac地址
-        - **Zone** (str) - 可用区
+        - **AdminUser** (str) -
+        - **BackupBeginTime** (int) -
+        - **BackupBlacklist** (str) -
+        - **BackupCount** (int) -
+        - **BackupDate** (str) -
+        - **BackupDuration** (int) -
+        - **ChargeType** (str) -
+        - **ClusterRole** (str) -
+        - **CreateTime** (int) -
+        - **DBId** (str) -
+        - **DBTypeId** (str) -
+        - **DataFileSize** (float) -
+        - **DiskSpace** (int) -
+        - **DiskUsedSize** (float) -
+        - **ExpiredTime** (int) -
+        - **IPv6Address** (str) -
+        - **InstanceMode** (str) -
+        - **InstanceType** (str) -
+        - **InstanceTypeId** (int) -
+        - **LogFileSize** (float) -
+        - **MemoryLimit** (int) -
+        - **ModifyTime** (int) -
+        - **Name** (str) -
+        - **ParamGroupId** (int) -
+        - **Port** (int) -
+        - **Role** (str) -
+        - **SSDType** (str) -
+        - **SrcDBId** (str) -
+        - **State** (str) -
+        - **SubnetId** (str) -
+        - **SystemFileSize** (float) -
+        - **Tag** (str) -
+        - **UseSSD** (bool) -
+        - **VPCId** (str) -
+        - **VirtualIP** (str) -
+        - **VirtualIPMac** (str) -
+        - **Zone** (str) -
+
+
+        **UFileDataSet**
+        - **Bucket** (str) -
+        - **TokenID** (str) -
 
 
         **MongoDBShardedClusterSet**
-        - **CreateTime** (int) - 分片集群的创建时间
-        - **DBId** (str) - 分片集群的资源ID
-        - **DBTypeId** (str) - DB类型id
-        - **MongosCount** (int) - 集群中mongos的个数
-        - **Name** (str) - 分片集群的名称
-        - **ShardsrvCount** (int) - 集群中分片的个数
-        - **SubnetId** (str) - 子网ID
-        - **Tag** (str) - 获取资源其他信息
-        - **VPCId** (str) - VPC的ID
-        - **VirtualIPs** (list) - 集群中mongos的IP
-        - **Zone** (str) - DB实例所在可用区
-
-
-        **UDBInstanceSet**
-        - **AdminUser** (str) - 管理员帐户名，默认root
-        - **BackupBeginTime** (int) - 备份策略，不可修改，开始时间，单位小时计，默认3点
-        - **BackupBlacklist** (str) - 备份策略，备份黑名单，mongodb则不适用
-        - **BackupCount** (int) - 备份策略，不可修改，备份文件保留的数量，默认7次
-        - **BackupDate** (str) - 备份日期标记位。共7位,每一位为一周中一天的备份情况 0表示关闭当天备份,1表示打开当天备份。最右边的一位 为星期天的备份开关，其余从右到左依次为星期一到星期 六的备份配置开关，每周必须至少设置两天备份。 例如：1100000 表示打开星期六和星期五的自动备份功能
-        - **BackupDuration** (int) - 备份策略，一天内备份时间间隔，单位小时，默认24小时
-        - **BackupZone** (str) - 跨可用区高可用备库所在可用区
-        - **ChargeType** (str) - Year， Month， Dynamic，Trial，默认: Dynamic
-        - **ClusterRole** (str) - 当DB类型为mongodb时，返回该实例所在集群中的角色，包括：mongos、configsrv_sccc、configsrv_csrs、shardsrv_datanode、shardsrv_arbiter，其中congfigsrv分为sccc和csrs两种模式，shardsrv分为datanode和arbiter两种模式
-        - **CreateTime** (int) - DB实例创建时间，采用UTC计时时间戳
-        - **DBId** (str) - DB实例id
-        - **DBTypeId** (str) - DB类型id，mysql/mongodb按版本细分各有一个id 目前id的取值范围为[1,7],数值对应的版本如下： 1：mysql-5.5，2：mysql-5.1，3：percona-5.5 4：mongodb-2.4，5：mongodb-2.6，6：mysql-5.6， 7：percona-5.6
-        - **DataFileSize** (float) - DB实例数据文件大小，单位GB
-        - **DataSet** (list) - 见 **UDBSlaveInstanceSet** 模型定义
-        - **DiskSpace** (int) - 磁盘空间(GB), 默认根据配置机型
-        - **DiskUsedSize** (float) - DB实例磁盘已使用空间，单位GB
-        - **ExpiredTime** (int) - DB实例过期时间，采用UTC计时时间戳
-        - **IPv6Address** (str) - 该实例的ipv6地址
-        - **InstanceMode** (str) - UDB实例模式类型, 可选值如下: “Normal”： 普通版UDB实例 “HA”: 高可用版UDB实例
-        - **InstanceType** (str) - UDB数据库机型
-        - **InstanceTypeId** (int) - UDB数据库机型ID (已弃用)
-        - **LogFileSize** (float) - DB实例日志文件大小，单位GB
-        - **MemoryLimit** (int) - 内存限制(MB)，默认根据配置机型
-        - **ModifyTime** (int) - DB实例修改时间，采用UTC计时时间戳
-        - **Name** (str) - 实例名称，至少6位
-        - **ParamGroupId** (int) - DB实例使用的配置参数组id
-        - **Port** (int) - 端口号，mysql默认3306，mongodb默认27017
-        - **Role** (str) - DB实例角色，mysql区分master/slave，mongodb多种角色
-        - **SSDType** (str) - SSD类型，SATA/PCI-E/NVMe
-        - **SrcDBId** (str) - 对mysql的slave而言是master的DBId，对master则为空， 对mongodb则是副本集id
-        - **State** (str) - DB状态标记 Init：初始化中，Fail：安装失败，Starting：启动中，Running：运行，Shutdown：关闭中，Shutoff：已关闭，Delete：已删除，Upgrading：升级中，Promoting：提升为独库进行中，Recovering：恢复中，Recover fail：恢复失败
-        - **SubnetId** (str) - 子网ID
-        - **SystemFileSize** (float) - DB实例系统文件大小，单位GB
-        - **Tag** (str) - 获取资源其他信息
-        - **UseSSD** (bool) - 是否使用SSD
-        - **UserUFileData** (dict) - 见 **UFileDataSet** 模型定义
-        - **VPCId** (str) - VPC的ID
-        - **VirtualIP** (str) - DB实例虚ip
-        - **VirtualIPMac** (str) - DB实例虚ip的mac地址
-        - **Zone** (str) - DB实例所在可用区
+        - **CreateTime** (int) -
+        - **DBId** (str) -
+        - **DBTypeId** (str) -
+        - **MongosCount** (int) -
+        - **Name** (str) -
+        - **ShardsrvCount** (int) -
+        - **SubnetId** (str) -
+        - **Tag** (str) -
+        - **VPCId** (str) -
+        - **VirtualIPs** (list) -
+        - **Zone** (str) -
 
 
         """
@@ -793,6 +793,9 @@ class UDBClient(Client):
         }
         req and d.update(req)
         d = apis.DescribeMongoDBShardedClusterRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("DescribeMongoDBShardedCluster", d, **kwargs)
         return apis.DescribeMongoDBShardedClusterResponseSchema().loads(resp)

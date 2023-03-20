@@ -315,7 +315,7 @@ class DescribeBandwidthUsageResponseSchema(schema.ResponseSchema):
 """
 API: DescribeEIP
 
-获取弹性IP信息
+获取弹性IP信息 
 """
 
 

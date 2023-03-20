@@ -717,12 +717,18 @@ class GetUHostInstancePriceRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "ShowPriceDetails": fields.Bool(
+            required=False, dump_to="ShowPriceDetails"
+        ),
         "StorageType": fields.Str(
             required=False, dump_to="StorageType"
         ),  # Deprecated, will be removed at 1.0
         "TimemachineFeature": fields.Str(
             required=False, dump_to="TimemachineFeature"
         ),  # Deprecated, will be removed at 1.0
+        "UDSetUHostInstance": fields.Bool(
+            required=False, dump_to="UDSetUHostInstance"
+        ),
         "UHostType": fields.Str(required=False, dump_to="UHostType"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
     }

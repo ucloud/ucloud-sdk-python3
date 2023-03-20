@@ -34,15 +34,29 @@ class UDBProxyClient(Client):
 
         **Response Model**
 
-        **ClientInfo**
-        - **Count** (int) - 客户端连接IP数
-        - **IP** (str) - 客户端连接IP
-
-
         **NodeClientInfo**
         - **ID** (str) - 代理节点ID
         - **IP** (str) - 代理节点IP
-        - **Records** (list) - 见 **ClientInfo** 模型定义
+        - **Records** (list) - 见 **ProxyProcesslist** 模型定义
+
+
+        **ClientInfo**
+        - **Count** (int) -
+        - **IP** (str) -
+
+
+        **ProxyProcesslist**
+        - **ClientHost** (str) - 代理连接DB地址
+        - **Command** (str) - 显示当前连接的执行的命令
+        - **DB** (str) - 当前执行的命令是在哪一个数据库上。如果没有指定数据库，则该值为 NULL
+        - **DBID** (str) - 数据库资源ID
+        - **Host** (str) - 代理连接DB地址
+        - **ID** (int) - 当前连接DB进程ID
+        - **Info** (str) - 一般记录的是线程执行的语句
+        - **Role** (str) - 数据库角色(主库/从库)
+        - **State** (str) - 线程的状态，和 Command 对应
+        - **Time** (int) - 表示该线程处于当前状态的时间
+        - **User** (str) - 启动这个线程的用户
 
 
         """

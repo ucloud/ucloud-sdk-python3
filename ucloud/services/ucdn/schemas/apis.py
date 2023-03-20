@@ -501,6 +501,7 @@ class GetUcdnDomain95BandwidthV2RequestSchema(schema.RequestSchema):
         "BeginTime": fields.Int(required=True, dump_to="BeginTime"),
         "DomainId": fields.List(fields.Str()),
         "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "IsDcdn": fields.Bool(required=False, dump_to="IsDcdn"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
     }
 
@@ -511,6 +512,39 @@ class GetUcdnDomain95BandwidthV2ResponseSchema(schema.ResponseSchema):
     fields = {
         "CdnBandwidth": fields.Float(required=False, load_from="CdnBandwidth"),
         "Time": fields.Int(required=True, load_from="Time"),
+    }
+
+
+"""
+API: GetUcdnDomainBandwidthByIpProtocol
+
+获取域名带宽数据按ip协议(新)
+"""
+
+
+class GetUcdnDomainBandwidthByIpProtocolRequestSchema(schema.RequestSchema):
+    """GetUcdnDomainBandwidthByIpProtocol - 获取域名带宽数据按ip协议(新)"""
+
+    fields = {
+        "Areacode": fields.Str(required=False, dump_to="Areacode"),
+        "BeginTime": fields.Int(required=False, dump_to="BeginTime"),
+        "DomainId": fields.List(fields.Str()),
+        "EndTime": fields.Int(required=False, dump_to="EndTime"),
+        "IpProtocol": fields.Str(required=True, dump_to="IpProtocol"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Type": fields.Int(required=True, dump_to="Type"),
+    }
+
+
+class GetUcdnDomainBandwidthByIpProtocolResponseSchema(schema.ResponseSchema):
+    """GetUcdnDomainBandwidthByIpProtocol - 获取域名带宽数据按ip协议(新)"""
+
+    fields = {
+        "BandwidthTrafficList": fields.List(
+            models.BandwidthTrafficInfoSchema(),
+            required=False,
+            load_from="BandwidthTrafficList",
+        ),
     }
 
 
@@ -529,6 +563,7 @@ class GetUcdnDomainBandwidthV2RequestSchema(schema.RequestSchema):
         "BeginTime": fields.Int(required=False, dump_to="BeginTime"),
         "DomainId": fields.List(fields.Str()),
         "EndTime": fields.Int(required=False, dump_to="EndTime"),
+        "IsDcdn": fields.Bool(required=False, dump_to="IsDcdn"),
         "Primeval": fields.Int(required=False, dump_to="Primeval"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Protocol": fields.Str(required=False, dump_to="Protocol"),
@@ -560,7 +595,9 @@ class GetUcdnDomainConfigRequestSchema(schema.RequestSchema):
 
     fields = {
         "ChannelType": fields.Str(required=False, dump_to="ChannelType"),
+        "Domain": fields.List(fields.Str()),
         "DomainId": fields.List(fields.Str()),
+        "IsDcdn": fields.Bool(required=False, dump_to="IsDcdn"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -595,6 +632,7 @@ class GetUcdnDomainHitRateRequestSchema(schema.RequestSchema):
         "DomainId": fields.List(fields.Str()),
         "EndTime": fields.Int(required=False, dump_to="EndTime"),
         "HitType": fields.Int(required=False, dump_to="HitType"),
+        "IsDcdn": fields.Bool(required=False, dump_to="IsDcdn"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Type": fields.Int(required=True, dump_to="Type"),
     }
@@ -627,6 +665,7 @@ class GetUcdnDomainHttpCodeV2RequestSchema(schema.RequestSchema):
         "BeginTime": fields.Int(required=False, dump_to="BeginTime"),
         "DomainId": fields.List(fields.Str()),
         "EndTime": fields.Int(required=False, dump_to="EndTime"),
+        "IsDcdn": fields.Bool(required=False, dump_to="IsDcdn"),
         "Layer": fields.Str(required=False, dump_to="Layer"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Type": fields.Int(required=True, dump_to="Type"),
@@ -811,6 +850,7 @@ class GetUcdnDomainOriginRequestNumRequestSchema(schema.RequestSchema):
         "BeginTime": fields.Int(required=True, dump_to="BeginTime"),
         "DomainId": fields.List(fields.Str()),
         "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "IsDcdn": fields.Bool(required=False, dump_to="IsDcdn"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Type": fields.Int(required=True, dump_to="Type"),
     }
@@ -897,6 +937,7 @@ class GetUcdnDomainRequestNumV3RequestSchema(schema.RequestSchema):
         "BeginTime": fields.Int(required=True, dump_to="BeginTime"),
         "DomainId": fields.List(fields.Str()),
         "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "IsDcdn": fields.Bool(required=False, dump_to="IsDcdn"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Protocol": fields.Str(required=False, dump_to="Protocol"),
         "Type": fields.Int(required=True, dump_to="Type"),
@@ -994,6 +1035,7 @@ class GetUcdnPassBandwidthV2RequestSchema(schema.RequestSchema):
         "BeginTime": fields.Int(required=False, dump_to="BeginTime"),
         "DomainId": fields.List(fields.Str()),
         "EndTime": fields.Int(required=False, dump_to="EndTime"),
+        "IsDcdn": fields.Bool(required=False, dump_to="IsDcdn"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Type": fields.Int(required=True, dump_to="Type"),
     }
@@ -1113,6 +1155,7 @@ class GetUcdnTrafficV2RequestSchema(schema.RequestSchema):
     """GetUcdnTrafficV2 - 获取流量信息"""
 
     fields = {
+        "IsDcdn": fields.Bool(required=False, dump_to="IsDcdn"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
     }
 
@@ -1235,6 +1278,7 @@ class UpdateUcdnDomainStatusRequestSchema(schema.RequestSchema):
 
     fields = {
         "DomainId": fields.Str(required=True, dump_to="DomainId"),
+        "IsDcdn": fields.Bool(required=False, dump_to="IsDcdn"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Status": fields.Str(required=True, dump_to="Status"),
     }

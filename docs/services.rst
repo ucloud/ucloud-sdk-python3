@@ -122,6 +122,13 @@ TiDB
    :members:
 
 
+UADS
+----
+
+.. autoclass:: ucloud.services.uads.client.UADSClient
+   :members:
+
+
 UBill
 -----
 

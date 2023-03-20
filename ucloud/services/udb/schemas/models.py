@@ -67,7 +67,7 @@ class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
 
 
 class MongoDBShardedClusterSetSchema(schema.ResponseSchema):
-    """MongoDBShardedClusterSet - mongodb分片集群的概览信息"""
+    """MongoDBShardedClusterSet -"""
 
     fields = {
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
