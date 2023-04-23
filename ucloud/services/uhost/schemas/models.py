@@ -20,26 +20,6 @@ class KeyPairSchema(schema.ResponseSchema):
     }
 
 
-class CollectionSchema(schema.ResponseSchema):
-    """Collection - CPU和内存可支持的规格"""
-
-    fields = {
-        "Cpu": fields.Int(required=False, load_from="Cpu"),
-        "Memory": fields.List(fields.Int()),
-        "MinimalCpuPlatform": fields.List(fields.Str()),
-    }
-
-
-class FeatureModesSchema(schema.ResponseSchema):
-    """FeatureModes - 可以支持的模式类别"""
-
-    fields = {
-        "MinimalCpuPlatform": fields.List(fields.Str()),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "RelatedToImageFeature": fields.List(fields.Str()),
-    }
-
-
 class DataDiskInfoSchema(schema.ResponseSchema):
     """DataDiskInfo - 数据盘信息"""
 
@@ -62,21 +42,42 @@ class BootDiskInfoSchema(schema.ResponseSchema):
     }
 
 
+class CollectionSchema(schema.ResponseSchema):
+    """Collection - CPU和内存可支持的规格"""
+
+    fields = {
+        "Cpu": fields.Int(required=False, load_from="Cpu"),
+        "Memory": fields.List(fields.Int()),
+        "MinimalCpuPlatform": fields.List(fields.Str()),
+    }
+
+
+class FeatureModesSchema(schema.ResponseSchema):
+    """FeatureModes - 可以支持的模式类别"""
+
+    fields = {
+        "MinimalCpuPlatform": fields.List(fields.Str()),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "RelatedToImageFeature": fields.List(fields.Str()),
+    }
+
+
+class DisksSchema(schema.ResponseSchema):
+    """Disks - 磁盘信息"""
+
+    fields = {
+        "BootDisk": fields.List(BootDiskInfoSchema()),
+        "DataDisk": fields.List(DataDiskInfoSchema()),
+        "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
 class MachineSizesSchema(schema.ResponseSchema):
     """MachineSizes - GPU、CPU和内存信息"""
 
     fields = {
         "Collection": fields.List(CollectionSchema()),
         "Gpu": fields.Int(required=False, load_from="Gpu"),
-    }
-
-
-class GraphicsMemorySchema(schema.ResponseSchema):
-    """GraphicsMemory - GPU的显存指标"""
-
-    fields = {
-        "Rate": fields.Int(required=False, load_from="Rate"),
-        "Value": fields.Int(required=False, load_from="Value"),
     }
 
 
@@ -99,21 +100,20 @@ class PerformanceSchema(schema.ResponseSchema):
     }
 
 
+class GraphicsMemorySchema(schema.ResponseSchema):
+    """GraphicsMemory - GPU的显存指标"""
+
+    fields = {
+        "Rate": fields.Int(required=False, load_from="Rate"),
+        "Value": fields.Int(required=False, load_from="Value"),
+    }
+
+
 class FeaturesSchema(schema.ResponseSchema):
     """Features - 虚机可支持的特性"""
 
     fields = {
         "Modes": fields.List(FeatureModesSchema()),
-        "Name": fields.Str(required=False, load_from="Name"),
-    }
-
-
-class DisksSchema(schema.ResponseSchema):
-    """Disks - 磁盘信息"""
-
-    fields = {
-        "BootDisk": fields.List(BootDiskInfoSchema()),
-        "DataDisk": fields.List(DataDiskInfoSchema()),
         "Name": fields.Str(required=False, load_from="Name"),
     }
 
@@ -182,6 +182,26 @@ class IsolationGroupSchema(schema.ResponseSchema):
     }
 
 
+class UHostIPSetSchema(schema.ResponseSchema):
+    """UHostIPSet - DescribeUHostInstance"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "Default": fields.Str(required=False, load_from="Default"),
+        "IP": fields.Str(required=False, load_from="IP"),
+        "IPId": fields.Str(required=False, load_from="IPId"),
+        "IPMode": fields.Str(required=True, load_from="IPMode"),
+        "Mac": fields.Str(required=False, load_from="Mac"),
+        "NetworkInterfaceId": fields.Str(
+            required=False, load_from="NetworkInterfaceId"
+        ),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "Type": fields.Str(required=False, load_from="Type"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "Weight": fields.Int(required=False, load_from="Weight"),
+    }
+
+
 class UHostKeyPairSchema(schema.ResponseSchema):
     """UHostKeyPair - 主机密钥信息"""
 
@@ -204,26 +224,6 @@ class UHostDiskSetSchema(schema.ResponseSchema):
         "Name": fields.Str(required=False, load_from="Name"),
         "Size": fields.Int(required=False, load_from="Size"),
         "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
-class UHostIPSetSchema(schema.ResponseSchema):
-    """UHostIPSet - DescribeUHostInstance"""
-
-    fields = {
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "Default": fields.Str(required=False, load_from="Default"),
-        "IP": fields.Str(required=False, load_from="IP"),
-        "IPId": fields.Str(required=False, load_from="IPId"),
-        "IPMode": fields.Str(required=True, load_from="IPMode"),
-        "Mac": fields.Str(required=False, load_from="Mac"),
-        "NetworkInterfaceId": fields.Str(
-            required=False, load_from="NetworkInterfaceId"
-        ),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "Type": fields.Str(required=False, load_from="Type"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-        "Weight": fields.Int(required=False, load_from="Weight"),
     }
 
 

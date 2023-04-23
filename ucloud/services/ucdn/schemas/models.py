@@ -3,6 +3,14 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class AccessConfSchema(schema.ResponseSchema):
+    """AccessConf - 访问控制"""
+
+    fields = {
+        "IpBlacklist": fields.Str(required=False, load_from="IpBlacklist"),
+    }
+
+
 class CacheConfSchema(schema.ResponseSchema):
     """CacheConf - 缓存配置"""
 
@@ -18,14 +26,6 @@ class CacheConfSchema(schema.ResponseSchema):
             required=False, load_from="HttpCodePattern"
         ),
         "PathPattern": fields.Str(required=True, load_from="PathPattern"),
-    }
-
-
-class AccessConfSchema(schema.ResponseSchema):
-    """AccessConf - 访问控制"""
-
-    fields = {
-        "IpBlacklist": fields.Str(required=False, load_from="IpBlacklist"),
     }
 
 
@@ -337,17 +337,6 @@ class AccessControlConfSchema(schema.ResponseSchema):
     }
 
 
-class CacheAllConfigSchema(schema.ResponseSchema):
-    """CacheAllConfig - 缓存相关的配置"""
-
-    fields = {
-        "CacheHost": fields.Str(required=False, load_from="CacheHost"),
-        "CacheKeyList": fields.List(CacheKeyInfoSchema()),
-        "CacheList": fields.List(CacheConfSchema()),
-        "HttpCodeCacheList": fields.List(CacheConfSchema()),
-    }
-
-
 class OriginConfSchema(schema.ResponseSchema):
     """OriginConf - 回源配置"""
 
@@ -374,6 +363,17 @@ class OriginConfSchema(schema.ResponseSchema):
         "OriginProtocol": fields.Str(
             required=False, load_from="OriginProtocol"
         ),
+    }
+
+
+class CacheAllConfigSchema(schema.ResponseSchema):
+    """CacheAllConfig - 缓存相关的配置"""
+
+    fields = {
+        "CacheHost": fields.Str(required=False, load_from="CacheHost"),
+        "CacheKeyList": fields.List(CacheKeyInfoSchema()),
+        "CacheList": fields.List(CacheConfSchema()),
+        "HttpCodeCacheList": fields.List(CacheConfSchema()),
     }
 
 

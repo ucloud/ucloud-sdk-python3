@@ -50,6 +50,16 @@ class ResourceInfoSchema(schema.ResponseSchema):
     }
 
 
+class CfgDictListSchema(schema.ResponseSchema):
+    """CfgDictList - 容器配置字典列表"""
+
+    fields = {
+        "MountPath": fields.Str(required=False, load_from="MountPath"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
+    }
+
+
 class EnvListSchema(schema.ResponseSchema):
     """EnvList - 容器环境变量列表"""
 
@@ -59,11 +69,29 @@ class EnvListSchema(schema.ResponseSchema):
     }
 
 
-class CfgDictListSchema(schema.ResponseSchema):
-    """CfgDictList - 容器配置字典列表"""
+class DockerInfoSchema(schema.ResponseSchema):
+    """DockerInfo - 容器信息"""
 
     fields = {
-        "MountPath": fields.Str(required=False, load_from="MountPath"),
+        "Args": fields.Str(required=False, load_from="Args"),
+        "CfgDictList": fields.List(CfgDictListSchema()),
+        "Command": fields.Str(required=False, load_from="Command"),
+        "CpuCores": fields.Float(required=False, load_from="CpuCores"),
+        "EnvList": fields.List(EnvListSchema()),
+        "ImageName": fields.Str(required=False, load_from="ImageName"),
+        "MemSize": fields.Float(required=False, load_from="MemSize"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "State": fields.Int(required=False, load_from="State"),
+        "WorkDir": fields.Str(required=False, load_from="WorkDir"),
+    }
+
+
+class StorVolumeInfoSchema(schema.ResponseSchema):
+    """StorVolumeInfo - 容器组存储卷信息"""
+
+    fields = {
+        "DiskSize": fields.Int(required=False, load_from="DiskSize"),
+        "MountPoint": fields.Str(required=False, load_from="MountPoint"),
         "Name": fields.Str(required=False, load_from="Name"),
         "ResourceId": fields.Str(required=False, load_from="ResourceId"),
     }
@@ -85,34 +113,6 @@ class ImageListSchema(schema.ResponseSchema):
         "ImageKey": fields.Str(required=False, load_from="ImageKey"),
         "StoreAddr": fields.Str(required=False, load_from="StoreAddr"),
         "UserName": fields.Str(required=False, load_from="UserName"),
-    }
-
-
-class StorVolumeInfoSchema(schema.ResponseSchema):
-    """StorVolumeInfo - 容器组存储卷信息"""
-
-    fields = {
-        "DiskSize": fields.Int(required=False, load_from="DiskSize"),
-        "MountPoint": fields.Str(required=False, load_from="MountPoint"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
-    }
-
-
-class DockerInfoSchema(schema.ResponseSchema):
-    """DockerInfo - 容器信息"""
-
-    fields = {
-        "Args": fields.Str(required=False, load_from="Args"),
-        "CfgDictList": fields.List(CfgDictListSchema()),
-        "Command": fields.Str(required=False, load_from="Command"),
-        "CpuCores": fields.Float(required=False, load_from="CpuCores"),
-        "EnvList": fields.List(EnvListSchema()),
-        "ImageName": fields.Str(required=False, load_from="ImageName"),
-        "MemSize": fields.Float(required=False, load_from="MemSize"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "State": fields.Int(required=False, load_from="State"),
-        "WorkDir": fields.Str(required=False, load_from="WorkDir"),
     }
 
 

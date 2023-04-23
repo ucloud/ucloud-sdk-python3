@@ -104,17 +104,26 @@ class CreateUMemSpaceRequestSchema(schema.RequestSchema):
     """CreateUMemSpace - 创建UMem内存空间"""
 
     fields = {
+        "BlockCnt": fields.Int(required=False, dump_to="BlockCnt"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "ClusterMode": fields.Str(required=False, dump_to="ClusterMode"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "HighPerformance": fields.Bool(
+            required=False, dump_to="HighPerformance"
+        ),
         "Name": fields.Str(required=True, dump_to="Name"),
+        "Password": fields.Base64(required=False, dump_to="Password"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Protocol": fields.Str(required=False, dump_to="Protocol"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Size": fields.Int(required=True, dump_to="Size"),
+        "SlaveZone": fields.Str(required=False, dump_to="SlaveZone"),
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
         "Type": fields.Str(required=False, dump_to="Type"),
         "VPCId": fields.Str(required=False, dump_to="VPCId"),
+        "Version": fields.Str(required=False, dump_to="Version"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
@@ -1129,12 +1138,12 @@ class RemoveUDRedisDataResponseSchema(schema.ResponseSchema):
 """
 API: ResizeUMemSpace
 
-调整内存空间容量
+调整内存空间容量，只支持存量老分布式产品，不支持高性能分布式
 """
 
 
 class ResizeUMemSpaceRequestSchema(schema.RequestSchema):
-    """ResizeUMemSpace - 调整内存空间容量"""
+    """ResizeUMemSpace - 调整内存空间容量，只支持存量老分布式产品，不支持高性能分布式"""
 
     fields = {
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
@@ -1142,12 +1151,13 @@ class ResizeUMemSpaceRequestSchema(schema.RequestSchema):
         "Region": fields.Str(required=True, dump_to="Region"),
         "Size": fields.Int(required=True, dump_to="Size"),
         "SpaceId": fields.Str(required=True, dump_to="SpaceId"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
+        "Type": fields.Str(required=False, dump_to="Type"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
 
 class ResizeUMemSpaceResponseSchema(schema.ResponseSchema):
-    """ResizeUMemSpace - 调整内存空间容量"""
+    """ResizeUMemSpace - 调整内存空间容量，只支持存量老分布式产品，不支持高性能分布式"""
 
     fields = {}
 

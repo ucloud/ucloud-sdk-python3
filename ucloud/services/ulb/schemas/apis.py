@@ -25,7 +25,7 @@ class AllocateBackendRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ResourceIP": fields.Str(required=False, dump_to="ResourceIP"),
-        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
+        "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
         "ResourceType": fields.Str(required=True, dump_to="ResourceType"),
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
         "ULBId": fields.Str(required=True, dump_to="ULBId"),
@@ -110,6 +110,9 @@ class CreatePolicyRequestSchema(schema.RequestSchema):
 
     fields = {
         "BackendId": fields.List(fields.Str()),
+        "DomainMatchMode": fields.Str(
+            required=False, dump_to="DomainMatchMode"
+        ),
         "Match": fields.Str(required=True, dump_to="Match"),
         "PolicyPriority": fields.Int(required=False, dump_to="PolicyPriority"),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
@@ -709,6 +712,7 @@ class UpdatePolicyRequestSchema(schema.RequestSchema):
         ),
         "Match": fields.Str(required=True, dump_to="Match"),
         "PolicyId": fields.Str(required=False, dump_to="PolicyId"),
+        "PolicyPriority": fields.Int(required=False, dump_to="PolicyPriority"),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Type": fields.Str(required=False, dump_to="Type"),

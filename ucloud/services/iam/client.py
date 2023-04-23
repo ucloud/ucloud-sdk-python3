@@ -13,6 +13,173 @@ class IAMClient(Client):
     ):
         super(IAMClient, self).__init__(config, transport, middleware, logger)
 
+    def add_user_to_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """AddUserToGroup - 添加成员到用户组
+
+        **Request**
+
+        - **GroupName** (str) - (Required) 用户组名
+        - **UserName** (str) - (Required) 用户名
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.AddUserToGroupRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("AddUserToGroup", d, **kwargs)
+        return apis.AddUserToGroupResponseSchema().loads(resp)
+
+    def attach_policies_to_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """AttachPoliciesToGroup - 关联IAM策略到用户组
+
+        **Request**
+
+        - **GroupName** (str) - (Required) 用户组名称
+        - **PolicyURNs** (list) - (Required) 策略URN
+        - **Scope** (str) - (Required) 应用范围
+        - **ProjectID** (str) - 项目ID（当Scope=Specified时ProjectID必传）
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.AttachPoliciesToGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("AttachPoliciesToGroup", d, **kwargs)
+        return apis.AttachPoliciesToGroupResponseSchema().loads(resp)
+
+    def attach_policies_to_user(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """AttachPoliciesToUser - 关联IAM策略到用户
+
+        **Request**
+
+        - **PolicyURNs** (list) - (Required) 策略URN
+        - **Scope** (str) - (Required) 应用范围
+        - **UserName** (str) - (Required) 用户名称
+        - **ProjectID** (str) - 项目ID（当Scope=Specified时ProjectID必传）
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.AttachPoliciesToUserRequestSchema().dumps(d)
+
+        resp = self.invoke("AttachPoliciesToUser", d, **kwargs)
+        return apis.AttachPoliciesToUserResponseSchema().loads(resp)
+
+    def create_access_key(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateAccessKey - 创建用户密钥
+
+        **Request**
+
+        - **UserName** (str) - (Required) 用户名
+
+        **Response**
+
+        - **AccessKey** (dict) - 见 **AccessKey** 模型定义
+
+        **Response Model**
+
+        **AccessKey**
+        - **AccessKeyID** (str) - 用户公钥
+        - **AccessKeySecret** (str) - 用户私钥
+        - **CreatedAt** (int) - 密钥创建时间
+        - **DeletedAt** (int) - 密钥删除时间
+        - **Description** (str) - 密钥备注
+        - **ExpiredAt** (int) - 密钥过期时间
+        - **Status** (str) - 密钥状态
+        - **UpdatedAt** (int) - 密钥更新时间
+        - **UserId** (int) - 用户ID
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.CreateAccessKeyRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateAccessKey", d, **kwargs)
+        return apis.CreateAccessKeyResponseSchema().loads(resp)
+
+    def create_group(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """CreateGroup - 创建用户组
+
+        **Request**
+
+        - **GroupName** (str) - (Required) 用户组名称
+        - **Description** (str) - 对用户组的描述
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.CreateGroupRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateGroup", d, **kwargs)
+        return apis.CreateGroupResponseSchema().loads(resp)
+
+    def create_iam_policy(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateIAMPolicy - 创建IAM策略
+
+        **Request**
+
+        - **Document** (str) - (Required) 策略内容
+        - **PolicyName** (str) - (Required) 策略名称
+        - **Description** (str) - 描述
+        - **ScopeType** (str) - 策略作用域类型
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.CreateIAMPolicyRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateIAMPolicy", d, **kwargs)
+        return apis.CreateIAMPolicyResponseSchema().loads(resp)
+
     def create_project(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -38,6 +205,96 @@ class IAMClient(Client):
         resp = self.invoke("CreateProject", d, **kwargs)
         return apis.CreateProjectResponseSchema().loads(resp)
 
+    def create_user(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """CreateUser - 创建IAM用户
+
+        **Request**
+
+        - **AccessKeyStatus** (str) - (Required) API密钥访问状态（LoginProfileStatus值为Inactive时，AccessKeyStatus不能为Inactive）
+        - **LoginProfileStatus** (str) - (Required) 控制台登录访问状态（AccessKeyStatus值为Inactive时，LoginProfileStatus不能为Inactive）
+        - **UserName** (str) - (Required) 用户名
+        - **DisplayName** (str) - 显示名称
+        - **Email** (str) - 用户邮箱（LoginProfileStatus值等于Active必传，LoginProfileStatus值等于Inactive不传）
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.CreateUserRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateUser", d, **kwargs)
+        return apis.CreateUserResponseSchema().loads(resp)
+
+    def delete_access_key(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteAccessKey - 删除用户密钥
+
+        **Request**
+
+        - **AccessKeyID** (str) - (Required) 用户公钥
+
+        **Response**
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.DeleteAccessKeyRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteAccessKey", d, **kwargs)
+        return apis.DeleteAccessKeyResponseSchema().loads(resp)
+
+    def delete_group(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """DeleteGroup - 删除用户组
+
+        **Request**
+
+        - **GroupName** (str) - (Required) 待删除用户组名称
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.DeleteGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteGroup", d, **kwargs)
+        return apis.DeleteGroupResponseSchema().loads(resp)
+
+    def delete_iam_policy(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteIAMPolicy - 删除IAM策略
+
+        **Request**
+
+        - **PolicyURN** (str) - (Required) 策略URN
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.DeleteIAMPolicyRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteIAMPolicy", d, **kwargs)
+        return apis.DeleteIAMPolicyResponseSchema().loads(resp)
+
     def delete_project(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -59,3 +316,763 @@ class IAMClient(Client):
 
         resp = self.invoke("DeleteProject", d, **kwargs)
         return apis.DeleteProjectResponseSchema().loads(resp)
+
+    def delete_user(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """DeleteUser - 删除用户
+
+        **Request**
+
+        - **UserName** (str) - (Required) 用户名
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.DeleteUserRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteUser", d, **kwargs)
+        return apis.DeleteUserResponseSchema().loads(resp)
+
+    def detach_policies_from_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DetachPoliciesFromGroup - 移除用户组关联的IAM策略
+
+        **Request**
+
+        - **GroupName** (str) - (Required) 用户组名称
+        - **PolicyURNs** (list) - (Required) 策略URN
+        - **Scope** (str) - (Required) 应用范围
+        - **ProjectID** (str) - 项目ID（当Scope=Specified时ProjectID必传）
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.DetachPoliciesFromGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("DetachPoliciesFromGroup", d, **kwargs)
+        return apis.DetachPoliciesFromGroupResponseSchema().loads(resp)
+
+    def detach_policies_from_user(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DetachPoliciesFromUser - 移除用户关联的IAM策略
+
+        **Request**
+
+        - **PolicyURNs** (list) - (Required) 策略URN
+        - **Scope** (str) - (Required) 应用范围
+        - **UserName** (str) - (Required) 用户名
+        - **ProjectID** (str) - 项目ID（当Scope=Specified时ProjectID必传）
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.DetachPoliciesFromUserRequestSchema().dumps(d)
+
+        resp = self.invoke("DetachPoliciesFromUser", d, **kwargs)
+        return apis.DetachPoliciesFromUserResponseSchema().loads(resp)
+
+    def get_group(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """GetGroup - 查询用户组详情
+
+        **Request**
+
+        - **GroupName** (str) - (Required) 用户组名称
+
+        **Response**
+
+        - **Group** (dict) - 见 **Group** 模型定义
+        - **Message** (str) - 错误消息
+
+        **Response Model**
+
+        **Group**
+        - **CreatedAt** (int) - 用户组创建时间戳
+        - **Description** (str) - 用户组描述信息
+        - **GroupName** (str) - 用户组名称
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.GetGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("GetGroup", d, **kwargs)
+        return apis.GetGroupResponseSchema().loads(resp)
+
+    def get_iam_policy(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetIAMPolicy - 获取策略详情
+
+        **Request**
+
+        - **PolicyURN** (str) - (Required) 策略URN
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+        - **Policy** (dict) - 见 **IAMPolicy** 模型定义
+
+        **Response Model**
+
+        **IAMPolicy**
+        - **CreatedAt** (int) - IAM权限策略创建时间
+        - **Description** (str) - IAM权限策略描述
+        - **Document** (str) - IAM权限策略文本
+        - **PolicyName** (str) - 策略名称
+        - **PolicyURN** (str) - IAM权限策略URN
+        - **ScopeType** (str) - IAM权限策略应用范围（ScopeRequired:项目级, ScopeEmpty:全局级, ScopeUnrestricted:项目级/全局级）
+        - **UpdatedAt** (int) - IAM权限策略更新时间
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.GetIAMPolicyRequestSchema().dumps(d)
+
+        resp = self.invoke("GetIAMPolicy", d, **kwargs)
+        return apis.GetIAMPolicyResponseSchema().loads(resp)
+
+    def get_login_profile(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetLoginProfile - 获取用户登录资料
+
+        **Request**
+
+        - **UserName** (str) - (Required) 用户名
+
+        **Response**
+
+        - **LoginProfile** (dict) - 见 **LoginProfile** 模型定义
+
+        **Response Model**
+
+        **LoginProfile**
+        - **MFABindRequired** (bool) - 是否必需绑定MFA
+        - **MaxPasswordAge** (int) - 密码最长有效期，单位：天
+        - **Status** (str) - 登录资料状态
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.GetLoginProfileRequestSchema().dumps(d)
+
+        resp = self.invoke("GetLoginProfile", d, **kwargs)
+        return apis.GetLoginProfileResponseSchema().loads(resp)
+
+    def get_user(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """GetUser - 获取用户信息
+
+        **Request**
+
+        - **UserName** (str) - (Required) 用户名
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+        - **User** (dict) - 见 **User** 模型定义
+
+        **Response Model**
+
+        **User**
+        - **CreatedAt** (int) - 创建时间戳
+        - **DisplayName** (str) - 昵称
+        - **Email** (str) - 邮箱
+        - **Status** (str) - 状态(Active:正常，Inactive:未激活，Frozen:冻结，ConsoleInactive:控制台未激活)
+        - **UserName** (str) - 用户名
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.GetUserRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUser", d, **kwargs)
+        return apis.GetUserResponseSchema().loads(resp)
+
+    def list_access_keys(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListAccessKeys - 获取指定用户密钥列表
+
+        **Request**
+
+        - **UserName** (str) - (Required) 用户名
+
+        **Response**
+
+        - **AccessKey** (list) - 见 **AccessKey** 模型定义
+
+        **Response Model**
+
+        **AccessKey**
+        - **AccessKeyID** (str) - 用户公钥
+        - **AccessKeySecret** (str) - 用户私钥
+        - **CreatedAt** (int) - 密钥创建时间
+        - **DeletedAt** (int) - 密钥删除时间
+        - **Description** (str) - 密钥备注
+        - **ExpiredAt** (int) - 密钥过期时间
+        - **Status** (str) - 密钥状态
+        - **UpdatedAt** (int) - 密钥更新时间
+        - **UserId** (int) - 用户ID
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.ListAccessKeysRequestSchema().dumps(d)
+
+        resp = self.invoke("ListAccessKeys", d, **kwargs)
+        return apis.ListAccessKeysResponseSchema().loads(resp)
+
+    def list_entities_for_policy(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListEntitiesForPolicy - 列出引用权限策略的实体
+
+        **Request**
+
+        - **PolicyURN** (str) - (Required) 策略URN
+        - **Limit** (str) - 需要查询的用户组数量
+        - **Offset** (str) - 从第几条数据开始查询
+
+        **Response**
+
+        - **Entities** (list) - 见 **Entity** 模型定义
+        - **Message** (str) - 错误消息
+        - **TotalCount** (int) - 数据集合数量
+
+        **Response Model**
+
+        **Entity**
+        - **AttachedAt** (int) - 引用时间
+        - **DisplayName** (str) - 子账户展示名称
+        - **EntityKind** (str) - 实体类型（User:用户，Group）
+        - **EntityName** (str) - 实体名称
+        - **Scope** (str) - 生效空间
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.ListEntitiesForPolicyRequestSchema().dumps(d)
+
+        resp = self.invoke("ListEntitiesForPolicy", d, **kwargs)
+        return apis.ListEntitiesForPolicyResponseSchema().loads(resp)
+
+    def list_entities_for_project(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListEntitiesForProject - 列出拥有指定项目权限的实体
+
+        **Request**
+
+        - **ProjectID** (str) - (Required) 项目ID
+        - **Limit** (str) - 需要查询的用户组数量
+        - **Offset** (str) - 从第几条数据开始查询
+
+        **Response**
+
+        - **Entities** (list) - 见 **Entity** 模型定义
+        - **Message** (str) - 错误消息
+        - **TotalCount** (int) - 数据集合数量
+
+        **Response Model**
+
+        **Entity**
+        - **AttachedAt** (int) - 引用时间
+        - **EntityKind** (str) - 实体类型（User:用户，Group）
+        - **EntityName** (str) - 实体名称
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.ListEntitiesForProjectRequestSchema().dumps(d)
+
+        resp = self.invoke("ListEntitiesForProject", d, **kwargs)
+        return apis.ListEntitiesForProjectResponseSchema().loads(resp)
+
+    def list_groups(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ListGroups - 列出用户组
+
+        **Request**
+
+
+        **Response**
+
+        - **Groups** (list) - 见 **Group** 模型定义
+        - **Message** (str) - 错误消息
+        - **TotalCount** (int) - 总数
+
+        **Response Model**
+
+        **Group**
+        - **CreatedAt** (int) - 用户组创建时间戳
+        - **Description** (str) - 用户组描述信息
+        - **GroupName** (str) - 用户组名称
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.ListGroupsRequestSchema().dumps(d)
+
+        resp = self.invoke("ListGroups", d, **kwargs)
+        return apis.ListGroupsResponseSchema().loads(resp)
+
+    def list_policies(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListPolicies - 获取IAM策略列表
+
+        **Request**
+
+        - **Owner** (str) - (Required) 策略所有者
+        - **Limit** (str) - 需要查询的用户组数量
+        - **Offset** (str) - 从第几条数据开始查询
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+        - **Policies** (list) - 见 **IAMPolicy** 模型定义
+        - **TotalCount** (int) - 数据集合数量
+
+        **Response Model**
+
+        **IAMPolicy**
+        - **CreatedAt** (int) - IAM权限策略创建时间
+        - **Description** (str) - IAM权限策略描述
+        - **Document** (str) - IAM权限策略文本
+        - **PolicyName** (str) - 策略名称
+        - **PolicyURN** (str) - IAM权限策略URN
+        - **ScopeType** (str) - IAM权限策略应用范围（ScopeRequired:项目级, ScopeEmpty:全局级, ScopeUnrestricted:项目级/全局级）
+        - **UpdatedAt** (int) - IAM权限策略更新时间
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.ListPoliciesRequestSchema().dumps(d)
+
+        resp = self.invoke("ListPolicies", d, **kwargs)
+        return apis.ListPoliciesResponseSchema().loads(resp)
+
+    def list_policies_for_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListPoliciesForGroup - 列出用户组关联的权限策略
+
+        **Request**
+
+        - **GroupName** (str) - (Required) 用户组名称
+        - **Limit** (str) - 需要查询的用户组数量
+        - **Offset** (str) - 从第几条数据开始查询
+        - **ProjectID** (str) - 项目ID
+        - **Scope** (str) - 应用范围
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+        - **Policies** (list) - 见 **Policy** 模型定义
+        - **TotalCount** (int) - 总数
+
+        **Response Model**
+
+        **Policy**
+        - **AttachedAt** (int) - 策略被添加到用户组时的时间戳
+        - **CreatedAt** (int) - 创建时间
+        - **Description** (str) - 描述
+        - **PolicyName** (str) - 权限策略名称
+        - **PolicyURN** (str) - 策略URN
+        - **ProjectID** (str) - 项目ID
+        - **Scope** (str) - 应用范围（ScopeRequired:项目级, ScopeEmpty:全局级, ScopeUnrestricted:项目级/全局级）
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.ListPoliciesForGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("ListPoliciesForGroup", d, **kwargs)
+        return apis.ListPoliciesForGroupResponseSchema().loads(resp)
+
+    def list_policies_for_user(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListPoliciesForUser - 列出用户关联的IAM策略
+
+        **Request**
+
+        - **UserName** (str) - (Required) 用户名
+        - **Limit** (str) - 需要查询的用户组数量
+        - **Offset** (str) - 从第几条数据开始查询
+        - **ProjectID** (str) - 项目ID
+        - **Scope** (str) - 应用范围
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+        - **Policies** (list) - 见 **Policy** 模型定义
+        - **TotalCount** (int) - 数据集合数量
+
+        **Response Model**
+
+        **Policy**
+        - **AttachedAt** (int) - 策略被添加到用户组时的时间戳
+        - **CreatedAt** (int) - 创建时间
+        - **Description** (str) - 描述
+        - **PolicyName** (str) - 权限策略名称
+        - **PolicyURN** (str) - 策略URN
+        - **ProjectID** (str) - 项目ID
+        - **Scope** (str) - 应用范围（ScopeRequired:项目级, ScopeEmpty:全局级, ScopeUnrestricted:项目级/全局级）
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.ListPoliciesForUserRequestSchema().dumps(d)
+
+        resp = self.invoke("ListPoliciesForUser", d, **kwargs)
+        return apis.ListPoliciesForUserResponseSchema().loads(resp)
+
+    def list_projects(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListProjects - 列出所有项目
+
+        **Request**
+
+        - **Limit** (str) -
+        - **Offset** (str) -
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+        - **Projects** (list) - 见 **Project** 模型定义
+        - **TotalCount** (int) - 总数
+
+        **Response Model**
+
+        **Project**
+        - **CreatedAt** (int) - 创建时间
+        - **ProjectID** (str) - 项目ID
+        - **ProjectName** (str) - 项目名称
+        - **UserCount** (int) - 用户数量
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.ListProjectsRequestSchema().dumps(d)
+
+        resp = self.invoke("ListProjects", d, **kwargs)
+        return apis.ListProjectsResponseSchema().loads(resp)
+
+    def list_users(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ListUsers - 列出用户列表
+
+        **Request**
+
+        - **Limit** (str) - 分页Limit(默认：10，最大100)
+        - **Offset** (str) - 分页offset
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+        - **TotalCount** (int) - 用户数量
+        - **Users** (list) - 见 **Users** 模型定义
+
+        **Response Model**
+
+        **Users**
+        - **CreatedAt** (int) - 创建时间戳
+        - **DisplayName** (str) - 昵称
+        - **Email** (str) - 邮箱
+        - **Status** (str) - 状态(Active:正常，Inactive:未激活，Frozen:冻结，ConsoleInactive:控制台未激活)
+        - **UserName** (str) - 用户名
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.ListUsersRequestSchema().dumps(d)
+
+        resp = self.invoke("ListUsers", d, **kwargs)
+        return apis.ListUsersResponseSchema().loads(resp)
+
+    def list_users_for_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListUsersForGroup - 列出用户组包含的用户
+
+        **Request**
+
+        - **GroupName** (str) - (Required) 用户组名称
+        - **Limit** (str) - 需要查询的组内用户数量
+        - **Offset** (str) - 从第几条数据开始查询
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+        - **TotalCount** (int) - 总数
+        - **Users** (list) - 见 **UserForGroup** 模型定义
+
+        **Response Model**
+
+        **UserForGroup**
+        - **DisplayName** (str) - 昵称
+        - **Email** (str) - 邮箱
+        - **JoinedAt** (int) - 用户被添加到用户组时的时间戳
+        - **UserName** (str) - 用户名
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.ListUsersForGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("ListUsersForGroup", d, **kwargs)
+        return apis.ListUsersForGroupResponseSchema().loads(resp)
+
+    def modify_project(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyProject - 修改项目
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectName** (str) - (Required) 新的项目名称
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.ModifyProjectRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyProject", d, **kwargs)
+        return apis.ModifyProjectResponseSchema().loads(resp)
+
+    def remove_user_from_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """RemoveUserFromGroup - 移除用户组中的IAM用户
+
+        **Request**
+
+        - **GroupName** (str) - (Required) 用户组名称
+        - **UserName** (str) - (Required) 用户名
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.RemoveUserFromGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("RemoveUserFromGroup", d, **kwargs)
+        return apis.RemoveUserFromGroupResponseSchema().loads(resp)
+
+    def remove_user_from_project(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """RemoveUserFromProject - 移除项目中的IAM用户，同时移除此用户在此项目下的所有权限
+
+        **Request**
+
+        - **ProjectID** (str) - (Required) 项目ID
+        - **UserName** (str) - (Required) 用户名
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.RemoveUserFromProjectRequestSchema().dumps(d)
+
+        resp = self.invoke("RemoveUserFromProject", d, **kwargs)
+        return apis.RemoveUserFromProjectResponseSchema().loads(resp)
+
+    def update_access_key(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateAccessKey - 修改用户密钥状态
+
+        **Request**
+
+        - **AccessKeyID** (str) - (Required) 用户公钥
+        - **Description** (str) - 密钥描述
+        - **Status** (str) - 密钥状态
+
+        **Response**
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.UpdateAccessKeyRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateAccessKey", d, **kwargs)
+        return apis.UpdateAccessKeyResponseSchema().loads(resp)
+
+    def update_group(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """UpdateGroup - 更新用户组信息
+
+        **Request**
+
+        - **Description** (str) - (Required) 用户组描述信息
+        - **GroupName** (str) - (Required) 用户组名称
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.UpdateGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateGroup", d, **kwargs)
+        return apis.UpdateGroupResponseSchema().loads(resp)
+
+    def update_iam_policy(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateIAMPolicy - 更新IAM策略
+
+        **Request**
+
+        - **Document** (str) - (Required) 策略内容
+        - **PolicyURN** (str) - (Required) 策略URN
+        - **Description** (str) - 描述
+        - **VersionDescription** (str) - 策略版本描述
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.UpdateIAMPolicyRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateIAMPolicy", d, **kwargs)
+        return apis.UpdateIAMPolicyResponseSchema().loads(resp)
+
+    def update_iam_policy_name(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateIAMPolicyName - 修改自定义策略名称
+
+        **Request**
+
+        - **Description** (str) - (Required) 策略描述
+        - **PolicyName** (str) - (Required) 策略名称
+        - **PolicyURN** (str) - (Required) 策略URN
+
+        **Response**
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.UpdateIAMPolicyNameRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateIAMPolicyName", d, **kwargs)
+        return apis.UpdateIAMPolicyNameResponseSchema().loads(resp)
+
+    def update_login_profile(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateLoginProfile - 更新用户登录资料
+
+        **Request**
+
+        - **UserName** (str) - (Required) 用户名
+        - **MFABindRequired** (bool) - 是否必需绑定MFA
+        - **MaxPasswordAge** (int) - 密码最长有效期，单位：天
+        - **Status** (str) - 登录资料状态
+        - **UserEmail** (str) - 用户真实邮箱
+
+        **Response**
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.UpdateLoginProfileRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateLoginProfile", d, **kwargs)
+        return apis.UpdateLoginProfileResponseSchema().loads(resp)
+
+    def update_user(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """UpdateUser - 更新用户
+
+        **Request**
+
+        - **UserName** (str) - (Required) 用户名
+        - **DisplayName** (str) - 用户名称（用户名称和用户状态不能同时为空）
+        - **NewUserName** (str) - 新用户名
+        - **Status** (str) - 用户状态（用户名称和用户状态不能同时为空，枚举值：Active:解冻,Frozen:冻结）
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.UpdateUserRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateUser", d, **kwargs)
+        return apis.UpdateUserResponseSchema().loads(resp)

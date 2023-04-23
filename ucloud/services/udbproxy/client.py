@@ -40,11 +40,6 @@ class UDBProxyClient(Client):
         - **Records** (list) - 见 **ProxyProcesslist** 模型定义
 
 
-        **ClientInfo**
-        - **Count** (int) -
-        - **IP** (str) -
-
-
         **ProxyProcesslist**
         - **ClientHost** (str) - 代理连接DB地址
         - **Command** (str) - 显示当前连接的执行的命令
