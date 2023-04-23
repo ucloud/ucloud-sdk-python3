@@ -80,16 +80,6 @@ class GraphicsMemorySchema(schema.ResponseSchema):
     }
 
 
-class CpuPlatformsSchema(schema.ResponseSchema):
-    """CpuPlatforms - CPU平台信息"""
-
-    fields = {
-        "Amd": fields.List(fields.Str()),
-        "Ampere": fields.List(fields.Str()),
-        "Intel": fields.List(fields.Str()),
-    }
-
-
 class PerformanceSchema(schema.ResponseSchema):
     """Performance - GPU的性能指标"""
 
@@ -115,6 +105,16 @@ class DisksSchema(schema.ResponseSchema):
         "BootDisk": fields.List(BootDiskInfoSchema()),
         "DataDisk": fields.List(DataDiskInfoSchema()),
         "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
+class CpuPlatformsSchema(schema.ResponseSchema):
+    """CpuPlatforms - CPU平台信息"""
+
+    fields = {
+        "Amd": fields.List(fields.Str()),
+        "Ampere": fields.List(fields.Str()),
+        "Intel": fields.List(fields.Str()),
     }
 
 
@@ -191,22 +191,6 @@ class UHostKeyPairSchema(schema.ResponseSchema):
     }
 
 
-class UHostDiskSetSchema(schema.ResponseSchema):
-    """UHostDiskSet - DescribeUHostInstance"""
-
-    fields = {
-        "BackupType": fields.Str(required=False, load_from="BackupType"),
-        "DiskId": fields.Str(required=False, load_from="DiskId"),
-        "DiskType": fields.Str(required=True, load_from="DiskType"),
-        "Drive": fields.Str(required=False, load_from="Drive"),
-        "Encrypted": fields.Str(required=False, load_from="Encrypted"),
-        "IsBoot": fields.Str(required=True, load_from="IsBoot"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Size": fields.Int(required=False, load_from="Size"),
-        "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
 class UHostIPSetSchema(schema.ResponseSchema):
     """UHostIPSet - DescribeUHostInstance"""
 
@@ -224,6 +208,22 @@ class UHostIPSetSchema(schema.ResponseSchema):
         "Type": fields.Str(required=False, load_from="Type"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
         "Weight": fields.Int(required=False, load_from="Weight"),
+    }
+
+
+class UHostDiskSetSchema(schema.ResponseSchema):
+    """UHostDiskSet - DescribeUHostInstance"""
+
+    fields = {
+        "BackupType": fields.Str(required=False, load_from="BackupType"),
+        "DiskId": fields.Str(required=False, load_from="DiskId"),
+        "DiskType": fields.Str(required=True, load_from="DiskType"),
+        "Drive": fields.Str(required=False, load_from="Drive"),
+        "Encrypted": fields.Str(required=False, load_from="Encrypted"),
+        "IsBoot": fields.Str(required=True, load_from="IsBoot"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "Type": fields.Str(required=False, load_from="Type"),
     }
 
 

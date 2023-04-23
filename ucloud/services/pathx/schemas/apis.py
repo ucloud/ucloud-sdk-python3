@@ -106,12 +106,12 @@ class CreatePathXSSLResponseSchema(schema.ResponseSchema):
 """
 API: CreateUGA3Instance
 
-创建全球统一接入加速配置项
+
 """
 
 
 class CreateUGA3InstanceRequestSchema(schema.RequestSchema):
-    """CreateUGA3Instance - 创建全球统一接入加速配置项"""
+    """CreateUGA3Instance -"""
 
     fields = {
         "AccelerationArea": fields.Str(
@@ -131,7 +131,7 @@ class CreateUGA3InstanceRequestSchema(schema.RequestSchema):
 
 
 class CreateUGA3InstanceResponseSchema(schema.ResponseSchema):
-    """CreateUGA3Instance - 创建全球统一接入加速配置项"""
+    """CreateUGA3Instance -"""
 
     fields = {
         "CName": fields.Str(required=False, load_from="CName"),
@@ -142,12 +142,12 @@ class CreateUGA3InstanceResponseSchema(schema.ResponseSchema):
 """
 API: CreateUGA3Port
 
-创建统一接入加速实例端口，目前仅支持四层TCP端口
+
 """
 
 
 class CreateUGA3PortRequestSchema(schema.RequestSchema):
-    """CreateUGA3Port - 创建统一接入加速实例端口，目前仅支持四层TCP端口"""
+    """CreateUGA3Port -"""
 
     fields = {
         "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
@@ -158,7 +158,7 @@ class CreateUGA3PortRequestSchema(schema.RequestSchema):
 
 
 class CreateUGA3PortResponseSchema(schema.ResponseSchema):
-    """CreateUGA3Port - 创建统一接入加速实例端口，目前仅支持四层TCP端口"""
+    """CreateUGA3Port -"""
 
     fields = {
         "Message": fields.Str(required=True, load_from="Message"),
@@ -320,12 +320,12 @@ class DeletePathXSSLResponseSchema(schema.ResponseSchema):
 """
 API: DeleteUGA3Instance
 
-删除全球统一接入转发实例
+
 """
 
 
 class DeleteUGA3InstanceRequestSchema(schema.RequestSchema):
-    """DeleteUGA3Instance - 删除全球统一接入转发实例"""
+    """DeleteUGA3Instance -"""
 
     fields = {
         "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
@@ -334,7 +334,7 @@ class DeleteUGA3InstanceRequestSchema(schema.RequestSchema):
 
 
 class DeleteUGA3InstanceResponseSchema(schema.ResponseSchema):
-    """DeleteUGA3Instance - 删除全球统一接入转发实例"""
+    """DeleteUGA3Instance -"""
 
     fields = {
         "Message": fields.Str(required=False, load_from="Message"),
@@ -344,12 +344,12 @@ class DeleteUGA3InstanceResponseSchema(schema.ResponseSchema):
 """
 API: DeleteUGA3Port
 
-删除统一接入加速实例转发器 按接入端口删除
+
 """
 
 
 class DeleteUGA3PortRequestSchema(schema.RequestSchema):
-    """DeleteUGA3Port - 删除统一接入加速实例转发器 按接入端口删除"""
+    """DeleteUGA3Port -"""
 
     fields = {
         "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
@@ -359,7 +359,7 @@ class DeleteUGA3PortRequestSchema(schema.RequestSchema):
 
 
 class DeleteUGA3PortResponseSchema(schema.ResponseSchema):
-    """DeleteUGA3Port - 删除统一接入加速实例转发器 按接入端口删除"""
+    """DeleteUGA3Port -"""
 
     fields = {
         "Message": fields.Str(required=True, load_from="Message"),
@@ -512,7 +512,7 @@ class DescribePathXLineConfigRequestSchema(schema.RequestSchema):
     """DescribePathXLineConfig - 获取全球加速线路信息"""
 
     fields = {
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
     }
 
 
@@ -559,12 +559,12 @@ class DescribePathXSSLResponseSchema(schema.ResponseSchema):
 """
 API: DescribeUGA3Area
 
-获取全球接入源站可选列表
+
 """
 
 
 class DescribeUGA3AreaRequestSchema(schema.RequestSchema):
-    """DescribeUGA3Area - 获取全球接入源站可选列表"""
+    """DescribeUGA3Area -"""
 
     fields = {
         "Domain": fields.Str(required=False, dump_to="Domain"),
@@ -574,7 +574,7 @@ class DescribeUGA3AreaRequestSchema(schema.RequestSchema):
 
 
 class DescribeUGA3AreaResponseSchema(schema.ResponseSchema):
-    """DescribeUGA3Area - 获取全球接入源站可选列表"""
+    """DescribeUGA3Area -"""
 
     fields = {
         "AreaSet": fields.List(
@@ -587,12 +587,12 @@ class DescribeUGA3AreaResponseSchema(schema.ResponseSchema):
 """
 API: DescribeUGA3Instance
 
-获取全球统一接入加速服务加速配置信息，指定实例ID返回单个实例。未指定实例ID时 指定分页参数 则按创建时间降序 返回记录
+
 """
 
 
 class DescribeUGA3InstanceRequestSchema(schema.RequestSchema):
-    """DescribeUGA3Instance - 获取全球统一接入加速服务加速配置信息，指定实例ID返回单个实例。未指定实例ID时 指定分页参数 则按创建时间降序 返回记录"""
+    """DescribeUGA3Instance -"""
 
     fields = {
         "InstanceId": fields.Str(required=False, dump_to="InstanceId"),
@@ -603,7 +603,7 @@ class DescribeUGA3InstanceRequestSchema(schema.RequestSchema):
 
 
 class DescribeUGA3InstanceResponseSchema(schema.ResponseSchema):
-    """DescribeUGA3Instance - 获取全球统一接入加速服务加速配置信息，指定实例ID返回单个实例。未指定实例ID时 指定分页参数 则按创建时间降序 返回记录"""
+    """DescribeUGA3Instance -"""
 
     fields = {
         "ForwardInstanceInfos": fields.List(
@@ -618,12 +618,12 @@ class DescribeUGA3InstanceResponseSchema(schema.ResponseSchema):
 """
 API: DescribeUGA3Optimization
 
-获取全球接入UGA3线路加速化情况
+
 """
 
 
 class DescribeUGA3OptimizationRequestSchema(schema.RequestSchema):
-    """DescribeUGA3Optimization - 获取全球接入UGA3线路加速化情况"""
+    """DescribeUGA3Optimization -"""
 
     fields = {
         "AccelerationArea": fields.Str(
@@ -636,7 +636,7 @@ class DescribeUGA3OptimizationRequestSchema(schema.RequestSchema):
 
 
 class DescribeUGA3OptimizationResponseSchema(schema.ResponseSchema):
-    """DescribeUGA3Optimization - 获取全球接入UGA3线路加速化情况"""
+    """DescribeUGA3Optimization -"""
 
     fields = {
         "AccelerationInfos": fields.List(
@@ -813,12 +813,12 @@ class GetPathXMetricResponseSchema(schema.ResponseSchema):
 """
 API: GetUGA3Metric
 
-获取全地域加速监控信息
+
 """
 
 
 class GetUGA3MetricRequestSchema(schema.RequestSchema):
-    """GetUGA3Metric - 获取全地域加速监控信息"""
+    """GetUGA3Metric -"""
 
     fields = {
         "AreaCode": fields.Str(required=False, dump_to="AreaCode"),
@@ -832,22 +832,22 @@ class GetUGA3MetricRequestSchema(schema.RequestSchema):
 
 
 class GetUGA3MetricResponseSchema(schema.ResponseSchema):
-    """GetUGA3Metric - 获取全地域加速监控信息"""
+    """GetUGA3Metric -"""
 
     fields = {
-        "DataSet": models.UGA3MetricSchema(),
+        "DataSet": models.UGA3MetricSchema(required=False, load_from="DataSet"),
     }
 
 
 """
 API: GetUGA3Price
 
-获取全球统一接入转发实例价格
+
 """
 
 
 class GetUGA3PriceRequestSchema(schema.RequestSchema):
-    """GetUGA3Price - 获取全球统一接入转发实例价格"""
+    """GetUGA3Price -"""
 
     fields = {
         "AccelerationArea": fields.Str(
@@ -862,7 +862,7 @@ class GetUGA3PriceRequestSchema(schema.RequestSchema):
 
 
 class GetUGA3PriceResponseSchema(schema.ResponseSchema):
-    """GetUGA3Price - 获取全球统一接入转发实例价格"""
+    """GetUGA3Price -"""
 
     fields = {
         "UGA3Price": fields.List(
@@ -874,12 +874,12 @@ class GetUGA3PriceResponseSchema(schema.ResponseSchema):
 """
 API: GetUGA3UpdatePrice
 
-全球统一接入获取实例更新价格（增加、删退）
+
 """
 
 
 class GetUGA3UpdatePriceRequestSchema(schema.RequestSchema):
-    """GetUGA3UpdatePrice - 全球统一接入获取实例更新价格（增加、删退）"""
+    """GetUGA3UpdatePrice -"""
 
     fields = {
         "AccelerationArea": fields.Str(
@@ -893,7 +893,7 @@ class GetUGA3UpdatePriceRequestSchema(schema.RequestSchema):
 
 
 class GetUGA3UpdatePriceResponseSchema(schema.ResponseSchema):
-    """GetUGA3UpdatePrice - 全球统一接入获取实例更新价格（增加、删退）"""
+    """GetUGA3UpdatePrice -"""
 
     fields = {
         "Price": fields.Float(required=True, load_from="Price"),
@@ -981,12 +981,12 @@ class ModifyGlobalSSHTypeResponseSchema(schema.ResponseSchema):
 """
 API: ModifyUGA3Bandwidth
 
-修改统一接入加速配置带宽
+
 """
 
 
 class ModifyUGA3BandwidthRequestSchema(schema.RequestSchema):
-    """ModifyUGA3Bandwidth - 修改统一接入加速配置带宽"""
+    """ModifyUGA3Bandwidth -"""
 
     fields = {
         "Bandwidth": fields.Int(required=False, dump_to="Bandwidth"),
@@ -997,7 +997,7 @@ class ModifyUGA3BandwidthRequestSchema(schema.RequestSchema):
 
 
 class ModifyUGA3BandwidthResponseSchema(schema.ResponseSchema):
-    """ModifyUGA3Bandwidth - 修改统一接入加速配置带宽"""
+    """ModifyUGA3Bandwidth -"""
 
     fields = {
         "Message": fields.Str(required=False, load_from="Message"),
@@ -1007,12 +1007,12 @@ class ModifyUGA3BandwidthResponseSchema(schema.ResponseSchema):
 """
 API: ModifyUGA3Instance
 
-修改统一接入加速配置属性，如Name，ReMark
+
 """
 
 
 class ModifyUGA3InstanceRequestSchema(schema.RequestSchema):
-    """ModifyUGA3Instance - 修改统一接入加速配置属性，如Name，ReMark"""
+    """ModifyUGA3Instance -"""
 
     fields = {
         "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
@@ -1023,7 +1023,7 @@ class ModifyUGA3InstanceRequestSchema(schema.RequestSchema):
 
 
 class ModifyUGA3InstanceResponseSchema(schema.ResponseSchema):
-    """ModifyUGA3Instance - 修改统一接入加速配置属性，如Name，ReMark"""
+    """ModifyUGA3Instance -"""
 
     fields = {
         "Message": fields.Str(required=False, load_from="Message"),
@@ -1033,12 +1033,12 @@ class ModifyUGA3InstanceResponseSchema(schema.ResponseSchema):
 """
 API: ModifyUGA3OriginInfo
 
-Domain， IPList注意：修改Domain或IPList时， 请确保源站服务端口已经开启且外网防火墙允许pathx出口ip访问。
+
 """
 
 
 class ModifyUGA3OriginInfoRequestSchema(schema.RequestSchema):
-    """ModifyUGA3OriginInfo - Domain， IPList注意：修改Domain或IPList时， 请确保源站服务端口已经开启且外网防火墙允许pathx出口ip访问。"""
+    """ModifyUGA3OriginInfo -"""
 
     fields = {
         "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
@@ -1049,24 +1049,22 @@ class ModifyUGA3OriginInfoRequestSchema(schema.RequestSchema):
 
 
 class ModifyUGA3OriginInfoResponseSchema(schema.ResponseSchema):
-    """ModifyUGA3OriginInfo - Domain， IPList注意：修改Domain或IPList时， 请确保源站服务端口已经开启且外网防火墙允许pathx出口ip访问。"""
+    """ModifyUGA3OriginInfo -"""
 
     fields = {
-        "Action": fields.Str(required=True, load_from="Action"),
         "Message": fields.Str(required=False, load_from="Message"),
-        "RetCode": fields.Int(required=True, load_from="RetCode"),
     }
 
 
 """
 API: ModifyUGA3Port
 
-修改统一接入加速实例端口,目前仅支持四层TCP端口
+
 """
 
 
 class ModifyUGA3PortRequestSchema(schema.RequestSchema):
-    """ModifyUGA3Port - 修改统一接入加速实例端口,目前仅支持四层TCP端口"""
+    """ModifyUGA3Port -"""
 
     fields = {
         "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
@@ -1077,7 +1075,7 @@ class ModifyUGA3PortRequestSchema(schema.RequestSchema):
 
 
 class ModifyUGA3PortResponseSchema(schema.ResponseSchema):
-    """ModifyUGA3Port - 修改统一接入加速实例端口,目前仅支持四层TCP端口"""
+    """ModifyUGA3Port -"""
 
     fields = {
         "Message": fields.Str(required=True, load_from="Message"),

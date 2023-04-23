@@ -155,6 +155,7 @@ class DescribeNewUcdnPrefetchCacheTaskRequestSchema(schema.RequestSchema):
     fields = {
         "BeginTime": fields.Int(required=False, dump_to="BeginTime"),
         "EndTime": fields.Int(required=False, dump_to="EndTime"),
+        "IsDcdn": fields.Bool(required=False, dump_to="IsDcdn"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -187,6 +188,7 @@ class DescribeNewUcdnRefreshCacheTaskRequestSchema(schema.RequestSchema):
     fields = {
         "BeginTime": fields.Int(required=False, dump_to="BeginTime"),
         "EndTime": fields.Int(required=False, dump_to="EndTime"),
+        "IsDcdn": fields.Bool(required=False, dump_to="IsDcdn"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -757,6 +759,7 @@ class GetUcdnDomainLogV2RequestSchema(schema.RequestSchema):
         "BeginTime": fields.Int(required=True, dump_to="BeginTime"),
         "DomainId": fields.List(fields.Str()),
         "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "IsDcdn": fields.Bool(required=False, dump_to="IsDcdn"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
     }
 

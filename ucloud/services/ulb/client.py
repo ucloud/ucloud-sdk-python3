@@ -22,16 +22,16 @@ class ULBClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **ResourceId** (str) - (Required) 所添加的后端资源的资源ID
-        - **ResourceType** (str) - (Required) 所添加的后端资源的类型，枚举值：UHost -> 云主机；UNI -> 虚拟网卡；UPM -> 物理云主机； UDHost -> 私有专区主机；UDocker -> 容器；UHybrid->混合云主机；CUBE->Cube，USDP->智能大数据平台；默认值为UHost。报文转发模式不支持UDocker、UHybrid、CUBE
+        - **ResourceType** (str) - (Required) 所添加的后端资源的类型，枚举值：UHost -> 云主机；UNI -> 虚拟网卡；UPM -> 物理云主机； UDHost -> 私有专区主机；UDocker -> 容器；UHybrid->混合云主机；CUBE->Cube，USDP->智能大数据平台， IP->IP类型；默认值为UHost。报文转发模式不支持UDocker、UHybrid、CUBE、IP
         - **ULBId** (str) - (Required) 负载均衡实例的ID
         - **VServerId** (str) - (Required) VServer实例的ID
         - **Enabled** (int) - 后端实例状态开关，枚举值： 1：启用； 0：禁用 默认为启用
         - **IsBackup** (int) - rs是否为backup，默认为00：普通rs1：backup的rs
         - **Port** (int) - 所添加的后端资源服务端口，取值范围[1-65535]，默认80
-        - **ResourceIP** (str) - 所添加的后端服务器的资源实例IP，当ResourceType 为 UHybrid 时有效，且必填
-        - **SubnetId** (str) - 所添加的后端服务器所在的子网，当ResourceType 为 UHybrid 时有效，且必填
-        - **VPCId** (str) - 所添加的后端服务器所在的vpc，当ResourceType 为 UHybrid 时有效，且必填
+        - **ResourceIP** (str) - 所添加的后端服务器的资源实例IP，当ResourceType 为 UHybrid 或 IP时有效，且必填；与ResourceId二选一必填
+        - **ResourceId** (str) - 所添加的后端资源的资源ID；与ResourceIP二选一必填
+        - **SubnetId** (str) - 所添加的后端服务器所在的子网，当ResourceType 为 UHybrid 或 IP 时有效，且必填
+        - **VPCId** (str) - 所添加的后端服务器所在的vpc，当ResourceType 为 UHybrid 或 IP 时有效，且必填
         - **Weight** (int) - 所添加的后端RS权重（在加权轮询算法下有效），取值范围[1-100]，默认为1
 
         **Response**
@@ -126,13 +126,14 @@ class ULBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BackendId** (list) - (Required) 内容转发策略应用的后端资源实例的ID，来源于 AllocateBackend 返回的 BackendId
         - **Match** (str) - (Required) 内容转发匹配字段
         - **ULBId** (str) - (Required) 需要添加内容转发策略的负载均衡实例ID
         - **VServerId** (str) - (Required) 需要添加内容转发策略的VServer实例ID
-        - **PolicyPriority** (int) - 策略优先级，1-9999
+        - **DomainMatchMode** (str) - 内容转发规则中域名的匹配方式，默认与原本一致。枚举值：Regular，正则；Wildcard，泛域名
+        - **PolicyPriority** (int) - 策略优先级，1-9999；只针对路径规则生效
         - **Type** (str) - 内容转发匹配字段的类型
 
         **Response**
@@ -1069,6 +1070,7 @@ class ULBClient(Client):
         - **BackendId** (list) - 内容转发策略应用的后端资源实例的ID，来源于 AllocateBackend 返回的 BackendId，不传表示更新转发节点为空
         - **DomainMatchMode** (str) - 内容转发规则中域名的匹配方式，默认与原本一致。枚举值：Regular，正则；Wildcard，泛域名
         - **PolicyId** (str) - 转发规则的ID，当Type为Default时，可以不传或为空
+        - **PolicyPriority** (int) - 策略优先级，1-9999；只针对路径规则生效
         - **Type** (str) - 内容转发匹配字段的类型，枚举值：Domain -> 域名转发规则；Path -> 路径转发规则；Default -> 默认转发规则，不传默认值Domain
 
         **Response**

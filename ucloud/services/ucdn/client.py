@@ -206,6 +206,7 @@ class UCDNClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值
         - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。
+        - **IsDcdn** (bool) - 是否全站加速 默认false
         - **Limit** (int) - 返回数据长度,默认全部，自然数
         - **Offset** (int) - 数据偏移量，默认为0，自然数
         - **Status** (str) - 需要获取的内容预热的状态，枚举值：success：成功；wait：等待处理；process：正在处理；failure：失败； unknow：未知，默认选择所有状态
@@ -254,6 +255,7 @@ class UCDNClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值
         - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。
+        - **IsDcdn** (bool) - 是否全站加速 默认false
         - **Limit** (int) - 返回数据长度,默认全部，自然数
         - **Offset** (int) - 数据偏移量，默认为0，自然数
         - **Status** (str) - 需要获取的内容刷新的状态，枚举值：success：成功；wait：等待处理；process：正在处理；failure：失败； unknow：未知，默认选择所有状态
@@ -789,7 +791,7 @@ class UCDNClient(Client):
         - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。
         - **IsDcdn** (bool) - 是否全站加速，默认false
         - **Primeval** (int) - 原始带宽，不为0则获取原始带宽，默认为0
-        - **Protocol** (str) - 协议，http、https、websocket  不传则查所有协议的带宽，可以查多个协议，用逗号分隔
+        - **Protocol** (str) - 协议，http、https、websocket、quic  不传则查所有协议的带宽，可以查多个协议，用逗号分隔
         - **Type** (int) - 时间粒度（0表示按照5分钟粒度，1表示按照1小时粒度，2表示按照一天的粒度，3表示按照1分钟粒度）
 
         **Response**
@@ -1154,6 +1156,7 @@ class UCDNClient(Client):
         - **BeginTime** (int) - (Required) 查询的起始时间，格式为Unix Timestamp
         - **EndTime** (int) - (Required) 查询的结束时间，格式为Unix Timestamp
         - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
+        - **IsDcdn** (bool) - 是否全站加速  默认false
 
         **Response**
 

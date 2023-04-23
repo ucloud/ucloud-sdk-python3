@@ -99,24 +99,6 @@ class PolicyBackendSetSchema(schema.ResponseSchema):
     }
 
 
-class BindSecurityPolicySchema(schema.ResponseSchema):
-    """BindSecurityPolicy - VServer绑定的安全策略组信息"""
-
-    fields = {
-        "SSLCiphers": fields.List(fields.Str()),
-        "SecurityPolicyId": fields.Str(
-            required=False, load_from="SecurityPolicyId"
-        ),
-        "SecurityPolicyName": fields.Str(
-            required=False, load_from="SecurityPolicyName"
-        ),
-        "SecurityPolicyType": fields.Int(
-            required=False, load_from="SecurityPolicyType"
-        ),
-        "TLSVersion": fields.Str(required=False, load_from="TLSVersion"),
-    }
-
-
 class ULBBackendSetSchema(schema.ResponseSchema):
     """ULBBackendSet - DescribeULB"""
 
@@ -143,6 +125,24 @@ class ULBBackendSetSchema(schema.ResponseSchema):
     }
 
 
+class BindSecurityPolicySchema(schema.ResponseSchema):
+    """BindSecurityPolicy - VServer绑定的安全策略组信息"""
+
+    fields = {
+        "SSLCiphers": fields.List(fields.Str()),
+        "SecurityPolicyId": fields.Str(
+            required=False, load_from="SecurityPolicyId"
+        ),
+        "SecurityPolicyName": fields.Str(
+            required=False, load_from="SecurityPolicyName"
+        ),
+        "SecurityPolicyType": fields.Int(
+            required=False, load_from="SecurityPolicyType"
+        ),
+        "TLSVersion": fields.Str(required=False, load_from="TLSVersion"),
+    }
+
+
 class ULBPolicySetSchema(schema.ResponseSchema):
     """ULBPolicySet - 内容转发详细列表"""
 
@@ -163,18 +163,6 @@ class ULBPolicySetSchema(schema.ResponseSchema):
     }
 
 
-class ULBIPSetSchema(schema.ResponseSchema):
-    """ULBIPSet - DescribeULB"""
-
-    fields = {
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "BandwidthType": fields.Int(required=False, load_from="BandwidthType"),
-        "EIP": fields.Str(required=False, load_from="EIP"),
-        "EIPId": fields.Str(required=False, load_from="EIPId"),
-        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
-    }
-
-
 class LoggerSetSchema(schema.ResponseSchema):
     """LoggerSet - ulb日志信息"""
 
@@ -185,12 +173,15 @@ class LoggerSetSchema(schema.ResponseSchema):
     }
 
 
-class FirewallSetSchema(schema.ResponseSchema):
-    """FirewallSet - ulb防火墙信息"""
+class ULBIPSetSchema(schema.ResponseSchema):
+    """ULBIPSet - DescribeULB"""
 
     fields = {
-        "FirewallId": fields.Str(required=False, load_from="FirewallId"),
-        "FirewallName": fields.Str(required=False, load_from="FirewallName"),
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "BandwidthType": fields.Int(required=False, load_from="BandwidthType"),
+        "EIP": fields.Str(required=False, load_from="EIP"),
+        "EIPId": fields.Str(required=False, load_from="EIPId"),
+        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
     }
 
 
@@ -227,6 +218,15 @@ class ULBVServerSetSchema(schema.ResponseSchema):
         "ULBId": fields.Str(required=False, load_from="ULBId"),
         "VServerId": fields.Str(required=False, load_from="VServerId"),
         "VServerName": fields.Str(required=False, load_from="VServerName"),
+    }
+
+
+class FirewallSetSchema(schema.ResponseSchema):
+    """FirewallSet - ulb防火墙信息"""
+
+    fields = {
+        "FirewallId": fields.Str(required=False, load_from="FirewallId"),
+        "FirewallName": fields.Str(required=False, load_from="FirewallName"),
     }
 
 

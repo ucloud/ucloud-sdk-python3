@@ -429,16 +429,16 @@ class UADSClient(Client):
 
         **Response Model**
 
-        **NetStatEntry**
-        - **Bps** (float) - 流量，单位：Mbits
-        - **Pps** (int) - 包量，单位：pps
-
-
         **NetStats**
         - **Drop** (dict) - 见 **NetStatEntry** 模型定义
         - **Egress** (dict) - 见 **NetStatEntry** 模型定义
         - **Ingress** (dict) - 见 **NetStatEntry** 模型定义
         - **Time** (int) - Unix时间戳
+
+
+        **NetStatEntry**
+        - **Bps** (float) - 流量，单位：Mbits
+        - **Pps** (int) - 包量，单位：pps
 
 
         """
@@ -470,16 +470,16 @@ class UADSClient(Client):
 
         **Response Model**
 
-        **NetStatEntry**
-        - **Bps** (float) - 流量，单位：Mbits
-        - **Pps** (int) - 包量，单位：pps
-
-
         **NetStats**
         - **Drop** (dict) - 见 **NetStatEntry** 模型定义
         - **Egress** (dict) - 见 **NetStatEntry** 模型定义
         - **Ingress** (dict) - 见 **NetStatEntry** 模型定义
         - **Time** (int) - Unix时间戳
+
+
+        **NetStatEntry**
+        - **Bps** (float) - 流量，单位：Mbits
+        - **Pps** (int) - 包量，单位：pps
 
 
         """
@@ -567,6 +567,16 @@ class UADSClient(Client):
 
         **Response Model**
 
+        **IPInfo**
+        - **CreateTime** (int) - 创建时间
+        - **EIPAddr** (list) - 见 **EIPAddrSet** 模型定义
+        - **EIPId** (str) - EIP资源ID
+        - **EIPRegion** (str) - EIP Region
+        - **Resource** (dict) - 见 **Resouce** 模型定义
+        - **Status** (str) - 状态
+        - **Tag** (str) - 业务组
+
+
         **EIPAddrSet**
         - **EIPType** (str) - IP类型：gaofang
         - **IP** (str) - 弹性IP地址
@@ -579,16 +589,6 @@ class UADSClient(Client):
         - **ResourceName** (str) - 资源名
         - **ResourceType** (str) - 资源类型
         - **Zone** (str) - 地区
-
-
-        **IPInfo**
-        - **CreateTime** (int) - 创建时间
-        - **EIPAddr** (list) - 见 **EIPAddrSet** 模型定义
-        - **EIPId** (str) - EIP资源ID
-        - **EIPRegion** (str) - EIP Region
-        - **Resource** (dict) - 见 **Resouce** 模型定义
-        - **Status** (str) - 状态
-        - **Tag** (str) - 业务组
 
 
         """
@@ -660,23 +660,6 @@ class UADSClient(Client):
 
         **Response Model**
 
-        **FwdSourceInfoConf**
-        - **IPList** (list) - 源站IP列表
-        - **Port** (int) - 源站端口
-        - **Source** (str) - 源站，兼容IP和域名
-        - **Toa** (int) - 源站Toa
-
-
-        **FwdSourceInfo**
-        - **Conf** (list) - 见 **FwdSourceInfoConf** 模型定义
-        - **Type** (str) - 回源类型，分 IP 和 Domain
-
-
-        **FwdClientProxyInfo**
-        - **Count** (int) - 回源IP个数
-        - **IPList** (list) - 回源IP列表
-
-
         **BGPFwdRule**
         - **BackupIP** (str) - 备份源站的IP
         - **BackupPort** (int) - 备份源站的端口
@@ -693,6 +676,23 @@ class UADSClient(Client):
         - **SourceInfo** (dict) - 见 **FwdSourceInfo** 模型定义
         - **Status** (str) - 规则的状态
         - **UpdateTime** (int) - 更新时间，unix格式
+
+
+        **FwdClientProxyInfo**
+        - **Count** (int) - 回源IP个数
+        - **IPList** (list) - 回源IP列表
+
+
+        **FwdSourceInfo**
+        - **Conf** (list) - 见 **FwdSourceInfoConf** 模型定义
+        - **Type** (str) - 回源类型，分 IP 和 Domain
+
+
+        **FwdSourceInfoConf**
+        - **IPList** (list) - 源站IP列表
+        - **Port** (int) - 源站端口
+        - **Source** (str) - 源站，兼容IP和域名
+        - **Toa** (int) - 源站Toa
 
 
         """
