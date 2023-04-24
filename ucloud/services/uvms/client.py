@@ -21,7 +21,6 @@ class UVMSClient(Client):
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config)
         - **CalledNumber** (str) - (Required) 被叫号码，采用 E.164 标准，格式为+[国家代码][用户号码]。例如：+8613512345678， 其中前面有一个+号 ，86为国家码，13512345678为手机号
         - **TemplateId** (str) - (Required) 模板 ID，在控制台审核通过的模板 ID。
         - **DispatchRule** (int) - 调度规则，0-默认（归属地优先），1-随机。当不指定外显号码（主叫号码为空）时生效。如不填写，默认为归属地优先。
@@ -41,7 +40,6 @@ class UVMSClient(Client):
         # build request
         d = {
             "ProjectId": self.config.project_id,
-            "Region": self.config.region,
         }
         req and d.update(req)
         d = apis.SendUVMSMessageRequestSchema().dumps(d)
