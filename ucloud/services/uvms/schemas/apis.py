@@ -24,15 +24,9 @@ class SendUVMSMessageRequestSchema(schema.RequestSchema):
         "FromNumber": fields.Str(required=False, dump_to="FromNumber"),
         "GroupType": fields.Int(required=False, dump_to="GroupType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Region": fields.Str(
-            required=True, dump_to="Region"
-        ),  # Deprecated, will be removed at 1.0
         "TemplateId": fields.Str(required=True, dump_to="TemplateId"),
         "TemplateParams": fields.List(fields.Str()),
         "UserId": fields.Str(required=False, dump_to="UserId"),
-        "Zone": fields.Str(
-            required=True, dump_to="Zone"
-        ),  # Deprecated, will be removed at 1.0
     }
 
 
