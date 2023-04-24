@@ -1,3 +1,8 @@
+## 0.11.45 (2023-04-24)
+
+ENHANCEMENTS:
+- Remove Region and Zone parameters from SendUVMSMessage API.
+
 ## 0.11.33 (2022-06-15)
 
 ENHANCEMENTS:
