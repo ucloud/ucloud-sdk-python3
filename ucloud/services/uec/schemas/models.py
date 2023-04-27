@@ -78,6 +78,23 @@ class IpListSchema(schema.ResponseSchema):
     }
 
 
+class DockerInfoSchema(schema.ResponseSchema):
+    """DockerInfo - 容器信息"""
+
+    fields = {
+        "Args": fields.Str(required=False, load_from="Args"),
+        "CfgDictList": fields.List(CfgDictListSchema()),
+        "Command": fields.Str(required=False, load_from="Command"),
+        "CpuCores": fields.Float(required=False, load_from="CpuCores"),
+        "EnvList": fields.List(EnvListSchema()),
+        "ImageName": fields.Str(required=False, load_from="ImageName"),
+        "MemSize": fields.Float(required=False, load_from="MemSize"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "State": fields.Int(required=False, load_from="State"),
+        "WorkDir": fields.Str(required=False, load_from="WorkDir"),
+    }
+
+
 class ImageListSchema(schema.ResponseSchema):
     """ImageList - 容器组镜像密钥列表"""
 
@@ -96,23 +113,6 @@ class StorVolumeInfoSchema(schema.ResponseSchema):
         "MountPoint": fields.Str(required=False, load_from="MountPoint"),
         "Name": fields.Str(required=False, load_from="Name"),
         "ResourceId": fields.Str(required=False, load_from="ResourceId"),
-    }
-
-
-class DockerInfoSchema(schema.ResponseSchema):
-    """DockerInfo - 容器信息"""
-
-    fields = {
-        "Args": fields.Str(required=False, load_from="Args"),
-        "CfgDictList": fields.List(CfgDictListSchema()),
-        "Command": fields.Str(required=False, load_from="Command"),
-        "CpuCores": fields.Float(required=False, load_from="CpuCores"),
-        "EnvList": fields.List(EnvListSchema()),
-        "ImageName": fields.Str(required=False, load_from="ImageName"),
-        "MemSize": fields.Float(required=False, load_from="MemSize"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "State": fields.Int(required=False, load_from="State"),
-        "WorkDir": fields.Str(required=False, load_from="WorkDir"),
     }
 
 

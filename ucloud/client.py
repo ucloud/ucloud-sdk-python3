@@ -152,6 +152,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def udi(self):
+        from ucloud.services.udi.client import UDIClient
+
+        return UDIClient(
+            self._auto_config("udi"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def udpn(self):
         from ucloud.services.udpn.client import UDPNClient
 

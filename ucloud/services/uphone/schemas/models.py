@@ -206,6 +206,16 @@ class UPhoneModelInstanceSchema(schema.ResponseSchema):
     }
 
 
+class ServerDiskSetSchema(schema.ResponseSchema):
+    """ServerDiskSet -"""
+
+    fields = {
+        "DiskType": fields.Str(required=True, load_from="DiskType"),
+        "IsBoot": fields.Bool(required=True, load_from="IsBoot"),
+        "Size": fields.Int(required=True, load_from="Size"),
+    }
+
+
 class UPhoneSpecSchema(schema.ResponseSchema):
     """UPhoneSpec -"""
 
@@ -214,16 +224,6 @@ class UPhoneSpecSchema(schema.ResponseSchema):
         "UPhoneModelName": fields.Str(
             required=False, load_from="UPhoneModelName"
         ),
-    }
-
-
-class ServerDiskSetSchema(schema.ResponseSchema):
-    """ServerDiskSet -"""
-
-    fields = {
-        "DiskType": fields.Str(required=True, load_from="DiskType"),
-        "IsBoot": fields.Bool(required=True, load_from="IsBoot"),
-        "Size": fields.Int(required=True, load_from="Size"),
     }
 
 

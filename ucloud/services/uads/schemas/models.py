@@ -130,21 +130,21 @@ class FwdSourceInfoConfSchema(schema.ResponseSchema):
     }
 
 
-class FwdClientProxyInfoSchema(schema.ResponseSchema):
-    """FwdClientProxyInfo - 转发规则，回源代理配置列表"""
-
-    fields = {
-        "Count": fields.Int(required=False, load_from="Count"),
-        "IPList": fields.List(fields.Str()),
-    }
-
-
 class FwdSourceInfoSchema(schema.ResponseSchema):
     """FwdSourceInfo - 转发规则，回源配置信息"""
 
     fields = {
         "Conf": fields.List(FwdSourceInfoConfSchema()),
         "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
+class FwdClientProxyInfoSchema(schema.ResponseSchema):
+    """FwdClientProxyInfo - 转发规则，回源代理配置列表"""
+
+    fields = {
+        "Count": fields.Int(required=False, load_from="Count"),
+        "IPList": fields.List(fields.Str()),
     }
 
 

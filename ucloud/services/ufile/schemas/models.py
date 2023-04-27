@@ -65,18 +65,6 @@ class LifeCycleItemSchema(schema.ResponseSchema):
     }
 
 
-class UFileTotalReportItemSchema(schema.ResponseSchema):
-    """UFileTotalReportItem - 总消费信息"""
-
-    fields = {
-        "ApiTimes": fields.Float(required=False, load_from="ApiTimes"),
-        "BusyFlow": fields.Float(required=False, load_from="BusyFlow"),
-        "CdnFlow": fields.Float(required=False, load_from="CdnFlow"),
-        "Flow": fields.Float(required=False, load_from="Flow"),
-        "IdleFlow": fields.Float(required=False, load_from="IdleFlow"),
-    }
-
-
 class UFileDailyReportItemSchema(schema.ResponseSchema):
     """UFileDailyReportItem -"""
 
@@ -92,6 +80,18 @@ class UFileDailyReportItemSchema(schema.ResponseSchema):
         "IaStorage": fields.Float(required=False, load_from="IaStorage"),
         "IdleFlow": fields.Float(required=False, load_from="IdleFlow"),
         "Storage": fields.Float(required=False, load_from="Storage"),
+    }
+
+
+class UFileTotalReportItemSchema(schema.ResponseSchema):
+    """UFileTotalReportItem - 总消费信息"""
+
+    fields = {
+        "ApiTimes": fields.Float(required=False, load_from="ApiTimes"),
+        "BusyFlow": fields.Float(required=False, load_from="BusyFlow"),
+        "CdnFlow": fields.Float(required=False, load_from="CdnFlow"),
+        "Flow": fields.Float(required=False, load_from="Flow"),
+        "IdleFlow": fields.Float(required=False, load_from="IdleFlow"),
     }
 
 

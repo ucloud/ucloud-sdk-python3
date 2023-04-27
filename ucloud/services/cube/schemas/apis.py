@@ -11,12 +11,12 @@ from ucloud.services.cube.schemas import models
 """
 API: CreateCubeDeployment
 
-创建Cube的Deployment
+
 """
 
 
 class CreateCubeDeploymentRequestSchema(schema.RequestSchema):
-    """CreateCubeDeployment - 创建Cube的Deployment"""
+    """CreateCubeDeployment -"""
 
     fields = {
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
@@ -35,7 +35,7 @@ class CreateCubeDeploymentRequestSchema(schema.RequestSchema):
 
 
 class CreateCubeDeploymentResponseSchema(schema.ResponseSchema):
-    """CreateCubeDeployment - 创建Cube的Deployment"""
+    """CreateCubeDeployment -"""
 
     fields = {
         "Deployment": fields.Str(required=False, load_from="Deployment"),
@@ -46,12 +46,12 @@ class CreateCubeDeploymentResponseSchema(schema.ResponseSchema):
 """
 API: CreateCubePod
 
-创建Pod
+
 """
 
 
 class CreateCubePodRequestSchema(schema.RequestSchema):
-    """CreateCubePod - 创建Pod"""
+    """CreateCubePod -"""
 
     fields = {
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
@@ -72,7 +72,7 @@ class CreateCubePodRequestSchema(schema.RequestSchema):
 
 
 class CreateCubePodResponseSchema(schema.ResponseSchema):
-    """CreateCubePod - 创建Pod"""
+    """CreateCubePod -"""
 
     fields = {
         "CubeId": fields.Str(required=False, load_from="CubeId"),
@@ -83,12 +83,12 @@ class CreateCubePodResponseSchema(schema.ResponseSchema):
 """
 API: DeleteCubeDeployment
 
-删除Cube的Deployment
+
 """
 
 
 class DeleteCubeDeploymentRequestSchema(schema.RequestSchema):
-    """DeleteCubeDeployment - 删除Cube的Deployment"""
+    """DeleteCubeDeployment -"""
 
     fields = {
         "DeploymentId": fields.Str(required=True, dump_to="DeploymentId"),
@@ -99,7 +99,7 @@ class DeleteCubeDeploymentRequestSchema(schema.RequestSchema):
 
 
 class DeleteCubeDeploymentResponseSchema(schema.ResponseSchema):
-    """DeleteCubeDeployment - 删除Cube的Deployment"""
+    """DeleteCubeDeployment -"""
 
     fields = {}
 
@@ -107,12 +107,12 @@ class DeleteCubeDeploymentResponseSchema(schema.ResponseSchema):
 """
 API: DeleteCubePod
 
-删除Pod
+
 """
 
 
 class DeleteCubePodRequestSchema(schema.RequestSchema):
-    """DeleteCubePod - 删除Pod"""
+    """DeleteCubePod -"""
 
     fields = {
         "CubeId": fields.Str(required=False, dump_to="CubeId"),
@@ -125,7 +125,7 @@ class DeleteCubePodRequestSchema(schema.RequestSchema):
 
 
 class DeleteCubePodResponseSchema(schema.ResponseSchema):
-    """DeleteCubePod - 删除Pod"""
+    """DeleteCubePod -"""
 
     fields = {}
 
@@ -133,12 +133,12 @@ class DeleteCubePodResponseSchema(schema.ResponseSchema):
 """
 API: GetCubeDeployment
 
-获取Deployment的详细信息
+
 """
 
 
 class GetCubeDeploymentRequestSchema(schema.RequestSchema):
-    """GetCubeDeployment - 获取Deployment的详细信息"""
+    """GetCubeDeployment -"""
 
     fields = {
         "DeploymentId": fields.Str(required=True, dump_to="DeploymentId"),
@@ -149,7 +149,7 @@ class GetCubeDeploymentRequestSchema(schema.RequestSchema):
 
 
 class GetCubeDeploymentResponseSchema(schema.ResponseSchema):
-    """GetCubeDeployment - 获取Deployment的详细信息"""
+    """GetCubeDeployment -"""
 
     fields = {
         "Deployment": fields.Str(required=True, load_from="Deployment"),
@@ -159,12 +159,12 @@ class GetCubeDeploymentResponseSchema(schema.ResponseSchema):
 """
 API: GetCubeExecToken
 
-获取登录容器的token
+
 """
 
 
 class GetCubeExecTokenRequestSchema(schema.RequestSchema):
-    """GetCubeExecToken - 获取登录容器的token"""
+    """GetCubeExecToken -"""
 
     fields = {
         "ContainerName": fields.Str(required=True, dump_to="ContainerName"),
@@ -177,7 +177,7 @@ class GetCubeExecTokenRequestSchema(schema.RequestSchema):
 
 
 class GetCubeExecTokenResponseSchema(schema.ResponseSchema):
-    """GetCubeExecToken - 获取登录容器的token"""
+    """GetCubeExecToken -"""
 
     fields = {
         "TerminalUrl": fields.Str(required=False, load_from="TerminalUrl"),
@@ -188,12 +188,12 @@ class GetCubeExecTokenResponseSchema(schema.ResponseSchema):
 """
 API: GetCubeExtendInfo
 
-获取Cube的额外信息
+
 """
 
 
 class GetCubeExtendInfoRequestSchema(schema.RequestSchema):
-    """GetCubeExtendInfo - 获取Cube的额外信息"""
+    """GetCubeExtendInfo -"""
 
     fields = {
         "CubeIds": fields.Str(required=True, dump_to="CubeIds"),
@@ -204,7 +204,7 @@ class GetCubeExtendInfoRequestSchema(schema.RequestSchema):
 
 
 class GetCubeExtendInfoResponseSchema(schema.ResponseSchema):
-    """GetCubeExtendInfo - 获取Cube的额外信息"""
+    """GetCubeExtendInfo -"""
 
     fields = {
         "ExtendInfo": fields.List(
@@ -216,12 +216,12 @@ class GetCubeExtendInfoResponseSchema(schema.ResponseSchema):
 """
 API: GetCubeMetrics
 
-获取Cube实例（Pod，PodX，Deploy等）监控数据时间序列
+
 """
 
 
 class GetCubeMetricsRequestSchema(schema.RequestSchema):
-    """GetCubeMetrics - 获取Cube实例（Pod，PodX，Deploy等）监控数据时间序列"""
+    """GetCubeMetrics -"""
 
     fields = {
         "BeginTime": fields.Int(required=True, dump_to="BeginTime"),
@@ -236,7 +236,7 @@ class GetCubeMetricsRequestSchema(schema.RequestSchema):
 
 
 class GetCubeMetricsResponseSchema(schema.ResponseSchema):
-    """GetCubeMetrics - 获取Cube实例（Pod，PodX，Deploy等）监控数据时间序列"""
+    """GetCubeMetrics -"""
 
     fields = {
         "DataSets": fields.List(
@@ -249,12 +249,12 @@ class GetCubeMetricsResponseSchema(schema.ResponseSchema):
 """
 API: GetCubePod
 
-获取Pod的详细信息
+
 """
 
 
 class GetCubePodRequestSchema(schema.RequestSchema):
-    """GetCubePod - 获取Pod的详细信息"""
+    """GetCubePod -"""
 
     fields = {
         "CubeId": fields.Str(required=False, dump_to="CubeId"),
@@ -266,7 +266,7 @@ class GetCubePodRequestSchema(schema.RequestSchema):
 
 
 class GetCubePodResponseSchema(schema.ResponseSchema):
-    """GetCubePod - 获取Pod的详细信息"""
+    """GetCubePod -"""
 
     fields = {
         "Pod": fields.Str(required=True, load_from="Pod"),
@@ -276,12 +276,12 @@ class GetCubePodResponseSchema(schema.ResponseSchema):
 """
 API: GetCubePrice
 
-获取cube的价格
+
 """
 
 
 class GetCubePriceRequestSchema(schema.RequestSchema):
-    """GetCubePrice - 获取cube的价格"""
+    """GetCubePrice -"""
 
     fields = {
         "ChargeType": fields.Str(required=True, dump_to="ChargeType"),
@@ -296,7 +296,7 @@ class GetCubePriceRequestSchema(schema.RequestSchema):
 
 
 class GetCubePriceResponseSchema(schema.ResponseSchema):
-    """GetCubePrice - 获取cube的价格"""
+    """GetCubePrice -"""
 
     fields = {
         "OriginalPrice": fields.Int(required=True, load_from="OriginalPrice"),
@@ -307,12 +307,12 @@ class GetCubePriceResponseSchema(schema.ResponseSchema):
 """
 API: GetCubeToken
 
-获取Cube的token，可用于terminal登录、log获取
+
 """
 
 
 class GetCubeTokenRequestSchema(schema.RequestSchema):
-    """GetCubeToken - 获取Cube的token，可用于terminal登录、log获取"""
+    """GetCubeToken -"""
 
     fields = {
         "ContainerName": fields.Str(required=True, dump_to="ContainerName"),
@@ -325,7 +325,7 @@ class GetCubeTokenRequestSchema(schema.RequestSchema):
 
 
 class GetCubeTokenResponseSchema(schema.ResponseSchema):
-    """GetCubeToken - 获取Cube的token，可用于terminal登录、log获取"""
+    """GetCubeToken -"""
 
     fields = {
         "Token": fields.Str(required=True, load_from="Token"),
@@ -335,12 +335,12 @@ class GetCubeTokenResponseSchema(schema.ResponseSchema):
 """
 API: ListCubeDeployment
 
-获取Cube的Deployment列表
+
 """
 
 
 class ListCubeDeploymentRequestSchema(schema.RequestSchema):
-    """ListCubeDeployment - 获取Cube的Deployment列表"""
+    """ListCubeDeployment -"""
 
     fields = {
         "Limit": fields.Int(required=True, dump_to="Limit"),
@@ -352,7 +352,7 @@ class ListCubeDeploymentRequestSchema(schema.RequestSchema):
 
 
 class ListCubeDeploymentResponseSchema(schema.ResponseSchema):
-    """ListCubeDeployment - 获取Cube的Deployment列表"""
+    """ListCubeDeployment -"""
 
     fields = {
         "Deployments": fields.List(
@@ -365,12 +365,12 @@ class ListCubeDeploymentResponseSchema(schema.ResponseSchema):
 """
 API: ListCubePod
 
-获取Pods列表
+
 """
 
 
 class ListCubePodRequestSchema(schema.RequestSchema):
-    """ListCubePod - 获取Pods列表"""
+    """ListCubePod -"""
 
     fields = {
         "DeploymentId": fields.Str(required=False, dump_to="DeploymentId"),
@@ -386,7 +386,7 @@ class ListCubePodRequestSchema(schema.RequestSchema):
 
 
 class ListCubePodResponseSchema(schema.ResponseSchema):
-    """ListCubePod - 获取Pods列表"""
+    """ListCubePod -"""
 
     fields = {
         "Pods": fields.List(fields.Str(), required=True, load_from="Pods"),
@@ -397,12 +397,12 @@ class ListCubePodResponseSchema(schema.ResponseSchema):
 """
 API: ModifyCubeExtendInfo
 
-修改Cube额外信息
+
 """
 
 
 class ModifyCubeExtendInfoRequestSchema(schema.RequestSchema):
-    """ModifyCubeExtendInfo - 修改Cube额外信息"""
+    """ModifyCubeExtendInfo -"""
 
     fields = {
         "CubeId": fields.Str(required=True, dump_to="CubeId"),
@@ -414,7 +414,7 @@ class ModifyCubeExtendInfoRequestSchema(schema.RequestSchema):
 
 
 class ModifyCubeExtendInfoResponseSchema(schema.ResponseSchema):
-    """ModifyCubeExtendInfo - 修改Cube额外信息"""
+    """ModifyCubeExtendInfo -"""
 
     fields = {}
 
@@ -422,12 +422,12 @@ class ModifyCubeExtendInfoResponseSchema(schema.ResponseSchema):
 """
 API: ModifyCubeTag
 
-修改业务组名字
+
 """
 
 
 class ModifyCubeTagRequestSchema(schema.RequestSchema):
-    """ModifyCubeTag - 修改业务组名字"""
+    """ModifyCubeTag -"""
 
     fields = {
         "CubeId": fields.Str(required=True, dump_to="CubeId"),
@@ -439,7 +439,7 @@ class ModifyCubeTagRequestSchema(schema.RequestSchema):
 
 
 class ModifyCubeTagResponseSchema(schema.ResponseSchema):
-    """ModifyCubeTag - 修改业务组名字"""
+    """ModifyCubeTag -"""
 
     fields = {
         "CubeId": fields.Str(required=True, load_from="CubeId"),
@@ -449,12 +449,12 @@ class ModifyCubeTagResponseSchema(schema.ResponseSchema):
 """
 API: RebootCubePod
 
-重启Cube Pod
+
 """
 
 
 class RebootCubePodRequestSchema(schema.RequestSchema):
-    """RebootCubePod - 重启Cube Pod"""
+    """RebootCubePod -"""
 
     fields = {
         "CubeId": fields.Str(required=True, dump_to="CubeId"),
@@ -465,7 +465,7 @@ class RebootCubePodRequestSchema(schema.RequestSchema):
 
 
 class RebootCubePodResponseSchema(schema.ResponseSchema):
-    """RebootCubePod - 重启Cube Pod"""
+    """RebootCubePod -"""
 
     fields = {}
 
@@ -473,12 +473,12 @@ class RebootCubePodResponseSchema(schema.ResponseSchema):
 """
 API: RenewCubePod
 
-更新Pod
+
 """
 
 
 class RenewCubePodRequestSchema(schema.RequestSchema):
-    """RenewCubePod - 更新Pod"""
+    """RenewCubePod -"""
 
     fields = {
         "CubeId": fields.Str(required=True, dump_to="CubeId"),
@@ -490,7 +490,7 @@ class RenewCubePodRequestSchema(schema.RequestSchema):
 
 
 class RenewCubePodResponseSchema(schema.ResponseSchema):
-    """RenewCubePod - 更新Pod"""
+    """RenewCubePod -"""
 
     fields = {
         "Pod": fields.Str(required=True, load_from="Pod"),
@@ -500,12 +500,12 @@ class RenewCubePodResponseSchema(schema.ResponseSchema):
 """
 API: UpdateCubeDeployment
 
-更新Deployment
+
 """
 
 
 class UpdateCubeDeploymentRequestSchema(schema.RequestSchema):
-    """UpdateCubeDeployment - 更新Deployment"""
+    """UpdateCubeDeployment -"""
 
     fields = {
         "Deployment": fields.Str(required=True, dump_to="Deployment"),
@@ -518,7 +518,7 @@ class UpdateCubeDeploymentRequestSchema(schema.RequestSchema):
 
 
 class UpdateCubeDeploymentResponseSchema(schema.ResponseSchema):
-    """UpdateCubeDeployment - 更新Deployment"""
+    """UpdateCubeDeployment -"""
 
     fields = {
         "Deployment": fields.Str(required=False, load_from="Deployment"),

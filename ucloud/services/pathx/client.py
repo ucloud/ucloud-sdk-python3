@@ -114,26 +114,26 @@ class PathXClient(Client):
     def create_uga_3instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """CreateUGA3Instance - 创建全球统一接入加速配置项
+        """CreateUGA3Instance -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Bandwidth** (int) - (Required) 实例的共享带宽大小，单位Mbps
-        - **AccelerationArea** (str) - 加速大区,默认Global,[    "Global":"全球",    "AP":"亚太",    "EU":"欧洲",    "ME":"中东",    "OA":"大洋洲",    "AF":"非洲",    "NA":"北美洲",    "SA":"南美洲"]
-        - **AreaCode** (str) - 非必填,如果不填，会根据Domain 和IPList 去选一个最近的源站区域BKK表示AreaCode;曼谷表示Area["BKK":"曼谷","DXB":"迪拜","FRA":"法兰克福","SGN":"胡志明市","HKG":"香港",CGK":"雅加达","LOS":"拉各斯","LHR":"伦敦","LAX":"洛杉矶","MNL":"马尼拉","DME":"莫斯科","BOM":"孟买","MSP":"圣保罗","ICN":"首尔","PVG":"上海","SIN":"新加坡","NRT":"东京","IAD":"华盛顿","TPE": "台北"]
-        - **ChargeType** (str) - 支付方式，如按月、按年、按时[Year,Month,Dynamic]
-        - **CouponId** (str) - 使用代金券可冲抵部分费用，仅全地域可用的代金券
-        - **Name** (str) - 加速配置实例名称,默认PathX
-        - **OriginDomain** (str) - 加速源域名，IPList和Domain二选一必填
-        - **OriginIPList** (str) - 加速源IP，多个IP用英文半角逗号(,)隔开；IPList和Domain二选一必填
-        - **Quantity** (int) - 购买周期
-        - **Remark** (str) - 备注项
+        - **ProjectId** (str) - (Config)
+        - **Bandwidth** (int) - (Required)
+        - **AccelerationArea** (str) -
+        - **AreaCode** (str) -
+        - **ChargeType** (str) -
+        - **CouponId** (str) -
+        - **Name** (str) -
+        - **OriginDomain** (str) -
+        - **OriginIPList** (str) -
+        - **Quantity** (int) -
+        - **Remark** (str) -
 
         **Response**
 
-        - **CName** (str) - 加速域名 用户可把业务域名CName到此域名上
-        - **InstanceId** (str) - 加速配置ID
+        - **CName** (str) -
+        - **InstanceId** (str) -
 
         """
         # build request
@@ -152,18 +152,18 @@ class PathXClient(Client):
     def create_uga_3port(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """CreateUGA3Port - 创建统一接入加速实例端口，目前仅支持四层TCP端口
+        """CreateUGA3Port -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **InstanceId** (str) - (Required) 加速配置实例ID
-        - **TCP** (list) - TCP接入端口，禁用65123端口
-        - **TCPRS** (list) - TCP回源端口
+        - **ProjectId** (str) - (Config)
+        - **InstanceId** (str) - (Required)
+        - **TCP** (list) -
+        - **TCPRS** (list) -
 
         **Response**
 
-        - **Message** (str) - 返回信息 说明
+        - **Message** (str) -
 
         """
         # build request
@@ -341,16 +341,16 @@ class PathXClient(Client):
     def delete_uga_3instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DeleteUGA3Instance - 删除全球统一接入转发实例
+        """DeleteUGA3Instance -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **InstanceId** (str) - (Required) 实例Id,资源的唯一标识
+        - **ProjectId** (str) - (Config)
+        - **InstanceId** (str) - (Required)
 
         **Response**
 
-        - **Message** (str) - 提示信息
+        - **Message** (str) -
 
         """
         # build request
@@ -360,23 +360,26 @@ class PathXClient(Client):
         req and d.update(req)
         d = apis.DeleteUGA3InstanceRequestSchema().dumps(d)
 
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("DeleteUGA3Instance", d, **kwargs)
         return apis.DeleteUGA3InstanceResponseSchema().loads(resp)
 
     def delete_uga_3port(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DeleteUGA3Port - 删除统一接入加速实例转发器 按接入端口删除
+        """DeleteUGA3Port -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **InstanceId** (str) - (Required) 加速配置实例ID
-        - **TCP** (list) - TCP接入端口
+        - **ProjectId** (str) - (Config)
+        - **InstanceId** (str) - (Required)
+        - **TCP** (list) -
 
         **Response**
 
-        - **Message** (str) - 返回信息 说明
+        - **Message** (str) -
 
         """
         # build request
@@ -385,6 +388,9 @@ class PathXClient(Client):
         }
         req and d.update(req)
         d = apis.DeleteUGA3PortRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("DeleteUGA3Port", d, **kwargs)
         return apis.DeleteUGA3PortResponseSchema().loads(resp)
@@ -560,7 +566,7 @@ class PathXClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。不填为默认项目。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
 
         **Response**
 
@@ -569,13 +575,20 @@ class PathXClient(Client):
         **Response Model**
 
         **UGAALine**
+        - **FlagUnicodeFrom** (str) - 加速国家区域国旗代码
+        - **FlagUnicodeTo** (str) - 源站所在国家区域国旗代码
+        - **GuaranteedBandwidthProportion** (int) - 后付费线路上限带宽与保底带宽的固定比例，正整数
         - **LineDetail** (list) - 见 **LineDetail** 模型定义
         - **LineFrom** (str) - 线路源
         - **LineFromName** (str) - 线路源中文名称
-        - **LineId** (str) - 线路计费Id
+        - **LineId** (str) - 线路ID，可用于创建加速线路资源
         - **LineTo** (str) - 线路目的
         - **LineToName** (str) - 线路目的中文名称
-        - **MaxBandwidth** (int) - 线路可售最大带宽
+        - **MaxBandwidth** (int) - 预付费线路可售最大带宽
+        - **PostPaidMaxBandwidth** (int) - 后付费线路最大可售带宽
+        - **RegionCategoryFrom** (str) - 加速国家区域所属地区代码
+        - **RegionCategoryTo** (str) - 源站所在国家区域所属地区代码
+        - **SupportPublicNetwork** (bool) - true:支持SD-WAN线路；false:不支持SD-WAN线路
 
 
         **LineDetail**
@@ -648,28 +661,28 @@ class PathXClient(Client):
     def describe_uga_3area(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DescribeUGA3Area - 获取全球接入源站可选列表
+        """DescribeUGA3Area -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Domain** (str) - 域名，非必填。如果填IP或者域名，会推荐一个地域在返回列表的第一个
-        - **IPList** (str) - IP集合，非必填。如果填IP或者域名，会推荐一个地域在返回列表的第一个，源站IP集合，以逗号分隔[127.0.0.1,127.0.0.2]
+        - **ProjectId** (str) - (Config)
+        - **Domain** (str) -
+        - **IPList** (str) -
 
         **Response**
 
         - **AreaSet** (list) - 见 **ForwardArea** 模型定义
-        - **Message** (str) - 提示信息
+        - **Message** (str) -
 
         **Response Model**
 
         **ForwardArea**
-        - **Area** (str) - 源站区域中文
-        - **AreaCode** (str) - 源站区域代码
-        - **ContinentCode** (str) - 大陆代码
-        - **CountryCode** (str) - 国家代码
-        - **FlagEmoji** (str) - 国旗 emoji
-        - **FlagUnicode** (str) - 国旗unicode
+        - **Area** (str) -
+        - **AreaCode** (str) -
+        - **ContinentCode** (str) -
+        - **CountryCode** (str) -
+        - **FlagEmoji** (str) -
+        - **FlagUnicode** (str) -
 
 
         """
@@ -680,69 +693,72 @@ class PathXClient(Client):
         req and d.update(req)
         d = apis.DescribeUGA3AreaRequestSchema().dumps(d)
 
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("DescribeUGA3Area", d, **kwargs)
         return apis.DescribeUGA3AreaResponseSchema().loads(resp)
 
     def describe_uga_3instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DescribeUGA3Instance - 获取全球统一接入加速服务加速配置信息，指定实例ID返回单个实例。未指定实例ID时 指定分页参数 则按创建时间降序 返回记录
+        """DescribeUGA3Instance -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **InstanceId** (str) - 加速配置实例ID，如果传了实例ID 则返回匹配实例ID的记录；如果没传则返回 ProjectId 下全部实例且符合分页要求
-        - **Limit** (int) - 返回的最大条数，默认为100，最大值400
-        - **Offset** (int) - 偏移量，默认为0
+        - **ProjectId** (str) - (Config)
+        - **InstanceId** (str) -
+        - **Limit** (int) -
+        - **Offset** (int) -
 
         **Response**
 
         - **ForwardInstanceInfos** (list) - 见 **ForwardInfo** 模型定义
-        - **TotalCount** (int) - 符合条件的总数
+        - **TotalCount** (int) -
 
         **Response Model**
 
         **ForwardInfo**
-        - **AccelerationArea** (str) - 加速大区代码
+        - **AccelerationArea** (str) -
         - **AccelerationAreaInfos** (list) - 见 **AccelerationAreaInfos** 模型定义
-        - **AccelerationAreaName** (str) - 加速大区名称
-        - **Bandwidth** (int) - 购买的带宽值
-        - **CName** (str) - 加速域名
-        - **ChargeType** (str) - 计费方式
-        - **CreateTime** (int) - 资源创建时间
-        - **Domain** (str) - 源站域名
+        - **AccelerationAreaName** (str) -
+        - **Bandwidth** (int) -
+        - **CName** (str) -
+        - **ChargeType** (str) -
+        - **CreateTime** (int) -
+        - **Domain** (str) -
         - **EgressIpList** (list) - 见 **OutPublicIpInfo** 模型定义
-        - **ExpireTime** (int) - 资源过期时间
-        - **IPList** (list) - 源站IP列表，多个值由半角英文逗号相隔
-        - **InstanceId** (str) - 加速配置ID
-        - **Name** (str) - 加速实例名称
-        - **OriginArea** (str) - 源站中文名
-        - **OriginAreaCode** (str) - 源站AreaCode
+        - **ExpireTime** (int) -
+        - **IPList** (list) -
+        - **InstanceId** (str) -
+        - **Name** (str) -
+        - **OriginArea** (str) -
+        - **OriginAreaCode** (str) -
         - **PortSets** (list) - 见 **ForwardTask** 模型定义
-        - **Remark** (str) - 备注
+        - **Remark** (str) -
 
 
         **AccelerationAreaInfos**
-        - **AccelerationArea** (str) - 加速区code
+        - **AccelerationArea** (str) -
         - **AccelerationNodes** (list) - 见 **SrcAreaInfo** 模型定义
 
 
         **SrcAreaInfo**
-        - **Area** (str) - AreaCode对应城市名
-        - **AreaCode** (str) - AreaCode ,城市机场代码
-        - **FlagEmoji** (str) - 国旗Emoji
-        - **FlagUnicode** (str) - 国旗Unicode
+        - **Area** (str) -
+        - **AreaCode** (str) -
+        - **FlagEmoji** (str) -
+        - **FlagUnicode** (str) -
 
 
         **OutPublicIpInfo**
-        - **Area** (str) - 线路回源节点机房代号
-        - **IP** (str) - 线路回源节点EIP
+        - **Area** (str) -
+        - **IP** (str) -
 
 
         **ForwardTask**
-        - **Port** (int) - 加速端口
-        - **Protocol** (str) - 转发协议，枚举值["TCP"，"UDP"，"HTTPHTTP"，"HTTPSHTTP"，"HTTPSHTTPS"，"WSWS"，"WSSWS"，"WSSWSS"]。TCP和UDP代表四层转发，其余为七层转发。
-        - **RSPort** (int) - 源站服务器监听的端口号
+        - **Port** (int) -
+        - **Protocol** (str) -
+        - **RSPort** (int) -
 
 
         """
@@ -753,20 +769,23 @@ class PathXClient(Client):
         req and d.update(req)
         d = apis.DescribeUGA3InstanceRequestSchema().dumps(d)
 
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("DescribeUGA3Instance", d, **kwargs)
         return apis.DescribeUGA3InstanceResponseSchema().loads(resp)
 
     def describe_uga_3optimization(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DescribeUGA3Optimization - 获取全球接入UGA3线路加速化情况
+        """DescribeUGA3Optimization -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **AreaCode** (str) - (Required) 源站AreaCode
-        - **AccelerationArea** (str) - 加速大区,默认Global,[    "Global":"全球",    "AP":"亚太",    "EU":"欧洲",    "ME":"中东",    "OA":"大洋洲",    "AF":"非洲",    "NA":"北美洲",    "SA":"南美洲"]
-        - **TimeRange** (str) - 默认一天 ，枚举类型["Hour","Day","Week"]
+        - **ProjectId** (str) - (Config)
+        - **AreaCode** (str) - (Required)
+        - **AccelerationArea** (str) -
+        - **TimeRange** (str) -
 
         **Response**
 
@@ -775,23 +794,23 @@ class PathXClient(Client):
         **Response Model**
 
         **AccelerationInfo**
-        - **AccelerationArea** (str) - 加速大区代码
-        - **AccelerationName** (str) - 加速大区名称
+        - **AccelerationArea** (str) -
+        - **AccelerationName** (str) -
         - **NodeInfo** (list) - 见 **NodeDelays** 模型定义
 
 
         **NodeDelays**
-        - **Area** (str) - 加速区域
-        - **AreaCode** (str) - 加速区域Code
-        - **CountryCode** (str) - 国家代码
-        - **FlagEmoji** (str) - 国旗Emoji
-        - **FlagUnicode** (str) - 国旗Code
-        - **Latency** (float) - 加速延迟
-        - **LatencyInternet** (float) - 公网延迟
-        - **LatencyOptimization** (float) - 加速提升比例
-        - **Loss** (float) - 加速后丢包率
-        - **LossInternet** (float) - 原始丢包率
-        - **LossOptimization** (float) - 丢包下降比例
+        - **Area** (str) -
+        - **AreaCode** (str) -
+        - **CountryCode** (str) -
+        - **FlagEmoji** (str) -
+        - **FlagUnicode** (str) -
+        - **Latency** (float) -
+        - **LatencyInternet** (float) -
+        - **LatencyOptimization** (float) -
+        - **Loss** (float) -
+        - **LossInternet** (float) -
+        - **LossOptimization** (float) -
 
 
         """
@@ -801,6 +820,9 @@ class PathXClient(Client):
         }
         req and d.update(req)
         d = apis.DescribeUGA3OptimizationRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("DescribeUGA3Optimization", d, **kwargs)
         return apis.DescribeUGA3OptimizationResponseSchema().loads(resp)
@@ -1078,17 +1100,17 @@ class PathXClient(Client):
     def get_uga_3metric(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """GetUGA3Metric - 获取全地域加速监控信息
+        """GetUGA3Metric -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **BeginTime** (int) - (Required) 查询起始时间，10位长度时间戳
-        - **EndTime** (int) - (Required) 查询结束时间，10位长度时间戳
-        - **InstanceId** (str) - (Required) 资源ID
-        - **AreaCode** (str) - 子线路AreaCode ,子线路的时候传，不是子线路可以不传
-        - **IsSubline** (bool) - 是否为子线路。为了简化查询,true 会返回所有子线路监控项可以，false:返回所有汇总的监控数据
-        - **MetricName** (list) - 查询监控的指标项。可不传	NetworkOut:出口总带宽	NetworkIn：入口总带宽	NetworkOutUsage：出口带宽使用率	NetworkInUsage：入口总带宽使用率	NetworkOutSubline ：子线路出口带宽	NetworkInSubline：子线路入口带宽	Delay：线路平均延迟	DelaySubline：子线路延迟	ConnectCount：当前连接数	ConnectCountSubline：子线路当前连接数	DelayPromote：延迟提升	DelayPromoteSubline：子线路延迟提升
+        - **ProjectId** (str) - (Config)
+        - **BeginTime** (int) - (Required)
+        - **EndTime** (int) - (Required)
+        - **InstanceId** (str) - (Required)
+        - **AreaCode** (str) -
+        - **IsSubline** (bool) -
+        - **MetricName** (list) -
 
         **Response**
 
@@ -1112,8 +1134,8 @@ class PathXClient(Client):
 
 
         **MatricPoint**
-        - **Timestamp** (int) - 时间戳
-        - **Value** (int) - 监控点数值
+        - **Timestamp** (int) -
+        - **Value** (int) -
 
 
         """
@@ -1124,22 +1146,25 @@ class PathXClient(Client):
         req and d.update(req)
         d = apis.GetUGA3MetricRequestSchema().dumps(d)
 
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("GetUGA3Metric", d, **kwargs)
         return apis.GetUGA3MetricResponseSchema().loads(resp)
 
     def get_uga_3price(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """GetUGA3Price - 获取全球统一接入转发实例价格
+        """GetUGA3Price -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **AreaCode** (str) - (Required) 源站区域
-        - **Bandwidth** (int) - (Required) 共享带宽大小
-        - **AccelerationArea** (str) - 加速大区,默认返回所有加速大区价格
-        - **ChargeType** (str) - 计费方式，默认按月支付。Month: 按月; Year: 按年; Dynamic: 按小时收
-        - **Quantity** (int) - 购买时间数量，当ChargeType为Month时 Quantity默认为0，代表购买至月底。按年按小时必须为大于0
+        - **ProjectId** (str) - (Config)
+        - **AreaCode** (str) - (Required)
+        - **Bandwidth** (int) - (Required)
+        - **AccelerationArea** (str) -
+        - **ChargeType** (str) -
+        - **Quantity** (int) -
 
         **Response**
 
@@ -1148,10 +1173,10 @@ class PathXClient(Client):
         **Response Model**
 
         **UGA3Price**
-        - **AccelerationArea** (str) - 加速大区代码
-        - **AccelerationAreaName** (str) - 加速大区名称
-        - **AccelerationBandwidthPrice** (float) - 加速配置带宽价格
-        - **AccelerationForwarderPrice** (float) - 转发配置价格
+        - **AccelerationArea** (str) -
+        - **AccelerationAreaName** (str) -
+        - **AccelerationBandwidthPrice** (float) -
+        - **AccelerationForwarderPrice** (float) -
 
 
         """
@@ -1162,25 +1187,28 @@ class PathXClient(Client):
         req and d.update(req)
         d = apis.GetUGA3PriceRequestSchema().dumps(d)
 
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("GetUGA3Price", d, **kwargs)
         return apis.GetUGA3PriceResponseSchema().loads(resp)
 
     def get_uga_3update_price(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """GetUGA3UpdatePrice - 全球统一接入获取实例更新价格（增加、删退）
+        """GetUGA3UpdatePrice -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **InstanceId** (str) - (Required) 资源ID
-        - **AccelerationArea** (str) - 暂未支持，加速大区，在更换加速大区的时候使用
-        - **AreaCode** (str) - 暂未支持，源站区域
-        - **Bandwidth** (int) - 只有升级带宽的时候有价格变化
+        - **ProjectId** (str) - (Config)
+        - **InstanceId** (str) - (Required)
+        - **AccelerationArea** (str) -
+        - **AreaCode** (str) -
+        - **Bandwidth** (int) -
 
         **Response**
 
-        - **Price** (float) - 价格 元。大于0需付费，小于0则退费。
+        - **Price** (float) -
 
         """
         # build request
@@ -1189,6 +1217,9 @@ class PathXClient(Client):
         }
         req and d.update(req)
         d = apis.GetUGA3UpdatePriceRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("GetUGA3UpdatePrice", d, **kwargs)
         return apis.GetUGA3UpdatePriceResponseSchema().loads(resp)
@@ -1277,18 +1308,18 @@ class PathXClient(Client):
     def modify_uga_3bandwidth(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ModifyUGA3Bandwidth - 修改统一接入加速配置带宽
+        """ModifyUGA3Bandwidth -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **InstanceId** (str) - (Required) 加速配置实例ID，格式uga3-xxxx
-        - **Bandwidth** (int) - 带宽大小，范围[1,100]，不传则不更新
-        - **CouponId** (str) - 需要全地域可用的代金券
+        - **ProjectId** (str) - (Config)
+        - **InstanceId** (str) - (Required)
+        - **Bandwidth** (int) -
+        - **CouponId** (str) -
 
         **Response**
 
-        - **Message** (str) - 补充描述信息
+        - **Message** (str) -
 
         """
         # build request
@@ -1298,24 +1329,27 @@ class PathXClient(Client):
         req and d.update(req)
         d = apis.ModifyUGA3BandwidthRequestSchema().dumps(d)
 
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("ModifyUGA3Bandwidth", d, **kwargs)
         return apis.ModifyUGA3BandwidthResponseSchema().loads(resp)
 
     def modify_uga_3instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ModifyUGA3Instance - 修改统一接入加速配置属性，如Name，ReMark
+        """ModifyUGA3Instance -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **InstanceId** (str) - (Required) 加速配置实例ID，格式uga-xxxx。不支持GlobalSSH实例。
-        - **Name** (str) - 加速配置实例名称，不填或空字符串则不更新
-        - **Remark** (str) - 备注信息，暂时前端为使用
+        - **ProjectId** (str) - (Config)
+        - **InstanceId** (str) - (Required)
+        - **Name** (str) -
+        - **Remark** (str) -
 
         **Response**
 
-        - **Message** (str) - 补充描述信息
+        - **Message** (str) -
 
         """
         # build request
@@ -1325,26 +1359,27 @@ class PathXClient(Client):
         req and d.update(req)
         d = apis.ModifyUGA3InstanceRequestSchema().dumps(d)
 
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("ModifyUGA3Instance", d, **kwargs)
         return apis.ModifyUGA3InstanceResponseSchema().loads(resp)
 
     def modify_uga_3origin_info(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ModifyUGA3OriginInfo - Domain， IPList注意：修改Domain或IPList时， 请确保源站服务端口已经开启且外网防火墙允许pathx出口ip访问。
+        """ModifyUGA3OriginInfo -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **InstanceId** (str) - (Required) 加速配置实例ID，格式uga3-xxxx。
-        - **OriginDomain** (str) - (Required) 加速源域名，仅支持1个域名。修改源站时 OriginIPList和OriginDomain至少填一个。OriginIPList和OriginDomain都填时 以Domain为准,如果两个都不填，不修改
-        - **OriginIPList** (str) - (Required) ，加速源IP，多个IP用英文半角逗号(,)隔开。修改源站时 ，OriginIPList和OriginDomain至少填一个。OriginIPList和OriginDomain都填时 以OriginDomain为准。如果两个都不填，不修改
+        - **ProjectId** (str) - (Config)
+        - **InstanceId** (str) - (Required)
+        - **OriginDomain** (str) - (Required)
+        - **OriginIPList** (str) - (Required)
 
         **Response**
 
-        - **Action** (str) - 操作名称
-        - **Message** (str) - 补充描述信息
-        - **RetCode** (int) - 返回码
+        - **Message** (str) -
 
         """
         # build request
@@ -1354,24 +1389,27 @@ class PathXClient(Client):
         req and d.update(req)
         d = apis.ModifyUGA3OriginInfoRequestSchema().dumps(d)
 
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("ModifyUGA3OriginInfo", d, **kwargs)
         return apis.ModifyUGA3OriginInfoResponseSchema().loads(resp)
 
     def modify_uga_3port(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ModifyUGA3Port - 修改统一接入加速实例端口,目前仅支持四层TCP端口
+        """ModifyUGA3Port -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **InstanceId** (str) - (Required) 加速配置实例ID
-        - **TCP** (list) - TCP接入端口，禁用65123端口
-        - **TCPRS** (list) - TCP回源端口
+        - **ProjectId** (str) - (Config)
+        - **InstanceId** (str) - (Required)
+        - **TCP** (list) -
+        - **TCPRS** (list) -
 
         **Response**
 
-        - **Message** (str) - 返回信息 说明
+        - **Message** (str) -
 
         """
         # build request
@@ -1380,6 +1418,9 @@ class PathXClient(Client):
         }
         req and d.update(req)
         d = apis.ModifyUGA3PortRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("ModifyUGA3Port", d, **kwargs)
         return apis.ModifyUGA3PortResponseSchema().loads(resp)
