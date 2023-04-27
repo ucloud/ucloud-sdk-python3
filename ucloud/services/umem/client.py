@@ -113,18 +113,25 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Name** (str) - (Required) 空间名称,长度(6<=size<=63)
         - **Size** (int) - (Required) 内存大小, 单位:GB, 范围[1~1024]
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **ChargeType** (str) - Year , Month, Dynamic, Trial 默认: Month
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **BlockCnt** (int) - 分片个数
+        - **ChargeType** (str) - Year , Month, Dynamic 默认: Month
+        - **ClusterMode** (str) - 是否是cluster模式（参数为cluster创建redis cluster，其他参数或者不传该参数仍然创建老版本分布式）
         - **CouponId** (str) - 使用的代金券id
+        - **HighPerformance** (bool) - 是否创建性能增强性。默认为false，或者不填，填true为性能增强型。
+        - **Password** (str) - URedis密码。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定密码。密码需使用base64进行编码，举例如下：# echo -n Password1 | base64UGFzc3dvcmQx。
         - **Protocol** (str) - 协议:memcache, redis (默认redis).注意:redis无single类型
         - **Quantity** (int) - 购买时长 默认: 1
-        - **SubnetId** (str) -
+        - **SlaveZone** (str) - 跨机房UDRedis，slave所在可用区（必须和Zone在同一Region，且不可相同）
+        - **SubnetId** (str) - 子网ID
+        - **Tag** (str) -
         - **Type** (str) - 空间类型:single(无热备),double(热备)(默认: double)
-        - **VPCId** (str) -
+        - **VPCId** (str) - VPC的ID
+        - **Version** (str) - 分布式分片版本（默认版本是4.0，其他版本见DescribeUDRedisBlockVersion）
 
         **Response**
 
@@ -1445,16 +1452,17 @@ class UMemClient(Client):
     def resize_umem_space(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ResizeUMemSpace - 调整内存空间容量
+        """ResizeUMemSpace - 调整内存空间容量，只支持存量老分布式产品，不支持高性能分布式
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Size** (int) - (Required) 内存大小, 单位:GB (需要大于原size,<= 1024)
         - **SpaceId** (str) - (Required) UMem 内存空间Id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **CouponId** (str) - 使用的代金券Id
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Type** (str) - 空间类型:single(无热备),double(热备)(默认: double)
 
         **Response**
 

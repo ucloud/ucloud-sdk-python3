@@ -294,6 +294,16 @@ class BandwidthTrafficInfoSchema(schema.ResponseSchema):
     }
 
 
+class CacheKeyInfoSchema(schema.ResponseSchema):
+    """CacheKeyInfo - 忽略参数缓存配置"""
+
+    fields = {
+        "Ignore": fields.Bool(required=False, load_from="Ignore"),
+        "PathPattern": fields.Str(required=False, load_from="PathPattern"),
+        "QueryString": fields.Str(required=False, load_from="QueryString"),
+    }
+
+
 class ReferConfSchema(schema.ResponseSchema):
     """ReferConf - refer配置"""
 
@@ -304,13 +314,14 @@ class ReferConfSchema(schema.ResponseSchema):
     }
 
 
-class CacheKeyInfoSchema(schema.ResponseSchema):
-    """CacheKeyInfo - 忽略参数缓存配置"""
+class CacheAllConfigSchema(schema.ResponseSchema):
+    """CacheAllConfig - 缓存相关的配置"""
 
     fields = {
-        "Ignore": fields.Bool(required=False, load_from="Ignore"),
-        "PathPattern": fields.Str(required=False, load_from="PathPattern"),
-        "QueryString": fields.Str(required=False, load_from="QueryString"),
+        "CacheHost": fields.Str(required=False, load_from="CacheHost"),
+        "CacheKeyList": fields.List(CacheKeyInfoSchema()),
+        "CacheList": fields.List(CacheConfSchema()),
+        "HttpCodeCacheList": fields.List(CacheConfSchema()),
     }
 
 
@@ -325,26 +336,6 @@ class AdvancedConfSchema(schema.ResponseSchema):
         "WebSocketEnable": fields.Bool(
             required=False, load_from="WebSocketEnable"
         ),
-    }
-
-
-class AccessControlConfSchema(schema.ResponseSchema):
-    """AccessControlConf - 访问控制配置参数"""
-
-    fields = {
-        "IpBlackList": fields.List(fields.Str()),
-        "ReferConf": ReferConfSchema(),
-    }
-
-
-class CacheAllConfigSchema(schema.ResponseSchema):
-    """CacheAllConfig - 缓存相关的配置"""
-
-    fields = {
-        "CacheHost": fields.Str(required=False, load_from="CacheHost"),
-        "CacheKeyList": fields.List(CacheKeyInfoSchema()),
-        "CacheList": fields.List(CacheConfSchema()),
-        "HttpCodeCacheList": fields.List(CacheConfSchema()),
     }
 
 
@@ -374,6 +365,15 @@ class OriginConfSchema(schema.ResponseSchema):
         "OriginProtocol": fields.Str(
             required=False, load_from="OriginProtocol"
         ),
+    }
+
+
+class AccessControlConfSchema(schema.ResponseSchema):
+    """AccessControlConf - 访问控制配置参数"""
+
+    fields = {
+        "IpBlackList": fields.List(fields.Str()),
+        "ReferConf": ReferConfSchema(),
     }
 
 

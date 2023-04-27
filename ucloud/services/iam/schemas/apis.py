@@ -9,6 +9,155 @@ from ucloud.services.iam.schemas import models
 
 
 """
+API: AddUserToGroup
+
+添加成员到用户组
+"""
+
+
+class AddUserToGroupRequestSchema(schema.RequestSchema):
+    """AddUserToGroup - 添加成员到用户组"""
+
+    fields = {
+        "GroupName": fields.Str(required=True, dump_to="GroupName"),
+        "UserName": fields.Str(required=True, dump_to="UserName"),
+    }
+
+
+class AddUserToGroupResponseSchema(schema.ResponseSchema):
+    """AddUserToGroup - 添加成员到用户组"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: AttachPoliciesToGroup
+
+关联IAM策略到用户组
+"""
+
+
+class AttachPoliciesToGroupRequestSchema(schema.RequestSchema):
+    """AttachPoliciesToGroup - 关联IAM策略到用户组"""
+
+    fields = {
+        "GroupName": fields.Str(required=True, dump_to="GroupName"),
+        "PolicyURNs": fields.List(fields.Str()),
+        "ProjectID": fields.Str(required=False, dump_to="ProjectID"),
+        "Scope": fields.Str(required=True, dump_to="Scope"),
+    }
+
+
+class AttachPoliciesToGroupResponseSchema(schema.ResponseSchema):
+    """AttachPoliciesToGroup - 关联IAM策略到用户组"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: AttachPoliciesToUser
+
+关联IAM策略到用户
+"""
+
+
+class AttachPoliciesToUserRequestSchema(schema.RequestSchema):
+    """AttachPoliciesToUser - 关联IAM策略到用户"""
+
+    fields = {
+        "PolicyURNs": fields.List(fields.Str()),
+        "ProjectID": fields.Str(required=False, dump_to="ProjectID"),
+        "Scope": fields.Str(required=True, dump_to="Scope"),
+        "UserName": fields.Str(required=True, dump_to="UserName"),
+    }
+
+
+class AttachPoliciesToUserResponseSchema(schema.ResponseSchema):
+    """AttachPoliciesToUser - 关联IAM策略到用户"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: CreateAccessKey
+
+创建用户密钥
+"""
+
+
+class CreateAccessKeyRequestSchema(schema.RequestSchema):
+    """CreateAccessKey - 创建用户密钥"""
+
+    fields = {
+        "UserName": fields.Str(required=True, dump_to="UserName"),
+    }
+
+
+class CreateAccessKeyResponseSchema(schema.ResponseSchema):
+    """CreateAccessKey - 创建用户密钥"""
+
+    fields = {
+        "AccessKey": models.AccessKeySchema(),
+    }
+
+
+"""
+API: CreateGroup
+
+创建用户组
+"""
+
+
+class CreateGroupRequestSchema(schema.RequestSchema):
+    """CreateGroup - 创建用户组"""
+
+    fields = {
+        "Description": fields.Str(required=False, dump_to="Description"),
+        "GroupName": fields.Str(required=True, dump_to="GroupName"),
+    }
+
+
+class CreateGroupResponseSchema(schema.ResponseSchema):
+    """CreateGroup - 创建用户组"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: CreateIAMPolicy
+
+创建IAM策略
+"""
+
+
+class CreateIAMPolicyRequestSchema(schema.RequestSchema):
+    """CreateIAMPolicy - 创建IAM策略"""
+
+    fields = {
+        "Description": fields.Str(required=False, dump_to="Description"),
+        "Document": fields.Str(required=True, dump_to="Document"),
+        "PolicyName": fields.Str(required=True, dump_to="PolicyName"),
+        "ScopeType": fields.Str(required=False, dump_to="ScopeType"),
+    }
+
+
+class CreateIAMPolicyResponseSchema(schema.ResponseSchema):
+    """CreateIAMPolicy - 创建IAM策略"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
 API: CreateProject
 
 创建项目
@@ -32,6 +181,102 @@ class CreateProjectResponseSchema(schema.ResponseSchema):
 
 
 """
+API: CreateUser
+
+创建IAM用户
+"""
+
+
+class CreateUserRequestSchema(schema.RequestSchema):
+    """CreateUser - 创建IAM用户"""
+
+    fields = {
+        "AccessKeyStatus": fields.Str(required=True, dump_to="AccessKeyStatus"),
+        "DisplayName": fields.Str(required=False, dump_to="DisplayName"),
+        "Email": fields.Str(required=False, dump_to="Email"),
+        "LoginProfileStatus": fields.Str(
+            required=True, dump_to="LoginProfileStatus"
+        ),
+        "UserName": fields.Str(required=True, dump_to="UserName"),
+    }
+
+
+class CreateUserResponseSchema(schema.ResponseSchema):
+    """CreateUser - 创建IAM用户"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: DeleteAccessKey
+
+删除用户密钥
+"""
+
+
+class DeleteAccessKeyRequestSchema(schema.RequestSchema):
+    """DeleteAccessKey - 删除用户密钥"""
+
+    fields = {
+        "AccessKeyID": fields.Str(required=True, dump_to="AccessKeyID"),
+    }
+
+
+class DeleteAccessKeyResponseSchema(schema.ResponseSchema):
+    """DeleteAccessKey - 删除用户密钥"""
+
+    fields = {}
+
+
+"""
+API: DeleteGroup
+
+删除用户组
+"""
+
+
+class DeleteGroupRequestSchema(schema.RequestSchema):
+    """DeleteGroup - 删除用户组"""
+
+    fields = {
+        "GroupName": fields.Str(required=True, dump_to="GroupName"),
+    }
+
+
+class DeleteGroupResponseSchema(schema.ResponseSchema):
+    """DeleteGroup - 删除用户组"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: DeleteIAMPolicy
+
+删除IAM策略
+"""
+
+
+class DeleteIAMPolicyRequestSchema(schema.RequestSchema):
+    """DeleteIAMPolicy - 删除IAM策略"""
+
+    fields = {
+        "PolicyURN": fields.Str(required=True, dump_to="PolicyURN"),
+    }
+
+
+class DeleteIAMPolicyResponseSchema(schema.ResponseSchema):
+    """DeleteIAMPolicy - 删除IAM策略"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
 API: DeleteProject
 
 删除项目
@@ -48,6 +293,681 @@ class DeleteProjectRequestSchema(schema.RequestSchema):
 
 class DeleteProjectResponseSchema(schema.ResponseSchema):
     """DeleteProject - 删除项目"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: DeleteUser
+
+删除用户
+"""
+
+
+class DeleteUserRequestSchema(schema.RequestSchema):
+    """DeleteUser - 删除用户"""
+
+    fields = {
+        "UserName": fields.Str(required=True, dump_to="UserName"),
+    }
+
+
+class DeleteUserResponseSchema(schema.ResponseSchema):
+    """DeleteUser - 删除用户"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: DetachPoliciesFromGroup
+
+移除用户组关联的IAM策略
+"""
+
+
+class DetachPoliciesFromGroupRequestSchema(schema.RequestSchema):
+    """DetachPoliciesFromGroup - 移除用户组关联的IAM策略"""
+
+    fields = {
+        "GroupName": fields.Str(required=True, dump_to="GroupName"),
+        "PolicyURNs": fields.List(fields.Str()),
+        "ProjectID": fields.Str(required=False, dump_to="ProjectID"),
+        "Scope": fields.Str(required=True, dump_to="Scope"),
+    }
+
+
+class DetachPoliciesFromGroupResponseSchema(schema.ResponseSchema):
+    """DetachPoliciesFromGroup - 移除用户组关联的IAM策略"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: DetachPoliciesFromUser
+
+移除用户关联的IAM策略
+"""
+
+
+class DetachPoliciesFromUserRequestSchema(schema.RequestSchema):
+    """DetachPoliciesFromUser - 移除用户关联的IAM策略"""
+
+    fields = {
+        "PolicyURNs": fields.List(fields.Str()),
+        "ProjectID": fields.Str(required=False, dump_to="ProjectID"),
+        "Scope": fields.Str(required=True, dump_to="Scope"),
+        "UserName": fields.Str(required=True, dump_to="UserName"),
+    }
+
+
+class DetachPoliciesFromUserResponseSchema(schema.ResponseSchema):
+    """DetachPoliciesFromUser - 移除用户关联的IAM策略"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: GetGroup
+
+查询用户组详情
+"""
+
+
+class GetGroupRequestSchema(schema.RequestSchema):
+    """GetGroup - 查询用户组详情"""
+
+    fields = {
+        "GroupName": fields.Str(required=True, dump_to="GroupName"),
+    }
+
+
+class GetGroupResponseSchema(schema.ResponseSchema):
+    """GetGroup - 查询用户组详情"""
+
+    fields = {
+        "Group": models.GroupSchema(),
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: GetIAMPolicy
+
+获取策略详情
+"""
+
+
+class GetIAMPolicyRequestSchema(schema.RequestSchema):
+    """GetIAMPolicy - 获取策略详情"""
+
+    fields = {
+        "PolicyURN": fields.Str(required=True, dump_to="PolicyURN"),
+    }
+
+
+class GetIAMPolicyResponseSchema(schema.ResponseSchema):
+    """GetIAMPolicy - 获取策略详情"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "Policy": models.IAMPolicySchema(),
+    }
+
+
+"""
+API: GetLoginProfile
+
+获取用户登录资料
+"""
+
+
+class GetLoginProfileRequestSchema(schema.RequestSchema):
+    """GetLoginProfile - 获取用户登录资料"""
+
+    fields = {
+        "UserName": fields.Str(required=True, dump_to="UserName"),
+    }
+
+
+class GetLoginProfileResponseSchema(schema.ResponseSchema):
+    """GetLoginProfile - 获取用户登录资料"""
+
+    fields = {
+        "LoginProfile": models.LoginProfileSchema(),
+    }
+
+
+"""
+API: GetUser
+
+获取用户信息
+"""
+
+
+class GetUserRequestSchema(schema.RequestSchema):
+    """GetUser - 获取用户信息"""
+
+    fields = {
+        "UserName": fields.Str(required=True, dump_to="UserName"),
+    }
+
+
+class GetUserResponseSchema(schema.ResponseSchema):
+    """GetUser - 获取用户信息"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "User": models.UserSchema(),
+    }
+
+
+"""
+API: ListAccessKeys
+
+获取指定用户密钥列表
+"""
+
+
+class ListAccessKeysRequestSchema(schema.RequestSchema):
+    """ListAccessKeys - 获取指定用户密钥列表"""
+
+    fields = {
+        "UserName": fields.Str(required=True, dump_to="UserName"),
+    }
+
+
+class ListAccessKeysResponseSchema(schema.ResponseSchema):
+    """ListAccessKeys - 获取指定用户密钥列表"""
+
+    fields = {
+        "AccessKey": fields.List(
+            models.AccessKeySchema(), required=True, load_from="AccessKey"
+        ),
+    }
+
+
+"""
+API: ListEntitiesForPolicy
+
+列出引用权限策略的实体
+"""
+
+
+class ListEntitiesForPolicyRequestSchema(schema.RequestSchema):
+    """ListEntitiesForPolicy - 列出引用权限策略的实体"""
+
+    fields = {
+        "Limit": fields.Str(required=False, dump_to="Limit"),
+        "Offset": fields.Str(required=False, dump_to="Offset"),
+        "PolicyURN": fields.Str(required=True, dump_to="PolicyURN"),
+    }
+
+
+class ListEntitiesForPolicyResponseSchema(schema.ResponseSchema):
+    """ListEntitiesForPolicy - 列出引用权限策略的实体"""
+
+    fields = {
+        "Entities": fields.List(
+            models.EntitySchema(), required=True, load_from="Entities"
+        ),
+        "Message": fields.Str(required=True, load_from="Message"),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
+API: ListEntitiesForProject
+
+列出拥有指定项目权限的实体
+"""
+
+
+class ListEntitiesForProjectRequestSchema(schema.RequestSchema):
+    """ListEntitiesForProject - 列出拥有指定项目权限的实体"""
+
+    fields = {
+        "Limit": fields.Str(required=False, dump_to="Limit"),
+        "Offset": fields.Str(required=False, dump_to="Offset"),
+        "ProjectID": fields.Str(required=True, dump_to="ProjectID"),
+    }
+
+
+class ListEntitiesForProjectResponseSchema(schema.ResponseSchema):
+    """ListEntitiesForProject - 列出拥有指定项目权限的实体"""
+
+    fields = {
+        "Entities": fields.List(
+            models.EntitySchema(), required=True, load_from="Entities"
+        ),
+        "Message": fields.Str(required=True, load_from="Message"),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
+API: ListGroups
+
+列出用户组
+"""
+
+
+class ListGroupsRequestSchema(schema.RequestSchema):
+    """ListGroups - 列出用户组"""
+
+    fields = {}
+
+
+class ListGroupsResponseSchema(schema.ResponseSchema):
+    """ListGroups - 列出用户组"""
+
+    fields = {
+        "Groups": fields.List(
+            models.GroupSchema(), required=True, load_from="Groups"
+        ),
+        "Message": fields.Str(required=True, load_from="Message"),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
+API: ListPolicies
+
+获取IAM策略列表
+"""
+
+
+class ListPoliciesRequestSchema(schema.RequestSchema):
+    """ListPolicies - 获取IAM策略列表"""
+
+    fields = {
+        "Limit": fields.Str(required=False, dump_to="Limit"),
+        "Offset": fields.Str(required=False, dump_to="Offset"),
+        "Owner": fields.Str(required=True, dump_to="Owner"),
+    }
+
+
+class ListPoliciesResponseSchema(schema.ResponseSchema):
+    """ListPolicies - 获取IAM策略列表"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "Policies": fields.List(
+            models.IAMPolicySchema(), required=True, load_from="Policies"
+        ),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
+API: ListPoliciesForGroup
+
+列出用户组关联的权限策略
+"""
+
+
+class ListPoliciesForGroupRequestSchema(schema.RequestSchema):
+    """ListPoliciesForGroup - 列出用户组关联的权限策略"""
+
+    fields = {
+        "GroupName": fields.Str(required=True, dump_to="GroupName"),
+        "Limit": fields.Str(required=False, dump_to="Limit"),
+        "Offset": fields.Str(required=False, dump_to="Offset"),
+        "ProjectID": fields.Str(required=False, dump_to="ProjectID"),
+        "Scope": fields.Str(required=False, dump_to="Scope"),
+    }
+
+
+class ListPoliciesForGroupResponseSchema(schema.ResponseSchema):
+    """ListPoliciesForGroup - 列出用户组关联的权限策略"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "Policies": fields.List(
+            models.PolicySchema(), required=True, load_from="Policies"
+        ),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
+API: ListPoliciesForUser
+
+列出用户关联的IAM策略
+"""
+
+
+class ListPoliciesForUserRequestSchema(schema.RequestSchema):
+    """ListPoliciesForUser - 列出用户关联的IAM策略"""
+
+    fields = {
+        "Limit": fields.Str(required=False, dump_to="Limit"),
+        "Offset": fields.Str(required=False, dump_to="Offset"),
+        "ProjectID": fields.Str(required=False, dump_to="ProjectID"),
+        "Scope": fields.Str(required=False, dump_to="Scope"),
+        "UserName": fields.Str(required=True, dump_to="UserName"),
+    }
+
+
+class ListPoliciesForUserResponseSchema(schema.ResponseSchema):
+    """ListPoliciesForUser - 列出用户关联的IAM策略"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "Policies": fields.List(
+            models.PolicySchema(), required=True, load_from="Policies"
+        ),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
+API: ListProjects
+
+列出所有项目
+"""
+
+
+class ListProjectsRequestSchema(schema.RequestSchema):
+    """ListProjects - 列出所有项目"""
+
+    fields = {
+        "Limit": fields.Str(required=False, dump_to="Limit"),
+        "Offset": fields.Str(required=False, dump_to="Offset"),
+    }
+
+
+class ListProjectsResponseSchema(schema.ResponseSchema):
+    """ListProjects - 列出所有项目"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "Projects": fields.List(
+            models.ProjectSchema(), required=True, load_from="Projects"
+        ),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
+API: ListUsers
+
+列出用户列表
+"""
+
+
+class ListUsersRequestSchema(schema.RequestSchema):
+    """ListUsers - 列出用户列表"""
+
+    fields = {
+        "Limit": fields.Str(required=False, dump_to="Limit"),
+        "Offset": fields.Str(required=False, dump_to="Offset"),
+    }
+
+
+class ListUsersResponseSchema(schema.ResponseSchema):
+    """ListUsers - 列出用户列表"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+        "Users": fields.List(
+            models.UsersSchema(), required=True, load_from="Users"
+        ),
+    }
+
+
+"""
+API: ListUsersForGroup
+
+列出用户组包含的用户
+"""
+
+
+class ListUsersForGroupRequestSchema(schema.RequestSchema):
+    """ListUsersForGroup - 列出用户组包含的用户"""
+
+    fields = {
+        "GroupName": fields.Str(required=True, dump_to="GroupName"),
+        "Limit": fields.Str(required=False, dump_to="Limit"),
+        "Offset": fields.Str(required=False, dump_to="Offset"),
+    }
+
+
+class ListUsersForGroupResponseSchema(schema.ResponseSchema):
+    """ListUsersForGroup - 列出用户组包含的用户"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+        "Users": fields.List(
+            models.UserForGroupSchema(), required=True, load_from="Users"
+        ),
+    }
+
+
+"""
+API: ModifyProject
+
+修改项目
+"""
+
+
+class ModifyProjectRequestSchema(schema.RequestSchema):
+    """ModifyProject - 修改项目"""
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "ProjectName": fields.Str(required=True, dump_to="ProjectName"),
+    }
+
+
+class ModifyProjectResponseSchema(schema.ResponseSchema):
+    """ModifyProject - 修改项目"""
+
+    fields = {}
+
+
+"""
+API: RemoveUserFromGroup
+
+移除用户组中的IAM用户
+"""
+
+
+class RemoveUserFromGroupRequestSchema(schema.RequestSchema):
+    """RemoveUserFromGroup - 移除用户组中的IAM用户"""
+
+    fields = {
+        "GroupName": fields.Str(required=True, dump_to="GroupName"),
+        "UserName": fields.Str(required=True, dump_to="UserName"),
+    }
+
+
+class RemoveUserFromGroupResponseSchema(schema.ResponseSchema):
+    """RemoveUserFromGroup - 移除用户组中的IAM用户"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: RemoveUserFromProject
+
+移除项目中的IAM用户，同时移除此用户在此项目下的所有权限
+"""
+
+
+class RemoveUserFromProjectRequestSchema(schema.RequestSchema):
+    """RemoveUserFromProject - 移除项目中的IAM用户，同时移除此用户在此项目下的所有权限"""
+
+    fields = {
+        "ProjectID": fields.Str(required=True, dump_to="ProjectID"),
+        "UserName": fields.Str(required=True, dump_to="UserName"),
+    }
+
+
+class RemoveUserFromProjectResponseSchema(schema.ResponseSchema):
+    """RemoveUserFromProject - 移除项目中的IAM用户，同时移除此用户在此项目下的所有权限"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: UpdateAccessKey
+
+修改用户密钥状态
+"""
+
+
+class UpdateAccessKeyRequestSchema(schema.RequestSchema):
+    """UpdateAccessKey - 修改用户密钥状态"""
+
+    fields = {
+        "AccessKeyID": fields.Str(required=True, dump_to="AccessKeyID"),
+        "Description": fields.Str(required=False, dump_to="Description"),
+        "Status": fields.Str(required=False, dump_to="Status"),
+    }
+
+
+class UpdateAccessKeyResponseSchema(schema.ResponseSchema):
+    """UpdateAccessKey - 修改用户密钥状态"""
+
+    fields = {}
+
+
+"""
+API: UpdateGroup
+
+更新用户组信息
+"""
+
+
+class UpdateGroupRequestSchema(schema.RequestSchema):
+    """UpdateGroup - 更新用户组信息"""
+
+    fields = {
+        "Description": fields.Str(required=True, dump_to="Description"),
+        "GroupName": fields.Str(required=True, dump_to="GroupName"),
+    }
+
+
+class UpdateGroupResponseSchema(schema.ResponseSchema):
+    """UpdateGroup - 更新用户组信息"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: UpdateIAMPolicy
+
+更新IAM策略
+"""
+
+
+class UpdateIAMPolicyRequestSchema(schema.RequestSchema):
+    """UpdateIAMPolicy - 更新IAM策略"""
+
+    fields = {
+        "Description": fields.Str(required=False, dump_to="Description"),
+        "Document": fields.Str(required=True, dump_to="Document"),
+        "PolicyURN": fields.Str(required=True, dump_to="PolicyURN"),
+        "VersionDescription": fields.Str(
+            required=False, dump_to="VersionDescription"
+        ),
+    }
+
+
+class UpdateIAMPolicyResponseSchema(schema.ResponseSchema):
+    """UpdateIAMPolicy - 更新IAM策略"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: UpdateIAMPolicyName
+
+修改自定义策略名称
+"""
+
+
+class UpdateIAMPolicyNameRequestSchema(schema.RequestSchema):
+    """UpdateIAMPolicyName - 修改自定义策略名称"""
+
+    fields = {
+        "Description": fields.Str(required=True, dump_to="Description"),
+        "PolicyName": fields.Str(required=True, dump_to="PolicyName"),
+        "PolicyURN": fields.Str(required=True, dump_to="PolicyURN"),
+    }
+
+
+class UpdateIAMPolicyNameResponseSchema(schema.ResponseSchema):
+    """UpdateIAMPolicyName - 修改自定义策略名称"""
+
+    fields = {}
+
+
+"""
+API: UpdateLoginProfile
+
+更新用户登录资料
+"""
+
+
+class UpdateLoginProfileRequestSchema(schema.RequestSchema):
+    """UpdateLoginProfile - 更新用户登录资料"""
+
+    fields = {
+        "MFABindRequired": fields.Bool(
+            required=False, dump_to="MFABindRequired"
+        ),
+        "MaxPasswordAge": fields.Int(required=False, dump_to="MaxPasswordAge"),
+        "Status": fields.Str(required=False, dump_to="Status"),
+        "UserEmail": fields.Str(required=False, dump_to="UserEmail"),
+        "UserName": fields.Str(required=True, dump_to="UserName"),
+    }
+
+
+class UpdateLoginProfileResponseSchema(schema.ResponseSchema):
+    """UpdateLoginProfile - 更新用户登录资料"""
+
+    fields = {}
+
+
+"""
+API: UpdateUser
+
+更新用户
+"""
+
+
+class UpdateUserRequestSchema(schema.RequestSchema):
+    """UpdateUser - 更新用户"""
+
+    fields = {
+        "DisplayName": fields.Str(required=False, dump_to="DisplayName"),
+        "NewUserName": fields.Str(required=False, dump_to="NewUserName"),
+        "Status": fields.Str(required=False, dump_to="Status"),
+        "UserName": fields.Str(required=True, dump_to="UserName"),
+    }
+
+
+class UpdateUserResponseSchema(schema.ResponseSchema):
+    """UpdateUser - 更新用户"""
 
     fields = {
         "Message": fields.Str(required=True, load_from="Message"),

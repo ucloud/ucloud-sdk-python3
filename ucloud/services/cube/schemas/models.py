@@ -4,7 +4,7 @@ from ucloud.core.typesystem import schema, fields
 
 
 class EIPAddrSchema(schema.ResponseSchema):
-    """EIPAddr - EIP地址"""
+    """EIPAddr -"""
 
     fields = {
         "IP": fields.Str(required=False, load_from="IP"),
@@ -13,7 +13,7 @@ class EIPAddrSchema(schema.ResponseSchema):
 
 
 class EIPSetSchema(schema.ResponseSchema):
-    """EIPSet - EIP信息"""
+    """EIPSet -"""
 
     fields = {
         "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
@@ -29,7 +29,7 @@ class EIPSetSchema(schema.ResponseSchema):
 
 
 class CubeExtendInfoSchema(schema.ResponseSchema):
-    """CubeExtendInfo - Cube的额外信息"""
+    """CubeExtendInfo -"""
 
     fields = {
         "CubeId": fields.Str(required=True, load_from="CubeId"),
@@ -50,7 +50,7 @@ class ValueSetSchema(schema.ResponseSchema):
 
 
 class MetricDataSetSchema(schema.ResponseSchema):
-    """MetricDataSet - 监控数据集合"""
+    """MetricDataSet -"""
 
     fields = {
         "MetricName": fields.Str(required=False, load_from="MetricName"),

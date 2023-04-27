@@ -401,6 +401,12 @@ class UNetClient(Client):
         - **OperatorName** (str) - 运营商信息如: 国际: International, BGP: BGP
 
 
+        **EIPBinding**
+        - **EIP** (str) - 外网ip
+        - **PrivateIP** (str) - 内网ip
+        - **PrivateIPType** (str) - 内网ip类型：PrimaryIP（默认）、SecondaryIP（非默认）
+
+
         **UnetEIPResourceSet**
         - **EIPId** (str) - 弹性IP的资源ID
         - **ResourceID** (str) - 已绑定资源的资源ID
@@ -415,12 +421,6 @@ class UNetClient(Client):
         - **ShareBandwidth** (int) - 共享带宽带宽值
         - **ShareBandwidthId** (str) - 共享带宽ID
         - **ShareBandwidthName** (str) - 共享带宽的资源名称
-
-
-        **EIPBinding**
-        - **EIP** (str) - 外网ip
-        - **PrivateIP** (str) - 内网ip
-        - **PrivateIPType** (str) - 内网ip类型：PrimaryIP（默认）、SecondaryIP（非默认）
 
 
         """

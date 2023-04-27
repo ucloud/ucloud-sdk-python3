@@ -150,6 +150,13 @@ UDDB
    :members:
 
 
+UDI
+---
+
+.. autoclass:: ucloud.services.udi.client.UDIClient
+   :members:
+
+
 UDTS
 ----
 
