@@ -178,11 +178,12 @@ class UDIClient(Client):
 
         **Response Model**
 
-        **ParamCustom**
-        - **Max** (int) -
-        - **Min** (int) -
-        - **ParamName** (str) -
-        - **ParamType** (str) -
+        **Function**
+        - **DisplayName** (str) -
+        - **FunctionName** (str) -
+        - **InputType** (str) -
+        - **OutputType** (str) -
+        - **SupportParams** (list) - 见 **ParamOption** 模型定义
 
 
         **ParamOption**
@@ -193,12 +194,11 @@ class UDIClient(Client):
         - **WhenValueCustom** (list) - 见 **ParamCustom** 模型定义
 
 
-        **Function**
-        - **DisplayName** (str) -
-        - **FunctionName** (str) -
-        - **InputType** (str) -
-        - **OutputType** (str) -
-        - **SupportParams** (list) - 见 **ParamOption** 模型定义
+        **ParamCustom**
+        - **Max** (int) -
+        - **Min** (int) -
+        - **ParamName** (str) -
+        - **ParamType** (str) -
 
 
         """

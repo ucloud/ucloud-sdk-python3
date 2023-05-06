@@ -44,6 +44,20 @@ class PHostCloudMachineTypeSetSchema(schema.ResponseSchema):
     }
 
 
+class PHostIPSetSchema(schema.ResponseSchema):
+    """PHostIPSet - DescribePHost"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "IPAddr": fields.Str(required=False, load_from="IPAddr"),
+        "IPId": fields.Str(required=False, load_from="IPId"),
+        "MACAddr": fields.Str(required=False, load_from="MACAddr"),
+        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+    }
+
+
 class PHostDescDiskSetSchema(schema.ResponseSchema):
     """PHostDescDiskSet - DescribePHost（包括传统和裸金属1、裸金属2）"""
 
@@ -56,20 +70,6 @@ class PHostDescDiskSetSchema(schema.ResponseSchema):
         "Name": fields.Str(required=False, load_from="Name"),
         "Space": fields.Int(required=False, load_from="Space"),
         "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
-class PHostIPSetSchema(schema.ResponseSchema):
-    """PHostIPSet - DescribePHost"""
-
-    fields = {
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "IPAddr": fields.Str(required=False, load_from="IPAddr"),
-        "IPId": fields.Str(required=False, load_from="IPId"),
-        "MACAddr": fields.Str(required=False, load_from="MACAddr"),
-        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
     }
 
 

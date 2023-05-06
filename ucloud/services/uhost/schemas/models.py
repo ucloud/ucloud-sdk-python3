@@ -62,15 +62,6 @@ class BootDiskInfoSchema(schema.ResponseSchema):
     }
 
 
-class PerformanceSchema(schema.ResponseSchema):
-    """Performance - GPU的性能指标"""
-
-    fields = {
-        "Rate": fields.Int(required=False, load_from="Rate"),
-        "Value": fields.Float(required=False, load_from="Value"),
-    }
-
-
 class MachineSizesSchema(schema.ResponseSchema):
     """MachineSizes - GPU、CPU和内存信息"""
 
@@ -115,6 +106,15 @@ class CpuPlatformsSchema(schema.ResponseSchema):
         "Amd": fields.List(fields.Str()),
         "Ampere": fields.List(fields.Str()),
         "Intel": fields.List(fields.Str()),
+    }
+
+
+class PerformanceSchema(schema.ResponseSchema):
+    """Performance - GPU的性能指标"""
+
+    fields = {
+        "Rate": fields.Int(required=False, load_from="Rate"),
+        "Value": fields.Float(required=False, load_from="Value"),
     }
 
 
@@ -342,4 +342,16 @@ class UHostPriceSetSchema(schema.ResponseSchema):
         "OriginalPriceDetail": PriceDetailSchema(),
         "Price": fields.Float(required=True, load_from="Price"),
         "PriceDetail": PriceDetailSchema(),
+    }
+
+
+class BasePriceSetSchema(schema.ResponseSchema):
+    """BasePriceSet - 价格信息"""
+
+    fields = {
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "OriginalPrice": fields.Float(
+            required=False, load_from="OriginalPrice"
+        ),
+        "Price": fields.Float(required=False, load_from="Price"),
     }

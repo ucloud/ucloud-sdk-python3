@@ -893,6 +893,42 @@ class UHostClient(Client):
         resp = self.invoke("GetUHostInstanceVncInfo", d, **kwargs)
         return apis.GetUHostInstanceVncInfoResponseSchema().loads(resp)
 
+    def get_uhost_renew_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUHostRenewPrice - 获取主机续费价格
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ChargeType** (str) - (Required) 计费类型。Year，Month，Dynamic，默认返回全部计费方式对应的价格
+        - **UHostId** (str) - (Required) UHost实例ID
+
+        **Response**
+
+        - **PriceSet** (list) - 见 **BasePriceSet** 模型定义
+
+        **Response Model**
+
+        **BasePriceSet**
+        - **ChargeType** (str) - 计费类型
+        - **OriginalPrice** (float) - 限时优惠的折前原价（即列表价乘以商务折扣后的单价）。
+        - **Price** (float) - 价格，单位: 元，保留小数点后两位有效数字
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetUHostRenewPriceRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUHostRenewPrice", d, **kwargs)
+        return apis.GetUHostRenewPriceResponseSchema().loads(resp)
+
     def get_uhost_upgrade_price(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
