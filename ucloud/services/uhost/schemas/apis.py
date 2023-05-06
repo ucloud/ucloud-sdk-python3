@@ -777,6 +777,34 @@ class GetUHostInstanceVncInfoResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetUHostRenewPrice
+
+获取主机续费价格
+"""
+
+
+class GetUHostRenewPriceRequestSchema(schema.RequestSchema):
+    """GetUHostRenewPrice - 获取主机续费价格"""
+
+    fields = {
+        "ChargeType": fields.Str(required=True, dump_to="ChargeType"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UHostId": fields.Str(required=True, dump_to="UHostId"),
+    }
+
+
+class GetUHostRenewPriceResponseSchema(schema.ResponseSchema):
+    """GetUHostRenewPrice - 获取主机续费价格"""
+
+    fields = {
+        "PriceSet": fields.List(
+            models.BasePriceSetSchema(), required=False, load_from="PriceSet"
+        ),
+    }
+
+
+"""
 API: GetUHostUpgradePrice
 
 获取UHost实例升级配置的价格。可选配置范围请参考[[api:uhost-api:uhost_type|云主机机型说明]]。

@@ -135,15 +135,6 @@ class SrcAreaInfoSchema(schema.ResponseSchema):
     }
 
 
-class OutPublicIpInfoSchema(schema.ResponseSchema):
-    """OutPublicIpInfo - 线路回源IP信息"""
-
-    fields = {
-        "Area": fields.Str(required=False, load_from="Area"),
-        "IP": fields.Str(required=False, load_from="IP"),
-    }
-
-
 class AccelerationAreaInfosSchema(schema.ResponseSchema):
     """AccelerationAreaInfos -"""
 
@@ -162,6 +153,15 @@ class ForwardTaskSchema(schema.ResponseSchema):
         "Port": fields.Int(required=True, load_from="Port"),
         "Protocol": fields.Str(required=True, load_from="Protocol"),
         "RSPort": fields.Int(required=True, load_from="RSPort"),
+    }
+
+
+class OutPublicIpInfoSchema(schema.ResponseSchema):
+    """OutPublicIpInfo - 线路回源IP信息"""
+
+    fields = {
+        "Area": fields.Str(required=False, load_from="Area"),
+        "IP": fields.Str(required=False, load_from="IP"),
     }
 
 
@@ -240,16 +240,6 @@ class UGAATaskSchema(schema.ResponseSchema):
     }
 
 
-class UGAL4ForwarderSchema(schema.ResponseSchema):
-    """UGAL4Forwarder - UGA实例 4层转发器信息"""
-
-    fields = {
-        "Port": fields.Int(required=True, load_from="Port"),
-        "Protocol": fields.Str(required=True, load_from="Protocol"),
-        "RSPort": fields.Int(required=True, load_from="RSPort"),
-    }
-
-
 class UPathSetSchema(schema.ResponseSchema):
     """UPathSet - uga关联的upath信息"""
 
@@ -274,6 +264,16 @@ class UGAL7ForwarderSchema(schema.ResponseSchema):
         "RSPort": fields.Int(required=True, load_from="RSPort"),
         "SSLId": fields.Str(required=False, load_from="SSLId"),
         "SSLName": fields.Str(required=False, load_from="SSLName"),
+    }
+
+
+class UGAL4ForwarderSchema(schema.ResponseSchema):
+    """UGAL4Forwarder - UGA实例 4层转发器信息"""
+
+    fields = {
+        "Port": fields.Int(required=True, load_from="Port"),
+        "Protocol": fields.Str(required=True, load_from="Protocol"),
+        "RSPort": fields.Int(required=True, load_from="RSPort"),
     }
 
 
