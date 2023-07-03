@@ -212,6 +212,21 @@ class UnetShareBandwidthSetSchema(schema.ResponseSchema):
     }
 
 
+class EIPExclusiveInfoSchema(schema.ResponseSchema):
+    """EIPExclusiveInfo - EIP专属流量包信息"""
+
+    fields = {
+        "AccountId": fields.Int(required=False, load_from="AccountId"),
+        "AvailableSize": fields.Int(required=False, load_from="AvailableSize"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "EIPId": fields.Str(required=False, load_from="EIPId"),
+        "LastResetTime": fields.Int(required=False, load_from="LastResetTime"),
+        "NextResetTime": fields.Int(required=False, load_from="NextResetTime"),
+        "ResetPolicy": fields.Str(required=False, load_from="ResetPolicy"),
+        "TotalSize": fields.Int(required=False, load_from="TotalSize"),
+    }
+
+
 class EIPPayModeSetSchema(schema.ResponseSchema):
     """EIPPayModeSet - GetEIPPayModeEIP"""
 

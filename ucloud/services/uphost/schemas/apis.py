@@ -26,10 +26,36 @@ class CreatePHostParamDisksSchema(schema.RequestSchema):
     }
 
 
+class CreatePHostParamNetworkInterfaceEIPSchema(schema.RequestSchema):
+    """CreatePHostParamNetworkInterfaceEIP -"""
+
+    fields = {
+        "Bandwidth": fields.Str(required=False, dump_to="Bandwidth"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "OperatorName": fields.Str(required=False, dump_to="OperatorName"),
+        "PayMode": fields.Str(required=False, dump_to="PayMode"),
+        "ShareBandwidthId": fields.Str(
+            required=False, dump_to="ShareBandwidthId"
+        ),
+    }
+
+
+class CreatePHostParamNetworkInterfaceSchema(schema.RequestSchema):
+    """CreatePHostParamNetworkInterface -"""
+
+    fields = {
+        "EIP": CreatePHostParamNetworkInterfaceEIPSchema(
+            required=False, dump_to="EIP"
+        ),
+    }
+
+
 class CreatePHostRequestSchema(schema.RequestSchema):
     """CreatePHost - 指定数据中心，根据资源使用量创建指定数量的UPHost物理云主机实例。"""
 
     fields = {
+        "ActivityId": fields.Int(required=False, dump_to="ActivityId"),
+        "CharacterName": fields.Str(required=False, dump_to="CharacterName"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "Cluster": fields.Str(required=False, dump_to="Cluster"),
         "Count": fields.Int(
@@ -39,12 +65,16 @@ class CreatePHostRequestSchema(schema.RequestSchema):
         "Disks": fields.List(CreatePHostParamDisksSchema()),
         "ImageId": fields.Str(required=True, dump_to="ImageId"),
         "Name": fields.Str(required=False, dump_to="Name"),
+        "NetworkInterface": fields.List(
+            CreatePHostParamNetworkInterfaceSchema()
+        ),
         "Password": fields.Str(required=True, dump_to="Password"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Str(required=False, dump_to="Quantity"),
         "Raid": fields.Str(required=False, dump_to="Raid"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Remark": fields.Str(required=False, dump_to="Remark"),
+        "RuleId": fields.Int(required=False, dump_to="RuleId"),
         "SecurityGroupId": fields.Str(
             required=False, dump_to="SecurityGroupId"
         ),

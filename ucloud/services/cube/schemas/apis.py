@@ -11,21 +11,23 @@ from ucloud.services.cube.schemas import models
 """
 API: CreateCubeDeployment
 
-
+创建容器实例Deployment
 """
 
 
 class CreateCubeDeploymentRequestSchema(schema.RequestSchema):
-    """CreateCubeDeployment -"""
+    """CreateCubeDeployment - 创建容器实例Deployment"""
 
     fields = {
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "CpuPlatform": fields.Str(required=False, dump_to="CpuPlatform"),
         "Deployment": fields.Str(required=True, dump_to="Deployment"),
-        "KubeConfig": fields.Str(required=False, dump_to="KubeConfig"),
+        "KubeConfig": fields.Str(
+            required=False, dump_to="KubeConfig"
+        ),  # Deprecated, will be removed at 1.0
         "Name": fields.Str(required=False, dump_to="Name"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "Quantity": fields.Str(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SubnetId": fields.Str(required=True, dump_to="SubnetId"),
         "Tag": fields.Str(required=False, dump_to="Tag"),
@@ -35,10 +37,10 @@ class CreateCubeDeploymentRequestSchema(schema.RequestSchema):
 
 
 class CreateCubeDeploymentResponseSchema(schema.ResponseSchema):
-    """CreateCubeDeployment -"""
+    """CreateCubeDeployment - 创建容器实例Deployment"""
 
     fields = {
-        "Deployment": fields.Str(required=False, load_from="Deployment"),
+        "Deployment": fields.Str(required=True, load_from="Deployment"),
         "DeploymentId": fields.Str(required=True, load_from="DeploymentId"),
     }
 
@@ -46,36 +48,52 @@ class CreateCubeDeploymentResponseSchema(schema.ResponseSchema):
 """
 API: CreateCubePod
 
-
+创建一个容器实例
 """
 
 
 class CreateCubePodRequestSchema(schema.RequestSchema):
-    """CreateCubePod -"""
+    """CreateCubePod - 创建一个容器实例"""
 
     fields = {
-        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
-        "CouponId": fields.Str(required=False, dump_to="CouponId"),
-        "CpuPlatform": fields.Str(required=False, dump_to="CpuPlatform"),
-        "Group": fields.Str(required=False, dump_to="Group"),
-        "KubeConfig": fields.Str(required=False, dump_to="KubeConfig"),
-        "Name": fields.Str(required=False, dump_to="Name"),
+        "ChargeType": fields.Str(
+            required=False, dump_to="ChargeType"
+        ),  # Deprecated, will be removed at 1.0
+        "CouponId": fields.Str(
+            required=False, dump_to="CouponId"
+        ),  # Deprecated, will be removed at 1.0
+        "CpuPlatform": fields.Str(
+            required=False, dump_to="CpuPlatform"
+        ),  # Deprecated, will be removed at 1.0
+        "Group": fields.Str(
+            required=False, dump_to="Group"
+        ),  # Deprecated, will be removed at 1.0
+        "KubeConfig": fields.Str(
+            required=False, dump_to="KubeConfig"
+        ),  # Deprecated, will be removed at 1.0
+        "Name": fields.Str(
+            required=False, dump_to="Name"
+        ),  # Deprecated, will be removed at 1.0
         "Pod": fields.Str(required=True, dump_to="Pod"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "Quantity": fields.Int(
+            required=False, dump_to="Quantity"
+        ),  # Deprecated, will be removed at 1.0
         "Region": fields.Str(required=True, dump_to="Region"),
         "SubnetId": fields.Str(required=True, dump_to="SubnetId"),
-        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "Tag": fields.Str(
+            required=False, dump_to="Tag"
+        ),  # Deprecated, will be removed at 1.0
         "VPCId": fields.Str(required=True, dump_to="VPCId"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
 
 class CreateCubePodResponseSchema(schema.ResponseSchema):
-    """CreateCubePod -"""
+    """CreateCubePod - 创建一个容器实例"""
 
     fields = {
-        "CubeId": fields.Str(required=False, load_from="CubeId"),
+        "CubeId": fields.Str(required=True, load_from="CubeId"),
         "Pod": fields.Str(required=True, load_from="Pod"),
     }
 
@@ -83,23 +101,27 @@ class CreateCubePodResponseSchema(schema.ResponseSchema):
 """
 API: DeleteCubeDeployment
 
-
+删除容器实例Deployment
 """
 
 
 class DeleteCubeDeploymentRequestSchema(schema.RequestSchema):
-    """DeleteCubeDeployment -"""
+    """DeleteCubeDeployment - 删除容器实例Deployment"""
 
     fields = {
-        "DeploymentId": fields.Str(required=True, dump_to="DeploymentId"),
+        "DeploymentId": fields.Str(
+            required=True, dump_to="DeploymentId"
+        ),  # Deprecated, will be removed at 1.0
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
+        "Zone": fields.Str(
+            required=False, dump_to="Zone"
+        ),  # Deprecated, will be removed at 1.0
     }
 
 
 class DeleteCubeDeploymentResponseSchema(schema.ResponseSchema):
-    """DeleteCubeDeployment -"""
+    """DeleteCubeDeployment - 删除容器实例Deployment"""
 
     fields = {}
 
@@ -107,25 +129,25 @@ class DeleteCubeDeploymentResponseSchema(schema.ResponseSchema):
 """
 API: DeleteCubePod
 
-
+删除容器实例
 """
 
 
 class DeleteCubePodRequestSchema(schema.RequestSchema):
-    """DeleteCubePod -"""
+    """DeleteCubePod - 删除容器实例"""
 
     fields = {
         "CubeId": fields.Str(required=False, dump_to="CubeId"),
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "ReleaseEIP": fields.Bool(required=False, dump_to="ReleaseEIP"),
+        "ReleaseEIP": fields.Str(required=False, dump_to="ReleaseEIP"),
         "Uid": fields.Str(required=False, dump_to="Uid"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
 
 class DeleteCubePodResponseSchema(schema.ResponseSchema):
-    """DeleteCubePod -"""
+    """DeleteCubePod - 删除容器实例"""
 
     fields = {}
 
@@ -133,23 +155,23 @@ class DeleteCubePodResponseSchema(schema.ResponseSchema):
 """
 API: GetCubeDeployment
 
-
+获取容器实例Deployment详细信息
 """
 
 
 class GetCubeDeploymentRequestSchema(schema.RequestSchema):
-    """GetCubeDeployment -"""
+    """GetCubeDeployment - 获取容器实例Deployment详细信息"""
 
     fields = {
         "DeploymentId": fields.Str(required=True, dump_to="DeploymentId"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
 
 class GetCubeDeploymentResponseSchema(schema.ResponseSchema):
-    """GetCubeDeployment -"""
+    """GetCubeDeployment - 获取容器实例Deployment详细信息"""
 
     fields = {
         "Deployment": fields.Str(required=True, load_from="Deployment"),
@@ -159,28 +181,28 @@ class GetCubeDeploymentResponseSchema(schema.ResponseSchema):
 """
 API: GetCubeExecToken
 
-
+获取容器实例执行token
 """
 
 
 class GetCubeExecTokenRequestSchema(schema.RequestSchema):
-    """GetCubeExecToken -"""
+    """GetCubeExecToken - 获取容器实例执行token"""
 
     fields = {
         "ContainerName": fields.Str(required=True, dump_to="ContainerName"),
         "CubeId": fields.Str(required=False, dump_to="CubeId"),
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Uid": fields.Str(required=False, dump_to="Uid"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
 
 class GetCubeExecTokenResponseSchema(schema.ResponseSchema):
-    """GetCubeExecToken -"""
+    """GetCubeExecToken - 获取容器实例执行token"""
 
     fields = {
-        "TerminalUrl": fields.Str(required=False, load_from="TerminalUrl"),
+        "TerminalUrl": fields.Str(required=True, load_from="TerminalUrl"),
         "Token": fields.Str(required=True, load_from="Token"),
     }
 
@@ -188,23 +210,23 @@ class GetCubeExecTokenResponseSchema(schema.ResponseSchema):
 """
 API: GetCubeExtendInfo
 
-
+获取容器实例附加信息
 """
 
 
 class GetCubeExtendInfoRequestSchema(schema.RequestSchema):
-    """GetCubeExtendInfo -"""
+    """GetCubeExtendInfo - 获取容器实例附加信息"""
 
     fields = {
-        "CubeIds": fields.Str(required=True, dump_to="CubeIds"),
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "CubeIds": fields.Str(required=False, dump_to="CubeIds"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
 
 class GetCubeExtendInfoResponseSchema(schema.ResponseSchema):
-    """GetCubeExtendInfo -"""
+    """GetCubeExtendInfo - 获取容器实例附加信息"""
 
     fields = {
         "ExtendInfo": fields.List(
@@ -216,18 +238,18 @@ class GetCubeExtendInfoResponseSchema(schema.ResponseSchema):
 """
 API: GetCubeMetrics
 
-
+获取容器实例指标
 """
 
 
 class GetCubeMetricsRequestSchema(schema.RequestSchema):
-    """GetCubeMetrics -"""
+    """GetCubeMetrics - 获取容器实例指标"""
 
     fields = {
-        "BeginTime": fields.Int(required=True, dump_to="BeginTime"),
+        "BeginTime": fields.Str(required=True, dump_to="BeginTime"),
         "ContainerName": fields.Str(required=True, dump_to="ContainerName"),
-        "EndTime": fields.Int(required=True, dump_to="EndTime"),
-        "MetricName": fields.List(fields.Str()),
+        "EndTime": fields.Str(required=True, dump_to="EndTime"),
+        "MetricName": fields.Str(required=True, dump_to="MetricName"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
@@ -236,13 +258,15 @@ class GetCubeMetricsRequestSchema(schema.RequestSchema):
 
 
 class GetCubeMetricsResponseSchema(schema.ResponseSchema):
-    """GetCubeMetrics -"""
+    """GetCubeMetrics - 获取容器实例指标"""
 
     fields = {
         "DataSets": fields.List(
-            models.MetricDataSetSchema(), required=False, load_from="DataSets"
+            models.MetricDataSetSchema(), required=True, load_from="DataSets"
         ),
-        "Message": fields.Str(required=False, load_from="Message"),
+        "Message": fields.Str(
+            required=False, load_from="Message"
+        ),  # Deprecated, will be removed at 1.0
     }
 
 
@@ -307,25 +331,25 @@ class GetCubePriceResponseSchema(schema.ResponseSchema):
 """
 API: GetCubeToken
 
-
+获取容器实例Token
 """
 
 
 class GetCubeTokenRequestSchema(schema.RequestSchema):
-    """GetCubeToken -"""
+    """GetCubeToken - 获取容器实例Token"""
 
     fields = {
         "ContainerName": fields.Str(required=True, dump_to="ContainerName"),
         "CubeId": fields.Str(required=False, dump_to="CubeId"),
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Uid": fields.Str(required=False, dump_to="Uid"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
 
 class GetCubeTokenResponseSchema(schema.ResponseSchema):
-    """GetCubeToken -"""
+    """GetCubeToken - 获取容器实例Token"""
 
     fields = {
         "Token": fields.Str(required=True, load_from="Token"),
@@ -365,12 +389,12 @@ class ListCubeDeploymentResponseSchema(schema.ResponseSchema):
 """
 API: ListCubePod
 
-
+获取容器实例详细列表
 """
 
 
 class ListCubePodRequestSchema(schema.RequestSchema):
-    """ListCubePod -"""
+    """ListCubePod - 获取容器实例详细列表"""
 
     fields = {
         "DeploymentId": fields.Str(required=False, dump_to="DeploymentId"),
@@ -381,16 +405,16 @@ class ListCubePodRequestSchema(schema.RequestSchema):
         "Region": fields.Str(required=True, dump_to="Region"),
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
         "VPCId": fields.Str(required=False, dump_to="VPCId"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
 
 class ListCubePodResponseSchema(schema.ResponseSchema):
-    """ListCubePod -"""
+    """ListCubePod - 获取容器实例详细列表"""
 
     fields = {
         "Pods": fields.List(fields.Str(), required=True, load_from="Pods"),
-        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
     }
 
 
@@ -473,24 +497,24 @@ class RebootCubePodResponseSchema(schema.ResponseSchema):
 """
 API: RenewCubePod
 
-
+更新容器实例
 """
 
 
 class RenewCubePodRequestSchema(schema.RequestSchema):
-    """RenewCubePod -"""
+    """RenewCubePod - 更新容器实例"""
 
     fields = {
-        "CubeId": fields.Str(required=True, dump_to="CubeId"),
+        "CubeId": fields.Str(required=False, dump_to="CubeId"),
         "Pod": fields.Str(required=True, dump_to="Pod"),
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
 
 class RenewCubePodResponseSchema(schema.ResponseSchema):
-    """RenewCubePod -"""
+    """RenewCubePod - 更新容器实例"""
 
     fields = {
         "Pod": fields.Str(required=True, load_from="Pod"),

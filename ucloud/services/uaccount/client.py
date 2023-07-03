@@ -22,7 +22,7 @@ class UAccountClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID，请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_ 的描述。不填写为创建时间最早的项目。
+        - **ProjectId** (str) - (Config) 项目ID，请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 的描述。不填写为创建时间最早的项目。
         - **CharacterId** (str) - (Required) 被加入成员归属角色ID
         - **MemberEmail** (str) - (Required) 被加入成员Email
 

@@ -549,6 +549,32 @@ class DisassociateFirewallResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetEIPExclusiveUTPInfo
+
+获取EIP专属流量包信息
+"""
+
+
+class GetEIPExclusiveUTPInfoRequestSchema(schema.RequestSchema):
+    """GetEIPExclusiveUTPInfo - 获取EIP专属流量包信息"""
+
+    fields = {
+        "EIPId": fields.Str(required=True, dump_to="EIPId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class GetEIPExclusiveUTPInfoResponseSchema(schema.ResponseSchema):
+    """GetEIPExclusiveUTPInfo - 获取EIP专属流量包信息"""
+
+    fields = {
+        "EIPExclusiveInfo": models.EIPExclusiveInfoSchema(),
+    }
+
+
+"""
 API: GetEIPPayMode
 
 获取弹性IP计费模式

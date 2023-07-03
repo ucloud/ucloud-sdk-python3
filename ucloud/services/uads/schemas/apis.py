@@ -104,7 +104,9 @@ class BuyHighProtectGameServiceRequestSchema(schema.RequestSchema):
     """BuyHighProtectGameService - 购买高防服务"""
 
     fields = {
-        "AccessMode": fields.Str(required=False, dump_to="AccessMode"),
+        "AccessMode": fields.Str(
+            required=False, dump_to="AccessMode"
+        ),  # Deprecated, will be removed at 1.0
         "AreaLine": fields.Str(required=True, dump_to="AreaLine"),
         "ChargeType": fields.Str(required=True, dump_to="ChargeType"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
@@ -607,7 +609,9 @@ class GetBuyNapServicePriceRequestSchema(schema.RequestSchema):
     """GetBuyNapServicePrice - 获取高防价格"""
 
     fields = {
-        "AccessMode": fields.Str(required=False, dump_to="AccessMode"),
+        "AccessMode": fields.Str(
+            required=False, dump_to="AccessMode"
+        ),  # Deprecated, will be removed at 1.0
         "AreaLine": fields.Str(required=True, dump_to="AreaLine"),
         "ChargeType": fields.Str(required=True, dump_to="ChargeType"),
         "DefenceDDosBaseFlowArr": fields.List(fields.Str()),

@@ -136,6 +136,13 @@ UBill
    :members:
 
 
+UCompShare
+----------
+
+.. autoclass:: ucloud.services.ucompshare.client.UCompShareClient
+   :members:
+
+
 UDBProxy
 --------
 

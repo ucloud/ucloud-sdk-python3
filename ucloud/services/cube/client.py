@@ -16,27 +16,26 @@ class CubeClient(Client):
     def create_cube_deployment(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """CreateCubeDeployment -
+        """CreateCubeDeployment - 创建容器实例Deployment
 
         **Request**
 
-        - **ProjectId** (str) - (Config)
-        - **Region** (str) - (Config)
-        - **Deployment** (str) - (Required)
-        - **SubnetId** (str) - (Required)
-        - **VPCId** (str) - (Required)
-        - **Zone** (str) - (Required)
-        - **ChargeType** (str) -
-        - **CpuPlatform** (str) -
-        - **KubeConfig** (str) -
-        - **Name** (str) -
-        - **Quantity** (int) -
-        - **Tag** (str) -
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Deployment** (str) - (Required) Deployment yaml，使用base64编码
+        - **SubnetId** (str) - (Required) Deployment所属子网
+        - **VPCId** (str) - (Required) Deployment所属VPC
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ChargeType** (str) - 计费模式
+        - **CpuPlatform** (str) - CPU平台
+        - **Name** (str) - Deployment名称
+        - **Quantity** (str) - 数量，默认为1
+        - **Tag** (str) - 标签
 
         **Response**
 
-        - **Deployment** (str) -
-        - **DeploymentId** (str) -
+        - **Deployment** (str) - Deployment yaml，使用base64编码
+        - **DeploymentId** (str) - Deployment ID
 
         """
         # build request
@@ -56,29 +55,21 @@ class CubeClient(Client):
     def create_cube_pod(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """CreateCubePod -
+        """CreateCubePod - 创建一个容器实例
 
         **Request**
 
-        - **ProjectId** (str) - (Config)
-        - **Region** (str) - (Config)
-        - **Pod** (str) - (Required)
-        - **SubnetId** (str) - (Required)
-        - **VPCId** (str) - (Required)
-        - **Zone** (str) - (Required)
-        - **ChargeType** (str) -
-        - **CouponId** (str) -
-        - **CpuPlatform** (str) -
-        - **Group** (str) -
-        - **KubeConfig** (str) -
-        - **Name** (str) -
-        - **Quantity** (int) -
-        - **Tag** (str) -
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Pod** (str) - (Required) Pod yaml，使用base64编码
+        - **SubnetId** (str) - (Required) 容器实例所属的子网ID
+        - **VPCId** (str) - (Required) 容器实例所属的VPC ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
-        - **CubeId** (str) -
-        - **Pod** (str) -
+        - **CubeId** (str) - 容器实例ID
+        - **Pod** (str) - Pod yaml，使用base64编码
 
         """
         # build request
@@ -98,14 +89,13 @@ class CubeClient(Client):
     def delete_cube_deployment(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DeleteCubeDeployment -
+        """DeleteCubeDeployment - 删除容器实例Deployment
 
         **Request**
 
-        - **ProjectId** (str) - (Config)
-        - **Region** (str) - (Config)
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **DeploymentId** (str) - (Required)
-        - **Zone** (str) -
 
         **Response**
 
@@ -119,25 +109,22 @@ class CubeClient(Client):
         req and d.update(req)
         d = apis.DeleteCubeDeploymentRequestSchema().dumps(d)
 
-        # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
         resp = self.invoke("DeleteCubeDeployment", d, **kwargs)
         return apis.DeleteCubeDeploymentResponseSchema().loads(resp)
 
     def delete_cube_pod(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DeleteCubePod -
+        """DeleteCubePod - 删除容器实例
 
         **Request**
 
-        - **ProjectId** (str) - (Config)
-        - **Region** (str) - (Config)
-        - **CubeId** (str) -
-        - **ReleaseEIP** (bool) -
-        - **Uid** (str) -
-        - **Zone** (str) -
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CubeId** (str) - 要删除的容器实例ID，若填写了Uid则可忽略
+        - **ReleaseEIP** (str) - 要释放的EIP，如果容器实例绑定了EIP则可以填写，会将EIP一并释放。否则EIP会被保留。
+        - **Uid** (str) - 要删除的容器实例UID，若填写了CubeId则可忽略
 
         **Response**
 
@@ -151,27 +138,24 @@ class CubeClient(Client):
         req and d.update(req)
         d = apis.DeleteCubePodRequestSchema().dumps(d)
 
-        # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
         resp = self.invoke("DeleteCubePod", d, **kwargs)
         return apis.DeleteCubePodResponseSchema().loads(resp)
 
     def get_cube_deployment(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """GetCubeDeployment -
+        """GetCubeDeployment - 获取容器实例Deployment详细信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config)
-        - **Region** (str) - (Config)
-        - **DeploymentId** (str) - (Required)
-        - **Zone** (str) -
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **DeploymentId** (str) - (Required) Deployment ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
-        - **Deployment** (str) -
+        - **Deployment** (str) - Deployment yaml，使用base64编码
 
         """
         # build request
@@ -182,30 +166,27 @@ class CubeClient(Client):
         req and d.update(req)
         d = apis.GetCubeDeploymentRequestSchema().dumps(d)
 
-        # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
         resp = self.invoke("GetCubeDeployment", d, **kwargs)
         return apis.GetCubeDeploymentResponseSchema().loads(resp)
 
     def get_cube_exec_token(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """GetCubeExecToken -
+        """GetCubeExecToken - 获取容器实例执行token
 
         **Request**
 
-        - **ProjectId** (str) - (Config)
-        - **Region** (str) - (Config)
-        - **ContainerName** (str) - (Required)
-        - **CubeId** (str) -
-        - **Uid** (str) -
-        - **Zone** (str) -
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ContainerName** (str) - (Required) 要执行的容器名称
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CubeId** (str) - 容器实例ID，若填写了Uid则可忽略
+        - **Uid** (str) - 容器实例UID，若填写了CubeId则可忽略
 
         **Response**
 
-        - **TerminalUrl** (str) -
-        - **Token** (str) -
+        - **TerminalUrl** (str) - 终端url
+        - **Token** (str) - 执行Token
 
         """
         # build request
@@ -216,23 +197,20 @@ class CubeClient(Client):
         req and d.update(req)
         d = apis.GetCubeExecTokenRequestSchema().dumps(d)
 
-        # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
         resp = self.invoke("GetCubeExecToken", d, **kwargs)
         return apis.GetCubeExecTokenResponseSchema().loads(resp)
 
     def get_cube_extend_info(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """GetCubeExtendInfo -
+        """GetCubeExtendInfo - 获取容器实例附加信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config)
-        - **Region** (str) - (Config)
-        - **CubeIds** (str) - (Required)
-        - **Zone** (str) -
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CubeIds** (str) - 容器实例ID，用逗号分割
 
         **Response**
 
@@ -241,28 +219,28 @@ class CubeClient(Client):
         **Response Model**
 
         **CubeExtendInfo**
-        - **CubeId** (str) -
+        - **CubeId** (str) - Cube的Id
         - **Eip** (list) - 见 **EIPSet** 模型定义
-        - **Expiration** (int) -
-        - **Name** (str) -
-        - **Tag** (str) -
+        - **Expiration** (int) - 资源有效期
+        - **Name** (str) - Cube的名称
+        - **Tag** (str) - 业务组名称
 
 
         **EIPSet**
-        - **Bandwidth** (int) -
-        - **BandwidthType** (int) -
-        - **CreateTime** (int) -
+        - **Bandwidth** (int) - EIP带宽值
+        - **BandwidthType** (int) - 带宽类型0标准普通带宽，1表示共享带宽
+        - **CreateTime** (int) - EIP创建时间
         - **EIPAddr** (list) - 见 **EIPAddr** 模型定义
-        - **EIPId** (str) -
-        - **PayMode** (str) -
-        - **Resource** (str) -
-        - **Status** (str) -
-        - **Weight** (int) -
+        - **EIPId** (str) - EIPId
+        - **PayMode** (str) - 付费模式，带宽付费或者流量付费
+        - **Resource** (str) - EIP绑定对象的资源Id
+        - **Status** (str) - EIP状态，表示使用中或者空闲
+        - **Weight** (int) - EIP权重
 
 
         **EIPAddr**
-        - **IP** (str) -
-        - **OperatorName** (str) -
+        - **IP** (str) - IP地址
+        - **OperatorName** (str) - 线路名称BGP或者internalation
 
 
         """
@@ -274,32 +252,28 @@ class CubeClient(Client):
         req and d.update(req)
         d = apis.GetCubeExtendInfoRequestSchema().dumps(d)
 
-        # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
         resp = self.invoke("GetCubeExtendInfo", d, **kwargs)
         return apis.GetCubeExtendInfoResponseSchema().loads(resp)
 
     def get_cube_metrics(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """GetCubeMetrics -
+        """GetCubeMetrics - 获取容器实例指标
 
         **Request**
 
-        - **ProjectId** (str) - (Config)
-        - **Region** (str) - (Config)
-        - **BeginTime** (int) - (Required)
-        - **ContainerName** (str) - (Required)
-        - **EndTime** (int) - (Required)
-        - **ResourceId** (str) - (Required)
-        - **Zone** (str) - (Required)
-        - **MetricName** (list) -
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **BeginTime** (str) - (Required) 开始时间
+        - **ContainerName** (str) - (Required) 容器名称
+        - **EndTime** (str) - (Required) 结束时间
+        - **MetricName** (str) - (Required) 指标名称
+        - **ResourceId** (str) - (Required) 资源ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
         - **DataSets** (list) - 见 **MetricDataSet** 模型定义
-        - **Message** (str) -
 
         **Response Model**
 
@@ -321,9 +295,6 @@ class CubeClient(Client):
         }
         req and d.update(req)
         d = apis.GetCubeMetricsRequestSchema().dumps(d)
-
-        # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("GetCubeMetrics", d, **kwargs)
         return apis.GetCubeMetricsResponseSchema().loads(resp)
@@ -397,20 +368,20 @@ class CubeClient(Client):
     def get_cube_token(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """GetCubeToken -
+        """GetCubeToken - 获取容器实例Token
 
         **Request**
 
-        - **ProjectId** (str) - (Config)
-        - **Region** (str) - (Config)
-        - **ContainerName** (str) - (Required)
-        - **CubeId** (str) -
-        - **Uid** (str) -
-        - **Zone** (str) -
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ContainerName** (str) - (Required) 容器名称
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CubeId** (str) - 容器实例ID，若填写了Uid则可忽略
+        - **Uid** (str) - 容器实例UID，若填写了CubeId则可忽略
 
         **Response**
 
-        - **Token** (str) -
+        - **Token** (str) - 容器实例Token
 
         """
         # build request
@@ -420,9 +391,6 @@ class CubeClient(Client):
         }
         req and d.update(req)
         d = apis.GetCubeTokenRequestSchema().dumps(d)
-
-        # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("GetCubeToken", d, **kwargs)
         return apis.GetCubeTokenResponseSchema().loads(resp)
@@ -463,24 +431,24 @@ class CubeClient(Client):
     def list_cube_pod(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ListCubePod -
+        """ListCubePod - 获取容器实例详细列表
 
         **Request**
 
-        - **ProjectId** (str) - (Config)
-        - **Region** (str) - (Config)
-        - **DeploymentId** (str) -
-        - **Group** (str) -
-        - **Limit** (int) -
-        - **Offset** (int) -
-        - **SubnetId** (str) -
-        - **VPCId** (str) -
-        - **Zone** (str) -
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **DeploymentId** (str) - 容器实例所属Deployment
+        - **Group** (str) - 容器实例组
+        - **Limit** (int) - 返回数据长度，默认为20，最大100
+        - **Offset** (int) - 列表起始位置偏移量，默认为0
+        - **SubnetId** (str) - 容器实例所属子网
+        - **VPCId** (str) - 容器实例所属VPC
 
         **Response**
 
-        - **Pods** (list) -
-        - **TotalCount** (int) -
+        - **Pods** (list) - 容器实例yaml列表，以base64编码
+        - **TotalCount** (int) - 容器实例总数
 
         """
         # build request
@@ -490,9 +458,6 @@ class CubeClient(Client):
         }
         req and d.update(req)
         d = apis.ListCubePodRequestSchema().dumps(d)
-
-        # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("ListCubePod", d, **kwargs)
         return apis.ListCubePodResponseSchema().loads(resp)
@@ -593,19 +558,19 @@ class CubeClient(Client):
     def renew_cube_pod(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """RenewCubePod -
+        """RenewCubePod - 更新容器实例
 
         **Request**
 
-        - **ProjectId** (str) - (Config)
-        - **Region** (str) - (Config)
-        - **CubeId** (str) - (Required)
-        - **Pod** (str) - (Required)
-        - **Zone** (str) -
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Pod** (str) - (Required) Pod yaml，以base64编码
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CubeId** (str) - 要更新的容器实例ID
 
         **Response**
 
-        - **Pod** (str) -
+        - **Pod** (str) - Pod yaml，以base64编码
 
         """
         # build request
@@ -615,9 +580,6 @@ class CubeClient(Client):
         }
         req and d.update(req)
         d = apis.RenewCubePodRequestSchema().dumps(d)
-
-        # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("RenewCubePod", d, **kwargs)
         return apis.RenewCubePodResponseSchema().loads(resp)

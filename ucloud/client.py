@@ -122,6 +122,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def ucompshare(self):
+        from ucloud.services.ucompshare.client import UCompShareClient
+
+        return UCompShareClient(
+            self._auto_config("ucompshare"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def udb(self):
         from ucloud.services.udb.client import UDBClient
 

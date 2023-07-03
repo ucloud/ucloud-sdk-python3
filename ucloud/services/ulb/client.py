@@ -459,6 +459,8 @@ class ULBClient(Client):
         - **CreateTime** (int) - SSL证书的创建时间
         - **Domains** (str) - USSL证书平台的域名,只有当SSLSource为1时才出现
         - **HashValue** (str) - SSL证书的HASH值
+        - **NotAfter** (int) - 证书过期时间,只有当SSLSource为1时才出现
+        - **NotBefore** (int) - 证书颁发时间,只有当SSLSource为1时才出现
         - **SSLContent** (str) - SSL证书的内容
         - **SSLId** (str) - SSL证书的Id
         - **SSLName** (str) - SSL证书的名字
@@ -1114,6 +1116,35 @@ class ULBClient(Client):
 
         resp = self.invoke("UpdateSSLAttribute", d, **kwargs)
         return apis.UpdateSSLAttributeResponseSchema().loads(resp)
+
+    def update_ssl_binding(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateSSLBinding - 将VServer绑定的证书更换为另一个证书
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **NewSSLId** (str) - (Required) VServer实例需要绑定的新的证书
+        - **OldSSLId** (str) - (Required) VServer实例绑定的旧的证书
+        - **ListenerId** (str) - 所操作VServer实例ID（仅ListenerId传参时，将更换该Vserver所有原证书为OldSSLId的绑定关系；LoadBalancerId和ListenerId都不传参则将更新该项目下所有原证书为OldSSLId的绑定关系；若LoadBalancerId与ListenerId皆有传参，则会强校验ULB与Vsserver的所属关系，将更换该ulb下vserver所绑定的OldSSLId为NewSSLId）
+        - **LoadBalancerId** (str) - 所操作ULB实例ID（仅LoadBalancerId传参时，将更换该ULB所有原证书为OldSSLId的绑定关系；LoadBalancerId和ListenerId都不传参则将更新该项目下所有原证书为OldSSLId的绑定关系）
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateSSLBindingRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateSSLBinding", d, **kwargs)
+        return apis.UpdateSSLBindingResponseSchema().loads(resp)
 
     def update_security_policy(
         self, req: typing.Optional[dict] = None, **kwargs
