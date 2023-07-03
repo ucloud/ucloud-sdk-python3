@@ -83,6 +83,16 @@ class ServiceInfoSchema(schema.ResponseSchema):
     }
 
 
+class EIPAddrSetSchema(schema.ResponseSchema):
+    """EIPAddrSet - EIP地址信息"""
+
+    fields = {
+        "EIPType": fields.Str(required=False, load_from="EIPType"),
+        "IP": fields.Str(required=False, load_from="IP"),
+        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
+    }
+
+
 class ResouceSchema(schema.ResponseSchema):
     """Resouce - 资源信息"""
 
@@ -92,16 +102,6 @@ class ResouceSchema(schema.ResponseSchema):
         "ResourceName": fields.Str(required=False, load_from="ResourceName"),
         "ResourceType": fields.Str(required=False, load_from="ResourceType"),
         "Zone": fields.Str(required=False, load_from="Zone"),
-    }
-
-
-class EIPAddrSetSchema(schema.ResponseSchema):
-    """EIPAddrSet - EIP地址信息"""
-
-    fields = {
-        "EIPType": fields.Str(required=False, load_from="EIPType"),
-        "IP": fields.Str(required=False, load_from="IP"),
-        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
     }
 
 

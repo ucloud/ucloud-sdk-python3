@@ -459,11 +459,9 @@ class DescribeImageResponseSchema(schema.ResponseSchema):
     """DescribeImage - 获取指定数据中心镜像列表，用户可通过指定操作系统类型，镜像Id进行过滤。"""
 
     fields = {
-        "Action": fields.Str(required=True, load_from="Action"),
         "ImageSet": fields.List(
             models.UHostImageSetSchema(), required=False, load_from="ImageSet"
         ),
-        "RetCode": fields.Int(required=True, load_from="RetCode"),
         "TotalCount": fields.Int(required=False, load_from="TotalCount"),
     }
 

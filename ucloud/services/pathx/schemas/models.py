@@ -231,6 +231,28 @@ class AccelerationInfoSchema(schema.ResponseSchema):
     }
 
 
+class UGAL7ForwarderSchema(schema.ResponseSchema):
+    """UGAL7Forwarder - UGA实例 7层转发器信息"""
+
+    fields = {
+        "Port": fields.Int(required=True, load_from="Port"),
+        "Protocol": fields.Str(required=True, load_from="Protocol"),
+        "RSPort": fields.Int(required=True, load_from="RSPort"),
+        "SSLId": fields.Str(required=False, load_from="SSLId"),
+        "SSLName": fields.Str(required=False, load_from="SSLName"),
+    }
+
+
+class UGAL4ForwarderSchema(schema.ResponseSchema):
+    """UGAL4Forwarder - UGA实例 4层转发器信息"""
+
+    fields = {
+        "Port": fields.Int(required=True, load_from="Port"),
+        "Protocol": fields.Str(required=True, load_from="Protocol"),
+        "RSPort": fields.Int(required=True, load_from="RSPort"),
+    }
+
+
 class UGAATaskSchema(schema.ResponseSchema):
     """UGAATask - 用户在UGAA实例下配置的多端口任务"""
 
@@ -252,28 +274,6 @@ class UPathSetSchema(schema.ResponseSchema):
         "LineToName": fields.Str(required=False, load_from="LineToName"),
         "UPathId": fields.Str(required=False, load_from="UPathId"),
         "UPathName": fields.Str(required=False, load_from="UPathName"),
-    }
-
-
-class UGAL7ForwarderSchema(schema.ResponseSchema):
-    """UGAL7Forwarder - UGA实例 7层转发器信息"""
-
-    fields = {
-        "Port": fields.Int(required=True, load_from="Port"),
-        "Protocol": fields.Str(required=True, load_from="Protocol"),
-        "RSPort": fields.Int(required=True, load_from="RSPort"),
-        "SSLId": fields.Str(required=False, load_from="SSLId"),
-        "SSLName": fields.Str(required=False, load_from="SSLName"),
-    }
-
-
-class UGAL4ForwarderSchema(schema.ResponseSchema):
-    """UGAL4Forwarder - UGA实例 4层转发器信息"""
-
-    fields = {
-        "Port": fields.Int(required=True, load_from="Port"),
-        "Protocol": fields.Str(required=True, load_from="Protocol"),
-        "RSPort": fields.Int(required=True, load_from="RSPort"),
     }
 
 

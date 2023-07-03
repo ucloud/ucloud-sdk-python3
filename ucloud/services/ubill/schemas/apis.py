@@ -56,17 +56,18 @@ class GetBalanceResponseSchema(schema.ResponseSchema):
 """
 API: GetBillDataFileUrl
 
-生成账单数据文件下载的 url
+生成账单数据文件下载的 url，包含三类文件，1. 已支付总览账单(支持CSV和PDF,从2023年03月开始支持PDF)；2. 未支付总览文件(支持CSV，只有当月账期可以查看)；3 账单详情文件(支持CSV)。           备注：文件生成有延迟，若返回值 IsValid=‘no’，需要使用者发起重试。
 """
 
 
 class GetBillDataFileUrlRequestSchema(schema.RequestSchema):
-    """GetBillDataFileUrl - 生成账单数据文件下载的 url"""
+    """GetBillDataFileUrl - 生成账单数据文件下载的 url，包含三类文件，1. 已支付总览账单(支持CSV和PDF,从2023年03月开始支持PDF)；2. 未支付总览文件(支持CSV，只有当月账期可以查看)；3 账单详情文件(支持CSV)。           备注：文件生成有延迟，若返回值 IsValid=‘no’，需要使用者发起重试。"""
 
     fields = {
         "BillPeriod": fields.Int(required=False, dump_to="BillPeriod"),
         "BillType": fields.Int(required=True, dump_to="BillType"),
         "BillingCycle": fields.Str(required=True, dump_to="BillingCycle"),
+        "Format": fields.Str(required=False, dump_to="Format"),
         "PaidType": fields.Int(required=False, dump_to="PaidType"),
         "RequireVersion": fields.Str(required=False, dump_to="RequireVersion"),
         "Version": fields.Str(required=False, dump_to="Version"),
@@ -74,7 +75,7 @@ class GetBillDataFileUrlRequestSchema(schema.RequestSchema):
 
 
 class GetBillDataFileUrlResponseSchema(schema.ResponseSchema):
-    """GetBillDataFileUrl - 生成账单数据文件下载的 url"""
+    """GetBillDataFileUrl - 生成账单数据文件下载的 url，包含三类文件，1. 已支付总览账单(支持CSV和PDF,从2023年03月开始支持PDF)；2. 未支付总览文件(支持CSV，只有当月账期可以查看)；3 账单详情文件(支持CSV)。           备注：文件生成有延迟，若返回值 IsValid=‘no’，需要使用者发起重试。"""
 
     fields = {
         "FileUrl": fields.Str(required=False, load_from="FileUrl"),

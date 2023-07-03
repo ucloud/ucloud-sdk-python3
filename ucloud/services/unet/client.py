@@ -706,6 +706,47 @@ class UNetClient(Client):
         resp = self.invoke("DisassociateFirewall", d, **kwargs)
         return apis.DisassociateFirewallResponseSchema().loads(resp)
 
+    def get_eip_exclusive_utp_info(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetEIPExclusiveUTPInfo - 获取EIP专属流量包信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **EIPId** (str) - (Required) EIP资源Id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **EIPExclusiveInfo** (dict) - 见 **EIPExclusiveInfo** 模型定义
+
+        **Response Model**
+
+        **EIPExclusiveInfo**
+        - **AccountId** (int) -
+        - **AvailableSize** (int) - 专属流量包剩余可用规格（单位MB）
+        - **CreateTime** (int) - 资源创建时间
+        - **EIPId** (str) - EIP资源Id
+        - **LastResetTime** (int) - 专属流量包上次重置时间
+        - **NextResetTime** (int) - 专属流量包下次重置时间
+        - **ResetPolicy** (str) - 专属流量包重置策略枚举：Day、Month、Year
+        - **TotalSize** (int) - 专属流量包总规格（单位MB）
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetEIPExclusiveUTPInfoRequestSchema().dumps(d)
+
+        resp = self.invoke("GetEIPExclusiveUTPInfo", d, **kwargs)
+        return apis.GetEIPExclusiveUTPInfoResponseSchema().loads(resp)
+
     def get_eip_pay_mode(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:

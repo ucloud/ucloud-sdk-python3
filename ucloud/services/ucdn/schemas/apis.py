@@ -874,12 +874,12 @@ class GetUcdnDomainOriginRequestNumResponseSchema(schema.ResponseSchema):
 """
 API: GetUcdnDomainPrefetchEnable
 
-获取域名预取开启状态
+
 """
 
 
 class GetUcdnDomainPrefetchEnableRequestSchema(schema.RequestSchema):
-    """GetUcdnDomainPrefetchEnable - 获取域名预取开启状态"""
+    """GetUcdnDomainPrefetchEnable -"""
 
     fields = {
         "DomainId": fields.Str(required=True, dump_to="DomainId"),
@@ -888,10 +888,49 @@ class GetUcdnDomainPrefetchEnableRequestSchema(schema.RequestSchema):
 
 
 class GetUcdnDomainPrefetchEnableResponseSchema(schema.ResponseSchema):
-    """GetUcdnDomainPrefetchEnable - 获取域名预取开启状态"""
+    """GetUcdnDomainPrefetchEnable -"""
 
     fields = {
         "Enable": fields.Int(required=False, load_from="Enable"),
+    }
+
+
+"""
+API: GetUcdnDomainPrefetchRefreshState
+
+获取域名预取刷新配额信息
+"""
+
+
+class GetUcdnDomainPrefetchRefreshStateRequestSchema(schema.RequestSchema):
+    """GetUcdnDomainPrefetchRefreshState - 获取域名预取刷新配额信息"""
+
+    fields = {
+        "DomainId": fields.Str(required=True, dump_to="DomainId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+    }
+
+
+class GetUcdnDomainPrefetchRefreshStateResponseSchema(schema.ResponseSchema):
+    """GetUcdnDomainPrefetchRefreshState - 获取域名预取刷新配额信息"""
+
+    fields = {
+        "PrefetchQuota": fields.Int(required=False, load_from="PrefetchQuota"),
+        "RefreshDirQuota": fields.Int(
+            required=False, load_from="RefreshDirQuota"
+        ),
+        "RefreshFileQuota": fields.Int(
+            required=False, load_from="RefreshFileQuota"
+        ),
+        "SubmitPrefetchCount": fields.Int(
+            required=False, load_from="SubmitPrefetchCount"
+        ),
+        "SubmitRefreshDir": fields.Int(
+            required=False, load_from="SubmitRefreshDir"
+        ),
+        "SubmitRefreshFile": fields.Int(
+            required=False, load_from="SubmitRefreshFile"
+        ),
     }
 
 

@@ -62,12 +62,31 @@ class BootDiskInfoSchema(schema.ResponseSchema):
     }
 
 
+class PerformanceSchema(schema.ResponseSchema):
+    """Performance - GPU的性能指标"""
+
+    fields = {
+        "Rate": fields.Int(required=False, load_from="Rate"),
+        "Value": fields.Float(required=False, load_from="Value"),
+    }
+
+
 class MachineSizesSchema(schema.ResponseSchema):
     """MachineSizes - GPU、CPU和内存信息"""
 
     fields = {
         "Collection": fields.List(CollectionSchema()),
         "Gpu": fields.Int(required=False, load_from="Gpu"),
+    }
+
+
+class CpuPlatformsSchema(schema.ResponseSchema):
+    """CpuPlatforms - CPU平台信息"""
+
+    fields = {
+        "Amd": fields.List(fields.Str()),
+        "Ampere": fields.List(fields.Str()),
+        "Intel": fields.List(fields.Str()),
     }
 
 
@@ -96,25 +115,6 @@ class DisksSchema(schema.ResponseSchema):
         "BootDisk": fields.List(BootDiskInfoSchema()),
         "DataDisk": fields.List(DataDiskInfoSchema()),
         "Name": fields.Str(required=False, load_from="Name"),
-    }
-
-
-class CpuPlatformsSchema(schema.ResponseSchema):
-    """CpuPlatforms - CPU平台信息"""
-
-    fields = {
-        "Amd": fields.List(fields.Str()),
-        "Ampere": fields.List(fields.Str()),
-        "Intel": fields.List(fields.Str()),
-    }
-
-
-class PerformanceSchema(schema.ResponseSchema):
-    """Performance - GPU的性能指标"""
-
-    fields = {
-        "Rate": fields.Int(required=False, load_from="Rate"),
-        "Value": fields.Float(required=False, load_from="Value"),
     }
 
 
@@ -156,7 +156,12 @@ class UHostImageSetSchema(schema.ResponseSchema):
         "MinimalCPU": fields.Str(required=False, load_from="MinimalCPU"),
         "OsName": fields.Str(required=False, load_from="OsName"),
         "OsType": fields.Str(required=False, load_from="OsType"),
+        "PrimarySoftware": fields.Str(
+            required=False, load_from="PrimarySoftware"
+        ),
+        "SceneCategories": fields.List(fields.Str()),
         "State": fields.Str(required=False, load_from="State"),
+        "SupportedGPUTypes": fields.List(fields.Str()),
         "Vendor": fields.Str(required=False, load_from="Vendor"),
         "Zone": fields.Str(required=False, load_from="Zone"),
     }
@@ -182,15 +187,6 @@ class IsolationGroupSchema(schema.ResponseSchema):
     }
 
 
-class UHostKeyPairSchema(schema.ResponseSchema):
-    """UHostKeyPair - 主机密钥信息"""
-
-    fields = {
-        "KeyPairId": fields.Str(required=False, load_from="KeyPairId"),
-        "KeyPairState": fields.Str(required=False, load_from="KeyPairState"),
-    }
-
-
 class UHostDiskSetSchema(schema.ResponseSchema):
     """UHostDiskSet - DescribeUHostInstance"""
 
@@ -204,6 +200,15 @@ class UHostDiskSetSchema(schema.ResponseSchema):
         "Name": fields.Str(required=False, load_from="Name"),
         "Size": fields.Int(required=False, load_from="Size"),
         "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
+class UHostKeyPairSchema(schema.ResponseSchema):
+    """UHostKeyPair - 主机密钥信息"""
+
+    fields = {
+        "KeyPairId": fields.Str(required=False, load_from="KeyPairId"),
+        "KeyPairState": fields.Str(required=False, load_from="KeyPairState"),
     }
 
 

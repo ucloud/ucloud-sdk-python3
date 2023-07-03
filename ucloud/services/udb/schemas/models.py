@@ -3,15 +3,6 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class UFileDataSetSchema(schema.ResponseSchema):
-    """UFileDataSet - 增加ufile的描述"""
-
-    fields = {
-        "Bucket": fields.Str(required=False, load_from="Bucket"),
-        "TokenID": fields.Str(required=False, load_from="TokenID"),
-    }
-
-
 class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
     """UDBSlaveInstanceSet - DescribeUDBSlaveInstance"""
 
@@ -66,21 +57,12 @@ class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
     }
 
 
-class MongoDBShardedClusterSetSchema(schema.ResponseSchema):
-    """MongoDBShardedClusterSet -"""
+class UFileDataSetSchema(schema.ResponseSchema):
+    """UFileDataSet - 增加ufile的描述"""
 
     fields = {
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "DBId": fields.Str(required=False, load_from="DBId"),
-        "DBTypeId": fields.Str(required=False, load_from="DBTypeId"),
-        "MongosCount": fields.Int(required=False, load_from="MongosCount"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "ShardsrvCount": fields.Int(required=False, load_from="ShardsrvCount"),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "Tag": fields.Str(required=False, load_from="Tag"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-        "VirtualIPs": fields.List(fields.Str()),
-        "Zone": fields.Str(required=False, load_from="Zone"),
+        "Bucket": fields.Str(required=False, load_from="Bucket"),
+        "TokenID": fields.Str(required=False, load_from="TokenID"),
     }
 
 
@@ -140,6 +122,24 @@ class UDBInstanceSetSchema(schema.ResponseSchema):
         "VPCId": fields.Str(required=False, load_from="VPCId"),
         "VirtualIP": fields.Str(required=False, load_from="VirtualIP"),
         "VirtualIPMac": fields.Str(required=False, load_from="VirtualIPMac"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+    }
+
+
+class MongoDBShardedClusterSetSchema(schema.ResponseSchema):
+    """MongoDBShardedClusterSet -"""
+
+    fields = {
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "DBId": fields.Str(required=False, load_from="DBId"),
+        "DBTypeId": fields.Str(required=False, load_from="DBTypeId"),
+        "MongosCount": fields.Int(required=False, load_from="MongosCount"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "ShardsrvCount": fields.Int(required=False, load_from="ShardsrvCount"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "VirtualIPs": fields.List(fields.Str()),
         "Zone": fields.Str(required=False, load_from="Zone"),
     }
 

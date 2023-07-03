@@ -121,7 +121,6 @@ class UADSClient(Client):
         - **LineType** (str) - (Required) 'default': 'DUPLET',  取值范围 {"DUPLET", "BGP"}
         - **Quantity** (int) - (Required) 计费时长
         - **SrcBandwidth** (int) - (Required) 带宽
-        - **AccessMode** (str) - 接入模式，默认为：IP；Domain：网站接入、IP：非网站接入
         - **CouponId** (str) - 代金券ID
         - **DefenceDDosBaseFlowArr** (list) - DDoS基础防护值（当购买套餐为多种线路的时候，顺序为，电信，联通，移动...，当为单线的时候只传DefenceDDosBaseFlowArr.0）
         - **DefenceDDosMaxFlowArr** (list) - DDoS最大防护值（当购买套餐为多种线路的时候，顺序为，电信，联通，移动...；当为单线的时候只传DefenceDDosMaxFlowArr.0）
@@ -758,7 +757,6 @@ class UADSClient(Client):
         - **LineType** (str) - (Required) 线路类型
         - **Quantity** (str) - (Required) 计费时长
         - **SrcBandwidth** (str) - (Required) 带宽
-        - **AccessMode** (str) - 接入模式，Domain：网站接入、IP：非网站接入；默认为：IP
 
         **Response**
 

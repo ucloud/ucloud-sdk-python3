@@ -69,21 +69,22 @@ class UBillClient(Client):
     def get_bill_data_file_url(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """GetBillDataFileUrl - 生成账单数据文件下载的 url
+        """GetBillDataFileUrl - 生成账单数据文件下载的 url，包含三类文件，1. 已支付总览账单(支持CSV和PDF,从2023年03月开始支持PDF)；2. 未支付总览文件(支持CSV，只有当月账期可以查看)；3 账单详情文件(支持CSV)。           备注：文件生成有延迟，若返回值 IsValid=‘no’，需要使用者发起重试。
 
         **Request**
 
-        - **BillType** (int) - (Required) 账单类型，传 0 时获取账单总览报表，传 1 获取账单明细报表
-        - **BillingCycle** (str) - (Required) 账期(字符串格式，YYYY-MM，例如2021-08).   若BillingCycle 和 BillPeriod同时存在，BillingCycle 优先
-        - **BillPeriod** (int) - 此字段不推荐使用，建议使用BillingCycle.   若BillingCycle 和 BillPeriod同时存在，BillingCycle 优先
-        - **PaidType** (int) - 获取账单总览报表时，账单的支付状态，传 0 时获取待支付账单，传 1 时获取已支付账单。获取账单明细报表时该参数无效
-        - **RequireVersion** (str) - 如需求其他语言版本的账单则使用此参数。默认中文。如 RequireVersion = "EN"，则提供英文版本账单。
-        - **Version** (str) - 文件版本，若为"v1"表示获取带有子用户信息的账单，可以为空
+        - **BillType** (int) - (Required) 账单类型，枚举值：\\ > 0: 账单总览报表; \\ > 1: 账单明细报表
+        - **BillingCycle** (str) - (Required) 账期: YYYY-MM格式的字符串，例如 ”2021-08“
+        - **BillPeriod** (int) - 账期: 时间戳格式，已弃用，请使用BillingCycle
+        - **Format** (str) - 文件格式，枚举值：\\ > ”csv“: csv格式;\\ > ”pdf“: pdf格式(已支付总览文件 从2023年03月开始支持PDF)
+        - **PaidType** (int) - 账单支付状态，  (获取账单明细报表，不需要填写该参数)，枚举值：\\ > 0: 0待支付总览账单(只支持当前月份的账期);\\ > 1: 已支付账单总览
+        - **RequireVersion** (str) - 账单语言版本，枚举值：\\ > ”“: 默认中文;\\ > ”EN“: 英文版本
+        - **Version** (str) - 文件版本，固定值"v1"。
 
         **Response**
 
-        - **FileUrl** (str) - 交易账单数据下载URL
-        - **IsValid** (str) - 生成的 URL是否有效，即有对应数据文件
+        - **FileUrl** (str) - 交易账单文件下载URL
+        - **IsValid** (str) - 是否有对应数据文件。(该参数返回no，表示文件正在生成中，需要用户发起重试获取。
 
         """
         # build request
@@ -102,10 +103,10 @@ class UBillClient(Client):
         **Request**
 
         - **BillingCycle** (str) - (Required) 账期，YYYY-MM，比如2021-08，只支持2018-05之后的查询
-        - **ChargeType** (str) - 计费方式 (筛选项, 默认全部)。枚举值：\\ > Dynamic:按时 \\ > Month:按月 \\ > Year:按年 \\ > Once:一次性按量 \\ > Used:按量 \\ > Post:后付费
+        - **ChargeType** (str) - 计费方式 (筛选项, 默认全部)。枚举值：\\ > Year:按年\\ > Month:按月 \\ > Day:按天 \\ > Dynamic:按时  \\ > Used:按量 \\ > Donate:赠送 \\ > Trial:试用  \\ > Post:后付费  \\ > Spot:抢占式
         - **Limit** (int) - 每页数量，默认值25，最大值：100。
         - **Offset** (int) - 数据偏移量 (默认0)
-        - **OrderType** (str) - 订单类型 (筛选项, 默认全部) 。枚举值：\\ > OT_BUY:新购 \\ > OT_RENEW:续费 \\ > OT_UPGRADE:升级 \\ > OT_REFUND:退费 \\ > OT_DOWNGRADE:降级 \\ > OT_SUSPEND:结算 \\ > OT_PAYMENT:删除资源回款 \\ > OT_POSTPAID_PAYMENT:后付费回款 \\ > OT_RECOVER:删除恢复 \\ > OT_POSTPAID_RENEW:过期续费回款
+        - **OrderType** (str) - 订单类型 (筛选项, 默认全部) 。枚举值：\\ > OT_BUY:新购 \\ > OT_RENEW:续费 \\ > OT_UPGRADE:升级 \\ > OT_DOWNGRADE:降级 \\ > OT_SUSPEND:结算 \\ > OT_ADDITIONAL:补单 \\ > OT_REFUND:删除 \\ > OT_POSTPAID_RENEW:过期 \\ > OT_POSTPAID_PAYMENT:后付费 \\ > OT_RECOVER:删除恢复
         - **PaidState** (int) - 支付状态 (筛选项, 1:仅显示未支付订单; 2:仅显示已支付订单; 0:两者都显示)
         - **ProjectName** (str) - 项目名称 (筛选项, 默认全部)
         - **ResourceIds** (list) - 资源ID(筛选项, 默认全部)	支持多筛选，多筛选请在请求参数中添加多个字段例ResourceIds.0: uhost-bzgf1gh5，ResourceIds.1: uhost-gu1xpspa，
@@ -127,11 +128,11 @@ class UBillClient(Client):
         - **AmountFree** (str) - 赠送金额抵扣
         - **AmountReal** (str) - 现金账户支付
         - **AzGroupCName** (str) - 可用区
-        - **ChargeType** (str) - 计费方式 (筛选项, 默认全部)。枚举值：\\ > Dynamic:按时 \\ > Month:按月 \\ > Year:按年 \\ > Once:一次性按量 \\ > Used:按量 \\ > Post:后付费
+        - **ChargeType** (str) - 计费方式 (筛选项, 默认全部)。枚举值：\\ > Year:按年\\ > Month:按月 \\ > Day:按天 \\ > Dynamic:按时 \\ > Used:按量 \\ > Donate:赠送 \\ > Trial:试用 \\ > Post:后付费 \\ > Spot:抢占式
         - **CreateTime** (int) - 创建时间（时间戳）
         - **ItemDetails** (list) - 见 **ItemDetail** 模型定义
         - **OrderNo** (str) - 订单号
-        - **OrderType** (str) - 订单类型 (筛选项, 默认全部) 。枚举值：\\ > OT_BUY:新购 \\ > OT_RENEW:续费 \\ > OT_UPGRADE:升级 \\ > OT_REFUND:退费 \\ > OT_DOWNGRADE:降级 \\ > OT_SUSPEND:结算 \\ > OT_PAYMENT:删除资源回款 \\ > OT_POSTPAID_PAYMENT:后付费回款 \\ > OT_RECOVER:删除恢复 \\ > OT_POSTPAID_RENEW:过期续费回款
+        - **OrderType** (str) - 订单类型 (筛选项, 默认全部) 。枚举值：\\ > OT_BUY:新购 \\ > OT_RENEW:续费 \\ > OT_UPGRADE:升级 \\ > OT_DOWNGRADE:降级 \\ > OT_SUSPEND:结算 \\ > OT_ADDITIONAL:补单 \\ > OT_REFUND:删除 \\ > OT_POSTPAID_RENEW:过期 \\ > OT_POSTPAID_PAYMENT:后付费 \\ > OT_RECOVER:删除恢复
         - **ProjectName** (str) - 项目名称
         - **ResourceExtendInfo** (list) - 见 **ResourceExtendInfo** 模型定义
         - **ResourceId** (str) - 资源ID

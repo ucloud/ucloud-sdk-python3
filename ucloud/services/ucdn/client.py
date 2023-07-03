@@ -1365,16 +1365,16 @@ class UCDNClient(Client):
     def get_ucdn_domain_prefetch_enable(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """GetUcdnDomainPrefetchEnable - 获取域名预取开启状态
+        """GetUcdnDomainPrefetchEnable -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **DomainId** (str) - (Required) 域名ID，创建加速域名时生成。
+        - **ProjectId** (str) - (Config)
+        - **DomainId** (str) - (Required)
 
         **Response**
 
-        - **Enable** (int) - 0表示该域名未开启预取，1表示该域名已开启预取
+        - **Enable** (int) -
 
         """
         # build request
@@ -1384,8 +1384,43 @@ class UCDNClient(Client):
         req and d.update(req)
         d = apis.GetUcdnDomainPrefetchEnableRequestSchema().dumps(d)
 
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("GetUcdnDomainPrefetchEnable", d, **kwargs)
         return apis.GetUcdnDomainPrefetchEnableResponseSchema().loads(resp)
+
+    def get_ucdn_domain_prefetch_refresh_state(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUcdnDomainPrefetchRefreshState - 获取域名预取刷新配额信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **DomainId** (str) - (Required) 域名ID，创建加速域名时生成。
+
+        **Response**
+
+        - **PrefetchQuota** (int) - 预热配额
+        - **RefreshDirQuota** (int) - 目录刷新配额
+        - **RefreshFileQuota** (int) - 文件刷新配额
+        - **SubmitPrefetchCount** (int) - 已提交预热个数
+        - **SubmitRefreshDir** (int) - 已提交的目录刷新个数
+        - **SubmitRefreshFile** (int) - 已提交的文件刷新个数
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUcdnDomainPrefetchRefreshStateRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUcdnDomainPrefetchRefreshState", d, **kwargs)
+        return apis.GetUcdnDomainPrefetchRefreshStateResponseSchema().loads(
+            resp
+        )
 
     def get_ucdn_domain_request_num_v2(
         self, req: typing.Optional[dict] = None, **kwargs

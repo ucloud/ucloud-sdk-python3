@@ -25,14 +25,18 @@ class UPHostClient(Client):
         - **ImageId** (str) - (Required) ImageId，可以通过接口  `DescribePHostImage <https://docs.ucloud.cn/api/uphost-api/api/uphost-api/describe_phost_image.html>`_ 获取
         - **Password** (str) - (Required) 密码（密码需使用base64进行编码）
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **ChargeType** (str) - 计费模式，枚举值为：year, 按年付费； month,按月付费；默认为按月付费
+        - **ActivityId** (int) - 短期促销活动时所需参数
+        - **CharacterName** (str) - 授权角色名, K8S专用，其他用户忽略
+        - **ChargeType** (str) - 计费模式，枚举值为：Year, 按年付费； Month,按月付费；默认按月付费
         - **Cluster** (str) - 网络环境，可选千兆：1G ，万兆：10G， 默认1G。智能网卡可以选择25G。
         - **CouponId** (str) - 代金券
         - **Disks** (list) - 见 **CreatePHostParamDisks** 模型定义
         - **Name** (str) - 物理机名称，默认为phost
+        - **NetworkInterface** (list) - 见 **CreatePHostParamNetworkInterface** 模型定义
         - **Quantity** (str) - 购买时长，1-10个月或1-10年；默认值为1。月付时，此参数传0，代表购买至月末，1代表整月。
-        - **Raid** (str) - Raid配置，默认Raid10  支持:Raid0、Raid1、Raid5、Raid10，NoRaid
+        - **Raid** (str) - 本地盘和裸金属1.0需要的参数。Raid配置，默认Raid10  支持:Raid0、Raid1、Raid5、Raid10，NoRaid
         - **Remark** (str) - 物理机备注，默认为空
+        - **RuleId** (int) - 短期促销活动时所需参数
         - **SecurityGroupId** (str) - 防火墙ID，默认：Web推荐防火墙。如何查询SecurityGroupId请参见  `DescribeFirewall <https://docs.ucloud.cn/api/uphost-api/api/unet-api/describe_firewall.html>`_ 。
         - **SubnetId** (str) - 子网ID，不填为默认，VPC2.0下需要填写此字段。
         - **Tag** (str) - 业务组，默认为default
@@ -51,6 +55,18 @@ class UPHostClient(Client):
         - **IsBoot** (str) - 裸金属机型参数->是否是系统盘。枚举值： True，是系统盘。 False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
         - **Size** (int) - 裸金属机型参数->磁盘大小，单位GB，必须是10GB的整数倍。系统盘20-500GB，数据盘单块盘20-32000GB。
         - **Type** (str) - 裸金属机型参数->磁盘类型：枚举值：CLOUD_RSSD
+
+
+        **CreatePHostParamNetworkInterfaceEIP**
+        - **Bandwidth** (str) - 【若绑定EIP，此参数必填】弹性IP的外网带宽, 单位为Mbps. 共享带宽模式必须指定0M带宽, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-800]
+        - **CouponId** (str) - 当前EIP代金券id。请通过DescribeCoupon接口查询，或登录用户中心查看。
+        - **OperatorName** (str) - 【若绑定EIP，此参数必填】弹性IP的线路。枚举值: 国际: International BGP: Bgp 各地域允许的线路参数如下: cn-sh1: Bgp cn-sh2: Bgp cn-gd: Bgp cn-bj1: Bgp cn-bj2: Bgp hk: International us-ca: International th-bkk: International kr-seoul:International us-ws:International ge-fra:International sg:International tw-kh:International.其他海外线路均为 International
+        - **PayMode** (str) - 弹性IP的计费模式. 枚举值: "Traffic", 流量计费; "Bandwidth", 带宽计费; "ShareBandwidth",共享带宽模式. "Free":免费带宽模式,默认为 "Bandwidth"
+        - **ShareBandwidthId** (str) - 绑定的共享带宽Id，仅当PayMode为ShareBandwidth时有效
+
+
+        **CreatePHostParamNetworkInterface**
+        - **EIP** (dict) - 见 **CreatePHostParamNetworkInterfaceEIP** 模型定义
 
 
         """

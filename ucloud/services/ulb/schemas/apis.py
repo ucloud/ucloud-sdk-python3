@@ -756,6 +756,32 @@ class UpdateSSLAttributeResponseSchema(schema.ResponseSchema):
 
 
 """
+API: UpdateSSLBinding
+
+将VServer绑定的证书更换为另一个证书
+"""
+
+
+class UpdateSSLBindingRequestSchema(schema.RequestSchema):
+    """UpdateSSLBinding - 将VServer绑定的证书更换为另一个证书"""
+
+    fields = {
+        "ListenerId": fields.Str(required=False, dump_to="ListenerId"),
+        "LoadBalancerId": fields.Str(required=False, dump_to="LoadBalancerId"),
+        "NewSSLId": fields.Str(required=True, dump_to="NewSSLId"),
+        "OldSSLId": fields.Str(required=True, dump_to="OldSSLId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class UpdateSSLBindingResponseSchema(schema.ResponseSchema):
+    """UpdateSSLBinding - 将VServer绑定的证书更换为另一个证书"""
+
+    fields = {}
+
+
+"""
 API: UpdateSecurityPolicy
 
 更新安全策略

@@ -325,6 +325,15 @@ class CacheAllConfigSchema(schema.ResponseSchema):
     }
 
 
+class AccessControlConfSchema(schema.ResponseSchema):
+    """AccessControlConf - 访问控制配置参数"""
+
+    fields = {
+        "IpBlackList": fields.List(fields.Str()),
+        "ReferConf": ReferConfSchema(),
+    }
+
+
 class AdvancedConfSchema(schema.ResponseSchema):
     """AdvancedConf - 域名高级配置"""
 
@@ -365,15 +374,6 @@ class OriginConfSchema(schema.ResponseSchema):
         "OriginProtocol": fields.Str(
             required=False, load_from="OriginProtocol"
         ),
-    }
-
-
-class AccessControlConfSchema(schema.ResponseSchema):
-    """AccessControlConf - 访问控制配置参数"""
-
-    fields = {
-        "IpBlackList": fields.List(fields.Str()),
-        "ReferConf": ReferConfSchema(),
     }
 
 

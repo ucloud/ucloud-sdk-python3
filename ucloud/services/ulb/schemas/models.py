@@ -99,24 +99,6 @@ class PolicyBackendSetSchema(schema.ResponseSchema):
     }
 
 
-class BindSecurityPolicySchema(schema.ResponseSchema):
-    """BindSecurityPolicy - VServer绑定的安全策略组信息"""
-
-    fields = {
-        "SSLCiphers": fields.List(fields.Str()),
-        "SecurityPolicyId": fields.Str(
-            required=False, load_from="SecurityPolicyId"
-        ),
-        "SecurityPolicyName": fields.Str(
-            required=False, load_from="SecurityPolicyName"
-        ),
-        "SecurityPolicyType": fields.Int(
-            required=False, load_from="SecurityPolicyType"
-        ),
-        "TLSVersion": fields.Str(required=False, load_from="TLSVersion"),
-    }
-
-
 class ULBPolicySetSchema(schema.ResponseSchema):
     """ULBPolicySet - 内容转发详细列表"""
 
@@ -160,6 +142,24 @@ class ULBBackendSetSchema(schema.ResponseSchema):
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
         "Weight": fields.Int(required=False, load_from="Weight"),
+    }
+
+
+class BindSecurityPolicySchema(schema.ResponseSchema):
+    """BindSecurityPolicy - VServer绑定的安全策略组信息"""
+
+    fields = {
+        "SSLCiphers": fields.List(fields.Str()),
+        "SecurityPolicyId": fields.Str(
+            required=False, load_from="SecurityPolicyId"
+        ),
+        "SecurityPolicyName": fields.Str(
+            required=False, load_from="SecurityPolicyName"
+        ),
+        "SecurityPolicyType": fields.Int(
+            required=False, load_from="SecurityPolicyType"
+        ),
+        "TLSVersion": fields.Str(required=False, load_from="TLSVersion"),
     }
 
 

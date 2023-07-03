@@ -50,15 +50,6 @@ class ResourceInfoSchema(schema.ResponseSchema):
     }
 
 
-class EnvListSchema(schema.ResponseSchema):
-    """EnvList - 容器环境变量列表"""
-
-    fields = {
-        "Key": fields.Str(required=False, load_from="Key"),
-        "Value": fields.Str(required=False, load_from="Value"),
-    }
-
-
 class CfgDictListSchema(schema.ResponseSchema):
     """CfgDictList - 容器配置字典列表"""
 
@@ -69,12 +60,12 @@ class CfgDictListSchema(schema.ResponseSchema):
     }
 
 
-class IpListSchema(schema.ResponseSchema):
-    """IpList - 容器组外网ip列表"""
+class EnvListSchema(schema.ResponseSchema):
+    """EnvList - 容器环境变量列表"""
 
     fields = {
-        "Ip": fields.Str(required=False, load_from="Ip"),
-        "Isp": fields.Str(required=False, load_from="Isp"),
+        "Key": fields.Str(required=False, load_from="Key"),
+        "Value": fields.Str(required=False, load_from="Value"),
     }
 
 
@@ -103,6 +94,15 @@ class DockerInfoSchema(schema.ResponseSchema):
         "Name": fields.Str(required=False, load_from="Name"),
         "State": fields.Int(required=False, load_from="State"),
         "WorkDir": fields.Str(required=False, load_from="WorkDir"),
+    }
+
+
+class IpListSchema(schema.ResponseSchema):
+    """IpList - 容器组外网ip列表"""
+
+    fields = {
+        "Ip": fields.Str(required=False, load_from="Ip"),
+        "Isp": fields.Str(required=False, load_from="Isp"),
     }
 
 
