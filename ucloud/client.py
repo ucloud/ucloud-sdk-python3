@@ -62,6 +62,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def sts(self):
+        from ucloud.services.sts.client import STSClient
+
+        return STSClient(
+            self._auto_config("sts"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def stepflow(self):
         from ucloud.services.stepflow.client import StepFlowClient
 

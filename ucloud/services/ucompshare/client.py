@@ -110,6 +110,27 @@ class UCompShareClient(Client):
 
         **Response Model**
 
+        **ULHostInstanceSet**
+        - **Apps** (list) - 【数组】镜像包含的应用列表。
+        - **AutoRenew** (str) - 是否自动续费。枚举值：Yes/No
+        - **CPU** (int) - CPU核数。
+        - **ChargeType** (str) - 计费模式。枚举值：Month/Year
+        - **CreateTime** (int) - 创建时间。Unix时间戳
+        - **DiskSet** (list) - 见 **ULHostDiskSet** 模型定义
+        - **ExpireTime** (int) - 过期时间。Unix时间戳
+        - **IPSet** (list) - 见 **UHostIPSet** 模型定义
+        - **ImageId** (str) - 镜像Id。
+        - **ImageName** (str) - 镜像名称。
+        - **IsExpire** (str) - 是否过期。枚举值：Yes/No
+        - **Memory** (int) - 内存。单位：MB
+        - **Name** (str) - 实例名称。默认套餐Id
+        - **Remark** (str) - 备注。
+        - **State** (str) - 实例状态。枚举值：\\ >初始化: Initializing; \\ >启动中: Starting; \\> 运行中: Running; \\> 关机中: Stopping; \\ >关机: Stopped \\ >安装失败: Install Fail; \\ >重启中: Rebooting; \\ > 未知(空字符串，获取状态超时或出错)：""
+        - **Tag** (str) - 业务组。
+        - **ULHostId** (str) - 实例Id。
+        - **Zone** (str) - 可用区。
+
+
         **ULHostDiskSet**
         - **DiskId** (str) - 磁盘Id
         - **DiskType** (str) - 磁盘类型。如："CLOUD_RSSD"、"CLOUD_SSD"
@@ -131,27 +152,6 @@ class UCompShareClient(Client):
         - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
         - **VPCId** (str) - IP地址对应的VPC ID。（北京一不支持，字段返回为空）
         - **Weight** (int) - 当前EIP的权重。权重最大的为当前的出口IP。
-
-
-        **ULHostInstanceSet**
-        - **Apps** (list) - 【数组】镜像包含的应用列表。
-        - **AutoRenew** (str) - 是否自动续费。枚举值：Yes/No
-        - **CPU** (int) - CPU核数。
-        - **ChargeType** (str) - 计费模式。枚举值：Month/Year
-        - **CreateTime** (int) - 创建时间。Unix时间戳
-        - **DiskSet** (list) - 见 **ULHostDiskSet** 模型定义
-        - **ExpireTime** (int) - 过期时间。Unix时间戳
-        - **IPSet** (list) - 见 **UHostIPSet** 模型定义
-        - **ImageId** (str) - 镜像Id。
-        - **ImageName** (str) - 镜像名称。
-        - **IsExpire** (str) - 是否过期。枚举值：Yes/No
-        - **Memory** (int) - 内存。单位：MB
-        - **Name** (str) - 实例名称。默认套餐Id
-        - **Remark** (str) - 备注。
-        - **State** (str) - 实例状态。枚举值：\\ >初始化: Initializing; \\ >启动中: Starting; \\> 运行中: Running; \\> 关机中: Stopping; \\ >关机: Stopped \\ >安装失败: Install Fail; \\ >重启中: Rebooting; \\ > 未知(空字符串，获取状态超时或出错)：""
-        - **Tag** (str) - 业务组。
-        - **ULHostId** (str) - 实例Id。
-        - **Zone** (str) - 可用区。
 
 
         """

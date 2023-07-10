@@ -227,17 +227,6 @@ class UPhoneSpecSchema(schema.ResponseSchema):
     }
 
 
-class IpSetSchema(schema.ResponseSchema):
-    """IpSet -"""
-
-    fields = {
-        "Ip": fields.Str(required=False, load_from="Ip"),
-        "IpMode": fields.Str(required=False, load_from="IpMode"),
-        "IpType": fields.Str(required=False, load_from="IpType"),
-        "Isp": fields.Str(required=False, load_from="Isp"),
-    }
-
-
 class ServerModelInstanceSchema(schema.ResponseSchema):
     """ServerModelInstance -"""
 
@@ -254,6 +243,17 @@ class ServerModelInstanceSchema(schema.ResponseSchema):
             required=False, load_from="ServerModelState"
         ),
         "UPhoneSpecs": fields.List(UPhoneSpecSchema()),
+    }
+
+
+class IpSetSchema(schema.ResponseSchema):
+    """IpSet -"""
+
+    fields = {
+        "Ip": fields.Str(required=False, load_from="Ip"),
+        "IpMode": fields.Str(required=False, load_from="IpMode"),
+        "IpType": fields.Str(required=False, load_from="IpType"),
+        "Isp": fields.Str(required=False, load_from="Isp"),
     }
 
 
