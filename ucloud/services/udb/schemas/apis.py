@@ -287,9 +287,13 @@ class CreateUDBInstanceRequestSchema(schema.RequestSchema):
         "BackupTime": fields.Int(required=False, dump_to="BackupTime"),
         "BackupZone": fields.Str(required=False, dump_to="BackupZone"),
         "CPU": fields.Int(required=False, dump_to="CPU"),
+        "CaseSensitivityParam": fields.Int(
+            required=False, dump_to="CaseSensitivityParam"
+        ),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "ClusterRole": fields.Str(required=False, dump_to="ClusterRole"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "DBSubVersion": fields.Str(required=False, dump_to="DBSubVersion"),
         "DBTypeId": fields.Str(required=True, dump_to="DBTypeId"),
         "DisableSemisync": fields.Bool(
             required=False, dump_to="DisableSemisync"
@@ -409,11 +413,14 @@ class CreateUDBReplicationInstanceRequestSchema(schema.RequestSchema):
     """CreateUDBReplicationInstance - 创建MongoDB的副本节点（包括仲裁）"""
 
     fields = {
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "InstanceType": fields.Str(required=False, dump_to="InstanceType"),
         "IsArbiter": fields.Bool(required=False, dump_to="IsArbiter"),
         "Name": fields.Str(required=True, dump_to="Name"),
         "Port": fields.Int(required=False, dump_to="Port"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Quantity": fields.Str(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SrcId": fields.Str(required=True, dump_to="SrcId"),
         "UseSSD": fields.Bool(required=False, dump_to="UseSSD"),

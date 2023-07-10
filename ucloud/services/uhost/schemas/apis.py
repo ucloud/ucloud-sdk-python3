@@ -121,6 +121,7 @@ class CreateUHostInstanceParamDisksSchema(schema.RequestSchema):
         "IsBoot": fields.Str(required=True, dump_to="IsBoot"),
         "KmsKeyId": fields.Str(required=False, dump_to="KmsKeyId"),
         "Size": fields.Int(required=True, dump_to="Size"),
+        "SnapshotId": fields.Str(required=False, dump_to="SnapshotId"),
         "Type": fields.Str(required=True, dump_to="Type"),
     }
 
@@ -243,6 +244,7 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
         ),
         "GPU": fields.Int(required=False, dump_to="GPU"),
         "GpuType": fields.Str(required=False, dump_to="GpuType"),
+        "HostBinding": fields.Bool(required=False, dump_to="HostBinding"),
         "HostIp": fields.Str(
             required=False, dump_to="HostIp"
         ),  # Deprecated, will be removed at 1.0
@@ -305,6 +307,8 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
         "TimemachineFeature": fields.Str(
             required=False, dump_to="TimemachineFeature"
         ),  # Deprecated, will be removed at 1.0
+        "UDHostId": fields.Str(required=False, dump_to="UDHostId"),
+        "UDSetId": fields.Str(required=False, dump_to="UDSetId"),
         "UHostType": fields.Str(required=False, dump_to="UHostType"),
         "UserData": fields.Str(required=False, dump_to="UserData"),
         "UserDataScript": fields.Str(

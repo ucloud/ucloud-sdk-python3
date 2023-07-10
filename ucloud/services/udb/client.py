@@ -20,15 +20,15 @@ class UDBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BackupName** (str) - (Required) 备份名称
         - **DBId** (str) - (Required) DB实例Id,该值可以通过DescribeUDBInstance获取
-        - **BackupMethod** (str) - 使用的备份方式。（快照备份即物理备份。注意只有SSD版本的mysql实例支持设置为snapshot）
+        - **BackupMethod** (str) - 使用的备份方式。默认使用逻辑备份（快照备份即物理备份。SSD版本的mysql/mongodb实例支持设置为snapshot，NVMe版本的mysql实例支持设置为xtrabackup）
         - **Blacklist** (str) - 备份黑名单列表，以 ; 分隔。注意：只有逻辑备份下备份黑名单才生效，快照备份备份黑名单下无效
         - **ForceBackup** (bool) - true表示逻辑备份时是使用 --force 参数，false表示不使用 --force 参数。物理备份此参数无效。
         - **UseBlacklist** (bool) - 是否使用黑名单备份，默认false
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -52,12 +52,12 @@ class UDBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BackupFile** (str) - (Required) 需要备份文件,可通过DescribeUDBInstanceBinlog获得 如果要传入多个文件名，以空格键分割,用单引号包含.
         - **DBId** (str) - (Required) DB实例Id,该值可以通过DescribeUDBInstance获取
         - **BackupName** (str) - DB备份文件名称
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -166,10 +166,10 @@ class UDBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **SrcDBId** (str) - (Required) 源实例的Id
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **SrcDBId** (str) - (Required) 源实例的Id(只支持普通版DB不支持高可用)
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -221,12 +221,12 @@ class UDBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **DBId** (str) - (Required) DB实例的id,该值可以通过DescribeUDBInstance获取
         - **LogType** (int) - (Required) 日志类型，10-error（暂不支持）、20-slow（暂不支持 ）、30-binlog
         - **BeforeTime** (int) - 删除时间点(至少前一天)之前log，采用时间戳(秒)，默认当 前时间点前一天
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -315,9 +315,11 @@ class UDBClient(Client):
         - **BackupTime** (int) - 备份策略，备份开始时间，单位小时计，默认1点
         - **BackupZone** (str) - 跨可用区高可用备库所在可用区，参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **CPU** (int) - cpu核数，如果db类型为sqlserver，必传参数
+        - **CaseSensitivityParam** (int) - mysql大小写参数, 0 为大小写敏感, 1 为大小写不敏感, 目前只针对mysql8.0有效
         - **ChargeType** (str) - Year， Month， Dynamic，Trial，默认: Month
         - **ClusterRole** (str) - 当DB类型(DBTypeId)为mongodb时，需要指定mongo的角色，可选值为configsrv (配置节点)，shardsrv (数据节点)
         - **CouponId** (str) - 使用的代金券id
+        - **DBSubVersion** (str) - mysql小版本号，支持指定小版本创建
         - **DisableSemisync** (bool) - 是否开启异步高可用，默认不填，可置为true
         - **EnableIpV6** (bool) - 是否创建使用ipv6 资源， 默认为false， 或者不填， 创建ipv6为true
         - **InstanceMode** (str) - UDB实例模式类型, 可选值如下: "Normal": 普通版UDB实例 "HA": 高可用版UDB实例 默认是"Normal"
@@ -429,15 +431,18 @@ class UDBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Name** (str) - (Required) 实例名称，至少6位
         - **SrcId** (str) - (Required) primary节点的DBId,该值可以通过DescribeUDBInstance获取
+        - **ChargeType** (str) - Year， Month， Dynamic，Trial，默认和主库保持一致
         - **CouponId** (str) - 使用的代金券id
+        - **InstanceType** (str) - UDB数据库机型: "Normal": "标准机型" , "SATA_SSD": "SSD机型" , "PCIE_SSD": "SSD高性能机型" , "Normal_Volume": "标准大容量机型", "SATA_SSD_Volume": "SSD大容量机型" , "PCIE_SSD_Volume": "SSD高性能大容量机型", "NVMe_SSD": "快杰机型"
         - **IsArbiter** (bool) - 是否是仲裁节点，默认false，仲裁节点按最小机型创建
         - **Port** (int) - 端口号，默认27017，取值范围3306至65535。
-        - **UseSSD** (bool) - 是否使用SSD，默认 为 true
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Quantity** (str) - 购买时长，默认默认和主库保持一致
+        - **UseSSD** (bool) - 是否使用SSD，默认为true。目前主要可用区、海外机房、新机房只提供SSD资源，非SSD资源不再提供。
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 

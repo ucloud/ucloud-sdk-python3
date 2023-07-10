@@ -146,6 +146,15 @@ class AccelerationAreaInfosSchema(schema.ResponseSchema):
     }
 
 
+class OutPublicIpInfoSchema(schema.ResponseSchema):
+    """OutPublicIpInfo - 线路回源IP信息"""
+
+    fields = {
+        "Area": fields.Str(required=False, load_from="Area"),
+        "IP": fields.Str(required=False, load_from="IP"),
+    }
+
+
 class ForwardTaskSchema(schema.ResponseSchema):
     """ForwardTask -"""
 
@@ -153,15 +162,6 @@ class ForwardTaskSchema(schema.ResponseSchema):
         "Port": fields.Int(required=True, load_from="Port"),
         "Protocol": fields.Str(required=True, load_from="Protocol"),
         "RSPort": fields.Int(required=True, load_from="RSPort"),
-    }
-
-
-class OutPublicIpInfoSchema(schema.ResponseSchema):
-    """OutPublicIpInfo - 线路回源IP信息"""
-
-    fields = {
-        "Area": fields.Str(required=False, load_from="Area"),
-        "IP": fields.Str(required=False, load_from="IP"),
     }
 
 
@@ -231,6 +231,15 @@ class AccelerationInfoSchema(schema.ResponseSchema):
     }
 
 
+class UGAATaskSchema(schema.ResponseSchema):
+    """UGAATask - 用户在UGAA实例下配置的多端口任务"""
+
+    fields = {
+        "Port": fields.Int(required=True, load_from="Port"),
+        "Protocol": fields.Str(required=True, load_from="Protocol"),
+    }
+
+
 class UGAL7ForwarderSchema(schema.ResponseSchema):
     """UGAL7Forwarder - UGA实例 7层转发器信息"""
 
@@ -250,15 +259,6 @@ class UGAL4ForwarderSchema(schema.ResponseSchema):
         "Port": fields.Int(required=True, load_from="Port"),
         "Protocol": fields.Str(required=True, load_from="Protocol"),
         "RSPort": fields.Int(required=True, load_from="RSPort"),
-    }
-
-
-class UGAATaskSchema(schema.ResponseSchema):
-    """UGAATask - 用户在UGAA实例下配置的多端口任务"""
-
-    fields = {
-        "Port": fields.Int(required=True, load_from="Port"),
-        "Protocol": fields.Str(required=True, load_from="Protocol"),
     }
 
 

@@ -127,12 +127,13 @@ class UHostClient(Client):
         - **AlarmTemplateId** (int) - 告警模板id，如果传了告警模板id，且告警模板id正确，则绑定告警模板。绑定告警模板失败只会在后台有日志，不会影响创建主机流程，也不会在前端报错。
         - **AutoDataDiskInit** (str) - 数据盘是否需要自动分区挂载。当镜像支持“Cloud-init”Feature时可填写此字段。取值 >“On” 自动挂载（默认值）> “Off” 不自动挂载。
         - **CPU** (int) - 虚拟CPU核数。可选参数：1-64（具体机型与CPU的对应关系参照控制台）。默认值: 4。
-        - **ChargeType** (str) - 计费模式。枚举值为： \\ > Year，按年付费； \\ > Month，按月付费；\\ > Dynamic，按小时预付费 \\ > Postpay，按小时后付费（支持关机不收费，目前仅部分可用区支持，请联系您的客户经理） \\Preemptive计费为抢占式实例(内测阶段) \\ 默认为月付
+        - **ChargeType** (str) - 计费模式。枚举值为： \\ > Year，按年付费； \\ > Month，按月付费；\\ > Dynamic，按小时预付费 \\ > Postpay，按小时后付费（支持关机不收费，目前仅部分可用区支持，请联系您的客户经理） \\ > Spot计费为抢占式实例(内测阶段) \\ 默认为月付
         - **CouponId** (str) - 主机代金券ID。请通过DescribeCoupon接口查询，或登录用户中心查看
         - **Disks** (list) - 见 **CreateUHostInstanceParamDisks** 模型定义
         - **Features** (dict) - 见 **CreateUHostInstanceParamFeatures** 模型定义
         - **GPU** (int) - GPU卡核心数。仅GPU机型支持此字段（可选范围与MachineType+GpuType相关）
         - **GpuType** (str) - GPU类型，枚举值["K80", "P40", "V100", "T4","T4A", "T4S","2080Ti","2080Ti-4C","1080Ti", "T4/4", "MI100", "V100S",2080","2080TiS","2080TiPro","3090","A100"]，MachineType为G时必填
+        - **HostBinding** (bool) - 【私有专区属性】专区云主机开启宿住关联属性
         - **HotplugFeature** (bool) - 热升级特性。True为开启，False为未开启，默认False。
         - **IsolationGroup** (str) - 硬件隔离组id。可通过DescribeIsolationGroup获取。
         - **KeyPairId** (str) - KeypairId 密钥对ID，LoginMode为KeyPair时此项必须。
@@ -149,6 +150,8 @@ class UHostClient(Client):
         - **SecurityGroupId** (str) - 防火墙ID，默认：Web推荐防火墙。如何查询SecurityGroupId请参见  `DescribeFirewall <https://docs.ucloud.cn/api/uhost-api/api/unet-api/describe_firewall.html>`_ 。
         - **SubnetId** (str) - 子网 ID。默认为当前地域的默认子网。
         - **Tag** (str) - 业务组。默认：Default（Default即为未分组）。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定业务组。
+        - **UDHostId** (str) - 【私有专区属性】专区宿主机id
+        - **UDSetId** (str) - 【私有专区属性】专区id
         - **UHostType** (str) - 【建议后续不再使用】云主机机型（V1.0），在本字段和字段MachineType中，仅需要其中1个字段即可。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
         - **UserData** (str) - 用户自定义数据。当镜像支持Cloud-init Feature时可填写此字段。注意：1、总数据量大小不超过 16K；2、使用base64编码
         - **VPCId** (str) - VPC ID。默认为当前地域的默认VPC。
@@ -170,6 +173,7 @@ class UHostClient(Client):
         - **IsBoot** (str) - 是否是系统盘。枚举值：\\ > True，是系统盘 \\ > False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
         - **KmsKeyId** (str) - 【功能仅部分可用区开放，详询技术支持】kms key id。选择加密盘时必填。
         - **Size** (int) - 磁盘大小，单位GB。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
+        - **SnapshotId** (str) - 从快照创建盘时所用快照id，目前仅支持数据盘
         - **Type** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
 
 
@@ -559,17 +563,21 @@ class UHostClient(Client):
         - **BootDiskState** (str) - 系统盘状态 Normal表示初始化完成；Initializing表示在初始化。仍在初始化的系统盘无法制作镜像。
         - **CPU** (int) - 虚拟CPU核数，单位: 个
         - **ChargeType** (str) - 计费模式，枚举值为： Year，按年付费； Month，按月付费； Dynamic，按需付费（需开启权限）；Preemptive 为抢占式实例；
-        - **CloudInitFeature** (bool) - true，支持cloutinit方式初始化；false,不支持
+        - **CloudInitFeature** (bool) - true: 支持cloutinit方式初始化；false: 不支持
         - **CpuPlatform** (str) - 云主机CPU平台。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type#主机概念20版本>`_ 。
         - **CreateTime** (int) - 创建时间，格式为Unix时间戳
         - **DiskSet** (list) - 见 **UHostDiskSet** 模型定义
+        - **EpcInstance** (bool) - true: 高性能计算主机；false: 不是
         - **ExpireTime** (int) - 到期时间，格式为Unix时间戳
         - **GPU** (int) - GPU个数
+        - **GpuType** (str) - GPU类型;枚举值["K80", "P40", "V100", "T4", "T4S","2080Ti","2080Ti-4C","1080Ti", "T4/4", "MI100", "V100S"]
+        - **HiddenKvm** (bool) - true: 开启 hidden kvm 功能；false: 不是
         - **HostType** (str) - 【建议不再使用】主机系列：N2，表示系列2；N1，表示系列1
+        - **HotPlugMaxCpu** (int) - 热升级支持的最大CPU个数
         - **HotplugFeature** (bool) - true: 开启热升级； false，未开启热升级
         - **HpcFeature** (bool) - true: 开启 hpc 系列功能；false: 未开启
         - **IPSet** (list) - 见 **UHostIPSet** 模型定义
-        - **IPv6Feature** (bool) - true:有ipv6特性；false，没有ipv6特性
+        - **IPv6Feature** (bool) - true: 有ipv6特性；false，没有ipv6特性
         - **ImageId** (str) - 【建议不再使用】主机的系统盘ID。
         - **IsolationGroup** (str) - 隔离组id，不在隔离组则返回""
         - **KeyPair** (dict) - 见 **UHostKeyPair** 模型定义
@@ -584,12 +592,15 @@ class UHostClient(Client):
         - **RdmaClusterId** (str) - RDMA集群id，仅快杰云主机返回该值；其他类型云主机返回""。当云主机的此值与RSSD云盘的RdmaClusterId相同时，RSSD可以挂载到这台云主机。
         - **Remark** (str) - 备注
         - **RestrictMode** (str) - 仅抢占式实例返回，LowSpeed为低速模式，PowerOff为关机模式
+        - **SecGroupInstance** (bool) - true: 绑定了安全组的主机；false: 不是
+        - **SpotAttribute** (dict) - 见 **SpotAttribute** 模型定义
         - **State** (str) - 实例状态，枚举值：\\ >初始化: Initializing; \\ >启动中: Starting; \\> 运行中: Running; \\> 关机中: Stopping; \\ >关机: Stopped \\ >安装失败: Install Fail; \\ >重启中: Rebooting; \\ > 未知(空字符串，获取状态超时或出错)：""
         - **StorageType** (str) - 【建议不再使用】主机磁盘类型。 枚举值为：\\ > LocalDisk，本地磁盘; \\ > UDisk 云盘。\\只要有一块磁盘为本地盘，即返回LocalDisk。
         - **SubnetType** (str) - 【建议不再使用】仅北京A的云主机会返回此字段。基础网络模式：Default；子网模式：Private
         - **Tag** (str) - 业务组名称
         - **TimemachineFeature** (str) - 【建议不再使用】数据方舟模式。枚举值：\\ > Yes: 开启方舟； \\ > no，未开启方舟
         - **TotalDiskSpace** (int) - 总的数据盘存储空间。
+        - **UDHostAttribute** (dict) - 见 **UDSetUDHostAttribute** 模型定义
         - **UHostId** (str) - UHost实例ID
         - **UHostType** (str) - 【建议不再使用】云主机机型（旧）。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
@@ -624,6 +635,16 @@ class UHostClient(Client):
         **UHostKeyPair**
         - **KeyPairId** (str) - 密钥对ID
         - **KeyPairState** (str) - 主机密钥对状态，Normal 正常，Deleted 删除
+
+
+        **SpotAttribute**
+        - **RecycleTime** (int) - 回收时间
+
+
+        **UDSetUDHostAttribute**
+        - **HostBinding** (bool) - 是否绑定私有专区宿主机
+        - **UDHostId** (str) - 私有专区宿主机
+        - **UDSetId** (str) - 私有专区
 
 
         """

@@ -115,6 +115,13 @@ ISMS
    :members:
 
 
+STS
+---
+
+.. autoclass:: ucloud.services.sts.client.STSClient
+   :members:
+
+
 TiDB
 ----
 
