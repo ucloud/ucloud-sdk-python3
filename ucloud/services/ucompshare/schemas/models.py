@@ -16,19 +16,6 @@ class BundleSchema(schema.ResponseSchema):
     }
 
 
-class ULHostDiskSetSchema(schema.ResponseSchema):
-    """ULHostDiskSet - 轻量应用主机的磁盘信息"""
-
-    fields = {
-        "DiskId": fields.Str(required=False, load_from="DiskId"),
-        "DiskType": fields.Str(required=False, load_from="DiskType"),
-        "Drive": fields.Str(required=False, load_from="Drive"),
-        "IsBoot": fields.Str(required=False, load_from="IsBoot"),
-        "Size": fields.Int(required=False, load_from="Size"),
-        "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
 class UHostIPSetSchema(schema.ResponseSchema):
     """UHostIPSet -"""
 
@@ -46,6 +33,19 @@ class UHostIPSetSchema(schema.ResponseSchema):
         "Type": fields.Str(required=False, load_from="Type"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
         "Weight": fields.Int(required=False, load_from="Weight"),
+    }
+
+
+class ULHostDiskSetSchema(schema.ResponseSchema):
+    """ULHostDiskSet - 轻量应用主机的磁盘信息"""
+
+    fields = {
+        "DiskId": fields.Str(required=False, load_from="DiskId"),
+        "DiskType": fields.Str(required=False, load_from="DiskType"),
+        "Drive": fields.Str(required=False, load_from="Drive"),
+        "IsBoot": fields.Str(required=False, load_from="IsBoot"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "Type": fields.Str(required=False, load_from="Type"),
     }
 
 
