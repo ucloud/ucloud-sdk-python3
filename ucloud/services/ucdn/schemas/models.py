@@ -294,6 +294,16 @@ class BandwidthTrafficInfoSchema(schema.ResponseSchema):
     }
 
 
+class ReferConfSchema(schema.ResponseSchema):
+    """ReferConf - refer配置"""
+
+    fields = {
+        "NullRefer": fields.Int(required=False, load_from="NullRefer"),
+        "ReferList": fields.List(fields.Str()),
+        "ReferType": fields.Int(required=False, load_from="ReferType"),
+    }
+
+
 class CacheKeyInfoSchema(schema.ResponseSchema):
     """CacheKeyInfo - 忽略参数缓存配置"""
 
@@ -304,13 +314,12 @@ class CacheKeyInfoSchema(schema.ResponseSchema):
     }
 
 
-class ReferConfSchema(schema.ResponseSchema):
-    """ReferConf - refer配置"""
+class AccessControlConfSchema(schema.ResponseSchema):
+    """AccessControlConf - 访问控制配置参数"""
 
     fields = {
-        "NullRefer": fields.Int(required=False, load_from="NullRefer"),
-        "ReferList": fields.List(fields.Str()),
-        "ReferType": fields.Int(required=False, load_from="ReferType"),
+        "IpBlackList": fields.List(fields.Str()),
+        "ReferConf": ReferConfSchema(),
     }
 
 
@@ -365,15 +374,6 @@ class AdvancedConfSchema(schema.ResponseSchema):
         "WebSocketEnable": fields.Bool(
             required=False, load_from="WebSocketEnable"
         ),
-    }
-
-
-class AccessControlConfSchema(schema.ResponseSchema):
-    """AccessControlConf - 访问控制配置参数"""
-
-    fields = {
-        "IpBlackList": fields.List(fields.Str()),
-        "ReferConf": ReferConfSchema(),
     }
 
 

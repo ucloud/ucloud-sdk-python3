@@ -62,21 +62,21 @@ class BootDiskInfoSchema(schema.ResponseSchema):
     }
 
 
+class PerformanceSchema(schema.ResponseSchema):
+    """Performance - GPU的性能指标"""
+
+    fields = {
+        "Rate": fields.Int(required=False, load_from="Rate"),
+        "Value": fields.Float(required=False, load_from="Value"),
+    }
+
+
 class MachineSizesSchema(schema.ResponseSchema):
     """MachineSizes - GPU、CPU和内存信息"""
 
     fields = {
         "Collection": fields.List(CollectionSchema()),
         "Gpu": fields.Int(required=False, load_from="Gpu"),
-    }
-
-
-class GraphicsMemorySchema(schema.ResponseSchema):
-    """GraphicsMemory - GPU的显存指标"""
-
-    fields = {
-        "Rate": fields.Int(required=False, load_from="Rate"),
-        "Value": fields.Int(required=False, load_from="Value"),
     }
 
 
@@ -89,12 +89,12 @@ class FeaturesSchema(schema.ResponseSchema):
     }
 
 
-class PerformanceSchema(schema.ResponseSchema):
-    """Performance - GPU的性能指标"""
+class GraphicsMemorySchema(schema.ResponseSchema):
+    """GraphicsMemory - GPU的显存指标"""
 
     fields = {
         "Rate": fields.Int(required=False, load_from="Rate"),
-        "Value": fields.Float(required=False, load_from="Value"),
+        "Value": fields.Int(required=False, load_from="Value"),
     }
 
 
@@ -196,16 +196,6 @@ class UHostKeyPairSchema(schema.ResponseSchema):
     }
 
 
-class UDSetUDHostAttributeSchema(schema.ResponseSchema):
-    """UDSetUDHostAttribute - 私有专区对应的宿主机属性"""
-
-    fields = {
-        "HostBinding": fields.Bool(required=False, load_from="HostBinding"),
-        "UDHostId": fields.Str(required=False, load_from="UDHostId"),
-        "UDSetId": fields.Str(required=False, load_from="UDSetId"),
-    }
-
-
 class SpotAttributeSchema(schema.ResponseSchema):
     """SpotAttribute - 竞价实例属性"""
 
@@ -247,6 +237,16 @@ class UHostDiskSetSchema(schema.ResponseSchema):
         "Name": fields.Str(required=False, load_from="Name"),
         "Size": fields.Int(required=False, load_from="Size"),
         "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
+class UDSetUDHostAttributeSchema(schema.ResponseSchema):
+    """UDSetUDHostAttribute - 私有专区对应的宿主机属性"""
+
+    fields = {
+        "HostBinding": fields.Bool(required=False, load_from="HostBinding"),
+        "UDHostId": fields.Str(required=False, load_from="UDHostId"),
+        "UDSetId": fields.Str(required=False, load_from="UDSetId"),
     }
 
 

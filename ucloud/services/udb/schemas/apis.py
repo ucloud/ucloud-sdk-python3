@@ -201,7 +201,7 @@ class ClearUDBLogRequestSchema(schema.RequestSchema):
     """ClearUDBLog - 清除UDB实例的log"""
 
     fields = {
-        "BeforeTime": fields.Int(required=False, dump_to="BeforeTime"),
+        "BeforeTime": fields.Int(required=True, dump_to="BeforeTime"),
         "DBId": fields.Str(required=True, dump_to="DBId"),
         "LogType": fields.Int(required=True, dump_to="LogType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),

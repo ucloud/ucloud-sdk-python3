@@ -130,6 +130,7 @@ class UBillClient(Client):
         - **AzGroupCName** (str) - 可用区
         - **ChargeType** (str) - 计费方式 (筛选项, 默认全部)。枚举值：\\ > Year:按年\\ > Month:按月 \\ > Day:按天 \\ > Dynamic:按时 \\ > Used:按量 \\ > Donate:赠送 \\ > Trial:试用 \\ > Post:后付费 \\ > Spot:抢占式
         - **CreateTime** (int) - 创建时间（时间戳）
+        - **EndTime** (int) - 结束时间（时间戳）
         - **ItemDetails** (list) - 见 **ItemDetail** 模型定义
         - **OrderNo** (str) - 订单号
         - **OrderType** (str) - 订单类型 (筛选项, 默认全部) 。枚举值：\\ > OT_BUY:新购 \\ > OT_RENEW:续费 \\ > OT_UPGRADE:升级 \\ > OT_DOWNGRADE:降级 \\ > OT_SUSPEND:结算 \\ > OT_ADDITIONAL:补单 \\ > OT_REFUND:删除 \\ > OT_POSTPAID_RENEW:过期 \\ > OT_POSTPAID_PAYMENT:后付费 \\ > OT_RECOVER:删除恢复
