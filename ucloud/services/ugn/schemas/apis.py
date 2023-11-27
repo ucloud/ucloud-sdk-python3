@@ -111,9 +111,9 @@ class CreateUGNRequestSchema(schema.RequestSchema):
 
     fields = {
         "Name": fields.Str(required=False, dump_to="Name"),
+        "Networks": fields.List(fields.Str()),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "Remark": fields.Str(required=False, dump_to="Remark"),
-        "Tag": fields.Str(required=False, dump_to="Tag"),
     }
 
 
@@ -121,8 +121,8 @@ class CreateUGNResponseSchema(schema.ResponseSchema):
     """CreateUGN - 创建云联网"""
 
     fields = {
-        "Message": fields.Str(required=True, load_from="Message"),
-        "UGNId": fields.Str(required=True, load_from="UGNId"),
+        "Message": fields.Str(required=False, load_from="Message"),
+        "UGNID": fields.Str(required=False, load_from="UGNID"),
     }
 
 
@@ -207,36 +207,6 @@ class DescribeInterRegionBandwidthResponseSchema(schema.ResponseSchema):
         ),
         "Message": fields.Str(required=True, load_from="Message"),
         "TotalCount": fields.Int(required=False, load_from="TotalCount"),
-    }
-
-
-"""
-API: DescribeUGN
-
-查询云联网
-"""
-
-
-class DescribeUGNRequestSchema(schema.RequestSchema):
-    """DescribeUGN - 查询云联网"""
-
-    fields = {
-        "Limit": fields.Int(required=False, dump_to="Limit"),
-        "Offset": fields.Int(required=False, dump_to="Offset"),
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
-        "UGNIds": fields.List(fields.Str()),
-    }
-
-
-class DescribeUGNResponseSchema(schema.ResponseSchema):
-    """DescribeUGN - 查询云联网"""
-
-    fields = {
-        "Message": fields.Str(required=True, load_from="Message"),
-        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
-        "UGNs": fields.List(
-            models.UGNSchema(), required=False, load_from="UGNs"
-        ),
     }
 
 
@@ -466,6 +436,47 @@ class UnpublishUGNRouteRuleRequestSchema(schema.RequestSchema):
 
 class UnpublishUGNRouteRuleResponseSchema(schema.ResponseSchema):
     """UnpublishUGNRouteRule - 取消发布云联网路由规则"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: UpdateUGNBwPackage
+
+更新带宽包配置
+"""
+
+
+class UpdateUGNBwPackageRequestSchema(schema.RequestSchema):
+    """UpdateUGNBwPackage - 更新带宽包配置"""
+
+    fields = {
+        "BwBidRate": fields.Float(required=True, dump_to="BwBidRate"),
+        "BwULRate": fields.Float(required=True, dump_to="BwULRate"),
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "Coupon": fields.Str(required=False, dump_to="Coupon"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "PackageID": fields.Str(required=True, dump_to="PackageID"),
+        "Path": fields.Str(required=True, dump_to="Path"),
+        "PayMode": fields.Str(required=True, dump_to="PayMode"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Qos": fields.Str(required=True, dump_to="Qos"),
+        "Quantity": fields.Str(required=False, dump_to="Quantity"),
+        "RegionA": fields.Str(required=True, dump_to="RegionA"),
+        "RegionABwMax": fields.Int(required=True, dump_to="RegionABwMax"),
+        "RegionABwMin": fields.Int(required=True, dump_to="RegionABwMin"),
+        "RegionB": fields.Str(required=True, dump_to="RegionB"),
+        "RegionBBwMax": fields.Int(required=True, dump_to="RegionBBwMax"),
+        "RegionBBwMin": fields.Int(required=True, dump_to="RegionBBwMin"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "UGNID": fields.Str(required=True, dump_to="UGNID"),
+    }
+
+
+class UpdateUGNBwPackageResponseSchema(schema.ResponseSchema):
+    """UpdateUGNBwPackage - 更新带宽包配置"""
 
     fields = {
         "Message": fields.Str(required=True, load_from="Message"),

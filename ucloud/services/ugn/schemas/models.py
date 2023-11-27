@@ -22,21 +22,6 @@ class InterRegionBandwidthSchema(schema.ResponseSchema):
     }
 
 
-class UGNSchema(schema.ResponseSchema):
-    """UGN - 云联网信息"""
-
-    fields = {
-        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
-        "Instances": fields.List(fields.Str()),
-        "InterRegionBandwidths": fields.List(fields.Str()),
-        "Name": fields.Str(required=True, load_from="Name"),
-        "Remark": fields.Str(required=True, load_from="Remark"),
-        "RouteRules": fields.List(fields.Str()),
-        "Tag": fields.Str(required=True, load_from="Tag"),
-        "UGNId": fields.Str(required=True, load_from="UGNId"),
-    }
-
-
 class InstanceSchema(schema.ResponseSchema):
     """Instance - 云联网实例信息"""
 
