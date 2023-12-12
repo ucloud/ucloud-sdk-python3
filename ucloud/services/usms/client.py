@@ -13,6 +13,39 @@ class USMSClient(Client):
     ):
         super(USMSClient, self).__init__(config, transport, middleware, logger)
 
+    def add_backfill(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """AddBackfill - 用户通过接口发送消息，当消息在终端被消费，调用该接口，进行记录。
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **SendNo** (str) - (Required) 发送Number，记录一次发送请求的唯一性
+        - **Target** (str) - (Required) 短信的接收目标,手机号需要添加国家码，比如(1)231xxxx
+        - **BackfillTime** (int) - 回填时间，秒级别时间戳
+        - **Content** (str) - 回填内容
+        - **SendTime** (int) - 发送请求的时间，秒级别时间戳
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 返回错误消息。当 RetCode 非 0 时提供详细的描述信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.AddBackfillRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("AddBackfill", d, **kwargs)
+        return apis.AddBackfillResponseSchema().loads(resp)
+
     def create_usms_signature(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:

@@ -105,13 +105,13 @@ class UGNClient(Client):
         return apis.CreateInterRegionBandwidthResponseSchema().loads(resp)
 
     def create_ugn(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """CreateUGN - 创建云联网
+        """CreateUGN -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config)
         - **Name** (str) -
-        - **Networks** (list) - 数组，数组内每个元素的字段如下：NetworkID：string，网络实例 ID，如 uvnet-xxxx；Type：string，网络实例类型，枚举值：VPC/HybridGW/...；Region：string，网络实例所属地域，如 cn-sh2；OrgName：string，网络实例所属项目名，如 org-xxx
+        - **Networks** (list) -
         - **Remark** (str) -
 
         **Response**
@@ -226,6 +226,84 @@ class UGNClient(Client):
 
         resp = self.invoke("DescribeInterRegionBandwidth", d, **kwargs)
         return apis.DescribeInterRegionBandwidthResponseSchema().loads(resp)
+
+    def describe_simple_ugn(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeSimpleUGN - 获取简洁版UGN详情
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **UGNID** (str) - (Required) UGN ID
+
+        **Response**
+
+        - **BwPackages** (list) - 见 **SimpleBwPackage** 模型定义
+        - **Message** (str) -
+        - **Networks** (list) - 见 **SimpleNetwork** 模型定义
+        - **Routes** (list) - 见 **SimpleRoute** 模型定义
+        - **UGN** (dict) - 见 **UGN** 模型定义
+
+        **Response Model**
+
+        **SimpleRoute**
+        - **DstAddr** (str) - 目的网段
+        - **NextHopID** (str) - 下一跳网络实例 ID
+        - **NextHopRegion** (str) - 下一跳网络实例所属地域
+        - **NextHopRegionID** (int) - 下一跳网络实例所属地域 id
+        - **NextHopType** (str) - 下一跳网络实例类型
+        - **Priority** (int) - 路由优先级
+
+
+        **SimpleBwPackage**
+        - **BandWidth** (float) - 带宽值
+        - **ChangePayMode** (str) - 带宽包切换计费类型
+        - **ChangeStatus** (int) - 带宽包切换状态
+        - **ChangeTime** (int) - 带宽包切换时间
+        - **CreateTime** (int) - 创建时间
+        - **ExpireTime** (int) - 过期时间
+        - **Name** (str) -
+        - **PackageID** (str) -
+        - **Path** (str) - 智能路径Delay:最低时延｜IGP:普通线路｜TCO:最低成本
+        - **PayMode** (str) - 计费模式 FixedBw:固定带宽｜Peak95:经典95｜Max5:第五峰值｜Traffic:流量计费
+        - **Qos** (str) - 服务质量Diamond:钻石｜Platinum:铂金｜Gold:黄金
+        - **RegionA** (str) - 地域A名称
+        - **RegionB** (str) - 地域B名称
+        - **Remark** (str) -
+        - **UGNID** (str) -
+
+
+        **SimpleNetwork**
+        - **CreateTime** (int) -
+        - **Name** (str) - 网络实例名称
+        - **NetworkID** (str) - 网络实例的ID，如 vnet-xxxxx
+        - **OrgID** (int) - 网络实例所在项目的ID
+        - **OrgName** (str) - 网络实例所在项目名
+        - **Region** (str) - 网络实例所在地域
+        - **RegionID** (int) - 网络实例所在地域ID
+        - **Type** (str) - 网络实例类型：VPC/HybridGW/...
+
+
+        **UGN**
+        - **BwPackageCount** (int) - 绑定带宽包数量
+        - **CreateTime** (int) - 云联网创建时间
+        - **Name** (str) - 云联网名称
+        - **NetworkCount** (int) - 关联网络实例数量
+        - **Remark** (str) - 云联网备注
+        - **UGNID** (str) - 云联网资源 ID
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.DescribeSimpleUGNRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeSimpleUGN", d, **kwargs)
+        return apis.DescribeSimpleUGNResponseSchema().loads(resp)
 
     def describe_ugn_instance(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -372,6 +450,145 @@ class UGNClient(Client):
         resp = self.invoke("DetachUGNInstance", d, **kwargs)
         return apis.DetachUGNInstanceResponseSchema().loads(resp)
 
+    def get_simple_ugn_bw_packages(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetSimpleUGNBwPackages - 获取指定云联网内的带宽包
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **UGNID** (str) - (Required)
+        - **Limit** (int) - 分页大小，默认20
+        - **Offset** (int) - 偏移量，默认0
+
+        **Response**
+
+        - **BwPackages** (list) - 见 **SimpleBwPackage** 模型定义
+        - **Limit** (int) -
+        - **Message** (str) -
+        - **Offset** (int) -
+        - **TotalCount** (int) -
+
+        **Response Model**
+
+        **SimpleBwPackage**
+        - **BandWidth** (float) - 带宽值
+        - **ChangePayMode** (str) - 带宽包切换计费类型
+        - **ChangeStatus** (int) - 带宽包切换状态
+        - **ChangeTime** (int) - 带宽包切换时间
+        - **CreateTime** (int) - 创建时间
+        - **ExpireTime** (int) - 过期时间
+        - **Name** (str) -
+        - **PackageID** (str) -
+        - **Path** (str) - 智能路径Delay:最低时延｜IGP:普通线路｜TCO:最低成本
+        - **PayMode** (str) - 计费模式 FixedBw:固定带宽｜Peak95:经典95｜Max5:第五峰值｜Traffic:流量计费
+        - **Qos** (str) - 服务质量Diamond:钻石｜Platinum:铂金｜Gold:黄金
+        - **RegionA** (str) - 地域A名称
+        - **RegionB** (str) - 地域B名称
+        - **Remark** (str) -
+        - **UGNID** (str) -
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetSimpleUGNBwPackagesRequestSchema().dumps(d)
+
+        resp = self.invoke("GetSimpleUGNBwPackages", d, **kwargs)
+        return apis.GetSimpleUGNBwPackagesResponseSchema().loads(resp)
+
+    def list_simple_bw_package(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListSimpleBwPackage - 获取当前项目下的带宽包列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Limit** (int) -
+        - **Offset** (int) -
+
+        **Response**
+
+        - **BwPackages** (list) - 见 **SimpleBwPackage** 模型定义
+        - **Limit** (int) -
+        - **Offset** (int) -
+        - **TotalCount** (int) -
+
+        **Response Model**
+
+        **SimpleBwPackage**
+        - **BandWidth** (float) - 带宽值
+        - **ChangePayMode** (str) - 带宽包切换计费类型
+        - **ChangeStatus** (int) - 带宽包切换状态
+        - **ChangeTime** (int) - 带宽包切换时间
+        - **CreateTime** (int) - 创建时间
+        - **ExpireTime** (int) - 过期时间
+        - **Name** (str) -
+        - **PackageID** (str) -
+        - **Path** (str) - 智能路径Delay:最低时延｜IGP:普通线路｜TCO:最低成本
+        - **PayMode** (str) - 计费模式 FixedBw:固定带宽｜Peak95:经典95｜Max5:第五峰值｜Traffic:流量计费
+        - **Qos** (str) - 服务质量Diamond:钻石｜Platinum:铂金｜Gold:黄金
+        - **RegionA** (str) - 地域A名称
+        - **RegionB** (str) - 地域B名称
+        - **Remark** (str) -
+        - **UGNID** (str) -
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.ListSimpleBwPackageRequestSchema().dumps(d)
+
+        resp = self.invoke("ListSimpleBwPackage", d, **kwargs)
+        return apis.ListSimpleBwPackageResponseSchema().loads(resp)
+
+    def list_ugn(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ListUGN - 获取当前项目下所有云联网资源
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Limit** (int) - 分页大小，默认20
+        - **Offset** (int) - 偏移量，默认0
+
+        **Response**
+
+        - **Limit** (int) -
+        - **Message** (str) -
+        - **Offset** (int) -
+        - **TotalCount** (int) -
+        - **UGNs** (list) - 见 **UGN** 模型定义
+
+        **Response Model**
+
+        **UGN**
+        - **BwPackageCount** (int) - 绑定带宽包数量
+        - **CreateTime** (int) - 云联网创建时间
+        - **Name** (str) - 云联网名称
+        - **NetworkCount** (int) - 关联网络实例数量
+        - **Remark** (str) - 云联网备注
+        - **UGNID** (str) - 云联网资源 ID
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.ListUGNRequestSchema().dumps(d)
+
+        resp = self.invoke("ListUGN", d, **kwargs)
+        return apis.ListUGNResponseSchema().loads(resp)
+
     def modify_inter_region_bandwidth(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -427,6 +644,33 @@ class UGNClient(Client):
         resp = self.invoke("ModifyUGNAttribute", d, **kwargs)
         return apis.ModifyUGNAttributeResponseSchema().loads(resp)
 
+    def modify_ugn_bandwidth(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyUGNBandwidth - 修改云联网带宽大小
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **BandWidth** (int) - (Required) 带宽值
+        - **PackageID** (str) - (Required) 带宽包id
+        - **UGNID** (str) - (Required) 云联网id
+
+        **Response**
+
+        - **Message** (str) -
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.ModifyUGNBandwidthRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyUGNBandwidth", d, **kwargs)
+        return apis.ModifyUGNBandwidthResponseSchema().loads(resp)
+
     def publish_ugn_route_rule(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -459,6 +703,86 @@ class UGNClient(Client):
         resp = self.invoke("PublishUGNRouteRule", d, **kwargs)
         return apis.PublishUGNRouteRuleResponseSchema().loads(resp)
 
+    def s_describe_ugn(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """SDescribeUGN - 获取简洁版UGN详情
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **UGNID** (str) - (Required) UGN ID
+
+        **Response**
+
+        - **BwPackages** (list) - 见 **SBwPackage** 模型定义
+        - **Message** (str) -
+        - **Networks** (list) - 见 **SNetwork** 模型定义
+        - **Policies** (list) - 暂不支持
+        - **Routes** (list) - 见 **Route** 模型定义
+        - **UGN** (dict) - 见 **UGN** 模型定义
+
+        **Response Model**
+
+        **SBwPackage**
+        - **BandWidth** (int) - 带宽值
+        - **ChangePayMode** (str) - 带宽包切换计费类型
+        - **ChangeStatus** (int) - 带宽包切换状态
+        - **ChangeTime** (int) - 带宽包切换时间
+        - **CreateTime** (int) - 创建时间
+        - **ExpireTime** (int) - 过期时间
+        - **Message** (str) - 备注信息
+        - **Name** (str) -
+        - **PackageID** (str) -
+        - **Path** (str) - 智能路径Delay:最低时延｜IGP:普通线路｜TCO:最低成本
+        - **PayMode** (str) - 计费模式 FixedBw:固定带宽｜Peak95:经典95｜Max5:第五峰值｜Traffic:流量计费
+        - **Qos** (str) - 服务质量Diamond:钻石｜Platinum:铂金｜Gold:黄金
+        - **RegionA** (str) - 地域A名称
+        - **RegionB** (str) - 地域B名称
+        - **Remark** (str) -
+        - **UGNID** (str) -
+
+
+        **SNetwork**
+        - **CreateTime** (str) -
+        - **Name** (str) - 网络实例名称
+        - **NetworkID** (str) - 网络实例的ID，如 vnet-xxxxx
+        - **OrgID** (int) - 网络实例所在项目的ID
+        - **OrgName** (str) - 网络实例所在项目名
+        - **Region** (str) - 网络实例所在地域
+        - **RegionID** (int) - 网络实例所在地域ID
+        - **Type** (str) - 网络实例类型：VPC/HybridGW/...
+
+
+        **UGN**
+        - **BwPackageCount** (int) - 绑定带宽包数量
+        - **CreateTime** (int) - 云联网创建时间
+        - **Name** (str) - 云联网名称
+        - **NetworkCount** (int) - 关联网络实例数量
+        - **Remark** (str) - 云联网备注
+        - **UGNID** (str) - 云联网资源 ID
+
+
+        **Route**
+        - **DstAddr** (str) - 目的网段
+        - **NexthopID** (str) - 下一跳网络实例 ID
+        - **NexthopRegion** (str) - 下一跳网络实例所属地域
+        - **NexthopRegionID** (int) - 下一跳网络实例所属地域 id
+        - **NexthopType** (str) - 下一跳网络实例类型
+        - **Priority** (int) - 路由优先级
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.SDescribeUGNRequestSchema().dumps(d)
+
+        resp = self.invoke("SDescribeUGN", d, **kwargs)
+        return apis.SDescribeUGNResponseSchema().loads(resp)
+
     def unpublish_ugn_route_rule(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -490,14 +814,14 @@ class UGNClient(Client):
     def update_ugn_bw_package(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """UpdateUGNBwPackage - 更新带宽包配置
+        """UpdateUGNBwPackage -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config)
         - **BwBidRate** (float) - (Required)
         - **BwULRate** (float) - (Required)
-        - **PackageID** (str) - (Required) 带宽包 ID
+        - **PackageID** (str) - (Required)
         - **Path** (str) - (Required)
         - **PayMode** (str) - (Required)
         - **Qos** (str) - (Required)
@@ -507,12 +831,12 @@ class UGNClient(Client):
         - **RegionB** (str) - (Required)
         - **RegionBBwMax** (int) - (Required)
         - **RegionBBwMin** (int) - (Required)
-        - **UGNID** (str) - (Required) 所绑定的 UGN ID
+        - **UGNID** (str) - (Required)
         - **ChargeType** (str) -
         - **Coupon** (str) -
-        - **Name** (str) - 名称
+        - **Name** (str) -
         - **Quantity** (str) -
-        - **Remark** (str) - 备注
+        - **Remark** (str) -
 
         **Response**
 
@@ -525,6 +849,9 @@ class UGNClient(Client):
         }
         req and d.update(req)
         d = apis.UpdateUGNBwPackageRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("UpdateUGNBwPackage", d, **kwargs)
         return apis.UpdateUGNBwPackageResponseSchema().loads(resp)
