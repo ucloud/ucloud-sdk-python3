@@ -102,12 +102,12 @@ class CreateInterRegionBandwidthResponseSchema(schema.ResponseSchema):
 """
 API: CreateUGN
 
-创建云联网
+
 """
 
 
 class CreateUGNRequestSchema(schema.RequestSchema):
-    """CreateUGN - 创建云联网"""
+    """CreateUGN -"""
 
     fields = {
         "Name": fields.Str(required=False, dump_to="Name"),
@@ -118,7 +118,7 @@ class CreateUGNRequestSchema(schema.RequestSchema):
 
 
 class CreateUGNResponseSchema(schema.ResponseSchema):
-    """CreateUGN - 创建云联网"""
+    """CreateUGN -"""
 
     fields = {
         "Message": fields.Str(required=False, load_from="Message"),
@@ -207,6 +207,42 @@ class DescribeInterRegionBandwidthResponseSchema(schema.ResponseSchema):
         ),
         "Message": fields.Str(required=True, load_from="Message"),
         "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
+API: DescribeSimpleUGN
+
+获取简洁版UGN详情
+"""
+
+
+class DescribeSimpleUGNRequestSchema(schema.RequestSchema):
+    """DescribeSimpleUGN - 获取简洁版UGN详情"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "UGNID": fields.Str(required=True, dump_to="UGNID"),
+    }
+
+
+class DescribeSimpleUGNResponseSchema(schema.ResponseSchema):
+    """DescribeSimpleUGN - 获取简洁版UGN详情"""
+
+    fields = {
+        "BwPackages": fields.List(
+            models.SimpleBwPackageSchema(),
+            required=True,
+            load_from="BwPackages",
+        ),
+        "Message": fields.Str(required=True, load_from="Message"),
+        "Networks": fields.List(
+            models.SimpleNetworkSchema(), required=True, load_from="Networks"
+        ),
+        "Routes": fields.List(
+            models.SimpleRouteSchema(), required=True, load_from="Routes"
+        ),
+        "UGN": models.UGNSchema(),
     }
 
 
@@ -325,6 +361,103 @@ class DetachUGNInstanceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetSimpleUGNBwPackages
+
+获取指定云联网内的带宽包
+"""
+
+
+class GetSimpleUGNBwPackagesRequestSchema(schema.RequestSchema):
+    """GetSimpleUGNBwPackages - 获取指定云联网内的带宽包"""
+
+    fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "UGNID": fields.Str(required=True, dump_to="UGNID"),
+    }
+
+
+class GetSimpleUGNBwPackagesResponseSchema(schema.ResponseSchema):
+    """GetSimpleUGNBwPackages - 获取指定云联网内的带宽包"""
+
+    fields = {
+        "BwPackages": fields.List(
+            models.SimpleBwPackageSchema(),
+            required=True,
+            load_from="BwPackages",
+        ),
+        "Limit": fields.Int(required=True, load_from="Limit"),
+        "Message": fields.Str(required=True, load_from="Message"),
+        "Offset": fields.Int(required=True, load_from="Offset"),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
+API: ListSimpleBwPackage
+
+获取当前项目下的带宽包列表
+"""
+
+
+class ListSimpleBwPackageRequestSchema(schema.RequestSchema):
+    """ListSimpleBwPackage - 获取当前项目下的带宽包列表"""
+
+    fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+    }
+
+
+class ListSimpleBwPackageResponseSchema(schema.ResponseSchema):
+    """ListSimpleBwPackage - 获取当前项目下的带宽包列表"""
+
+    fields = {
+        "BwPackages": fields.List(
+            models.SimpleBwPackageSchema(),
+            required=True,
+            load_from="BwPackages",
+        ),
+        "Limit": fields.Int(required=True, load_from="Limit"),
+        "Offset": fields.Int(required=True, load_from="Offset"),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
+API: ListUGN
+
+获取当前项目下所有云联网资源
+"""
+
+
+class ListUGNRequestSchema(schema.RequestSchema):
+    """ListUGN - 获取当前项目下所有云联网资源"""
+
+    fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+    }
+
+
+class ListUGNResponseSchema(schema.ResponseSchema):
+    """ListUGN - 获取当前项目下所有云联网资源"""
+
+    fields = {
+        "Limit": fields.Int(required=False, load_from="Limit"),
+        "Message": fields.Str(required=True, load_from="Message"),
+        "Offset": fields.Int(required=False, load_from="Offset"),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+        "UGNs": fields.List(
+            models.UGNSchema(), required=True, load_from="UGNs"
+        ),
+    }
+
+
+"""
 API: ModifyInterRegionBandwidth
 
 修改跨域带宽
@@ -380,6 +513,32 @@ class ModifyUGNAttributeResponseSchema(schema.ResponseSchema):
 
 
 """
+API: ModifyUGNBandwidth
+
+修改云联网带宽大小
+"""
+
+
+class ModifyUGNBandwidthRequestSchema(schema.RequestSchema):
+    """ModifyUGNBandwidth - 修改云联网带宽大小"""
+
+    fields = {
+        "BandWidth": fields.Int(required=True, dump_to="BandWidth"),
+        "PackageID": fields.Str(required=True, dump_to="PackageID"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "UGNID": fields.Str(required=True, dump_to="UGNID"),
+    }
+
+
+class ModifyUGNBandwidthResponseSchema(schema.ResponseSchema):
+    """ModifyUGNBandwidth - 修改云联网带宽大小"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
 API: PublishUGNRouteRule
 
 发布云联网路由规则
@@ -408,6 +567,43 @@ class PublishUGNRouteRuleResponseSchema(schema.ResponseSchema):
     fields = {
         "Message": fields.Str(required=True, load_from="Message"),
         "RouteRuleId": fields.Str(required=False, load_from="RouteRuleId"),
+    }
+
+
+"""
+API: SDescribeUGN
+
+获取简洁版UGN详情
+"""
+
+
+class SDescribeUGNRequestSchema(schema.RequestSchema):
+    """SDescribeUGN - 获取简洁版UGN详情"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "UGNID": fields.Str(required=True, dump_to="UGNID"),
+    }
+
+
+class SDescribeUGNResponseSchema(schema.ResponseSchema):
+    """SDescribeUGN - 获取简洁版UGN详情"""
+
+    fields = {
+        "BwPackages": fields.List(
+            models.SBwPackageSchema(), required=True, load_from="BwPackages"
+        ),
+        "Message": fields.Str(required=True, load_from="Message"),
+        "Networks": fields.List(
+            models.SNetworkSchema(), required=True, load_from="Networks"
+        ),
+        "Policies": fields.List(
+            fields.Str(), required=True, load_from="Policies"
+        ),
+        "Routes": fields.List(
+            models.RouteSchema(), required=True, load_from="Routes"
+        ),
+        "UGN": models.UGNSchema(),
     }
 
 
@@ -445,12 +641,12 @@ class UnpublishUGNRouteRuleResponseSchema(schema.ResponseSchema):
 """
 API: UpdateUGNBwPackage
 
-更新带宽包配置
+
 """
 
 
 class UpdateUGNBwPackageRequestSchema(schema.RequestSchema):
-    """UpdateUGNBwPackage - 更新带宽包配置"""
+    """UpdateUGNBwPackage -"""
 
     fields = {
         "BwBidRate": fields.Float(required=True, dump_to="BwBidRate"),
@@ -476,7 +672,7 @@ class UpdateUGNBwPackageRequestSchema(schema.RequestSchema):
 
 
 class UpdateUGNBwPackageResponseSchema(schema.ResponseSchema):
-    """UpdateUGNBwPackage - 更新带宽包配置"""
+    """UpdateUGNBwPackage -"""
 
     fields = {
         "Message": fields.Str(required=True, load_from="Message"),

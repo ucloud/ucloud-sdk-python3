@@ -9,6 +9,36 @@ from ucloud.services.usms.schemas import models
 
 
 """
+API: AddBackfill
+
+用户通过接口发送消息，当消息在终端被消费，调用该接口，进行记录。
+"""
+
+
+class AddBackfillRequestSchema(schema.RequestSchema):
+    """AddBackfill - 用户通过接口发送消息，当消息在终端被消费，调用该接口，进行记录。"""
+
+    fields = {
+        "BackfillTime": fields.Int(required=False, dump_to="BackfillTime"),
+        "Content": fields.Str(required=False, dump_to="Content"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "SendNo": fields.Str(required=True, dump_to="SendNo"),
+        "SendTime": fields.Int(required=False, dump_to="SendTime"),
+        "Target": fields.Str(required=True, dump_to="Target"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class AddBackfillResponseSchema(schema.ResponseSchema):
+    """AddBackfill - 用户通过接口发送消息，当消息在终端被消费，调用该接口，进行记录。"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
 API: CreateUSMSSignature
 
 调用接口CreateUSMSSignature申请短信签名

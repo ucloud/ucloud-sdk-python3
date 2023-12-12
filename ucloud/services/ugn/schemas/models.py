@@ -22,6 +22,71 @@ class InterRegionBandwidthSchema(schema.ResponseSchema):
     }
 
 
+class UGNSchema(schema.ResponseSchema):
+    """UGN - 云联网信息"""
+
+    fields = {
+        "BwPackageCount": fields.Int(required=True, load_from="BwPackageCount"),
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "Name": fields.Str(required=True, load_from="Name"),
+        "NetworkCount": fields.Int(required=True, load_from="NetworkCount"),
+        "Remark": fields.Str(required=True, load_from="Remark"),
+        "UGNID": fields.Str(required=True, load_from="UGNID"),
+    }
+
+
+class SimpleRouteSchema(schema.ResponseSchema):
+    """SimpleRoute - 简洁版云联网路由条目"""
+
+    fields = {
+        "DstAddr": fields.Str(required=False, load_from="DstAddr"),
+        "NextHopID": fields.Str(required=False, load_from="NextHopID"),
+        "NextHopRegion": fields.Str(required=False, load_from="NextHopRegion"),
+        "NextHopRegionID": fields.Int(
+            required=False, load_from="NextHopRegionID"
+        ),
+        "NextHopType": fields.Str(required=False, load_from="NextHopType"),
+        "Priority": fields.Int(required=False, load_from="Priority"),
+    }
+
+
+class SimpleNetworkSchema(schema.ResponseSchema):
+    """SimpleNetwork - 简洁版云联网网络实例"""
+
+    fields = {
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "Name": fields.Str(required=True, load_from="Name"),
+        "NetworkID": fields.Str(required=True, load_from="NetworkID"),
+        "OrgID": fields.Int(required=False, load_from="OrgID"),
+        "OrgName": fields.Str(required=True, load_from="OrgName"),
+        "Region": fields.Str(required=True, load_from="Region"),
+        "RegionID": fields.Int(required=False, load_from="RegionID"),
+        "Type": fields.Str(required=True, load_from="Type"),
+    }
+
+
+class SimpleBwPackageSchema(schema.ResponseSchema):
+    """SimpleBwPackage - 简洁版带宽包"""
+
+    fields = {
+        "BandWidth": fields.Float(required=True, load_from="BandWidth"),
+        "ChangePayMode": fields.Str(required=False, load_from="ChangePayMode"),
+        "ChangeStatus": fields.Int(required=False, load_from="ChangeStatus"),
+        "ChangeTime": fields.Int(required=False, load_from="ChangeTime"),
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "PackageID": fields.Str(required=True, load_from="PackageID"),
+        "Path": fields.Str(required=True, load_from="Path"),
+        "PayMode": fields.Str(required=True, load_from="PayMode"),
+        "Qos": fields.Str(required=True, load_from="Qos"),
+        "RegionA": fields.Str(required=True, load_from="RegionA"),
+        "RegionB": fields.Str(required=True, load_from="RegionB"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "UGNID": fields.Str(required=True, load_from="UGNID"),
+    }
+
+
 class InstanceSchema(schema.ResponseSchema):
     """Instance - 云联网实例信息"""
 
@@ -70,4 +135,57 @@ class RouteRuleSchema(schema.ResponseSchema):
         "Rollback": fields.Bool(required=True, load_from="Rollback"),
         "RouteRuleId": fields.Str(required=True, load_from="RouteRuleId"),
         "RouteRuleType": fields.Int(required=True, load_from="RouteRuleType"),
+    }
+
+
+class SNetworkSchema(schema.ResponseSchema):
+    """SNetwork - 简洁版云联网网络实例"""
+
+    fields = {
+        "CreateTime": fields.Str(required=False, load_from="CreateTime"),
+        "Name": fields.Str(required=True, load_from="Name"),
+        "NetworkID": fields.Str(required=True, load_from="NetworkID"),
+        "OrgID": fields.Int(required=False, load_from="OrgID"),
+        "OrgName": fields.Str(required=True, load_from="OrgName"),
+        "Region": fields.Str(required=True, load_from="Region"),
+        "RegionID": fields.Int(required=False, load_from="RegionID"),
+        "Type": fields.Str(required=True, load_from="Type"),
+    }
+
+
+class SBwPackageSchema(schema.ResponseSchema):
+    """SBwPackage - 简洁版带宽包"""
+
+    fields = {
+        "BandWidth": fields.Int(required=True, load_from="BandWidth"),
+        "ChangePayMode": fields.Str(required=False, load_from="ChangePayMode"),
+        "ChangeStatus": fields.Int(required=False, load_from="ChangeStatus"),
+        "ChangeTime": fields.Int(required=False, load_from="ChangeTime"),
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "Message": fields.Str(required=False, load_from="Message"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "PackageID": fields.Str(required=True, load_from="PackageID"),
+        "Path": fields.Str(required=True, load_from="Path"),
+        "PayMode": fields.Str(required=True, load_from="PayMode"),
+        "Qos": fields.Str(required=True, load_from="Qos"),
+        "RegionA": fields.Str(required=True, load_from="RegionA"),
+        "RegionB": fields.Str(required=True, load_from="RegionB"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "UGNID": fields.Str(required=True, load_from="UGNID"),
+    }
+
+
+class RouteSchema(schema.ResponseSchema):
+    """Route - 云联网路由条目"""
+
+    fields = {
+        "DstAddr": fields.Str(required=False, load_from="DstAddr"),
+        "NexthopID": fields.Str(required=False, load_from="NexthopID"),
+        "NexthopRegion": fields.Str(required=False, load_from="NexthopRegion"),
+        "NexthopRegionID": fields.Int(
+            required=False, load_from="NexthopRegionID"
+        ),
+        "NexthopType": fields.Str(required=False, load_from="NexthopType"),
+        "Priority": fields.Int(required=False, load_from="Priority"),
     }
