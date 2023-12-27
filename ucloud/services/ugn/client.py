@@ -247,15 +247,6 @@ class UGNClient(Client):
 
         **Response Model**
 
-        **SimpleRoute**
-        - **DstAddr** (str) - 目的网段
-        - **NextHopID** (str) - 下一跳网络实例 ID
-        - **NextHopRegion** (str) - 下一跳网络实例所属地域
-        - **NextHopRegionID** (int) - 下一跳网络实例所属地域 id
-        - **NextHopType** (str) - 下一跳网络实例类型
-        - **Priority** (int) - 路由优先级
-
-
         **SimpleBwPackage**
         - **BandWidth** (float) - 带宽值
         - **ChangePayMode** (str) - 带宽包切换计费类型
@@ -283,6 +274,15 @@ class UGNClient(Client):
         - **Region** (str) - 网络实例所在地域
         - **RegionID** (int) - 网络实例所在地域ID
         - **Type** (str) - 网络实例类型：VPC/HybridGW/...
+
+
+        **SimpleRoute**
+        - **DstAddr** (str) - 目的网段
+        - **NextHopID** (str) - 下一跳网络实例 ID
+        - **NextHopRegion** (str) - 下一跳网络实例所属地域
+        - **NextHopRegionID** (int) - 下一跳网络实例所属地域 id
+        - **NextHopType** (str) - 下一跳网络实例类型
+        - **Priority** (int) - 路由优先级
 
 
         **UGN**
@@ -754,15 +754,6 @@ class UGNClient(Client):
         - **Type** (str) - 网络实例类型：VPC/HybridGW/...
 
 
-        **UGN**
-        - **BwPackageCount** (int) - 绑定带宽包数量
-        - **CreateTime** (int) - 云联网创建时间
-        - **Name** (str) - 云联网名称
-        - **NetworkCount** (int) - 关联网络实例数量
-        - **Remark** (str) - 云联网备注
-        - **UGNID** (str) - 云联网资源 ID
-
-
         **Route**
         - **DstAddr** (str) - 目的网段
         - **NexthopID** (str) - 下一跳网络实例 ID
@@ -770,6 +761,15 @@ class UGNClient(Client):
         - **NexthopRegionID** (int) - 下一跳网络实例所属地域 id
         - **NexthopType** (str) - 下一跳网络实例类型
         - **Priority** (int) - 路由优先级
+
+
+        **UGN**
+        - **BwPackageCount** (int) - 绑定带宽包数量
+        - **CreateTime** (int) - 云联网创建时间
+        - **Name** (str) - 云联网名称
+        - **NetworkCount** (int) - 关联网络实例数量
+        - **Remark** (str) - 云联网备注
+        - **UGNID** (str) - 云联网资源 ID
 
 
         """

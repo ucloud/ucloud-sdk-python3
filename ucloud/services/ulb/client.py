@@ -13,17 +13,77 @@ class ULBClient(Client):
     ):
         super(ULBClient, self).__init__(config, transport, middleware, logger)
 
-    def allocate_backend(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """AllocateBackend - 添加ULB后端资源实例
+    def add_targets(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """AddTargets - 给应用型负载均衡监听器添加后端服务节点
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **ResourceType** (str) - (Required) 所添加的后端资源的类型，枚举值：UHost -> 云主机；UNI -> 虚拟网卡；UPM -> 物理云主机； UDHost -> 私有专区主机；UDocker -> 容器；UHybrid->混合云主机；CUBE->Cube，USDP->智能大数据平台， IP->IP类型；默认值为UHost。报文转发模式不支持UDocker、UHybrid、CUBE、IP
-        - **ULBId** (str) - (Required) 负载均衡实例的ID
+        - **ListenerId** (str) - (Required) 监听器的ID
+        - **LoadBalancerId** (str) - (Required) 负载均衡实例的ID
+        - **Targets** (list) - 见 **AddTargetsParamTargets** 模型定义
+
+        **Response**
+
+        - **Targets** (list) - 见 **TargetSet** 模型定义
+
+        **Request Model**
+
+        **AddTargetsParamTargets**
+        - **Enabled** (bool) - 服务节点是否启用。默认值true
+        - **IsBackup** (bool) - 服务节点是否为备节点。默认值false
+        - **Port** (int) - 服务节点的端口。限定取值：[1-65535]，默认值80
+        - **ResourceIP** (str) - 服务节点的IP。在IP类型时，必传
+        - **ResourceId** (str) - 服务节点的资源ID。在非IP类型时，必传
+        - **ResourceType** (str) - 服务节点的类型。限定枚举值："UHost" / "UNI"/"UPM"/"IP"，默认值："UHost"；非IP类型，如果该资源有多个IP，将只能添加主IP；非IP类型，展示时，会显示相关资源信息，IP类型只展示IP信息。在相关资源被删除时，非IP类型会把相关资源从lb中剔除，IP类型不保证这个逻辑
+        - **SubnetId** (str) - 服务节点的子网资源ID。在IP类型时，必传
+        - **VPCId** (str) - 服务节点的VPC资源ID。在IP类型时，必传
+        - **Weight** (int) - 服务节点的权重。限定取值：[1-100]，默认值1；仅在加权轮询算法时有效
+
+
+        **Response Model**
+
+        **TargetSet**
+        - **Enabled** (bool) - 服务节点是否启用。 默认值：true
+        - **Id** (str) - 服务节点的标识ID。
+        - **IsBackup** (bool) - 服务节点是否为备节点。 默认值：false
+        - **Port** (int) - 服务节点的端口。限定取值：[1-65535]； 默认值：80
+        - **ResourceIP** (str) - 服务节点的IP。在IP类型时，必传
+        - **ResourceId** (str) - 服务节点的资源ID。在非IP类型时，必传
+        - **ResourceType** (str) - 服务节点的类型。限定枚举值：UHost -> 云主机，UNI -> 虚拟网卡，UPM -> 物理云主机，IP ->  IP类型； 默认值："UHost"； 非IP类型，如果该资源有多个IP，将只能添加主IP； 非IP类型，展示时，会显示相关资源信息，IP类型只展示IP信息。 在相关资源被删除时，非IP类型会把相关资源从lb中剔除，IP类型不保证这个逻辑
+        - **State** (str) - 服务节点的健康检查状态。限定枚举值：Healthy -> 健康，Unhealthy -> 不健康
+        - **SubnetId** (str) - 服务节点的子网资源ID。在IP类型时，必传
+        - **VPCId** (str) - 服务节点的VPC资源ID。在IP类型时，必传
+        - **Weight** (int) - 服务节点的权重。限定取值：[1-100]； 仅在加权轮询算法时有效； 默认值：1
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.AddTargetsRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("AddTargets", d, **kwargs)
+        return apis.AddTargetsResponseSchema().loads(resp)
+
+    def allocate_backend(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """AllocateBackend - 添加CLB后端资源实例
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ResourceType** (str) - (Required) 所添加的后端资源的类型，枚举值：UHost -> 云主机；UNI -> 虚拟网卡；UPM -> 物理云主机；UHybrid->混合云主机；CUBE->Cube， IP->IP类型；默认值为UHost。报文转发模式不支持UHybrid、CUBE、IP
+        - **ULBId** (str) - (Required) 传统型负载均衡实例的ID
         - **VServerId** (str) - (Required) VServer实例的ID
         - **Enabled** (int) - 后端实例状态开关，枚举值： 1：启用； 0：禁用 默认为启用
         - **IsBackup** (int) - rs是否为backup，默认为00：普通rs1：backup的rs
@@ -36,7 +96,7 @@ class ULBClient(Client):
 
         **Response**
 
-        - **BackendId** (str) - 所添加的后端资源在ULB中的对象ID，（为ULB系统中使用，与资源自身ID无关），可用于 UpdateBackendAttribute/UpdateBackendAttributeBatch/ReleaseBackend
+        - **BackendId** (str) - 所添加的后端资源在CLB中的对象ID，（为CLB系统中使用，与资源自身ID无关），可用于 UpdateBackendAttribute/UpdateBackendAttributeBatch/ReleaseBackend
 
         """
         # build request
@@ -94,14 +154,14 @@ class ULBClient(Client):
         return apis.AllocateBackendBatchResponseSchema().loads(resp)
 
     def bind_ssl(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """BindSSL - 将SSL证书绑定到VServer
+        """BindSSL - 将SSL证书绑定到传统型负载均衡VServer
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **SSLId** (str) - (Required) SSL证书的Id
-        - **ULBId** (str) - (Required) 所绑定ULB实例ID
+        - **ULBId** (str) - (Required) 所绑定CLB实例ID
         - **VServerId** (str) - (Required) 所绑定VServer实例ID
 
         **Response**
@@ -119,19 +179,117 @@ class ULBClient(Client):
         resp = self.invoke("BindSSL", d, **kwargs)
         return apis.BindSSLResponseSchema().loads(resp)
 
-    def create_policy(
+    def create_listener(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """CreatePolicy - 创建VServer内容转发策略
+        """CreateListener - 创建一个应用型负载均衡的监听器
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **BackendId** (list) - (Required) 内容转发策略应用的后端资源实例的ID，来源于 AllocateBackend 返回的 BackendId
+        - **LoadBalancerId** (str) - (Required) 负载均衡实例的ID
+        - **Certificates** (list) - （应用型专用）服务器默认证书ID。仅HTTPS监听支持，且必填；暂时只支持最大长度为1
+        - **CompressionEnabled** (bool) - （应用型专用）是否开启数据压缩功能。目前只支持使用gzip对特定文件类型进行压缩。默认值为：false
+        - **HTTP2Enabled** (bool) - （应用型专用）是否开启HTTP/2特性。仅HTTPS监听支持开启；默认值为：false
+        - **HealthCheckConfig** (dict) - 见 **CreateListenerParamHealthCheckConfig** 模型定义
+        - **IdleTimeout** (int) - 连接空闲超时时间。单位：秒。应用型限定取值：[1-86400]；默认值60
+        - **ListenerPort** (int) - 监听器的监听端口。应用型限定取值：[1-65535]，默认值80
+        - **ListenerProtocol** (str) - 监听协议。应用型限定取值：“HTTP”/"HTTPS"，默认值“HTTP”
+        - **Name** (str) - 监听器的名称。限定字符长度：[1-255]；限定特殊字符，仅支持：“-”，“_”，“.”；默认值：listener
+        - **RedirectEnabled** (bool) - （应用型专用）是否开启HTTP重定向到HTTPS。仅HTTP监听支持开启；默认值为：false
+        - **RedirectPort** (int) - （应用型专用）重定向端口。限定取值：[1-65535]，默认值443
+        - **Remark** (str) - 监听器的备注信息。限定字符长度：[0-255]
+        - **Scheduler** (str) - 负载均衡算法。应用型限定取值："Roundrobin"/"Source"/"WeightRoundrobin"/" Leastconn"/"Backup"，默认值"Roundrobin"
+        - **SecurityPolicyId** (str) - （应用型专用）安全策略组ID。仅HTTPS监听支持绑定；默认值“Default”，表示绑定原生策略
+        - **StickinessConfig** (dict) - 见 **CreateListenerParamStickinessConfig** 模型定义
+
+        **Response**
+
+        - **ListenerId** (str) - 监听器的ID
+
+        **Request Model**
+
+        **CreateListenerParamStickinessConfig**
+        - **CookieName** (str) - （应用型专用）自定义Cookie。当StickinessType取值"UserDefined"时有效；限定字符长度：[0-255]
+        - **Enabled** (bool) - 是否开启会话保持功能。应用型负载均衡实例基于Cookie实现；默认值为：false
+        - **Type** (str) - （应用型专用）Cookie处理方式。限定枚举值："ServerInsert" / "UserDefined"；默认值为：“ServerInsert”
+
+
+        **CreateListenerParamHealthCheckConfig**
+        - **Domain** (str) - （应用型专用）HTTP检查域名
+        - **Enabled** (bool) - 是否开启健康检查功能。暂时不支持关闭。默认值为：true
+        - **Path** (str) - （应用型专用）HTTP检查路径
+        - **Type** (str) - 健康检查方式。应用型限定取值：“Port”/"HTTP"，默认值：“Port”
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateListenerRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateListener", d, **kwargs)
+        return apis.CreateListenerResponseSchema().loads(resp)
+
+    def create_load_balancer(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateLoadBalancer - 创建一个应用型负载均衡实例
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **SubnetId** (str) - (Required) 负载均衡实例所属的子网资源ID。负载均衡实例的内网VIP和SNAT场景的源IP限定在该子网内；指定子网不影响添加后端服务节点时的范围，依旧是整个VPC下支持的资源
+        - **VPCId** (str) - (Required) 负载均衡实例所属的VPC资源ID
+        - **ChargeType** (str) - 付费模式。限定枚举值："Year" / "Month"/"Day"/"Dynamic"，默认值为：“Month”
+        - **CouponId** (str) - 代金券code
+        - **IPVersion** (str) - 负载均衡实例的IP协议。限定枚举值："IPv4" / "IPv6"/"DualStack"，默认值为：“IPv4”
+        - **Name** (str) - 负载均衡实例的名称。默认值：lb；特殊字符仅支持：“-”，“_”，“.”；限定字符长度：[1-255]
+        - **Quantity** (int) - 购买的时长, 默认: 1; 0-> 购买至月末(0只在月付费有效，其余付费模式传0，实际收费按一个周期计费)
+        - **Remark** (str) - 负载均衡实例的备注信息。限定字符长度：[0-255]
+        - **Tag** (str) - 负载均衡实例所属的业务组ID。默认值为“Default”； 传空则为Default业务组
+        - **Type** (str) - 负载均衡实例的类型。限定枚举值："Application" / "Network"，默认值："Application"
+
+        **Response**
+
+        - **LoadBalancerId** (str) - 负载均衡实例的ID
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateLoadBalancerRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateLoadBalancer", d, **kwargs)
+        return apis.CreateLoadBalancerResponseSchema().loads(resp)
+
+    def create_policy(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreatePolicy - 传统型负载均衡创建VServer内容转发策略
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **BackendId** (list) - (Required) 内容转发策略应用的传统型负载均衡后端资源实例的ID，来源于 AllocateBackend 返回的 BackendId
         - **Match** (str) - (Required) 内容转发匹配字段
-        - **ULBId** (str) - (Required) 需要添加内容转发策略的负载均衡实例ID
-        - **VServerId** (str) - (Required) 需要添加内容转发策略的VServer实例ID
+        - **ULBId** (str) - (Required) 需要添加内容转发策略的传统型负载均衡实例ID
+        - **VServerId** (str) - (Required) 需要添加内容转发策略的传统型负载均衡VServer实例ID
         - **DomainMatchMode** (str) - 内容转发规则中域名的匹配方式，默认与原本一致。枚举值：Regular，正则；Wildcard，泛域名
         - **PolicyPriority** (int) - 策略优先级，1-9999；只针对路径规则生效
         - **Type** (str) - 内容转发匹配字段的类型
@@ -154,6 +312,69 @@ class ULBClient(Client):
 
         resp = self.invoke("CreatePolicy", d, **kwargs)
         return apis.CreatePolicyResponseSchema().loads(resp)
+
+    def create_rule(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """CreateRule - 给应用型负载均衡监听器创建一条转发规则
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ListenerId** (str) - (Required) 监听器的ID
+        - **LoadBalancerId** (str) - (Required) 负载均衡实例的ID
+        - **Pass** (bool) - 当转发的服务节点为空时，规则是否忽略。默认值true
+        - **RuleActions** (list) - 见 **CreateRuleParamRuleActions** 模型定义
+        - **RuleConditions** (list) - 见 **CreateRuleParamRuleConditions** 模型定义
+
+        **Response**
+
+        - **RuleId** (str) - 转发规则的ID
+
+        **Request Model**
+
+        **CreateRuleParamRuleActionsForwardConfigTargets**
+        - **Id** (str) - 转发的后端服务节点的标识ID。限定在监听器的服务节点池里；数组长度可以是0；转发服务节点配置的数组长度不为0时，Id必填
+        - **Weight** (int) - 转发的后端服务节点的权重。仅监听器负载均衡算法是加权轮询是有效
+
+
+        **CreateRuleParamRuleConditionsPathConfig**
+        - **Values** (list) - 取值。暂时只支持数组长度为1；取值需符合相关条件；路径匹配时必填
+
+
+        **CreateRuleParamRuleConditionsHostConfig**
+        - **MatchMode** (str) - 匹配方式。限定枚举值："Regular"/"Wildcard"，默认值："Regular"
+        - **Values** (list) - 取值。暂时只支持数组长度为1；取值需符合相关匹配方式的条件；域名匹配时必填
+
+
+        **CreateRuleParamRuleActionsForwardConfig**
+        - **Targets** (list) - 见 **CreateRuleParamRuleActionsForwardConfigTargets** 模型定义
+
+
+        **CreateRuleParamRuleConditions**
+        - **HostConfig** (dict) - 见 **CreateRuleParamRuleConditionsHostConfig** 模型定义
+        - **PathConfig** (dict) - 见 **CreateRuleParamRuleConditionsPathConfig** 模型定义
+        - **Type** (str) - 匹配条件类型。限定枚举值："Host"/"Path"
+
+
+        **CreateRuleParamRuleActions**
+        - **ForwardConfig** (dict) - 见 **CreateRuleParamRuleActionsForwardConfig** 模型定义
+        - **Type** (str) - 动作类型。限定枚举值："Forward"；RuleActions暂支持长度为1
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateRuleRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateRule", d, **kwargs)
+        return apis.CreateRuleResponseSchema().loads(resp)
 
     def create_ssl(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """CreateSSL - 创建SSL证书，可以把整个 Pem 证书内容传过来，或者把证书、私钥、CA证书分别传过来
@@ -222,28 +443,28 @@ class ULBClient(Client):
         return apis.CreateSecurityPolicyResponseSchema().loads(resp)
 
     def create_ulb(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """CreateULB - 创建负载均衡实例，可以选择内网或者外网
+        """CreateULB - 创建传统型负载均衡负载均衡实例，可以选择内网或者外网
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **BusinessId** (str) - ULB 所属的业务组ID，如果不传则使用默认的业务组
+        - **BusinessId** (str) - CLB 所属的业务组ID，如果不传则使用默认的业务组
         - **ChargeType** (str) - 付费方式, 枚举值为: Year, 按年付费; Month, 按月付费; Dynamic, 按时付费
         - **FirewallId** (str) - 防火墙ID，如果不传，则默认不绑定防火墙
-        - **InnerMode** (str) - 创建的ULB是否为内网模式
-        - **ListenType** (str) - ULB 监听器类型，外网ULB默认RequestProxy，内网ULB默认PacketsTransmit。枚举值：RequestProxy，请求代理； PacketsTransmit ，报文转发。
-        - **OuterMode** (str) - 创建的ULB是否为外网模式，默认即为外网模式
+        - **InnerMode** (str) - 创建的CLB是否为内网模式
+        - **ListenType** (str) - CLB 监听器类型，外网CLB默认RequestProxy，内网ULB默认PacketsTransmit。枚举值：RequestProxy，请求代理； PacketsTransmit ，报文转发。
+        - **OuterMode** (str) - 创建的CLB是否为外网模式，默认即为外网模式
         - **Remark** (str) - 备注
-        - **SubnetId** (str) - ULB 所属的子网ID，如果不传则随机选择一个。
+        - **SubnetId** (str) - CLB 所属的子网ID，如果不传则随机选择一个。
         - **Tag** (str) - 业务组
         - **ULBName** (str) - 负载均衡的名字，默认值为“ULB”
-        - **VPCId** (str) - ULB所在的VPC的ID。 如果不传则使用默认的VPC，若不传且无默认VPC则接口报错
+        - **VPCId** (str) - CLB所在的VPC的ID。 如果不传则使用默认的VPC，若不传且无默认VPC则接口报错
 
         **Response**
 
         - **IPv6AddressId** (str) - IPv6地址Id
-        - **ULBId** (str) - 负载均衡实例的Id
+        - **ULBId** (str) - 传统型负载均衡实例的Id
 
         """
         # build request
@@ -263,13 +484,13 @@ class ULBClient(Client):
     def create_vserver(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """CreateVServer - 创建VServer实例，定义监听的协议和端口以及负载均衡算法
+        """CreateVServer - 创建CLB的VServer实例，定义监听的协议和端口以及负载均衡算法
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **ULBId** (str) - (Required) 负载均衡实例ID
+        - **ULBId** (str) - (Required) 传统型负载均衡实例ID
         - **ClientTimeout** (int) - ListenType为RequestProxy时表示空闲连接的回收时间，单位：秒，取值范围：时(0，86400]，默认值为60；ListenType为PacketsTransmit时表示连接保持的时间，单位：秒，取值范围：[60，900]，0 表示禁用连接保持
         - **Domain** (str) - 根据MonitorType确认； 当MonitorType为Path时，此字段有意义，代表HTTP检查域名
         - **EnableCompression** (int) - 0:关闭 1:开启，用于数据压缩功能
@@ -307,17 +528,71 @@ class ULBClient(Client):
         resp = self.invoke("CreateVServer", d, **kwargs)
         return apis.CreateVServerResponseSchema().loads(resp)
 
-    def delete_policy(
+    def delete_listener(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DeletePolicy - 删除内容转发策略
+        """DeleteListener - 删除一个应用型负载均衡监听器
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **PolicyId** (str) - (Required) 内容转发策略ID
-        - **VServerId** (str) - VServer 资源ID
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ListenerId** (str) - (Required) 应用型负载均衡监听器的ID
+        - **LoadBalancerId** (str) - (Required) 应用型负载均衡实例的ID
+        - **RelatedRedirectDisabled** (bool) - (Required) 是否关闭相关监听器的重定向功能。默认为false，即有其他监听器重定向到本监听器，则删除失败。为true时，会先关闭相关监听器的重定向功能，再删除本监听器。默认值为：false
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteListenerRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteListener", d, **kwargs)
+        return apis.DeleteListenerResponseSchema().loads(resp)
+
+    def delete_load_balancer(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteLoadBalancer - 删除一个应用型负载均衡实例
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **LoadBalancerId** (str) - (Required) 应用型负载均衡实例的ID
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteLoadBalancerRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteLoadBalancer", d, **kwargs)
+        return apis.DeleteLoadBalancerResponseSchema().loads(resp)
+
+    def delete_policy(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeletePolicy - 删除传统型负载均衡的内容转发策略
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **PolicyId** (str) - (Required) CLB的内容转发策略ID
+        - **VServerId** (str) - CLB的VServer 资源ID
 
         **Response**
 
@@ -333,6 +608,32 @@ class ULBClient(Client):
 
         resp = self.invoke("DeletePolicy", d, **kwargs)
         return apis.DeletePolicyResponseSchema().loads(resp)
+
+    def delete_rule(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """DeleteRule - 删除应用型负载均衡监听器的一条转发规则
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ListenerId** (str) - (Required) 应用型负载均衡监听器的ID
+        - **LoadBalancerId** (str) - (Required) 应用型负载均衡实例的ID
+        - **RuleId** (str) - (Required) 应用型负载均衡的转发规则的ID
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteRuleRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteRule", d, **kwargs)
+        return apis.DeleteRuleResponseSchema().loads(resp)
 
     def delete_ssl(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """DeleteSSL - 删除SSL证书
@@ -385,14 +686,14 @@ class ULBClient(Client):
         return apis.DeleteSecurityPolicyResponseSchema().loads(resp)
 
     def delete_ulb(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """DeleteULB - 删除负载均衡实例
+        """DeleteULB - 删除传统型负载均衡实例
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **ULBId** (str) - (Required) 负载均衡实例的ID
-        - **ReleaseEip** (bool) - 删除ulb时是否释放绑定的EIP，false标识只解绑EIP，true表示会释放绑定的EIP，默认是false。Anycast IP 此参数无效
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ULBId** (str) - (Required) 传统型负载均衡实例的ID
+        - **ReleaseEip** (bool) - 删除clb时是否释放绑定的EIP，false标识只解绑EIP，true表示会释放绑定的EIP，默认是false。Anycast IP 此参数无效
 
         **Response**
 
@@ -412,14 +713,14 @@ class ULBClient(Client):
     def delete_vserver(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DeleteVServer - 删除VServer实例
+        """DeleteVServer - 删除CLB的VServer实例
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **ULBId** (str) - (Required) 负载均衡实例的ID
-        - **VServerId** (str) - (Required) VServer实例的ID
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ULBId** (str) - (Required) 传统型负载均衡实例的ID
+        - **VServerId** (str) - (Required) CLB下的VServer实例的ID
 
         **Response**
 
@@ -436,8 +737,369 @@ class ULBClient(Client):
         resp = self.invoke("DeleteVServer", d, **kwargs)
         return apis.DeleteVServerResponseSchema().loads(resp)
 
+    def describe_listeners(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeListeners - 描述一个指定的监听器或者一个应用型负载均衡实例下的所有监听器
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Limit** (int) - 数据分页值，默认为100
+        - **ListenerId** (str) - 应用型负载均衡监听器的ID。若指定ListenerId，则忽略LoadBalancerId。ListenId和LoadBalancerId必选其一
+        - **LoadBalancerId** (str) - 应用型负载均衡实例的ID。未指定ListenId，则描述指定的LoadBalancerId下的所有监听器。
+        - **Offset** (int) - 数据偏移量，默认为0
+
+        **Response**
+
+        - **Listeners** (list) - 见 **Listener** 模型定义
+        - **TotalCount** (int) - 满足条件的负载均衡监听器总数
+
+        **Response Model**
+
+        **ForwardTargetSet**
+        - **Id** (str) - 服务节点的标识ID
+        - **Weight** (int) - 权重。仅监听器负载均衡算法是加权轮询是有效；取值范围[1-100]，默认值为1
+
+
+        **ForwardConfigSet**
+        - **Targets** (list) - 见 **ForwardTargetSet** 模型定义
+
+
+        **PathConfigSet**
+        - **Values** (list) - 取值。暂时只支持数组长度为1； 取值需符合相关匹配方式的条件
+
+
+        **HostConfigSet**
+        - **MatchMode** (str) - 匹配方式。限定枚举值：Regular-正则，Wildcard-泛域名； 默认值：Regular
+        - **Values** (list) - 取值。暂时只支持数组长度为1； 取值需符合相关匹配方式的条件
+
+
+        **RuleAction**
+        - **ForwardConfig** (dict) - 见 **ForwardConfigSet** 模型定义
+        - **Type** (str) - 动作类型。限定枚举值：Forward
+
+
+        **RuleCondition**
+        - **HostConfig** (dict) - 见 **HostConfigSet** 模型定义
+        - **PathConfig** (dict) - 见 **PathConfigSet** 模型定义
+        - **Type** (str) - 匹配条件类型。限定枚举值：Host，Path
+
+
+        **StickinessConfigSet**
+        - **CookieName** (str) - （应用型专用）自定义Cookie。当StickinessType取值"UserDefined"时有效
+        - **Enabled** (bool) - 是否开启会话保持功能。应用型负载均衡实例基于Cookie实现
+        - **Type** (str) - （应用型专用）Cookie处理方式。限定枚举值： ServerInsert -> 自动生成KEY；UserDefined -> 用户自定义KEY
+
+
+        **HealthCheckConfigSet**
+        - **Domain** (str) - （应用型专用）HTTP检查域名。 当Type为HTTP时，此字段有意义，代表HTTP检查域名
+        - **Enabled** (bool) - 是否开启健康检查功能。暂时不支持关闭。 默认值为：true
+        - **Path** (str) - （应用型专用）HTTP检查路径。当Type为HTTP时，此字段有意义，代表HTTP检查路径
+        - **Type** (str) - 健康检查方式。应用型限定取值： Port -> 端口检查；HTTP -> HTTP检查； 默认值：Port
+
+
+        **Rule**
+        - **IsDefault** (bool) - 是否为默认转发规则
+        - **Pass** (bool) - 当转发的服务节点为空时，规则是否忽略
+        - **RuleActions** (list) - 见 **RuleAction** 模型定义
+        - **RuleConditions** (list) - 见 **RuleCondition** 模型定义
+        - **RuleId** (str) - 转发规则的ID
+
+
+        **Target**
+        - **Enabled** (bool) - 服务节点是否启用
+        - **Id** (str) - 服务节点的标识ID。为ALB/NLB中使用，与资源自身ID无关，可用于UpdateTargetsAttribute/RemoveTargets
+        - **IsBackup** (bool) - 服务节点是否为备节点
+        - **Port** (int) - 服务节点的端口
+        - **ResourceIP** (str) - 服务节点的IP
+        - **ResourceId** (str) - 服务节点的资源ID
+        - **ResourceName** (str) - 服务节点的资源名称
+        - **ResourceType** (str) - 服务节点的类型。限定枚举值：UHost -> 云主机，UNI -> 虚拟网卡，UPM -> 物理云主机，IP ->  IP类型； 默认值："UHost"； 非IP类型，如果该资源有多个IP，将只能添加主IP； 非IP类型，展示时，会显示相关资源信息，IP类型只展示IP信息。 在相关资源被删除时，非IP类型会把相关资源从lb中剔除，IP类型不保证这个逻辑
+        - **State** (str) - 服务节点的健康检查状态。限定枚举值：Healthy -> 健康，Unhealthy -> 不健康
+        - **SubnetId** (str) - 服务节点的子网资源ID
+        - **VPCId** (str) - 服务节点的VPC资源ID
+        - **Weight** (int) - 服务节点的权重。仅在加权轮询算法时有效
+
+
+        **Certificate**
+        - **IsDefault** (bool) - 是否为默认证书
+        - **SSLId** (str) - 证书ID
+
+
+        **Listener**
+        - **Certificates** (list) - 见 **Certificate** 模型定义
+        - **CompressionEnabled** (bool) - （应用型专用）是否开启数据压缩功能。目前只支持使用gzip对特定文件类型进行压缩
+        - **HTTP2Enabled** (bool) - （应用型专用）是否开启HTTP/2特性。仅HTTPS监听支持开启
+        - **HealthCheckConfig** (dict) - 见 **HealthCheckConfigSet** 模型定义
+        - **IdleTimeout** (int) - 连接空闲超时时间。单位：秒
+        - **ListenerId** (str) - 监听器的ID
+        - **ListenerPort** (int) - 监听器的监听端口
+        - **ListenerProtocol** (str) - 监听协议。应用型限定取值： HTTP、HTTPS
+        - **Name** (str) - 监听器的名称
+        - **RedirectEnabled** (bool) - （应用型专用）是否开启HTTP重定向到HTTPS。仅HTTP监听支持开启
+        - **RedirectPort** (int) - （应用型专用）重定向端口
+        - **Remark** (str) - 监听器的备注信息
+        - **Rules** (list) - 见 **Rule** 模型定义
+        - **Scheduler** (str) - 负载均衡算法。应用型限定取值：Roundrobin -> 轮询;Source -> 源地址； WeightRoundrobin -> 加权轮询; Leastconn -> 最小连接数；Backup ->主备模式
+        - **SecurityPolicyId** (str) - （应用型专用）安全策略组ID。仅HTTPS监听支持绑定；Default -> 原生策略
+        - **State** (str) - listener健康状态。限定枚举值：Healthy -> 健康，Unhealthy -> 不健康，PartialHealth -> 部分健康，None -> 无节点状态
+        - **StickinessConfig** (dict) - 见 **StickinessConfigSet** 模型定义
+        - **Targets** (list) - 见 **Target** 模型定义
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeListenersRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeListeners", d, **kwargs)
+        return apis.DescribeListenersResponseSchema().loads(resp)
+
+    def describe_load_balancers(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeLoadBalancers - 描述特定条件下的应用型负载均衡实例或者全部的应用型负载均衡实例
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Limit** (str) - 数据分页值，默认为100
+        - **LoadBalancerIds** (list) - 负载均衡实例的ID。必须是同一类型的实例，若指定了实例ID，将忽略除Type外的其他过滤条件
+        - **Offset** (str) - 数据偏移量，默认为0
+        - **ShowDetail** (bool) - 是否获取监听器和后端服务节点的详细信息。默认值：false
+        - **SubnetId** (str) - 限定所在的子网
+        - **Type** (str) - 负载均衡实例的类型。限定枚举值："Application" / "Network"，默认值："Application"
+        - **VPCId** (str) - 限定所在的VPC
+
+        **Response**
+
+        - **LoadBalancers** (list) - 见 **LoadBalancer** 模型定义
+        - **TotalCount** (int) - 满足条件的负载均衡实例总数
+
+        **Response Model**
+
+        **ForwardTargetSet**
+        - **Id** (str) - 服务节点的标识ID
+        - **Weight** (int) - 权重。仅监听器负载均衡算法是加权轮询是有效；取值范围[1-100]，默认值为1
+
+
+        **ForwardConfigSet**
+        - **Targets** (list) - 见 **ForwardTargetSet** 模型定义
+
+
+        **HostConfigSet**
+        - **MatchMode** (str) - 匹配方式。限定枚举值：Regular-正则，Wildcard-泛域名； 默认值：Regular
+        - **Values** (list) - 取值。暂时只支持数组长度为1； 取值需符合相关匹配方式的条件
+
+
+        **PathConfigSet**
+        - **Values** (list) - 取值。暂时只支持数组长度为1； 取值需符合相关匹配方式的条件
+
+
+        **RuleAction**
+        - **ForwardConfig** (dict) - 见 **ForwardConfigSet** 模型定义
+        - **Type** (str) - 动作类型。限定枚举值：Forward
+
+
+        **RuleCondition**
+        - **HostConfig** (dict) - 见 **HostConfigSet** 模型定义
+        - **PathConfig** (dict) - 见 **PathConfigSet** 模型定义
+        - **Type** (str) - 匹配条件类型。限定枚举值：Host，Path
+
+
+        **StickinessConfigSet**
+        - **CookieName** (str) - （应用型专用）自定义Cookie。当StickinessType取值"UserDefined"时有效
+        - **Enabled** (bool) - 是否开启会话保持功能。应用型负载均衡实例基于Cookie实现
+        - **Type** (str) - （应用型专用）Cookie处理方式。限定枚举值： ServerInsert -> 自动生成KEY；UserDefined -> 用户自定义KEY
+
+
+        **Rule**
+        - **IsDefault** (bool) - 是否为默认转发规则
+        - **Pass** (bool) - 当转发的服务节点为空时，规则是否忽略
+        - **RuleActions** (list) - 见 **RuleAction** 模型定义
+        - **RuleConditions** (list) - 见 **RuleCondition** 模型定义
+        - **RuleId** (str) - 转发规则的ID
+
+
+        **Certificate**
+        - **IsDefault** (bool) - 是否为默认证书
+        - **SSLId** (str) - 证书ID
+
+
+        **Target**
+        - **Enabled** (bool) - 服务节点是否启用
+        - **Id** (str) - 服务节点的标识ID。为ALB/NLB中使用，与资源自身ID无关，可用于UpdateTargetsAttribute/RemoveTargets
+        - **IsBackup** (bool) - 服务节点是否为备节点
+        - **Port** (int) - 服务节点的端口
+        - **ResourceIP** (str) - 服务节点的IP
+        - **ResourceId** (str) - 服务节点的资源ID
+        - **ResourceName** (str) - 服务节点的资源名称
+        - **ResourceType** (str) - 服务节点的类型。限定枚举值：UHost -> 云主机，UNI -> 虚拟网卡，UPM -> 物理云主机，IP ->  IP类型； 默认值："UHost"； 非IP类型，如果该资源有多个IP，将只能添加主IP； 非IP类型，展示时，会显示相关资源信息，IP类型只展示IP信息。 在相关资源被删除时，非IP类型会把相关资源从lb中剔除，IP类型不保证这个逻辑
+        - **State** (str) - 服务节点的健康检查状态。限定枚举值：Healthy -> 健康，Unhealthy -> 不健康
+        - **SubnetId** (str) - 服务节点的子网资源ID
+        - **VPCId** (str) - 服务节点的VPC资源ID
+        - **Weight** (int) - 服务节点的权重。仅在加权轮询算法时有效
+
+
+        **HealthCheckConfigSet**
+        - **Domain** (str) - （应用型专用）HTTP检查域名。 当Type为HTTP时，此字段有意义，代表HTTP检查域名
+        - **Enabled** (bool) - 是否开启健康检查功能。暂时不支持关闭。 默认值为：true
+        - **Path** (str) - （应用型专用）HTTP检查路径。当Type为HTTP时，此字段有意义，代表HTTP检查路径
+        - **Type** (str) - 健康检查方式。应用型限定取值： Port -> 端口检查；HTTP -> HTTP检查； 默认值：Port
+
+
+        **Listener**
+        - **Certificates** (list) - 见 **Certificate** 模型定义
+        - **CompressionEnabled** (bool) - （应用型专用）是否开启数据压缩功能。目前只支持使用gzip对特定文件类型进行压缩
+        - **HTTP2Enabled** (bool) - （应用型专用）是否开启HTTP/2特性。仅HTTPS监听支持开启
+        - **HealthCheckConfig** (dict) - 见 **HealthCheckConfigSet** 模型定义
+        - **IdleTimeout** (int) - 连接空闲超时时间。单位：秒
+        - **ListenerId** (str) - 监听器的ID
+        - **ListenerPort** (int) - 监听器的监听端口
+        - **ListenerProtocol** (str) - 监听协议。应用型限定取值： HTTP、HTTPS
+        - **Name** (str) - 监听器的名称
+        - **RedirectEnabled** (bool) - （应用型专用）是否开启HTTP重定向到HTTPS。仅HTTP监听支持开启
+        - **RedirectPort** (int) - （应用型专用）重定向端口
+        - **Remark** (str) - 监听器的备注信息
+        - **Rules** (list) - 见 **Rule** 模型定义
+        - **Scheduler** (str) - 负载均衡算法。应用型限定取值：Roundrobin -> 轮询;Source -> 源地址； WeightRoundrobin -> 加权轮询; Leastconn -> 最小连接数；Backup ->主备模式
+        - **SecurityPolicyId** (str) - （应用型专用）安全策略组ID。仅HTTPS监听支持绑定；Default -> 原生策略
+        - **State** (str) - listener健康状态。限定枚举值：Healthy -> 健康，Unhealthy -> 不健康，PartialHealth -> 部分健康，None -> 无节点状态
+        - **StickinessConfig** (dict) - 见 **StickinessConfigSet** 模型定义
+        - **Targets** (list) - 见 **Target** 模型定义
+
+
+        **FirewallSet**
+        - **FirewallId** (str) - 防火墙ID
+        - **FirewallName** (str) - 防火墙名称
+
+
+        **IPInfo**
+        - **AddressType** (str) - 网络模式。 限定枚举值：Internet -> 互联网，Intranet -> 内联网
+        - **Bandwidth** (int) - 带宽值。单位M
+        - **BandwidthType** (int) - 带宽类型。限定枚举值：1 -> 共享带宽，0 -> 普通带宽类型
+        - **IP** (str) - IP地址
+        - **IPVersion** (str) - IP协议版本
+        - **Id** (str) - 唯一标识ID
+        - **OperatorName** (str) - 外网IP的运营商信息。枚举值为：Telecom -> 电信，Unicom -> 联通，International -> 国际IP，Bgp -> BGP，Duplet -> 双线（电信+联通双线路），BGPPro -> 精品BGP，China-mobile -> 中国移动，Anycast -> AnycastEIP
+
+
+        **AccessLogConfigSet**
+        - **Enabled** (bool) - （应用型专用）是否开启访问日志记录功能
+        - **US3BucketName** (str) - （应用型专用）用于存储访问日志的bucket
+        - **US3TokenId** (str) - （应用型专用）上传访问日志到bucket所需的token
+
+
+        **LoadBalancer**
+        - **AccessLogConfig** (dict) - 见 **AccessLogConfigSet** 模型定义
+        - **AutoRenewEnabled** (bool) - 是否开启自动续费
+        - **ChargeType** (str) - 付费模式
+        - **CreateTime** (int) - 负载均衡实例创建时间。格式为Unix Timestamp
+        - **Firewall** (dict) - 见 **FirewallSet** 模型定义
+        - **IPInfos** (list) - 见 **IPInfo** 模型定义
+        - **IPVersion** (str) - 负载均衡实例支持的IP协议版本
+        - **Listeners** (list) - 见 **Listener** 模型定义
+        - **LoadBalancerId** (str) - 负载均衡实例的ID
+        - **Name** (str) - 负载均衡实例的名称
+        - **PurchaseValue** (int) - 有效期（计费）。格式为Unix Timestamp
+        - **Remark** (str) - 负载均衡实例的备注信息
+        - **SnatIPs** (list) - 应用型实例的代理IP或网络型FULLNAT模式下snat所用的IP
+        - **Status** (str) - lb状态：Normal-正常；Arrears-欠费停服
+        - **SubnetId** (str) - 负载均衡实例所属的子网资源ID。负载均衡实例的内网VIP和SNAT场景的源IP限定在该子网内；指定子网不影响添加后端服务节点时的范围，依旧是整个VPC下支持的资源
+        - **Tag** (str) - 负载均衡实例所属的业务组ID
+        - **Type** (str) - 负载均衡实例的类型。限定枚举值：Application -> 应用型，Network -> 网络型
+        - **VPCId** (str) - 负载均衡实例所属的VPC资源ID
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeLoadBalancersRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeLoadBalancers", d, **kwargs)
+        return apis.DescribeLoadBalancersResponseSchema().loads(resp)
+
+    def describe_rules(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeRules - 描述一条指定的转发规则或者一个应用型负载均衡监听器下的所有转发规则
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ListenerId** (str) - (Required) 监听器的ID
+        - **LoadBalancerId** (str) - (Required) 应用型负载均衡实例的ID
+        - **RuleId** (str) - 应用型负载均衡转发规则的ID。指定RuleId，则只描述该规则
+
+        **Response**
+
+        - **Rules** (list) - 见 **Rule** 模型定义
+
+        **Response Model**
+
+        **ForwardTargetSet**
+        - **Id** (str) - 服务节点的标识ID
+        - **Weight** (int) - 权重。仅监听器负载均衡算法是加权轮询是有效；取值范围[1-100]，默认值为1
+
+
+        **ForwardConfigSet**
+        - **Targets** (list) - 见 **ForwardTargetSet** 模型定义
+
+
+        **PathConfigSet**
+        - **Values** (list) - 取值。暂时只支持数组长度为1； 取值需符合相关匹配方式的条件
+
+
+        **HostConfigSet**
+        - **MatchMode** (str) - 匹配方式。限定枚举值：Regular-正则，Wildcard-泛域名； 默认值：Regular
+        - **Values** (list) - 取值。暂时只支持数组长度为1； 取值需符合相关匹配方式的条件
+
+
+        **RuleAction**
+        - **ForwardConfig** (dict) - 见 **ForwardConfigSet** 模型定义
+        - **Type** (str) - 动作类型。限定枚举值：Forward
+
+
+        **RuleCondition**
+        - **HostConfig** (dict) - 见 **HostConfigSet** 模型定义
+        - **PathConfig** (dict) - 见 **PathConfigSet** 模型定义
+        - **Type** (str) - 匹配条件类型。限定枚举值：Host，Path
+
+
+        **Rule**
+        - **IsDefault** (bool) - 是否为默认转发规则
+        - **Pass** (bool) - 当转发的服务节点为空时，规则是否忽略
+        - **RuleActions** (list) - 见 **RuleAction** 模型定义
+        - **RuleConditions** (list) - 见 **RuleCondition** 模型定义
+        - **RuleId** (str) - 转发规则的ID
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeRulesRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeRules", d, **kwargs)
+        return apis.DescribeRulesResponseSchema().loads(resp)
+
     def describe_ssl(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """DescribeSSL - 获取SSL证书信息
+        """DescribeSSL - 获取SSL证书信息，仅能获取SSL证书与传统型负载均衡监听器的绑定关系
 
         **Request**
 
@@ -488,10 +1150,65 @@ class ULBClient(Client):
         resp = self.invoke("DescribeSSL", d, **kwargs)
         return apis.DescribeSSLResponseSchema().loads(resp)
 
+    def describe_sslv_22(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeSSLV2 - 获取SSL证书信息，该接口可以同时获取SSL与传统型和应用型负载均衡监听器的绑定关系
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Limit** (int) - 数据分页值，默认为20
+        - **Offset** (int) - 数据偏移量，默认值为0
+        - **SSLId** (str) - SSL证书的Id
+
+        **Response**
+
+        - **DataSet** (list) - 见 **SSLInfo** 模型定义
+        - **TotalCount** (int) - 满足条件的SSL证书总数
+
+        **Response Model**
+
+        **SSLRelation**
+        - **IsDefault** (bool) - 是否为监听器默认SSL证书
+        - **ListenerId** (str) - 监听器的ID
+        - **ListenerName** (str) - 监听器的名称
+        - **LoadBalancerId** (str) - 负载均衡实例的ID
+        - **LoadBalancerName** (str) - 负载均衡实例的名称
+
+
+        **SSLInfo**
+        - **CreateTime** (int) - SSL证书的创建时间
+        - **Domains** (str) - USSL证书平台的域名,只有当SSLSource为1时才出现
+        - **HashValue** (str) - SSL证书的HASH值
+        - **NotAfter** (int) - 证书过期时间,只有当SSLSource为1时才出现
+        - **NotBefore** (int) - 证书颁发时间,只有当SSLSource为1时才出现
+        - **Relations** (list) - 见 **SSLRelation** 模型定义
+        - **SSLContent** (str) - SSL证书的内容
+        - **SSLId** (str) - SSL证书的Id
+        - **SSLName** (str) - SSL证书的名字
+        - **SSLSource** (int) - SSL证书来源，SSL证书来源，0代表证书来自于ULB平台，1代表证书来自于USSL平台
+        - **SSLType** (str) - SSL证书类型，暂时只有 Pem 一种类型
+        - **USSLId** (str) - USSL证书平台的编号,只有当SSLSource为1时才出现
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeSSLV2RequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeSSLV2", d, **kwargs)
+        return apis.DescribeSSLV2ResponseSchema().loads(resp)
+
     def describe_security_policies(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DescribeSecurityPolicies - 获取安全策略的信息
+        """DescribeSecurityPolicies - 获取安全策略的信息，绑定关系仅能获取安全策略与传统型负载均衡监听器的绑定关系
 
         **Request**
 
@@ -536,6 +1253,54 @@ class ULBClient(Client):
         resp = self.invoke("DescribeSecurityPolicies", d, **kwargs)
         return apis.DescribeSecurityPoliciesResponseSchema().loads(resp)
 
+    def describe_security_policies_v2(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeSecurityPoliciesV2 - 获取安全策略的信息，可以同时获取安全策略与传统型和应用性负载均衡监听器的绑定关系
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Limit** (int) - 数据分页值
+        - **Offset** (int) - 数据偏移量
+        - **SecurityPolicyId** (str) - 安全策略ID
+
+        **Response**
+
+        - **DataSet** (list) - 见 **SecurityPolicyInfo** 模型定义
+        - **TotalCount** (int) - 满足条件的安全策略总数
+
+        **Response Model**
+
+        **SecurityPolicyRelation**
+        - **ListenerId** (str) - 监听器的ID
+        - **ListenerName** (str) - 监听器的名称
+        - **ListenerPort** (int) - 监听端口
+        - **LoadBalancerId** (str) - 负载均衡实例的ID
+
+
+        **SecurityPolicyInfo**
+        - **Relations** (list) - 见 **SecurityPolicyRelation** 模型定义
+        - **SSLCiphers** (list) - 加密套件
+        - **SecurityPolicyId** (str) - 安全策略ID
+        - **SecurityPolicyName** (str) - 安全策略名称
+        - **SecurityPolicyType** (int) - 安全策略类型 0：预定义 1：自定义
+        - **TLSVersion** (str) - TLS最低版本
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeSecurityPoliciesV2RequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeSecurityPoliciesV2", d, **kwargs)
+        return apis.DescribeSecurityPoliciesV2ResponseSchema().loads(resp)
+
     def describe_support_ciphers(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -570,23 +1335,23 @@ class ULBClient(Client):
         return apis.DescribeSupportCiphersResponseSchema().loads(resp)
 
     def describe_ulb(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """DescribeULB - 获取ULB详细信息
+        """DescribeULB - 获取CLB详细信息
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **BusinessId** (str) - ULB所属的业务组ID
+        - **BusinessId** (str) - CLB所属的业务组ID
         - **Limit** (int) - 数据分页值，默认为20
         - **Offset** (int) - 数据偏移量，默认为0
-        - **SubnetId** (str) - ULB所属的子网ID
-        - **ULBId** (str) - 负载均衡实例的Id。 若指定则返回指定的负载均衡实例的信息； 若不指定则返回当前数据中心中所有的负载均衡实例的信息
-        - **VPCId** (str) - ULB所属的VPC
+        - **SubnetId** (str) - CLB所属的子网ID
+        - **ULBId** (str) - 传统型负载均衡实例的Id。 若指定则返回指定的传统型负载均衡实例的信息； 若不指定则返回当前数据中心中所有的传统型负载均衡实例的信息
+        - **VPCId** (str) - CLB所属的VPC
 
         **Response**
 
         - **DataSet** (list) - 见 **ULBSet** 模型定义
-        - **TotalCount** (int) - 满足条件的ULB总数
+        - **TotalCount** (int) - 满足条件的CLB总数
 
         **Response Model**
 
@@ -705,6 +1470,8 @@ class ULBClient(Client):
         - **CreateTime** (int) - SSL证书的创建时间
         - **Domains** (str) - USSL证书平台的域名,只有当SSLSource为1时才出现
         - **HashValue** (str) - SSL证书的HASH值
+        - **NotAfter** (int) - 证书过期时间,只有当SSLSource为1时才出现
+        - **NotBefore** (int) - 证书颁发时间,只有当SSLSource为1时才出现
         - **SSLContent** (str) - SSL证书的内容
         - **SSLId** (str) - SSL证书的Id
         - **SSLName** (str) - SSL证书的名字
@@ -743,23 +1510,23 @@ class ULBClient(Client):
     def describe_ulb_simple(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DescribeULBSimple - 获取ULB信息
+        """DescribeULBSimple - 获取CLB信息
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **BusinessId** (str) - ULB所属的业务组ID
+        - **BusinessId** (str) - CLB所属的业务组ID
         - **Limit** (int) - 数据分页值，默认为10000
         - **Offset** (int) - 数据偏移量，默认为0
-        - **SubnetId** (str) - ULB所属的子网ID
-        - **ULBId** (str) - 负载均衡实例的Id。 若指定则返回指定的负载均衡实例的信息； 若不指定则返回当前数据中心中所有的负载均衡实例的信息
-        - **VPCId** (str) - ULB所属的VPC
+        - **SubnetId** (str) - CLB所属的子网ID
+        - **ULBId** (str) - 传统型负载均衡实例的Id。 若指定则返回指定的传统型负载均衡实例的信息； 若不指定则返回当前数据中心中所有的传统型负载均衡实例的信息
+        - **VPCId** (str) - CLB所属的VPC
 
         **Response**
 
         - **DataSet** (list) - 见 **ULBSimpleSet** 模型定义
-        - **TotalCount** (int) - 满足条件的ULB总数
+        - **TotalCount** (int) - 满足条件的CLB总数
 
         **Response Model**
 
@@ -821,7 +1588,7 @@ class ULBClient(Client):
     def describe_vserver(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DescribeVServer - 获取ULB下的VServer的详细信息
+        """DescribeVServer - 获取CLB下的VServer的详细信息
 
         **Request**
 
@@ -829,8 +1596,8 @@ class ULBClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Limit** (int) - 数据分页值
         - **Offset** (int) - 数据偏移量
-        - **ULBId** (str) - 负载均衡实例的Id
-        - **VServerId** (str) - VServer实例的Id；若指定则返回指定的VServer实例的信息； 若不指定则返回当前负载均衡实例下所有VServer的信息
+        - **ULBId** (str) - 传统型负载均衡实例的Id
+        - **VServerId** (str) - CLB下的VServer实例的Id；若指定则返回指定的VServer实例的信息； 若不指定则返回当前传统型负载均衡实例下所有VServer的信息
 
         **Response**
 
@@ -912,6 +1679,8 @@ class ULBClient(Client):
         - **CreateTime** (int) - SSL证书的创建时间
         - **Domains** (str) - USSL证书平台的域名,只有当SSLSource为1时才出现
         - **HashValue** (str) - SSL证书的HASH值
+        - **NotAfter** (int) - 证书过期时间,只有当SSLSource为1时才出现
+        - **NotBefore** (int) - 证书颁发时间,只有当SSLSource为1时才出现
         - **SSLContent** (str) - SSL证书的内容
         - **SSLId** (str) - SSL证书的Id
         - **SSLName** (str) - SSL证书的名字
@@ -950,14 +1719,14 @@ class ULBClient(Client):
     def release_backend(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ReleaseBackend - 从VServer释放后端资源实例
+        """ReleaseBackend - 从CLB的VServer释放后端资源实例
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **BackendId** (str) - (Required) 后端资源实例的ID(ULB后端ID，非资源自身ID)
-        - **ULBId** (str) - (Required) 负载均衡实例的ID
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **BackendId** (str) - (Required) 后端资源实例的ID(CLB后端ID，非资源自身ID)
+        - **ULBId** (str) - (Required) 传统型负载均衡实例的ID
 
         **Response**
 
@@ -974,10 +1743,38 @@ class ULBClient(Client):
         resp = self.invoke("ReleaseBackend", d, **kwargs)
         return apis.ReleaseBackendResponseSchema().loads(resp)
 
+    def remove_targets(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """RemoveTargets - 从应用型负载均衡监听器删除后端服务节点
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Ids** (list) - (Required) 服务节点的标识ID。不超过20个；
+        - **ListenerId** (str) - (Required) 监听器的ID
+        - **LoadBalancerId** (str) - (Required) 负载均衡实例的ID
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.RemoveTargetsRequestSchema().dumps(d)
+
+        resp = self.invoke("RemoveTargets", d, **kwargs)
+        return apis.RemoveTargetsResponseSchema().loads(resp)
+
     def un_bind_security_policy(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """UnBindSecurityPolicy - 批量解绑安全策略
+        """UnBindSecurityPolicy - 批量解绑安全策略，会同时解绑与传统型和应用型负载均衡监听器的绑定关系
 
         **Request**
 
@@ -1001,15 +1798,15 @@ class ULBClient(Client):
         return apis.UnBindSecurityPolicyResponseSchema().loads(resp)
 
     def unbind_ssl(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """UnbindSSL - 从VServer解绑SSL证书
+        """UnbindSSL - 从CLB下的VServer解绑SSL证书
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **SSLId** (str) - (Required) SSL证书的Id
-        - **ULBId** (str) - (Required) 所绑定ULB实例ID
-        - **VServerId** (str) - (Required) 所绑定VServer实例ID
+        - **ULBId** (str) - (Required) 所绑定CLB实例ID
+        - **VServerId** (str) - (Required) CLB所绑定VServer实例ID
 
         **Response**
 
@@ -1029,14 +1826,14 @@ class ULBClient(Client):
     def update_backend_attribute(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """UpdateBackendAttribute - 更新ULB后端资源实例(服务节点)属性
+        """UpdateBackendAttribute - 更新CLB后端资源实例(服务节点)属性
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **BackendId** (str) - (Required) 后端资源实例的ID(ULB后端ID，非资源自身ID)
-        - **ULBId** (str) - (Required) 负载均衡资源ID
+        - **BackendId** (str) - (Required) 后端资源实例的ID(CLB后端ID，非资源自身ID)
+        - **ULBId** (str) - (Required) 传统型负载均衡资源ID
         - **Enabled** (int) - 后端实例状态开关
         - **IsBackup** (int) - 是否为backup0：主rs1：备rs默认为0
         - **Port** (int) - 后端资源服务端口，取值范围[1-65535]
@@ -1057,21 +1854,159 @@ class ULBClient(Client):
         resp = self.invoke("UpdateBackendAttribute", d, **kwargs)
         return apis.UpdateBackendAttributeResponseSchema().loads(resp)
 
+    def update_backend_batch(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateBackendBatch - 批量更新ULB后端资源实例(服务节点)属性
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ULBId** (str) - (Required) 负载均衡资源ID
+        - **Attributes** (list) - 见 **UpdateBackendBatchParamAttributes** 模型定义
+
+        **Response**
+
+        - **BackendSet** (list) - 见 **BackendMsg** 模型定义
+
+        **Request Model**
+
+        **UpdateBackendBatchParamAttributes**
+        - **BackendId** (str) - 后端资源实例的ID(ULB后端ID，非资源自身ID)
+        - **Enabled** (int) - 后端实例状态开关
+        - **IsBackup** (int) - 是否为backup 0：主rs 1：备rs 默认为0
+        - **Port** (int) - 后端资源服务端口，取值范围[1-65535]
+        - **Weight** (int) - 所添加的后端RS权重（在加权轮询算法下有效），取值范围[0-100]，默认为1
+
+
+        **Response Model**
+
+        **BackendMsg**
+        - **BackendId** (str) - rs的资源ID
+        - **SubMessage** (str) - 修改rs返回的消息
+        - **SubRetCode** (int) - 修改rs的返回值
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateBackendBatchRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateBackendBatch", d, **kwargs)
+        return apis.UpdateBackendBatchResponseSchema().loads(resp)
+
+    def update_listener_attribute(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateListenerAttribute - 更新一个应用型负载均衡监听器的属性
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ListenerId** (str) - (Required) 监听器的ID
+        - **LoadBalancerId** (str) - (Required) 负载均衡实例的ID
+        - **Certificates** (list) - （应用型专用）服务器默认证书ID。仅HTTPS监听支持
+        - **CompressionEnabled** (bool) - （应用型专用）是否开启数据压缩功能。目前只支持使用gzip对特定文件类型进行压缩
+        - **HTTP2Enabled** (bool) - （应用型专用）是否开启HTTP/2特性。仅HTTPS监听支持开启
+        - **HealthCheckConfig** (dict) - 见 **UpdateListenerAttributeParamHealthCheckConfig** 模型定义
+        - **IdleTimeout** (int) - 连接空闲超时时间。单位：秒。应用型限定取值：[1-86400]
+        - **Name** (str) - 监听器的名称。限定字符长度：[1-255]；限定特殊字符，仅支持：-_.
+        - **RedirectEnabled** (bool) - （应用型专用）是否开启HTTP重定向到HTTPS。仅HTTP监听支持开启
+        - **RedirectPort** (int) - （应用型专用）重定向端口。限定取值：[1-65535]
+        - **Remark** (str) - 监听器的备注信息。限定字符长度：[0-255]
+        - **Scheduler** (str) - 负载均衡算法。应用型限定取值："Roundrobin"/"Source"/"WeightRoundrobin"/" Leastconn"/"Backup"
+        - **SecurityPolicyId** (str) - （应用型专用）安全策略组ID。仅HTTPS监听支持绑定。“Default”，表示绑定原生策略
+        - **StickinessConfig** (dict) - 见 **UpdateListenerAttributeParamStickinessConfig** 模型定义
+
+        **Response**
+
+
+        **Request Model**
+
+        **UpdateListenerAttributeParamStickinessConfig**
+        - **CookieName** (str) - （应用型专用）自定义Cookie。当StickinessType取值"UserDefined"时有效；限定字符长度：[0-255]
+        - **Enabled** (bool) - 是否开启会话保持功能。应用型负载均衡实例基于Cookie实现，网络型负载均衡则基于源IP，保证在对应的空闲超时时间内，同一个源IP送到同一个服务节点。默认值为：false
+        - **Type** (str) - （应用型专用）Cookie处理方式。限定枚举值："ServerInsert" / "UserDefined"，默认值为：“ServerInsert”
+
+
+        **UpdateListenerAttributeParamHealthCheckConfig**
+        - **Domain** (str) - （应用型专用）HTTP检查域名
+        - **Enabled** (bool) - 是否开启健康检查功能。暂时不支持关闭；默认值为：true
+        - **Path** (str) - （应用型专用）HTTP检查路径
+        - **Type** (str) - 健康检查方式。应用型限定取值：“Port”/"HTTP"；默认值：“Port”
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateListenerAttributeRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateListenerAttribute", d, **kwargs)
+        return apis.UpdateListenerAttributeResponseSchema().loads(resp)
+
+    def update_load_balancer_attribute(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateLoadBalancerAttribute - 更新一个应用型负载均衡实例的属性
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **LoadBalancerId** (str) - (Required) 负载均衡实例的ID
+        - **AccessLogConfig** (dict) - 见 **UpdateLoadBalancerAttributeParamAccessLogConfig** 模型定义
+        - **Name** (str) - 负载均衡实例的名称，不传则默认不修改
+        - **Remark** (str) - 负载均衡实例的备注信息，不传则默认不修改，限定字符长度：[0-255]
+        - **Tag** (str) - 负载均衡实例所属的业务组ID，不传则默认不修改
+
+        **Response**
+
+
+        **Request Model**
+
+        **UpdateLoadBalancerAttributeParamAccessLogConfig**
+        - **Enabled** (bool) - （应用型专用）是否开启访问日志记录功能
+        - **US3BucketName** (str) - （应用型专用）用于存储访问日志的bucket
+        - **US3TokenId** (str) - （应用型专用）上传访问日志到bucket所需的token
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateLoadBalancerAttributeRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateLoadBalancerAttribute", d, **kwargs)
+        return apis.UpdateLoadBalancerAttributeResponseSchema().loads(resp)
+
     def update_policy(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """UpdatePolicy - 更新内容转发规则，包括转发规则后的服务节点
+        """UpdatePolicy - 更新传统型负载均衡内容转发规则，包括转发规则后的服务节点
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Match** (str) - (Required) 内容转发匹配字段
-        - **ULBId** (str) - (Required) 需要添加内容转发策略的负载均衡实例ID
-        - **VServerId** (str) - (Required) 需要添加内容转发策略的VServer实例ID，只支持请求代理模式下，HTTP或HTTPS协议的VServer
-        - **BackendId** (list) - 内容转发策略应用的后端资源实例的ID，来源于 AllocateBackend 返回的 BackendId，不传表示更新转发节点为空
+        - **ULBId** (str) - (Required) 需要添加内容转发策略的传统型负载均衡实例ID
+        - **VServerId** (str) - (Required) 需要添加内容转发策略的VServer实例ID，只支持请求代理模式下，HTTP或HTTPS协议的CLB下的VServer
+        - **BackendId** (list) - 内容转发策略应用的后端资源实例的ID（CLB的后端节点Id），来源于 AllocateBackend 返回的 BackendId，不传表示更新转发节点为空
         - **DomainMatchMode** (str) - 内容转发规则中域名的匹配方式，默认与原本一致。枚举值：Regular，正则；Wildcard，泛域名
-        - **PolicyId** (str) - 转发规则的ID，当Type为Default时，可以不传或为空
+        - **PolicyId** (str) - 传统型负载均衡转发规则的ID，当Type为Default时，可以不传或为空
         - **PolicyPriority** (int) - 策略优先级，1-9999；只针对路径规则生效
         - **Type** (str) - 内容转发匹配字段的类型，枚举值：Domain -> 域名转发规则；Path -> 路径转发规则；Default -> 默认转发规则，不传默认值Domain
 
@@ -1089,6 +2024,68 @@ class ULBClient(Client):
 
         resp = self.invoke("UpdatePolicy", d, **kwargs)
         return apis.UpdatePolicyResponseSchema().loads(resp)
+
+    def update_rule_attribute(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateRuleAttribute - 更新应用型负载均衡监听器的一条转发规则的属性
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ListenerId** (str) - (Required) 监听器的ID
+        - **LoadBalancerId** (str) - (Required) 负载均衡实例的ID
+        - **RuleId** (str) - (Required) 转发规则的ID
+        - **Pass** (bool) - 当转发的服务节点为空时，规则是否忽略。默认转发规则不可更改
+        - **RuleActions** (list) - 见 **UpdateRuleAttributeParamRuleActions** 模型定义
+        - **RuleConditions** (list) - 见 **UpdateRuleAttributeParamRuleConditions** 模型定义
+
+        **Response**
+
+
+        **Request Model**
+
+        **UpdateRuleAttributeParamRuleActionsForwardConfigTargets**
+        - **Id** (str) - 转发的后端服务节点的标识ID。限定在监听器的服务节点池里；数组长度可以是0；转发服务节点配置的数组长度不为0时，Id必填
+        - **Weight** (int) - 转发的后端服务节点的权重。仅监听器负载均衡算法是加权轮询是有效
+
+
+        **UpdateRuleAttributeParamRuleActionsForwardConfig**
+        - **Targets** (list) - 见 **UpdateRuleAttributeParamRuleActionsForwardConfigTargets** 模型定义
+
+
+        **UpdateRuleAttributeParamRuleConditionsPathConfig**
+        - **Values** (list) - 取值。暂时只支持数组长度为1；取值需符合相关条件；修改路径匹配时必填
+
+
+        **UpdateRuleAttributeParamRuleConditionsHostConfig**
+        - **MatchMode** (str) - 匹配方式。限定枚举值："Regular"/"Wildcard"，默认值："Regular"
+        - **Values** (list) - 取值。暂时只支持数组长度为1；取值需符合相关匹配方式的条件；修改域名匹配时必填
+
+
+        **UpdateRuleAttributeParamRuleActions**
+        - **ForwardConfig** (dict) - 见 **UpdateRuleAttributeParamRuleActionsForwardConfig** 模型定义
+        - **Type** (str) - 动作类型。限定枚举值："Forward"；RuleActions数组长度不为0时必填
+
+
+        **UpdateRuleAttributeParamRuleConditions**
+        - **HostConfig** (dict) - 见 **UpdateRuleAttributeParamRuleConditionsHostConfig** 模型定义
+        - **PathConfig** (dict) - 见 **UpdateRuleAttributeParamRuleConditionsPathConfig** 模型定义
+        - **Type** (str) - 匹配条件类型。限定枚举值："Host"/"Path"；RuleConditions数组长度不为0时必填
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateRuleAttributeRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateRuleAttribute", d, **kwargs)
+        return apis.UpdateRuleAttributeResponseSchema().loads(resp)
 
     def update_ssl_attribute(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1120,16 +2117,16 @@ class ULBClient(Client):
     def update_ssl_binding(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """UpdateSSLBinding - 将VServer绑定的证书更换为另一个证书
+        """UpdateSSLBinding - 将传统型或应用型负载均衡监听器绑定的证书更换为另一个证书，
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **NewSSLId** (str) - (Required) VServer实例需要绑定的新的证书
-        - **OldSSLId** (str) - (Required) VServer实例绑定的旧的证书
-        - **ListenerId** (str) - 所操作VServer实例ID（仅ListenerId传参时，将更换该Vserver所有原证书为OldSSLId的绑定关系；LoadBalancerId和ListenerId都不传参则将更新该项目下所有原证书为OldSSLId的绑定关系；若LoadBalancerId与ListenerId皆有传参，则会强校验ULB与Vsserver的所属关系，将更换该ulb下vserver所绑定的OldSSLId为NewSSLId）
-        - **LoadBalancerId** (str) - 所操作ULB实例ID（仅LoadBalancerId传参时，将更换该ULB所有原证书为OldSSLId的绑定关系；LoadBalancerId和ListenerId都不传参则将更新该项目下所有原证书为OldSSLId的绑定关系）
+        - **NewSSLId** (str) - (Required) 监听器实例需要绑定的新的证书
+        - **OldSSLId** (str) - (Required) 监听器实例绑定的旧的证书
+        - **ListenerId** (str) - 所操作监听器实例ID（仅ListenerId传参时，将更换该监听器所有原证书为OldSSLId的绑定关系；LoadBalancerId和ListenerId都不传参则将更新该项目下所有原证书为OldSSLId的绑定关系；若LoadBalancerId与ListenerId皆有传参，则会强校验ULB与Vsserver的所属关系，将更换该ulb下vserver所绑定的OldSSLId为NewSSLId）（监听器指VServer或Listener）
+        - **LoadBalancerId** (str) - 所操作LB实例ID（仅LoadBalancerId传参时，将更换该LB所有原证书为OldSSLId的绑定关系；LoadBalancerId和ListenerId都不传参则将更新该项目下所有原证书为OldSSLId的绑定关系）（LB指CLB或ALB）
 
         **Response**
 
@@ -1175,16 +2172,53 @@ class ULBClient(Client):
         resp = self.invoke("UpdateSecurityPolicy", d, **kwargs)
         return apis.UpdateSecurityPolicyResponseSchema().loads(resp)
 
-    def update_ulb_attribute(
+    def update_targets_attribute(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """UpdateULBAttribute - 更新ULB名字业务组备注等属性字段
+        """UpdateTargetsAttribute - 更新应用型负载均衡监听器后端服务节点的属性
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **ULBId** (str) - (Required) ULB资源ID
+        - **ListenerId** (str) - (Required) 监听器的ID
+        - **LoadBalancerId** (str) - (Required) 负载均衡实例的ID
+        - **Targets** (list) - 见 **UpdateTargetsAttributeParamTargets** 模型定义
+
+        **Response**
+
+
+        **Request Model**
+
+        **UpdateTargetsAttributeParamTargets**
+        - **Enabled** (bool) - 服务节点是否启用。默认值true；要更新的Targets数组长度至少为1，不超过20个
+        - **Id** (str) - 服务节点的标识ID。限定枚举值："UHost" / "UNI"/"UPM"/"IP"；要更新的Targets数组长度至少为1，不超过20个
+        - **IsBackup** (bool) - 服务节点是否为备节点。默认值false；要更新的Targets数组长度至少为1，不超过20个
+        - **Weight** (int) - 服务节点的权重。限定取值：[1-100]，默认值1；仅在加权轮询算法时有效；要更新的Targets数组长度至少为1，不超过20个
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateTargetsAttributeRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateTargetsAttribute", d, **kwargs)
+        return apis.UpdateTargetsAttributeResponseSchema().loads(resp)
+
+    def update_ulb_attribute(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateULBAttribute - 更新CLB名字业务组备注等属性字段
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ULBId** (str) - (Required) CLB资源ID
         - **BucketName** (str) - 设置用于存储ulb日志的bucket
         - **EnableLog** (int) - 日志开关，1代表开启日志，0代表关闭日志，传1时必须同时传BucketName，TokenName与TokenId二选一
         - **IsWAFOn** (str) - 是否开启WAF。枚举类型：Yes，No，默认值为No
@@ -1212,14 +2246,14 @@ class ULBClient(Client):
     def update_vserver_attribute(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """UpdateVServerAttribute - 更新VServer实例属性
+        """UpdateVServerAttribute - 更新传统型负载均衡VServer实例属性
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **ULBId** (str) - (Required) 负载均衡实例ID
-        - **VServerId** (str) - (Required) VServer实例ID
+        - **ULBId** (str) - (Required) 传统型负载均衡实例ID
+        - **VServerId** (str) - (Required) 传统型负载均衡VServer实例ID
         - **ClientTimeout** (int) - 请求代理的VServer下表示空闲连接的回收时间，单位：秒，取值范围：时(0，86400]，默认值为60；报文转发的VServer下表示回话保持的时间，单位：秒，取值范围：[60，900]，0 表示禁用连接保持
         - **Domain** (str) - MonitorType 为 Path 时指定健康检查发送请求时HTTP HEADER 里的域名
         - **EnableCompression** (int) - 0:关闭 1:开启，用于数据压缩功能
