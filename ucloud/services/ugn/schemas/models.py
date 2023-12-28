@@ -138,21 +138,6 @@ class RouteRuleSchema(schema.ResponseSchema):
     }
 
 
-class SNetworkSchema(schema.ResponseSchema):
-    """SNetwork - 简洁版云联网网络实例"""
-
-    fields = {
-        "CreateTime": fields.Str(required=False, load_from="CreateTime"),
-        "Name": fields.Str(required=True, load_from="Name"),
-        "NetworkID": fields.Str(required=True, load_from="NetworkID"),
-        "OrgID": fields.Int(required=False, load_from="OrgID"),
-        "OrgName": fields.Str(required=True, load_from="OrgName"),
-        "Region": fields.Str(required=True, load_from="Region"),
-        "RegionID": fields.Int(required=False, load_from="RegionID"),
-        "Type": fields.Str(required=True, load_from="Type"),
-    }
-
-
 class SBwPackageSchema(schema.ResponseSchema):
     """SBwPackage - 简洁版带宽包"""
 
@@ -188,4 +173,19 @@ class RouteSchema(schema.ResponseSchema):
         ),
         "NexthopType": fields.Str(required=False, load_from="NexthopType"),
         "Priority": fields.Int(required=False, load_from="Priority"),
+    }
+
+
+class SNetworkSchema(schema.ResponseSchema):
+    """SNetwork - 简洁版云联网网络实例"""
+
+    fields = {
+        "CreateTime": fields.Str(required=False, load_from="CreateTime"),
+        "Name": fields.Str(required=True, load_from="Name"),
+        "NetworkID": fields.Str(required=True, load_from="NetworkID"),
+        "OrgID": fields.Int(required=False, load_from="OrgID"),
+        "OrgName": fields.Str(required=True, load_from="OrgName"),
+        "Region": fields.Str(required=True, load_from="Region"),
+        "RegionID": fields.Int(required=False, load_from="RegionID"),
+        "Type": fields.Str(required=True, load_from="Type"),
     }

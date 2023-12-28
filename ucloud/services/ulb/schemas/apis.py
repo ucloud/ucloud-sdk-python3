@@ -9,14 +9,59 @@ from ucloud.services.ulb.schemas import models
 
 
 """
+API: AddTargets
+
+给应用型负载均衡监听器添加后端服务节点
+"""
+
+
+class AddTargetsParamTargetsSchema(schema.RequestSchema):
+    """AddTargetsParamTargets -"""
+
+    fields = {
+        "Enabled": fields.Bool(required=False, dump_to="Enabled"),
+        "IsBackup": fields.Bool(required=False, dump_to="IsBackup"),
+        "Port": fields.Int(required=False, dump_to="Port"),
+        "ResourceIP": fields.Str(required=False, dump_to="ResourceIP"),
+        "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
+        "ResourceType": fields.Str(required=False, dump_to="ResourceType"),
+        "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
+        "VPCId": fields.Str(required=False, dump_to="VPCId"),
+        "Weight": fields.Int(required=False, dump_to="Weight"),
+    }
+
+
+class AddTargetsRequestSchema(schema.RequestSchema):
+    """AddTargets - 给应用型负载均衡监听器添加后端服务节点"""
+
+    fields = {
+        "ListenerId": fields.Str(required=True, dump_to="ListenerId"),
+        "LoadBalancerId": fields.Str(required=True, dump_to="LoadBalancerId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Targets": fields.List(AddTargetsParamTargetsSchema()),
+    }
+
+
+class AddTargetsResponseSchema(schema.ResponseSchema):
+    """AddTargets - 给应用型负载均衡监听器添加后端服务节点"""
+
+    fields = {
+        "Targets": fields.List(
+            models.TargetSetSchema(), required=False, load_from="Targets"
+        ),
+    }
+
+
+"""
 API: AllocateBackend
 
-添加ULB后端资源实例
+添加CLB后端资源实例
 """
 
 
 class AllocateBackendRequestSchema(schema.RequestSchema):
-    """AllocateBackend - 添加ULB后端资源实例"""
+    """AllocateBackend - 添加CLB后端资源实例"""
 
     fields = {
         "Enabled": fields.Int(required=False, dump_to="Enabled"),
@@ -36,7 +81,7 @@ class AllocateBackendRequestSchema(schema.RequestSchema):
 
 
 class AllocateBackendResponseSchema(schema.ResponseSchema):
-    """AllocateBackend - 添加ULB后端资源实例"""
+    """AllocateBackend - 添加CLB后端资源实例"""
 
     fields = {
         "BackendId": fields.Str(required=False, load_from="BackendId"),
@@ -76,12 +121,12 @@ class AllocateBackendBatchResponseSchema(schema.ResponseSchema):
 """
 API: BindSSL
 
-将SSL证书绑定到VServer
+将SSL证书绑定到传统型负载均衡VServer
 """
 
 
 class BindSSLRequestSchema(schema.RequestSchema):
-    """BindSSL - 将SSL证书绑定到VServer"""
+    """BindSSL - 将SSL证书绑定到传统型负载均衡VServer"""
 
     fields = {
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
@@ -93,20 +138,128 @@ class BindSSLRequestSchema(schema.RequestSchema):
 
 
 class BindSSLResponseSchema(schema.ResponseSchema):
-    """BindSSL - 将SSL证书绑定到VServer"""
+    """BindSSL - 将SSL证书绑定到传统型负载均衡VServer"""
 
     fields = {}
 
 
 """
+API: CreateListener
+
+创建一个应用型负载均衡的监听器
+"""
+
+
+class CreateListenerParamStickinessConfigSchema(schema.RequestSchema):
+    """CreateListenerParamStickinessConfig -"""
+
+    fields = {
+        "CookieName": fields.Str(required=False, dump_to="CookieName"),
+        "Enabled": fields.Bool(required=False, dump_to="Enabled"),
+        "Type": fields.Str(required=False, dump_to="Type"),
+    }
+
+
+class CreateListenerParamHealthCheckConfigSchema(schema.RequestSchema):
+    """CreateListenerParamHealthCheckConfig -"""
+
+    fields = {
+        "Domain": fields.Str(required=False, dump_to="Domain"),
+        "Enabled": fields.Bool(required=False, dump_to="Enabled"),
+        "Path": fields.Str(required=False, dump_to="Path"),
+        "Type": fields.Str(required=False, dump_to="Type"),
+    }
+
+
+class CreateListenerRequestSchema(schema.RequestSchema):
+    """CreateListener - 创建一个应用型负载均衡的监听器"""
+
+    fields = {
+        "Certificates": fields.List(fields.Str()),
+        "CompressionEnabled": fields.Bool(
+            required=False, dump_to="CompressionEnabled"
+        ),
+        "HTTP2Enabled": fields.Bool(required=False, dump_to="HTTP2Enabled"),
+        "HealthCheckConfig": CreateListenerParamHealthCheckConfigSchema(
+            required=False, dump_to="HealthCheckConfig"
+        ),
+        "IdleTimeout": fields.Int(required=False, dump_to="IdleTimeout"),
+        "ListenerPort": fields.Int(required=False, dump_to="ListenerPort"),
+        "ListenerProtocol": fields.Str(
+            required=False, dump_to="ListenerProtocol"
+        ),
+        "LoadBalancerId": fields.Str(required=True, dump_to="LoadBalancerId"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "RedirectEnabled": fields.Bool(
+            required=False, dump_to="RedirectEnabled"
+        ),
+        "RedirectPort": fields.Int(required=False, dump_to="RedirectPort"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "Scheduler": fields.Str(required=False, dump_to="Scheduler"),
+        "SecurityPolicyId": fields.Str(
+            required=False, dump_to="SecurityPolicyId"
+        ),
+        "StickinessConfig": CreateListenerParamStickinessConfigSchema(
+            required=False, dump_to="StickinessConfig"
+        ),
+    }
+
+
+class CreateListenerResponseSchema(schema.ResponseSchema):
+    """CreateListener - 创建一个应用型负载均衡的监听器"""
+
+    fields = {
+        "ListenerId": fields.Str(required=True, load_from="ListenerId"),
+    }
+
+
+"""
+API: CreateLoadBalancer
+
+创建一个应用型负载均衡实例
+"""
+
+
+class CreateLoadBalancerRequestSchema(schema.RequestSchema):
+    """CreateLoadBalancer - 创建一个应用型负载均衡实例"""
+
+    fields = {
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "IPVersion": fields.Str(required=False, dump_to="IPVersion"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "SubnetId": fields.Str(required=True, dump_to="SubnetId"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "Type": fields.Str(required=False, dump_to="Type"),
+        "VPCId": fields.Str(required=True, dump_to="VPCId"),
+    }
+
+
+class CreateLoadBalancerResponseSchema(schema.ResponseSchema):
+    """CreateLoadBalancer - 创建一个应用型负载均衡实例"""
+
+    fields = {
+        "LoadBalancerId": fields.Str(
+            required=False, load_from="LoadBalancerId"
+        ),
+    }
+
+
+"""
 API: CreatePolicy
 
-创建VServer内容转发策略
+传统型负载均衡创建VServer内容转发策略
 """
 
 
 class CreatePolicyRequestSchema(schema.RequestSchema):
-    """CreatePolicy - 创建VServer内容转发策略"""
+    """CreatePolicy - 传统型负载均衡创建VServer内容转发策略"""
 
     fields = {
         "BackendId": fields.List(fields.Str()),
@@ -124,10 +277,102 @@ class CreatePolicyRequestSchema(schema.RequestSchema):
 
 
 class CreatePolicyResponseSchema(schema.ResponseSchema):
-    """CreatePolicy - 创建VServer内容转发策略"""
+    """CreatePolicy - 传统型负载均衡创建VServer内容转发策略"""
 
     fields = {
         "PolicyId": fields.Str(required=False, load_from="PolicyId"),
+    }
+
+
+"""
+API: CreateRule
+
+给应用型负载均衡监听器创建一条转发规则
+"""
+
+
+class CreateRuleParamRuleActionsForwardConfigTargetsSchema(
+    schema.RequestSchema
+):
+    """CreateRuleParamRuleActionsForwardConfigTargets -"""
+
+    fields = {
+        "Id": fields.Str(required=False, dump_to="Id"),
+        "Weight": fields.Int(required=False, dump_to="Weight"),
+    }
+
+
+class CreateRuleParamRuleConditionsPathConfigSchema(schema.RequestSchema):
+    """CreateRuleParamRuleConditionsPathConfig -"""
+
+    fields = {
+        "Values": fields.List(fields.Str()),
+    }
+
+
+class CreateRuleParamRuleConditionsHostConfigSchema(schema.RequestSchema):
+    """CreateRuleParamRuleConditionsHostConfig -"""
+
+    fields = {
+        "MatchMode": fields.Str(required=False, dump_to="MatchMode"),
+        "Values": fields.List(fields.Str()),
+    }
+
+
+class CreateRuleParamRuleActionsForwardConfigSchema(schema.RequestSchema):
+    """CreateRuleParamRuleActionsForwardConfig -"""
+
+    fields = {
+        "Targets": fields.List(
+            CreateRuleParamRuleActionsForwardConfigTargetsSchema()
+        ),
+    }
+
+
+class CreateRuleParamRuleConditionsSchema(schema.RequestSchema):
+    """CreateRuleParamRuleConditions -"""
+
+    fields = {
+        "HostConfig": CreateRuleParamRuleConditionsHostConfigSchema(
+            required=False, dump_to="HostConfig"
+        ),
+        "PathConfig": CreateRuleParamRuleConditionsPathConfigSchema(
+            required=False, dump_to="PathConfig"
+        ),
+        "Type": fields.Str(required=True, dump_to="Type"),
+    }
+
+
+class CreateRuleParamRuleActionsSchema(schema.RequestSchema):
+    """CreateRuleParamRuleActions -"""
+
+    fields = {
+        "ForwardConfig": CreateRuleParamRuleActionsForwardConfigSchema(
+            required=False, dump_to="ForwardConfig"
+        ),
+        "Type": fields.Str(required=True, dump_to="Type"),
+    }
+
+
+class CreateRuleRequestSchema(schema.RequestSchema):
+    """CreateRule - 给应用型负载均衡监听器创建一条转发规则"""
+
+    fields = {
+        "ListenerId": fields.Str(required=True, dump_to="ListenerId"),
+        "LoadBalancerId": fields.Str(required=True, dump_to="LoadBalancerId"),
+        "Pass": fields.Bool(required=False, dump_to="Pass"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "RuleActions": fields.List(CreateRuleParamRuleActionsSchema()),
+        "RuleConditions": fields.List(CreateRuleParamRuleConditionsSchema()),
+    }
+
+
+class CreateRuleResponseSchema(schema.ResponseSchema):
+    """CreateRule - 给应用型负载均衡监听器创建一条转发规则"""
+
+    fields = {
+        "RuleId": fields.Str(required=True, load_from="RuleId"),
     }
 
 
@@ -196,12 +441,12 @@ class CreateSecurityPolicyResponseSchema(schema.ResponseSchema):
 """
 API: CreateULB
 
-创建负载均衡实例，可以选择内网或者外网
+创建传统型负载均衡负载均衡实例，可以选择内网或者外网
 """
 
 
 class CreateULBRequestSchema(schema.RequestSchema):
-    """CreateULB - 创建负载均衡实例，可以选择内网或者外网"""
+    """CreateULB - 创建传统型负载均衡负载均衡实例，可以选择内网或者外网"""
 
     fields = {
         "BusinessId": fields.Str(required=False, dump_to="BusinessId"),
@@ -227,7 +472,7 @@ class CreateULBRequestSchema(schema.RequestSchema):
 
 
 class CreateULBResponseSchema(schema.ResponseSchema):
-    """CreateULB - 创建负载均衡实例，可以选择内网或者外网"""
+    """CreateULB - 创建传统型负载均衡负载均衡实例，可以选择内网或者外网"""
 
     fields = {
         "IPv6AddressId": fields.Str(required=False, load_from="IPv6AddressId"),
@@ -238,12 +483,12 @@ class CreateULBResponseSchema(schema.ResponseSchema):
 """
 API: CreateVServer
 
-创建VServer实例，定义监听的协议和端口以及负载均衡算法
+创建CLB的VServer实例，定义监听的协议和端口以及负载均衡算法
 """
 
 
 class CreateVServerRequestSchema(schema.RequestSchema):
-    """CreateVServer - 创建VServer实例，定义监听的协议和端口以及负载均衡算法"""
+    """CreateVServer - 创建CLB的VServer实例，定义监听的协议和端口以及负载均衡算法"""
 
     fields = {
         "ClientTimeout": fields.Int(required=False, dump_to="ClientTimeout"),
@@ -278,7 +523,7 @@ class CreateVServerRequestSchema(schema.RequestSchema):
 
 
 class CreateVServerResponseSchema(schema.ResponseSchema):
-    """CreateVServer - 创建VServer实例，定义监听的协议和端口以及负载均衡算法"""
+    """CreateVServer - 创建CLB的VServer实例，定义监听的协议和端口以及负载均衡算法"""
 
     fields = {
         "VServerId": fields.Str(required=False, load_from="VServerId"),
@@ -286,14 +531,64 @@ class CreateVServerResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DeleteListener
+
+删除一个应用型负载均衡监听器
+"""
+
+
+class DeleteListenerRequestSchema(schema.RequestSchema):
+    """DeleteListener - 删除一个应用型负载均衡监听器"""
+
+    fields = {
+        "ListenerId": fields.Str(required=True, dump_to="ListenerId"),
+        "LoadBalancerId": fields.Str(required=True, dump_to="LoadBalancerId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "RelatedRedirectDisabled": fields.Bool(
+            required=True, dump_to="RelatedRedirectDisabled"
+        ),
+    }
+
+
+class DeleteListenerResponseSchema(schema.ResponseSchema):
+    """DeleteListener - 删除一个应用型负载均衡监听器"""
+
+    fields = {}
+
+
+"""
+API: DeleteLoadBalancer
+
+删除一个应用型负载均衡实例
+"""
+
+
+class DeleteLoadBalancerRequestSchema(schema.RequestSchema):
+    """DeleteLoadBalancer - 删除一个应用型负载均衡实例"""
+
+    fields = {
+        "LoadBalancerId": fields.Str(required=True, dump_to="LoadBalancerId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DeleteLoadBalancerResponseSchema(schema.ResponseSchema):
+    """DeleteLoadBalancer - 删除一个应用型负载均衡实例"""
+
+    fields = {}
+
+
+"""
 API: DeletePolicy
 
-删除内容转发策略
+删除传统型负载均衡的内容转发策略
 """
 
 
 class DeletePolicyRequestSchema(schema.RequestSchema):
-    """DeletePolicy - 删除内容转发策略"""
+    """DeletePolicy - 删除传统型负载均衡的内容转发策略"""
 
     fields = {
         "GroupId": fields.Str(
@@ -307,7 +602,32 @@ class DeletePolicyRequestSchema(schema.RequestSchema):
 
 
 class DeletePolicyResponseSchema(schema.ResponseSchema):
-    """DeletePolicy - 删除内容转发策略"""
+    """DeletePolicy - 删除传统型负载均衡的内容转发策略"""
+
+    fields = {}
+
+
+"""
+API: DeleteRule
+
+删除应用型负载均衡监听器的一条转发规则
+"""
+
+
+class DeleteRuleRequestSchema(schema.RequestSchema):
+    """DeleteRule - 删除应用型负载均衡监听器的一条转发规则"""
+
+    fields = {
+        "ListenerId": fields.Str(required=True, dump_to="ListenerId"),
+        "LoadBalancerId": fields.Str(required=True, dump_to="LoadBalancerId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "RuleId": fields.Str(required=True, dump_to="RuleId"),
+    }
+
+
+class DeleteRuleResponseSchema(schema.ResponseSchema):
+    """DeleteRule - 删除应用型负载均衡监听器的一条转发规则"""
 
     fields = {}
 
@@ -363,12 +683,12 @@ class DeleteSecurityPolicyResponseSchema(schema.ResponseSchema):
 """
 API: DeleteULB
 
-删除负载均衡实例
+删除传统型负载均衡实例
 """
 
 
 class DeleteULBRequestSchema(schema.RequestSchema):
-    """DeleteULB - 删除负载均衡实例"""
+    """DeleteULB - 删除传统型负载均衡实例"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -379,7 +699,7 @@ class DeleteULBRequestSchema(schema.RequestSchema):
 
 
 class DeleteULBResponseSchema(schema.ResponseSchema):
-    """DeleteULB - 删除负载均衡实例"""
+    """DeleteULB - 删除传统型负载均衡实例"""
 
     fields = {}
 
@@ -387,12 +707,12 @@ class DeleteULBResponseSchema(schema.ResponseSchema):
 """
 API: DeleteVServer
 
-删除VServer实例
+删除CLB的VServer实例
 """
 
 
 class DeleteVServerRequestSchema(schema.RequestSchema):
-    """DeleteVServer - 删除VServer实例"""
+    """DeleteVServer - 删除CLB的VServer实例"""
 
     fields = {
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
@@ -403,20 +723,116 @@ class DeleteVServerRequestSchema(schema.RequestSchema):
 
 
 class DeleteVServerResponseSchema(schema.ResponseSchema):
-    """DeleteVServer - 删除VServer实例"""
+    """DeleteVServer - 删除CLB的VServer实例"""
 
     fields = {}
 
 
 """
+API: DescribeListeners
+
+描述一个指定的监听器或者一个应用型负载均衡实例下的所有监听器
+"""
+
+
+class DescribeListenersRequestSchema(schema.RequestSchema):
+    """DescribeListeners - 描述一个指定的监听器或者一个应用型负载均衡实例下的所有监听器"""
+
+    fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "ListenerId": fields.Str(required=False, dump_to="ListenerId"),
+        "LoadBalancerId": fields.Str(required=False, dump_to="LoadBalancerId"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DescribeListenersResponseSchema(schema.ResponseSchema):
+    """DescribeListeners - 描述一个指定的监听器或者一个应用型负载均衡实例下的所有监听器"""
+
+    fields = {
+        "Listeners": fields.List(
+            models.ListenerSchema(), required=False, load_from="Listeners"
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
+API: DescribeLoadBalancers
+
+描述特定条件下的应用型负载均衡实例或者全部的应用型负载均衡实例
+"""
+
+
+class DescribeLoadBalancersRequestSchema(schema.RequestSchema):
+    """DescribeLoadBalancers - 描述特定条件下的应用型负载均衡实例或者全部的应用型负载均衡实例"""
+
+    fields = {
+        "Limit": fields.Str(required=False, dump_to="Limit"),
+        "LoadBalancerIds": fields.List(fields.Str()),
+        "Offset": fields.Str(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ShowDetail": fields.Bool(required=False, dump_to="ShowDetail"),
+        "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
+        "Type": fields.Str(required=False, dump_to="Type"),
+        "VPCId": fields.Str(required=False, dump_to="VPCId"),
+    }
+
+
+class DescribeLoadBalancersResponseSchema(schema.ResponseSchema):
+    """DescribeLoadBalancers - 描述特定条件下的应用型负载均衡实例或者全部的应用型负载均衡实例"""
+
+    fields = {
+        "LoadBalancers": fields.List(
+            models.LoadBalancerSchema(),
+            required=True,
+            load_from="LoadBalancers",
+        ),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
+API: DescribeRules
+
+描述一条指定的转发规则或者一个应用型负载均衡监听器下的所有转发规则
+"""
+
+
+class DescribeRulesRequestSchema(schema.RequestSchema):
+    """DescribeRules - 描述一条指定的转发规则或者一个应用型负载均衡监听器下的所有转发规则"""
+
+    fields = {
+        "ListenerId": fields.Str(required=True, dump_to="ListenerId"),
+        "LoadBalancerId": fields.Str(required=True, dump_to="LoadBalancerId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "RuleId": fields.Str(required=False, dump_to="RuleId"),
+    }
+
+
+class DescribeRulesResponseSchema(schema.ResponseSchema):
+    """DescribeRules - 描述一条指定的转发规则或者一个应用型负载均衡监听器下的所有转发规则"""
+
+    fields = {
+        "Rules": fields.List(
+            models.RuleSchema(), required=True, load_from="Rules"
+        ),
+    }
+
+
+"""
 API: DescribeSSL
 
-获取SSL证书信息
+获取SSL证书信息，仅能获取SSL证书与传统型负载均衡监听器的绑定关系
 """
 
 
 class DescribeSSLRequestSchema(schema.RequestSchema):
-    """DescribeSSL - 获取SSL证书信息"""
+    """DescribeSSL - 获取SSL证书信息，仅能获取SSL证书与传统型负载均衡监听器的绑定关系"""
 
     fields = {
         "Limit": fields.Int(required=False, dump_to="Limit"),
@@ -428,7 +844,7 @@ class DescribeSSLRequestSchema(schema.RequestSchema):
 
 
 class DescribeSSLResponseSchema(schema.ResponseSchema):
-    """DescribeSSL - 获取SSL证书信息"""
+    """DescribeSSL - 获取SSL证书信息，仅能获取SSL证书与传统型负载均衡监听器的绑定关系"""
 
     fields = {
         "DataSet": fields.List(
@@ -439,14 +855,44 @@ class DescribeSSLResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeSSLV2
+
+获取SSL证书信息，该接口可以同时获取SSL与传统型和应用型负载均衡监听器的绑定关系
+"""
+
+
+class DescribeSSLV2RequestSchema(schema.RequestSchema):
+    """DescribeSSLV2 - 获取SSL证书信息，该接口可以同时获取SSL与传统型和应用型负载均衡监听器的绑定关系"""
+
+    fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SSLId": fields.Str(required=False, dump_to="SSLId"),
+    }
+
+
+class DescribeSSLV2ResponseSchema(schema.ResponseSchema):
+    """DescribeSSLV2 - 获取SSL证书信息，该接口可以同时获取SSL与传统型和应用型负载均衡监听器的绑定关系"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.SSLInfoSchema(), required=False, load_from="DataSet"
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
 API: DescribeSecurityPolicies
 
-获取安全策略的信息
+获取安全策略的信息，绑定关系仅能获取安全策略与传统型负载均衡监听器的绑定关系
 """
 
 
 class DescribeSecurityPoliciesRequestSchema(schema.RequestSchema):
-    """DescribeSecurityPolicies - 获取安全策略的信息"""
+    """DescribeSecurityPolicies - 获取安全策略的信息，绑定关系仅能获取安全策略与传统型负载均衡监听器的绑定关系"""
 
     fields = {
         "Limit": fields.Int(required=False, dump_to="Limit"),
@@ -460,11 +906,45 @@ class DescribeSecurityPoliciesRequestSchema(schema.RequestSchema):
 
 
 class DescribeSecurityPoliciesResponseSchema(schema.ResponseSchema):
-    """DescribeSecurityPolicies - 获取安全策略的信息"""
+    """DescribeSecurityPolicies - 获取安全策略的信息，绑定关系仅能获取安全策略与传统型负载均衡监听器的绑定关系"""
 
     fields = {
         "DataSet": fields.List(
             models.SecurityPolicySchema(), required=False, load_from="DataSet"
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
+API: DescribeSecurityPoliciesV2
+
+获取安全策略的信息，可以同时获取安全策略与传统型和应用性负载均衡监听器的绑定关系
+"""
+
+
+class DescribeSecurityPoliciesV2RequestSchema(schema.RequestSchema):
+    """DescribeSecurityPoliciesV2 - 获取安全策略的信息，可以同时获取安全策略与传统型和应用性负载均衡监听器的绑定关系"""
+
+    fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SecurityPolicyId": fields.Str(
+            required=False, dump_to="SecurityPolicyId"
+        ),
+    }
+
+
+class DescribeSecurityPoliciesV2ResponseSchema(schema.ResponseSchema):
+    """DescribeSecurityPoliciesV2 - 获取安全策略的信息，可以同时获取安全策略与传统型和应用性负载均衡监听器的绑定关系"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.SecurityPolicyInfoSchema(),
+            required=False,
+            load_from="DataSet",
         ),
         "TotalCount": fields.Int(required=False, load_from="TotalCount"),
     }
@@ -499,12 +979,12 @@ class DescribeSupportCiphersResponseSchema(schema.ResponseSchema):
 """
 API: DescribeULB
 
-获取ULB详细信息
+获取CLB详细信息
 """
 
 
 class DescribeULBRequestSchema(schema.RequestSchema):
-    """DescribeULB - 获取ULB详细信息"""
+    """DescribeULB - 获取CLB详细信息"""
 
     fields = {
         "BusinessId": fields.Str(required=False, dump_to="BusinessId"),
@@ -519,7 +999,7 @@ class DescribeULBRequestSchema(schema.RequestSchema):
 
 
 class DescribeULBResponseSchema(schema.ResponseSchema):
-    """DescribeULB - 获取ULB详细信息"""
+    """DescribeULB - 获取CLB详细信息"""
 
     fields = {
         "DataSet": fields.List(
@@ -532,12 +1012,12 @@ class DescribeULBResponseSchema(schema.ResponseSchema):
 """
 API: DescribeULBSimple
 
-获取ULB信息
+获取CLB信息
 """
 
 
 class DescribeULBSimpleRequestSchema(schema.RequestSchema):
-    """DescribeULBSimple - 获取ULB信息"""
+    """DescribeULBSimple - 获取CLB信息"""
 
     fields = {
         "BusinessId": fields.Str(required=False, dump_to="BusinessId"),
@@ -552,7 +1032,7 @@ class DescribeULBSimpleRequestSchema(schema.RequestSchema):
 
 
 class DescribeULBSimpleResponseSchema(schema.ResponseSchema):
-    """DescribeULBSimple - 获取ULB信息"""
+    """DescribeULBSimple - 获取CLB信息"""
 
     fields = {
         "DataSet": fields.List(
@@ -565,12 +1045,12 @@ class DescribeULBSimpleResponseSchema(schema.ResponseSchema):
 """
 API: DescribeVServer
 
-获取ULB下的VServer的详细信息
+获取CLB下的VServer的详细信息
 """
 
 
 class DescribeVServerRequestSchema(schema.RequestSchema):
-    """DescribeVServer - 获取ULB下的VServer的详细信息"""
+    """DescribeVServer - 获取CLB下的VServer的详细信息"""
 
     fields = {
         "Limit": fields.Int(required=False, dump_to="Limit"),
@@ -583,7 +1063,7 @@ class DescribeVServerRequestSchema(schema.RequestSchema):
 
 
 class DescribeVServerResponseSchema(schema.ResponseSchema):
-    """DescribeVServer - 获取ULB下的VServer的详细信息"""
+    """DescribeVServer - 获取CLB下的VServer的详细信息"""
 
     fields = {
         "DataSet": fields.List(
@@ -596,12 +1076,12 @@ class DescribeVServerResponseSchema(schema.ResponseSchema):
 """
 API: ReleaseBackend
 
-从VServer释放后端资源实例
+从CLB的VServer释放后端资源实例
 """
 
 
 class ReleaseBackendRequestSchema(schema.RequestSchema):
-    """ReleaseBackend - 从VServer释放后端资源实例"""
+    """ReleaseBackend - 从CLB的VServer释放后端资源实例"""
 
     fields = {
         "BackendId": fields.Str(required=True, dump_to="BackendId"),
@@ -612,7 +1092,32 @@ class ReleaseBackendRequestSchema(schema.RequestSchema):
 
 
 class ReleaseBackendResponseSchema(schema.ResponseSchema):
-    """ReleaseBackend - 从VServer释放后端资源实例"""
+    """ReleaseBackend - 从CLB的VServer释放后端资源实例"""
+
+    fields = {}
+
+
+"""
+API: RemoveTargets
+
+从应用型负载均衡监听器删除后端服务节点
+"""
+
+
+class RemoveTargetsRequestSchema(schema.RequestSchema):
+    """RemoveTargets - 从应用型负载均衡监听器删除后端服务节点"""
+
+    fields = {
+        "Ids": fields.List(fields.Str()),
+        "ListenerId": fields.Str(required=True, dump_to="ListenerId"),
+        "LoadBalancerId": fields.Str(required=True, dump_to="LoadBalancerId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class RemoveTargetsResponseSchema(schema.ResponseSchema):
+    """RemoveTargets - 从应用型负载均衡监听器删除后端服务节点"""
 
     fields = {}
 
@@ -620,12 +1125,12 @@ class ReleaseBackendResponseSchema(schema.ResponseSchema):
 """
 API: UnBindSecurityPolicy
 
-批量解绑安全策略
+批量解绑安全策略，会同时解绑与传统型和应用型负载均衡监听器的绑定关系
 """
 
 
 class UnBindSecurityPolicyRequestSchema(schema.RequestSchema):
-    """UnBindSecurityPolicy - 批量解绑安全策略"""
+    """UnBindSecurityPolicy - 批量解绑安全策略，会同时解绑与传统型和应用型负载均衡监听器的绑定关系"""
 
     fields = {
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
@@ -637,7 +1142,7 @@ class UnBindSecurityPolicyRequestSchema(schema.RequestSchema):
 
 
 class UnBindSecurityPolicyResponseSchema(schema.ResponseSchema):
-    """UnBindSecurityPolicy - 批量解绑安全策略"""
+    """UnBindSecurityPolicy - 批量解绑安全策略，会同时解绑与传统型和应用型负载均衡监听器的绑定关系"""
 
     fields = {}
 
@@ -645,12 +1150,12 @@ class UnBindSecurityPolicyResponseSchema(schema.ResponseSchema):
 """
 API: UnbindSSL
 
-从VServer解绑SSL证书
+从CLB下的VServer解绑SSL证书
 """
 
 
 class UnbindSSLRequestSchema(schema.RequestSchema):
-    """UnbindSSL - 从VServer解绑SSL证书"""
+    """UnbindSSL - 从CLB下的VServer解绑SSL证书"""
 
     fields = {
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
@@ -662,7 +1167,7 @@ class UnbindSSLRequestSchema(schema.RequestSchema):
 
 
 class UnbindSSLResponseSchema(schema.ResponseSchema):
-    """UnbindSSL - 从VServer解绑SSL证书"""
+    """UnbindSSL - 从CLB下的VServer解绑SSL证书"""
 
     fields = {}
 
@@ -670,12 +1175,12 @@ class UnbindSSLResponseSchema(schema.ResponseSchema):
 """
 API: UpdateBackendAttribute
 
-更新ULB后端资源实例(服务节点)属性
+更新CLB后端资源实例(服务节点)属性
 """
 
 
 class UpdateBackendAttributeRequestSchema(schema.RequestSchema):
-    """UpdateBackendAttribute - 更新ULB后端资源实例(服务节点)属性"""
+    """UpdateBackendAttribute - 更新CLB后端资源实例(服务节点)属性"""
 
     fields = {
         "BackendId": fields.Str(required=True, dump_to="BackendId"),
@@ -690,7 +1195,155 @@ class UpdateBackendAttributeRequestSchema(schema.RequestSchema):
 
 
 class UpdateBackendAttributeResponseSchema(schema.ResponseSchema):
-    """UpdateBackendAttribute - 更新ULB后端资源实例(服务节点)属性"""
+    """UpdateBackendAttribute - 更新CLB后端资源实例(服务节点)属性"""
+
+    fields = {}
+
+
+"""
+API: UpdateBackendBatch
+
+批量更新ULB后端资源实例(服务节点)属性
+"""
+
+
+class UpdateBackendBatchParamAttributesSchema(schema.RequestSchema):
+    """UpdateBackendBatchParamAttributes -"""
+
+    fields = {
+        "BackendId": fields.Str(required=True, dump_to="BackendId"),
+        "Enabled": fields.Int(required=False, dump_to="Enabled"),
+        "IsBackup": fields.Int(required=False, dump_to="IsBackup"),
+        "Port": fields.Int(required=False, dump_to="Port"),
+        "Weight": fields.Int(required=False, dump_to="Weight"),
+    }
+
+
+class UpdateBackendBatchRequestSchema(schema.RequestSchema):
+    """UpdateBackendBatch - 批量更新ULB后端资源实例(服务节点)属性"""
+
+    fields = {
+        "Attributes": fields.List(UpdateBackendBatchParamAttributesSchema()),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ULBId": fields.Str(required=True, dump_to="ULBId"),
+    }
+
+
+class UpdateBackendBatchResponseSchema(schema.ResponseSchema):
+    """UpdateBackendBatch - 批量更新ULB后端资源实例(服务节点)属性"""
+
+    fields = {
+        "BackendSet": fields.List(
+            models.BackendMsgSchema(), required=False, load_from="BackendSet"
+        ),
+    }
+
+
+"""
+API: UpdateListenerAttribute
+
+更新一个应用型负载均衡监听器的属性
+"""
+
+
+class UpdateListenerAttributeParamStickinessConfigSchema(schema.RequestSchema):
+    """UpdateListenerAttributeParamStickinessConfig -"""
+
+    fields = {
+        "CookieName": fields.Str(required=False, dump_to="CookieName"),
+        "Enabled": fields.Bool(required=False, dump_to="Enabled"),
+        "Type": fields.Str(required=False, dump_to="Type"),
+    }
+
+
+class UpdateListenerAttributeParamHealthCheckConfigSchema(schema.RequestSchema):
+    """UpdateListenerAttributeParamHealthCheckConfig -"""
+
+    fields = {
+        "Domain": fields.Str(required=False, dump_to="Domain"),
+        "Enabled": fields.Bool(required=False, dump_to="Enabled"),
+        "Path": fields.Str(required=False, dump_to="Path"),
+        "Type": fields.Str(required=False, dump_to="Type"),
+    }
+
+
+class UpdateListenerAttributeRequestSchema(schema.RequestSchema):
+    """UpdateListenerAttribute - 更新一个应用型负载均衡监听器的属性"""
+
+    fields = {
+        "Certificates": fields.List(fields.Str()),
+        "CompressionEnabled": fields.Bool(
+            required=False, dump_to="CompressionEnabled"
+        ),
+        "HTTP2Enabled": fields.Bool(required=False, dump_to="HTTP2Enabled"),
+        "HealthCheckConfig": UpdateListenerAttributeParamHealthCheckConfigSchema(
+            required=False, dump_to="HealthCheckConfig"
+        ),
+        "IdleTimeout": fields.Int(required=False, dump_to="IdleTimeout"),
+        "ListenerId": fields.Str(required=True, dump_to="ListenerId"),
+        "LoadBalancerId": fields.Str(required=True, dump_to="LoadBalancerId"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "RedirectEnabled": fields.Bool(
+            required=False, dump_to="RedirectEnabled"
+        ),
+        "RedirectPort": fields.Int(required=False, dump_to="RedirectPort"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "Scheduler": fields.Str(required=False, dump_to="Scheduler"),
+        "SecurityPolicyId": fields.Str(
+            required=False, dump_to="SecurityPolicyId"
+        ),
+        "StickinessConfig": UpdateListenerAttributeParamStickinessConfigSchema(
+            required=False, dump_to="StickinessConfig"
+        ),
+    }
+
+
+class UpdateListenerAttributeResponseSchema(schema.ResponseSchema):
+    """UpdateListenerAttribute - 更新一个应用型负载均衡监听器的属性"""
+
+    fields = {}
+
+
+"""
+API: UpdateLoadBalancerAttribute
+
+更新一个应用型负载均衡实例的属性
+"""
+
+
+class UpdateLoadBalancerAttributeParamAccessLogConfigSchema(
+    schema.RequestSchema
+):
+    """UpdateLoadBalancerAttributeParamAccessLogConfig -"""
+
+    fields = {
+        "Enabled": fields.Bool(required=False, dump_to="Enabled"),
+        "US3BucketName": fields.Str(required=False, dump_to="US3BucketName"),
+        "US3TokenId": fields.Str(required=False, dump_to="US3TokenId"),
+    }
+
+
+class UpdateLoadBalancerAttributeRequestSchema(schema.RequestSchema):
+    """UpdateLoadBalancerAttribute - 更新一个应用型负载均衡实例的属性"""
+
+    fields = {
+        "AccessLogConfig": UpdateLoadBalancerAttributeParamAccessLogConfigSchema(
+            required=False, dump_to="AccessLogConfig"
+        ),
+        "LoadBalancerId": fields.Str(required=True, dump_to="LoadBalancerId"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+    }
+
+
+class UpdateLoadBalancerAttributeResponseSchema(schema.ResponseSchema):
+    """UpdateLoadBalancerAttribute - 更新一个应用型负载均衡实例的属性"""
 
     fields = {}
 
@@ -698,12 +1351,12 @@ class UpdateBackendAttributeResponseSchema(schema.ResponseSchema):
 """
 API: UpdatePolicy
 
-更新内容转发规则，包括转发规则后的服务节点
+更新传统型负载均衡内容转发规则，包括转发规则后的服务节点
 """
 
 
 class UpdatePolicyRequestSchema(schema.RequestSchema):
-    """UpdatePolicy - 更新内容转发规则，包括转发规则后的服务节点"""
+    """UpdatePolicy - 更新传统型负载均衡内容转发规则，包括转发规则后的服务节点"""
 
     fields = {
         "BackendId": fields.List(fields.Str()),
@@ -722,13 +1375,112 @@ class UpdatePolicyRequestSchema(schema.RequestSchema):
 
 
 class UpdatePolicyResponseSchema(schema.ResponseSchema):
-    """UpdatePolicy - 更新内容转发规则，包括转发规则后的服务节点"""
+    """UpdatePolicy - 更新传统型负载均衡内容转发规则，包括转发规则后的服务节点"""
 
     fields = {
         "PolicyId": fields.Str(
             required=False, load_from="PolicyId"
         ),  # Deprecated, will be removed at 1.0
     }
+
+
+"""
+API: UpdateRuleAttribute
+
+更新应用型负载均衡监听器的一条转发规则的属性
+"""
+
+
+class UpdateRuleAttributeParamRuleActionsForwardConfigTargetsSchema(
+    schema.RequestSchema
+):
+    """UpdateRuleAttributeParamRuleActionsForwardConfigTargets -"""
+
+    fields = {
+        "Id": fields.Str(required=False, dump_to="Id"),
+        "Weight": fields.Int(required=False, dump_to="Weight"),
+    }
+
+
+class UpdateRuleAttributeParamRuleActionsForwardConfigSchema(
+    schema.RequestSchema
+):
+    """UpdateRuleAttributeParamRuleActionsForwardConfig -"""
+
+    fields = {
+        "Targets": fields.List(
+            UpdateRuleAttributeParamRuleActionsForwardConfigTargetsSchema()
+        ),
+    }
+
+
+class UpdateRuleAttributeParamRuleConditionsPathConfigSchema(
+    schema.RequestSchema
+):
+    """UpdateRuleAttributeParamRuleConditionsPathConfig -"""
+
+    fields = {
+        "Values": fields.List(fields.Str()),
+    }
+
+
+class UpdateRuleAttributeParamRuleConditionsHostConfigSchema(
+    schema.RequestSchema
+):
+    """UpdateRuleAttributeParamRuleConditionsHostConfig -"""
+
+    fields = {
+        "MatchMode": fields.Str(required=False, dump_to="MatchMode"),
+        "Values": fields.List(fields.Str()),
+    }
+
+
+class UpdateRuleAttributeParamRuleActionsSchema(schema.RequestSchema):
+    """UpdateRuleAttributeParamRuleActions -"""
+
+    fields = {
+        "ForwardConfig": UpdateRuleAttributeParamRuleActionsForwardConfigSchema(
+            required=False, dump_to="ForwardConfig"
+        ),
+        "Type": fields.Str(required=False, dump_to="Type"),
+    }
+
+
+class UpdateRuleAttributeParamRuleConditionsSchema(schema.RequestSchema):
+    """UpdateRuleAttributeParamRuleConditions -"""
+
+    fields = {
+        "HostConfig": UpdateRuleAttributeParamRuleConditionsHostConfigSchema(
+            required=False, dump_to="HostConfig"
+        ),
+        "PathConfig": UpdateRuleAttributeParamRuleConditionsPathConfigSchema(
+            required=False, dump_to="PathConfig"
+        ),
+        "Type": fields.Str(required=False, dump_to="Type"),
+    }
+
+
+class UpdateRuleAttributeRequestSchema(schema.RequestSchema):
+    """UpdateRuleAttribute - 更新应用型负载均衡监听器的一条转发规则的属性"""
+
+    fields = {
+        "ListenerId": fields.Str(required=True, dump_to="ListenerId"),
+        "LoadBalancerId": fields.Str(required=True, dump_to="LoadBalancerId"),
+        "Pass": fields.Bool(required=False, dump_to="Pass"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "RuleActions": fields.List(UpdateRuleAttributeParamRuleActionsSchema()),
+        "RuleConditions": fields.List(
+            UpdateRuleAttributeParamRuleConditionsSchema()
+        ),
+        "RuleId": fields.Str(required=True, dump_to="RuleId"),
+    }
+
+
+class UpdateRuleAttributeResponseSchema(schema.ResponseSchema):
+    """UpdateRuleAttribute - 更新应用型负载均衡监听器的一条转发规则的属性"""
+
+    fields = {}
 
 
 """
@@ -758,12 +1510,12 @@ class UpdateSSLAttributeResponseSchema(schema.ResponseSchema):
 """
 API: UpdateSSLBinding
 
-将VServer绑定的证书更换为另一个证书
+将传统型或应用型负载均衡监听器绑定的证书更换为另一个证书，
 """
 
 
 class UpdateSSLBindingRequestSchema(schema.RequestSchema):
-    """UpdateSSLBinding - 将VServer绑定的证书更换为另一个证书"""
+    """UpdateSSLBinding - 将传统型或应用型负载均衡监听器绑定的证书更换为另一个证书，"""
 
     fields = {
         "ListenerId": fields.Str(required=False, dump_to="ListenerId"),
@@ -776,7 +1528,7 @@ class UpdateSSLBindingRequestSchema(schema.RequestSchema):
 
 
 class UpdateSSLBindingResponseSchema(schema.ResponseSchema):
-    """UpdateSSLBinding - 将VServer绑定的证书更换为另一个证书"""
+    """UpdateSSLBinding - 将传统型或应用型负载均衡监听器绑定的证书更换为另一个证书，"""
 
     fields = {}
 
@@ -812,14 +1564,50 @@ class UpdateSecurityPolicyResponseSchema(schema.ResponseSchema):
 
 
 """
+API: UpdateTargetsAttribute
+
+更新应用型负载均衡监听器后端服务节点的属性
+"""
+
+
+class UpdateTargetsAttributeParamTargetsSchema(schema.RequestSchema):
+    """UpdateTargetsAttributeParamTargets -"""
+
+    fields = {
+        "Enabled": fields.Bool(required=False, dump_to="Enabled"),
+        "Id": fields.Str(required=False, dump_to="Id"),
+        "IsBackup": fields.Bool(required=False, dump_to="IsBackup"),
+        "Weight": fields.Int(required=False, dump_to="Weight"),
+    }
+
+
+class UpdateTargetsAttributeRequestSchema(schema.RequestSchema):
+    """UpdateTargetsAttribute - 更新应用型负载均衡监听器后端服务节点的属性"""
+
+    fields = {
+        "ListenerId": fields.Str(required=True, dump_to="ListenerId"),
+        "LoadBalancerId": fields.Str(required=True, dump_to="LoadBalancerId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Targets": fields.List(UpdateTargetsAttributeParamTargetsSchema()),
+    }
+
+
+class UpdateTargetsAttributeResponseSchema(schema.ResponseSchema):
+    """UpdateTargetsAttribute - 更新应用型负载均衡监听器后端服务节点的属性"""
+
+    fields = {}
+
+
+"""
 API: UpdateULBAttribute
 
-更新ULB名字业务组备注等属性字段
+更新CLB名字业务组备注等属性字段
 """
 
 
 class UpdateULBAttributeRequestSchema(schema.RequestSchema):
-    """UpdateULBAttribute - 更新ULB名字业务组备注等属性字段"""
+    """UpdateULBAttribute - 更新CLB名字业务组备注等属性字段"""
 
     fields = {
         "BucketName": fields.Str(required=False, dump_to="BucketName"),
@@ -837,7 +1625,7 @@ class UpdateULBAttributeRequestSchema(schema.RequestSchema):
 
 
 class UpdateULBAttributeResponseSchema(schema.ResponseSchema):
-    """UpdateULBAttribute - 更新ULB名字业务组备注等属性字段"""
+    """UpdateULBAttribute - 更新CLB名字业务组备注等属性字段"""
 
     fields = {}
 
@@ -845,12 +1633,12 @@ class UpdateULBAttributeResponseSchema(schema.ResponseSchema):
 """
 API: UpdateVServerAttribute
 
-更新VServer实例属性
+更新传统型负载均衡VServer实例属性
 """
 
 
 class UpdateVServerAttributeRequestSchema(schema.RequestSchema):
-    """UpdateVServerAttribute - 更新VServer实例属性"""
+    """UpdateVServerAttribute - 更新传统型负载均衡VServer实例属性"""
 
     fields = {
         "ClientTimeout": fields.Int(required=False, dump_to="ClientTimeout"),
@@ -886,6 +1674,6 @@ class UpdateVServerAttributeRequestSchema(schema.RequestSchema):
 
 
 class UpdateVServerAttributeResponseSchema(schema.ResponseSchema):
-    """UpdateVServerAttribute - 更新VServer实例属性"""
+    """UpdateVServerAttribute - 更新传统型负载均衡VServer实例属性"""
 
     fields = {}
