@@ -3,6 +3,15 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class UFileDataSetSchema(schema.ResponseSchema):
+    """UFileDataSet - 增加ufile的描述"""
+
+    fields = {
+        "Bucket": fields.Str(required=False, load_from="Bucket"),
+        "TokenID": fields.Str(required=False, load_from="TokenID"),
+    }
+
+
 class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
     """UDBSlaveInstanceSet - DescribeUDBSlaveInstance"""
 
@@ -19,6 +28,9 @@ class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
         "BackupDuration": fields.Int(
             required=False, load_from="BackupDuration"
         ),
+        "CaseSensitivityParam": fields.Int(
+            required=False, load_from="CaseSensitivityParam"
+        ),
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
         "ClusterRole": fields.Str(required=False, load_from="ClusterRole"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
@@ -28,20 +40,29 @@ class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
         "DiskSpace": fields.Int(required=False, load_from="DiskSpace"),
         "DiskUsedSize": fields.Float(required=False, load_from="DiskUsedSize"),
         "ExpiredTime": fields.Int(required=False, load_from="ExpiredTime"),
-        "IPv6Address": fields.Str(required=False, load_from="IPv6Address"),
+        "IPv6Address": fields.Str(
+            required=False, load_from="IPv6Address"
+        ),  # Deprecated, will be removed at 1.0
         "InstanceMode": fields.Str(required=False, load_from="InstanceMode"),
         "InstanceType": fields.Str(required=False, load_from="InstanceType"),
         "InstanceTypeId": fields.Int(
             required=False, load_from="InstanceTypeId"
         ),
         "LogFileSize": fields.Float(required=False, load_from="LogFileSize"),
+        "MachineType": fields.Str(required=False, load_from="MachineType"),
         "MemoryLimit": fields.Int(required=False, load_from="MemoryLimit"),
         "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
         "Name": fields.Str(required=False, load_from="Name"),
         "ParamGroupId": fields.Int(required=False, load_from="ParamGroupId"),
         "Port": fields.Int(required=False, load_from="Port"),
+        "ReplicationDelaySeconds": fields.Int(
+            required=False, load_from="ReplicationDelaySeconds"
+        ),
         "Role": fields.Str(required=False, load_from="Role"),
         "SSDType": fields.Str(required=False, load_from="SSDType"),
+        "SpecificationType": fields.Str(
+            required=False, load_from="SpecificationType"
+        ),
         "SrcDBId": fields.Str(required=False, load_from="SrcDBId"),
         "State": fields.Str(required=False, load_from="State"),
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
@@ -54,15 +75,6 @@ class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
         "VirtualIP": fields.Str(required=False, load_from="VirtualIP"),
         "VirtualIPMac": fields.Str(required=False, load_from="VirtualIPMac"),
         "Zone": fields.Str(required=False, load_from="Zone"),
-    }
-
-
-class UFileDataSetSchema(schema.ResponseSchema):
-    """UFileDataSet - 增加ufile的描述"""
-
-    fields = {
-        "Bucket": fields.Str(required=False, load_from="Bucket"),
-        "TokenID": fields.Str(required=False, load_from="TokenID"),
     }
 
 
@@ -100,7 +112,11 @@ class UDBInstanceSetSchema(schema.ResponseSchema):
         "BackupDuration": fields.Int(
             required=False, load_from="BackupDuration"
         ),
+        "BackupMethod": fields.Str(required=False, load_from="BackupMethod"),
         "BackupZone": fields.Str(required=False, load_from="BackupZone"),
+        "CaseSensitivityParam": fields.Int(
+            required=False, load_from="CaseSensitivityParam"
+        ),
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
         "CluserRole": fields.Str(
             required=False, load_from="CluserRole"
@@ -108,11 +124,13 @@ class UDBInstanceSetSchema(schema.ResponseSchema):
         "ClusterRole": fields.Str(required=False, load_from="ClusterRole"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "DBId": fields.Str(required=False, load_from="DBId"),
+        "DBSubVersion": fields.Str(required=False, load_from="DBSubVersion"),
         "DBTypeId": fields.Str(required=False, load_from="DBTypeId"),
         "DataFileSize": fields.Float(required=False, load_from="DataFileSize"),
         "DataSet": fields.List(UDBSlaveInstanceSetSchema()),
         "DiskSpace": fields.Int(required=False, load_from="DiskSpace"),
         "DiskUsedSize": fields.Float(required=False, load_from="DiskUsedSize"),
+        "EnableSSL": fields.Int(required=False, load_from="EnableSSL"),
         "ExpiredTime": fields.Int(required=False, load_from="ExpiredTime"),
         "IPv6Address": fields.Str(required=False, load_from="IPv6Address"),
         "InstanceMode": fields.Str(required=False, load_from="InstanceMode"),
@@ -121,6 +139,7 @@ class UDBInstanceSetSchema(schema.ResponseSchema):
             required=False, load_from="InstanceTypeId"
         ),
         "LogFileSize": fields.Float(required=False, load_from="LogFileSize"),
+        "MachineType": fields.Str(required=False, load_from="MachineType"),
         "MemoryLimit": fields.Int(required=False, load_from="MemoryLimit"),
         "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
         "Name": fields.Str(required=False, load_from="Name"),
@@ -128,6 +147,12 @@ class UDBInstanceSetSchema(schema.ResponseSchema):
         "Port": fields.Int(required=False, load_from="Port"),
         "Role": fields.Str(required=False, load_from="Role"),
         "SSDType": fields.Str(required=False, load_from="SSDType"),
+        "SSLExpirationTime": fields.Int(
+            required=False, load_from="SSLExpirationTime"
+        ),
+        "SpecificationType": fields.Int(
+            required=False, load_from="SpecificationType"
+        ),
         "SrcDBId": fields.Str(required=False, load_from="SrcDBId"),
         "State": fields.Str(required=False, load_from="State"),
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
@@ -247,6 +272,7 @@ class UDBTypeSetSchema(schema.ResponseSchema):
     """UDBTypeSet - DescribeUDBType"""
 
     fields = {
+        "DBSubVersion": fields.Str(required=False, load_from="DBSubVersion"),
         "DBTypeId": fields.Str(required=False, load_from="DBTypeId"),
     }
 
@@ -257,4 +283,23 @@ class ConnNumMapSchema(schema.ResponseSchema):
     fields = {
         "Ip": fields.Str(required=False, load_from="Ip"),
         "Num": fields.Int(required=False, load_from="Num"),
+    }
+
+
+class TableDataSchema(schema.ResponseSchema):
+    """TableData - 用户表详情"""
+
+    fields = {
+        "DBName": fields.Str(required=True, load_from="DBName"),
+        "Engine": fields.Str(required=True, load_from="Engine"),
+        "TableName": fields.Str(required=True, load_from="TableName"),
+    }
+
+
+class UDBDatabaseDataSchema(schema.ResponseSchema):
+    """UDBDatabaseData - 某个库的详细信息"""
+
+    fields = {
+        "DBName": fields.Str(required=True, load_from="DBName"),
+        "TableDataSet": fields.List(TableDataSchema()),
     }

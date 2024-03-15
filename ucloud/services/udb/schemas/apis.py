@@ -201,7 +201,7 @@ class ClearUDBLogRequestSchema(schema.RequestSchema):
     """ClearUDBLog - 清除UDB实例的log"""
 
     fields = {
-        "BeforeTime": fields.Int(required=True, dump_to="BeforeTime"),
+        "BeforeTime": fields.Int(required=False, dump_to="BeforeTime"),
         "DBId": fields.Str(required=True, dump_to="DBId"),
         "LogType": fields.Int(required=True, dump_to="LogType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -299,7 +299,9 @@ class CreateUDBInstanceRequestSchema(schema.RequestSchema):
             required=False, dump_to="DisableSemisync"
         ),
         "DiskSpace": fields.Int(required=True, dump_to="DiskSpace"),
-        "EnableIpV6": fields.Bool(required=False, dump_to="EnableIpV6"),
+        "EnableIpV6": fields.Bool(
+            required=False, dump_to="EnableIpV6"
+        ),  # Deprecated, will be removed at 1.0
         "HAArch": fields.Str(
             required=False, dump_to="HAArch"
         ),  # Deprecated, will be removed at 1.0
@@ -307,7 +309,8 @@ class CreateUDBInstanceRequestSchema(schema.RequestSchema):
         "InstanceType": fields.Str(
             required=False, dump_to="InstanceType"
         ),  # Deprecated, will be removed at 1.0
-        "MemoryLimit": fields.Int(required=True, dump_to="MemoryLimit"),
+        "MachineType": fields.Str(required=False, dump_to="MachineType"),
+        "MemoryLimit": fields.Int(required=False, dump_to="MemoryLimit"),
         "Name": fields.Str(required=True, dump_to="Name"),
         "ParamGroupId": fields.Int(required=True, dump_to="ParamGroupId"),
         "Port": fields.Int(required=True, dump_to="Port"),
@@ -315,6 +318,9 @@ class CreateUDBInstanceRequestSchema(schema.RequestSchema):
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SSDType": fields.Str(required=False, dump_to="SSDType"),
+        "SpecificationType": fields.Str(
+            required=False, dump_to="SpecificationType"
+        ),
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
         "Tag": fields.Str(required=False, dump_to="Tag"),
         "UDBCId": fields.Str(
@@ -347,16 +353,22 @@ class CreateUDBInstanceByRecoveryRequestSchema(schema.RequestSchema):
     """CreateUDBInstanceByRecovery - 创建db，将新创建的db恢复到指定db某个指定时间点"""
 
     fields = {
+        "AdminPassword": fields.Str(required=False, dump_to="AdminPassword"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
         "EnableIpV6": fields.Bool(required=False, dump_to="EnableIpV6"),
+        "MachineType": fields.Str(required=False, dump_to="MachineType"),
         "Name": fields.Str(required=True, dump_to="Name"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "RecoveryTime": fields.Int(required=True, dump_to="RecoveryTime"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "SpecificationType": fields.Int(
+            required=False, dump_to="SpecificationType"
+        ),
         "SrcDBId": fields.Str(required=True, dump_to="SrcDBId"),
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
+        "Tables": fields.Str(required=False, dump_to="Tables"),
         "UDBCId": fields.Str(required=False, dump_to="UDBCId"),
         "UseSSD": fields.Bool(required=False, dump_to="UseSSD"),
         "VPCId": fields.Str(required=False, dump_to="VPCId"),
@@ -497,6 +509,7 @@ class CreateUDBSlaveRequestSchema(schema.RequestSchema):
             required=False, dump_to="IsCreatePhysically"
         ),
         "IsLock": fields.Bool(required=False, dump_to="IsLock"),
+        "MachineType": fields.Str(required=False, dump_to="MachineType"),
         "MemoryLimit": fields.Int(required=False, dump_to="MemoryLimit"),
         "Name": fields.Str(required=True, dump_to="Name"),
         "ParamGroupId": fields.Int(required=False, dump_to="ParamGroupId"),
@@ -505,6 +518,9 @@ class CreateUDBSlaveRequestSchema(schema.RequestSchema):
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SSDType": fields.Str(required=False, dump_to="SSDType"),
+        "SpecificationType": fields.Int(
+            required=False, dump_to="SpecificationType"
+        ),
         "SrcId": fields.Str(required=True, dump_to="SrcId"),
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
         "UseSSD": fields.Bool(
@@ -772,7 +788,9 @@ class DescribeUDBInstanceRequestSchema(schema.RequestSchema):
         "Offset": fields.Int(required=False, dump_to="Offset"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
         "UDBCId": fields.Str(required=False, dump_to="UDBCId"),
+        "VPCId": fields.Str(required=False, dump_to="VPCId"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
@@ -958,10 +976,15 @@ class DescribeUDBInstancePriceRequestSchema(schema.RequestSchema):
         "DBTypeId": fields.Str(required=True, dump_to="DBTypeId"),
         "DiskSpace": fields.Int(required=True, dump_to="DiskSpace"),
         "InstanceMode": fields.Str(required=False, dump_to="InstanceMode"),
+        "InstanceType": fields.Str(required=False, dump_to="InstanceType"),
+        "MachineType": fields.Str(required=False, dump_to="MachineType"),
         "MemoryLimit": fields.Int(required=True, dump_to="MemoryLimit"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SSDType": fields.Str(required=False, dump_to="SSDType"),
+        "SpecificationType": fields.Int(
+            required=False, dump_to="SpecificationType"
+        ),
         "UseSSD": fields.Str(
             required=False, dump_to="UseSSD"
         ),  # Deprecated, will be removed at 1.0
@@ -1018,13 +1041,19 @@ class DescribeUDBInstanceUpgradePriceRequestSchema(schema.RequestSchema):
     """DescribeUDBInstanceUpgradePrice - 获取UDB实例升降级价格信息"""
 
     fields = {
+        "CPU": fields.Int(required=False, dump_to="CPU"),
         "DBId": fields.Str(required=True, dump_to="DBId"),
         "DiskSpace": fields.Int(required=True, dump_to="DiskSpace"),
+        "InstanceType": fields.Str(required=False, dump_to="InstanceType"),
+        "MachineType": fields.Str(required=False, dump_to="MachineType"),
         "MemoryLimit": fields.Int(required=True, dump_to="MemoryLimit"),
         "OrderStartTime": fields.Int(required=False, dump_to="OrderStartTime"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SSDType": fields.Str(required=False, dump_to="SSDType"),
+        "SpecificationType": fields.Int(
+            required=False, dump_to="SpecificationType"
+        ),
         "UseSSD": fields.Bool(
             required=False, dump_to="UseSSD"
         ),  # Deprecated, will be removed at 1.0
@@ -1194,6 +1223,7 @@ class DescribeUDBTypeRequestSchema(schema.RequestSchema):
             required=False, dump_to="CompatibleWithDBType"
         ),
         "DBClusterType": fields.Str(required=False, dump_to="DBClusterType"),
+        "DBSubVersion": fields.Str(required=False, dump_to="DBSubVersion"),
         "DiskType": fields.Str(required=False, dump_to="DiskType"),
         "InstanceMode": fields.Str(required=False, dump_to="InstanceMode"),
         "Region": fields.Str(required=True, dump_to="Region"),
@@ -1367,6 +1397,60 @@ class GetUDBClientConnNumResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetUDBInstanceSSLCertURL
+
+获取SSL证书下载地址
+"""
+
+
+class GetUDBInstanceSSLCertURLRequestSchema(schema.RequestSchema):
+    """GetUDBInstanceSSLCertURL - 获取SSL证书下载地址"""
+
+    fields = {
+        "DBId": fields.Str(required=True, dump_to="DBId"),
+        "ExpireTime": fields.Int(required=False, dump_to="ExpireTime"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class GetUDBInstanceSSLCertURLResponseSchema(schema.ResponseSchema):
+    """GetUDBInstanceSSLCertURL - 获取SSL证书下载地址"""
+
+    fields = {
+        "InnerUrl": fields.Str(required=True, load_from="InnerUrl"),
+        "InternetUrl": fields.Str(required=True, load_from="InternetUrl"),
+    }
+
+
+"""
+API: ListUDBUserTables
+
+查看udb实例所有的用户表集合 （只包括引擎为innodb和myisam的表）
+"""
+
+
+class ListUDBUserTablesRequestSchema(schema.RequestSchema):
+    """ListUDBUserTables - 查看udb实例所有的用户表集合 （只包括引擎为innodb和myisam的表）"""
+
+    fields = {
+        "DBId": fields.Str(required=True, dump_to="DBId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class ListUDBUserTablesResponseSchema(schema.ResponseSchema):
+    """ListUDBUserTables - 查看udb实例所有的用户表集合 （只包括引擎为innodb和myisam的表）"""
+
+    fields = {
+        "Tables": fields.List(
+            models.UDBDatabaseDataSchema(), required=True, load_from="Tables"
+        ),
+    }
+
+
+"""
 API: ModifyUDBInstanceName
 
 重命名UDB实例
@@ -1413,6 +1497,57 @@ class ModifyUDBInstancePasswordRequestSchema(schema.RequestSchema):
 
 class ModifyUDBInstancePasswordResponseSchema(schema.ResponseSchema):
     """ModifyUDBInstancePassword - 修改DB实例的管理员密码"""
+
+    fields = {}
+
+
+"""
+API: ModifyUDBInstanceRemarkName
+
+修改UDB实例备注信息
+"""
+
+
+class ModifyUDBInstanceRemarkNameRequestSchema(schema.RequestSchema):
+    """ModifyUDBInstanceRemarkName - 修改UDB实例备注信息"""
+
+    fields = {
+        "DBId": fields.Str(required=True, dump_to="DBId"),
+        "Name": fields.Str(required=True, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ModifyUDBInstanceRemarkNameResponseSchema(schema.ResponseSchema):
+    """ModifyUDBInstanceRemarkName - 修改UDB实例备注信息"""
+
+    fields = {}
+
+
+"""
+API: ModifyUDBInstanceSSL
+
+调整SSL的信息
+"""
+
+
+class ModifyUDBInstanceSSLRequestSchema(schema.RequestSchema):
+    """ModifyUDBInstanceSSL - 调整SSL的信息"""
+
+    fields = {
+        "DBId": fields.Str(required=True, dump_to="DBId"),
+        "EnableSSL": fields.Int(required=True, dump_to="EnableSSL"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ValidTime": fields.Int(required=False, dump_to="ValidTime"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ModifyUDBInstanceSSLResponseSchema(schema.ResponseSchema):
+    """ModifyUDBInstanceSSL - 调整SSL的信息"""
 
     fields = {}
 
@@ -1481,10 +1616,14 @@ class ResizeUDBInstanceRequestSchema(schema.RequestSchema):
         "DiskSpace": fields.Int(required=True, dump_to="DiskSpace"),
         "InstanceMode": fields.Str(required=False, dump_to="InstanceMode"),
         "InstanceType": fields.Str(required=False, dump_to="InstanceType"),
+        "MachineType": fields.Str(required=False, dump_to="MachineType"),
         "MemoryLimit": fields.Int(required=True, dump_to="MemoryLimit"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SSDType": fields.Str(required=False, dump_to="SSDType"),
+        "SpecificationType": fields.Str(
+            required=False, dump_to="SpecificationType"
+        ),
         "StartAfterUpgrade": fields.Bool(
             required=False, dump_to="StartAfterUpgrade"
         ),
@@ -1549,6 +1688,32 @@ class RestartUDBInstanceResponseSchema(schema.ResponseSchema):
     """RestartUDBInstance - 重启UDB实例"""
 
     fields = {}
+
+
+"""
+API: RollbackUDBInstance
+
+在原实例回档指定库表
+"""
+
+
+class RollbackUDBInstanceRequestSchema(schema.RequestSchema):
+    """RollbackUDBInstance - 在原实例回档指定库表"""
+
+    fields = {
+        "RecoveryTime": fields.Str(required=True, dump_to="RecoveryTime"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SrcDBId": fields.Str(required=True, dump_to="SrcDBId"),
+        "Tables": fields.Str(required=True, dump_to="Tables"),
+    }
+
+
+class RollbackUDBInstanceResponseSchema(schema.ResponseSchema):
+    """RollbackUDBInstance - 在原实例回档指定库表"""
+
+    fields = {
+        "DBId": fields.Str(required=True, load_from="DBId"),
+    }
 
 
 """
@@ -1694,10 +1859,18 @@ class UpdateUDBInstanceBackupStrategyRequestSchema(schema.RequestSchema):
         "BackupDate": fields.Str(required=False, dump_to="BackupDate"),
         "BackupMethod": fields.Str(required=False, dump_to="BackupMethod"),
         "BackupTime": fields.Int(required=False, dump_to="BackupTime"),
+        "BinlogRemoteSaveDays": fields.Int(
+            required=False, dump_to="BinlogRemoteSaveDays"
+        ),
         "DBId": fields.Str(required=True, dump_to="DBId"),
+        "EnableBinlogBackup": fields.Bool(
+            required=False, dump_to="EnableBinlogBackup"
+        ),
         "ForceDump": fields.Bool(required=False, dump_to="ForceDump"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "UserBucket": fields.Str(required=False, dump_to="UserBucket"),
+        "UserTokenID": fields.Str(required=False, dump_to="UserTokenID"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
@@ -1785,6 +1958,38 @@ class UpgradeUDBInstanceToHAResponseSchema(schema.ResponseSchema):
     """UpgradeUDBInstanceToHA - 快杰普通db升级为高可用(只针对mysql5.5及以上版本Nvme机型的实例)"""
 
     fields = {}
+
+
+"""
+API: UpgradeUDBVersion
+
+升级db实例版本
+"""
+
+
+class UpgradeUDBVersionRequestSchema(schema.RequestSchema):
+    """UpgradeUDBVersion - 升级db实例版本"""
+
+    fields = {
+        "DBId": fields.Str(required=True, dump_to="DBId"),
+        "DBSubVersion": fields.Str(required=True, dump_to="DBSubVersion"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SwitchEndTime": fields.Int(required=False, dump_to="SwitchEndTime"),
+        "SwitchStartTime": fields.Int(
+            required=False, dump_to="SwitchStartTime"
+        ),
+        "SwitchType": fields.Str(required=True, dump_to="SwitchType"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class UpgradeUDBVersionResponseSchema(schema.ResponseSchema):
+    """UpgradeUDBVersion - 升级db实例版本"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
 
 
 """

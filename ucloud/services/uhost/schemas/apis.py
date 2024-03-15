@@ -193,7 +193,10 @@ class CreateUHostInstanceParamNetworkInterfaceSchema(schema.RequestSchema):
 class CreateUHostInstanceParamSecGroupIdSchema(schema.RequestSchema):
     """CreateUHostInstanceParamSecGroupId -"""
 
-    fields = {}
+    fields = {
+        "Id": fields.Str(required=False, dump_to="Id"),
+        "Priority": fields.Int(required=False, dump_to="Priority"),
+    }
 
 
 class CreateUHostInstanceParamVirtualGpuGPUVirtualGpuSchema(
@@ -293,9 +296,11 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
         "RestrictMode": fields.Str(
             required=False, dump_to="RestrictMode"
         ),  # Deprecated, will be removed at 1.0
+        "SecGroupId": fields.List(CreateUHostInstanceParamSecGroupIdSchema()),
         "SecurityGroupId": fields.Str(
             required=False, dump_to="SecurityGroupId"
         ),
+        "SecurityMode": fields.Str(required=False, dump_to="SecurityMode"),
         "SetId": fields.Int(
             required=False, dump_to="SetId"
         ),  # Deprecated, will be removed at 1.0
@@ -779,6 +784,35 @@ class GetUHostInstanceVncInfoResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetUHostRefundPrice
+
+获取主机删除扣除费用。包括主机、磁盘、快照服务、EIP等资源的费用
+"""
+
+
+class GetUHostRefundPriceRequestSchema(schema.RequestSchema):
+    """GetUHostRefundPrice - 获取主机删除扣除费用。包括主机、磁盘、快照服务、EIP等资源的费用"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UHostIds": fields.List(fields.Str()),
+    }
+
+
+class GetUHostRefundPriceResponseSchema(schema.ResponseSchema):
+    """GetUHostRefundPrice - 获取主机删除扣除费用。包括主机、磁盘、快照服务、EIP等资源的费用"""
+
+    fields = {
+        "RefundPriceSet": fields.List(
+            models.UHostRefundPriceSetSchema(),
+            required=True,
+            load_from="RefundPriceSet",
+        ),
+    }
+
+
+"""
 API: GetUHostRenewPrice
 
 获取主机续费价格
@@ -824,6 +858,7 @@ class GetUHostUpgradePriceRequestSchema(schema.RequestSchema):
         "DiskSpace": fields.Int(
             required=False, dump_to="DiskSpace"
         ),  # Deprecated, will be removed at 1.0
+        "GPU": fields.Int(required=False, dump_to="GPU"),
         "HostType": fields.Str(
             required=False, dump_to="HostType"
         ),  # Deprecated, will be removed at 1.0
@@ -1246,6 +1281,7 @@ class ResizeUHostInstanceRequestSchema(schema.RequestSchema):
         "DiskSpace": fields.Int(
             required=False, dump_to="DiskSpace"
         ),  # Deprecated, will be removed at 1.0
+        "GPU": fields.Int(required=False, dump_to="GPU"),
         "Memory": fields.Int(required=False, dump_to="Memory"),
         "NetCapValue": fields.Int(required=False, dump_to="NetCapValue"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -1388,12 +1424,12 @@ class TerminateUHostInstanceResponseSchema(schema.ResponseSchema):
 """
 API: UpgradeToArkUHostInstance
 
-普通升级为方舟机型
+
 """
 
 
 class UpgradeToArkUHostInstanceRequestSchema(schema.RequestSchema):
-    """UpgradeToArkUHostInstance - 普通升级为方舟机型"""
+    """UpgradeToArkUHostInstance -"""
 
     fields = {
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
@@ -1404,7 +1440,7 @@ class UpgradeToArkUHostInstanceRequestSchema(schema.RequestSchema):
 
 
 class UpgradeToArkUHostInstanceResponseSchema(schema.ResponseSchema):
-    """UpgradeToArkUHostInstance - 普通升级为方舟机型"""
+    """UpgradeToArkUHostInstance -"""
 
     fields = {
         "UHostSet": fields.List(
