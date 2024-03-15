@@ -106,6 +106,7 @@ class BackupParamSchema(schema.ResponseSchema):
             required=False, load_from="AutoBackupToggleWeek"
         ),
         "ClusterId": fields.Str(required=True, load_from="ClusterId"),
+        "Disabled": fields.Bool(required=False, load_from="Disabled"),
         "ManualBackupCopies": fields.Int(
             required=False, load_from="ManualBackupCopies"
         ),
@@ -166,10 +167,15 @@ class BackupInfoSchema(schema.ResponseSchema):
         "BackupName": fields.Str(required=False, load_from="BackupName"),
         "BackupSize": fields.Int(required=False, load_from="BackupSize"),
         "BackupType": fields.Str(required=False, load_from="BackupType"),
+        "BatchId": fields.Str(required=False, load_from="BatchId"),
         "ClusterId": fields.Str(required=False, load_from="ClusterId"),
         "EndTime": fields.Int(required=False, load_from="EndTime"),
+        "ReplicaType": fields.Str(required=False, load_from="ReplicaType"),
         "StartTime": fields.Int(required=False, load_from="StartTime"),
         "State": fields.Str(required=False, load_from="State"),
+        "VirtualClusterId": fields.Str(
+            required=False, load_from="VirtualClusterId"
+        ),
     }
 
 

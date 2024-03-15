@@ -22,6 +22,7 @@ class UMongoDBClient(Client):
 
         **Request**
 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BackupName** (str) - (Required) 备份名称
         - **ClusterId** (str) - (Required) 实例ID
@@ -36,6 +37,7 @@ class UMongoDBClient(Client):
         """
         # build request
         d = {
+            "ProjectId": self.config.project_id,
             "Region": self.config.region,
         }
         req and d.update(req)
@@ -298,6 +300,7 @@ class UMongoDBClient(Client):
 
         **Request**
 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterId** (str) - (Required) 实例ID
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
@@ -314,12 +317,14 @@ class UMongoDBClient(Client):
         - **AutoBackupToggleTime** (str) - 自动备份预期时间范围 (24小时制，精确到分钟，00:00~23:59)
         - **AutoBackupToggleWeek** (str) - 自动备份预期周几 (1-7 表示 周一到周末，多个数据用','分割，eg: 3,7)
         - **ClusterId** (str) - 实例ID
+        - **Disabled** (bool) - 是否禁用(false:未禁用;true:禁用)
         - **ManualBackupCopies** (int) - 手动备份保存份数
 
 
         """
         # build request
         d = {
+            "ProjectId": self.config.project_id,
             "Region": self.config.region,
         }
         req and d.update(req)
@@ -420,6 +425,7 @@ class UMongoDBClient(Client):
 
         **Request**
 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterId** (str) - (Required) 实例ID
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
@@ -436,15 +442,19 @@ class UMongoDBClient(Client):
         - **BackupName** (str) - 备份名称
         - **BackupSize** (int) - 备份数据大小
         - **BackupType** (str) - 备份类型
+        - **BatchId** (str) - 批次id
         - **ClusterId** (str) - 实例ID
         - **EndTime** (int) - 备份结束时间
+        - **ReplicaType** (str) - 副本类型,ConfigRepl或者DataRepl
         - **StartTime** (int) - 备份开始时间
         - **State** (str) - 备份状态
+        - **VirtualClusterId** (str) - 虚拟节点id
 
 
         """
         # build request
         d = {
+            "ProjectId": self.config.project_id,
             "Region": self.config.region,
         }
         req and d.update(req)
@@ -631,11 +641,13 @@ class UMongoDBClient(Client):
 
         **Request**
 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterId** (str) - (Required) 实例ID
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **AutoBackupToggleTime** (str) - 自动备份预期开始时间范围(00:00~23:59),默认 5:00~6:00
         - **AutoBackupToggleWeek** (str) - 自动备份预期星期几(1～7),默认 3,7 (周三，周日)
+        - **Disabled** (bool) - 是否禁用,true:禁用;false:开启
 
         **Response**
 
@@ -644,6 +656,7 @@ class UMongoDBClient(Client):
         """
         # build request
         d = {
+            "ProjectId": self.config.project_id,
             "Region": self.config.region,
         }
         req and d.update(req)

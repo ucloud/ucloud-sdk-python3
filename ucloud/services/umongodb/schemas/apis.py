@@ -21,6 +21,7 @@ class BackupUMongoDBClusterRequestSchema(schema.RequestSchema):
     fields = {
         "BackupName": fields.Str(required=True, dump_to="BackupName"),
         "ClusterId": fields.Str(required=True, dump_to="ClusterId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
     }
@@ -215,6 +216,7 @@ class GetUMongoDBBackupParamRequestSchema(schema.RequestSchema):
 
     fields = {
         "ClusterId": fields.Str(required=True, dump_to="ClusterId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
     }
@@ -298,6 +300,7 @@ class ListUMongoDBBackupRequestSchema(schema.RequestSchema):
 
     fields = {
         "ClusterId": fields.Str(required=True, dump_to="ClusterId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
     }
@@ -470,6 +473,8 @@ class ModifyUMongoDBBackupParamRequestSchema(schema.RequestSchema):
             required=False, dump_to="AutoBackupToggleWeek"
         ),
         "ClusterId": fields.Str(required=True, dump_to="ClusterId"),
+        "Disabled": fields.Bool(required=False, dump_to="Disabled"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
     }

@@ -138,7 +138,7 @@ class UHostClient(Client):
         - **IsolationGroup** (str) - 硬件隔离组id。可通过DescribeIsolationGroup获取。
         - **KeyPairId** (str) - KeypairId 密钥对ID，LoginMode为KeyPair时此项必须。
         - **MachineType** (str) - 云主机机型（V2.0），在本字段和字段UHostType中，仅需要其中1个字段即可。枚举值["N", "C", "G", "O", "OS", "OM", "OPRO", "OMAX", "O.BM", "O.EPC"]。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
-        - **MaxCount** (int) - 本次最大创建主机数量，取值范围是[1,100]，默认值为1。
+        - **MaxCount** (int) - 本次最大创建主机数量，取值范围是[1,100]，默认值为1。- 库存数量不足时，按库存数量创建。- 配额不足时，返回错误。- 使用隔离组时，以隔离组可用数量为准。
         - **Memory** (int) - 内存大小。单位：MB。范围 ：[1024, 262144]，取值为1024的倍数（可选范围参考控制台）。默认值：8192
         - **MinimalCpuPlatform** (str) - 最低cpu平台，枚举值["Intel/Auto", "Intel/IvyBridge", "Intel/Haswell", "Intel/Broadwell", "Intel/Skylake", "Intel/Cascadelake", "Intel/CascadelakeR", "Intel/IceLake", "Amd/Epyc2", "Amd/Auto","Ampere/Auto","Ampere/Altra"],默认值是"Intel/Auto"。
         - **Name** (str) - UHost实例名称。默认：UHost。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定实例名称。
@@ -147,7 +147,9 @@ class UHostClient(Client):
         - **Password** (str) - UHost密码。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定密码。密码需使用base64进行编码，举例如下：# echo -n Password1 | base64UGFzc3dvcmQx。
         - **PrivateIp** (list) - 【数组】创建云主机时指定内网IP。若不传值，则随机分配当前子网下的IP。调用方式举例：PrivateIp.0=x.x.x.x。当前只支持一个内网IP。
         - **Quantity** (int) - 购买时长。默认:值 1。按小时购买（Dynamic/Postpay）时无需此参数。 月付时，此参数传0，代表购买至月末。
+        - **SecGroupId** (list) - 见 **CreateUHostInstanceParamSecGroupId** 模型定义
         - **SecurityGroupId** (str) - 防火墙ID，默认：Web推荐防火墙。如何查询SecurityGroupId请参见  `DescribeFirewall <https://docs.ucloud.cn/api/uhost-api/api/unet-api/describe_firewall.html>`_ 。
+        - **SecurityMode** (str) - 主机安全模式。Firewall：防火墙；SecGroup：安全组；默认值：Firewall。
         - **SubnetId** (str) - 子网 ID。默认为当前地域的默认子网。
         - **Tag** (str) - 业务组。默认：Default（Default即为未分组）。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定业务组。
         - **UDHostId** (str) - 【私有专区属性】专区宿主机id
@@ -167,7 +169,7 @@ class UHostClient(Client):
 
 
         **CreateUHostInstanceParamDisks**
-        - **BackupType** (str) - 磁盘备份方案。枚举值：\\ > NONE，无备份 \\ > DATAARK，数据方舟 \\ > SNAPSHOT，快照 \\当前磁盘支持的备份模式参考  `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ ,默认值:NONE
+        - **BackupType** (str) - 磁盘备份方案。枚举值：\\ > NONE，无备份 \\ > DATAARK，数据方舟【已下线，不再支持】 \\ > SNAPSHOT，快照 \\当前磁盘支持的备份模式参考  `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ ,默认值:NONE
         - **CouponId** (str) - 云盘代金券id。不适用于系统盘/本地盘。请通过DescribeCoupon接口查询，或登录用户中心查看
         - **Encrypted** (bool) - 【功能仅部分可用区开放，详询技术支持】磁盘是否加密。加密：true, 不加密: false加密必须传入对应的的KmsKeyId,默认值false
         - **IsBoot** (str) - 是否是系统盘。枚举值：\\ > True，是系统盘 \\ > False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
@@ -204,6 +206,8 @@ class UHostClient(Client):
 
 
         **CreateUHostInstanceParamSecGroupId**
+        - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
+        - **Priority** (int) - 安全组优先级。取值范围[1, 5]
 
 
         **CreateUHostInstanceParamVirtualGpuGPUVirtualGpu**
@@ -454,7 +458,7 @@ class UHostClient(Client):
 
         **UHostImageSet**
         - **CreateTime** (int) - 创建时间，格式为Unix时间戳
-        - **Features** (list) - 特殊状态标识， 目前包含NetEnhnced（网络增强1.0）, NetEnhanced_Ultra（网络增强2.0）, HotPlug(热升级), GPU（GPU镜像）,CloudInit, IPv6（支持IPv6网络）,RssdAttachable（支持RSSD云盘）,Vgpu_AMD（支持AMD的vgpu）,Vgpu_NVIDIA（支持NVIDIA的vgpu）,Aarch64_Type（支持arm64架构）
+        - **Features** (list) - 特殊状态标识，目前包含NetEnhnced（网络增强1.0）, NetEnhanced_Ultra（网络增强2.0）, NetEnhanced_Extreme（网络增强3.0）, HotPlug(热升级), GPU（GPU镜像）,CloudInit, IPv6（支持IPv6网络）,RssdAttachable（支持RSSD云盘）,Vgpu_AMD（支持AMD的vgpu）,Vgpu_NVIDIA（支持NVIDIA的vgpu）,Aarch64_Type（支持arm64架构）
         - **FuncType** (str) - 行业镜像类型（仅行业镜像将返回这个值）
         - **ImageDescription** (str) - 镜像描述
         - **ImageId** (str) - 镜像ID
@@ -915,6 +919,42 @@ class UHostClient(Client):
         resp = self.invoke("GetUHostInstanceVncInfo", d, **kwargs)
         return apis.GetUHostInstanceVncInfoResponseSchema().loads(resp)
 
+    def get_uhost_refund_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUHostRefundPrice - 获取主机删除扣除费用。包括主机、磁盘、快照服务、EIP等资源的费用
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **UHostIds** (list) - (Required) 【数组】UHost实例ID。参见  `DescribeUHostInstance <https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html>`_
+
+        **Response**
+
+        - **RefundPriceSet** (list) - 见 **UHostRefundPriceSet** 模型定义
+
+        **Response Model**
+
+        **UHostRefundPriceSet**
+        - **Code** (int) - 实例操作结果的错误码。0为成功
+        - **Message** (str) - 当 Code 非 0 时提供详细的描述信息
+        - **RefundPrice** (float) - 实例的删除退费金额
+        - **UHostId** (str) - UHost实例ID
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetUHostRefundPriceRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUHostRefundPrice", d, **kwargs)
+        return apis.GetUHostRefundPriceResponseSchema().loads(resp)
+
     def get_uhost_renew_price(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -962,6 +1002,7 @@ class UHostClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **UHostId** (str) - (Required) UHost实例ID。 参见  `DescribeUHostInstance <https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html>`_ 。
         - **CPU** (int) - 虚拟CPU核数。可选参数：1-64（可选范围参考控制台）。默认值为当前实例的CPU核数。
+        - **GPU** (int) - GPU卡核心数。仅GPU机型支持此字段（可选范围与MachineType+GpuType相关）
         - **Memory** (int) - 内存大小。单位：MB。范围 ：[1024, 262144]，取值为1024的倍数（可选范围参考控制台）。默认值为当前实例的内存大小。
         - **NetCapValue** (int) - 网卡升降级（1，表示升级，2表示降级，0表示不变）
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
@@ -1365,6 +1406,7 @@ class UHostClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance <https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html>`_
         - **CPU** (int) - 虚拟CPU核数。可选参数：1-240（可选范围与UHostType相关）。默认值为当前实例的CPU核数
+        - **GPU** (int) - GPU卡核心数。仅GPU机型支持此字段（可选范围与MachineType+GpuType相关）
         - **Memory** (int) - 内存大小。单位：MB。范围 ：[1024, 1966080]，取值为1024的倍数（可选范围与UHostType相关）。默认值为当前实例的内存大小。
         - **NetCapValue** (int) - 网卡升降级（1，表示升级，2表示降级，0表示不变）
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
@@ -1503,18 +1545,18 @@ class UHostClient(Client):
     def upgrade_to_ark_uhost_instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """UpgradeToArkUHostInstance - 普通升级为方舟机型
+        """UpgradeToArkUHostInstance -
 
         **Request**
 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **UHostIds** (list) - (Required) UHost主机的资源ID，例如UHostIds.0代表希望升级的主机1，UHostIds.1代表主机2。
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **CouponId** (str) - 代金券ID 请参考DescribeCoupon接口
+        - **Region** (str) - (Config)
+        - **Zone** (str) - (Required)
+        - **CouponId** (str) -
+        - **UHostIds** (list) -
 
         **Response**
 
-        - **UHostSet** (list) - UHost主机的资源ID数组
+        - **UHostSet** (list) -
 
         """
         # build request
@@ -1523,6 +1565,9 @@ class UHostClient(Client):
         }
         req and d.update(req)
         d = apis.UpgradeToArkUHostInstanceRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("UpgradeToArkUHostInstance", d, **kwargs)
         return apis.UpgradeToArkUHostInstanceResponseSchema().loads(resp)
