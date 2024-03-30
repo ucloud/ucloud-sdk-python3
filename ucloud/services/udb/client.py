@@ -701,23 +701,28 @@ class UDBClient(Client):
         - **BackupCount** (int) -
         - **BackupDate** (str) -
         - **BackupDuration** (int) -
+        - **BackupMethod** (str) -
         - **BackupZone** (str) -
+        - **CaseSensitivityParam** (int) -
         - **ChargeType** (str) -
         - **CluserRole** (str) -
         - **ClusterRole** (str) -
         - **CreateTime** (int) -
         - **DBId** (str) -
+        - **DBSubVersion** (str) -
         - **DBTypeId** (str) -
         - **DataFileSize** (float) -
         - **DataSet** (list) - 见 **UDBSlaveInstanceSet** 模型定义
         - **DiskSpace** (int) -
         - **DiskUsedSize** (float) -
+        - **EnableSSL** (int) -
         - **ExpiredTime** (int) -
         - **IPv6Address** (str) -
         - **InstanceMode** (str) -
         - **InstanceType** (str) -
         - **InstanceTypeId** (int) -
         - **LogFileSize** (float) -
+        - **MachineType** (str) -
         - **MemoryLimit** (int) -
         - **ModifyTime** (int) -
         - **Name** (str) -
@@ -725,6 +730,8 @@ class UDBClient(Client):
         - **Port** (int) -
         - **Role** (str) -
         - **SSDType** (str) -
+        - **SSLExpirationTime** (int) -
+        - **SpecificationType** (int) -
         - **SrcDBId** (str) -
         - **State** (str) -
         - **SubnetId** (str) -
@@ -745,6 +752,7 @@ class UDBClient(Client):
         - **BackupCount** (int) -
         - **BackupDate** (str) -
         - **BackupDuration** (int) -
+        - **CaseSensitivityParam** (int) -
         - **ChargeType** (str) -
         - **ClusterRole** (str) -
         - **CreateTime** (int) -
@@ -759,13 +767,16 @@ class UDBClient(Client):
         - **InstanceType** (str) -
         - **InstanceTypeId** (int) -
         - **LogFileSize** (float) -
+        - **MachineType** (str) -
         - **MemoryLimit** (int) -
         - **ModifyTime** (int) -
         - **Name** (str) -
         - **ParamGroupId** (int) -
         - **Port** (int) -
+        - **ReplicationDelaySeconds** (int) -
         - **Role** (str) -
         - **SSDType** (str) -
+        - **SpecificationType** (str) -
         - **SrcDBId** (str) -
         - **State** (str) -
         - **SubnetId** (str) -
@@ -957,6 +968,7 @@ class UDBClient(Client):
         - **BackupDuration** (int) - 备份策略，一天内备份时间间隔，单位小时，默认24小时
         - **BackupMethod** (str) - 默认的备份方式，nobackup表示不备份， snapshot 表示使用快照备份，logic 表示使用逻辑备份，xtrabackup表示使用物理备份。
         - **BackupZone** (str) - 跨可用区高可用备库所在可用区
+        - **CPU** (int) - CPU核数
         - **CaseSensitivityParam** (int) - 0区分大小写, 1不分区
         - **ChargeType** (str) - Year， Month， Dynamic，Trial，默认: Dynamic
         - **ClusterRole** (str) - 当DB类型为mongodb时，返回该实例所在集群中的角色，包括：mongos、configsrv_sccc、configsrv_csrs、shardsrv_datanode、shardsrv_arbiter，其中congfigsrv分为sccc和csrs两种模式，shardsrv分为datanode和arbiter两种模式
@@ -1770,15 +1782,15 @@ class UDBClient(Client):
 
         **Response Model**
 
+        **UDBDatabaseData**
+        - **DBName** (str) - 数据库名称
+        - **TableDataSet** (list) - 见 **TableData** 模型定义
+
+
         **TableData**
         - **DBName** (str) - 表所属的库名称
         - **Engine** (str) - 表的引擎（innodb, myisam）
         - **TableName** (str) - 表名称
-
-
-        **UDBDatabaseData**
-        - **DBName** (str) - 数据库名称
-        - **TableDataSet** (list) - 见 **TableData** 模型定义
 
 
         """
