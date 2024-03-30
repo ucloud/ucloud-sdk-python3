@@ -3,15 +3,6 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class UFileDataSetSchema(schema.ResponseSchema):
-    """UFileDataSet - 增加ufile的描述"""
-
-    fields = {
-        "Bucket": fields.Str(required=False, load_from="Bucket"),
-        "TokenID": fields.Str(required=False, load_from="TokenID"),
-    }
-
-
 class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
     """UDBSlaveInstanceSet - DescribeUDBSlaveInstance"""
 
@@ -78,6 +69,15 @@ class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
     }
 
 
+class UFileDataSetSchema(schema.ResponseSchema):
+    """UFileDataSet - 增加ufile的描述"""
+
+    fields = {
+        "Bucket": fields.Str(required=False, load_from="Bucket"),
+        "TokenID": fields.Str(required=False, load_from="TokenID"),
+    }
+
+
 class MongoDBShardedClusterSetSchema(schema.ResponseSchema):
     """MongoDBShardedClusterSet -"""
 
@@ -114,6 +114,7 @@ class UDBInstanceSetSchema(schema.ResponseSchema):
         ),
         "BackupMethod": fields.Str(required=False, load_from="BackupMethod"),
         "BackupZone": fields.Str(required=False, load_from="BackupZone"),
+        "CPU": fields.Int(required=False, load_from="CPU"),
         "CaseSensitivityParam": fields.Int(
             required=False, load_from="CaseSensitivityParam"
         ),
