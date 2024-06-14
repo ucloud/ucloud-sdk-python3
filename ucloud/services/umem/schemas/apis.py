@@ -115,6 +115,7 @@ class CreateUMemSpaceRequestSchema(schema.RequestSchema):
         "Password": fields.Base64(required=False, dump_to="Password"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Protocol": fields.Str(required=False, dump_to="Protocol"),
+        "ProxySize": fields.Int(required=False, dump_to="ProxySize"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Size": fields.Int(required=True, dump_to="Size"),
@@ -361,6 +362,7 @@ class DescribeUDRedisSlowlogRequestSchema(schema.RequestSchema):
         "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "ProxyId": fields.Str(required=False, dump_to="ProxyId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
     }
@@ -511,8 +513,13 @@ class DescribeUMemPriceRequestSchema(schema.RequestSchema):
     """DescribeUMemPrice - 获取UMem实例价格信息"""
 
     fields = {
+        "BlockCnt": fields.Int(required=False, dump_to="BlockCnt"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "HighPerformance": fields.Bool(
+            required=False, dump_to="HighPerformance"
+        ),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "ProxySize": fields.Int(required=False, dump_to="ProxySize"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Size": fields.Int(required=True, dump_to="Size"),
@@ -812,15 +819,18 @@ class DescribeURedisGroupResponseSchema(schema.ResponseSchema):
 """
 API: DescribeURedisPrice
 
-取uredis价格信息
+获取URedis价格信息
 """
 
 
 class DescribeURedisPriceRequestSchema(schema.RequestSchema):
-    """DescribeURedisPrice - 取uredis价格信息"""
+    """DescribeURedisPrice - 获取URedis价格信息"""
 
     fields = {
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "HighPerformance": fields.Bool(
+            required=False, dump_to="HighPerformance"
+        ),
         "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
@@ -832,7 +842,7 @@ class DescribeURedisPriceRequestSchema(schema.RequestSchema):
 
 
 class DescribeURedisPriceResponseSchema(schema.ResponseSchema):
-    """DescribeURedisPrice - 取uredis价格信息"""
+    """DescribeURedisPrice - 获取URedis价格信息"""
 
     fields = {
         "DataSet": fields.List(
