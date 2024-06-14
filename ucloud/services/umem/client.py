@@ -125,6 +125,7 @@ class UMemClient(Client):
         - **HighPerformance** (bool) - 是否创建性能增强性。默认为false，或者不填，填true为性能增强型。
         - **Password** (str) - URedis密码。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定密码。密码需使用base64进行编码，举例如下：# echo -n Password1 | base64UGFzc3dvcmQx。
         - **Protocol** (str) - 协议:memcache, redis (默认redis).注意:redis无single类型
+        - **ProxySize** (int) - 分布式代理CPU核数
         - **Quantity** (int) - 购买时长 默认: 1
         - **SlaveZone** (str) - 跨机房UDRedis，slave所在可用区（必须和Zone在同一Region，且不可相同）
         - **SubnetId** (str) - 子网ID
@@ -399,11 +400,12 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **InstanceId** (str) - (Required) 实例id
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Limit** (int) - 分页显示的条目数，默认为10
+        - **ProxyId** (str) - 代理Id
 
         **Response**
 
@@ -652,7 +654,10 @@ class UMemClient(Client):
         - **Size** (int) - (Required) 购买umem大小,单位:GB,范围[1~1024]
         - **Type** (str) - (Required) 空间类型:single(无热备),double(热备)(默认: double)
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **BlockCnt** (int) - umem 分片个数
         - **ChargeType** (str) - Year， Month， Dynamic 如果不指定，则一次性获取三种计费
+        - **HighPerformance** (bool) - 实例类型是否为性能增强型。默认为false，或者不填，true为性能增强型。
+        - **ProxySize** (int) - umem 代理CPU核心数
         - **Quantity** (int) - 购买UMem的时长，默认值为1
 
         **Response**
@@ -1081,15 +1086,16 @@ class UMemClient(Client):
     def describe_uredis_price(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DescribeURedisPrice - 取uredis价格信息
+        """DescribeURedisPrice - 获取URedis价格信息
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Size** (int) - (Required) 量大小,单位:GB  取值范围[1-32]
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ChargeType** (str) - 计费模式，Year， Month， Dynamic；如果不指定，则一次性获取三种计费
+        - **HighPerformance** (bool) - 查询高性能Redis， 默认为false， 或者不填， 查询高性能为true
         - **ProductType** (str) - 产品类型：MS_Redis（标准主备版），S_Redis（从库），默认为MS_Redis
         - **Quantity** (int) - 计费模式为Dynamic时，购买的时长, 默认为1
         - **RegionFlag** (bool) - 是否是跨机房URedis(默认false)
