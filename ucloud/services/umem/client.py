@@ -74,6 +74,39 @@ class UMemClient(Client):
         resp = self.invoke("CheckURedisAllowance", d, **kwargs)
         return apis.CheckURedisAllowanceResponseSchema().loads(resp)
 
+    def create_scan_hot_big_keys(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateScanHotBigKeys - 创建执行扫大key和热key的任务
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **GroupId** (str) - (Required) 资源id
+        - **Type** (str) - (Required) 任务类型。"ScanBigKeys"：扫大key，"ScanHotKeys"：扫热key
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **IsRetry** (bool) - 是否要重试任务，如果是的话，TaskId必填
+        - **TaskId** (str) - 要重试的任务id
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateScanHotBigKeysRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateScanHotBigKeys", d, **kwargs)
+        return apis.CreateScanHotBigKeysResponseSchema().loads(resp)
+
     def create_umem_backup(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -120,17 +153,20 @@ class UMemClient(Client):
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BlockCnt** (int) - 分片个数
         - **ChargeType** (str) - Year , Month, Dynamic 默认: Month
-        - **ClusterMode** (str) - 是否是cluster模式（参数为cluster创建redis cluster，其他参数或者不传该参数仍然创建老版本分布式）
+        - **ClusterMode** (str) - 【待废弃】是否是cluster模式（参数为cluster创建redis cluster，其他参数或者不传该参数仍然创建老版本分布式）
         - **CouponId** (str) - 使用的代金券id
         - **HighPerformance** (bool) - 是否创建性能增强性。默认为false，或者不填，填true为性能增强型。
         - **Password** (str) - URedis密码。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定密码。密码需使用base64进行编码，举例如下：# echo -n Password1 | base64UGFzc3dvcmQx。
+        - **Port** (int) - 分片端口, 默认为 6379
         - **Protocol** (str) - 协议:memcache, redis (默认redis).注意:redis无single类型
-        - **ProxySize** (int) - 分布式代理CPU核数
+        - **ProxyPort** (int) - 代理端口, 默认为 6379
+        - **ProxySize** (int) - 分布式代理CPU核数，不填或者传0时默认不创建代理
         - **Quantity** (int) - 购买时长 默认: 1
         - **SlaveZone** (str) - 跨机房UDRedis，slave所在可用区（必须和Zone在同一Region，且不可相同）
         - **SubnetId** (str) - 子网ID
-        - **Tag** (str) -
+        - **Tag** (str) - 业务组名称
         - **Type** (str) - 空间类型:single(无热备),double(热备)(默认: double)
+        - **UlbMode** (bool) - 是否创建负载均衡型分布式代理，true时表示创建负载均衡型代理
         - **VPCId** (str) - VPC的ID
         - **Version** (str) - 分布式分片版本（默认版本是4.0，其他版本见DescribeUDRedisBlockVersion）
 
@@ -239,6 +275,7 @@ class UMemClient(Client):
         - **HighAvailability** (str) - (Required) 是否开启高可用,enable或disable
         - **Name** (str) - (Required) 请求创建组的名称 (范围[6-63],只能包含英文、数字以及符号-和_)
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **AOFID** (str) - 回档的AOF文件ID
         - **AutoBackup** (str) - 是否自动备份,enable或disable，默认disable
         - **BackupId** (str) - 有此项代表从备份中创建，无代表正常创建
         - **BackupTime** (int) - 自动备份开始时间,范围[0-23],默认3点
@@ -249,7 +286,10 @@ class UMemClient(Client):
         - **HighPerformance** (bool) - 是否创建高性能Redis， 默认为false， 或者不填， 创建高性能为true
         - **MasterGroupId** (str) - Master Redis Group的ID，创建只读Slave时，必须填写
         - **Password** (str) - 初始化密码,需要 base64 编码
+        - **Port** (int) - 端口
         - **Quantity** (int) - 购买时长，默认为1
+        - **RollbackGroupId** (str) - 如果是通过回档创建实例，需要传回档实例的GroupId
+        - **RollbackTime** (int) - 回档时间点
         - **Size** (int) - 每个节点的内存大小,单位GB,默认1GB,目前仅支持1/2/4/8/16/32,六种
         - **SlaveZone** (str) - 跨机房URedis，slave所在可用区（必须和Zone在同一Region，且不可相同）
         - **SubnetId** (str) - 子网ID
@@ -659,6 +699,7 @@ class UMemClient(Client):
         - **HighPerformance** (bool) - 实例类型是否为性能增强型。默认为false，或者不填，true为性能增强型。
         - **ProxySize** (int) - umem 代理CPU核心数
         - **Quantity** (int) - 购买UMem的时长，默认值为1
+        - **UlbMode** (str) - umem分布式代理类型，默认false，true为负载均衡型代理
 
         **Response**
 
@@ -754,6 +795,12 @@ class UMemClient(Client):
         - **Size** (int) - (Required) 购买UMem大小,单位:GB
         - **SpaceId** (str) - (Required) 需要升级的空间的SpaceId
         - **Type** (str) - (Required) 空间类型:single(无热备),double(热备)(默认: double)
+        - **BlockIds** (list) - 进行容量调整分片的分片ID(性能增强型不需要传入)
+        - **BlockSize** (list) - 进行容量调整的分片的目标容量,单位 GB(性能增强型不需要传入)
+        - **HighPerformance** (str) - 是否为性能增强型。默认为false，或者不填，true为性能增强型。
+        - **IsSplit** (str) - 如果是拆分按钮查询价格就填 true, 否则就填 false,默认为 false
+        - **NewCPU** (int) - 代理升级后CPU核数
+        - **ProxyId** (str) - 代理id
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
@@ -1170,18 +1217,22 @@ class UMemClient(Client):
 
         **Request**
 
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **GroupId** (str) - (Required) 要升级的空间的GroupId,请参考DescribeURedisGroup接口
         - **Size** (int) - (Required) 购买uredis大小,单位:GB,范围是[1-32]
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **HighPerformance** (bool) - 查询高性能Redis， 默认为false， 或者不填， 查询高性能为true
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
-        - **Price** (float) - 扩容差价，单位: 元，保留小数点后两位有效数字
+        - **OriginalPrice** (int) - 原价
+        - **Price** (float) - 价格
 
         """
         # build request
         d = {
+            "ProjectId": self.config.project_id,
             "Region": self.config.region,
         }
         req and d.update(req)
@@ -1492,14 +1543,16 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **GroupId** (str) - (Required) 组ID
         - **Size** (int) - (Required) 内存大小, 单位:GB (需要大于原size,且小于等于32) 目前仅支持1/2/4/8/16/32 G 六种容量规格
-        - **ChargeType** (str) -
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ChargeType** (str) - 计费类型
         - **CouponId** (int) - 代金券ID 请参考DescribeCoupon接口
+        - **HighPerformance** (bool) - 高性能Redis， 默认为false， 或者不填， 高性能为true
+        - **StartTime** (int) - 任务执行时间戳，默认为0或者不传时，为立即执行，传入时间需满足未来一天范围
         - **Type** (str) - 空间类型:single(无热备),double(热备)(默认: double)
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
 
         **Response**
 

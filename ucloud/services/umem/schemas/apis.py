@@ -67,6 +67,33 @@ class CheckURedisAllowanceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: CreateScanHotBigKeys
+
+创建执行扫大key和热key的任务
+"""
+
+
+class CreateScanHotBigKeysRequestSchema(schema.RequestSchema):
+    """CreateScanHotBigKeys - 创建执行扫大key和热key的任务"""
+
+    fields = {
+        "GroupId": fields.Str(required=True, dump_to="GroupId"),
+        "IsRetry": fields.Bool(required=False, dump_to="IsRetry"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "TaskId": fields.Str(required=False, dump_to="TaskId"),
+        "Type": fields.Str(required=True, dump_to="Type"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class CreateScanHotBigKeysResponseSchema(schema.ResponseSchema):
+    """CreateScanHotBigKeys - 创建执行扫大key和热key的任务"""
+
+    fields = {}
+
+
+"""
 API: CreateUMemBackup
 
 创建分布式redis备份
@@ -113,8 +140,10 @@ class CreateUMemSpaceRequestSchema(schema.RequestSchema):
         ),
         "Name": fields.Str(required=True, dump_to="Name"),
         "Password": fields.Base64(required=False, dump_to="Password"),
+        "Port": fields.Int(required=False, dump_to="Port"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Protocol": fields.Str(required=False, dump_to="Protocol"),
+        "ProxyPort": fields.Int(required=False, dump_to="ProxyPort"),
         "ProxySize": fields.Int(required=False, dump_to="ProxySize"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
@@ -123,6 +152,7 @@ class CreateUMemSpaceRequestSchema(schema.RequestSchema):
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
         "Tag": fields.Str(required=False, dump_to="Tag"),
         "Type": fields.Str(required=False, dump_to="Type"),
+        "UlbMode": fields.Bool(required=False, dump_to="UlbMode"),
         "VPCId": fields.Str(required=False, dump_to="VPCId"),
         "Version": fields.Str(required=False, dump_to="Version"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
@@ -212,6 +242,7 @@ class CreateURedisGroupRequestSchema(schema.RequestSchema):
     """CreateURedisGroup - 创建主备redis"""
 
     fields = {
+        "AOFID": fields.Str(required=False, dump_to="AOFID"),
         "AutoBackup": fields.Str(required=False, dump_to="AutoBackup"),
         "BackupId": fields.Str(required=False, dump_to="BackupId"),
         "BackupTime": fields.Int(required=False, dump_to="BackupTime"),
@@ -228,9 +259,14 @@ class CreateURedisGroupRequestSchema(schema.RequestSchema):
         "MasterGroupId": fields.Str(required=False, dump_to="MasterGroupId"),
         "Name": fields.Str(required=True, dump_to="Name"),
         "Password": fields.Base64(required=False, dump_to="Password"),
+        "Port": fields.Int(required=False, dump_to="Port"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "RollbackGroupId": fields.Str(
+            required=False, dump_to="RollbackGroupId"
+        ),
+        "RollbackTime": fields.Int(required=False, dump_to="RollbackTime"),
         "Size": fields.Int(required=False, dump_to="Size"),
         "SlaveZone": fields.Str(required=False, dump_to="SlaveZone"),
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
@@ -524,6 +560,7 @@ class DescribeUMemPriceRequestSchema(schema.RequestSchema):
         "Region": fields.Str(required=True, dump_to="Region"),
         "Size": fields.Int(required=True, dump_to="Size"),
         "Type": fields.Str(required=True, dump_to="Type"),
+        "UlbMode": fields.Str(required=False, dump_to="UlbMode"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
@@ -581,7 +618,15 @@ class DescribeUMemUpgradePriceRequestSchema(schema.RequestSchema):
     """DescribeUMemUpgradePrice - 获取UMem升级价格信息"""
 
     fields = {
+        "BlockIds": fields.List(fields.Str()),
+        "BlockSize": fields.List(fields.Int()),
+        "HighPerformance": fields.Str(
+            required=False, dump_to="HighPerformance"
+        ),
+        "IsSplit": fields.Str(required=False, dump_to="IsSplit"),
+        "NewCPU": fields.Int(required=False, dump_to="NewCPU"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "ProxyId": fields.Str(required=False, dump_to="ProxyId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Size": fields.Int(required=True, dump_to="Size"),
         "SpaceId": fields.Str(required=True, dump_to="SpaceId"),
@@ -893,6 +938,10 @@ class DescribeURedisUpgradePriceRequestSchema(schema.RequestSchema):
 
     fields = {
         "GroupId": fields.Str(required=True, dump_to="GroupId"),
+        "HighPerformance": fields.Bool(
+            required=False, dump_to="HighPerformance"
+        ),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Size": fields.Int(required=True, dump_to="Size"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
@@ -903,6 +952,7 @@ class DescribeURedisUpgradePriceResponseSchema(schema.ResponseSchema):
     """DescribeURedisUpgradePrice - 获取uredis升级价格信息"""
 
     fields = {
+        "OriginalPrice": fields.Int(required=False, load_from="OriginalPrice"),
         "Price": fields.Float(required=False, load_from="Price"),
     }
 
@@ -1186,11 +1236,15 @@ class ResizeURedisGroupRequestSchema(schema.RequestSchema):
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "CouponId": fields.Int(required=False, dump_to="CouponId"),
         "GroupId": fields.Str(required=True, dump_to="GroupId"),
+        "HighPerformance": fields.Bool(
+            required=False, dump_to="HighPerformance"
+        ),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Size": fields.Int(required=True, dump_to="Size"),
+        "StartTime": fields.Int(required=False, dump_to="StartTime"),
         "Type": fields.Str(required=False, dump_to="Type"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
 
