@@ -452,6 +452,7 @@ class DescribeImageRequestSchema(schema.RequestSchema):
     """DescribeImage - 获取指定数据中心镜像列表，用户可通过指定操作系统类型，镜像Id进行过滤。"""
 
     fields = {
+        "FuncType": fields.Str(required=False, dump_to="FuncType"),
         "ImageId": fields.Str(required=False, dump_to="ImageId"),
         "ImageType": fields.Str(required=False, dump_to="ImageType"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
