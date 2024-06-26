@@ -65,22 +65,6 @@ class EIPBindingSchema(schema.ResponseSchema):
     }
 
 
-class ShareBandwidthSetSchema(schema.ResponseSchema):
-    """ShareBandwidthSet - DescribeEIP"""
-
-    fields = {
-        "ShareBandwidth": fields.Int(
-            required=False, load_from="ShareBandwidth"
-        ),
-        "ShareBandwidthId": fields.Str(
-            required=False, load_from="ShareBandwidthId"
-        ),
-        "ShareBandwidthName": fields.Str(
-            required=False, load_from="ShareBandwidthName"
-        ),
-    }
-
-
 class UnetEIPResourceSetSchema(schema.ResponseSchema):
     """UnetEIPResourceSet - DescribeEIP"""
 
@@ -98,6 +82,22 @@ class UnetEIPResourceSetSchema(schema.ResponseSchema):
         ),
         "SubResourceType": fields.Str(
             required=False, load_from="SubResourceType"
+        ),
+    }
+
+
+class ShareBandwidthSetSchema(schema.ResponseSchema):
+    """ShareBandwidthSet - DescribeEIP"""
+
+    fields = {
+        "ShareBandwidth": fields.Int(
+            required=False, load_from="ShareBandwidth"
+        ),
+        "ShareBandwidthId": fields.Str(
+            required=False, load_from="ShareBandwidthId"
+        ),
+        "ShareBandwidthName": fields.Str(
+            required=False, load_from="ShareBandwidthName"
         ),
     }
 
@@ -174,6 +174,21 @@ class ResourceSetSchema(schema.ResponseSchema):
         ),
         "Tag": fields.Str(required=False, load_from="Tag"),
         "Zone": fields.Int(required=False, load_from="Zone"),
+    }
+
+
+class DescribeSecondaryIPDataSetSchema(schema.ResponseSchema):
+    """DescribeSecondaryIPDataSet - 描述内网IP的具体信息"""
+
+    fields = {
+        "EIP": fields.Str(required=False, load_from="EIP"),
+        "EIPId": fields.Str(required=False, load_from="EIPId"),
+        "PrivateIP": fields.Str(required=False, load_from="PrivateIP"),
+        "PrivateIPType": fields.Str(required=False, load_from="PrivateIPType"),
+        "ResourceID": fields.Str(required=False, load_from="ResourceID"),
+        "ResourceName": fields.Str(required=False, load_from="ResourceName"),
+        "SubnetID": fields.Str(required=False, load_from="SubnetID"),
+        "VPCID": fields.Str(required=False, load_from="VPCID"),
     }
 
 
