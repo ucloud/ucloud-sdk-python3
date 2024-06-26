@@ -78,6 +78,7 @@ class UNetClient(Client):
         - **IPVersion** (str) - 共享带宽类型，IPv4或者IPv6，不传默认IPv4
         - **OperatorName** (str) - 共享带宽线路：BGP 国内多线,International 国际多线,ChinaMobile 移动单线,Unicom 联通单线,Telecom 电信单线,BGPPro 精品BGP（仅香港支持精品BGP）
         - **Quantity** (int) - 购买时长
+        - **Tag** (str) - 业务组名称, 默认为 "Default"
 
         **Response**
 
@@ -197,7 +198,7 @@ class UNetClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写
         - **Region** (str) - (Config) 地域
         - **Name** (str) - (Required) 防火墙名称
-        - **Rule** (list) - (Required) 防火墙规则，例如：TCP|22|192.168.1.1/22|DROP|LOW|禁用22端口，第一个参数代表协议：第二个参数代表端口号，第三个参数为ip，第四个参数为ACCEPT（接受）和DROP（拒绝），第五个参数优先级：HIGH（高），MEDIUM（中），LOW（低），第六个参数为该条规则的自定义备注,bj1不支持添加备注
+        - **Rule** (list) - (Required) 防火墙规则，例如：TCP|22|192.168.1.1/22|DROP|LOW|禁用22端口，第一个参数代表协议：第二个参数代表端口号，第三个参数为ip，第四个参数为ACCEPT（接受）和DROP（拒绝），第五个参数优先级：HIGH（高），MEDIUM（中），LOW（低），第六个参数为该条规则的自定义备注，备注最大长度64
         - **Remark** (str) - 防火墙描述，默认为空
         - **Tag** (str) - 防火墙业务组，默认为Default
 
@@ -325,9 +326,11 @@ class UNetClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **BeginTime** (int) - 统计开始时间
         - **EIPIds** (list) - 弹性IP的资源Id. 如果为空, 则返回当前 Region中符合条件的所有EIP的带宽用量, n为自然数
+        - **EndTime** (int) - 统计结束时间
         - **Limit** (int) - 返回数据分页值, 取值范围为 [0,10000000] 之间的整数, 默认为20
         - **OffSet** (int) - 返回数据偏移量, 默认为0
 
@@ -447,8 +450,8 @@ class UNetClient(Client):
         - **FWId** (str) - 防火墙ID，默认为返回所有防火墙
         - **Limit** (int) - 返回数据长度，默认为20，最大10000000
         - **Offset** (int) - 列表起始位置偏移量，默认为0
-        - **ResourceId** (str) - 绑定防火墙组的资源ID
-        - **ResourceType** (str) - 绑定防火墙组的资源类型，默认为全部资源类型。枚举值为："unatgw"，NAT网关； "uhost"，云主机；“uni”，虚拟网卡； "upm"，物理云主机； "hadoophost"，hadoop节点； "fortresshost"，堡垒机； "udhost"，私有专区主机；"udockhost"，容器；"dbaudit"，数据库审计.
+        - **ResourceId** (str) - 绑定防火墙组的资源ID。
+        - **ResourceType** (str) - 绑定防火墙的资源类型，仅获取资源对应防火墙信息时需要。枚举值为："unatgw"，NAT网关； "uhost"，云主机； "upm"，物理云主机； "hadoophost"，hadoop节点； "fortresshost"，堡垒机； "udhost"，私有专区主机；"udockhost"，容器；"dbaudit"，数据库审计；”uni“，虚拟网卡；“cube”，Cube容器实例；“ulb”，负载均衡实例。
 
         **Response**
 
@@ -535,6 +538,51 @@ class UNetClient(Client):
 
         resp = self.invoke("DescribeFirewallResource", d, **kwargs)
         return apis.DescribeFirewallResourceResponseSchema().loads(resp)
+
+    def describe_private_ip(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribePrivateIP - 获取资源绑定的内网IP信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Limit** (int) - 获取信息数量 ，默认20；不允许为0
+        - **ObjectId** (str) - 虚拟网卡的资源ID;  ObjectId为空时，则获取项目下所有的虚拟网卡主辅IP信息
+        - **Offset** (int) - 列表起始位置偏移量，默认为0
+        - **SubnetId** (str) - 子网的ID
+        - **VPCId** (str) - VPC的ID
+
+        **Response**
+
+        - **DataSet** (list) - 见 **DescribeSecondaryIPDataSet** 模型定义
+        - **TotalCount** (int) - 返回资源数量
+
+        **Response Model**
+
+        **DescribeSecondaryIPDataSet**
+        - **EIP** (str) - 外网IP
+        - **EIPId** (str) - EIP资源ID
+        - **PrivateIP** (str) - 内网IP
+        - **PrivateIPType** (str) - 内网IP类型；枚举值：PrimaryIP：主内网IP，SecondaryIP：辅助内网IP
+        - **ResourceID** (str) - 资源ID
+        - **ResourceName** (str) - 资源名称
+        - **SubnetID** (str) - 子网ID
+        - **VPCID** (str) - VPCID
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribePrivateIPRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribePrivateIP", d, **kwargs)
+        return apis.DescribePrivateIPResponseSchema().loads(resp)
 
     def describe_share_bandwidth(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -900,7 +948,7 @@ class UNetClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **FWId** (str) - (Required) 防火墙资源ID
         - **ResourceId** (str) - (Required) 所应用资源ID
-        - **ResourceType** (str) - (Required) 绑定防火墙组的资源类型，默认为全部资源类型。枚举值为："unatgw"，NAT网关； "uhost"，云主机； "upm"，物理云主机； "hadoophost"，hadoop节点； "fortresshost"，堡垒机； "udhost"，私有专区主机；"udockhost"，容器；"dbaudit"，数据库审计，”uni“，虚拟网卡，“cube”，Cube容器实例。
+        - **ResourceType** (str) - (Required) 绑定防火墙的资源类型，枚举值为："unatgw"，NAT网关； "uhost"，云主机； "upm"，物理云主机； "hadoophost"，hadoop节点； "fortresshost"，堡垒机； "udhost"，私有专区主机；"udockhost"，容器；"dbaudit"，数据库审计；”uni“，虚拟网卡；“cube”，Cube容器实例；“ulb”，负载均衡实例。
 
         **Response**
 
@@ -1140,10 +1188,10 @@ class UNetClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **FWId** (str) - (Required) 防火墙资源ID
-        - **Rule** (list) - (Required) 防火墙规则，例如：TCP|22|192.168.1.1/22|DROP|LOW|禁用22端口，第一个参数代表协议：第二个参数代表端口号，第三个参数为ip，第四个参数为ACCEPT（接受）和DROP（拒绝），第五个参数优先级：HIGH（高），MEDIUM（中），LOW（低），第六个参数为该条规则的自定义备注
+        - **Rule** (list) - (Required) 防火墙规则，例如：TCP|22|192.168.1.1/22|DROP|LOW|禁用22端口，第一个参数代表协议：第二个参数代表端口号，第三个参数为ip，第四个参数为ACCEPT（接受）和DROP（拒绝），第五个参数优先级：HIGH（高），MEDIUM（中），LOW（低），第六个参数为该条规则的自定义备注, 备注最大长度64
 
         **Response**
 

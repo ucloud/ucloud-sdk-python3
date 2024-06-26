@@ -74,6 +74,7 @@ class AllocateShareBandwidthRequestSchema(schema.RequestSchema):
         "ShareBandwidthGuarantee": fields.Int(
             required=False, dump_to="ShareBandwidthGuarantee"
         ),  # Deprecated, will be removed at 1.0
+        "Tag": fields.Str(required=False, dump_to="Tag"),
     }
 
 
@@ -291,7 +292,9 @@ class DescribeBandwidthUsageRequestSchema(schema.RequestSchema):
     """DescribeBandwidthUsage - 获取带宽用量信息"""
 
     fields = {
+        "BeginTime": fields.Int(required=False, dump_to="BeginTime"),
         "EIPIds": fields.List(fields.Str()),
+        "EndTime": fields.Int(required=False, dump_to="EndTime"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "OffSet": fields.Int(required=False, dump_to="OffSet"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -406,6 +409,40 @@ class DescribeFirewallResourceResponseSchema(schema.ResponseSchema):
             models.ResourceSetSchema(), required=False, load_from="ResourceSet"
         ),
         "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
+API: DescribePrivateIP
+
+获取资源绑定的内网IP信息
+"""
+
+
+class DescribePrivateIPRequestSchema(schema.RequestSchema):
+    """DescribePrivateIP - 获取资源绑定的内网IP信息"""
+
+    fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "ObjectId": fields.Str(required=False, dump_to="ObjectId"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
+        "VPCId": fields.Str(required=False, dump_to="VPCId"),
+    }
+
+
+class DescribePrivateIPResponseSchema(schema.ResponseSchema):
+    """DescribePrivateIP - 获取资源绑定的内网IP信息"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.DescribeSecondaryIPDataSetSchema(),
+            required=True,
+            load_from="DataSet",
+        ),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
     }
 
 
