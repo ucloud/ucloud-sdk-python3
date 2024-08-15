@@ -26,6 +26,62 @@ class ReceiptPerSessionSchema(schema.ResponseSchema):
     }
 
 
+class StatisticsDataSchema(schema.ResponseSchema):
+    """StatisticsData - 统计信息"""
+
+    fields = {
+        "FailCostCount": fields.Int(required=True, load_from="FailCostCount"),
+        "FailCount": fields.Int(required=True, load_from="FailCount"),
+        "SendCostCount": fields.Int(required=True, load_from="SendCostCount"),
+        "SendCount": fields.Int(required=True, load_from="SendCount"),
+        "SubmitFailCostCount": fields.Int(
+            required=True, load_from="SubmitFailCostCount"
+        ),
+        "SubmitFailCount": fields.Int(
+            required=True, load_from="SubmitFailCount"
+        ),
+        "SuccessCostCount": fields.Int(
+            required=True, load_from="SuccessCostCount"
+        ),
+        "SuccessCount": fields.Int(required=True, load_from="SuccessCount"),
+        "UnknownCostCount": fields.Int(
+            required=True, load_from="UnknownCostCount"
+        ),
+        "UnknownCount": fields.Int(required=True, load_from="UnknownCount"),
+    }
+
+
+class StatisticsDataInfoSchema(schema.ResponseSchema):
+    """StatisticsDataInfo - 统计信息按天聚合"""
+
+    fields = {
+        "BrevityCode": fields.Str(required=True, load_from="BrevityCode"),
+        "CostCount": fields.Int(required=True, load_from="CostCount"),
+        "Count": fields.Int(required=True, load_from="Count"),
+        "FailedCostCount": fields.Int(
+            required=True, load_from="FailedCostCount"
+        ),
+        "FailedCount": fields.Int(required=True, load_from="FailedCount"),
+        "SendDate": fields.Str(required=True, load_from="SendDate"),
+        "SubmitFailedCostCount": fields.Int(
+            required=True, load_from="SubmitFailedCostCount"
+        ),
+        "SubmitFailedCount": fields.Int(
+            required=True, load_from="SubmitFailedCount"
+        ),
+        "SuccessCostCount": fields.Int(
+            required=True, load_from="SuccessCostCount"
+        ),
+        "SuccessCount": fields.Int(required=True, load_from="SuccessCount"),
+        "SuccessRate": fields.Float(required=True, load_from="SuccessRate"),
+        "UnknownCostCount": fields.Int(
+            required=True, load_from="UnknownCostCount"
+        ),
+        "UnknownCount": fields.Int(required=True, load_from="UnknownCount"),
+        "UserId": fields.Str(required=True, load_from="UserId"),
+    }
+
+
 class OutSignatureSchema(schema.ResponseSchema):
     """OutSignature - 短信签名"""
 

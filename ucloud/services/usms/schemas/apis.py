@@ -196,6 +196,43 @@ class GetUSMSSendReceiptResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetUSMSSendStatistics
+
+获取发送统计数据
+"""
+
+
+class GetUSMSSendStatisticsRequestSchema(schema.RequestSchema):
+    """GetUSMSSendStatistics - 获取发送统计数据"""
+
+    fields = {
+        "BrevityCode": fields.Str(required=False, dump_to="BrevityCode"),
+        "Domestic": fields.Int(required=True, dump_to="Domestic"),
+        "EndDate": fields.Str(required=True, dump_to="EndDate"),
+        "NumPerPage": fields.Int(required=True, dump_to="NumPerPage"),
+        "OrderBy": fields.Str(required=True, dump_to="OrderBy"),
+        "OrderType": fields.Str(required=True, dump_to="OrderType"),
+        "Page": fields.Int(required=True, dump_to="Page"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Purpose": fields.Int(required=False, dump_to="Purpose"),
+        "StartDate": fields.Str(required=True, dump_to="StartDate"),
+    }
+
+
+class GetUSMSSendStatisticsResponseSchema(schema.ResponseSchema):
+    """GetUSMSSendStatistics - 获取发送统计数据"""
+
+    fields = {
+        "Data": fields.List(
+            models.StatisticsDataInfoSchema(), required=False, load_from="Data"
+        ),
+        "Message": fields.Str(required=False, load_from="Message"),
+        "StatisticsData": models.StatisticsDataSchema(),
+        "Total": fields.Int(required=False, load_from="Total"),
+    }
+
+
+"""
 API: QueryUSMSSignature
 
 调用接口QueryUSMSSignature查询短信签名申请状态

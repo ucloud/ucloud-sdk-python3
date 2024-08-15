@@ -20,6 +20,16 @@ class KeyPairSchema(schema.ResponseSchema):
     }
 
 
+class CollectionSchema(schema.ResponseSchema):
+    """Collection - CPU和内存可支持的规格"""
+
+    fields = {
+        "Cpu": fields.Int(required=False, load_from="Cpu"),
+        "Memory": fields.List(fields.Int()),
+        "MinimalCpuPlatform": fields.List(fields.Str()),
+    }
+
+
 class FeatureModesSchema(schema.ResponseSchema):
     """FeatureModes - 可以支持的模式类别"""
 
@@ -52,13 +62,30 @@ class BootDiskInfoSchema(schema.ResponseSchema):
     }
 
 
-class CollectionSchema(schema.ResponseSchema):
-    """Collection - CPU和内存可支持的规格"""
+class MachineSizesSchema(schema.ResponseSchema):
+    """MachineSizes - GPU、CPU和内存信息"""
 
     fields = {
-        "Cpu": fields.Int(required=False, load_from="Cpu"),
-        "Memory": fields.List(fields.Int()),
-        "MinimalCpuPlatform": fields.List(fields.Str()),
+        "Collection": fields.List(CollectionSchema()),
+        "Gpu": fields.Int(required=False, load_from="Gpu"),
+    }
+
+
+class GraphicsMemorySchema(schema.ResponseSchema):
+    """GraphicsMemory - GPU的显存指标"""
+
+    fields = {
+        "Rate": fields.Int(required=False, load_from="Rate"),
+        "Value": fields.Int(required=False, load_from="Value"),
+    }
+
+
+class PerformanceSchema(schema.ResponseSchema):
+    """Performance - GPU的性能指标"""
+
+    fields = {
+        "Rate": fields.Int(required=False, load_from="Rate"),
+        "Value": fields.Float(required=False, load_from="Value"),
     }
 
 
@@ -88,33 +115,6 @@ class CpuPlatformsSchema(schema.ResponseSchema):
         "Amd": fields.List(fields.Str()),
         "Ampere": fields.List(fields.Str()),
         "Intel": fields.List(fields.Str()),
-    }
-
-
-class PerformanceSchema(schema.ResponseSchema):
-    """Performance - GPU的性能指标"""
-
-    fields = {
-        "Rate": fields.Int(required=False, load_from="Rate"),
-        "Value": fields.Float(required=False, load_from="Value"),
-    }
-
-
-class MachineSizesSchema(schema.ResponseSchema):
-    """MachineSizes - GPU、CPU和内存信息"""
-
-    fields = {
-        "Collection": fields.List(CollectionSchema()),
-        "Gpu": fields.Int(required=False, load_from="Gpu"),
-    }
-
-
-class GraphicsMemorySchema(schema.ResponseSchema):
-    """GraphicsMemory - GPU的显存指标"""
-
-    fields = {
-        "Rate": fields.Int(required=False, load_from="Rate"),
-        "Value": fields.Int(required=False, load_from="Value"),
     }
 
 
@@ -188,6 +188,14 @@ class IsolationGroupSchema(schema.ResponseSchema):
     }
 
 
+class SpotAttributeSchema(schema.ResponseSchema):
+    """SpotAttribute - 竞价实例属性"""
+
+    fields = {
+        "RecycleTime": fields.Int(required=False, load_from="RecycleTime"),
+    }
+
+
 class UDSetUDHostAttributeSchema(schema.ResponseSchema):
     """UDSetUDHostAttribute - 私有专区对应的宿主机属性"""
 
@@ -195,15 +203,6 @@ class UDSetUDHostAttributeSchema(schema.ResponseSchema):
         "HostBinding": fields.Bool(required=False, load_from="HostBinding"),
         "UDHostId": fields.Str(required=False, load_from="UDHostId"),
         "UDSetId": fields.Str(required=False, load_from="UDSetId"),
-    }
-
-
-class UHostKeyPairSchema(schema.ResponseSchema):
-    """UHostKeyPair - 主机密钥信息"""
-
-    fields = {
-        "KeyPairId": fields.Str(required=False, load_from="KeyPairId"),
-        "KeyPairState": fields.Str(required=False, load_from="KeyPairState"),
     }
 
 
@@ -227,14 +226,6 @@ class UHostIPSetSchema(schema.ResponseSchema):
     }
 
 
-class SpotAttributeSchema(schema.ResponseSchema):
-    """SpotAttribute - 竞价实例属性"""
-
-    fields = {
-        "RecycleTime": fields.Int(required=False, load_from="RecycleTime"),
-    }
-
-
 class UHostDiskSetSchema(schema.ResponseSchema):
     """UHostDiskSet - DescribeUHostInstance"""
 
@@ -248,6 +239,15 @@ class UHostDiskSetSchema(schema.ResponseSchema):
         "Name": fields.Str(required=False, load_from="Name"),
         "Size": fields.Int(required=False, load_from="Size"),
         "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
+class UHostKeyPairSchema(schema.ResponseSchema):
+    """UHostKeyPair - 主机密钥信息"""
+
+    fields = {
+        "KeyPairId": fields.Str(required=False, load_from="KeyPairId"),
+        "KeyPairState": fields.Str(required=False, load_from="KeyPairState"),
     }
 
 

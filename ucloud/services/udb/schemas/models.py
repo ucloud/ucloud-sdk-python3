@@ -3,6 +3,15 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class UFileDataSetSchema(schema.ResponseSchema):
+    """UFileDataSet - 增加ufile的描述"""
+
+    fields = {
+        "Bucket": fields.Str(required=False, load_from="Bucket"),
+        "TokenID": fields.Str(required=False, load_from="TokenID"),
+    }
+
+
 class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
     """UDBSlaveInstanceSet - DescribeUDBSlaveInstance"""
 
@@ -51,7 +60,7 @@ class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
         ),
         "Role": fields.Str(required=False, load_from="Role"),
         "SSDType": fields.Str(required=False, load_from="SSDType"),
-        "SpecificationType": fields.Str(
+        "SpecificationType": fields.Int(
             required=False, load_from="SpecificationType"
         ),
         "SrcDBId": fields.Str(required=False, load_from="SrcDBId"),
@@ -66,15 +75,6 @@ class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
         "VirtualIP": fields.Str(required=False, load_from="VirtualIP"),
         "VirtualIPMac": fields.Str(required=False, load_from="VirtualIPMac"),
         "Zone": fields.Str(required=False, load_from="Zone"),
-    }
-
-
-class UFileDataSetSchema(schema.ResponseSchema):
-    """UFileDataSet - 增加ufile的描述"""
-
-    fields = {
-        "Bucket": fields.Str(required=False, load_from="Bucket"),
-        "TokenID": fields.Str(required=False, load_from="TokenID"),
     }
 
 
@@ -284,6 +284,19 @@ class ConnNumMapSchema(schema.ResponseSchema):
     fields = {
         "Ip": fields.Str(required=False, load_from="Ip"),
         "Num": fields.Int(required=False, load_from="Num"),
+    }
+
+
+class MachineTypeSchema(schema.ResponseSchema):
+    """MachineType - mysql数据库机型"""
+
+    fields = {
+        "Cpu": fields.Int(required=False, load_from="Cpu"),
+        "Description": fields.Str(required=False, load_from="Description"),
+        "Group": fields.Str(required=False, load_from="Group"),
+        "ID": fields.Str(required=False, load_from="ID"),
+        "Memory": fields.Int(required=False, load_from="Memory"),
+        "Os": fields.Str(required=False, load_from="Os"),
     }
 
 
