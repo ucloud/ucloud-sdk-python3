@@ -1425,6 +1425,36 @@ class GetUDBInstanceSSLCertURLResponseSchema(schema.ResponseSchema):
 
 
 """
+API: ListUDBMachineType
+
+获取UDB云数据库支持的计算规格列表，暂不支持获取跨可用区实例的计算规格，目前支持的数据库品类包括：NVMe版和SSD云盘版MySQL
+"""
+
+
+class ListUDBMachineTypeRequestSchema(schema.RequestSchema):
+    """ListUDBMachineType - 获取UDB云数据库支持的计算规格列表，暂不支持获取跨可用区实例的计算规格，目前支持的数据库品类包括：NVMe版和SSD云盘版MySQL"""
+
+    fields = {
+        "InstanceMode": fields.Str(required=False, dump_to="InstanceMode"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ListUDBMachineTypeResponseSchema(schema.ResponseSchema):
+    """ListUDBMachineType - 获取UDB云数据库支持的计算规格列表，暂不支持获取跨可用区实例的计算规格，目前支持的数据库品类包括：NVMe版和SSD云盘版MySQL"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.MachineTypeSchema(), required=True, load_from="DataSet"
+        ),
+        "DefaultMachineType": models.MachineTypeSchema(),
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
 API: ListUDBUserTables
 
 查看udb实例所有的用户表集合 （只包括引擎为innodb和myisam的表）
@@ -1611,6 +1641,7 @@ class ResizeUDBInstanceRequestSchema(schema.RequestSchema):
     """ResizeUDBInstance - 修改（升级和降级）UDB实例的配置，包括内存和磁盘的配置，对于内存升级无需关闭实例，其他场景需要事先关闭实例。两套参数可以配置升降机：1.配置UseSSD和SSDType  2.配置InstanceType，不需要配置InstanceMode。这两套第二套参数的优先级更高"""
 
     fields = {
+        "CPU": fields.Int(required=False, dump_to="CPU"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
         "DBId": fields.Str(required=True, dump_to="DBId"),
         "DiskSpace": fields.Int(required=True, dump_to="DiskSpace"),

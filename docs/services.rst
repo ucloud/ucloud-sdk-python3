@@ -171,6 +171,13 @@ UDI
    :members:
 
 
+UDNS
+----
+
+.. autoclass:: ucloud.services.udns.client.UDNSClient
+   :members:
+
+
 UDTS
 ----
 

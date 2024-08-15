@@ -703,6 +703,7 @@ class UDBClient(Client):
         - **BackupDuration** (int) -
         - **BackupMethod** (str) -
         - **BackupZone** (str) -
+        - **CPU** (int) -
         - **CaseSensitivityParam** (int) -
         - **ChargeType** (str) -
         - **CluserRole** (str) -
@@ -1040,7 +1041,7 @@ class UDBClient(Client):
         - **ReplicationDelaySeconds** (int) - 延时从库时长
         - **Role** (str) - DB实例角色，mysql区分master/slave，mongodb多种角色
         - **SSDType** (str) - SSD类型，SATA/PCI-E
-        - **SpecificationType** (str) - 实例计算规格类型，0或不传代表使用内存方式购买，1代表使用内存-cpu可选配比方式购买，需要填写MachineType
+        - **SpecificationType** (int) - 实例计算规格类型，0或不传代表使用内存方式购买，1代表使用内存-cpu可选配比方式购买，需要填写MachineType
         - **SrcDBId** (str) - 对mysql的slave而言是master的DBId，对master则为空， 对mongodb则是副本集id
         - **State** (str) - DB状态标记 Init：初始化中，Fail：安装失败，Starting：启动中，Running：运行，Shutdown：关闭中，Shutoff：已关闭，Delete：已删除，Upgrading：升级中，Promoting：提升为独库进行中，Recovering：恢复中，Recover fail：恢复失败,Remakeing:重做中,RemakeFail:重做失败, MajorVersionUpgrading:小版本升级中，MajorVersionUpgradeWaitForSwitch:高可用等待切换，MajorVersionUpgradeFail
         - **SubnetId** (str) - 子网ID
@@ -1766,6 +1767,47 @@ class UDBClient(Client):
         resp = self.invoke("GetUDBInstanceSSLCertURL", d, **kwargs)
         return apis.GetUDBInstanceSSLCertURLResponseSchema().loads(resp)
 
+    def list_udb_machine_type(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListUDBMachineType - 获取UDB云数据库支持的计算规格列表，暂不支持获取跨可用区实例的计算规格，目前支持的数据库品类包括：NVMe版和SSD云盘版MySQL
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **InstanceMode** (str) - UDB实例模式类型, 可选值如下: "Normal": 普通版UDB实例 "HA": 高可用版UDB实例 默认是"Normal"
+
+        **Response**
+
+        - **DataSet** (list) - 见 **MachineType** 模型定义
+        - **DefaultMachineType** (dict) - 见 **MachineType** 模型定义
+        - **Message** (str) - 接口返回信息
+
+        **Response Model**
+
+        **MachineType**
+        - **Cpu** (int) - 规格cpu核数
+        - **Description** (str) - 计算规格描述，格式为"nCmG"，表示n核mG内存实例
+        - **Group** (str) - 内存/cpu配比
+        - **ID** (str) - 计算规格id, 目前支持CPU和内存比1:2、1:4、1:8三类配比规格;规格的格式为："机型.配比.CPU核数规格"；机型支持o和n两种机型，分别代表快杰NVMe和SSD云盘机型；配比映射关系如下:2m代表CPU内存配比1比2，4m代表CPU内存配比1比4，8m代表CPU内存配比1比8，CPU核数规格射关系如下：small代表1C，medium代表2C，xlarge代表4C，2xlarge代表8C，4xlarge代表16C，8xlarge代表32C，16xlarge代表64C，例如 "o.mysql4m.medium"表示创建快杰NVMe机型2C8G的实例，"o.mysql8m.4xlarge"表示创建快杰NVMe机型16C128G的实例
+        - **Memory** (int) - 规格内存大小，单位（GB）
+        - **Os** (str) - 内部云主机机型，可选"o/n"
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ListUDBMachineTypeRequestSchema().dumps(d)
+
+        resp = self.invoke("ListUDBMachineType", d, **kwargs)
+        return apis.ListUDBMachineTypeResponseSchema().loads(resp)
+
     def list_udb_user_tables(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1984,6 +2026,7 @@ class UDBClient(Client):
         - **DBId** (str) - (Required) 实例的Id
         - **DiskSpace** (int) - (Required) 磁盘空间(GB), 暂时支持20G-32T
         - **MemoryLimit** (int) - (Required) 内存限制(MB)，目前支持以下几档 2000M/4000M/ 6000M/8000M/ 12000M/16000M/ 24000M/32000M/ 48000M/64000M/96000M/128000M/192000M/256000M/320000M。
+        - **CPU** (int) - 数据库的CPU核数（只对普通版的SQLServer有用）
         - **CouponId** (str) - 使用的代金券id
         - **InstanceMode** (str) - UDB实例模式类型, 可选值如下: "Normal": 普通版UDB实例 "HA": 高可用版UDB实例 默认是"Normal"
         - **InstanceType** (str) - UDB数据库机型: "Normal": "标准机型" ,  "SATA_SSD": "SSD机型" , "PCIE_SSD": "SSD高性能机型" ,  "Normal_Volume": "标准大容量机型",  "SATA_SSD_Volume": "SSD大容量机型" ,  "PCIE_SSD_Volume": "SSD高性能大容量机型"，“NVMe_SSD”：“快杰机型”

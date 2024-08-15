@@ -182,6 +182,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def udns(self):
+        from ucloud.services.udns.client import UDNSClient
+
+        return UDNSClient(
+            self._auto_config("udns"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def udpn(self):
         from ucloud.services.udpn.client import UDPNClient
 

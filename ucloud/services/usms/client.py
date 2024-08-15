@@ -97,7 +97,7 @@ class USMSClient(Client):
         - **Instruction** (str) - 模板变量属性说明
         - **International** (bool) - 标记是否为国际短信。true:国际短信，false:国内短信，若不传值则默认该值为false
         - **Remark** (str) - 短信模板申请原因说明，字数不超过128，每个中文、符号、英文、数字等都计为1个字。
-        - **UnsubscribeInfo** (str) - 当Purpose为3时，也即会员推广类短信模板，该项必填。枚举值：TD退订、回T退订、回N退订、回TD退订、退订回T、退订回D、退订回TD、退订回复T、退订回复D、退订回复N、退订回复TD、拒收回T
+        - **UnsubscribeInfo** (str) - 当Purpose=3并且International=false时，也即国内会员推广类短信模板，该项必填。枚举值：【拒收请回复R】
 
         **Response**
 
@@ -216,6 +216,74 @@ class USMSClient(Client):
 
         resp = self.invoke("GetUSMSSendReceipt", d, **kwargs)
         return apis.GetUSMSSendReceiptResponseSchema().loads(resp)
+
+    def get_usms_send_statistics(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUSMSSendStatistics - 获取发送统计数据
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID，不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Domestic** (int) - (Required) 国内标记，0-国际短信 1-国内短信
+        - **EndDate** (str) - (Required) 结束日期，格式为YYYY-MM-DD
+        - **NumPerPage** (int) - (Required) 每页记录个数
+        - **OrderBy** (str) - (Required) 排序字段，如BrevityCode表示按照BrevityCode排列，配合OrderType使用。目前支持SendDate、BrevityCode
+        - **OrderType** (str) - (Required) 排序方式，asc-正序 desc-倒序
+        - **Page** (int) - (Required) 页编号，从0开始
+        - **StartDate** (str) - (Required) 开始日期，格式为YYYY-MM-DD
+        - **BrevityCode** (str) - 国际简码，如CN表示中国，当需要查询多个国家时，使用-分割，如CN-ID。
+        - **Purpose** (int) - 短信类型，1-验证码 2-通知类 3-营销类
+
+        **Response**
+
+        - **Data** (list) - 见 **StatisticsDataInfo** 模型定义
+        - **Message** (str) - 描述信息
+        - **StatisticsData** (dict) - 见 **StatisticsData** 模型定义
+        - **Total** (int) - 返回记录数
+
+        **Response Model**
+
+        **StatisticsDataInfo**
+        - **BrevityCode** (str) - 国际/地区标识码
+        - **CostCount** (int) - 发送总数（拆分条数）
+        - **Count** (int) - 发送总数（提交条数）
+        - **FailedCostCount** (int) - 发送失败数（拆分条数）
+        - **FailedCount** (int) - 发送失败数（提交条数）
+        - **SendDate** (str) - 发送时间
+        - **SubmitFailedCostCount** (int) - 提交失败数（拆分条数）
+        - **SubmitFailedCount** (int) - 提交失败数（提交条数）
+        - **SuccessCostCount** (int) - 发送成功数（拆分条数）
+        - **SuccessCount** (int) - 发送成功数（提交条数）
+        - **SuccessRate** (float) - 发送成功率
+        - **UnknownCostCount** (int) - 状态未知数（拆分条数）
+        - **UnknownCount** (int) - 状态未知数（提交条数）
+        - **UserId** (str) - UserId
+
+
+        **StatisticsData**
+        - **FailCostCount** (int) - 发送失败数（拆分条数）
+        - **FailCount** (int) - 发送失败数（提交条数）
+        - **SendCostCount** (int) - 发送总数（拆分条数）
+        - **SendCount** (int) - 发送总数（提交条数）
+        - **SubmitFailCostCount** (int) - 提交失败数（拆分条数）
+        - **SubmitFailCount** (int) - 提交失败数（提交条数）
+        - **SuccessCostCount** (int) - 发送成功数（拆分条数）
+        - **SuccessCount** (int) - 发送成功数（提交条数）
+        - **UnknownCostCount** (int) - 状态未知数（拆分条数）
+        - **UnknownCount** (int) - 状态未知数（提交条数）
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUSMSSendStatisticsRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUSMSSendStatistics", d, **kwargs)
+        return apis.GetUSMSSendStatisticsResponseSchema().loads(resp)
 
     def query_usms_signature(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -357,7 +425,7 @@ class USMSClient(Client):
         - **PhoneNumbers** (list) - (Required) 电话号码数组，电话号码格式为(60)1xxxxxxxx，()中为国际长途区号(如中国为86或0086，两种格式都支持)，后面为电话号码.若不传入国际区号，如1851623xxxx，则默认为国内手机号
         - **TemplateId** (str) - (Required) 模板ID（也即短信模板申请时的工单ID），请到 `USMS控制台 <https://console.ucloud.cn/usms>`_ 的模板管理页面查看；使用的短信模板必须是已申请并通过审核；
         - **ExtendCode** (str) - 短信扩展码，格式为阿拉伯数字串，默认不开通，如需开通请联系 UCloud技术支持
-        - **SigContent** (str) - 短信签名内容，请到 `USMS控制台 <https://console.ucloud.cn/usms>`_ 的签名管理页面查看；使用的短信签名必须是已申请并且通过审核；
+        - **SigContent** (str) - 短信签名内容，请到 `USMS控制台 <https://console.ucloud.cn/usms>`_ 的签名管理页面查看；使用的短信签名必须是已申请并且通过审核；（注：国内短信为必选参数、国际短信为可选参数）
         - **TemplateParams** (list) - 模板可变参数，以数组的方式填写，举例，TemplateParams.0，TemplateParams.1，... 若模板中无可变参数，则该项可不填写；若模板中有可变参数，则该项为必填项，参数个数需与变量个数保持一致，否则无法发送；
         - **UserId** (str) - 自定义的业务标识ID，字符串（ 长度不能超过32 位），不支持 单引号、表情包符号等特殊字符
 

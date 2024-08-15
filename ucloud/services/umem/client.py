@@ -927,16 +927,24 @@ class UMemClient(Client):
 
         **Request**
 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **GroupId** (str) - (Required) 需要升级的空间的GroupId,请参考DescribeUMemcacheGroup接口
         - **Size** (int) - (Required) 购买umemcache大小,单位:GB
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
-        - **Price** (float) - 价格，单位：元
+        - **ListPrice** (int) - 列表价格
+        - **OriginalPrice** (int) - 原价
+        - **Price** (int) - 价格
 
         """
         # build request
-        d = {}
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
         req and d.update(req)
         d = apis.DescribeUMemcacheUpgradePriceRequestSchema().dumps(d)
 
