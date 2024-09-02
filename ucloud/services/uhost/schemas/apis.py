@@ -53,6 +53,7 @@ class CreateCustomImageRequestSchema(schema.RequestSchema):
     """CreateCustomImage - 从指定UHost实例，生成自定义镜像。"""
 
     fields = {
+        "DataUDiskIds": fields.List(fields.Str()),
         "ImageDescription": fields.Str(
             required=False, dump_to="ImageDescription"
         ),
@@ -68,6 +69,9 @@ class CreateCustomImageResponseSchema(schema.ResponseSchema):
     """CreateCustomImage - 从指定UHost实例，生成自定义镜像。"""
 
     fields = {
+        "DataSnapshotIds": fields.List(
+            fields.Str(), required=False, load_from="DataSnapshotIds"
+        ),
         "ImageId": fields.Str(required=False, load_from="ImageId"),
     }
 

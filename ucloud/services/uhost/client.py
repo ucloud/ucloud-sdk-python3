@@ -59,11 +59,13 @@ class UHostClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ImageName** (str) - (Required) 镜像名称
         - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance <https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html>`_
+        - **DataUDiskIds** (list) - 【数组】关联的云盘数据盘id列表。注意: 云盘数据盘需要开启快照服务
         - **ImageDescription** (str) - 镜像描述
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
+        - **DataSnapshotIds** (list) - 云盘数据盘快照id列表
         - **ImageId** (str) - 镜像Id
 
         """
@@ -459,6 +461,7 @@ class UHostClient(Client):
 
         **UHostImageSet**
         - **CreateTime** (int) - 创建时间，格式为Unix时间戳
+        - **DataSnapshotIds** (list) - 关联的云盘数据盘快照Id列表
         - **Features** (list) - 特殊状态标识，目前包含NetEnhnced（网络增强1.0）, NetEnhanced_Ultra（网络增强2.0）, NetEnhanced_Extreme（网络增强3.0）, HotPlug(热升级), GPU（GPU镜像）,CloudInit, IPv6（支持IPv6网络）,RssdAttachable（支持RSSD云盘）,Vgpu_AMD（支持AMD的vgpu）,Vgpu_NVIDIA（支持NVIDIA的vgpu）,Aarch64_Type（支持arm64架构）
         - **FuncType** (str) - 镜像归属,枚举值:["gpu","app","uhost"]。"gpu": 对gpu进行处理过的行业镜像；"app"：轻量云主机专用的镜像；"uhost"：云主机镜像市场的行业镜像
         - **ImageDescription** (str) - 镜像描述

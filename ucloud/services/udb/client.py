@@ -321,6 +321,7 @@ class UDBClient(Client):
         - **DBSubVersion** (str) - mysql小版本号，支持指定小版本创建
         - **DisableSemisync** (bool) - 是否开启异步高可用，默认不填，可置为true
         - **InstanceMode** (str) - UDB实例模式类型, 可选值如下: "Normal": 普通版UDB实例 "HA": 高可用版UDB实例 默认是"Normal"
+        - **InstanceType** (str) - UDB数据库机型: "SATA_SSD": "SSD机型" , "PCIE_SSD": "SSD高性能机型" , "Normal_Volume": "标准大容量机型", "SATA_SSD_Volume": "SSD大容量机型" , "PCIE_SSD_Volume": "SSD高性能大容量机型", "NVMe_SSD": "快杰机型"
         - **MachineType** (str) - 规格类型ID,当SpecificationType为1时有效
         - **MemoryLimit** (int) - 内存限制(MB)，目前支持以下几档 2000M/4000M/ 6000M/8000M/12000M/16000M/ 24000M/32000M/48000M/ 64000M/96000M/128000M/192000M/256000M/320000M
         - **Quantity** (int) - 购买时长，默认值1
@@ -777,7 +778,7 @@ class UDBClient(Client):
         - **ReplicationDelaySeconds** (int) -
         - **Role** (str) -
         - **SSDType** (str) -
-        - **SpecificationType** (str) -
+        - **SpecificationType** (int) -
         - **SrcDBId** (str) -
         - **State** (str) -
         - **SubnetId** (str) -
