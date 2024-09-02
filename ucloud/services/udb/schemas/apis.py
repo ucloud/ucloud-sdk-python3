@@ -306,9 +306,7 @@ class CreateUDBInstanceRequestSchema(schema.RequestSchema):
             required=False, dump_to="HAArch"
         ),  # Deprecated, will be removed at 1.0
         "InstanceMode": fields.Str(required=False, dump_to="InstanceMode"),
-        "InstanceType": fields.Str(
-            required=False, dump_to="InstanceType"
-        ),  # Deprecated, will be removed at 1.0
+        "InstanceType": fields.Str(required=False, dump_to="InstanceType"),
         "MachineType": fields.Str(required=False, dump_to="MachineType"),
         "MemoryLimit": fields.Int(required=False, dump_to="MemoryLimit"),
         "Name": fields.Str(required=True, dump_to="Name"),
