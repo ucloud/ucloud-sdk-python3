@@ -55,6 +55,22 @@ class UnetBandwidthUsageEIPSetSchema(schema.ResponseSchema):
     }
 
 
+class ShareBandwidthSetSchema(schema.ResponseSchema):
+    """ShareBandwidthSet - DescribeEIP"""
+
+    fields = {
+        "ShareBandwidth": fields.Int(
+            required=False, load_from="ShareBandwidth"
+        ),
+        "ShareBandwidthId": fields.Str(
+            required=False, load_from="ShareBandwidthId"
+        ),
+        "ShareBandwidthName": fields.Str(
+            required=False, load_from="ShareBandwidthName"
+        ),
+    }
+
+
 class UnetEIPResourceSetSchema(schema.ResponseSchema):
     """UnetEIPResourceSet - DescribeEIP"""
 
@@ -83,22 +99,6 @@ class EIPBindingSchema(schema.ResponseSchema):
         "EIP": fields.Str(required=False, load_from="EIP"),
         "PrivateIP": fields.Str(required=False, load_from="PrivateIP"),
         "PrivateIPType": fields.Str(required=False, load_from="PrivateIPType"),
-    }
-
-
-class ShareBandwidthSetSchema(schema.ResponseSchema):
-    """ShareBandwidthSet - DescribeEIP"""
-
-    fields = {
-        "ShareBandwidth": fields.Int(
-            required=False, load_from="ShareBandwidth"
-        ),
-        "ShareBandwidthId": fields.Str(
-            required=False, load_from="ShareBandwidthId"
-        ),
-        "ShareBandwidthName": fields.Str(
-            required=False, load_from="ShareBandwidthName"
-        ),
     }
 
 

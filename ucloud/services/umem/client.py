@@ -656,16 +656,20 @@ class UMemClient(Client):
         **Response**
 
         - **DataSet** (list) - 见 **UMemBlockInfo** 模型定义
+        - **ReadMode** (str) - 集群读写分离策略。 枚举值[ "Custom": 用户自定义节点权重， "Uniform": 包括主节点在内的所有节点平均读请求， "ReadOnly": 读请求均分至只读节点]
 
         **Response Model**
 
         **UMemBlockInfo**
         - **BlockId** (str) - 分片id
+        - **BlockName** (str) - 分片名称
         - **BlockPort** (int) - 分片端口
+        - **BlockReadWeight** (int) - 分片读权重
         - **BlockSize** (int) - 容量单位GB
         - **BlockSlotBegin** (int) - 分片维护的键槽起始值
         - **BlockSlotEnd** (int) - 分片维护的键槽结束值
-        - **BlockState** (str) - 实例状态 Starting // 创建中 Creating // 初始化中 CreateFail // 创建失败 Fail // 创建失败 Deleting // 删除中 DeleteFail // 删除失败 Running // 运行 Resizing // 容量调整中 ResizeFail // 容量调整失败 Configing // 配置中 ConfigFail // 配置失败Restarting // 重启中 SetPasswordFail //设置密码失败
+        - **BlockState** (str) - 实例状态 Starting // 创建中 Creating // 初始化中 CreateFail // 创建失败 Fail // 创建失败 Deleting // 删除中 DeleteFail // 删除失败 Running // 运行 Resizing // 容量调整中 ResizeFail // 容量调整失败 Configing // 配置中 ConfigFail // 配置失败Restarting // 重启中 SetPasswordFail //设置密码失败UpgradeMemInit  //任务初始化
+        - **BlockType** (str) - 分片类型，master 或者 slave
         - **BlockUsedSize** (int) - 使用量单位MB
         - **BlockVip** (str) - 分片ip
 

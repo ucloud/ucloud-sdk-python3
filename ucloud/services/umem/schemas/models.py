@@ -117,11 +117,16 @@ class UMemBlockInfoSchema(schema.ResponseSchema):
 
     fields = {
         "BlockId": fields.Str(required=True, load_from="BlockId"),
+        "BlockName": fields.Str(required=False, load_from="BlockName"),
         "BlockPort": fields.Int(required=True, load_from="BlockPort"),
+        "BlockReadWeight": fields.Int(
+            required=False, load_from="BlockReadWeight"
+        ),
         "BlockSize": fields.Int(required=True, load_from="BlockSize"),
         "BlockSlotBegin": fields.Int(required=True, load_from="BlockSlotBegin"),
         "BlockSlotEnd": fields.Int(required=True, load_from="BlockSlotEnd"),
         "BlockState": fields.Str(required=True, load_from="BlockState"),
+        "BlockType": fields.Str(required=False, load_from="BlockType"),
         "BlockUsedSize": fields.Int(required=False, load_from="BlockUsedSize"),
         "BlockVip": fields.Str(required=False, load_from="BlockVip"),
     }
