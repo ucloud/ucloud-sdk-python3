@@ -1219,7 +1219,10 @@ class ResetUHostInstancePasswordRequestSchema(schema.RequestSchema):
     """ResetUHostInstancePassword - 重置UHost实例的管理员密码。"""
 
     fields = {
-        "Password": fields.Base64(required=True, dump_to="Password"),
+        "AutoStart": fields.Bool(required=False, dump_to="AutoStart"),
+        "KeyPairId": fields.Str(required=False, dump_to="KeyPairId"),
+        "LoginMode": fields.Str(required=False, dump_to="LoginMode"),
+        "Password": fields.Base64(required=False, dump_to="Password"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "UHostId": fields.Str(required=True, dump_to="UHostId"),
@@ -1279,6 +1282,7 @@ class ResizeUHostInstanceRequestSchema(schema.RequestSchema):
     """ResizeUHostInstance - 修改指定UHost实例的资源配置，如CPU核心数，内存容量大小，网络增强等。可选配置范围请参考[[api:uhost-api:uhost_type|云主机机型说明]]。"""
 
     fields = {
+        "AutoStart": fields.Bool(required=False, dump_to="AutoStart"),
         "BootDiskSpace": fields.Int(
             required=False, dump_to="BootDiskSpace"
         ),  # Deprecated, will be removed at 1.0

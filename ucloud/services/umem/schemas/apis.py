@@ -628,6 +628,7 @@ class DescribeUMemUpgradePriceRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "ProxyId": fields.Str(required=False, dump_to="ProxyId"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "ReplicaSize": fields.Int(required=False, dump_to="ReplicaSize"),
         "Size": fields.Int(required=True, dump_to="Size"),
         "SpaceId": fields.Str(required=True, dump_to="SpaceId"),
         "Type": fields.Str(required=True, dump_to="Type"),
@@ -1172,6 +1173,39 @@ class ModifyURedisGroupPasswordRequestSchema(schema.RequestSchema):
 
 class ModifyURedisGroupPasswordResponseSchema(schema.ResponseSchema):
     """ModifyURedisGroupPassword - 修改主备密码/重置密码"""
+
+    fields = {}
+
+
+"""
+API: RegisterUMemDefrag
+
+动态开关redis碎片整理选项
+"""
+
+
+class RegisterUMemDefragRequestSchema(schema.RequestSchema):
+    """RegisterUMemDefrag - 动态开关redis碎片整理选项"""
+
+    fields = {
+        "EndHour": fields.Int(required=False, dump_to="EndHour"),
+        "EndMin": fields.Int(required=False, dump_to="EndMin"),
+        "EndTime": fields.Int(required=False, dump_to="EndTime"),
+        "FragSize": fields.Int(required=False, dump_to="FragSize"),
+        "FragTime": fields.Int(required=False, dump_to="FragTime"),
+        "IsUnion": fields.Bool(required=False, dump_to="IsUnion"),
+        "OperateType": fields.Str(required=False, dump_to="OperateType"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
+        "StartHour": fields.Int(required=False, dump_to="StartHour"),
+        "StartMin": fields.Int(required=False, dump_to="StartMin"),
+        "StartTime": fields.Int(required=False, dump_to="StartTime"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class RegisterUMemDefragResponseSchema(schema.ResponseSchema):
+    """RegisterUMemDefrag - 动态开关redis碎片整理选项"""
 
     fields = {}
 

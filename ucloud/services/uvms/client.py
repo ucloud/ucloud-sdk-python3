@@ -13,6 +13,74 @@ class UVMSClient(Client):
     ):
         super(UVMSClient, self).__init__(config, transport, middleware, logger)
 
+    def get_uvms_send_record(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUVMSSendRecord - 获取语音发送记录
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **BrevityCode** (str) - 国际码，国内CN
+        - **CalledCityCode** (str) - 被叫城市编码
+        - **CalledOperatorCode** (str) - 被叫运营商 cmcc中国移动，cucc中国联通,ctcc中国电信
+        - **CallingCityCode** (str) - 主叫城市编码
+        - **EndTime** (int) - 结束时间-拨打时间，默认当前
+        - **ExcludeBrevityCode** (str) - 排除国际码
+        - **FuzzySearch** (str) - 模糊搜索，支持 主叫号码和被叫号码
+        - **NumPerPage** (int) - 每页数量，默认10
+        - **OrderBy** (str) - call_start_time(拨打时间)/receive_time（回执时间）
+        - **OrderType** (str) - asc\desc
+        - **Page** (int) - 页码，默认0
+        - **PhoneNumber** (str) - 被叫号码，精确查询
+        - **Purpose** (int) - 目标1验证码2通知3营销
+        - **StartTime** (int) - 开始时间-拨打时间，默认最近7天
+        - **TaskNo** (str) - 任务编号
+        - **TemplateId** (str) - 目标ID
+
+        **Response**
+
+        - **Data** (list) - 见 **SendRecordItem** 模型定义
+        - **Total** (int) - 总数
+
+        **Response Model**
+
+        **SendRecordItem**
+        - **BillPeriod** (int) - 计费周期（秒）
+        - **BillSecond** (int) - 计费时长（秒）
+        - **BrevityCode** (str) - 国际码
+        - **CallEndTime** (int) - 呼叫结束时间(毫秒时间戳)
+        - **CallStartTime** (int) - 呼叫开始时间(毫秒时间戳)
+        - **CalledCityCode** (str) - 被叫所属城市码
+        - **CalledOperatorCode** (str) - 被叫供应商码 cmcc中国移动，cucc中国联通,ctcc中国电信
+        - **CallingCityCode** (str) - 主叫所属城市码
+        - **ChannelId** (str) - 通道ID
+        - **CountryCode** (str) - 国家码
+        - **Duration** (int) - 呼叫持续时间
+        - **GroupType** (int) - 1随机号码组2专属号码组
+        - **Phone** (str) - 被叫号码
+        - **PreCost** (int) - 预扣量
+        - **Purpose** (int) - 目标1验证码2通知3营销
+        - **ReceiptDesc** (str) - 回执描述
+        - **ReceiptResult** (int) - 回执结果1成功2失败3未知
+        - **ReceiveTime** (int) - 回执时间
+        - **ShowNumber** (str) - 主叫号码，如果是随机，可能为空
+        - **SubmitTime** (int) - 客户提交时间
+        - **TaskNo** (str) - 任务编号
+        - **TemplateId** (str) - 模板ID
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUVMSSendRecordRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUVMSSendRecord", d, **kwargs)
+        return apis.GetUVMSSendRecordResponseSchema().loads(resp)
+
     def send_uvms_message(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
