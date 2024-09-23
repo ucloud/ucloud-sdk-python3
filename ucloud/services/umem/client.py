@@ -801,6 +801,7 @@ class UMemClient(Client):
         - **IsSplit** (str) - 如果是拆分按钮查询价格就填 true, 否则就填 false,默认为 false
         - **NewCPU** (int) - 代理升级后CPU核数
         - **ProxyId** (str) - 代理id
+        - **ReplicaSize** (int) - 新增读写分离节点容量大小
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
@@ -1486,6 +1487,44 @@ class UMemClient(Client):
 
         resp = self.invoke("ModifyURedisGroupPassword", d, **kwargs)
         return apis.ModifyURedisGroupPasswordResponseSchema().loads(resp)
+
+    def register_umem_defrag(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """RegisterUMemDefrag - 动态开关redis碎片整理选项
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ResourceId** (str) - (Required) 资源ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **EndHour** (int) - 结束整点数值（分布式实例该参数无效）。
+        - **EndMin** (int) - 结束分钟数（分布式实例该参数无效）。
+        - **EndTime** (int) - 关闭时间戳
+        - **FragSize** (int) - 碎片整理阈值，范围为 100-200（分布式实例该参数无效）。
+        - **FragTime** (int) - 任务时间周期，单位为分钟。
+        - **IsUnion** (bool) - AND逻辑字段，表示 阈值和时间段都满足（分布式实例该参数无效）。
+        - **OperateType** (str) - 操作类型：“Once”： 表示单次执行， “Open”：表示开启策略“Close”:  表示关闭策略（分布式实例只支持Once）。
+        - **StartHour** (int) - 开始整点数值（分布式实例该参数无效）。
+        - **StartMin** (int) - 开始分钟数（分布式实例该参数无效）。
+        - **StartTime** (int) - 开始时间戳
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.RegisterUMemDefragRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("RegisterUMemDefrag", d, **kwargs)
+        return apis.RegisterUMemDefragResponseSchema().loads(resp)
 
     def remove_ud_redis_data(
         self, req: typing.Optional[dict] = None, **kwargs

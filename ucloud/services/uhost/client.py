@@ -1348,8 +1348,11 @@ class UHostClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **Password** (str) - (Required) UHost新密码（密码格式使用BASE64编码）
         - **UHostId** (str) - (Required) UHost实例ID
+        - **AutoStart** (bool) - 修改密码结束后是否立即开机，默认为false， 如果设置为true，则修改密码成功后立即开机； 抢占式和后付费云主机暂不支持当前功能；
+        - **KeyPairId** (str) - KeypairId 密钥对ID，LoginMode为KeyPair时此项必须。
+        - **LoginMode** (str) - 主机登陆模式。密码（默认选项）: Password，密钥 KeyPair。
+        - **Password** (str) - UHost新密码（密码格式使用BASE64编码）
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
@@ -1410,6 +1413,7 @@ class UHostClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance <https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html>`_
+        - **AutoStart** (bool) - 扩容结束后是否立即开机，默认为false，如果设置为true，则扩容成功后立即开机；抢占式和后付费云主机暂不支持当前功能；
         - **CPU** (int) - 虚拟CPU核数。可选参数：1-240（可选范围与UHostType相关）。默认值为当前实例的CPU核数
         - **GPU** (int) - GPU卡核心数。仅GPU机型支持此字段（可选范围与MachineType+GpuType相关）
         - **Memory** (int) - 内存大小。单位：MB。范围 ：[1024, 1966080]，取值为1024的倍数（可选范围与UHostType相关）。默认值为当前实例的内存大小。

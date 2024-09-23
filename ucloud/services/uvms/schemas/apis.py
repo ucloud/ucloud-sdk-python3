@@ -9,6 +9,54 @@ from ucloud.services.uvms.schemas import models
 
 
 """
+API: GetUVMSSendRecord
+
+获取语音发送记录
+"""
+
+
+class GetUVMSSendRecordRequestSchema(schema.RequestSchema):
+    """GetUVMSSendRecord - 获取语音发送记录"""
+
+    fields = {
+        "BrevityCode": fields.Str(required=False, dump_to="BrevityCode"),
+        "CalledCityCode": fields.Str(required=False, dump_to="CalledCityCode"),
+        "CalledOperatorCode": fields.Str(
+            required=False, dump_to="CalledOperatorCode"
+        ),
+        "CallingCityCode": fields.Str(
+            required=False, dump_to="CallingCityCode"
+        ),
+        "EndTime": fields.Int(required=False, dump_to="EndTime"),
+        "ExcludeBrevityCode": fields.Str(
+            required=False, dump_to="ExcludeBrevityCode"
+        ),
+        "FuzzySearch": fields.Str(required=False, dump_to="FuzzySearch"),
+        "NumPerPage": fields.Int(required=False, dump_to="NumPerPage"),
+        "OrderBy": fields.Str(required=False, dump_to="OrderBy"),
+        "OrderType": fields.Str(required=False, dump_to="OrderType"),
+        "Page": fields.Int(required=False, dump_to="Page"),
+        "PhoneNumber": fields.Str(required=False, dump_to="PhoneNumber"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Purpose": fields.Int(required=False, dump_to="Purpose"),
+        "StartTime": fields.Int(required=False, dump_to="StartTime"),
+        "TaskNo": fields.Str(required=False, dump_to="TaskNo"),
+        "TemplateId": fields.Str(required=False, dump_to="TemplateId"),
+    }
+
+
+class GetUVMSSendRecordResponseSchema(schema.ResponseSchema):
+    """GetUVMSSendRecord - 获取语音发送记录"""
+
+    fields = {
+        "Data": fields.List(
+            models.SendRecordItemSchema(), required=False, load_from="Data"
+        ),
+        "Total": fields.Int(required=False, load_from="Total"),
+    }
+
+
+"""
 API: SendUVMSMessage
 
 向指定号码拨打电话
