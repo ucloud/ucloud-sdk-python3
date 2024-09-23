@@ -535,6 +535,7 @@ class DescribeUMemBlockInfoResponseSchema(schema.ResponseSchema):
         "DataSet": fields.List(
             models.UMemBlockInfoSchema(), required=False, load_from="DataSet"
         ),
+        "ReadMode": fields.Str(required=False, load_from="ReadMode"),
     }
 
 
