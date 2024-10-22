@@ -700,6 +700,7 @@ class UMemClient(Client):
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BlockCnt** (int) - umem 分片个数
         - **ChargeType** (str) - Year， Month， Dynamic 如果不指定，则一次性获取三种计费
+        - **ClusterMode** (str) - 数据库类型，RWMode为读写分离
         - **HighPerformance** (bool) - 实例类型是否为性能增强型。默认为false，或者不填，true为性能增强型。
         - **ProxySize** (int) - umem 代理CPU核心数
         - **Quantity** (int) - 购买UMem的时长，默认值为1

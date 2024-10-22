@@ -552,6 +552,7 @@ class DescribeUMemPriceRequestSchema(schema.RequestSchema):
     fields = {
         "BlockCnt": fields.Int(required=False, dump_to="BlockCnt"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "ClusterMode": fields.Str(required=False, dump_to="ClusterMode"),
         "HighPerformance": fields.Bool(
             required=False, dump_to="HighPerformance"
         ),
