@@ -151,9 +151,10 @@ class UMemClient(Client):
         - **Name** (str) - (Required) 空间名称,长度(6<=size<=63)
         - **Size** (int) - (Required) 内存大小, 单位:GB, 范围[1~1024]
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **BackupId** (str) - 备份ID，选择从该备份新建集群
         - **BlockCnt** (int) - 分片个数
         - **ChargeType** (str) - Year , Month, Dynamic 默认: Month
-        - **ClusterMode** (str) - 【待废弃】是否是cluster模式（参数为cluster创建redis cluster，其他参数或者不传该参数仍然创建老版本分布式）
+        - **ClusterMode** (str) - "RWMode"：表示创建读写分离版本;其他为创建普通版本
         - **CouponId** (str) - 使用的代金券id
         - **HighPerformance** (bool) - 是否创建性能增强性。默认为false，或者不填，填true为性能增强型。
         - **Password** (str) - URedis密码。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定密码。密码需使用base64进行编码，举例如下：# echo -n Password1 | base64UGFzc3dvcmQx。
@@ -163,6 +164,7 @@ class UMemClient(Client):
         - **ProxySize** (int) - 分布式代理CPU核数，不填或者传0时默认不创建代理
         - **Quantity** (int) - 购买时长 默认: 1
         - **SlaveZone** (str) - 跨机房UDRedis，slave所在可用区（必须和Zone在同一Region，且不可相同）
+        - **SpaceId** (str) - 集群ID，选择某个备份创建时，需要填写源集群ID
         - **SubnetId** (str) - 子网ID
         - **Tag** (str) - 业务组名称
         - **Type** (str) - 空间类型:single(无热备),double(热备)(默认: double)
@@ -282,7 +284,7 @@ class UMemClient(Client):
         - **ChargeType** (str) - 计费模式，Year , Month, Dynamic 默认: Month
         - **ConfigId** (str) - 配置ID,目前支持 4.0版本配置ID:"6c9298a3-9d7f-428c-b1d0-e87ab3b8a1ea", 5.0版本配置ID:"3cdeeb90-dcbf-46e8-95cd-a05d8860a22c",6.0版本配置ID:"1d990520-aac8-4e0f-9384-f58611e8eb28",7.0版本配置ID:"48dcf534-db41-11ec-a1a6-52670028d520",默认版本4.0,从备份创建为必传项
         - **CouponId** (str) - 代金券ID
-        - **EnableIpV6** (bool) - 是否创建使用ipv6 资源， 默认为false， 或者不填， 创建ipv6为true
+        - **EnableIpV6** (bool) - 【即将下线,请勿使用】是否创建使用ipv6 资源， 默认为false， 或者不填， 创建ipv6为true
         - **HighPerformance** (bool) - 是否创建高性能Redis， 默认为false， 或者不填， 创建高性能为true
         - **MasterGroupId** (str) - Master Redis Group的ID，创建只读Slave时，必须填写
         - **Password** (str) - 初始化密码,需要 base64 编码
@@ -700,6 +702,7 @@ class UMemClient(Client):
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BlockCnt** (int) - umem 分片个数
         - **ChargeType** (str) - Year， Month， Dynamic 如果不指定，则一次性获取三种计费
+        - **ClusterMode** (str) - 数据库类型，RWMode为读写分离
         - **HighPerformance** (bool) - 实例类型是否为性能增强型。默认为false，或者不填，true为性能增强型。
         - **ProxySize** (int) - umem 代理CPU核心数
         - **Quantity** (int) - 购买UMem的时长，默认值为1
@@ -1007,18 +1010,18 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BackupId** (str) - (Required) 备份ID
-        - **GroupId** (str) - 实例名称
+        - **GroupId** (str) - 实例ID
         - **RegionFlag** (bool) - 是否是跨机房URedis(默认false)
         - **SlaveZone** (str) - 跨机房URedis，slave所在可用区（必须和Zone在同一Region，且不可相同）
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
         - **BackupPath** (str) - 备份文件公网的地址
-        - **BackupURL** (str) - 备份文件公网的地址
+        - **BackupURL** (str) - [即将下线,请使用BackupPath]
 
         """
         # build request
@@ -1109,9 +1112,10 @@ class UMemClient(Client):
         - **CreateTime** (int) - 创建时间 (UNIX时间戳)
         - **ExpireTime** (int) - 过期时间 (UNIX时间戳)
         - **GroupId** (str) - 组ID
-        - **GroupName** (str) - 组名称
+        - **GroupName** (str) - [即将下线,请使用Name] 组名称
         - **HighAvailability** (str) - 是否开启高可用,enable,disable
-        - **MemorySize** (int) - 容量单位GB
+        - **IsHighPerformance** (bool) - 是否是高性能Redis， true表示是； false表示否
+        - **MemorySize** (int) - [即将下线,请使用Size] 容量单位GB
         - **ModifyTime** (int) - 修改时间 (UNIX时间戳)
         - **Name** (str) - 组名称
         - **Port** (int) - 节点分配的服务端口

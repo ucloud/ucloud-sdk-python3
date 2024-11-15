@@ -20,6 +20,16 @@ class KeyPairSchema(schema.ResponseSchema):
     }
 
 
+class FeatureModesSchema(schema.ResponseSchema):
+    """FeatureModes - 可以支持的模式类别"""
+
+    fields = {
+        "MinimalCpuPlatform": fields.List(fields.Str()),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "RelatedToImageFeature": fields.List(fields.Str()),
+    }
+
+
 class CollectionSchema(schema.ResponseSchema):
     """Collection - CPU和内存可支持的规格"""
 
@@ -30,13 +40,14 @@ class CollectionSchema(schema.ResponseSchema):
     }
 
 
-class FeatureModesSchema(schema.ResponseSchema):
-    """FeatureModes - 可以支持的模式类别"""
+class BootDiskInfoSchema(schema.ResponseSchema):
+    """BootDiskInfo - 系统盘信息"""
 
     fields = {
-        "MinimalCpuPlatform": fields.List(fields.Str()),
+        "Features": fields.List(fields.Str()),
+        "InstantResize": fields.Bool(required=False, load_from="InstantResize"),
+        "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
         "Name": fields.Str(required=False, load_from="Name"),
-        "RelatedToImageFeature": fields.List(fields.Str()),
     }
 
 
@@ -51,13 +62,20 @@ class DataDiskInfoSchema(schema.ResponseSchema):
     }
 
 
-class BootDiskInfoSchema(schema.ResponseSchema):
-    """BootDiskInfo - 系统盘信息"""
+class GraphicsMemorySchema(schema.ResponseSchema):
+    """GraphicsMemory - GPU的显存指标"""
 
     fields = {
-        "Features": fields.List(fields.Str()),
-        "InstantResize": fields.Bool(required=False, load_from="InstantResize"),
-        "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
+        "Rate": fields.Int(required=False, load_from="Rate"),
+        "Value": fields.Int(required=False, load_from="Value"),
+    }
+
+
+class FeaturesSchema(schema.ResponseSchema):
+    """Features - 虚机可支持的特性"""
+
+    fields = {
+        "Modes": fields.List(FeatureModesSchema()),
         "Name": fields.Str(required=False, load_from="Name"),
     }
 
@@ -77,24 +95,6 @@ class MachineSizesSchema(schema.ResponseSchema):
     fields = {
         "Collection": fields.List(CollectionSchema()),
         "Gpu": fields.Int(required=False, load_from="Gpu"),
-    }
-
-
-class GraphicsMemorySchema(schema.ResponseSchema):
-    """GraphicsMemory - GPU的显存指标"""
-
-    fields = {
-        "Rate": fields.Int(required=False, load_from="Rate"),
-        "Value": fields.Int(required=False, load_from="Value"),
-    }
-
-
-class FeaturesSchema(schema.ResponseSchema):
-    """Features - 虚机可支持的特性"""
-
-    fields = {
-        "Modes": fields.List(FeatureModesSchema()),
-        "Name": fields.Str(required=False, load_from="Name"),
     }
 
 
@@ -135,6 +135,18 @@ class AvailableInstanceTypesSchema(schema.ResponseSchema):
     }
 
 
+class BasePriceSetSchema(schema.ResponseSchema):
+    """BasePriceSet - 价格信息"""
+
+    fields = {
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "OriginalPrice": fields.Float(
+            required=False, load_from="OriginalPrice"
+        ),
+        "Price": fields.Float(required=False, load_from="Price"),
+    }
+
+
 class UHostImageSetSchema(schema.ResponseSchema):
     """UHostImageSet - DescribeImage"""
 
@@ -158,6 +170,7 @@ class UHostImageSetSchema(schema.ResponseSchema):
         "MinimalCPU": fields.Str(required=False, load_from="MinimalCPU"),
         "OsName": fields.Str(required=False, load_from="OsName"),
         "OsType": fields.Str(required=False, load_from="OsType"),
+        "PriceSet": fields.List(BasePriceSetSchema()),
         "PrimarySoftware": fields.Str(
             required=False, load_from="PrimarySoftware"
         ),
@@ -186,6 +199,16 @@ class IsolationGroupSchema(schema.ResponseSchema):
         "GroupName": fields.Str(required=False, load_from="GroupName"),
         "Remark": fields.Str(required=False, load_from="Remark"),
         "SpreadInfoSet": fields.List(SpreadInfoSchema()),
+    }
+
+
+class UDSetUDHostAttributeSchema(schema.ResponseSchema):
+    """UDSetUDHostAttribute - 私有专区对应的宿主机属性"""
+
+    fields = {
+        "HostBinding": fields.Bool(required=False, load_from="HostBinding"),
+        "UDHostId": fields.Str(required=False, load_from="UDHostId"),
+        "UDSetId": fields.Str(required=False, load_from="UDSetId"),
     }
 
 
@@ -239,16 +262,6 @@ class SpotAttributeSchema(schema.ResponseSchema):
 
     fields = {
         "RecycleTime": fields.Int(required=False, load_from="RecycleTime"),
-    }
-
-
-class UDSetUDHostAttributeSchema(schema.ResponseSchema):
-    """UDSetUDHostAttribute - 私有专区对应的宿主机属性"""
-
-    fields = {
-        "HostBinding": fields.Bool(required=False, load_from="HostBinding"),
-        "UDHostId": fields.Str(required=False, load_from="UDHostId"),
-        "UDSetId": fields.Str(required=False, load_from="UDSetId"),
     }
 
 
@@ -387,16 +400,4 @@ class UHostRefundPriceSetSchema(schema.ResponseSchema):
         "Message": fields.Str(required=True, load_from="Message"),
         "RefundPrice": fields.Float(required=True, load_from="RefundPrice"),
         "UHostId": fields.Str(required=True, load_from="UHostId"),
-    }
-
-
-class BasePriceSetSchema(schema.ResponseSchema):
-    """BasePriceSet - 价格信息"""
-
-    fields = {
-        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "OriginalPrice": fields.Float(
-            required=False, load_from="OriginalPrice"
-        ),
-        "Price": fields.Float(required=False, load_from="Price"),
     }

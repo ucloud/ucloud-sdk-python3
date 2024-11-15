@@ -25,7 +25,7 @@ class UVMSClient(Client):
         - **CalledCityCode** (str) - 被叫城市编码
         - **CalledOperatorCode** (str) - 被叫运营商 cmcc中国移动，cucc中国联通,ctcc中国电信
         - **CallingCityCode** (str) - 主叫城市编码
-        - **EndTime** (int) - 结束时间-拨打时间，默认当前
+        - **EndTime** (float) - 结束时间-拨打时间，时间戳（秒），默认当前
         - **ExcludeBrevityCode** (str) - 排除国际码
         - **FuzzySearch** (str) - 模糊搜索，支持 主叫号码和被叫号码
         - **NumPerPage** (int) - 每页数量，默认10
@@ -34,7 +34,7 @@ class UVMSClient(Client):
         - **Page** (int) - 页码，默认0
         - **PhoneNumber** (str) - 被叫号码，精确查询
         - **Purpose** (int) - 目标1验证码2通知3营销
-        - **StartTime** (int) - 开始时间-拨打时间，默认最近7天
+        - **StartTime** (float) - 开始时间-拨打时间，时间戳（秒），默认最近7天
         - **TaskNo** (str) - 任务编号
         - **TemplateId** (str) - 目标ID
 
@@ -49,8 +49,8 @@ class UVMSClient(Client):
         - **BillPeriod** (int) - 计费周期（秒）
         - **BillSecond** (int) - 计费时长（秒）
         - **BrevityCode** (str) - 国际码
-        - **CallEndTime** (int) - 呼叫结束时间(毫秒时间戳)
-        - **CallStartTime** (int) - 呼叫开始时间(毫秒时间戳)
+        - **CallEndTime** (float) - 呼叫结束时间(毫秒时间戳)
+        - **CallStartTime** (float) - 呼叫开始时间(毫秒时间戳)
         - **CalledCityCode** (str) - 被叫所属城市码
         - **CalledOperatorCode** (str) - 被叫供应商码 cmcc中国移动，cucc中国联通,ctcc中国电信
         - **CallingCityCode** (str) - 主叫所属城市码
@@ -63,9 +63,9 @@ class UVMSClient(Client):
         - **Purpose** (int) - 目标1验证码2通知3营销
         - **ReceiptDesc** (str) - 回执描述
         - **ReceiptResult** (int) - 回执结果1成功2失败3未知
-        - **ReceiveTime** (int) - 回执时间
+        - **ReceiveTime** (float) - 回执时间
         - **ShowNumber** (str) - 主叫号码，如果是随机，可能为空
-        - **SubmitTime** (int) - 客户提交时间
+        - **SubmitTime** (float) - 客户提交时间
         - **TaskNo** (str) - 任务编号
         - **TemplateId** (str) - 模板ID
 

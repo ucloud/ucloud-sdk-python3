@@ -64,6 +64,7 @@ class UK8SClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterId** (str) - (Required) 集群ID
         - **NodeGroupName** (str) - (Required) 节点池名字
+        - **BootDiskSize** (int) - 系统盘大小，单位GB。默认40。范围：[40, 500]。注意SSD本地盘无法调整。
         - **BootDiskType** (str) - 磁盘类型
         - **CPU** (int) - GPU卡核心数。仅GPU机型支持此字段（可选范围与MachineType+GpuType相关）
         - **ChargeType** (str) - 计费模式
@@ -75,6 +76,7 @@ class UK8SClient(Client):
         - **MachineType** (str) - 云主机机型。枚举值["N", "C", "G", "O", "OS"]。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
         - **Mem** (int) - 内存大小。单位：MB
         - **MinimalCpuPlatform** (str) - 最低cpu平台，枚举值["Intel/Auto", "Intel/IvyBridge", "Intel/Haswell", "Intel/Broadwell", "Intel/Skylake", "Intel/Cascadelake"；"Intel/CascadelakeR"; “Amd/Epyc2”,"Amd/Auto"],默认值是"Intel/Auto"
+        - **SubnetId** (str) - 子网 ID。默认为集群创建时填写的子网ID，也可以填写集群同VPC内的子网ID。
         - **Tag** (str) - 业务组
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
@@ -158,6 +160,7 @@ class UK8SClient(Client):
         - **Mem** (int) - (Required) 内存大小。单位：MB。范围 ：[4096, 262144]，取值为1024的倍数（可选范围参考控制台）。默认值：8192
         - **Password** (str) - (Required) Node节点密码。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定密码。密码需使用base64进行编码，如下：# echo -n Password1 | base64
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **BootDiskSize** (int) - 系统盘大小，单位GB。默认40。范围：[40, 500]。注意SSD本地盘无法调整。
         - **BootDiskType** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。默认为SSD云盘
         - **DataDiskSize** (int) - 数据磁盘大小，单位GB。默认0。范围 ：[20, 1000]
         - **DataDiskType** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。默认为SSD云盘
@@ -170,13 +173,17 @@ class UK8SClient(Client):
         - **Labels** (str) - Node节点标签。key=value形式,多组用”,“隔开，最多5组。 如env=pro,type=game
         - **MachineType** (str) - 云主机机型。枚举值["N", "C", "G", "O", "OS"]。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
         - **MaxPods** (int) - 默认110，生产环境建议小于等于110。
-        - **MinmalCpuPlatform** (str) - 最低cpu平台，枚举值["Intel/Auto", "Intel/IvyBridge", "Intel/Haswell", "Intel/Broadwell", "Intel/Skylake", "Intel/Cascadelake"；"Intel/CascadelakeR"; “Amd/Epyc2”,"Amd/Auto"],默认值是"Intel/Auto"
+        - **MinimalCpuPlatform** (str) - 最低cpu平台，枚举值["Intel/Auto", "Intel/IvyBridge", "Intel/Haswell", "Intel/Broadwell", "Intel/Skylake", "Intel/Cascadelake"；"Intel/CascadelakeR"; “Amd/Epyc2”,"Amd/Auto"],默认值是"Intel/Auto"
+        - **NodeGroupId** (str) - 节点池id
         - **Quantity** (int) - 购买时长。默认: 1。按小时购买(Dynamic)时无需此参数。 月付时，此参数传0，代表了购买至月末。
         - **SubnetId** (str) - 子网 ID。默认为集群创建时填写的子网ID，也可以填写集群同VPC内的子网ID。
+        - **Tag** (str) - 业务组
+        - **Taints** (str) - Node节点污点，形式为key=value:effect，多组taints用”,“隔开,最多支持五组。
         - **UserData** (str) - 用户自定义数据。当镜像支持Cloud-init Feature时可填写此字段。注意：1、总数据量大小不超过 16K；2、使用base64编码。
 
         **Response**
 
+        - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息。
         - **NodeIds** (list) - Node实例Id集合
 
         """
@@ -201,8 +208,8 @@ class UK8SClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterName** (str) - (Required) 集群名称
         - **MasterCPU** (int) - (Required) Master节点的虚拟CPU核数。可选参数：2-64（具体机型与CPU的对应关系参照控制台）。
         - **MasterMachineType** (str) - (Required) Master节点的云主机机型（V2.0），如["N", "C", "O", "OS"]，具体请参照云主机机型。
@@ -212,19 +219,22 @@ class UK8SClient(Client):
         - **SubnetId** (str) - (Required) 集群Node及Pod所属子网
         - **VPCId** (str) - (Required) 集群Node及Pod所属VPC
         - **ChargeType** (str) - 集群所有节点的付费模式。枚举值为： Year，按年付费； Month，按月付费； Dynamic，按小时付费（需开启权限），默认按月。
+        - **ClusterDomain** (str) - 创建集群的时候定义clusterdomain
         - **ExternalApiServer** (str) - 是否允许外网访问apiserver，开启：Yes 不开启：No。默认为No。
         - **ImageId** (str) - Master节点和Node节点的镜像 ID，不填则随机选择可用的基础镜像。支持用户自定义镜像。
         - **InitScript** (str) - 用户自定义脚本，与UserData不同，自定义脚本将在集群安装完毕后执行。注意：1、总数据量大小不超多16K；2、使用base64编码。
         - **K8sVersion** (str) - k8s集群的版本，版本信息请参考UK8S集群创建页，不指定的话默认为当前支持的最高版本。
         - **KubeProxy** (dict) - 见 **CreateUK8SClusterV2ParamKubeProxy** 模型定义
         - **Master** (list) - 见 **CreateUK8SClusterV2ParamMaster** 模型定义
+        - **MasterBootDiskSize** (int) - Master节点系统盘大小，单位GB，默认为40。范围：[40, 500]。注意SSD本地盘无法调整。
         - **MasterBootDiskType** (str) - Master节点系统盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。默认为SSD云盘
         - **MasterDataDiskSize** (int) - Master节点的数据盘大小，单位GB，默认为0。范围 ：[20, 1000]
         - **MasterDataDiskType** (str) - Master节点数据盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。默认为SSD云盘
         - **MasterIsolationGroup** (str) - 【无效，已删除】当前将自动为Master节点创建隔离组，确保Master节点归属于不同物理机。
-        - **MasterMinmalCpuPlatform** (str) - Master节点的最低cpu平台，不选则随机。枚举值["Intel/Auto", "Intel/IvyBridge", "Intel/Haswell", "Intel/Broadwell", "Intel/Skylake", "Intel/Cascadelake"。
+        - **MasterMinimalCpuPlatform** (str) - Master节点的最低cpu平台，不选则随机。枚举值["Intel/Auto", "Intel/IvyBridge", "Intel/Haswell", "Intel/Broadwell", "Intel/Skylake", "Intel/Cascadelake"。
         - **Nodes** (list) - 见 **CreateUK8SClusterV2ParamNodes** 模型定义
         - **Quantity** (int) - 购买时长。默认为1。按小时购买(Dynamic)时无需此参数。 月付时，此参数传0，代表了购买至月末。
+        - **Tag** (str) - 业务组
         - **UserData** (str) - 用户自定义数据。注意：1、总数据量大小不超多16K；2、使用base64编码。
 
         **Response**
@@ -238,10 +248,11 @@ class UK8SClient(Client):
 
 
         **CreateUK8SClusterV2ParamMaster**
-        - **Zone** (str) - Master节点所属可用区，需要设置 Master.0.Zone、 Master.1.Zone、Master.2.Zone 三个 Master 节点的可用区。 三个节点可部署在不同可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - Master节点所属可用区，需要设置 Master.0.Zone、 Master.1.Zone、Master.2.Zone 三个 Master 节点的可用区。 三个节点可部署在不同可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
 
         **CreateUK8SClusterV2ParamNodes**
+        - **BootDiskSIze** (int) - Node节点的系统盘大小，单位GB，默认为40。范围：[40, 500]。注意SSD本地盘无法调整。
         - **BootDiskType** (str) - 一组Node节点的系统盘类型，请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。默认为SSD云盘
         - **CPU** (int) - 一组Node节点的虚拟CPU核数。单位：核，范围：[2, 64]，可选范围参考控制台。
         - **Count** (int) - 一组Node节点的数量，范围：[1,10]。
@@ -254,8 +265,9 @@ class UK8SClient(Client):
         - **MachineType** (str) - 一组Nodes节点云主机机型，如["N", "C", "O", "OS"]，具体请参照云主机机型。
         - **MaxPods** (int) - Node节点上可运行最大节点数，默认为110。
         - **Mem** (int) - 一组Node节点的内存大小。单位：MB,范围 ：[4096, 262144]，取值为1024的倍数，可选范围参考控制台。
-        - **MinmalCpuPlatform** (str) - Node节点的最低cpu平台，不选则随机。枚举值["Intel/Auto", "Intel/IvyBridge", "Intel/Haswell", "Intel/Broadwell", "Intel/Skylake", "Intel/Cascadelake"。
-        - **Zone** (str) - 一组Nodes节点所属可用区，可创建多组Nodes节点，如一组是CPU Nodes节点，另一组是GPU Nodes节点。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **MinimalCpuPlatform** (str) - Node节点的最低cpu平台，不选则随机。枚举值["Intel/Auto", "Intel/IvyBridge", "Intel/Haswell", "Intel/Broadwell", "Intel/Skylake", "Intel/Cascadelake"。
+        - **Taints** (str) - Node节点污点，形式为key=value:effect，多组taints用”,“隔开,最多支持五组。
+        - **Zone** (str) - 一组Nodes节点所属可用区，可创建多组Nodes节点，如一组是CPU Nodes节点，另一组是GPU Nodes节点。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
 
         """
@@ -659,6 +671,7 @@ class UK8SClient(Client):
         **Response Model**
 
         **NodeGroupSet**
+        - **BootDiskSize** (int) - 系统盘大小
         - **BootDiskType** (str) - 系统盘类型
         - **CPU** (int) - 虚拟CPU核数
         - **ChargeType** (str) - 付费方式

@@ -56,6 +56,7 @@ class AddUK8SNodeGroupRequestSchema(schema.RequestSchema):
     """AddUK8SNodeGroup - 添加UK8S节点池"""
 
     fields = {
+        "BootDiskSize": fields.Int(required=False, dump_to="BootDiskSize"),
         "BootDiskType": fields.Str(required=False, dump_to="BootDiskType"),
         "CPU": fields.Int(required=False, dump_to="CPU"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
@@ -73,6 +74,7 @@ class AddUK8SNodeGroupRequestSchema(schema.RequestSchema):
         "NodeGroupName": fields.Str(required=True, dump_to="NodeGroupName"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
         "Tag": fields.Str(required=False, dump_to="Tag"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
     }
@@ -139,6 +141,7 @@ class AddUK8SUHostNodeRequestSchema(schema.RequestSchema):
     """AddUK8SUHostNode - 为UK8S集群添加一台Node节点，机型类型为云主机"""
 
     fields = {
+        "BootDiskSize": fields.Int(required=False, dump_to="BootDiskSize"),
         "BootDiskType": fields.Str(required=False, dump_to="BootDiskType"),
         "CPU": fields.Int(required=True, dump_to="CPU"),
         "ChargeType": fields.Str(required=True, dump_to="ChargeType"),
@@ -158,14 +161,20 @@ class AddUK8SUHostNodeRequestSchema(schema.RequestSchema):
         "MachineType": fields.Str(required=False, dump_to="MachineType"),
         "MaxPods": fields.Int(required=False, dump_to="MaxPods"),
         "Mem": fields.Int(required=True, dump_to="Mem"),
+        "MinimalCpuPlatform": fields.Str(
+            required=False, dump_to="MinimalCpuPlatform"
+        ),
         "MinmalCpuPlatform": fields.Str(
             required=False, dump_to="MinmalCpuPlatform"
-        ),
+        ),  # Deprecated, will be removed at 1.0
+        "NodeGroupId": fields.Str(required=False, dump_to="NodeGroupId"),
         "Password": fields.Str(required=True, dump_to="Password"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "Taints": fields.Str(required=False, dump_to="Taints"),
         "UserData": fields.Str(required=False, dump_to="UserData"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
     }
@@ -175,9 +184,7 @@ class AddUK8SUHostNodeResponseSchema(schema.ResponseSchema):
     """AddUK8SUHostNode - 为UK8S集群添加一台Node节点，机型类型为云主机"""
 
     fields = {
-        "Message": fields.Str(
-            required=True, load_from="Message"
-        ),  # Deprecated, will be removed at 1.0
+        "Message": fields.Str(required=True, load_from="Message"),
         "NodeIds": fields.List(
             fields.Str(), required=False, load_from="NodeIds"
         ),
@@ -211,6 +218,7 @@ class CreateUK8SClusterV2ParamNodesSchema(schema.RequestSchema):
     """CreateUK8SClusterV2ParamNodes -"""
 
     fields = {
+        "BootDiskSIze": fields.Int(required=False, dump_to="BootDiskSIze"),
         "BootDiskType": fields.Str(required=False, dump_to="BootDiskType"),
         "CPU": fields.Int(required=True, dump_to="CPU"),
         "Count": fields.Int(required=True, dump_to="Count"),
@@ -223,9 +231,13 @@ class CreateUK8SClusterV2ParamNodesSchema(schema.RequestSchema):
         "MachineType": fields.Str(required=True, dump_to="MachineType"),
         "MaxPods": fields.Int(required=False, dump_to="MaxPods"),
         "Mem": fields.Int(required=True, dump_to="Mem"),
+        "MinimalCpuPlatform": fields.Str(
+            required=False, dump_to="MinimalCpuPlatform"
+        ),
         "MinmalCpuPlatform": fields.Str(
             required=False, dump_to="MinmalCpuPlatform"
-        ),
+        ),  # Deprecated, will be removed at 1.0
+        "Taints": fields.Str(required=False, dump_to="Taints"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
@@ -235,6 +247,7 @@ class CreateUK8SClusterV2RequestSchema(schema.RequestSchema):
 
     fields = {
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "ClusterDomain": fields.Str(required=False, dump_to="ClusterDomain"),
         "ClusterName": fields.Str(required=True, dump_to="ClusterName"),
         "ExternalApiServer": fields.Str(
             required=False, dump_to="ExternalApiServer"
@@ -246,6 +259,9 @@ class CreateUK8SClusterV2RequestSchema(schema.RequestSchema):
             required=False, dump_to="KubeProxy"
         ),
         "Master": fields.List(CreateUK8SClusterV2ParamMasterSchema()),
+        "MasterBootDiskSize": fields.Int(
+            required=False, dump_to="MasterBootDiskSize"
+        ),
         "MasterBootDiskType": fields.Str(
             required=False, dump_to="MasterBootDiskType"
         ),
@@ -263,9 +279,12 @@ class CreateUK8SClusterV2RequestSchema(schema.RequestSchema):
             required=True, dump_to="MasterMachineType"
         ),
         "MasterMem": fields.Int(required=True, dump_to="MasterMem"),
+        "MasterMinimalCpuPlatform": fields.Str(
+            required=False, dump_to="MasterMinimalCpuPlatform"
+        ),
         "MasterMinmalCpuPlatform": fields.Str(
             required=False, dump_to="MasterMinmalCpuPlatform"
-        ),
+        ),  # Deprecated, will be removed at 1.0
         "Nodes": fields.List(CreateUK8SClusterV2ParamNodesSchema()),
         "Password": fields.Str(required=True, dump_to="Password"),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
@@ -273,6 +292,7 @@ class CreateUK8SClusterV2RequestSchema(schema.RequestSchema):
         "Region": fields.Str(required=True, dump_to="Region"),
         "ServiceCIDR": fields.Str(required=True, dump_to="ServiceCIDR"),
         "SubnetId": fields.Str(required=True, dump_to="SubnetId"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
         "UserData": fields.Str(required=False, dump_to="UserData"),
         "VPCId": fields.Str(required=True, dump_to="VPCId"),
     }
