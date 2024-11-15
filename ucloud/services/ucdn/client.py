@@ -150,13 +150,13 @@ class UCDNClient(Client):
     def control_ucdn_domain_cache_access(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ControlUcdnDomainCacheAccess - 封禁解封缓存访问
+        """ControlUcdnDomainCacheAccess -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Type** (str) - (Required) forbid=封禁   unforbid=解封  其他值非法
-        - **UrlList** (list) - (Required) 待封禁的Url，一次封禁多个Url时最多一次30条，只能对表示文件的Url进行操作
+        - **ProjectId** (str) - (Config)
+        - **Type** (str) - (Required)
+        - **UrlList** (list) -
 
         **Response**
 
@@ -168,6 +168,9 @@ class UCDNClient(Client):
         }
         req and d.update(req)
         d = apis.ControlUcdnDomainCacheAccessRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("ControlUcdnDomainCacheAccess", d, **kwargs)
         return apis.ControlUcdnDomainCacheAccessResponseSchema().loads(resp)
@@ -623,6 +626,47 @@ class UCDNClient(Client):
         resp = self.invoke("GetNewUcdnDomainRequestNum", d, **kwargs)
         return apis.GetNewUcdnDomainRequestNumResponseSchema().loads(resp)
 
+    def get_new_ucdn_log_client_ip_statistics(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetNewUcdnLogClientIpStatistics - 获取日志客户端ip统计
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **DomainId** (str) - (Required) 域名id，创建域名时生成的id
+        - **BeginTime** (int) - 查询的日期，单位：Unix时间戳。只支持按天查询
+        - **Limit** (str) - 返回结果数量限制，返回最多100条
+        - **OrderBy** (int) - 0表示按照下载次数降序排列，1表示按流量降序排列，默认为0
+        - **Type** (int) - 1表示按照1小时粒度，2表示按照一天的粒度 默认是天
+
+        **Response**
+
+        - **Action** (str) - 操作名称
+        - **ClientIpStatisticsList** (list) - 见 **ClientIpStatisticsList** 模型定义
+        - **RetCode** (int) - 返回码
+
+        **Response Model**
+
+        **ClientIpStatisticsList**
+        - **Flow** (int) - 流量单位字节
+        - **FlowPercent** (float) - 流量占比
+        - **IP** (str) - 客户端IP
+        - **RequestPercent** (float) - 请求数占比
+        - **Requst** (int) - 请求数
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetNewUcdnLogClientIpStatisticsRequestSchema().dumps(d)
+
+        resp = self.invoke("GetNewUcdnLogClientIpStatistics", d, **kwargs)
+        return apis.GetNewUcdnLogClientIpStatisticsResponseSchema().loads(resp)
+
     def get_new_ucdn_log_referer_statistics(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -937,7 +981,7 @@ class UCDNClient(Client):
         - **BeginTime** (int) - 查询的起始时间，格式为Unix Timestamp。如果有EndTime，BeginTime必须赋值。如没有赋值，则返回缺少参 数错误，如果没有EndTime，BeginTime也可以不赋值，EndTime默认当前时间，BeginTime 默认前一天的当前时间。
         - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
         - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。
-        - **HitType** (int) - 命中类型：0=整体命中  1=边缘命中  默认是0
+        - **HitType** (int) - 默认是0
         - **IsDcdn** (bool) - 是否全站加速，默认false
 
         **Response**
@@ -977,7 +1021,7 @@ class UCDNClient(Client):
         - **DomainId** (list) - 域名id，创建域名时生成的id。默认全部域名
         - **EndTime** (int) - 查询的结束时间，格式为Unix Timestamp。EndTime默认为当前时间，BeginTime默认为当前时间前一天时间。
         - **IsDcdn** (bool) - 是否全站加速 默认false
-        - **Layer** (str) - 指定获取的状态码是边缘还是上层    edge 表示边缘  layer 表示上层
+        - **Layer** (str) - edge 表示边缘
 
         **Response**
 
@@ -1766,7 +1810,7 @@ class UCDNClient(Client):
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **UrlList** (list) - (Required) 预热URL列表，n从自然数0开始。UrlList.n字段必须以”http://域名/”开始。如刷新文件目录a下面img.png文件， 格式为http://abc.ucloud.cn/a/img.png。请正确提交需要刷新的域名
+        - **UrlList** (list) - (Required) 预热URL列表，n从自然数0开始。UrlList.n字段必须以”http://域名/”开始。如刷新文件目录a下面img.png文件， 格式为http://abc.ucloud.cn/a/img.png。请正确提交需要刷新的域名，一次性可提交1000条，最少每10S调用一次
 
         **Response**
 
@@ -1864,6 +1908,32 @@ class UCDNClient(Client):
 
         resp = self.invoke("SwitchUcdnChargeType", d, **kwargs)
         return apis.SwitchUcdnChargeTypeResponseSchema().loads(resp)
+
+    def update_ucdn_domain_https_config_v2(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateUcdnDomainHttpsConfigV2 - https加速配置，国内，国外一起配置(兼容全站加速域名)
+
+        **Request**
+
+        - **DomainId** (str) - (Required) 域名对应的资源Id
+        - **CertId** (int) - 证书id(可能是ucdn的id，也可能是ussl的id)
+        - **CertName** (str) - 证书名称，开启加速必传
+        - **CertType** (str) - 证书类型 ucdn/ussl
+        - **HttpsStatusAbroad** (str) - 开启或关闭加速 enable或disable 当加速区域含国外的时候，此参数为必传
+        - **HttpsStatusCn** (str) - 开启或关闭加速 enable或disable  当加速区域含国内的时候，此参数为必传
+
+        **Response**
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.UpdateUcdnDomainHttpsConfigV2RequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateUcdnDomainHttpsConfigV2", d, **kwargs)
+        return apis.UpdateUcdnDomainHttpsConfigV2ResponseSchema().loads(resp)
 
     def update_ucdn_domain_status(
         self, req: typing.Optional[dict] = None, **kwargs

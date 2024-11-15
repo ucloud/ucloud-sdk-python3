@@ -475,12 +475,19 @@ class UHostClient(Client):
         - **MinimalCPU** (str) - 默认值为空'''。当CentOS 7.3/7.4/7.5等镜像会标记为“Broadwell”
         - **OsName** (str) - 操作系统名称
         - **OsType** (str) - 操作系统类型：Linux，Windows
+        - **PriceSet** (list) - 见 **BasePriceSet** 模型定义
         - **PrimarySoftware** (str) - 主要安装软件
         - **SceneCategories** (list) - 场景分类，目前包含Featured（精选），PreInstalledDrivers（预装驱动），AIPainting（AI绘画），AIModels（AI模型），HPC（高性能计算）
         - **State** (str) - 镜像状态， 可用：Available，制作中：Making， 不可用：Unavailable，复制中：Copying
         - **SupportedGPUTypes** (list) - 支持的GPU机型
         - **Vendor** (str) - 供应商（仅行业镜像将返回这个值）
         - **Zone** (str) - 可用区，参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
+
+        **BasePriceSet**
+        - **ChargeType** (str) - 计费类型
+        - **OriginalPrice** (float) - 限时优惠的折前原价（即列表价乘以商务折扣后的单价）。
+        - **Price** (float) - 价格，单位: 元，保留小数点后两位有效数字
 
 
         """

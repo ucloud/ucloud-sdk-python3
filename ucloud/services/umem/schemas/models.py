@@ -25,15 +25,6 @@ class UDRedisSlowlogSetSchema(schema.ResponseSchema):
     }
 
 
-class UMemSpaceAddressSetSchema(schema.ResponseSchema):
-    """UMemSpaceAddressSet - DescribeUMemSpace"""
-
-    fields = {
-        "IP": fields.Str(required=False, load_from="IP"),
-        "Port": fields.Int(required=False, load_from="Port"),
-    }
-
-
 class UMemSlaveDataSetSchema(schema.ResponseSchema):
     """UMemSlaveDataSet - DescribeUMem"""
 
@@ -61,6 +52,15 @@ class UMemSlaveDataSetSchema(schema.ResponseSchema):
         "Version": fields.Str(required=False, load_from="Version"),
         "VirtualIP": fields.Str(required=True, load_from="VirtualIP"),
         "Zone": fields.Str(required=False, load_from="Zone"),
+    }
+
+
+class UMemSpaceAddressSetSchema(schema.ResponseSchema):
+    """UMemSpaceAddressSet - DescribeUMemSpace"""
+
+    fields = {
+        "IP": fields.Str(required=False, load_from="IP"),
+        "Port": fields.Int(required=False, load_from="Port"),
     }
 
 
@@ -259,6 +259,9 @@ class URedisGroupSetSchema(schema.ResponseSchema):
         "GroupName": fields.Str(required=False, load_from="GroupName"),
         "HighAvailability": fields.Str(
             required=False, load_from="HighAvailability"
+        ),
+        "IsHighPerformance": fields.Bool(
+            required=False, load_from="IsHighPerformance"
         ),
         "MemorySize": fields.Int(required=False, load_from="MemorySize"),
         "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),

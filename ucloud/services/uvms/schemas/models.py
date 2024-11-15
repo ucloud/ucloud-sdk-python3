@@ -10,8 +10,10 @@ class SendRecordItemSchema(schema.ResponseSchema):
         "BillPeriod": fields.Int(required=False, load_from="BillPeriod"),
         "BillSecond": fields.Int(required=False, load_from="BillSecond"),
         "BrevityCode": fields.Str(required=False, load_from="BrevityCode"),
-        "CallEndTime": fields.Int(required=False, load_from="CallEndTime"),
-        "CallStartTime": fields.Int(required=False, load_from="CallStartTime"),
+        "CallEndTime": fields.Float(required=False, load_from="CallEndTime"),
+        "CallStartTime": fields.Float(
+            required=False, load_from="CallStartTime"
+        ),
         "CalledCityCode": fields.Str(
             required=False, load_from="CalledCityCode"
         ),
@@ -30,9 +32,9 @@ class SendRecordItemSchema(schema.ResponseSchema):
         "Purpose": fields.Int(required=False, load_from="Purpose"),
         "ReceiptDesc": fields.Str(required=False, load_from="ReceiptDesc"),
         "ReceiptResult": fields.Int(required=False, load_from="ReceiptResult"),
-        "ReceiveTime": fields.Int(required=False, load_from="ReceiveTime"),
+        "ReceiveTime": fields.Float(required=False, load_from="ReceiveTime"),
         "ShowNumber": fields.Str(required=False, load_from="ShowNumber"),
-        "SubmitTime": fields.Int(required=False, load_from="SubmitTime"),
+        "SubmitTime": fields.Float(required=False, load_from="SubmitTime"),
         "TaskNo": fields.Str(required=False, load_from="TaskNo"),
         "TemplateId": fields.Str(required=False, load_from="TemplateId"),
     }

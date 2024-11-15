@@ -27,7 +27,7 @@ class GetUVMSSendRecordRequestSchema(schema.RequestSchema):
         "CallingCityCode": fields.Str(
             required=False, dump_to="CallingCityCode"
         ),
-        "EndTime": fields.Int(required=False, dump_to="EndTime"),
+        "EndTime": fields.Float(required=False, dump_to="EndTime"),
         "ExcludeBrevityCode": fields.Str(
             required=False, dump_to="ExcludeBrevityCode"
         ),
@@ -39,7 +39,7 @@ class GetUVMSSendRecordRequestSchema(schema.RequestSchema):
         "PhoneNumber": fields.Str(required=False, dump_to="PhoneNumber"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Purpose": fields.Int(required=False, dump_to="Purpose"),
-        "StartTime": fields.Int(required=False, dump_to="StartTime"),
+        "StartTime": fields.Float(required=False, dump_to="StartTime"),
         "TaskNo": fields.Str(required=False, dump_to="TaskNo"),
         "TemplateId": fields.Str(required=False, dump_to="TemplateId"),
     }

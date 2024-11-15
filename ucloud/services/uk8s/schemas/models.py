@@ -158,6 +158,7 @@ class NodeGroupSetSchema(schema.ResponseSchema):
     """NodeGroupSet - 节点池配置"""
 
     fields = {
+        "BootDiskSize": fields.Int(required=False, load_from="BootDiskSize"),
         "BootDiskType": fields.Str(required=False, load_from="BootDiskType"),
         "CPU": fields.Int(required=False, load_from="CPU"),
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),

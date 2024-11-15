@@ -131,6 +131,7 @@ class CreateUMemSpaceRequestSchema(schema.RequestSchema):
     """CreateUMemSpace - 创建UMem内存空间"""
 
     fields = {
+        "BackupId": fields.Str(required=False, dump_to="BackupId"),
         "BlockCnt": fields.Int(required=False, dump_to="BlockCnt"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "ClusterMode": fields.Str(required=False, dump_to="ClusterMode"),
@@ -149,6 +150,7 @@ class CreateUMemSpaceRequestSchema(schema.RequestSchema):
         "Region": fields.Str(required=True, dump_to="Region"),
         "Size": fields.Int(required=True, dump_to="Size"),
         "SlaveZone": fields.Str(required=False, dump_to="SlaveZone"),
+        "SpaceId": fields.Str(required=False, dump_to="SpaceId"),
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
         "Tag": fields.Str(required=False, dump_to="Tag"),
         "Type": fields.Str(required=False, dump_to="Type"),
@@ -552,6 +554,7 @@ class DescribeUMemPriceRequestSchema(schema.RequestSchema):
     fields = {
         "BlockCnt": fields.Int(required=False, dump_to="BlockCnt"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "ClusterMode": fields.Str(required=False, dump_to="ClusterMode"),
         "HighPerformance": fields.Bool(
             required=False, dump_to="HighPerformance"
         ),

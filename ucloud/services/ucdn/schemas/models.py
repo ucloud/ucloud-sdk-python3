@@ -3,6 +3,14 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class AccessConfSchema(schema.ResponseSchema):
+    """AccessConf - 访问控制"""
+
+    fields = {
+        "IpBlacklist": fields.Str(required=False, load_from="IpBlacklist"),
+    }
+
+
 class CacheConfSchema(schema.ResponseSchema):
     """CacheConf - 缓存配置"""
 
@@ -18,14 +26,6 @@ class CacheConfSchema(schema.ResponseSchema):
             required=False, load_from="HttpCodePattern"
         ),
         "PathPattern": fields.Str(required=True, load_from="PathPattern"),
-    }
-
-
-class AccessConfSchema(schema.ResponseSchema):
-    """AccessConf - 访问控制"""
-
-    fields = {
-        "IpBlacklist": fields.Str(required=False, load_from="IpBlacklist"),
     }
 
 
@@ -245,6 +245,20 @@ class RequestInfoSchema(schema.ResponseSchema):
     }
 
 
+class ClientIpStatisticsListSchema(schema.ResponseSchema):
+    """ClientIpStatisticsList - ClientIpStatisticsList"""
+
+    fields = {
+        "Flow": fields.Int(required=False, load_from="Flow"),
+        "FlowPercent": fields.Float(required=False, load_from="FlowPercent"),
+        "IP": fields.Str(required=False, load_from="IP"),
+        "RequestPercent": fields.Float(
+            required=False, load_from="RequestPercent"
+        ),
+        "Requst": fields.Int(required=False, load_from="Requst"),
+    }
+
+
 class RefererListSchema(schema.ResponseSchema):
     """RefererList - RefererList"""
 
@@ -294,6 +308,16 @@ class BandwidthTrafficInfoSchema(schema.ResponseSchema):
     }
 
 
+class CacheKeyInfoSchema(schema.ResponseSchema):
+    """CacheKeyInfo - 忽略参数缓存配置"""
+
+    fields = {
+        "Ignore": fields.Bool(required=False, load_from="Ignore"),
+        "PathPattern": fields.Str(required=False, load_from="PathPattern"),
+        "QueryString": fields.Str(required=False, load_from="QueryString"),
+    }
+
+
 class ReferConfSchema(schema.ResponseSchema):
     """ReferConf - refer配置"""
 
@@ -304,13 +328,28 @@ class ReferConfSchema(schema.ResponseSchema):
     }
 
 
-class CacheKeyInfoSchema(schema.ResponseSchema):
-    """CacheKeyInfo - 忽略参数缓存配置"""
+class AdvancedConfSchema(schema.ResponseSchema):
+    """AdvancedConf - 域名高级配置"""
 
     fields = {
-        "Ignore": fields.Bool(required=False, load_from="Ignore"),
-        "PathPattern": fields.Str(required=False, load_from="PathPattern"),
-        "QueryString": fields.Str(required=False, load_from="QueryString"),
+        "Http2Https": fields.Bool(required=False, load_from="Http2Https"),
+        "HttpClientHeader": fields.List(fields.Str()),
+        "HttpOriginHeader": fields.List(fields.Str()),
+        "QuicEnable": fields.Bool(required=False, load_from="QuicEnable"),
+        "WebSocketEnable": fields.Bool(
+            required=False, load_from="WebSocketEnable"
+        ),
+    }
+
+
+class CacheAllConfigSchema(schema.ResponseSchema):
+    """CacheAllConfig - 缓存相关的配置"""
+
+    fields = {
+        "CacheHost": fields.Str(required=False, load_from="CacheHost"),
+        "CacheKeyList": fields.List(CacheKeyInfoSchema()),
+        "CacheList": fields.List(CacheConfSchema()),
+        "HttpCodeCacheList": fields.List(CacheConfSchema()),
     }
 
 
@@ -348,31 +387,6 @@ class OriginConfSchema(schema.ResponseSchema):
         "OriginPort": fields.Int(required=False, load_from="OriginPort"),
         "OriginProtocol": fields.Str(
             required=False, load_from="OriginProtocol"
-        ),
-    }
-
-
-class CacheAllConfigSchema(schema.ResponseSchema):
-    """CacheAllConfig - 缓存相关的配置"""
-
-    fields = {
-        "CacheHost": fields.Str(required=False, load_from="CacheHost"),
-        "CacheKeyList": fields.List(CacheKeyInfoSchema()),
-        "CacheList": fields.List(CacheConfSchema()),
-        "HttpCodeCacheList": fields.List(CacheConfSchema()),
-    }
-
-
-class AdvancedConfSchema(schema.ResponseSchema):
-    """AdvancedConf - 域名高级配置"""
-
-    fields = {
-        "Http2Https": fields.Bool(required=False, load_from="Http2Https"),
-        "HttpClientHeader": fields.List(fields.Str()),
-        "HttpOriginHeader": fields.List(fields.Str()),
-        "QuicEnable": fields.Bool(required=False, load_from="QuicEnable"),
-        "WebSocketEnable": fields.Bool(
-            required=False, load_from="WebSocketEnable"
         ),
     }
 

@@ -100,12 +100,12 @@ class BatchRefreshNewUcdnDomainCacheResponseSchema(schema.ResponseSchema):
 """
 API: ControlUcdnDomainCacheAccess
 
-封禁解封缓存访问
+
 """
 
 
 class ControlUcdnDomainCacheAccessRequestSchema(schema.RequestSchema):
-    """ControlUcdnDomainCacheAccess - 封禁解封缓存访问"""
+    """ControlUcdnDomainCacheAccess -"""
 
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -115,7 +115,7 @@ class ControlUcdnDomainCacheAccessRequestSchema(schema.RequestSchema):
 
 
 class ControlUcdnDomainCacheAccessResponseSchema(schema.ResponseSchema):
-    """ControlUcdnDomainCacheAccess - 封禁解封缓存访问"""
+    """ControlUcdnDomainCacheAccess -"""
 
     fields = {}
 
@@ -420,6 +420,40 @@ class GetNewUcdnDomainRequestNumResponseSchema(schema.ResponseSchema):
         "RequestList": fields.List(
             models.RequestInfoSchema(), required=False, load_from="RequestList"
         ),
+    }
+
+
+"""
+API: GetNewUcdnLogClientIpStatistics
+
+获取日志客户端ip统计
+"""
+
+
+class GetNewUcdnLogClientIpStatisticsRequestSchema(schema.RequestSchema):
+    """GetNewUcdnLogClientIpStatistics - 获取日志客户端ip统计"""
+
+    fields = {
+        "BeginTime": fields.Int(required=False, dump_to="BeginTime"),
+        "DomainId": fields.Str(required=True, dump_to="DomainId"),
+        "Limit": fields.Str(required=False, dump_to="Limit"),
+        "OrderBy": fields.Int(required=False, dump_to="OrderBy"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Type": fields.Int(required=False, dump_to="Type"),
+    }
+
+
+class GetNewUcdnLogClientIpStatisticsResponseSchema(schema.ResponseSchema):
+    """GetNewUcdnLogClientIpStatistics - 获取日志客户端ip统计"""
+
+    fields = {
+        "Action": fields.Str(required=True, load_from="Action"),
+        "ClientIpStatisticsList": fields.List(
+            models.ClientIpStatisticsListSchema(),
+            required=False,
+            load_from="ClientIpStatisticsList",
+        ),
+        "RetCode": fields.Int(required=True, load_from="RetCode"),
     }
 
 
@@ -1304,6 +1338,34 @@ class SwitchUcdnChargeTypeRequestSchema(schema.RequestSchema):
 
 class SwitchUcdnChargeTypeResponseSchema(schema.ResponseSchema):
     """SwitchUcdnChargeType - 切换账号计费方式"""
+
+    fields = {}
+
+
+"""
+API: UpdateUcdnDomainHttpsConfigV2
+
+https加速配置，国内，国外一起配置(兼容全站加速域名)
+"""
+
+
+class UpdateUcdnDomainHttpsConfigV2RequestSchema(schema.RequestSchema):
+    """UpdateUcdnDomainHttpsConfigV2 - https加速配置，国内，国外一起配置(兼容全站加速域名)"""
+
+    fields = {
+        "CertId": fields.Int(required=False, dump_to="CertId"),
+        "CertName": fields.Str(required=False, dump_to="CertName"),
+        "CertType": fields.Str(required=False, dump_to="CertType"),
+        "DomainId": fields.Str(required=True, dump_to="DomainId"),
+        "HttpsStatusAbroad": fields.Str(
+            required=False, dump_to="HttpsStatusAbroad"
+        ),
+        "HttpsStatusCn": fields.Str(required=False, dump_to="HttpsStatusCn"),
+    }
+
+
+class UpdateUcdnDomainHttpsConfigV2ResponseSchema(schema.ResponseSchema):
+    """UpdateUcdnDomainHttpsConfigV2 - https加速配置，国内，国外一起配置(兼容全站加速域名)"""
 
     fields = {}
 
