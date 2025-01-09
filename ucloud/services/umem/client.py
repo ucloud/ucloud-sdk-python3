@@ -1561,6 +1561,37 @@ class UMemClient(Client):
         resp = self.invoke("RemoveUDRedisData", d, **kwargs)
         return apis.RemoveUDRedisDataResponseSchema().loads(resp)
 
+    def resize_ud_redis_block_size(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ResizeUDRedisBlockSize - 更改udredis分片容量
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **BlockId** (str) - (Required) 分片id
+        - **BlockSize** (int) - (Required) 分片容量（单位GB）4/8/12/16/20
+        - **SpaceId** (str) - (Required) spaceid
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **HighPerformance** (bool) - 是否为性能增强型。默认为false，或者不填，true为性能增强型。
+        - **StartTime** (int) - 任务执行时间戳，时间戳需满足未来一天时间范围内。默认不传或者值为0时，即为立即执行
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ResizeUDRedisBlockSizeRequestSchema().dumps(d)
+
+        resp = self.invoke("ResizeUDRedisBlockSize", d, **kwargs)
+        return apis.ResizeUDRedisBlockSizeResponseSchema().loads(resp)
+
     def resize_umem_space(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:

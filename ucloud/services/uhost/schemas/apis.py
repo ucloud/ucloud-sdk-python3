@@ -28,8 +28,10 @@ class CopyCustomImageRequestSchema(schema.RequestSchema):
         "TargetImageName": fields.Str(
             required=False, dump_to="TargetImageName"
         ),
+        "TargetImageTag": fields.Str(required=False, dump_to="TargetImageTag"),
         "TargetProjectId": fields.Str(required=True, dump_to="TargetProjectId"),
         "TargetRegion": fields.Str(required=False, dump_to="TargetRegion"),
+        "TargetRegionList": fields.List(fields.Str()),
         "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
@@ -38,7 +40,11 @@ class CopyCustomImageResponseSchema(schema.ResponseSchema):
     """CopyCustomImage - 复制自制镜像"""
 
     fields = {
+        "Infos": fields.List(
+            models.CopyImageTaskInfoSchema(), required=False, load_from="Infos"
+        ),
         "TargetImageId": fields.Str(required=False, load_from="TargetImageId"),
+        "TaskId": fields.Str(required=False, load_from="TaskId"),
     }
 
 
@@ -60,6 +66,7 @@ class CreateCustomImageRequestSchema(schema.RequestSchema):
         "ImageName": fields.Str(required=True, dump_to="ImageName"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
         "UHostId": fields.Str(required=True, dump_to="UHostId"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
     }
@@ -458,6 +465,7 @@ class DescribeImageRequestSchema(schema.RequestSchema):
     fields = {
         "FuncType": fields.Str(required=False, dump_to="FuncType"),
         "ImageId": fields.Str(required=False, dump_to="ImageId"),
+        "ImageIds": fields.List(fields.Str()),
         "ImageType": fields.Str(required=False, dump_to="ImageType"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
@@ -465,6 +473,7 @@ class DescribeImageRequestSchema(schema.RequestSchema):
         "PriceSet": fields.Int(required=False, dump_to="PriceSet"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
@@ -911,6 +920,7 @@ class ImportCustomImageRequestSchema(schema.RequestSchema):
         "OsType": fields.Str(required=True, dump_to="OsType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
         "UFileUrl": fields.Str(required=True, dump_to="UFileUrl"),
     }
 

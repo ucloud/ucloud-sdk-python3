@@ -19,6 +19,9 @@ class AttachUDiskRequestSchema(schema.RequestSchema):
     """AttachUDisk - 将一个可用的UDisk挂载到某台主机上，当UDisk挂载成功后，还需要在主机内部进行文件系统操作"""
 
     fields = {
+        "EnableCrossPodAttach": fields.Str(
+            required=False, dump_to="EnableCrossPodAttach"
+        ),
         "HostId": fields.Str(required=False, dump_to="HostId"),
         "MultiAttach": fields.Str(required=False, dump_to="MultiAttach"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -412,6 +415,7 @@ class DescribeUDiskRequestSchema(schema.RequestSchema):
         ),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Status": fields.Str(required=False, dump_to="Status"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
         "UDiskBasicInfo": fields.Str(required=False, dump_to="UDiskBasicInfo"),
         "UDiskId": fields.Str(required=False, dump_to="UDiskId"),
         "UHostIdForAttachment": fields.Str(
@@ -542,6 +546,39 @@ class DescribeUDiskUpgradePriceResponseSchema(schema.ResponseSchema):
     fields = {
         "OriginalPrice": fields.Int(required=False, load_from="OriginalPrice"),
         "Price": fields.Int(required=False, load_from="Price"),
+    }
+
+
+"""
+API: DetachDeleteUDisk
+
+卸载删除某个已经挂载在指定UHost实例上的UDisk
+"""
+
+
+class DetachDeleteUDiskRequestSchema(schema.RequestSchema):
+    """DetachDeleteUDisk - 卸载删除某个已经挂载在指定UHost实例上的UDisk"""
+
+    fields = {
+        "DeleteSnapshotService": fields.Str(
+            required=False, dump_to="DeleteSnapshotService"
+        ),
+        "HostId": fields.Str(required=False, dump_to="HostId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UDiskId": fields.Str(required=True, dump_to="UDiskId"),
+        "UHostId": fields.Str(required=False, dump_to="UHostId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DetachDeleteUDiskResponseSchema(schema.ResponseSchema):
+    """DetachDeleteUDisk - 卸载删除某个已经挂载在指定UHost实例上的UDisk"""
+
+    fields = {
+        "HostId": fields.Str(required=False, load_from="HostId"),
+        "UDiskId": fields.Str(required=False, load_from="UDiskId"),
+        "UHostId": fields.Str(required=False, load_from="UHostId"),
     }
 
 

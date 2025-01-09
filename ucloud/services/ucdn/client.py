@@ -350,6 +350,7 @@ class UCDNClient(Client):
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **CdnDomain** (str) - 根据加速域名筛选对应的证书
         - **Limit** (int) - 长度，默认为全部，非负整数
         - **Offset** (int) - 偏移，默认为0，非负整数
 
@@ -1119,8 +1120,9 @@ class UCDNClient(Client):
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **PageIndex** (int) - 返回第几页，不填默认是第1页
+        - **PageIndex** (int) - 返回第几页，序号从1开始，不填默认是第1页，填0表示不用分页直接返回所有数据
         - **PageSize** (int) - 分页的大小，不填默认每页20个
+        - **QueryByProject** (bool) - 是否按项目查询，true  或 false  默认为false
 
         **Response**
 

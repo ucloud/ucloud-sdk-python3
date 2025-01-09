@@ -26,12 +26,24 @@ class UHostClient(Client):
         - **TargetProjectId** (str) - (Required) 目标项目Id, 参见 GetProjectList
         - **TargetImageDescription** (str) - 目标镜像描述
         - **TargetImageName** (str) - 目标镜像名称
-        - **TargetRegion** (str) - 目标地域，不跨地域不用填
+        - **TargetImageTag** (str) - 目标镜像业务组
+        - **TargetRegion** (str) - 目标地域，不跨地域可不填
+        - **TargetRegionList** (list) - 目标地域的集合，批量复制时填写
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
+        - **Infos** (list) - 见 **CopyImageTaskInfo** 模型定义
+        - **TargetImageId** (str) - 目标镜像Id，只有非批量复制的时候该字段才存在
+        - **TaskId** (str) - 目标镜像复制的任务Id，只有非批量复制的时候该字段才存在
+
+        **Response Model**
+
+        **CopyImageTaskInfo**
         - **TargetImageId** (str) - 目标镜像Id
+        - **TargetRegion** (str) - 目标地域
+        - **TaskId** (str) - 目标镜像复制的任务Id
+
 
         """
         # build request
@@ -61,6 +73,7 @@ class UHostClient(Client):
         - **UHostId** (str) - (Required) UHost实例ID 参见  `DescribeUHostInstance <https://docs.ucloud.cn/api/uhost-api/describe_uhost_instance.html>`_
         - **DataUDiskIds** (list) - 【数组】关联的云盘数据盘id列表。注意: 云盘数据盘需要开启快照服务
         - **ImageDescription** (str) - 镜像描述
+        - **Tag** (str) - 镜像业务组。默认：Default
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
@@ -445,11 +458,13 @@ class UHostClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **FuncType** (str) - 镜像归属,枚举值:["gpu","app","uhost"]。"gpu": 对gpu进行处理过的行业镜像；"app"：轻量云主机专用的镜像；"uhost"：云主机镜像市场的行业镜像。FuncType传参错误会被忽略
         - **ImageId** (str) - 镜像Id
+        - **ImageIds** (list) - 镜像Id列表
         - **ImageType** (str) - 镜像类型。标准镜像：Base，镜像市场：Business， 自定义镜像：Custom，默认返回所有类型
         - **Limit** (int) - 返回数据长度，默认为20
         - **Offset** (int) - 列表起始位置偏移量，默认为0
         - **OsType** (str) - 操作系统类型：Linux， Windows 默认返回所有类型
         - **PriceSet** (int) - 是否返回价格：1返回，0不返回；默认不返回
+        - **Tag** (str) - 业务组Id。默认：Default
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
@@ -480,6 +495,7 @@ class UHostClient(Client):
         - **SceneCategories** (list) - 场景分类，目前包含Featured（精选），PreInstalledDrivers（预装驱动），AIPainting（AI绘画），AIModels（AI模型），HPC（高性能计算）
         - **State** (str) - 镜像状态， 可用：Available，制作中：Making， 不可用：Unavailable，复制中：Copying
         - **SupportedGPUTypes** (list) - 支持的GPU机型
+        - **Tag** (str) - 业务组
         - **Vendor** (str) - 供应商（仅行业镜像将返回这个值）
         - **Zone** (str) - 可用区，参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
 
@@ -1052,6 +1068,7 @@ class UHostClient(Client):
         - **OsType** (str) - (Required) 操作系统平台，比如CentOS、Ubuntu、Windows、RedHat等，请参考控制台的镜像版本；若导入控制台上没有的操作系统，参数为Other
         - **UFileUrl** (str) - (Required) UFile私有空间地址
         - **ImageDescription** (str) - 镜像描述
+        - **Tag** (str) - 业务组
 
         **Response**
 
