@@ -1239,6 +1239,36 @@ class RemoveUDRedisDataResponseSchema(schema.ResponseSchema):
 
 
 """
+API: ResizeUDRedisBlockSize
+
+更改udredis分片容量
+"""
+
+
+class ResizeUDRedisBlockSizeRequestSchema(schema.RequestSchema):
+    """ResizeUDRedisBlockSize - 更改udredis分片容量"""
+
+    fields = {
+        "BlockId": fields.Str(required=True, dump_to="BlockId"),
+        "BlockSize": fields.Int(required=True, dump_to="BlockSize"),
+        "HighPerformance": fields.Bool(
+            required=False, dump_to="HighPerformance"
+        ),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SpaceId": fields.Str(required=True, dump_to="SpaceId"),
+        "StartTime": fields.Int(required=False, dump_to="StartTime"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ResizeUDRedisBlockSizeResponseSchema(schema.ResponseSchema):
+    """ResizeUDRedisBlockSize - 更改udredis分片容量"""
+
+    fields = {}
+
+
+"""
 API: ResizeUMemSpace
 
 调整内存空间容量，只支持存量老分布式产品，不支持高性能分布式

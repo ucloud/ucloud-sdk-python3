@@ -249,6 +249,7 @@ class GetCertificateV2RequestSchema(schema.RequestSchema):
     """GetCertificateV2 - 获取证书列表(新)"""
 
     fields = {
+        "CdnDomain": fields.Str(required=False, dump_to="CdnDomain"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -734,6 +735,7 @@ class GetUcdnDomainInfoListRequestSchema(schema.RequestSchema):
         "PageIndex": fields.Int(required=False, dump_to="PageIndex"),
         "PageSize": fields.Int(required=False, dump_to="PageSize"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "QueryByProject": fields.Bool(required=False, dump_to="QueryByProject"),
     }
 
 

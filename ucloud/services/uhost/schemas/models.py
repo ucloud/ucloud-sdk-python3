@@ -3,6 +3,16 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class CopyImageTaskInfoSchema(schema.ResponseSchema):
+    """CopyImageTaskInfo - 镜像复制的任务信息"""
+
+    fields = {
+        "TargetImageId": fields.Str(required=False, load_from="TargetImageId"),
+        "TargetRegion": fields.Str(required=False, load_from="TargetRegion"),
+        "TaskId": fields.Str(required=False, load_from="TaskId"),
+    }
+
+
 class KeyPairSchema(schema.ResponseSchema):
     """KeyPair - 密钥对信息"""
 
@@ -40,17 +50,6 @@ class CollectionSchema(schema.ResponseSchema):
     }
 
 
-class BootDiskInfoSchema(schema.ResponseSchema):
-    """BootDiskInfo - 系统盘信息"""
-
-    fields = {
-        "Features": fields.List(fields.Str()),
-        "InstantResize": fields.Bool(required=False, load_from="InstantResize"),
-        "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
-        "Name": fields.Str(required=False, load_from="Name"),
-    }
-
-
 class DataDiskInfoSchema(schema.ResponseSchema):
     """DataDiskInfo - 数据盘信息"""
 
@@ -58,6 +57,17 @@ class DataDiskInfoSchema(schema.ResponseSchema):
         "Features": fields.List(fields.Str()),
         "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
         "MinimalSize": fields.Int(required=False, load_from="MinimalSize"),
+        "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
+class BootDiskInfoSchema(schema.ResponseSchema):
+    """BootDiskInfo - 系统盘信息"""
+
+    fields = {
+        "Features": fields.List(fields.Str()),
+        "InstantResize": fields.Bool(required=False, load_from="InstantResize"),
+        "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
         "Name": fields.Str(required=False, load_from="Name"),
     }
 
@@ -77,6 +87,16 @@ class FeaturesSchema(schema.ResponseSchema):
     fields = {
         "Modes": fields.List(FeatureModesSchema()),
         "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
+class CpuPlatformsSchema(schema.ResponseSchema):
+    """CpuPlatforms - CPU平台信息"""
+
+    fields = {
+        "Amd": fields.List(fields.Str()),
+        "Ampere": fields.List(fields.Str()),
+        "Intel": fields.List(fields.Str()),
     }
 
 
@@ -105,16 +125,6 @@ class DisksSchema(schema.ResponseSchema):
         "BootDisk": fields.List(BootDiskInfoSchema()),
         "DataDisk": fields.List(DataDiskInfoSchema()),
         "Name": fields.Str(required=False, load_from="Name"),
-    }
-
-
-class CpuPlatformsSchema(schema.ResponseSchema):
-    """CpuPlatforms - CPU平台信息"""
-
-    fields = {
-        "Amd": fields.List(fields.Str()),
-        "Ampere": fields.List(fields.Str()),
-        "Intel": fields.List(fields.Str()),
     }
 
 
@@ -177,6 +187,7 @@ class UHostImageSetSchema(schema.ResponseSchema):
         "SceneCategories": fields.List(fields.Str()),
         "State": fields.Str(required=False, load_from="State"),
         "SupportedGPUTypes": fields.List(fields.Str()),
+        "Tag": fields.Str(required=False, load_from="Tag"),
         "Vendor": fields.Str(required=False, load_from="Vendor"),
         "Zone": fields.Str(required=False, load_from="Zone"),
     }
@@ -199,6 +210,14 @@ class IsolationGroupSchema(schema.ResponseSchema):
         "GroupName": fields.Str(required=False, load_from="GroupName"),
         "Remark": fields.Str(required=False, load_from="Remark"),
         "SpreadInfoSet": fields.List(SpreadInfoSchema()),
+    }
+
+
+class SpotAttributeSchema(schema.ResponseSchema):
+    """SpotAttribute - 竞价实例属性"""
+
+    fields = {
+        "RecycleTime": fields.Int(required=False, load_from="RecycleTime"),
     }
 
 
@@ -254,14 +273,6 @@ class UHostDiskSetSchema(schema.ResponseSchema):
         "Name": fields.Str(required=False, load_from="Name"),
         "Size": fields.Int(required=False, load_from="Size"),
         "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
-class SpotAttributeSchema(schema.ResponseSchema):
-    """SpotAttribute - 竞价实例属性"""
-
-    fields = {
-        "RecycleTime": fields.Int(required=False, load_from="RecycleTime"),
     }
 
 

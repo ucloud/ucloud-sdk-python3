@@ -18,13 +18,14 @@ class UDiskClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **UDiskId** (str) - (Required) 需要挂载的UDisk实例ID.
+        - **EnableCrossPodAttach** (str) - 是否允许跨pod挂载（Yes：允许跨pod挂载，No：不允许跨pod挂载，不填默认No）
         - **HostId** (str) - Host实例ID
         - **MultiAttach** (str) - 是否允许多点挂载（Yes: 允许多点挂载， No: 不允许多点挂载， 不填默认Yes ）
         - **UHostId** (str) - UHost实例ID。【UHostId和HostId必须选填一个，本字段即将废弃，建议使用HostId】
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -419,6 +420,7 @@ class UDiskClient(Client):
         - **Offset** (int) - 数据偏移量, 默认为0
         - **ProtocolVersion** (int) - 请求协议版本，建议升级为1，为1时DiskType与UHost磁盘类型定义一致；默认为0
         - **Status** (str) - 云盘状态。All(所有状态)，Available(可用)，Attaching(挂载中)，InUse(已挂载)， Detaching(卸载中)， Initializating(分配中)，Failed(创建失败)，Cloning(克隆中)，Restoring(恢复中)，RestoreFailed(恢复失败)。默认值：All
+        - **Tag** (str) - 业务组名称
         - **UDiskBasicInfo** (str) - 是否只返回云盘基础信息（只包含云盘及关联主机的资源信息）。Yes：是，No：否，默认值（No）。（如仅需要基础信息，建议选填“Yes”，可降低请求延时）
         - **UDiskId** (str) - UDisk Id(留空返回全部)
         - **UHostIdForAttachment** (str) - 根据传入的UHostIdForAttachment，筛选出能被挂载在该主机上的云盘【本字段即将废弃，建议使用HostIdForAttachment】
@@ -621,6 +623,39 @@ class UDiskClient(Client):
 
         resp = self.invoke("DescribeUDiskUpgradePrice", d, **kwargs)
         return apis.DescribeUDiskUpgradePriceResponseSchema().loads(resp)
+
+    def detach_delete_udisk(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DetachDeleteUDisk - 卸载删除某个已经挂载在指定UHost实例上的UDisk
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **UDiskId** (str) - (Required) 需要卸载的UDisk实例ID
+        - **DeleteSnapshotService** (str) - 是否删除快照服务。Yes：删除，No：不删除，默认值：Yes。
+        - **HostId** (str) - Host实例ID
+        - **UHostId** (str) - UHost实例ID。【UHostId和HostId必须选填一个，本字段即将废弃，建议使用HostId】
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **HostId** (str) - 卸载的Host实例ID
+        - **UDiskId** (str) - 卸载删除的UDisk实例ID
+        - **UHostId** (str) - 卸载的UHost实例ID。【即将废弃，建议使用HostId】
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DetachDeleteUDiskRequestSchema().dumps(d)
+
+        resp = self.invoke("DetachDeleteUDisk", d, **kwargs)
+        return apis.DetachDeleteUDiskResponseSchema().loads(resp)
 
     def detach_udisk(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """DetachUDisk - 卸载某个已经挂载在指定UHost实例上的UDisk
