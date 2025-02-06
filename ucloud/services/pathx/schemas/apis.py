@@ -33,6 +33,38 @@ class BindPathXSSLResponseSchema(schema.ResponseSchema):
 
 
 """
+API: CreateAppRepo
+
+
+"""
+
+
+class CreateAppRepoRequestSchema(schema.RequestSchema):
+    """CreateAppRepo -"""
+
+    fields = {
+        "ChargeType": fields.Str(required=True, dump_to="ChargeType"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "Description": fields.Str(required=False, dump_to="Description"),
+        "Name": fields.Str(required=True, dump_to="Name"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "RecordName": fields.List(fields.Str()),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "VPCId": fields.List(fields.Str()),
+    }
+
+
+class CreateAppRepoResponseSchema(schema.ResponseSchema):
+    """CreateAppRepo -"""
+
+    fields = {
+        "InstanceId": fields.Str(required=False, load_from="InstanceId"),
+        "Message": fields.Str(required=False, load_from="Message"),
+    }
+
+
+"""
 API: CreateGlobalSSHInstance
 
 创建GlobalSSH实例
@@ -272,6 +304,29 @@ class CreateUPathResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DeleteAppRepo
+
+
+"""
+
+
+class DeleteAppRepoRequestSchema(schema.RequestSchema):
+    """DeleteAppRepo -"""
+
+    fields = {
+        "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DeleteAppRepoResponseSchema(schema.ResponseSchema):
+    """DeleteAppRepo -"""
+
+    fields = {}
+
+
+"""
 API: DeleteGlobalSSHInstance
 
 删除GlobalSSH实例
@@ -444,6 +499,93 @@ class DeleteUPathResponseSchema(schema.ResponseSchema):
     """DeleteUPath - 删除UPath"""
 
     fields = {}
+
+
+"""
+API: DescribeAppRepo
+
+
+"""
+
+
+class DescribeAppRepoRequestSchema(schema.RequestSchema):
+    """DescribeAppRepo -"""
+
+    fields = {
+        "InstanceId": fields.Str(required=False, dump_to="InstanceId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DescribeAppRepoResponseSchema(schema.ResponseSchema):
+    """DescribeAppRepo -"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.AppRepoInstanceSchema(), required=False, load_from="DataSet"
+        ),
+        "Message": fields.Str(required=False, load_from="Message"),
+    }
+
+
+"""
+API: DescribeAppRepoPermitDomain
+
+
+"""
+
+
+class DescribeAppRepoPermitDomainRequestSchema(schema.RequestSchema):
+    """DescribeAppRepoPermitDomain -"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DescribeAppRepoPermitDomainResponseSchema(schema.ResponseSchema):
+    """DescribeAppRepoPermitDomain -"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.DomainDetailSchema(), required=False, load_from="DataSet"
+        ),
+        "Message": fields.Str(required=False, load_from="Message"),
+    }
+
+
+"""
+API: DescribeAppRepoPostPaidRecord
+
+
+"""
+
+
+class DescribeAppRepoPostPaidRecordRequestSchema(schema.RequestSchema):
+    """DescribeAppRepoPostPaidRecord -"""
+
+    fields = {
+        "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "StartTime": fields.Int(required=True, dump_to="StartTime"),
+    }
+
+
+class DescribeAppRepoPostPaidRecordResponseSchema(schema.ResponseSchema):
+    """DescribeAppRepoPostPaidRecord -"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.TPostpaidBaseSchema(), required=False, load_from="DataSet"
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
 
 
 """
@@ -729,6 +871,59 @@ class DescribeUPathTemplateResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetAppRepoPrice
+
+
+"""
+
+
+class GetAppRepoPriceRequestSchema(schema.RequestSchema):
+    """GetAppRepoPrice -"""
+
+    fields = {
+        "ChargeType": fields.Str(required=True, dump_to="ChargeType"),
+        "DomainQuantity": fields.Int(required=False, dump_to="DomainQuantity"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class GetAppRepoPriceResponseSchema(schema.ResponseSchema):
+    """GetAppRepoPrice -"""
+
+    fields = {
+        "Price": fields.Float(required=False, load_from="Price"),
+    }
+
+
+"""
+API: GetAppRepoUpgradePrice
+
+
+"""
+
+
+class GetAppRepoUpgradePriceRequestSchema(schema.RequestSchema):
+    """GetAppRepoUpgradePrice -"""
+
+    fields = {
+        "DomainQuantity": fields.Int(required=False, dump_to="DomainQuantity"),
+        "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class GetAppRepoUpgradePriceResponseSchema(schema.ResponseSchema):
+    """GetAppRepoUpgradePrice -"""
+
+    fields = {
+        "Price": fields.Float(required=False, load_from="Price"),
+    }
+
+
+"""
 API: GetGlobalSSHPrice
 
 获取GlobalSSH价格
@@ -751,6 +946,40 @@ class GetGlobalSSHPriceResponseSchema(schema.ResponseSchema):
 
     fields = {
         "Price": fields.Float(required=False, load_from="Price"),
+    }
+
+
+"""
+API: GetGlobalSSHTraffic
+
+获取GlobalSSH流量统计数据
+"""
+
+
+class GetGlobalSSHTrafficRequestSchema(schema.RequestSchema):
+    """GetGlobalSSHTraffic - 获取GlobalSSH流量统计数据"""
+
+    fields = {
+        "BeginTime": fields.Int(required=True, dump_to="BeginTime"),
+        "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "UGAId": fields.Str(required=True, dump_to="UGAId"),
+    }
+
+
+class GetGlobalSSHTrafficResponseSchema(schema.ResponseSchema):
+    """GetGlobalSSHTraffic - 获取GlobalSSH流量统计数据"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.TrafficDailySchema(), required=True, load_from="DataSet"
+        ),
+        "TrafficDailyRecently": fields.List(
+            models.TrafficDailyRecentlySchema(),
+            required=False,
+            load_from="TrafficDailyRecently",
+        ),
+        "UGAId": fields.Str(required=True, load_from="UGAId"),
     }
 
 
@@ -897,6 +1126,34 @@ class GetUGA3UpdatePriceResponseSchema(schema.ResponseSchema):
 
     fields = {
         "Price": fields.Float(required=True, load_from="Price"),
+    }
+
+
+"""
+API: ModifyGlobalSSHOriginInfo
+
+修改GlobalSSH 源站信息
+"""
+
+
+class ModifyGlobalSSHOriginInfoRequestSchema(schema.RequestSchema):
+    """ModifyGlobalSSHOriginInfo - 修改GlobalSSH 源站信息"""
+
+    fields = {
+        "Area": fields.Str(required=False, dump_to="Area"),
+        "AreaCode": fields.Str(required=False, dump_to="AreaCode"),
+        "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
+        "InstanceType": fields.Str(required=True, dump_to="InstanceType"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "RsIP": fields.Str(required=True, dump_to="RsIP"),
+    }
+
+
+class ModifyGlobalSSHOriginInfoResponseSchema(schema.ResponseSchema):
+    """ModifyGlobalSSHOriginInfo - 修改GlobalSSH 源站信息"""
+
+    fields = {
+        "Message": fields.Str(required=False, load_from="Message"),
     }
 
 
@@ -1201,6 +1458,56 @@ class UnBindPathXSSLRequestSchema(schema.RequestSchema):
 
 class UnBindPathXSSLResponseSchema(schema.ResponseSchema):
     """UnBindPathXSSL - 解绑PathX SSL 证书"""
+
+    fields = {}
+
+
+"""
+API: UpdateAppRepo
+
+
+"""
+
+
+class UpdateAppRepoRequestSchema(schema.RequestSchema):
+    """UpdateAppRepo -"""
+
+    fields = {
+        "Description": fields.Str(required=False, dump_to="Description"),
+        "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class UpdateAppRepoResponseSchema(schema.ResponseSchema):
+    """UpdateAppRepo -"""
+
+    fields = {}
+
+
+"""
+API: UpdateAppRepoDomainName
+
+
+"""
+
+
+class UpdateAppRepoDomainNameRequestSchema(schema.RequestSchema):
+    """UpdateAppRepoDomainName -"""
+
+    fields = {
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "RecordName": fields.List(fields.Str()),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class UpdateAppRepoDomainNameResponseSchema(schema.ResponseSchema):
+    """UpdateAppRepoDomainName -"""
 
     fields = {}
 

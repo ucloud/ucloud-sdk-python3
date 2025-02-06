@@ -129,13 +129,6 @@ TiDB
    :members:
 
 
-UAAA
-----
-
-.. autoclass:: ucloud.services.uaaa.client.UAAAClient
-   :members:
-
-
 UADS
 ----
 

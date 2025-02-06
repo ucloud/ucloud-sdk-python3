@@ -39,6 +39,43 @@ class PathXClient(Client):
         resp = self.invoke("BindPathXSSL", d, **kwargs)
         return apis.BindPathXSSLResponseSchema().loads(resp)
 
+    def create_app_repo(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateAppRepo -
+
+        **Request**
+
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **ChargeType** (str) - (Required)
+        - **Name** (str) - (Required)
+        - **CouponId** (str) -
+        - **Description** (str) -
+        - **Quantity** (int) -
+        - **RecordName** (list) -
+        - **VPCId** (list) -
+
+        **Response**
+
+        - **InstanceId** (str) -
+        - **Message** (str) -
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateAppRepoRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateAppRepo", d, **kwargs)
+        return apis.CreateAppRepoResponseSchema().loads(resp)
+
     def create_global_ssh_instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -289,6 +326,35 @@ class PathXClient(Client):
         resp = self.invoke("CreateUPath", d, **kwargs)
         return apis.CreateUPathResponseSchema().loads(resp)
 
+    def delete_app_repo(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteAppRepo -
+
+        **Request**
+
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **InstanceId** (str) - (Required)
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteAppRepoRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("DeleteAppRepo", d, **kwargs)
+        return apis.DeleteAppRepoResponseSchema().loads(resp)
+
     def delete_global_ssh_instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -473,6 +539,136 @@ class PathXClient(Client):
 
         resp = self.invoke("DeleteUPath", d, **kwargs)
         return apis.DeleteUPathResponseSchema().loads(resp)
+
+    def describe_app_repo(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeAppRepo -
+
+        **Request**
+
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **InstanceId** (str) -
+
+        **Response**
+
+        - **DataSet** (list) - 见 **AppRepoInstance** 模型定义
+        - **Message** (str) -
+
+        **Response Model**
+
+        **AppRepoInstance**
+        - **ChargeType** (str) -
+        - **CreateTime** (int) -
+        - **Description** (str) -
+        - **ExpireTime** (int) -
+        - **InstanceId** (str) -
+        - **Name** (str) -
+        - **RecordName** (list) -
+        - **VPC** (list) -
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeAppRepoRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("DescribeAppRepo", d, **kwargs)
+        return apis.DescribeAppRepoResponseSchema().loads(resp)
+
+    def describe_app_repo_permit_domain(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeAppRepoPermitDomain -
+
+        **Request**
+
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+
+        **Response**
+
+        - **DataSet** (list) - 见 **DomainDetail** 模型定义
+        - **Message** (str) -
+
+        **Response Model**
+
+        **DomainDetail**
+        - **Info** (dict) - 见 **DomainInfo** 模型定义
+        - **Redirect** (list) - 见 **DomainInfo** 模型定义
+
+
+        **DomainInfo**
+        - **Desc** (str) -
+        - **DomainName** (str) -
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeAppRepoPermitDomainRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("DescribeAppRepoPermitDomain", d, **kwargs)
+        return apis.DescribeAppRepoPermitDomainResponseSchema().loads(resp)
+
+    def describe_app_repo_post_paid_record(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeAppRepoPostPaidRecord -
+
+        **Request**
+
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **EndTime** (int) - (Required)
+        - **InstanceId** (str) - (Required)
+        - **StartTime** (int) - (Required)
+        - **Limit** (int) -
+        - **Offset** (int) -
+
+        **Response**
+
+        - **DataSet** (list) - 见 **TPostpaidBase** 模型定义
+        - **TotalCount** (int) -
+
+        **Response Model**
+
+        **TPostpaidBase**
+        - **EndTime** (int) -
+        - **InstanceId** (str) -
+        - **StartTime** (int) -
+        - **TrafficSum** (int) -
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeAppRepoPostPaidRecordRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("DescribeAppRepoPostPaidRecord", d, **kwargs)
+        return apis.DescribeAppRepoPostPaidRecordResponseSchema().loads(resp)
 
     def describe_global_ssh_area(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -998,6 +1194,69 @@ class PathXClient(Client):
         resp = self.invoke("DescribeUPathTemplate", d, **kwargs)
         return apis.DescribeUPathTemplateResponseSchema().loads(resp)
 
+    def get_app_repo_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetAppRepoPrice -
+
+        **Request**
+
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **ChargeType** (str) - (Required)
+        - **DomainQuantity** (int) -
+        - **Quantity** (int) -
+
+        **Response**
+
+        - **Price** (float) -
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetAppRepoPriceRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("GetAppRepoPrice", d, **kwargs)
+        return apis.GetAppRepoPriceResponseSchema().loads(resp)
+
+    def get_app_repo_upgrade_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetAppRepoUpgradePrice -
+
+        **Request**
+
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **InstanceId** (str) - (Required)
+        - **DomainQuantity** (int) -
+
+        **Response**
+
+        - **Price** (float) -
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetAppRepoUpgradePriceRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("GetAppRepoUpgradePrice", d, **kwargs)
+        return apis.GetAppRepoUpgradePriceResponseSchema().loads(resp)
+
     def get_global_ssh_price(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1024,6 +1283,49 @@ class PathXClient(Client):
 
         resp = self.invoke("GetGlobalSSHPrice", d, **kwargs)
         return apis.GetGlobalSSHPriceResponseSchema().loads(resp)
+
+    def get_global_ssh_traffic(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetGlobalSSHTraffic - 获取GlobalSSH流量统计数据
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **BeginTime** (int) - (Required) 查询起始时间，如1525017600
+        - **EndTime** (int) - (Required) 查询结束时间，如1525103999
+        - **UGAId** (str) - (Required) 资源ID，如uga-as5daw
+
+        **Response**
+
+        - **DataSet** (list) - 见 **TrafficDaily** 模型定义
+        - **TrafficDailyRecently** (list) - 见 **TrafficDailyRecently** 模型定义
+        - **UGAId** (str) - 资源ID
+
+        **Response Model**
+
+        **TrafficDailyRecently**
+        - **Day** (str) - 日期
+        - **TrafficUnitGB** (str) - 日流量(单位GB)
+        - **TrafficUnitMB** (str) - 日流量(单位MB)
+
+
+        **TrafficDaily**
+        - **BillingState** (str) - Yes:已扣费, No:未扣费
+        - **Date** (int) - 日期
+        - **Traffic** (int) - 流量（单位GB）
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetGlobalSSHTrafficRequestSchema().dumps(d)
+
+        resp = self.invoke("GetGlobalSSHTraffic", d, **kwargs)
+        return apis.GetGlobalSSHTrafficResponseSchema().loads(resp)
 
     def get_global_ssh_update_price(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1223,6 +1525,35 @@ class PathXClient(Client):
 
         resp = self.invoke("GetUGA3UpdatePrice", d, **kwargs)
         return apis.GetUGA3UpdatePriceResponseSchema().loads(resp)
+
+    def modify_global_ssh_origin_info(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyGlobalSSHOriginInfo - 修改GlobalSSH 源站信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **InstanceId** (str) - (Required) 资源ID:ugaa-xxxxxxx
+        - **InstanceType** (str) - (Required) Free,Basic,Enterprise,Ultimate
+        - **RsIP** (str) - (Required) 被SSH访问的源站IP
+        - **Area** (str) - 填写支持SSH访问IP的地区名称，如“洛杉矶”，“新加坡”，“香港”，“东京”，“华盛顿”，“法兰克福”。Area和AreaCode两者必填一个
+        - **AreaCode** (str) - AreaCode, 区域航空港国际通用代码。Area和AreaCode两者必填一个
+
+        **Response**
+
+        - **Message** (str) - 提示信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.ModifyGlobalSSHOriginInfoRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyGlobalSSHOriginInfo", d, **kwargs)
+        return apis.ModifyGlobalSSHOriginInfoResponseSchema().loads(resp)
 
     def modify_global_ssh_port(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1557,6 +1888,68 @@ class PathXClient(Client):
 
         resp = self.invoke("UnBindPathXSSL", d, **kwargs)
         return apis.UnBindPathXSSLResponseSchema().loads(resp)
+
+    def update_app_repo(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateAppRepo -
+
+        **Request**
+
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **InstanceId** (str) - (Required)
+        - **Description** (str) -
+        - **Name** (str) -
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateAppRepoRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("UpdateAppRepo", d, **kwargs)
+        return apis.UpdateAppRepoResponseSchema().loads(resp)
+
+    def update_app_repo_domain_name(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateAppRepoDomainName -
+
+        **Request**
+
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **InstanceId** (str) - (Required)
+        - **CouponId** (str) -
+        - **RecordName** (list) -
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateAppRepoDomainNameRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("UpdateAppRepoDomainName", d, **kwargs)
+        return apis.UpdateAppRepoDomainNameResponseSchema().loads(resp)
 
     def update_path_x_whitelist(
         self, req: typing.Optional[dict] = None, **kwargs

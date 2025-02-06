@@ -339,6 +339,29 @@ class CacheAllConfigSchema(schema.ResponseSchema):
     }
 
 
+class AdvancedConfSchema(schema.ResponseSchema):
+    """AdvancedConf - 域名高级配置"""
+
+    fields = {
+        "Http2Https": fields.Bool(required=False, load_from="Http2Https"),
+        "HttpClientHeader": fields.List(fields.Str()),
+        "HttpOriginHeader": fields.List(fields.Str()),
+        "QuicEnable": fields.Bool(required=False, load_from="QuicEnable"),
+        "WebSocketEnable": fields.Bool(
+            required=False, load_from="WebSocketEnable"
+        ),
+    }
+
+
+class AccessControlConfSchema(schema.ResponseSchema):
+    """AccessControlConf - 访问控制配置参数"""
+
+    fields = {
+        "IpBlackList": fields.List(fields.Str()),
+        "ReferConf": ReferConfSchema(),
+    }
+
+
 class OriginConfSchema(schema.ResponseSchema):
     """OriginConf - 回源配置"""
 
@@ -365,29 +388,6 @@ class OriginConfSchema(schema.ResponseSchema):
         "OriginProtocol": fields.Str(
             required=False, load_from="OriginProtocol"
         ),
-    }
-
-
-class AdvancedConfSchema(schema.ResponseSchema):
-    """AdvancedConf - 域名高级配置"""
-
-    fields = {
-        "Http2Https": fields.Bool(required=False, load_from="Http2Https"),
-        "HttpClientHeader": fields.List(fields.Str()),
-        "HttpOriginHeader": fields.List(fields.Str()),
-        "QuicEnable": fields.Bool(required=False, load_from="QuicEnable"),
-        "WebSocketEnable": fields.Bool(
-            required=False, load_from="WebSocketEnable"
-        ),
-    }
-
-
-class AccessControlConfSchema(schema.ResponseSchema):
-    """AccessControlConf - 访问控制配置参数"""
-
-    fields = {
-        "IpBlackList": fields.List(fields.Str()),
-        "ReferConf": ReferConfSchema(),
     }
 
 

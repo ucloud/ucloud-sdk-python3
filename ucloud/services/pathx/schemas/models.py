@@ -3,6 +3,50 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class AppRepoInstanceSchema(schema.ResponseSchema):
+    """AppRepoInstance -"""
+
+    fields = {
+        "ChargeType": fields.Str(required=True, load_from="ChargeType"),
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "Description": fields.Str(required=True, load_from="Description"),
+        "ExpireTime": fields.Int(required=True, load_from="ExpireTime"),
+        "InstanceId": fields.Str(required=True, load_from="InstanceId"),
+        "Name": fields.Str(required=True, load_from="Name"),
+        "RecordName": fields.List(fields.Str()),
+        "VPC": fields.List(fields.Str()),
+    }
+
+
+class DomainInfoSchema(schema.ResponseSchema):
+    """DomainInfo -"""
+
+    fields = {
+        "Desc": fields.Str(required=False, load_from="Desc"),
+        "DomainName": fields.Str(required=False, load_from="DomainName"),
+    }
+
+
+class DomainDetailSchema(schema.ResponseSchema):
+    """DomainDetail -"""
+
+    fields = {
+        "Info": DomainInfoSchema(required=False, load_from="Info"),
+        "Redirect": fields.List(DomainInfoSchema()),
+    }
+
+
+class TPostpaidBaseSchema(schema.ResponseSchema):
+    """TPostpaidBase -"""
+
+    fields = {
+        "EndTime": fields.Int(required=True, load_from="EndTime"),
+        "InstanceId": fields.Str(required=True, load_from="InstanceId"),
+        "StartTime": fields.Int(required=True, load_from="StartTime"),
+        "TrafficSum": fields.Int(required=True, load_from="TrafficSum"),
+    }
+
+
 class GlobalSSHAreaSchema(schema.ResponseSchema):
     """GlobalSSHArea -"""
 
@@ -231,12 +275,13 @@ class AccelerationInfoSchema(schema.ResponseSchema):
     }
 
 
-class UGAATaskSchema(schema.ResponseSchema):
-    """UGAATask - 用户在UGAA实例下配置的多端口任务"""
+class UGAL4ForwarderSchema(schema.ResponseSchema):
+    """UGAL4Forwarder - UGA实例 4层转发器信息"""
 
     fields = {
         "Port": fields.Int(required=True, load_from="Port"),
         "Protocol": fields.Str(required=True, load_from="Protocol"),
+        "RSPort": fields.Int(required=True, load_from="RSPort"),
     }
 
 
@@ -255,6 +300,15 @@ class UPathSetSchema(schema.ResponseSchema):
     }
 
 
+class UGAATaskSchema(schema.ResponseSchema):
+    """UGAATask - 用户在UGAA实例下配置的多端口任务"""
+
+    fields = {
+        "Port": fields.Int(required=True, load_from="Port"),
+        "Protocol": fields.Str(required=True, load_from="Protocol"),
+    }
+
+
 class UGAL7ForwarderSchema(schema.ResponseSchema):
     """UGAL7Forwarder - UGA实例 7层转发器信息"""
 
@@ -264,16 +318,6 @@ class UGAL7ForwarderSchema(schema.ResponseSchema):
         "RSPort": fields.Int(required=True, load_from="RSPort"),
         "SSLId": fields.Str(required=False, load_from="SSLId"),
         "SSLName": fields.Str(required=False, load_from="SSLName"),
-    }
-
-
-class UGAL4ForwarderSchema(schema.ResponseSchema):
-    """UGAL4Forwarder - UGA实例 4层转发器信息"""
-
-    fields = {
-        "Port": fields.Int(required=True, load_from="Port"),
-        "Protocol": fields.Str(required=True, load_from="Protocol"),
-        "RSPort": fields.Int(required=True, load_from="RSPort"),
     }
 
 
@@ -339,6 +383,26 @@ class AlarmRulerSchema(schema.ResponseSchema):
         "ResourceType": fields.Str(required=False, load_from="ResourceType"),
         "Threshold": fields.Int(required=True, load_from="Threshold"),
         "TriggerCount": fields.Int(required=True, load_from="TriggerCount"),
+    }
+
+
+class TrafficDailySchema(schema.ResponseSchema):
+    """TrafficDaily -"""
+
+    fields = {
+        "BillingState": fields.Str(required=True, load_from="BillingState"),
+        "Date": fields.Int(required=True, load_from="Date"),
+        "Traffic": fields.Int(required=True, load_from="Traffic"),
+    }
+
+
+class TrafficDailyRecentlySchema(schema.ResponseSchema):
+    """TrafficDailyRecently - 最近3个月日流量统计"""
+
+    fields = {
+        "Day": fields.Str(required=False, load_from="Day"),
+        "TrafficUnitGB": fields.Str(required=False, load_from="TrafficUnitGB"),
+        "TrafficUnitMB": fields.Str(required=False, load_from="TrafficUnitMB"),
     }
 
 

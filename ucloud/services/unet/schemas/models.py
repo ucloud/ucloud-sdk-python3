@@ -76,6 +76,16 @@ class UnetEIPResourceSetSchema(schema.ResponseSchema):
     }
 
 
+class EIPBindingSchema(schema.ResponseSchema):
+    """EIPBinding - EIP绑定内网IP关系数据"""
+
+    fields = {
+        "EIP": fields.Str(required=False, load_from="EIP"),
+        "PrivateIP": fields.Str(required=False, load_from="PrivateIP"),
+        "PrivateIPType": fields.Str(required=False, load_from="PrivateIPType"),
+    }
+
+
 class ShareBandwidthSetSchema(schema.ResponseSchema):
     """ShareBandwidthSet - DescribeEIP"""
 
@@ -89,16 +99,6 @@ class ShareBandwidthSetSchema(schema.ResponseSchema):
         "ShareBandwidthName": fields.Str(
             required=False, load_from="ShareBandwidthName"
         ),
-    }
-
-
-class EIPBindingSchema(schema.ResponseSchema):
-    """EIPBinding - EIP绑定内网IP关系数据"""
-
-    fields = {
-        "EIP": fields.Str(required=False, load_from="EIP"),
-        "PrivateIP": fields.Str(required=False, load_from="PrivateIP"),
-        "PrivateIPType": fields.Str(required=False, load_from="PrivateIPType"),
     }
 
 
