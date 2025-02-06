@@ -1025,6 +1025,49 @@ class PathXClient(Client):
         resp = self.invoke("GetGlobalSSHPrice", d, **kwargs)
         return apis.GetGlobalSSHPriceResponseSchema().loads(resp)
 
+    def get_global_ssh_traffic(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetGlobalSSHTraffic - 获取GlobalSSH流量统计数据
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **BeginTime** (int) - (Required) 查询起始时间，如1525017600
+        - **EndTime** (int) - (Required) 查询结束时间，如1525103999
+        - **UGAId** (str) - (Required) 资源ID，如uga-as5daw
+
+        **Response**
+
+        - **DataSet** (list) - 见 **TrafficDaily** 模型定义
+        - **TrafficDailyRecently** (list) - 见 **TrafficDailyRecently** 模型定义
+        - **UGAId** (str) - 资源ID
+
+        **Response Model**
+
+        **TrafficDailyRecently**
+        - **Day** (str) - 日期
+        - **TrafficUnitGB** (str) - 日流量(单位GB)
+        - **TrafficUnitMB** (str) - 日流量(单位MB)
+
+
+        **TrafficDaily**
+        - **BillingState** (str) - Yes:已扣费, No:未扣费
+        - **Date** (int) - 日期
+        - **Traffic** (int) - 流量（单位GB）
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetGlobalSSHTrafficRequestSchema().dumps(d)
+
+        resp = self.invoke("GetGlobalSSHTraffic", d, **kwargs)
+        return apis.GetGlobalSSHTrafficResponseSchema().loads(resp)
+
     def get_global_ssh_update_price(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1223,6 +1266,35 @@ class PathXClient(Client):
 
         resp = self.invoke("GetUGA3UpdatePrice", d, **kwargs)
         return apis.GetUGA3UpdatePriceResponseSchema().loads(resp)
+
+    def modify_global_ssh_origin_info(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyGlobalSSHOriginInfo - 修改GlobalSSH 源站信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID,如org-xxxx。请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **InstanceId** (str) - (Required) 资源ID:ugaa-xxxxxxx
+        - **InstanceType** (str) - (Required) Free,Basic,Enterprise,Ultimate
+        - **RsIP** (str) - (Required) 被SSH访问的源站IP
+        - **Area** (str) - 填写支持SSH访问IP的地区名称，如“洛杉矶”，“新加坡”，“香港”，“东京”，“华盛顿”，“法兰克福”。Area和AreaCode两者必填一个
+        - **AreaCode** (str) - AreaCode, 区域航空港国际通用代码。Area和AreaCode两者必填一个
+
+        **Response**
+
+        - **Message** (str) - 提示信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.ModifyGlobalSSHOriginInfoRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyGlobalSSHOriginInfo", d, **kwargs)
+        return apis.ModifyGlobalSSHOriginInfoResponseSchema().loads(resp)
 
     def modify_global_ssh_port(
         self, req: typing.Optional[dict] = None, **kwargs

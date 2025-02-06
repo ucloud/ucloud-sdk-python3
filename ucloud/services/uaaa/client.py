@@ -134,14 +134,14 @@ class UAAAClient(Client):
 
         **Response Model**
 
-        **DomainInfo**
-        - **Desc** (str) - 备注信息
-        - **DomainName** (str) - 域名解析记录名称
-
-
         **DomainDetail**
         - **Info** (dict) - 见 **DomainInfo** 模型定义
         - **Redirect** (list) - 见 **DomainInfo** 模型定义
+
+
+        **DomainInfo**
+        - **Desc** (str) - 备注信息
+        - **DomainName** (str) - 域名解析记录名称
 
 
         """

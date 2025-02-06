@@ -26,31 +26,6 @@ class ReceiptPerSessionSchema(schema.ResponseSchema):
     }
 
 
-class StatisticsDataSchema(schema.ResponseSchema):
-    """StatisticsData - 统计信息"""
-
-    fields = {
-        "FailCostCount": fields.Int(required=True, load_from="FailCostCount"),
-        "FailCount": fields.Int(required=True, load_from="FailCount"),
-        "SendCostCount": fields.Int(required=True, load_from="SendCostCount"),
-        "SendCount": fields.Int(required=True, load_from="SendCount"),
-        "SubmitFailCostCount": fields.Int(
-            required=True, load_from="SubmitFailCostCount"
-        ),
-        "SubmitFailCount": fields.Int(
-            required=True, load_from="SubmitFailCount"
-        ),
-        "SuccessCostCount": fields.Int(
-            required=True, load_from="SuccessCostCount"
-        ),
-        "SuccessCount": fields.Int(required=True, load_from="SuccessCount"),
-        "UnknownCostCount": fields.Int(
-            required=True, load_from="UnknownCostCount"
-        ),
-        "UnknownCount": fields.Int(required=True, load_from="UnknownCount"),
-    }
-
-
 class StatisticsDataInfoSchema(schema.ResponseSchema):
     """StatisticsDataInfo - 统计信息按天聚合"""
 
@@ -79,6 +54,31 @@ class StatisticsDataInfoSchema(schema.ResponseSchema):
         ),
         "UnknownCount": fields.Int(required=True, load_from="UnknownCount"),
         "UserId": fields.Str(required=True, load_from="UserId"),
+    }
+
+
+class StatisticsDataSchema(schema.ResponseSchema):
+    """StatisticsData - 统计信息"""
+
+    fields = {
+        "FailCostCount": fields.Int(required=True, load_from="FailCostCount"),
+        "FailCount": fields.Int(required=True, load_from="FailCount"),
+        "SendCostCount": fields.Int(required=True, load_from="SendCostCount"),
+        "SendCount": fields.Int(required=True, load_from="SendCount"),
+        "SubmitFailCostCount": fields.Int(
+            required=True, load_from="SubmitFailCostCount"
+        ),
+        "SubmitFailCount": fields.Int(
+            required=True, load_from="SubmitFailCount"
+        ),
+        "SuccessCostCount": fields.Int(
+            required=True, load_from="SuccessCostCount"
+        ),
+        "SuccessCount": fields.Int(required=True, load_from="SuccessCount"),
+        "UnknownCostCount": fields.Int(
+            required=True, load_from="UnknownCostCount"
+        ),
+        "UnknownCount": fields.Int(required=True, load_from="UnknownCount"),
     }
 
 
