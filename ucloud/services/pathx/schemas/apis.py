@@ -755,6 +755,40 @@ class GetGlobalSSHPriceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetGlobalSSHTraffic
+
+获取GlobalSSH流量统计数据
+"""
+
+
+class GetGlobalSSHTrafficRequestSchema(schema.RequestSchema):
+    """GetGlobalSSHTraffic - 获取GlobalSSH流量统计数据"""
+
+    fields = {
+        "BeginTime": fields.Int(required=True, dump_to="BeginTime"),
+        "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "UGAId": fields.Str(required=True, dump_to="UGAId"),
+    }
+
+
+class GetGlobalSSHTrafficResponseSchema(schema.ResponseSchema):
+    """GetGlobalSSHTraffic - 获取GlobalSSH流量统计数据"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.TrafficDailySchema(), required=True, load_from="DataSet"
+        ),
+        "TrafficDailyRecently": fields.List(
+            models.TrafficDailyRecentlySchema(),
+            required=False,
+            load_from="TrafficDailyRecently",
+        ),
+        "UGAId": fields.Str(required=True, load_from="UGAId"),
+    }
+
+
+"""
 API: GetGlobalSSHUpdatePrice
 
 获取GlobalSSH升级价格
@@ -897,6 +931,34 @@ class GetUGA3UpdatePriceResponseSchema(schema.ResponseSchema):
 
     fields = {
         "Price": fields.Float(required=True, load_from="Price"),
+    }
+
+
+"""
+API: ModifyGlobalSSHOriginInfo
+
+修改GlobalSSH 源站信息
+"""
+
+
+class ModifyGlobalSSHOriginInfoRequestSchema(schema.RequestSchema):
+    """ModifyGlobalSSHOriginInfo - 修改GlobalSSH 源站信息"""
+
+    fields = {
+        "Area": fields.Str(required=False, dump_to="Area"),
+        "AreaCode": fields.Str(required=False, dump_to="AreaCode"),
+        "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
+        "InstanceType": fields.Str(required=True, dump_to="InstanceType"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "RsIP": fields.Str(required=True, dump_to="RsIP"),
+    }
+
+
+class ModifyGlobalSSHOriginInfoResponseSchema(schema.ResponseSchema):
+    """ModifyGlobalSSHOriginInfo - 修改GlobalSSH 源站信息"""
+
+    fields = {
+        "Message": fields.Str(required=False, load_from="Message"),
     }
 
 

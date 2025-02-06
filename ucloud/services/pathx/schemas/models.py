@@ -135,6 +135,15 @@ class SrcAreaInfoSchema(schema.ResponseSchema):
     }
 
 
+class OutPublicIpInfoSchema(schema.ResponseSchema):
+    """OutPublicIpInfo - 线路回源IP信息"""
+
+    fields = {
+        "Area": fields.Str(required=False, load_from="Area"),
+        "IP": fields.Str(required=False, load_from="IP"),
+    }
+
+
 class AccelerationAreaInfosSchema(schema.ResponseSchema):
     """AccelerationAreaInfos -"""
 
@@ -143,15 +152,6 @@ class AccelerationAreaInfosSchema(schema.ResponseSchema):
             required=True, load_from="AccelerationArea"
         ),
         "AccelerationNodes": fields.List(SrcAreaInfoSchema()),
-    }
-
-
-class OutPublicIpInfoSchema(schema.ResponseSchema):
-    """OutPublicIpInfo - 线路回源IP信息"""
-
-    fields = {
-        "Area": fields.Str(required=False, load_from="Area"),
-        "IP": fields.Str(required=False, load_from="IP"),
     }
 
 
@@ -231,15 +231,6 @@ class AccelerationInfoSchema(schema.ResponseSchema):
     }
 
 
-class UGAATaskSchema(schema.ResponseSchema):
-    """UGAATask - 用户在UGAA实例下配置的多端口任务"""
-
-    fields = {
-        "Port": fields.Int(required=True, load_from="Port"),
-        "Protocol": fields.Str(required=True, load_from="Protocol"),
-    }
-
-
 class UPathSetSchema(schema.ResponseSchema):
     """UPathSet - uga关联的upath信息"""
 
@@ -252,6 +243,15 @@ class UPathSetSchema(schema.ResponseSchema):
         "LineToName": fields.Str(required=False, load_from="LineToName"),
         "UPathId": fields.Str(required=False, load_from="UPathId"),
         "UPathName": fields.Str(required=False, load_from="UPathName"),
+    }
+
+
+class UGAATaskSchema(schema.ResponseSchema):
+    """UGAATask - 用户在UGAA实例下配置的多端口任务"""
+
+    fields = {
+        "Port": fields.Int(required=True, load_from="Port"),
+        "Protocol": fields.Str(required=True, load_from="Protocol"),
     }
 
 
@@ -339,6 +339,26 @@ class AlarmRulerSchema(schema.ResponseSchema):
         "ResourceType": fields.Str(required=False, load_from="ResourceType"),
         "Threshold": fields.Int(required=True, load_from="Threshold"),
         "TriggerCount": fields.Int(required=True, load_from="TriggerCount"),
+    }
+
+
+class TrafficDailyRecentlySchema(schema.ResponseSchema):
+    """TrafficDailyRecently - 最近3个月日流量统计"""
+
+    fields = {
+        "Day": fields.Str(required=False, load_from="Day"),
+        "TrafficUnitGB": fields.Str(required=False, load_from="TrafficUnitGB"),
+        "TrafficUnitMB": fields.Str(required=False, load_from="TrafficUnitMB"),
+    }
+
+
+class TrafficDailySchema(schema.ResponseSchema):
+    """TrafficDaily -"""
+
+    fields = {
+        "BillingState": fields.Str(required=True, load_from="BillingState"),
+        "Date": fields.Int(required=True, load_from="Date"),
+        "Traffic": fields.Int(required=True, load_from="Traffic"),
     }
 
 
