@@ -55,6 +55,27 @@ class UnetBandwidthUsageEIPSetSchema(schema.ResponseSchema):
     }
 
 
+class UnetEIPResourceSetSchema(schema.ResponseSchema):
+    """UnetEIPResourceSet - DescribeEIP"""
+
+    fields = {
+        "EIPId": fields.Str(required=False, load_from="EIPId"),
+        "ResourceID": fields.Str(required=False, load_from="ResourceID"),
+        "ResourceId": fields.Str(
+            required=False, load_from="ResourceId"
+        ),  # Deprecated, will be removed at 1.0
+        "ResourceName": fields.Str(required=False, load_from="ResourceName"),
+        "ResourceType": fields.Str(required=False, load_from="ResourceType"),
+        "SubResourceId": fields.Str(required=False, load_from="SubResourceId"),
+        "SubResourceName": fields.Str(
+            required=False, load_from="SubResourceName"
+        ),
+        "SubResourceType": fields.Str(
+            required=False, load_from="SubResourceType"
+        ),
+    }
+
+
 class ShareBandwidthSetSchema(schema.ResponseSchema):
     """ShareBandwidthSet - DescribeEIP"""
 
@@ -78,27 +99,6 @@ class EIPBindingSchema(schema.ResponseSchema):
         "EIP": fields.Str(required=False, load_from="EIP"),
         "PrivateIP": fields.Str(required=False, load_from="PrivateIP"),
         "PrivateIPType": fields.Str(required=False, load_from="PrivateIPType"),
-    }
-
-
-class UnetEIPResourceSetSchema(schema.ResponseSchema):
-    """UnetEIPResourceSet - DescribeEIP"""
-
-    fields = {
-        "EIPId": fields.Str(required=False, load_from="EIPId"),
-        "ResourceID": fields.Str(required=False, load_from="ResourceID"),
-        "ResourceId": fields.Str(
-            required=False, load_from="ResourceId"
-        ),  # Deprecated, will be removed at 1.0
-        "ResourceName": fields.Str(required=False, load_from="ResourceName"),
-        "ResourceType": fields.Str(required=False, load_from="ResourceType"),
-        "SubResourceId": fields.Str(required=False, load_from="SubResourceId"),
-        "SubResourceName": fields.Str(
-            required=False, load_from="SubResourceName"
-        ),
-        "SubResourceType": fields.Str(
-            required=False, load_from="SubResourceType"
-        ),
     }
 
 

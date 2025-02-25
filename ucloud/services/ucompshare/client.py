@@ -76,42 +76,6 @@ class UCompShareClient(Client):
 
         **Response Model**
 
-        **UHostIPSet**
-        - **Bandwidth** (int) - IP对应的带宽, 单位: Mb  (内网IP不显示带宽信息)
-        - **Default** (str) - 内网 Private 类型下，表示是否为默认网卡。true: 是默认网卡；其他值：不是。
-        - **IP** (str) - IP地址
-        - **IPId** (str) - 外网IP资源ID 。(内网IP无对应的资源ID)
-        - **IPMode** (str) - IPv4/IPv6；
-        - **Mac** (str) - 内网 Private 类型下，当前网卡的Mac。
-        - **NetworkInterfaceId** (str) - 弹性网卡为默认网卡时，返回对应的 ID 值
-        - **SubnetId** (str) - IP地址对应的子网 ID。（北京一不支持，字段返回为空）
-        - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
-        - **VPCId** (str) - IP地址对应的VPC ID。（北京一不支持，字段返回为空）
-        - **Weight** (int) - 当前EIP的权重。权重最大的为当前的出口IP。
-
-
-        **UHostDiskSet**
-        - **BackupType** (str) - 备份方案。若开通了数据方舟，则为DATAARK
-        - **DiskId** (str) - 磁盘ID
-        - **DiskType** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
-        - **Drive** (str) - 磁盘盘符
-        - **Encrypted** (str) - "true": 加密盘 "false"：非加密盘
-        - **IsBoot** (str) - 是否是系统盘。枚举值：\\ > True，是系统盘 \\ > False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
-        - **Name** (str) - UDisk名字（仅当磁盘是UDisk时返回）
-        - **Size** (int) - 磁盘大小，单位: GB
-        - **Type** (str) - 【建议不再使用】磁盘类型。系统盘: Boot，数据盘: Data,网络盘：Udisk
-
-
-        **GraphicsMemory**
-        - **Rate** (int) - 交互展示参数，可忽略
-        - **Value** (int) - 值，单位是GB
-
-
-        **SoftwareAddr**
-        - **Name** (str) - 软件名称
-        - **URL** (str) - 软件地址
-
-
         **CompShareInstanceSet**
         - **AutoRenew** (str) - 是否自动续费，自动续费：“Yes”，不自动续费：“No”
         - **CPU** (int) - 虚拟CPU核数，单位: 个
@@ -156,6 +120,42 @@ class UCompShareClient(Client):
         - **UHostId** (str) - 实例Id
         - **UUID** (str) - 【内部API返回】资源长Id
         - **Zone** (str) - 可用区
+
+
+        **UHostDiskSet**
+        - **BackupType** (str) - 备份方案。若开通了数据方舟，则为DATAARK
+        - **DiskId** (str) - 磁盘ID
+        - **DiskType** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
+        - **Drive** (str) - 磁盘盘符
+        - **Encrypted** (str) - "true": 加密盘 "false"：非加密盘
+        - **IsBoot** (str) - 是否是系统盘。枚举值：\\ > True，是系统盘 \\ > False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
+        - **Name** (str) - UDisk名字（仅当磁盘是UDisk时返回）
+        - **Size** (int) - 磁盘大小，单位: GB
+        - **Type** (str) - 【建议不再使用】磁盘类型。系统盘: Boot，数据盘: Data,网络盘：Udisk
+
+
+        **GraphicsMemory**
+        - **Rate** (int) - 交互展示参数，可忽略
+        - **Value** (int) - 值，单位是GB
+
+
+        **UHostIPSet**
+        - **Bandwidth** (int) - IP对应的带宽, 单位: Mb  (内网IP不显示带宽信息)
+        - **Default** (str) - 内网 Private 类型下，表示是否为默认网卡。true: 是默认网卡；其他值：不是。
+        - **IP** (str) - IP地址
+        - **IPId** (str) - 外网IP资源ID 。(内网IP无对应的资源ID)
+        - **IPMode** (str) - IPv4/IPv6；
+        - **Mac** (str) - 内网 Private 类型下，当前网卡的Mac。
+        - **NetworkInterfaceId** (str) - 弹性网卡为默认网卡时，返回对应的 ID 值
+        - **SubnetId** (str) - IP地址对应的子网 ID。（北京一不支持，字段返回为空）
+        - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
+        - **VPCId** (str) - IP地址对应的VPC ID。（北京一不支持，字段返回为空）
+        - **Weight** (int) - 当前EIP的权重。权重最大的为当前的出口IP。
+
+
+        **SoftwareAddr**
+        - **Name** (str) - 软件名称
+        - **URL** (str) - 软件地址
 
 
         """
@@ -259,6 +259,16 @@ class UCompShareClient(Client):
         - **Type** (str) - 磁盘类型。系统盘："Boot"；数据盘："Data"
 
 
+        **ExclusiveUTPInfo**
+        - **AvailableSize** (int) - 当前周期剩余流量
+        - **CreateTime** (int) - 创建时间
+        - **ExcessSize** (int) - 当前周期超出限额的流量
+        - **LastResetTime** (int) - 上次重置时间
+        - **NextResetTime** (int) - 下次重置时间
+        - **TotalSize** (int) - 当前周期总流量
+        - **UsedSize** (int) - 当前周期已使用流量
+
+
         **UHostIPSet**
         - **Bandwidth** (int) - IP对应的带宽, 单位: Mb  (内网IP不显示带宽信息)
         - **Default** (str) - 内网 Private 类型下，表示是否为默认网卡。true: 是默认网卡；其他值：不是。
@@ -271,16 +281,6 @@ class UCompShareClient(Client):
         - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
         - **VPCId** (str) - IP地址对应的VPC ID。（北京一不支持，字段返回为空）
         - **Weight** (int) - 当前EIP的权重。权重最大的为当前的出口IP。
-
-
-        **ExclusiveUTPInfo**
-        - **AvailableSize** (int) - 当前周期剩余流量
-        - **CreateTime** (int) - 创建时间
-        - **ExcessSize** (int) - 当前周期超出限额的流量
-        - **LastResetTime** (int) - 上次重置时间
-        - **NextResetTime** (int) - 下次重置时间
-        - **TotalSize** (int) - 当前周期总流量
-        - **UsedSize** (int) - 当前周期已使用流量
 
 
         """
@@ -453,6 +453,36 @@ class UCompShareClient(Client):
 
         resp = self.invoke("RebootULHostInstance", d, **kwargs)
         return apis.RebootULHostInstanceResponseSchema().loads(resp)
+
+    def reinstall_comp_share_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ReinstallCompShareInstance - 重装算力平台实例
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CompShareImageId** (str) - (Required) 镜像Id
+        - **Password** (str) - (Required) 实例的新密码
+        - **UHostId** (str) - (Required) 实例Id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **UHostId** (str) - 实例Id
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ReinstallCompShareInstanceRequestSchema().dumps(d)
+
+        resp = self.invoke("ReinstallCompShareInstance", d, **kwargs)
+        return apis.ReinstallCompShareInstanceResponseSchema().loads(resp)
 
     def reinstall_ul_host_instance(
         self, req: typing.Optional[dict] = None, **kwargs

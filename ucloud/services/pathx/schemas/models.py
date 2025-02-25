@@ -135,12 +135,13 @@ class SrcAreaInfoSchema(schema.ResponseSchema):
     }
 
 
-class OutPublicIpInfoSchema(schema.ResponseSchema):
-    """OutPublicIpInfo - 线路回源IP信息"""
+class ForwardTaskSchema(schema.ResponseSchema):
+    """ForwardTask -"""
 
     fields = {
-        "Area": fields.Str(required=False, load_from="Area"),
-        "IP": fields.Str(required=False, load_from="IP"),
+        "Port": fields.Int(required=True, load_from="Port"),
+        "Protocol": fields.Str(required=True, load_from="Protocol"),
+        "RSPort": fields.Int(required=True, load_from="RSPort"),
     }
 
 
@@ -155,13 +156,12 @@ class AccelerationAreaInfosSchema(schema.ResponseSchema):
     }
 
 
-class ForwardTaskSchema(schema.ResponseSchema):
-    """ForwardTask -"""
+class OutPublicIpInfoSchema(schema.ResponseSchema):
+    """OutPublicIpInfo - 线路回源IP信息"""
 
     fields = {
-        "Port": fields.Int(required=True, load_from="Port"),
-        "Protocol": fields.Str(required=True, load_from="Protocol"),
-        "RSPort": fields.Int(required=True, load_from="RSPort"),
+        "Area": fields.Str(required=False, load_from="Area"),
+        "IP": fields.Str(required=False, load_from="IP"),
     }
 
 
@@ -246,15 +246,12 @@ class UPathSetSchema(schema.ResponseSchema):
     }
 
 
-class UGAL7ForwarderSchema(schema.ResponseSchema):
-    """UGAL7Forwarder - UGA实例 7层转发器信息"""
+class UGAATaskSchema(schema.ResponseSchema):
+    """UGAATask - 用户在UGAA实例下配置的多端口任务"""
 
     fields = {
         "Port": fields.Int(required=True, load_from="Port"),
         "Protocol": fields.Str(required=True, load_from="Protocol"),
-        "RSPort": fields.Int(required=True, load_from="RSPort"),
-        "SSLId": fields.Str(required=False, load_from="SSLId"),
-        "SSLName": fields.Str(required=False, load_from="SSLName"),
     }
 
 
@@ -268,12 +265,15 @@ class UGAL4ForwarderSchema(schema.ResponseSchema):
     }
 
 
-class UGAATaskSchema(schema.ResponseSchema):
-    """UGAATask - 用户在UGAA实例下配置的多端口任务"""
+class UGAL7ForwarderSchema(schema.ResponseSchema):
+    """UGAL7Forwarder - UGA实例 7层转发器信息"""
 
     fields = {
         "Port": fields.Int(required=True, load_from="Port"),
         "Protocol": fields.Str(required=True, load_from="Protocol"),
+        "RSPort": fields.Int(required=True, load_from="RSPort"),
+        "SSLId": fields.Str(required=False, load_from="SSLId"),
+        "SSLName": fields.Str(required=False, load_from="SSLName"),
     }
 
 
@@ -342,16 +342,6 @@ class AlarmRulerSchema(schema.ResponseSchema):
     }
 
 
-class TrafficDailySchema(schema.ResponseSchema):
-    """TrafficDaily -"""
-
-    fields = {
-        "BillingState": fields.Str(required=True, load_from="BillingState"),
-        "Date": fields.Int(required=True, load_from="Date"),
-        "Traffic": fields.Int(required=True, load_from="Traffic"),
-    }
-
-
 class TrafficDailyRecentlySchema(schema.ResponseSchema):
     """TrafficDailyRecently - 最近3个月日流量统计"""
 
@@ -359,6 +349,16 @@ class TrafficDailyRecentlySchema(schema.ResponseSchema):
         "Day": fields.Str(required=False, load_from="Day"),
         "TrafficUnitGB": fields.Str(required=False, load_from="TrafficUnitGB"),
         "TrafficUnitMB": fields.Str(required=False, load_from="TrafficUnitMB"),
+    }
+
+
+class TrafficDailySchema(schema.ResponseSchema):
+    """TrafficDaily -"""
+
+    fields = {
+        "BillingState": fields.Str(required=True, load_from="BillingState"),
+        "Date": fields.Int(required=True, load_from="Date"),
+        "Traffic": fields.Int(required=True, load_from="Traffic"),
     }
 
 
