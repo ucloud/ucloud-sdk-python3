@@ -28,6 +28,11 @@ class CreateULHostInstanceRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "SecurityGroupId": fields.Str(
+            required=False, dump_to="SecurityGroupId"
+        ),
+        "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
+        "VPCId": fields.Str(required=False, dump_to="VPCId"),
     }
 
 
@@ -37,6 +42,39 @@ class CreateULHostInstanceResponseSchema(schema.ResponseSchema):
     fields = {
         "Message": fields.Str(required=True, load_from="Message"),
         "ULHostId": fields.Str(required=True, load_from="ULHostId"),
+    }
+
+
+"""
+API: DescribeCompShareInstance
+
+获取用户所有地域下主机资源信息列表
+"""
+
+
+class DescribeCompShareInstanceRequestSchema(schema.RequestSchema):
+    """DescribeCompShareInstance - 获取用户所有地域下主机资源信息列表"""
+
+    fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "UHostIds": fields.List(fields.Str()),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DescribeCompShareInstanceResponseSchema(schema.ResponseSchema):
+    """DescribeCompShareInstance - 获取用户所有地域下主机资源信息列表"""
+
+    fields = {
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+        "UHostSet": fields.List(
+            models.CompShareInstanceSetSchema(),
+            required=True,
+            load_from="UHostSet",
+        ),
     }
 
 
@@ -291,6 +329,32 @@ class ResetULHostInstancePasswordResponseSchema(schema.ResponseSchema):
 
 
 """
+API: StartCompShareInstance
+
+启动算力平台实例
+"""
+
+
+class StartCompShareInstanceRequestSchema(schema.RequestSchema):
+    """StartCompShareInstance - 启动算力平台实例"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UHostId": fields.Str(required=True, dump_to="UHostId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class StartCompShareInstanceResponseSchema(schema.ResponseSchema):
+    """StartCompShareInstance - 启动算力平台实例"""
+
+    fields = {
+        "UHostId": fields.Str(required=True, load_from="UHostId"),
+    }
+
+
+"""
 API: StartULHostInstance
 
 启动处于关闭状态的UHost实例。
@@ -312,6 +376,32 @@ class StartULHostInstanceResponseSchema(schema.ResponseSchema):
 
     fields = {
         "ULHostId": fields.Str(required=False, load_from="ULHostId"),
+    }
+
+
+"""
+API: StopCompShareInstance
+
+关闭算力平台实例
+"""
+
+
+class StopCompShareInstanceRequestSchema(schema.RequestSchema):
+    """StopCompShareInstance - 关闭算力平台实例"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UHostId": fields.Str(required=True, dump_to="UHostId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class StopCompShareInstanceResponseSchema(schema.ResponseSchema):
+    """StopCompShareInstance - 关闭算力平台实例"""
+
+    fields = {
+        "UHostId": fields.Str(required=True, load_from="UHostId"),
     }
 
 

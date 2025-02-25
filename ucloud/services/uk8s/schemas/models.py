@@ -3,18 +3,6 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class IPSetSchema(schema.ResponseSchema):
-    """IPSet - 节点的IP信息"""
-
-    fields = {
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "Default": fields.Str(required=False, load_from="Default"),
-        "IP": fields.Str(required=False, load_from="IP"),
-        "IPId": fields.Str(required=False, load_from="IPId"),
-        "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
 class DiskSetSchema(schema.ResponseSchema):
     """DiskSet - 节点磁盘信息"""
 
@@ -28,6 +16,18 @@ class DiskSetSchema(schema.ResponseSchema):
         "IsBoot": fields.Str(required=False, load_from="IsBoot"),
         "Name": fields.Str(required=False, load_from="Name"),
         "Size": fields.Int(required=False, load_from="Size"),
+        "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
+class IPSetSchema(schema.ResponseSchema):
+    """IPSet - 节点的IP信息"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "Default": fields.Str(required=False, load_from="Default"),
+        "IP": fields.Str(required=False, load_from="IP"),
+        "IPId": fields.Str(required=False, load_from="IPId"),
         "Type": fields.Str(required=False, load_from="Type"),
     }
 
