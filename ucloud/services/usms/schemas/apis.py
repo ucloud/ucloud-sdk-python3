@@ -51,10 +51,13 @@ class CreateUSMSSignatureRequestSchema(schema.RequestSchema):
     fields = {
         "CertificateType": fields.Int(required=True, dump_to="CertificateType"),
         "Description": fields.Str(required=True, dump_to="Description"),
-        "File": fields.Str(required=True, dump_to="File"),
+        "File": fields.Str(required=False, dump_to="File"),
         "International": fields.Bool(required=False, dump_to="International"),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "ProxyFile": fields.Str(required=False, dump_to="ProxyFile"),
+        "QualificationId": fields.Str(
+            required=False, dump_to="QualificationId"
+        ),
         "SigContent": fields.Str(required=True, dump_to="SigContent"),
         "SigPurpose": fields.Int(required=True, dump_to="SigPurpose"),
         "SigType": fields.Int(required=True, dump_to="SigType"),

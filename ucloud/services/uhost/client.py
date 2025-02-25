@@ -13,6 +13,38 @@ class UHostClient(Client):
     ):
         super(UHostClient, self).__init__(config, transport, middleware, logger)
 
+    def add_uhost_to_isolation_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """AddUHostToIsolationGroup - 将已有不在隔离组中的云主机添加到隔离组中
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **GroupId** (str) - (Required) 硬件隔离组id
+        - **UHostId** (str) - (Required) 主机id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **UHostId** (str) - 主机id
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.AddUHostToIsolationGroupRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("AddUHostToIsolationGroup", d, **kwargs)
+        return apis.AddUHostToIsolationGroupResponseSchema().loads(resp)
+
     def copy_custom_image(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:

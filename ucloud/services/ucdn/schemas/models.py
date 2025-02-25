@@ -308,16 +308,6 @@ class BandwidthTrafficInfoSchema(schema.ResponseSchema):
     }
 
 
-class ReferConfSchema(schema.ResponseSchema):
-    """ReferConf - refer配置"""
-
-    fields = {
-        "NullRefer": fields.Int(required=False, load_from="NullRefer"),
-        "ReferList": fields.List(fields.Str()),
-        "ReferType": fields.Int(required=False, load_from="ReferType"),
-    }
-
-
 class CacheKeyInfoSchema(schema.ResponseSchema):
     """CacheKeyInfo - 忽略参数缓存配置"""
 
@@ -328,12 +318,38 @@ class CacheKeyInfoSchema(schema.ResponseSchema):
     }
 
 
-class AccessControlConfSchema(schema.ResponseSchema):
-    """AccessControlConf - 访问控制配置参数"""
+class ReferConfSchema(schema.ResponseSchema):
+    """ReferConf - refer配置"""
 
     fields = {
-        "IpBlackList": fields.List(fields.Str()),
-        "ReferConf": ReferConfSchema(),
+        "NullRefer": fields.Int(required=False, load_from="NullRefer"),
+        "ReferList": fields.List(fields.Str()),
+        "ReferType": fields.Int(required=False, load_from="ReferType"),
+    }
+
+
+class CacheAllConfigSchema(schema.ResponseSchema):
+    """CacheAllConfig - 缓存相关的配置"""
+
+    fields = {
+        "CacheHost": fields.Str(required=False, load_from="CacheHost"),
+        "CacheKeyList": fields.List(CacheKeyInfoSchema()),
+        "CacheList": fields.List(CacheConfSchema()),
+        "HttpCodeCacheList": fields.List(CacheConfSchema()),
+    }
+
+
+class AdvancedConfSchema(schema.ResponseSchema):
+    """AdvancedConf - 域名高级配置"""
+
+    fields = {
+        "Http2Https": fields.Bool(required=False, load_from="Http2Https"),
+        "HttpClientHeader": fields.List(fields.Str()),
+        "HttpOriginHeader": fields.List(fields.Str()),
+        "QuicEnable": fields.Bool(required=False, load_from="QuicEnable"),
+        "WebSocketEnable": fields.Bool(
+            required=False, load_from="WebSocketEnable"
+        ),
     }
 
 
@@ -366,28 +382,12 @@ class OriginConfSchema(schema.ResponseSchema):
     }
 
 
-class AdvancedConfSchema(schema.ResponseSchema):
-    """AdvancedConf - 域名高级配置"""
+class AccessControlConfSchema(schema.ResponseSchema):
+    """AccessControlConf - 访问控制配置参数"""
 
     fields = {
-        "Http2Https": fields.Bool(required=False, load_from="Http2Https"),
-        "HttpClientHeader": fields.List(fields.Str()),
-        "HttpOriginHeader": fields.List(fields.Str()),
-        "QuicEnable": fields.Bool(required=False, load_from="QuicEnable"),
-        "WebSocketEnable": fields.Bool(
-            required=False, load_from="WebSocketEnable"
-        ),
-    }
-
-
-class CacheAllConfigSchema(schema.ResponseSchema):
-    """CacheAllConfig - 缓存相关的配置"""
-
-    fields = {
-        "CacheHost": fields.Str(required=False, load_from="CacheHost"),
-        "CacheKeyList": fields.List(CacheKeyInfoSchema()),
-        "CacheList": fields.List(CacheConfSchema()),
-        "HttpCodeCacheList": fields.List(CacheConfSchema()),
+        "IpBlackList": fields.List(fields.Str()),
+        "ReferConf": ReferConfSchema(),
     }
 
 
