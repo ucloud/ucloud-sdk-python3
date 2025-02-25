@@ -275,6 +275,36 @@ class RebootULHostInstanceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: ReinstallCompShareInstance
+
+重装算力平台实例
+"""
+
+
+class ReinstallCompShareInstanceRequestSchema(schema.RequestSchema):
+    """ReinstallCompShareInstance - 重装算力平台实例"""
+
+    fields = {
+        "CompShareImageId": fields.Str(
+            required=True, dump_to="CompShareImageId"
+        ),
+        "Password": fields.Str(required=True, dump_to="Password"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UHostId": fields.Str(required=True, dump_to="UHostId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ReinstallCompShareInstanceResponseSchema(schema.ResponseSchema):
+    """ReinstallCompShareInstance - 重装算力平台实例"""
+
+    fields = {
+        "UHostId": fields.Str(required=True, load_from="UHostId"),
+    }
+
+
+"""
 API: ReinstallULHostInstance
 
 重装轻量应用云主机

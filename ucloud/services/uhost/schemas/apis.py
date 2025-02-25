@@ -309,6 +309,7 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
         "MachineType": fields.Str(required=False, dump_to="MachineType"),
         "MaxCount": fields.Int(required=False, dump_to="MaxCount"),
         "Memory": fields.Int(required=False, dump_to="Memory"),
+        "MinCount": fields.Int(required=False, dump_to="MinCount"),
         "MinimalCpuPlatform": fields.Str(
             required=False, dump_to="MinimalCpuPlatform"
         ),
