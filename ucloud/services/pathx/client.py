@@ -1045,16 +1045,16 @@ class PathXClient(Client):
 
         **Response Model**
 
-        **TrafficDailyRecently**
-        - **Day** (str) - 日期
-        - **TrafficUnitGB** (str) - 日流量(单位GB)
-        - **TrafficUnitMB** (str) - 日流量(单位MB)
-
-
         **TrafficDaily**
         - **BillingState** (str) - Yes:已扣费, No:未扣费
         - **Date** (int) - 日期
         - **Traffic** (int) - 流量（单位GB）
+
+
+        **TrafficDailyRecently**
+        - **Day** (str) - 日期
+        - **TrafficUnitGB** (str) - 日流量(单位GB)
+        - **TrafficUnitMB** (str) - 日流量(单位MB)
 
 
         """

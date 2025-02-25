@@ -9,6 +9,33 @@ from ucloud.services.uhost.schemas import models
 
 
 """
+API: AddUHostToIsolationGroup
+
+将已有不在隔离组中的云主机添加到隔离组中
+"""
+
+
+class AddUHostToIsolationGroupRequestSchema(schema.RequestSchema):
+    """AddUHostToIsolationGroup - 将已有不在隔离组中的云主机添加到隔离组中"""
+
+    fields = {
+        "GroupId": fields.Str(required=True, dump_to="GroupId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UHostId": fields.Str(required=True, dump_to="UHostId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class AddUHostToIsolationGroupResponseSchema(schema.ResponseSchema):
+    """AddUHostToIsolationGroup - 将已有不在隔离组中的云主机添加到隔离组中"""
+
+    fields = {
+        "UHostId": fields.Str(required=False, load_from="UHostId"),
+    }
+
+
+"""
 API: CopyCustomImage
 
 复制自制镜像
