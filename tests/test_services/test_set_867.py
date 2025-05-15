@@ -21,15 +21,15 @@ def test_set_867(client: utest.Client, variables: dict):
     scenario.variables["SnapshotSysDesc"] = "snapshot-ARK-SYS-01-desc"
     scenario.variables["SnapDiskType"] = "LocalBoot"
     scenario.variables["SnapshotDataNameModify"] = "snapshot-ARK-DATA-01-modify"
-    scenario.variables[
-        "SnapshotDataDescModify"
-    ] = "snapshot-ARK-DATA-01-desc-Modify"
+    scenario.variables["SnapshotDataDescModify"] = (
+        "snapshot-ARK-DATA-01-desc-Modify"
+    )
     scenario.variables["UhostName"] = "uhost-snapshot-ARK-auto-api-1"
     scenario.variables["SnapshotDataName"] = "snapshot-ARK-DATA-01"
     scenario.variables["SnapshotDataDesc"] = "snapshot-ARK-DATA-01-desc"
-    scenario.variables[
-        "CreateFromTimeMachinePassword"
-    ] = "Z3VhbmxpeXVhbm1pbWExMjMhQCM="
+    scenario.variables["CreateFromTimeMachinePassword"] = (
+        "Z3VhbmxpeXVhbm1pbWExMjMhQCM="
+    )
     scenario.variables["ImageID"] = "#{u_get_image_resource($Region,$Zone)}"
 
     scenario.run(client)

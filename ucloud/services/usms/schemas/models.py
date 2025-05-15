@@ -82,6 +82,31 @@ class StatisticsDataSchema(schema.ResponseSchema):
     }
 
 
+class OutSignatureQualificationSchema(schema.ResponseSchema):
+    """OutSignatureQualification -"""
+
+    fields = {
+        "AccountId": fields.Int(required=False, load_from="AccountId"),
+        "Attr": fields.Int(required=False, load_from="Attr"),
+        "CompanyName": fields.Str(required=False, load_from="CompanyName"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "ErrCode": fields.Int(required=False, load_from="ErrCode"),
+        "ErrDesc": fields.Str(required=False, load_from="ErrDesc"),
+        "HandlerName": fields.Str(required=False, load_from="HandlerName"),
+        "ManagerName": fields.Str(required=False, load_from="ManagerName"),
+        "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "QualificationId": fields.Str(
+            required=False, load_from="QualificationId"
+        ),
+        "ReviewEndTime": fields.Int(required=False, load_from="ReviewEndTime"),
+        "ReviewStartTime": fields.Int(
+            required=False, load_from="ReviewStartTime"
+        ),
+        "Status": fields.Int(required=False, load_from="Status"),
+    }
+
+
 class OutSignatureSchema(schema.ResponseSchema):
     """OutSignature - 短信签名"""
 
@@ -90,6 +115,57 @@ class OutSignatureSchema(schema.ResponseSchema):
         "SigContent": fields.Str(required=True, load_from="SigContent"),
         "SigId": fields.Str(required=True, load_from="SigId"),
         "Status": fields.Int(required=True, load_from="Status"),
+    }
+
+
+class OutSignatureQualificationDetailSchema(schema.ResponseSchema):
+    """OutSignatureQualificationDetail -"""
+
+    fields = {
+        "Attr": fields.Int(required=False, load_from="Attr"),
+        "CompanyCertificateFile": fields.Str(
+            required=False, load_from="CompanyCertificateFile"
+        ),
+        "CompanyCreditCode": fields.Str(
+            required=False, load_from="CompanyCreditCode"
+        ),
+        "CompanyName": fields.Str(required=False, load_from="CompanyName"),
+        "CompanyWorkScenePhotos": fields.Str(
+            required=False, load_from="CompanyWorkScenePhotos"
+        ),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "ErrCode": fields.Int(required=False, load_from="ErrCode"),
+        "ErrDesc": fields.Str(required=False, load_from="ErrDesc"),
+        "HandlerHandHeldImage": fields.Str(
+            required=False, load_from="HandlerHandHeldImage"
+        ),
+        "HandlerIDCardBackImage": fields.Str(
+            required=False, load_from="HandlerIDCardBackImage"
+        ),
+        "HandlerIDCardFrontImage": fields.Str(
+            required=False, load_from="HandlerIDCardFrontImage"
+        ),
+        "HandlerIDNumber": fields.Str(
+            required=False, load_from="HandlerIDNumber"
+        ),
+        "HandlerName": fields.Str(required=False, load_from="HandlerName"),
+        "ManagerIDNumber": fields.Str(
+            required=False, load_from="ManagerIDNumber"
+        ),
+        "ManagerName": fields.Str(required=False, load_from="ManagerName"),
+        "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "PowerOfAttorney": fields.Str(
+            required=False, load_from="PowerOfAttorney"
+        ),
+        "QualificationId": fields.Str(
+            required=False, load_from="QualificationId"
+        ),
+        "ReviewEndTime": fields.Int(required=False, load_from="ReviewEndTime"),
+        "ReviewStartTime": fields.Int(
+            required=False, load_from="ReviewStartTime"
+        ),
+        "Status": fields.Int(required=False, load_from="Status"),
     }
 
 
