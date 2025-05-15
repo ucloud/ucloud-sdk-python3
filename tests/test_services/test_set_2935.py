@@ -16,9 +16,9 @@ scenario = utest.Scenario(2935)
 def test_set_2935(client: utest.Client, variables: dict):
     scenario.initial(variables)
 
-    scenario.variables[
-        "Image_Id_ucloud"
-    ] = "#{u_get_image_resource($Region,$Zone)}"
+    scenario.variables["Image_Id_ucloud"] = (
+        "#{u_get_image_resource($Region,$Zone)}"
+    )
     scenario.variables["saopaulo_image"] = "uimage-1bkjka"
 
     scenario.run(client)

@@ -46,6 +46,48 @@ class USMSClient(Client):
         resp = self.invoke("AddBackfill", d, **kwargs)
         return apis.AddBackfillResponseSchema().loads(resp)
 
+    def add_usms_signature_qualification(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """AddUSMSSignatureQualification - 添加短信签名资质申请记录
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Attr** (int) - (Required) 资质属性，0-自用 1-他用
+        - **Name** (str) - (Required) 资质名称
+        - **Status** (int) - (Required) 状态：0-草稿，1-提交审核
+        - **CompanyCertificateFileId** (str) - 公司证件文件FileId
+        - **CompanyCreditCode** (str) - 公司统一社会信用代码
+        - **CompanyName** (str) - 公司名称，长度限制100
+        - **CompanyWorkScenePhotosFileId** (str) - 公司工作现场照片FileId
+        - **HandlerHandHeldImageFileId** (str) - 经办人手持身份证图片FileId
+        - **HandlerIDCardBackImageFileId** (str) - 经办人身份证国徽面图片FileId
+        - **HandlerIDCardFrontImageFileId** (str) - 经办人身份证人像面图片FileId
+        - **HandlerIDNumber** (str) - 经办人身份证号码
+        - **HandlerName** (str) - 经办人姓名
+        - **ManagerIDNumber** (str) - 法人身份证号码
+        - **ManagerName** (str) - 法人姓名
+
+        **Response**
+
+        - **Message** (str) - 返回状态码描述，如果操作成功，默认返回为空
+        - **QualificationId** (str) - 资质Id
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.AddUSMSSignatureQualificationRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("AddUSMSSignatureQualification", d, **kwargs)
+        return apis.AddUSMSSignatureQualificationResponseSchema().loads(resp)
+
     def create_usms_signature(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -63,6 +105,7 @@ class USMSClient(Client):
         - **International** (bool) - 国内/国际短信。true:国际短信，false:国内短信，若不传值则默认该值为false
         - **ProxyFile** (str) - 短信签名授权委托文件，需先进行base64编码格式转换，此处填写转换后的字符串。文件大小不超过4 MB；当您是代理并使用第三方的签名时（也即SigPurpose为1-他用），该项为必填项；
         - **QualificationId** (str) - 资质ID
+        - **SceneDesc** (str) - 短信签名对应的场景说明
 
         **Response**
 
@@ -144,6 +187,31 @@ class USMSClient(Client):
 
         resp = self.invoke("DeleteUSMSSignature", d, **kwargs)
         return apis.DeleteUSMSSignatureResponseSchema().loads(resp)
+
+    def delete_usms_signature_qualification(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteUSMSSignatureQualification - 删除短信签名资质申请记录
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **QualificationIds** (list) - (Required) 签名资质Id，支持以数组的方式，举例，以QualificationIds.0、QualificationIds.1...QualificationIds.N方式传入
+
+        **Response**
+
+        - **Message** (str) - 返回状态码描述，如果操作成功，默认返回为空
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.DeleteUSMSSignatureQualificationRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteUSMSSignatureQualification", d, **kwargs)
+        return apis.DeleteUSMSSignatureQualificationResponseSchema().loads(resp)
 
     def delete_usms_template(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -286,6 +354,58 @@ class USMSClient(Client):
         resp = self.invoke("GetUSMSSendStatistics", d, **kwargs)
         return apis.GetUSMSSendStatisticsResponseSchema().loads(resp)
 
+    def get_usms_signature_qualification(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUSMSSignatureQualification - 获取短信签名资质申请记录列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **NumPerPage** (int) - (Required) 每页个数
+        - **OrderBy** (str) - (Required) 排序字段，QualificationId/CreateTime
+        - **OrderType** (str) - (Required) 排序类型: desc、asc
+        - **Page** (int) - (Required) 页索引
+        - **InAccountIds** (list) - 项目ID列表
+        - **QualificationAttr** (int) - 签名资质属性: 0-自用，1-他用
+        - **Status** (int) - 签名资质状态: 0-草稿 1-审核中 2-审核通过 3-审核未通过 4-人工禁用
+
+        **Response**
+
+        - **Data** (list) - 见 **OutSignatureQualification** 模型定义
+        - **Message** (str) - 返回状态码描述，如果操作成功，默认返回为空
+        - **Total** (int) - 签名资质总个数
+
+        **Response Model**
+
+        **OutSignatureQualification**
+        - **AccountId** (int) - 项目Id
+        - **Attr** (int) - 资质属性: 0-自用 1-他用
+        - **CompanyName** (str) - 公司名称
+        - **CreateTime** (int) - 创建时间戳
+        - **ErrCode** (int) - 审核未通过错误码
+        - **ErrDesc** (str) - 审核未通过错误原因
+        - **HandlerName** (str) - 经办人姓名
+        - **ManagerName** (str) - 负责人姓名
+        - **ModifyTime** (int) - 修改时间戳
+        - **Name** (str) - 资质名称
+        - **QualificationId** (str) - 资质Id
+        - **ReviewEndTime** (int) - 审核完成时间戳
+        - **ReviewStartTime** (int) - 审核开始时间戳
+        - **Status** (int) - 状态:0-草稿 1-审核中 2-审核通过 3-审核未通过 4-人工禁用
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUSMSSignatureQualificationRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUSMSSignatureQualification", d, **kwargs)
+        return apis.GetUSMSSignatureQualificationResponseSchema().loads(resp)
+
     def query_usms_signature(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -321,6 +441,59 @@ class USMSClient(Client):
 
         resp = self.invoke("QueryUSMSSignature", d, **kwargs)
         return apis.QueryUSMSSignatureResponseSchema().loads(resp)
+
+    def query_usms_signature_qualification(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """QueryUSMSSignatureQualification - 获取短信签名资质申请记录详情
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **QualificationId** (str) - (Required) 签名资质Id
+
+        **Response**
+
+        - **Data** (dict) - 见 **OutSignatureQualificationDetail** 模型定义
+        - **Message** (str) - 返回状态码描述，如果操作成功，默认返回为空
+
+        **Response Model**
+
+        **OutSignatureQualificationDetail**
+        - **Attr** (int) - 资质属性：0-自用，1-他用
+        - **CompanyCertificateFile** (str) - 公司证件文件链接
+        - **CompanyCreditCode** (str) - 统一社会信用代码
+        - **CompanyName** (str) - 公司名称
+        - **CompanyWorkScenePhotos** (str) - 工作现场照片链接
+        - **CreateTime** (int) - 创建时间戳
+        - **ErrCode** (int) - 审核未通过错误码
+        - **ErrDesc** (str) - 审核未通过错误原因
+        - **HandlerHandHeldImage** (str) - 经办人手持身份证图片链接
+        - **HandlerIDCardBackImage** (str) - 经办人身份证国徽面图片链接
+        - **HandlerIDCardFrontImage** (str) - 经办人身份证人像面图片链接
+        - **HandlerIDNumber** (str) - 经办人证件号码
+        - **HandlerName** (str) - 经办人姓名
+        - **ManagerIDNumber** (str) - 负责人证件号码
+        - **ManagerName** (str) - 负责人姓名
+        - **ModifyTime** (int) - 修改时间戳
+        - **Name** (str) - 资质名称
+        - **PowerOfAttorney** (str) - 授权委托书文件链接
+        - **QualificationId** (str) - 资质Id
+        - **ReviewEndTime** (int) - 审核完成时间戳
+        - **ReviewStartTime** (int) - 审核开始时间戳
+        - **Status** (int) - 状态:0-草稿 1-审核中 2-审核通过 3-审核未通过 4-人工禁用
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.QueryUSMSSignatureQualificationRequestSchema().dumps(d)
+
+        resp = self.invoke("QueryUSMSSignatureQualification", d, **kwargs)
+        return apis.QueryUSMSSignatureQualificationResponseSchema().loads(resp)
 
     def query_usms_template(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -468,6 +641,7 @@ class USMSClient(Client):
         - **File** (str) - 短信签名的资质证明文件内容，需先进行base64编码格式转换，此处填写转换后的字符串。文件大小不超过4 MB。内容格式如下: [file type];[code type],[base64]  如：image/jpeg;base64,5YaF5a65
         - **ProxyDoc** (str) - 短信签名授权委托文件URL，若未更改授权委托文件，则该处填写已上传的授权委托文件的URL链接，否则使用ProxyFile参数
         - **ProxyFile** (str) - 短信签名授权委托文件内容，需先进行base64编码格式转换，此处填写转换后的字符串。文件大小不超过4 MB；当您是代理并使用第三方的签名时（也即SigPurpose为1-他用），该项为必填项；格式和File类似。
+        - **SceneDesc** (str) - 短信签名对应的场景说明
 
         **Response**
 
@@ -483,6 +657,46 @@ class USMSClient(Client):
 
         resp = self.invoke("UpdateUSMSSignature", d, **kwargs)
         return apis.UpdateUSMSSignatureResponseSchema().loads(resp)
+
+    def update_usms_signature_qualification(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateUSMSSignatureQualification - 修改短信签名资质申请记录
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **QualificationId** (str) - (Required) 资质Id
+        - **Status** (int) - (Required) 状态：0-草稿，1-提交审核
+        - **Attr** (int) - 资质属性，0-自用 1-他用
+        - **CompanyCertificateFileId** (str) - 公司证件文件FileId
+        - **CompanyCreditCode** (str) - 公司统一社会信用代码
+        - **CompanyName** (str) - 公司名称，长度限制100
+        - **CompanyWorkScenePhotosFileId** (str) - 公司工作现场照片FileId
+        - **HandlerHandHeldImageFileId** (str) - 经办人手持身份证图片FileId
+        - **HandlerIDCardBackImageFileId** (str) - 经办人身份证国徽面图片FileId
+        - **HandlerIDCardFrontImageFileId** (str) - 经办人身份证人像面图片FileId
+        - **HandlerIDNumber** (str) - 经办人身份证号码
+        - **HandlerName** (str) - 经办人姓名
+        - **ManagerIDNumber** (str) - 法人身份证号码
+        - **ManagerName** (str) - 法人姓名
+        - **Name** (str) - 资质名称
+
+        **Response**
+
+        - **Message** (str) - 返回状态码描述，如果操作成功，默认返回为空
+        - **QualificationId** (str) - 资质Id
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.UpdateUSMSSignatureQualificationRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateUSMSSignatureQualification", d, **kwargs)
+        return apis.UpdateUSMSSignatureQualificationResponseSchema().loads(resp)
 
     def update_usms_template(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -514,3 +728,32 @@ class USMSClient(Client):
 
         resp = self.invoke("UpdateUSMSTemplate", d, **kwargs)
         return apis.UpdateUSMSTemplateResponseSchema().loads(resp)
+
+    def upload_usms_file(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UploadUSMSFile - 上传文件
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **FileContent** (str) - (Required) 文件内容，base64编码
+        - **FileName** (str) - (Required) 文件名称，携带文件后缀
+        - **Source** (int) - (Required) 文件来源，0-签名资质
+        - **FileType** (str) - 文件类型，mime格式
+
+        **Response**
+
+        - **FileId** (str) - 文件FileId
+        - **Message** (str) - 返回状态码描述，如果操作成功，默认返回为空
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.UploadUSMSFileRequestSchema().dumps(d)
+
+        resp = self.invoke("UploadUSMSFile", d, **kwargs)
+        return apis.UploadUSMSFileResponseSchema().loads(resp)
