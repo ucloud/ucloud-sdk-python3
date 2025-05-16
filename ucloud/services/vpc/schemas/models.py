@@ -280,6 +280,71 @@ class NetworkInterfaceSchema(schema.ResponseSchema):
     }
 
 
+class SecGroupSimpleInfoSchema(schema.ResponseSchema):
+    """SecGroupSimpleInfo - 安全组简略信息"""
+
+    fields = {
+        "Name": fields.Str(required=False, load_from="Name"),
+        "SecGroupId": fields.Str(required=False, load_from="SecGroupId"),
+    }
+
+
+class ResourceSecgroupInfoSchema(schema.ResponseSchema):
+    """ResourceSecgroupInfo - 资源的安全组信息"""
+
+    fields = {
+        "Count": fields.Int(required=True, load_from="Count"),
+        "ResourceId": fields.Str(required=True, load_from="ResourceId"),
+        "SecGroupInfo": fields.List(SecGroupSimpleInfoSchema()),
+    }
+
+
+class ResourceExInfoSchema(schema.ResponseSchema):
+    """ResourceExInfo - 资源额外信息（for 安全组）"""
+
+    fields = {
+        "EIP": fields.List(fields.Str()),
+        "IP": fields.List(fields.Str()),
+        "ResourceName": fields.Str(required=False, load_from="ResourceName"),
+        "SuperResourceId": fields.Str(
+            required=True, load_from="SuperResourceId"
+        ),
+        "SuperResourceName": fields.Str(
+            required=False, load_from="SuperResourceName"
+        ),
+        "Uni": fields.List(ResourceSecgroupInfoSchema()),
+    }
+
+
+class BindingSecGroupInfoSchema(schema.ResponseSchema):
+    """BindingSecGroupInfo -"""
+
+    fields = {
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Priority": fields.Int(required=False, load_from="Priority"),
+        "SecGroupId": fields.Str(required=False, load_from="SecGroupId"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+    }
+
+
+class ResourceSecgroupInfoExSchema(schema.ResponseSchema):
+    """ResourceSecgroupInfoEx - 资源绑定的安全组信息。ResourceSecgroupInfoEx 中如果资源是非网卡资源（如云主机）且绑定虚拟网卡，
+    则该资源不会绑定安全组，安全组只会绑定到虚拟网卡上；故 Count 为 0，Uni 非空，
+    Uni 为一个网卡数组，表示每个虚拟网卡绑定的安全组信息。
+    """
+
+    fields = {
+        "Count": fields.Int(required=True, load_from="Count"),
+        "ExInfo": ResourceExInfoSchema(),
+        "PermitAssociate": fields.Bool(
+            required=True, load_from="PermitAssociate"
+        ),
+        "ResourceId": fields.Str(required=True, load_from="ResourceId"),
+        "ResourceName": fields.Str(required=True, load_from="ResourceName"),
+        "SecGroupInfo": fields.List(BindingSecGroupInfoSchema()),
+    }
+
+
 class RouteRuleInfoSchema(schema.ResponseSchema):
     """RouteRuleInfo - 路由规则信息"""
 
@@ -318,6 +383,57 @@ class RouteTableInfoSchema(schema.ResponseSchema):
         "Tag": fields.Str(required=False, load_from="Tag"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
         "VPCName": fields.Str(required=False, load_from="VPCName"),
+    }
+
+
+class SecGroupRuleInfoSchema(schema.ResponseSchema):
+    """SecGroupRuleInfo - 安全组规则信息"""
+
+    fields = {
+        "Direction": fields.Str(required=False, load_from="Direction"),
+        "DstPort": fields.Str(required=False, load_from="DstPort"),
+        "IPRange": fields.Str(required=False, load_from="IPRange"),
+        "Priority": fields.Int(required=False, load_from="Priority"),
+        "ProtocolType": fields.Str(required=False, load_from="ProtocolType"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "RuleAction": fields.Str(required=False, load_from="RuleAction"),
+        "RuleId": fields.Str(required=False, load_from="RuleId"),
+    }
+
+
+class SecGroupInfoSchema(schema.ResponseSchema):
+    """SecGroupInfo - 安全组信息"""
+
+    fields = {
+        "Account": fields.Int(required=False, load_from="Account"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "Rule": fields.List(SecGroupRuleInfoSchema()),
+        "SecGroupId": fields.Str(required=False, load_from="SecGroupId"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "Type": fields.Str(required=False, load_from="Type"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+    }
+
+
+class SecGroupResourceInfoSchema(schema.ResponseSchema):
+    """SecGroupResourceInfo - 安全组绑定资源信息"""
+
+    fields = {
+        "Name": fields.Str(required=False, load_from="Name"),
+        "PrivateIp": fields.Str(required=False, load_from="PrivateIp"),
+        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
+        "ResourceType": fields.Str(required=False, load_from="ResourceType"),
+        "SubResourceId": fields.Str(required=False, load_from="SubResourceId"),
+        "SubResourceName": fields.Str(
+            required=False, load_from="SubResourceName"
+        ),
+        "SubResourceType": fields.Str(
+            required=False, load_from="SubResourceType"
+        ),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "Zone": fields.Int(required=False, load_from="Zone"),
     }
 
 

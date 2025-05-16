@@ -276,6 +276,60 @@ class VPCClient(Client):
         resp = self.invoke("AssociateRouteTable", d, **kwargs)
         return apis.AssociateRouteTableResponseSchema().loads(resp)
 
+    def associate_sec_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """AssociateSecGroup - 绑定资源到安全组
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **PrioritySecGroup** (str) - (Required) 包含安全组 ID 和优先级的 PrioritySecGroup 数组，该字段和资源 ID 只支持一个批量。不支持 .n 格式。Type 为 PrioritySecGroup JSON 格式数组。
+        - **ResourceId** (str) - (Required) 资源短 ID 数组，安全组参赛和该字段只支持一个批量。不支持 .n 格式。Type 为 string 数组。
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.AssociateSecGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("AssociateSecGroup", d, **kwargs)
+        return apis.AssociateSecGroupResponseSchema().loads(resp)
+
+    def associate_sec_group_dynamic(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """AssociateSecGroupDynamic - 绑定安全组，动态调整绑定优先级
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ResourceId** (list) - (Required) 资源短 ID 数组。支持数组模式。Type 为 string 数组。
+        - **SecGroupId** (str) - (Required) 安全组ID
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.AssociateSecGroupDynamicRequestSchema().dumps(d)
+
+        resp = self.invoke("AssociateSecGroupDynamic", d, **kwargs)
+        return apis.AssociateSecGroupDynamicResponseSchema().loads(resp)
+
     def attach_network_interface(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -524,15 +578,25 @@ class VPCClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **SubnetId** (str) - (Required) 所属子网ID
         - **VPCId** (str) - (Required) 所属VPCID
+        - **EipDirectMode** (bool) - 是否开启EIP直通，默认false
         - **Name** (str) - 虚拟网卡名称，默认为 NetworkInterface
+        - **PrioritySecGroup** (list) - 见 **CreateNetworkInterfaceParamPrioritySecGroup** 模型定义
         - **PrivateIp** (list) - 指定内网IP。当前一个网卡仅支持绑定一个内网IP
         - **Remark** (str) - 备注
         - **SecurityGroupId** (str) - 防火墙GroupId，默认：Web推荐防火墙 可由DescribeSecurityGroupResponse中的GroupId取得
+        - **SecurityMode** (int) - 指定使用 安全组还是防火墙。为 0 时绑定防火墙，为1时绑定安全组
         - **Tag** (str) - 业务组
 
         **Response**
 
         - **NetworkInterface** (dict) - 见 **NetworkInterfaceInfo** 模型定义
+
+        **Request Model**
+
+        **CreateNetworkInterfaceParamPrioritySecGroup**
+        - **Priority** (int) - 安全组优先级
+        - **SecGroupId** (str) - 安全组 ID
+
 
         **Response Model**
 
@@ -600,6 +664,80 @@ class VPCClient(Client):
 
         resp = self.invoke("CreateRouteTable", d, **kwargs)
         return apis.CreateRouteTableResponseSchema().loads(resp)
+
+    def create_sec_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateSecGroup - 创建安全组
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Name** (str) - (Required) 安全组名称，最长64个字符。
+        - **VPCID** (str) - (Required) 资源ID所属的VPC
+
+        **Response**
+
+        - **SecGroupId** (str) - 安全组ID
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateSecGroupRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateSecGroup", d, **kwargs)
+        return apis.CreateSecGroupResponseSchema().loads(resp)
+
+    def create_sec_group_rule(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateSecGroupRule -
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **SecGroupId** (str) - (Required) 需要添加规则的安全组资源ID。
+        - **Rule** (list) - 见 **CreateSecGroupRuleParamRule** 模型定义
+
+        **Response**
+
+        - **RuleId** (list) - 规则 ID
+
+        **Request Model**
+
+        **CreateSecGroupRuleParamRule**
+        - **Direction** (str) - "Ingress/Egress"，入站规则/出站规则
+        - **DstPort** (str) - 目的端口。逗号分隔，如 "80,443"、"443,2000-10000"
+        - **IPRange** (str) - IP 地址信息，逗号分隔。
+        - **Priority** (int) - 规则优先级。范围为 1~200
+        - **ProtocolType** (str) - 协议类型。"TCP","UDP","ICMP","ICMPv6","ALL"
+        - **Remark** (str) - 规则备注
+        - **RuleAction** (str) - 规则行为。"Accept" 或 "Drop"
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateSecGroupRuleRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateSecGroupRule", d, **kwargs)
+        return apis.CreateSecGroupRuleResponseSchema().loads(resp)
 
     def create_snat_dnat_rule(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -913,6 +1051,59 @@ class VPCClient(Client):
 
         resp = self.invoke("DeleteRouteTable", d, **kwargs)
         return apis.DeleteRouteTableResponseSchema().loads(resp)
+
+    def delete_sec_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteSecGroup - 删除安全组
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **SecGroupId** (str) - (Required) 安全组资源 Id 数组。不支持 .n 格式。Type 为 string 数组
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteSecGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteSecGroup", d, **kwargs)
+        return apis.DeleteSecGroupResponseSchema().loads(resp)
+
+    def delete_sec_group_rule(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteSecGroupRule -
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **RuleId** (str) - (Required) 安全组规则 ID 数组。不支持 .n 格式。Type 为 string 数组。
+        - **SecGroupId** (str) - (Required) 所属安全组 ID。
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteSecGroupRuleRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteSecGroupRule", d, **kwargs)
+        return apis.DeleteSecGroupRuleResponseSchema().loads(resp)
 
     def delete_secondary_ip(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1540,6 +1731,76 @@ class VPCClient(Client):
         resp = self.invoke("DescribeNetworkInterface", d, **kwargs)
         return apis.DescribeNetworkInterfaceResponseSchema().loads(resp)
 
+    def describe_resource_sec_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeResourceSecGroup - 查询资源绑定的安全组信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Limit** (int) - 分页查询时的最大返回资源数量。
+        - **Offset** (int) - 分页查询时的偏移量。传入了 ResourceId 则不分页。
+        - **ResourceId** (str) - 资源 ID 数组，如果指定则不分页；否则分页获取该账号下的指定类型的资源。不支持 .n 格式。Type 为 string 数组。
+        - **ResourceType** (str) - 资源类型，如 uhost, uni
+        - **VPCId** (str) - VPC ID。非必须，分页使用（分页时，也可不传）；ResourceId 非空时，忽略
+
+        **Response**
+
+        - **DataSet** (list) - 见 **ResourceSecgroupInfoEx** 模型定义
+        - **TotalCount** (int) - 资源总数量。传入 ResourceId 时，为传入资源中的有效资源数量。
+
+        **Response Model**
+
+        **SecGroupSimpleInfo**
+        - **Name** (str) - 安全组名称
+        - **SecGroupId** (str) - 安全组资源ID
+
+
+        **ResourceSecgroupInfo**
+        - **Count** (int) - 资源绑定安全组数量
+        - **ResourceId** (str) - 资源ID
+        - **SecGroupInfo** (list) - 见 **SecGroupSimpleInfo** 模型定义
+
+
+        **ResourceExInfo**
+        - **EIP** (list) - 主机外网IP
+        - **IP** (list) - 主机内网IP
+        - **ResourceName** (str) - 资源名称
+        - **SuperResourceId** (str) - 父级资源ID
+        - **SuperResourceName** (str) - 父级资源名称
+        - **Uni** (list) - 见 **ResourceSecgroupInfo** 模型定义
+
+
+        **BindingSecGroupInfo**
+        - **Name** (str) - 安全组名称
+        - **Priority** (int) - 该资源与该安全组绑定的优先级
+        - **SecGroupId** (str) - 安全组 ID
+        - **VPCId** (str) - 安全组所属 VPC
+
+
+        **ResourceSecgroupInfoEx**
+        - **Count** (int) - 该资源绑定的安全组数量
+        - **ExInfo** (dict) - 见 **ResourceExInfo** 模型定义
+        - **PermitAssociate** (bool) - 表示是否允许绑定安全组
+        - **ResourceId** (str) - 资源 ID
+        - **ResourceName** (str) - 资源名称
+        - **SecGroupInfo** (list) - 见 **BindingSecGroupInfo** 模型定义
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeResourceSecGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeResourceSecGroup", d, **kwargs)
+        return apis.DescribeResourceSecGroupResponseSchema().loads(resp)
+
     def describe_route_table(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1606,6 +1867,105 @@ class VPCClient(Client):
 
         resp = self.invoke("DescribeRouteTable", d, **kwargs)
         return apis.DescribeRouteTableResponseSchema().loads(resp)
+
+    def describe_sec_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeSecGroup -
+
+        **Request**
+
+        - **ProjectId** (int) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Limit** (int) - 分页查询数据长度。默认为20
+        - **Offset** (int) - 分页查询起始位置偏移量。默认为0
+        - **SecGroupId** (list) - 安全组资源 ID 数组，传入则 Offset/Limit/BusinessId 失效。支持数组格式。Type 为 string 数组。
+        - **VPCId** (str) - 资源ID所属的 VPC ID
+
+        **Response**
+
+        - **DataSet** (list) - 见 **SecGroupInfo** 模型定义
+
+        **Response Model**
+
+        **SecGroupRuleInfo**
+        - **Direction** (str) - "Ingress/Egress"，入站规则/出站规则
+        - **DstPort** (str) - 目标端口
+        - **IPRange** (str) - 地址
+        - **Priority** (int) - 优先级
+        - **ProtocolType** (str) - 协议类型
+        - **Remark** (str) - 安全组规则备注
+        - **RuleAction** (str) - 匹配策略
+        - **RuleId** (str) - 规则ID
+
+
+        **SecGroupInfo**
+        - **Account** (int) - 用户 ID
+        - **CreateTime** (int) - 创建的时间，格式为Unix Timestamp，如 1747030299
+        - **Name** (str) - 安全组名称
+        - **Remark** (str) - 备注
+        - **Rule** (list) - 见 **SecGroupRuleInfo** 模型定义
+        - **SecGroupId** (str) - 安全组资源ID
+        - **Tag** (str) - 业务组
+        - **Type** (str) - 安全组类型，枚举值为： "user defined", 自定义创建安全组； "recommend web", 使用Web模板创建的安全组； "recommend non web", 使用非Web模板创建的安全组
+        - **VPCId** (str) - VPC资源ID
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeSecGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeSecGroup", d, **kwargs)
+        return apis.DescribeSecGroupResponseSchema().loads(resp)
+
+    def describe_sec_group_resource(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeSecGroupResource - 获取安全组绑资源信息
+
+        **Request**
+
+        - **ProjectId** (int) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Limit** (int) - 分页查询长度。默认为20
+        - **Offset** (int) - 分页查询起始位置偏移量。默认为0
+        - **SecGroupId** (str) - 安全组资源ID。
+
+        **Response**
+
+        - **DataSet** (list) - 见 **SecGroupResourceInfo** 模型定义
+        - **TotalCount** (int) - 安全组绑定的资源总数
+
+        **Response Model**
+
+        **SecGroupResourceInfo**
+        - **Name** (str) - 名称
+        - **PrivateIp** (str) - 内网IP
+        - **ResourceId** (str) - 资源ID
+        - **ResourceType** (str) - 资源类型。"unatgw"，NAT网关； "uhost"，云主机； "upm"，物理云主机； "hadoophost"，hadoop节点； "fortresshost"，堡垒机； "udhost"，私有专区主机；"udockhost"，容器；"dbaudit"，数据库审计，“uni”，虚拟网卡。
+        - **SubResourceId** (str) - 资源绑定的虚拟网卡的ID
+        - **SubResourceName** (str) - 绑定的虚拟网卡的名称
+        - **SubResourceType** (str) - 绑定的虚拟网卡的类型，“uni”，虚拟网卡
+        - **Tag** (str) - 业务组
+        - **Zone** (int) - 可用区
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeSecGroupResourceRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeSecGroupResource", d, **kwargs)
+        return apis.DescribeSecGroupResourceResponseSchema().loads(resp)
 
     def describe_secondary_ip(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -2037,6 +2397,92 @@ class VPCClient(Client):
 
         resp = self.invoke("DetachNetworkInterface", d, **kwargs)
         return apis.DetachNetworkInterfaceResponseSchema().loads(resp)
+
+    def disable_uni_eip_direct_mode(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DisableUniEipDirectMode - 关闭虚拟网卡EIP直通功能
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **InterfaceId** (str) - (Required) 虚拟网卡ID
+        - **VPCId** (str) - (Required) VPC ID
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 返回信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DisableUniEipDirectModeRequestSchema().dumps(d)
+
+        resp = self.invoke("DisableUniEipDirectMode", d, **kwargs)
+        return apis.DisableUniEipDirectModeResponseSchema().loads(resp)
+
+    def disassociate_sec_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DisassociateSecGroup - 解绑安全组和资源绑定关系
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Force** (bool) - 是否强制解绑。默认为 false。为 true 表示强制解绑，用于删除资源前的解绑，因为开启安全组特性的资源至少绑定一个安全组，正常情况下是不允许解绑所有安全组。
+        - **ResourceId** (str) - 资源ID数组，为空表示解绑资源上所有安全组，安全组ID和资源ID至少传一个，且只能有一个批量。不支持 .n 格式。Type 为 string 数组。
+        - **SecGroupId** (str) - 安全组ID数组，为空表示解绑安全组绑定的所以资源，安全组ID和资源ID至少传一个,且只能有一个批量。不支持 .n 格式。Type 为 string 数组。
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DisassociateSecGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("DisassociateSecGroup", d, **kwargs)
+        return apis.DisassociateSecGroupResponseSchema().loads(resp)
+
+    def enable_uni_eip_direct_mode(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """EnableUniEipDirectMode - 开启虚拟网卡EIP直通功能
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **InterfaceId** (str) - (Required) 虚拟网卡ID
+        - **VPCId** (str) - (Required) VPC ID
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 返回信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.EnableUniEipDirectModeRequestSchema().dumps(d)
+
+        resp = self.invoke("EnableUniEipDirectMode", d, **kwargs)
+        return apis.EnableUniEipDirectModeResponseSchema().loads(resp)
 
     def enable_white_list(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -2500,6 +2946,37 @@ class VPCClient(Client):
         resp = self.invoke("UpdateNetworkAclEntry", d, **kwargs)
         return apis.UpdateNetworkAclEntryResponseSchema().loads(resp)
 
+    def update_network_interface_default_output(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateNetworkInterfaceDefaultOutput - 更新虚拟网卡默认出口(仅用于开启EIP网卡可见模式的虚拟网卡)
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **InterfaceId** (str) - (Required) 虚拟网卡Id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Output** (str) - 出口IP
+
+        **Response**
+
+        - **Message** (str) - 返回信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateNetworkInterfaceDefaultOutputRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateNetworkInterfaceDefaultOutput", d, **kwargs)
+        return apis.UpdateNetworkInterfaceDefaultOutputResponseSchema().loads(
+            resp
+        )
+
     def update_route_table_attribute(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -2528,6 +3005,109 @@ class VPCClient(Client):
 
         resp = self.invoke("UpdateRouteTableAttribute", d, **kwargs)
         return apis.UpdateRouteTableAttributeResponseSchema().loads(resp)
+
+    def update_sec_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateSecGroup - 更新安全组基本信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **SecGroupId** (str) - (Required) 安全组资源ID数组。不支持 .n 格式。Type 为 string 数组。
+        - **Name** (str) - 安全组名称，默认为空，为空则不做修改。Name,Tag,Remark必须填写1个及以上
+        - **Remark** (str) - 安全组备注，默认为空，为空则不做修改。Name,Tag,Remark必须填写1个及以上
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateSecGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateSecGroup", d, **kwargs)
+        return apis.UpdateSecGroupResponseSchema().loads(resp)
+
+    def update_sec_group_association(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateSecGroupAssociation - 仅对操作的安全组ID生效，其他已有的绑定关系不受影响。
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **OldSecGroupId** (list) - (Required) 被替换的安全组ID。支持数组格式，即为 string 数组。
+        - **ResourceId** (str) - (Required) 资源ID
+        - **NewPrioritySecGroup** (list) - 见 **UpdateSecGroupAssociationParamNewPrioritySecGroup** 模型定义
+
+        **Response**
+
+
+        **Request Model**
+
+        **UpdateSecGroupAssociationParamNewPrioritySecGroup**
+        - **Priority** (int) - 新绑定安全组的绑定优先级。支持 NewPrioritySecGroup 为数组格式，即传对应数据的 JSON 格式数组。
+        - **SecGroupId** (str) - 需新绑定的安全组ID
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateSecGroupAssociationRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateSecGroupAssociation", d, **kwargs)
+        return apis.UpdateSecGroupAssociationResponseSchema().loads(resp)
+
+    def update_sec_group_rule(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateSecGroupRule -
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **SecGroupId** (str) - (Required) 规则所属得安全组 ID。
+        - **Rule** (list) - 见 **UpdateSecGroupRuleParamRule** 模型定义
+
+        **Response**
+
+
+        **Request Model**
+
+        **UpdateSecGroupRuleParamRule**
+        - **Direction** (str) - "Ingress/Egress"，入站规则/出站规则
+        - **DstPort** (str) - 目的端口。逗号分隔，如 "80,443"、"443,2000-10000"
+        - **IPRange** (str) - IP 地址信息，逗号分隔。
+        - **Priority** (int) - 规则优先级。范围为 1~200
+        - **ProtocolType** (str) - 协议类型。"TCP","UDP","ICMP","ICMPv6","ALL"
+        - **Remark** (str) - 规则备注
+        - **RuleAction** (str) - 规则行为。"Accept" 或 "Drop"
+        - **RuleId** (str) - 规则 ID
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateSecGroupRuleRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateSecGroupRule", d, **kwargs)
+        return apis.UpdateSecGroupRuleResponseSchema().loads(resp)
 
     def update_snat_rule(
         self, req: typing.Optional[dict] = None, **kwargs
