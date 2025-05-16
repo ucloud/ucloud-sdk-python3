@@ -207,6 +207,56 @@ class AssociateRouteTableResponseSchema(schema.ResponseSchema):
 
 
 """
+API: AssociateSecGroup
+
+绑定资源到安全组
+"""
+
+
+class AssociateSecGroupRequestSchema(schema.RequestSchema):
+    """AssociateSecGroup - 绑定资源到安全组"""
+
+    fields = {
+        "PrioritySecGroup": fields.Str(
+            required=True, dump_to="PrioritySecGroup"
+        ),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
+    }
+
+
+class AssociateSecGroupResponseSchema(schema.ResponseSchema):
+    """AssociateSecGroup - 绑定资源到安全组"""
+
+    fields = {}
+
+
+"""
+API: AssociateSecGroupDynamic
+
+绑定安全组，动态调整绑定优先级
+"""
+
+
+class AssociateSecGroupDynamicRequestSchema(schema.RequestSchema):
+    """AssociateSecGroupDynamic - 绑定安全组，动态调整绑定优先级"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ResourceId": fields.List(fields.Str()),
+        "SecGroupId": fields.Str(required=True, dump_to="SecGroupId"),
+    }
+
+
+class AssociateSecGroupDynamicResponseSchema(schema.ResponseSchema):
+    """AssociateSecGroupDynamic - 绑定安全组，动态调整绑定优先级"""
+
+    fields = {}
+
+
+"""
 API: AttachNetworkInterface
 
 绑定网卡到云主机
@@ -413,11 +463,24 @@ API: CreateNetworkInterface
 """
 
 
+class CreateNetworkInterfaceParamPrioritySecGroupSchema(schema.RequestSchema):
+    """CreateNetworkInterfaceParamPrioritySecGroup -"""
+
+    fields = {
+        "Priority": fields.Int(required=False, dump_to="Priority"),
+        "SecGroupId": fields.Str(required=False, dump_to="SecGroupId"),
+    }
+
+
 class CreateNetworkInterfaceRequestSchema(schema.RequestSchema):
     """CreateNetworkInterface - 创建虚拟网卡"""
 
     fields = {
+        "EipDirectMode": fields.Bool(required=False, dump_to="EipDirectMode"),
         "Name": fields.Str(required=False, dump_to="Name"),
+        "PrioritySecGroup": fields.List(
+            CreateNetworkInterfaceParamPrioritySecGroupSchema()
+        ),
         "PrivateIp": fields.List(fields.Str()),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
@@ -425,6 +488,7 @@ class CreateNetworkInterfaceRequestSchema(schema.RequestSchema):
         "SecurityGroupId": fields.Str(
             required=False, dump_to="SecurityGroupId"
         ),
+        "SecurityMode": fields.Int(required=False, dump_to="SecurityMode"),
         "SubnetId": fields.Str(required=True, dump_to="SubnetId"),
         "Tag": fields.Str(required=False, dump_to="Tag"),
         "VPCId": fields.Str(required=True, dump_to="VPCId"),
@@ -464,6 +528,72 @@ class CreateRouteTableResponseSchema(schema.ResponseSchema):
 
     fields = {
         "RouteTableId": fields.Str(required=False, load_from="RouteTableId"),
+    }
+
+
+"""
+API: CreateSecGroup
+
+创建安全组
+"""
+
+
+class CreateSecGroupRequestSchema(schema.RequestSchema):
+    """CreateSecGroup - 创建安全组"""
+
+    fields = {
+        "Name": fields.Str(required=True, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "VPCID": fields.Str(required=True, dump_to="VPCID"),
+    }
+
+
+class CreateSecGroupResponseSchema(schema.ResponseSchema):
+    """CreateSecGroup - 创建安全组"""
+
+    fields = {
+        "SecGroupId": fields.Str(required=True, load_from="SecGroupId"),
+    }
+
+
+"""
+API: CreateSecGroupRule
+
+
+"""
+
+
+class CreateSecGroupRuleParamRuleSchema(schema.RequestSchema):
+    """CreateSecGroupRuleParamRule -"""
+
+    fields = {
+        "Direction": fields.Str(required=True, dump_to="Direction"),
+        "DstPort": fields.Str(required=True, dump_to="DstPort"),
+        "IPRange": fields.Str(required=True, dump_to="IPRange"),
+        "Priority": fields.Int(required=True, dump_to="Priority"),
+        "ProtocolType": fields.Str(required=True, dump_to="ProtocolType"),
+        "Remark": fields.Str(required=True, dump_to="Remark"),
+        "RuleAction": fields.Str(required=True, dump_to="RuleAction"),
+    }
+
+
+class CreateSecGroupRuleRequestSchema(schema.RequestSchema):
+    """CreateSecGroupRule -"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Rule": fields.List(CreateSecGroupRuleParamRuleSchema()),
+        "SecGroupId": fields.Str(required=True, dump_to="SecGroupId"),
+    }
+
+
+class CreateSecGroupRuleResponseSchema(schema.ResponseSchema):
+    """CreateSecGroupRule -"""
+
+    fields = {
+        "RuleId": fields.List(fields.Str(), required=True, load_from="RuleId"),
     }
 
 
@@ -740,6 +870,53 @@ class DeleteRouteTableRequestSchema(schema.RequestSchema):
 
 class DeleteRouteTableResponseSchema(schema.ResponseSchema):
     """DeleteRouteTable - 删除自定义路由表"""
+
+    fields = {}
+
+
+"""
+API: DeleteSecGroup
+
+删除安全组
+"""
+
+
+class DeleteSecGroupRequestSchema(schema.RequestSchema):
+    """DeleteSecGroup - 删除安全组"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SecGroupId": fields.Str(required=True, dump_to="SecGroupId"),
+    }
+
+
+class DeleteSecGroupResponseSchema(schema.ResponseSchema):
+    """DeleteSecGroup - 删除安全组"""
+
+    fields = {}
+
+
+"""
+API: DeleteSecGroupRule
+
+
+"""
+
+
+class DeleteSecGroupRuleRequestSchema(schema.RequestSchema):
+    """DeleteSecGroupRule -"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "RuleId": fields.Str(required=True, dump_to="RuleId"),
+        "SecGroupId": fields.Str(required=True, dump_to="SecGroupId"),
+    }
+
+
+class DeleteSecGroupRuleResponseSchema(schema.ResponseSchema):
+    """DeleteSecGroupRule -"""
 
     fields = {}
 
@@ -1164,6 +1341,40 @@ class DescribeNetworkInterfaceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeResourceSecGroup
+
+查询资源绑定的安全组信息
+"""
+
+
+class DescribeResourceSecGroupRequestSchema(schema.RequestSchema):
+    """DescribeResourceSecGroup - 查询资源绑定的安全组信息"""
+
+    fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
+        "ResourceType": fields.Str(required=False, dump_to="ResourceType"),
+        "VPCId": fields.Str(required=False, dump_to="VPCId"),
+    }
+
+
+class DescribeResourceSecGroupResponseSchema(schema.ResponseSchema):
+    """DescribeResourceSecGroup - 查询资源绑定的安全组信息"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.ResourceSecgroupInfoExSchema(),
+            required=True,
+            load_from="DataSet",
+        ),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
 API: DescribeRouteTable
 
 获取路由表详细信息(包括路由策略)
@@ -1194,6 +1405,68 @@ class DescribeRouteTableResponseSchema(schema.ResponseSchema):
             models.RouteTableInfoSchema(),
             required=False,
             load_from="RouteTables",
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
+API: DescribeSecGroup
+
+
+"""
+
+
+class DescribeSecGroupRequestSchema(schema.RequestSchema):
+    """DescribeSecGroup -"""
+
+    fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Int(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SecGroupId": fields.List(fields.Str()),
+        "VPCId": fields.Str(required=False, dump_to="VPCId"),
+    }
+
+
+class DescribeSecGroupResponseSchema(schema.ResponseSchema):
+    """DescribeSecGroup -"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.SecGroupInfoSchema(), required=True, load_from="DataSet"
+        ),
+    }
+
+
+"""
+API: DescribeSecGroupResource
+
+获取安全组绑资源信息
+"""
+
+
+class DescribeSecGroupResourceRequestSchema(schema.RequestSchema):
+    """DescribeSecGroupResource - 获取安全组绑资源信息"""
+
+    fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Int(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SecGroupId": fields.Str(required=False, dump_to="SecGroupId"),
+    }
+
+
+class DescribeSecGroupResourceResponseSchema(schema.ResponseSchema):
+    """DescribeSecGroupResource - 获取安全组绑资源信息"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.SecGroupResourceInfoSchema(),
+            required=True,
+            load_from="DataSet",
         ),
         "TotalCount": fields.Int(required=False, load_from="TotalCount"),
     }
@@ -1513,6 +1786,85 @@ class DetachNetworkInterfaceResponseSchema(schema.ResponseSchema):
     """DetachNetworkInterface - 解绑云主机关联网卡"""
 
     fields = {}
+
+
+"""
+API: DisableUniEipDirectMode
+
+关闭虚拟网卡EIP直通功能
+"""
+
+
+class DisableUniEipDirectModeRequestSchema(schema.RequestSchema):
+    """DisableUniEipDirectMode - 关闭虚拟网卡EIP直通功能"""
+
+    fields = {
+        "InterfaceId": fields.Str(required=True, dump_to="InterfaceId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "VPCId": fields.Str(required=True, dump_to="VPCId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DisableUniEipDirectModeResponseSchema(schema.ResponseSchema):
+    """DisableUniEipDirectMode - 关闭虚拟网卡EIP直通功能"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: DisassociateSecGroup
+
+解绑安全组和资源绑定关系
+"""
+
+
+class DisassociateSecGroupRequestSchema(schema.RequestSchema):
+    """DisassociateSecGroup - 解绑安全组和资源绑定关系"""
+
+    fields = {
+        "Force": fields.Bool(required=False, dump_to="Force"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
+        "SecGroupId": fields.Str(required=False, dump_to="SecGroupId"),
+    }
+
+
+class DisassociateSecGroupResponseSchema(schema.ResponseSchema):
+    """DisassociateSecGroup - 解绑安全组和资源绑定关系"""
+
+    fields = {}
+
+
+"""
+API: EnableUniEipDirectMode
+
+开启虚拟网卡EIP直通功能
+"""
+
+
+class EnableUniEipDirectModeRequestSchema(schema.RequestSchema):
+    """EnableUniEipDirectMode - 开启虚拟网卡EIP直通功能"""
+
+    fields = {
+        "InterfaceId": fields.Str(required=True, dump_to="InterfaceId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "VPCId": fields.Str(required=True, dump_to="VPCId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class EnableUniEipDirectModeResponseSchema(schema.ResponseSchema):
+    """EnableUniEipDirectMode - 开启虚拟网卡EIP直通功能"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
 
 
 """
@@ -1907,6 +2259,33 @@ class UpdateNetworkAclEntryResponseSchema(schema.ResponseSchema):
 
 
 """
+API: UpdateNetworkInterfaceDefaultOutput
+
+更新虚拟网卡默认出口(仅用于开启EIP网卡可见模式的虚拟网卡)
+"""
+
+
+class UpdateNetworkInterfaceDefaultOutputRequestSchema(schema.RequestSchema):
+    """UpdateNetworkInterfaceDefaultOutput - 更新虚拟网卡默认出口(仅用于开启EIP网卡可见模式的虚拟网卡)"""
+
+    fields = {
+        "InterfaceId": fields.Str(required=True, dump_to="InterfaceId"),
+        "Output": fields.Str(required=False, dump_to="Output"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class UpdateNetworkInterfaceDefaultOutputResponseSchema(schema.ResponseSchema):
+    """UpdateNetworkInterfaceDefaultOutput - 更新虚拟网卡默认出口(仅用于开启EIP网卡可见模式的虚拟网卡)"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
 API: UpdateRouteTableAttribute
 
 更新路由表基本信息
@@ -1928,6 +2307,108 @@ class UpdateRouteTableAttributeRequestSchema(schema.RequestSchema):
 
 class UpdateRouteTableAttributeResponseSchema(schema.ResponseSchema):
     """UpdateRouteTableAttribute - 更新路由表基本信息"""
+
+    fields = {}
+
+
+"""
+API: UpdateSecGroup
+
+更新安全组基本信息
+"""
+
+
+class UpdateSecGroupRequestSchema(schema.RequestSchema):
+    """UpdateSecGroup - 更新安全组基本信息"""
+
+    fields = {
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "SecGroupId": fields.Str(required=True, dump_to="SecGroupId"),
+    }
+
+
+class UpdateSecGroupResponseSchema(schema.ResponseSchema):
+    """UpdateSecGroup - 更新安全组基本信息"""
+
+    fields = {}
+
+
+"""
+API: UpdateSecGroupAssociation
+
+仅对操作的安全组ID生效，其他已有的绑定关系不受影响。
+"""
+
+
+class UpdateSecGroupAssociationParamNewPrioritySecGroupSchema(
+    schema.RequestSchema
+):
+    """UpdateSecGroupAssociationParamNewPrioritySecGroup -"""
+
+    fields = {
+        "Priority": fields.Int(required=True, dump_to="Priority"),
+        "SecGroupId": fields.Str(required=True, dump_to="SecGroupId"),
+    }
+
+
+class UpdateSecGroupAssociationRequestSchema(schema.RequestSchema):
+    """UpdateSecGroupAssociation - 仅对操作的安全组ID生效，其他已有的绑定关系不受影响。"""
+
+    fields = {
+        "NewPrioritySecGroup": fields.List(
+            UpdateSecGroupAssociationParamNewPrioritySecGroupSchema()
+        ),
+        "OldSecGroupId": fields.List(fields.Str()),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
+    }
+
+
+class UpdateSecGroupAssociationResponseSchema(schema.ResponseSchema):
+    """UpdateSecGroupAssociation - 仅对操作的安全组ID生效，其他已有的绑定关系不受影响。"""
+
+    fields = {}
+
+
+"""
+API: UpdateSecGroupRule
+
+
+"""
+
+
+class UpdateSecGroupRuleParamRuleSchema(schema.RequestSchema):
+    """UpdateSecGroupRuleParamRule -"""
+
+    fields = {
+        "Direction": fields.Str(required=True, dump_to="Direction"),
+        "DstPort": fields.Str(required=True, dump_to="DstPort"),
+        "IPRange": fields.Str(required=True, dump_to="IPRange"),
+        "Priority": fields.Int(required=True, dump_to="Priority"),
+        "ProtocolType": fields.Str(required=True, dump_to="ProtocolType"),
+        "Remark": fields.Str(required=True, dump_to="Remark"),
+        "RuleAction": fields.Str(required=True, dump_to="RuleAction"),
+        "RuleId": fields.Str(required=True, dump_to="RuleId"),
+    }
+
+
+class UpdateSecGroupRuleRequestSchema(schema.RequestSchema):
+    """UpdateSecGroupRule -"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Rule": fields.List(UpdateSecGroupRuleParamRuleSchema()),
+        "SecGroupId": fields.Str(required=True, dump_to="SecGroupId"),
+    }
+
+
+class UpdateSecGroupRuleResponseSchema(schema.ResponseSchema):
+    """UpdateSecGroupRule -"""
 
     fields = {}
 
