@@ -147,6 +147,10 @@ class CreateUMemSpaceRequestSchema(schema.RequestSchema):
         "ProxySize": fields.Int(required=False, dump_to="ProxySize"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "RollbackSpaceId": fields.Str(
+            required=False, dump_to="RollbackSpaceId"
+        ),
+        "RollbackTime": fields.Int(required=False, dump_to="RollbackTime"),
         "Size": fields.Int(required=True, dump_to="Size"),
         "SlaveZone": fields.Str(required=False, dump_to="SlaveZone"),
         "SpaceId": fields.Str(required=False, dump_to="SpaceId"),
@@ -476,6 +480,7 @@ class DescribeUMemBackupResponseSchema(schema.ResponseSchema):
         "DataSet": fields.List(
             models.UMemBackupSetSchema(), required=False, load_from="DataSet"
         ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
     }
 
 
@@ -581,12 +586,12 @@ class DescribeUMemPriceResponseSchema(schema.ResponseSchema):
 """
 API: DescribeUMemSpace
 
-获取UMem内存空间列表
+获取UMem内存空间列表（已废弃，建议是使用DescribeUMem接口）
 """
 
 
 class DescribeUMemSpaceRequestSchema(schema.RequestSchema):
-    """DescribeUMemSpace - 获取UMem内存空间列表"""
+    """DescribeUMemSpace - 获取UMem内存空间列表（已废弃，建议是使用DescribeUMem接口）"""
 
     fields = {
         "Limit": fields.Int(required=False, dump_to="Limit"),
@@ -600,7 +605,7 @@ class DescribeUMemSpaceRequestSchema(schema.RequestSchema):
 
 
 class DescribeUMemSpaceResponseSchema(schema.ResponseSchema):
-    """DescribeUMemSpace - 获取UMem内存空间列表"""
+    """DescribeUMemSpace - 获取UMem内存空间列表（已废弃，建议是使用DescribeUMem接口）"""
 
     fields = {
         "DataSet": fields.List(
@@ -757,11 +762,12 @@ class DescribeURedisBackupRequestSchema(schema.RequestSchema):
     """DescribeURedisBackup - 查询主备redis备份"""
 
     fields = {
-        "GroupId": fields.Str(required=False, dump_to="GroupId"),
+        "GroupId": fields.Str(required=True, dump_to="GroupId"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "SlaveZone": fields.Str(required=False, dump_to="SlaveZone"),
     }
 
 
@@ -842,12 +848,12 @@ class DescribeURedisConfigResponseSchema(schema.ResponseSchema):
 """
 API: DescribeURedisGroup
 
-查询主备Redis
+查询主备Redis(已废弃，建议使用DescribeUMem)
 """
 
 
 class DescribeURedisGroupRequestSchema(schema.RequestSchema):
-    """DescribeURedisGroup - 查询主备Redis"""
+    """DescribeURedisGroup - 查询主备Redis(已废弃，建议使用DescribeUMem)"""
 
     fields = {
         "GroupId": fields.Str(required=False, dump_to="GroupId"),
@@ -860,7 +866,7 @@ class DescribeURedisGroupRequestSchema(schema.RequestSchema):
 
 
 class DescribeURedisGroupResponseSchema(schema.ResponseSchema):
-    """DescribeURedisGroup - 查询主备Redis"""
+    """DescribeURedisGroup - 查询主备Redis(已废弃，建议使用DescribeUMem)"""
 
     fields = {
         "DataSet": fields.List(
@@ -1270,12 +1276,12 @@ class ResizeUDRedisBlockSizeResponseSchema(schema.ResponseSchema):
 """
 API: ResizeUMemSpace
 
-调整内存空间容量，只支持存量老分布式产品，不支持高性能分布式
+调整内存空间容量，只支持存量老分布式产品，不支持高性能分布式。（已废弃，不建议使用）
 """
 
 
 class ResizeUMemSpaceRequestSchema(schema.RequestSchema):
-    """ResizeUMemSpace - 调整内存空间容量，只支持存量老分布式产品，不支持高性能分布式"""
+    """ResizeUMemSpace - 调整内存空间容量，只支持存量老分布式产品，不支持高性能分布式。（已废弃，不建议使用）"""
 
     fields = {
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
@@ -1289,7 +1295,7 @@ class ResizeUMemSpaceRequestSchema(schema.RequestSchema):
 
 
 class ResizeUMemSpaceResponseSchema(schema.ResponseSchema):
-    """ResizeUMemSpace - 调整内存空间容量，只支持存量老分布式产品，不支持高性能分布式"""
+    """ResizeUMemSpace - 调整内存空间容量，只支持存量老分布式产品，不支持高性能分布式。（已废弃，不建议使用）"""
 
     fields = {}
 
