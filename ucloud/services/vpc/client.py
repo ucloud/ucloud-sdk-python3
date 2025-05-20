@@ -1753,15 +1753,13 @@ class VPCClient(Client):
 
         **Response Model**
 
-        **SecGroupSimpleInfo**
-        - **Name** (str) - 安全组名称
-        - **SecGroupId** (str) - 安全组资源ID
-
-
-        **ResourceSecgroupInfo**
-        - **Count** (int) - 资源绑定安全组数量
-        - **ResourceId** (str) - 资源ID
-        - **SecGroupInfo** (list) - 见 **SecGroupSimpleInfo** 模型定义
+        **ResourceSecgroupInfoEx**
+        - **Count** (int) - 该资源绑定的安全组数量
+        - **ExInfo** (dict) - 见 **ResourceExInfo** 模型定义
+        - **PermitAssociate** (bool) - 表示是否允许绑定安全组
+        - **ResourceId** (str) - 资源 ID
+        - **ResourceName** (str) - 资源名称
+        - **SecGroupInfo** (list) - 见 **BindingSecGroupInfo** 模型定义
 
 
         **ResourceExInfo**
@@ -1773,20 +1771,22 @@ class VPCClient(Client):
         - **Uni** (list) - 见 **ResourceSecgroupInfo** 模型定义
 
 
+        **ResourceSecgroupInfo**
+        - **Count** (int) - 资源绑定安全组数量
+        - **ResourceId** (str) - 资源ID
+        - **SecGroupInfo** (list) - 见 **SecGroupSimpleInfo** 模型定义
+
+
+        **SecGroupSimpleInfo**
+        - **Name** (str) - 安全组名称
+        - **SecGroupId** (str) - 安全组资源ID
+
+
         **BindingSecGroupInfo**
         - **Name** (str) - 安全组名称
         - **Priority** (int) - 该资源与该安全组绑定的优先级
         - **SecGroupId** (str) - 安全组 ID
         - **VPCId** (str) - 安全组所属 VPC
-
-
-        **ResourceSecgroupInfoEx**
-        - **Count** (int) - 该资源绑定的安全组数量
-        - **ExInfo** (dict) - 见 **ResourceExInfo** 模型定义
-        - **PermitAssociate** (bool) - 表示是否允许绑定安全组
-        - **ResourceId** (str) - 资源 ID
-        - **ResourceName** (str) - 资源名称
-        - **SecGroupInfo** (list) - 见 **BindingSecGroupInfo** 模型定义
 
 
         """
@@ -1875,7 +1875,7 @@ class VPCClient(Client):
 
         **Request**
 
-        - **ProjectId** (int) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Limit** (int) - 分页查询数据长度。默认为20
         - **Offset** (int) - 分页查询起始位置偏移量。默认为0
@@ -1888,17 +1888,6 @@ class VPCClient(Client):
 
         **Response Model**
 
-        **SecGroupRuleInfo**
-        - **Direction** (str) - "Ingress/Egress"，入站规则/出站规则
-        - **DstPort** (str) - 目标端口
-        - **IPRange** (str) - 地址
-        - **Priority** (int) - 优先级
-        - **ProtocolType** (str) - 协议类型
-        - **Remark** (str) - 安全组规则备注
-        - **RuleAction** (str) - 匹配策略
-        - **RuleId** (str) - 规则ID
-
-
         **SecGroupInfo**
         - **Account** (int) - 用户 ID
         - **CreateTime** (int) - 创建的时间，格式为Unix Timestamp，如 1747030299
@@ -1909,6 +1898,17 @@ class VPCClient(Client):
         - **Tag** (str) - 业务组
         - **Type** (str) - 安全组类型，枚举值为： "user defined", 自定义创建安全组； "recommend web", 使用Web模板创建的安全组； "recommend non web", 使用非Web模板创建的安全组
         - **VPCId** (str) - VPC资源ID
+
+
+        **SecGroupRuleInfo**
+        - **Direction** (str) - "Ingress/Egress"，入站规则/出站规则
+        - **DstPort** (str) - 目标端口
+        - **IPRange** (str) - 地址
+        - **Priority** (int) - 优先级
+        - **ProtocolType** (str) - 协议类型
+        - **Remark** (str) - 安全组规则备注
+        - **RuleAction** (str) - 匹配策略
+        - **RuleId** (str) - 规则ID
 
 
         """
@@ -1930,7 +1930,7 @@ class VPCClient(Client):
 
         **Request**
 
-        - **ProjectId** (int) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Limit** (int) - 分页查询长度。默认为20
         - **Offset** (int) - 分页查询起始位置偏移量。默认为0

@@ -19,6 +19,7 @@ class UDRedisSlowlogSetSchema(schema.ResponseSchema):
 
     fields = {
         "BlockId": fields.Str(required=False, load_from="BlockId"),
+        "Client": fields.Str(required=False, load_from="Client"),
         "Command": fields.Str(required=False, load_from="Command"),
         "SpendTime": fields.Int(required=False, load_from="SpendTime"),
         "StartTime": fields.Int(required=False, load_from="StartTime"),
@@ -107,6 +108,7 @@ class UMemBackupSetSchema(schema.ResponseSchema):
         "BackupName": fields.Str(required=True, load_from="BackupName"),
         "BackupType": fields.Str(required=True, load_from="BackupType"),
         "BlockCount": fields.Int(required=True, load_from="BlockCount"),
+        "BlockSize": fields.Int(required=False, load_from="BlockSize"),
         "CreateTime": fields.Int(required=True, load_from="CreateTime"),
         "State": fields.Str(required=True, load_from="State"),
     }
@@ -150,6 +152,9 @@ class UMemSpaceSetSchema(schema.ResponseSchema):
 
     fields = {
         "Address": fields.List(UMemSpaceAddressSetSchema()),
+        "AofRollbackEnable": fields.Bool(
+            required=False, load_from="AofRollbackEnable"
+        ),
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
@@ -160,6 +165,9 @@ class UMemSpaceSetSchema(schema.ResponseSchema):
         "SpaceId": fields.Str(required=False, load_from="SpaceId"),
         "State": fields.Str(required=False, load_from="State"),
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "SupportAofRollback": fields.Bool(
+            required=False, load_from="SupportAofRollback"
+        ),
         "Tag": fields.Str(required=True, load_from="Tag"),
         "Type": fields.Str(required=False, load_from="Type"),
         "UsedSize": fields.Int(required=False, load_from="UsedSize"),
@@ -270,6 +278,12 @@ class URedisGroupSetSchema(schema.ResponseSchema):
         "Protocol": fields.Str(required=False, load_from="Protocol"),
         "RewriteTime": fields.Int(required=True, load_from="RewriteTime"),
         "Role": fields.Str(required=True, load_from="Role"),
+        "SSLCertExpireTime": fields.Int(
+            required=False, load_from="SSLCertExpireTime"
+        ),
+        "SSLEnable": fields.Bool(required=False, load_from="SSLEnable"),
+        "SSLVersion": fields.Str(required=False, load_from="SSLVersion"),
+        "SecPolicy": fields.Int(required=False, load_from="SecPolicy"),
         "Size": fields.Int(required=False, load_from="Size"),
         "SlaveZone": fields.Str(required=False, load_from="SlaveZone"),
         "State": fields.Str(required=False, load_from="State"),

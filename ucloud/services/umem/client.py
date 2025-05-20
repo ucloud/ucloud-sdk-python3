@@ -163,6 +163,8 @@ class UMemClient(Client):
         - **ProxyPort** (int) - 代理端口, 默认为 6379
         - **ProxySize** (int) - 分布式代理CPU核数，不填或者传0时默认不创建代理
         - **Quantity** (int) - 购买时长 默认: 1
+        - **RollbackSpaceId** (str) - 如果是通过回档创建，该实例ID不为空
+        - **RollbackTime** (int) - 要回档的时间戳
         - **SlaveZone** (str) - 跨机房UDRedis，slave所在可用区（必须和Zone在同一Region，且不可相同）
         - **SpaceId** (str) - 集群ID，选择某个备份创建时，需要填写源集群ID
         - **SubnetId** (str) - 子网ID
@@ -458,6 +460,7 @@ class UMemClient(Client):
 
         **UDRedisSlowlogSet**
         - **BlockId** (str) - 分片id
+        - **Client** (str) - 慢日志的的客户信息
         - **Command** (str) - 查询命令
         - **SpendTime** (int) - 查询消耗的时间
         - **StartTime** (int) - 查询发生的时间
@@ -577,16 +580,17 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **SpaceId** (str) - (Required) 资源id
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Limit** (int) - 分页显示的条目数, 默认值为10
         - **Offset** (int) - 分页显示的起始偏移, 默认值为0
 
         **Response**
 
         - **DataSet** (list) - 见 **UMemBackupSet** 模型定义
+        - **TotalCount** (int) - 备份总数
 
         **Response Model**
 
@@ -595,6 +599,7 @@ class UMemClient(Client):
         - **BackupName** (str) - 备份名称
         - **BackupType** (str) - 备份类型: auto(自动) ,manual(手动)
         - **BlockCount** (int) - 本次备份，分片的数量
+        - **BlockSize** (int) - 备份大小
         - **CreateTime** (int) - 创建时间
         - **State** (str) - Starting:备份中 Done:完成
 
@@ -735,17 +740,17 @@ class UMemClient(Client):
     def describe_umem_space(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DescribeUMemSpace - 获取UMem内存空间列表
+        """DescribeUMemSpace - 获取UMem内存空间列表（已废弃，建议是使用DescribeUMem接口）
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Limit** (int) - 返回数据长度, 默认为20
         - **Offset** (int) - 数据偏移量, 默认为0
         - **Protocol** (str) - 协议类型: memcache, redis
         - **SpaceId** (str) - 内存空间ID (无ID，则获取所有)
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -756,6 +761,7 @@ class UMemClient(Client):
 
         **UMemSpaceSet**
         - **Address** (list) - 见 **UMemSpaceAddressSet** 模型定义
+        - **AofRollbackEnable** (bool) - 实例是否开启了回档
         - **ChargeType** (str) - Year, Month, Dynamic, Trial
         - **CreateTime** (int) - 创建时间
         - **ExpireTime** (int) - 到期时间
@@ -765,11 +771,12 @@ class UMemClient(Client):
         - **Size** (int) - 容量单位GB
         - **SpaceId** (str) - 内存空间ID
         - **State** (str) - Starting:创建中 Running:运行中 Fail:失败
-        - **SubnetId** (str) -
-        - **Tag** (str) -
+        - **SubnetId** (str) - 子网ID
+        - **SupportAofRollback** (bool) - 实例是否支持回档
+        - **Tag** (str) - 实例tag
         - **Type** (str) - 空间类型:single(无热备),double(热备)
         - **UsedSize** (int) - 使用量单位MB
-        - **VPCId** (str) -
+        - **VPCId** (str) - VPC ID
         - **Zone** (str) - 可用区，参见 `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
 
 
@@ -966,11 +973,12 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **GroupId** (str) - 组的ID
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **GroupId** (str) - (Required) 组的ID
         - **Limit** (int) - 分页显示的条目数, 默认值为10
         - **Offset** (int) - 分页显示的起始偏移, 默认值为0
+        - **SlaveZone** (str) - 跨机房URedis，slave所在可用区（必须和Zone在同一Region，且不可相同）
 
         **Response**
 
@@ -1086,7 +1094,7 @@ class UMemClient(Client):
     def describe_uredis_group(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DescribeURedisGroup - 查询主备Redis
+        """DescribeURedisGroup - 查询主备Redis(已废弃，建议使用DescribeUMem)
 
         **Request**
 
@@ -1122,9 +1130,13 @@ class UMemClient(Client):
         - **Protocol** (str) - 协议
         - **RewriteTime** (int) - 返回运维时间 0 //0点 1 //1点 以此类推
         - **Role** (str) - 实例类型
+        - **SSLCertExpireTime** (int) - 证书过期时间
+        - **SSLEnable** (bool) - 实例是否开启SSL
+        - **SSLVersion** (str) - SSL版本
+        - **SecPolicy** (int) - 安全策略。1:内网隔离，2:加密通信，3:内网隔离+加密通信
         - **Size** (int) - 容量单位GB
         - **SlaveZone** (str) - 跨机房URedis，slave redis所在可用区，参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **State** (str) - 状态标记 Creating // 初始化中 CreateFail // 创建失败 Deleting // 删除中 DeleteFail // 删除失败 Running // 运行 Resizing // 容量调整中 ResizeFail // 容量调整失败 Configing // 配置中 ConfigFail // 配置失败
+        - **State** (str) - 状态标记 Creating // 初始化中 CreateFail // 创建失败 Deleting // 删除中 DeleteFail // 删除失败 Running // 运行 Resizing // 容量调整中 ResizeFail // 容量调整失败 Configing // 配置中 ConfigFail // 配置失败// 修改SSL中SSLSwitching //SSLSwitchFail修改SSL失败
         - **SubnetId** (str) - subnetid
         - **Tag** (str) - 业务组名称
         - **Type** (str) - 空间类型:single(无热备),double(热备)
@@ -1595,7 +1607,7 @@ class UMemClient(Client):
     def resize_umem_space(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ResizeUMemSpace - 调整内存空间容量，只支持存量老分布式产品，不支持高性能分布式
+        """ResizeUMemSpace - 调整内存空间容量，只支持存量老分布式产品，不支持高性能分布式。（已废弃，不建议使用）
 
         **Request**
 

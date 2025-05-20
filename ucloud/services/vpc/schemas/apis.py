@@ -1423,7 +1423,7 @@ class DescribeSecGroupRequestSchema(schema.RequestSchema):
     fields = {
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
-        "ProjectId": fields.Int(required=False, dump_to="ProjectId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SecGroupId": fields.List(fields.Str()),
         "VPCId": fields.Str(required=False, dump_to="VPCId"),
@@ -1453,7 +1453,7 @@ class DescribeSecGroupResourceRequestSchema(schema.RequestSchema):
     fields = {
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
-        "ProjectId": fields.Int(required=False, dump_to="ProjectId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SecGroupId": fields.Str(required=False, dump_to="SecGroupId"),
     }
