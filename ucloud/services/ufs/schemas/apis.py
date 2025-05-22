@@ -24,6 +24,7 @@ class AddUFSVolumeMountPointRequestSchema(schema.RequestSchema):
         "SubnetId": fields.Str(required=True, dump_to="SubnetId"),
         "VolumeId": fields.Str(required=True, dump_to="VolumeId"),
         "VpcId": fields.Str(required=True, dump_to="VpcId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
 
@@ -55,6 +56,7 @@ class CreateUFSVolumeRequestSchema(schema.RequestSchema):
         "StorageType": fields.Str(required=True, dump_to="StorageType"),
         "Tag": fields.Str(required=False, dump_to="Tag"),
         "VolumeName": fields.Str(required=False, dump_to="VolumeName"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
 
@@ -84,6 +86,7 @@ class DescribeUFSVolume2RequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "VolumeId": fields.Str(required=False, dump_to="VolumeId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
 
@@ -112,6 +115,7 @@ class DescribeUFSVolumeMountpointRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "VolumeId": fields.Str(required=True, dump_to="VolumeId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
 
@@ -177,6 +181,7 @@ class ExtendUFSVolumeRequestSchema(schema.RequestSchema):
         "Region": fields.Str(required=True, dump_to="Region"),
         "Size": fields.Int(required=True, dump_to="Size"),
         "VolumeId": fields.Str(required=True, dump_to="VolumeId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
 
@@ -200,6 +205,7 @@ class RemoveUFSVolumeRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "VolumeId": fields.Str(required=True, dump_to="VolumeId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
 
