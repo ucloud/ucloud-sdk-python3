@@ -3,6 +3,34 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class WithoutGpuSpecSchema(schema.ResponseSchema):
+    """WithoutGpuSpec - 无卡云主机规格信息"""
+
+    fields = {
+        "Cpu": fields.Int(required=False, load_from="Cpu"),
+        "Gpu": fields.Int(required=False, load_from="Gpu"),
+        "Memory": fields.Int(required=False, load_from="Memory"),
+    }
+
+
+class UHostDiskSetSchema(schema.ResponseSchema):
+    """UHostDiskSet -"""
+
+    fields = {
+        "BackupType": fields.Str(
+            required=False, load_from="BackupType"
+        ),  # Deprecated, will be removed at 1.0
+        "DiskId": fields.Str(required=False, load_from="DiskId"),
+        "DiskType": fields.Str(required=True, load_from="DiskType"),
+        "Drive": fields.Str(required=False, load_from="Drive"),
+        "Encrypted": fields.Str(required=False, load_from="Encrypted"),
+        "IsBoot": fields.Str(required=True, load_from="IsBoot"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
 class UHostIPSetSchema(schema.ResponseSchema):
     """UHostIPSet -"""
 
@@ -41,22 +69,6 @@ class SoftwareAddrSchema(schema.ResponseSchema):
     }
 
 
-class UHostDiskSetSchema(schema.ResponseSchema):
-    """UHostDiskSet -"""
-
-    fields = {
-        "BackupType": fields.Str(required=False, load_from="BackupType"),
-        "DiskId": fields.Str(required=False, load_from="DiskId"),
-        "DiskType": fields.Str(required=True, load_from="DiskType"),
-        "Drive": fields.Str(required=False, load_from="Drive"),
-        "Encrypted": fields.Str(required=False, load_from="Encrypted"),
-        "IsBoot": fields.Str(required=True, load_from="IsBoot"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Size": fields.Int(required=False, load_from="Size"),
-        "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
 class CompShareInstanceSetSchema(schema.ResponseSchema):
     """CompShareInstanceSet - 算力平台实例详情"""
 
@@ -87,14 +99,18 @@ class CompShareInstanceSetSchema(schema.ResponseSchema):
         ),
         "CpuArch": fields.Str(required=False, load_from="CpuArch"),
         "CpuPlatform": fields.Str(required=False, load_from="CpuPlatform"),
-        "CreateTime": fields.Str(required=False, load_from="CreateTime"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "DiskSet": fields.List(UHostDiskSetSchema()),
-        "ExpireTime": fields.Str(required=False, load_from="ExpireTime"),
+        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
         "GPU": fields.Int(required=False, load_from="GPU"),
         "GpuType": fields.Str(required=False, load_from="GpuType"),
         "GraphicsMemory": GraphicsMemorySchema(),
-        "HostIp": fields.Str(required=False, load_from="HostIp"),
-        "HugepageCfg": fields.Str(required=False, load_from="HugepageCfg"),
+        "HostIp": fields.Str(
+            required=False, load_from="HostIp"
+        ),  # Deprecated, will be removed at 1.0
+        "HugepageCfg": fields.Str(
+            required=False, load_from="HugepageCfg"
+        ),  # Deprecated, will be removed at 1.0
         "IPSet": fields.List(UHostIPSetSchema()),
         "InstancePrice": fields.Float(
             required=False, load_from="InstancePrice"
@@ -102,29 +118,44 @@ class CompShareInstanceSetSchema(schema.ResponseSchema):
         "InstanceType": fields.Str(required=False, load_from="InstanceType"),
         "IsExpire": fields.Str(required=False, load_from="IsExpire"),
         "MachineType": fields.Str(required=False, load_from="MachineType"),
-        "Memory": fields.Str(required=False, load_from="Memory"),
+        "Memory": fields.Int(required=False, load_from="Memory"),
         "Name": fields.Str(required=False, load_from="Name"),
         "OsName": fields.Str(required=False, load_from="OsName"),
         "OsType": fields.Str(required=False, load_from="OsType"),
         "Password": fields.Str(required=False, load_from="Password"),
-        "PodId": fields.Str(required=False, load_from="PodId"),
+        "PodId": fields.Str(
+            required=False, load_from="PodId"
+        ),  # Deprecated, will be removed at 1.0
         "PostPayShutdown": fields.Bool(
             required=False, load_from="PostPayShutdown"
-        ),
+        ),  # Deprecated, will be removed at 1.0
         "QemuFullVersion": fields.Str(
             required=False, load_from="QemuFullVersion"
-        ),
-        "QemuVersion": fields.Str(required=False, load_from="QemuVersion"),
+        ),  # Deprecated, will be removed at 1.0
+        "QemuVersion": fields.Str(
+            required=False, load_from="QemuVersion"
+        ),  # Deprecated, will be removed at 1.0
         "Remark": fields.Str(required=False, load_from="Remark"),
-        "SetId": fields.Int(required=False, load_from="SetId"),
+        "SetId": fields.Int(
+            required=False, load_from="SetId"
+        ),  # Deprecated, will be removed at 1.0
         "Softwares": fields.List(SoftwareAddrSchema()),
+        "SshLoginCommand": fields.Str(
+            required=False, load_from="SshLoginCommand"
+        ),
         "State": fields.Str(required=False, load_from="State"),
+        "SupportWithoutGpuStart": fields.Bool(
+            required=False, load_from="SupportWithoutGpuStart"
+        ),
         "Tag": fields.Str(required=False, load_from="Tag"),
         "TotalDiskSpace": fields.Int(
             required=False, load_from="TotalDiskSpace"
         ),
         "UHostId": fields.Str(required=False, load_from="UHostId"),
-        "UUID": fields.Str(required=False, load_from="UUID"),
+        "UUID": fields.Str(
+            required=False, load_from="UUID"
+        ),  # Deprecated, will be removed at 1.0
+        "WithoutGpuSpec": WithoutGpuSpecSchema(),
         "Zone": fields.Str(required=False, load_from="Zone"),
     }
 
@@ -142,6 +173,19 @@ class BundleSchema(schema.ResponseSchema):
     }
 
 
+class ULHostDiskSetSchema(schema.ResponseSchema):
+    """ULHostDiskSet - 轻量应用主机的磁盘信息"""
+
+    fields = {
+        "DiskId": fields.Str(required=False, load_from="DiskId"),
+        "DiskType": fields.Str(required=False, load_from="DiskType"),
+        "Drive": fields.Str(required=False, load_from="Drive"),
+        "IsBoot": fields.Str(required=False, load_from="IsBoot"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
 class ExclusiveUTPInfoSchema(schema.ResponseSchema):
     """ExclusiveUTPInfo - 流量包详情"""
 
@@ -156,19 +200,6 @@ class ExclusiveUTPInfoSchema(schema.ResponseSchema):
     }
 
 
-class ULHostDiskSetSchema(schema.ResponseSchema):
-    """ULHostDiskSet - 轻量应用主机的磁盘信息"""
-
-    fields = {
-        "DiskId": fields.Str(required=False, load_from="DiskId"),
-        "DiskType": fields.Str(required=False, load_from="DiskType"),
-        "Drive": fields.Str(required=False, load_from="Drive"),
-        "IsBoot": fields.Str(required=False, load_from="IsBoot"),
-        "Size": fields.Int(required=False, load_from="Size"),
-        "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
 class ULHostInstanceSetSchema(schema.ResponseSchema):
     """ULHostInstanceSet - 轻量应用云主机详情"""
 
@@ -179,7 +210,10 @@ class ULHostInstanceSetSchema(schema.ResponseSchema):
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "DiskSet": fields.List(ULHostDiskSetSchema()),
-        "ExclusiveUTPInfo": ExclusiveUTPInfoSchema(),
+        "EIPExclusiveUTPInfo": ExclusiveUTPInfoSchema(),
+        "ExclusiveUTPInfo": ExclusiveUTPInfoSchema(
+            required=False, load_from="ExclusiveUTPInfo"
+        ),  # Deprecated, will be removed at 1.0
         "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
         "IPSet": fields.List(UHostIPSetSchema()),
         "ImageId": fields.Str(required=False, load_from="ImageId"),

@@ -15,6 +15,58 @@ class UCompShareClient(Client):
             config, transport, middleware, logger
         )
 
+    def create_comp_share_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateCompShareInstance - 创建轻量级算力平台主机资源
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CPU** (int) - (Required) 虚拟CPU核数。可选参数：1-64（具体机型与CPU的对应关系参照控制台）。默认值: 4。
+        - **CompShareImageId** (str) - (Required) 镜像ID
+        - **GPU** (int) - (Required) GPU卡核心数。仅GPU机型支持此字段（可选范围与MachineType+GpuType相关）
+        - **GpuType** (str) - (Required) GPU类型，枚举值["K80", "P40", "V100", "T4","T4A", "T4S","2080Ti","2080Ti-4C","1080Ti", "T4/4", "MI100", "V100S",2080","2080TiS","2080TiPro","3090","A100"]，MachineType为G时必填
+        - **MachineType** (str) - (Required) 云主机机型（V2.0），在本字段和字段UHostType中，仅需要其中1个字段即可。枚举值["N", "C", "G", "O", "OS", "OM", "OPRO", "OMAX", "O.BM", "O.EPC"]。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
+        - **Memory** (int) - (Required) 内存大小。单位：MB。范围 ：[1024, 262144]，取值为1024的倍数（可选范围参考控制台）。默认值：8192
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ChargeType** (str) - 计费模式。枚举值为: \\ > Month，按月付费；\\ > Day，按天付费；\\ > Dynamic，按小时预付费 \\ > Postpay，按小时后付费（支持关机不收费，目前仅部分可用区支持，请联系您的客户经理） \\ > Spot计费为抢占式实例(内测阶段) \\ 默认为月付
+        - **Disks** (list) - 见 **CreateCompShareInstanceParamDisks** 模型定义
+        - **LoginMode** (str) - 主机登陆模式。密码（默认选项）: Password
+        - **MinimalCpuPlatform** (str) - 最低cpu平台，枚举值["Intel/Auto", "Intel/IvyBridge", "Intel/Haswell", "Intel/Broadwell", "Intel/Skylake", "Intel/Cascadelake", "Intel/CascadelakeR", "Intel/IceLake", "Amd/Epyc2", "Amd/Auto","Ampere/Auto","Ampere/Altra"],默认值是"Intel/Auto"。
+        - **Name** (str) - 实例名称
+        - **Password** (str) - UHost密码。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定密码。密码需使用base64进行编码，举例如下：# echo -n Password1 | base64UGFzc3dvcmQx。
+        - **Quantity** (int) - 购买时长。默认:值 1。按小时购买（Dynamic/Postpay）时无需此参数。 月付时，此参数传0，代表购买至月末。
+        - **SecurityGroupId** (str) - 防火墙Id
+
+        **Response**
+
+        - **UHostIds** (list) - UHost实例Id集合
+
+        **Request Model**
+
+        **CreateCompShareInstanceParamDisks**
+        - **IsBoot** (bool) - 是否是系统盘。枚举值：\\ > True，是系统盘 \\ > False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
+        - **Size** (int) - 磁盘大小，单位GB。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
+        - **Type** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateCompShareInstanceRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateCompShareInstance", d, **kwargs)
+        return apis.CreateCompShareInstanceResponseSchema().loads(resp)
+
     def create_ul_host_instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -67,6 +119,7 @@ class UCompShareClient(Client):
         - **Limit** (int) - 返回数据长度，默认为20，最大100
         - **Offset** (int) - 列表起始位置偏移量，默认为0
         - **UHostIds** (list) - 【数组】UHost主机的资源ID，例如UHostIds.0代表希望获取信息 的主机1，UHostIds.1代表主机2。 如果不传入，则返回当前Region 所有符合条件的UHost实例。
+        - **WithoutGpu** (bool) - 无卡GPU
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
@@ -89,41 +142,35 @@ class UCompShareClient(Client):
         - **CompShareImageType** (str) - 镜像类型- System 系统镜像- App 应用镜像- Custom 自制镜像- Community 社区镜像
         - **CpuArch** (str) - CPU架构。"x86_64"/"i386"等
         - **CpuPlatform** (str) - CPU平台。如"Intel/Auto"、"Amd/Auto"等等
-        - **CreateTime** (str) - 创建时间
+        - **CreateTime** (int) - 创建时间
         - **DiskSet** (list) - 见 **UHostDiskSet** 模型定义
-        - **ExpireTime** (str) - 过期时间
+        - **ExpireTime** (int) - 过期时间
         - **GPU** (int) - GPU个数
         - **GpuType** (str) - GPU类型。如: "4090"
         - **GraphicsMemory** (dict) - 见 **GraphicsMemory** 模型定义
-        - **HostIp** (str) - 【内部API返回】宿主IP
-        - **HugepageCfg** (str) - 【内部API返回】大页内存
         - **IPSet** (list) - 见 **UHostIPSet** 模型定义
         - **InstancePrice** (float) - 主机价格
         - **InstanceType** (str) - 实例类型。"UHost": 普通主机；"Container": 容器主机
         - **IsExpire** (str) - 是否过期。Yes：已过期；No：未过期
         - **MachineType** (str) - 机型信息
-        - **Memory** (str) - 内存大小，单位：MB
+        - **Memory** (int) - 内存大小，单位：MB
         - **Name** (str) - 实例名称
         - **OsName** (str) - 虚机镜像的名称
         - **OsType** (str) - 虚机镜像操作系统类型。"Linux"\"Windows"
         - **Password** (str) - 主机密码。由Base64编码
-        - **PodId** (str) - 【内部API返回】udisk podId
-        - **PostPayShutdown** (bool) - 【内部API返回】后付费关机
-        - **QemuFullVersion** (str) - 【内部API返回】Qemu完整版本号
-        - **QemuVersion** (str) - 【内部API返回】Qemu版本号
         - **Remark** (str) - 实例备注
-        - **SetId** (int) - 【内部API返回】宿主所在Set Id
         - **Softwares** (list) - 见 **SoftwareAddr** 模型定义
+        - **SshLoginCommand** (str) - SSH登录命令
         - **State** (str) - 实例状态，枚举值：\\ >初始化: Initializing; \\ >启动中: Starting; \\> 运行中: Running; \\> 关机中: Stopping; \\ >关机: Stopped \\ >安装失败: Install Fail; \\ >重启中: Rebooting; \\ >升级改配中: Resizing; \\ > 未知(空字符串，获取状态超时或出错)：
+        - **SupportWithoutGpuStart** (bool) - 此实例是否支持无卡开机
         - **Tag** (str) - 实例业务组
         - **TotalDiskSpace** (int) - 总的数据盘存储空间
         - **UHostId** (str) - 实例Id
-        - **UUID** (str) - 【内部API返回】资源长Id
+        - **WithoutGpuSpec** (dict) - 见 **WithoutGpuSpec** 模型定义
         - **Zone** (str) - 可用区
 
 
         **UHostDiskSet**
-        - **BackupType** (str) - 备份方案。若开通了数据方舟，则为DATAARK
         - **DiskId** (str) - 磁盘ID
         - **DiskType** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
         - **Drive** (str) - 磁盘盘符
@@ -156,6 +203,12 @@ class UCompShareClient(Client):
         **SoftwareAddr**
         - **Name** (str) - 软件名称
         - **URL** (str) - 软件地址
+
+
+        **WithoutGpuSpec**
+        - **Cpu** (int) - cpu
+        - **Gpu** (int) - gpu
+        - **Memory** (int) - 内存
 
 
         """
@@ -235,7 +288,7 @@ class UCompShareClient(Client):
         - **ChargeType** (str) - 计费模式。枚举值：Month/Year
         - **CreateTime** (int) - 创建时间。Unix时间戳
         - **DiskSet** (list) - 见 **ULHostDiskSet** 模型定义
-        - **ExclusiveUTPInfo** (dict) - 见 **ExclusiveUTPInfo** 模型定义
+        - **EIPExclusiveUTPInfo** (dict) - 见 **ExclusiveUTPInfo** 模型定义
         - **ExpireTime** (int) - 过期时间。Unix时间戳
         - **IPSet** (list) - 见 **UHostIPSet** 模型定义
         - **ImageId** (str) - 镜像Id。
@@ -427,6 +480,34 @@ class UCompShareClient(Client):
         resp = self.invoke("PoweroffULHostInstance", d, **kwargs)
         return apis.PoweroffULHostInstanceResponseSchema().loads(resp)
 
+    def reboot_comp_share_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """RebootCompShareInstance - 重启轻量算力平台实例
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **UHostId** (str) - (Required) 实例Id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **UHostId** (str) - 实例Id
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.RebootCompShareInstanceRequestSchema().dumps(d)
+
+        resp = self.invoke("RebootCompShareInstance", d, **kwargs)
+        return apis.RebootCompShareInstanceResponseSchema().loads(resp)
+
     def reboot_ul_host_instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -464,9 +545,9 @@ class UCompShareClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **CompShareImageId** (str) - (Required) 镜像Id
-        - **Password** (str) - (Required) 实例的新密码
         - **UHostId** (str) - (Required) 实例Id
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Password** (str) - 实例的新密码
 
         **Response**
 
@@ -513,6 +594,35 @@ class UCompShareClient(Client):
 
         resp = self.invoke("ReinstallULHostInstance", d, **kwargs)
         return apis.ReinstallULHostInstanceResponseSchema().loads(resp)
+
+    def reset_comp_share_instance_password(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ResetCompShareInstancePassword - 重置算力平台实例密码
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Password** (str) - (Required) 新密码。需经Base64编码
+        - **UHostId** (str) - (Required) 实例Id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **UHostId** (str) - 实例Id
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ResetCompShareInstancePasswordRequestSchema().dumps(d)
+
+        resp = self.invoke("ResetCompShareInstancePassword", d, **kwargs)
+        return apis.ResetCompShareInstancePasswordResponseSchema().loads(resp)
 
     def reset_ul_host_instance_password(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -651,6 +761,34 @@ class UCompShareClient(Client):
 
         resp = self.invoke("StopULHostInstance", d, **kwargs)
         return apis.StopULHostInstanceResponseSchema().loads(resp)
+
+    def terminate_comp_share_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """TerminateCompShareInstance - 删除轻量算力共享平台虚机实例
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **UHostId** (str) - (Required) 虚机资源id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **UHostId** (str) - 虚机资源id
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.TerminateCompShareInstanceRequestSchema().dumps(d)
+
+        resp = self.invoke("TerminateCompShareInstance", d, **kwargs)
+        return apis.TerminateCompShareInstanceResponseSchema().loads(resp)
 
     def terminate_ul_host_instance(
         self, req: typing.Optional[dict] = None, **kwargs
