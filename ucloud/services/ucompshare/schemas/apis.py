@@ -8,6 +8,63 @@ from ucloud.services.ucompshare.schemas import models
 
 
 """
+API: CreateCompShareInstance
+
+创建轻量级算力平台主机资源
+"""
+
+
+class CreateCompShareInstanceParamDisksSchema(schema.RequestSchema):
+    """CreateCompShareInstanceParamDisks -"""
+
+    fields = {
+        "IsBoot": fields.Bool(required=True, dump_to="IsBoot"),
+        "Size": fields.Int(required=True, dump_to="Size"),
+        "Type": fields.Str(required=True, dump_to="Type"),
+    }
+
+
+class CreateCompShareInstanceRequestSchema(schema.RequestSchema):
+    """CreateCompShareInstance - 创建轻量级算力平台主机资源"""
+
+    fields = {
+        "CPU": fields.Int(required=True, dump_to="CPU"),
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "CompShareImageId": fields.Str(
+            required=True, dump_to="CompShareImageId"
+        ),
+        "Disks": fields.List(CreateCompShareInstanceParamDisksSchema()),
+        "GPU": fields.Int(required=True, dump_to="GPU"),
+        "GpuType": fields.Str(required=True, dump_to="GpuType"),
+        "LoginMode": fields.Str(required=False, dump_to="LoginMode"),
+        "MachineType": fields.Str(required=True, dump_to="MachineType"),
+        "Memory": fields.Int(required=True, dump_to="Memory"),
+        "MinimalCpuPlatform": fields.Str(
+            required=False, dump_to="MinimalCpuPlatform"
+        ),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "Password": fields.Str(required=False, dump_to="Password"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SecurityGroupId": fields.Str(
+            required=False, dump_to="SecurityGroupId"
+        ),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class CreateCompShareInstanceResponseSchema(schema.ResponseSchema):
+    """CreateCompShareInstance - 创建轻量级算力平台主机资源"""
+
+    fields = {
+        "UHostIds": fields.List(
+            fields.Str(), required=True, load_from="UHostIds"
+        ),
+    }
+
+
+"""
 API: CreateULHostInstance
 
 创建轻量应用云主机
@@ -60,6 +117,7 @@ class DescribeCompShareInstanceRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=False, dump_to="Region"),
         "UHostIds": fields.List(fields.Str()),
+        "WithoutGpu": fields.Bool(required=False, dump_to="WithoutGpu"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
@@ -249,6 +307,32 @@ class PoweroffULHostInstanceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: RebootCompShareInstance
+
+重启轻量算力平台实例
+"""
+
+
+class RebootCompShareInstanceRequestSchema(schema.RequestSchema):
+    """RebootCompShareInstance - 重启轻量算力平台实例"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UHostId": fields.Str(required=True, dump_to="UHostId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class RebootCompShareInstanceResponseSchema(schema.ResponseSchema):
+    """RebootCompShareInstance - 重启轻量算力平台实例"""
+
+    fields = {
+        "UHostId": fields.Str(required=True, load_from="UHostId"),
+    }
+
+
+"""
 API: RebootULHostInstance
 
 重新启动UHost实例。
@@ -287,7 +371,7 @@ class ReinstallCompShareInstanceRequestSchema(schema.RequestSchema):
         "CompShareImageId": fields.Str(
             required=True, dump_to="CompShareImageId"
         ),
-        "Password": fields.Str(required=True, dump_to="Password"),
+        "Password": fields.Str(required=False, dump_to="Password"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "UHostId": fields.Str(required=True, dump_to="UHostId"),
@@ -328,6 +412,33 @@ class ReinstallULHostInstanceResponseSchema(schema.ResponseSchema):
     fields = {
         "Message": fields.Str(required=True, load_from="Message"),
         "ULHostId": fields.Str(required=True, load_from="ULHostId"),
+    }
+
+
+"""
+API: ResetCompShareInstancePassword
+
+重置算力平台实例密码
+"""
+
+
+class ResetCompShareInstancePasswordRequestSchema(schema.RequestSchema):
+    """ResetCompShareInstancePassword - 重置算力平台实例密码"""
+
+    fields = {
+        "Password": fields.Str(required=True, dump_to="Password"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UHostId": fields.Str(required=True, dump_to="UHostId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ResetCompShareInstancePasswordResponseSchema(schema.ResponseSchema):
+    """ResetCompShareInstancePassword - 重置算力平台实例密码"""
+
+    fields = {
+        "UHostId": fields.Str(required=True, load_from="UHostId"),
     }
 
 
@@ -456,6 +567,32 @@ class StopULHostInstanceResponseSchema(schema.ResponseSchema):
 
     fields = {
         "ULHostId": fields.Str(required=False, load_from="ULHostId"),
+    }
+
+
+"""
+API: TerminateCompShareInstance
+
+删除轻量算力共享平台虚机实例
+"""
+
+
+class TerminateCompShareInstanceRequestSchema(schema.RequestSchema):
+    """TerminateCompShareInstance - 删除轻量算力共享平台虚机实例"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UHostId": fields.Str(required=True, dump_to="UHostId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class TerminateCompShareInstanceResponseSchema(schema.ResponseSchema):
+    """TerminateCompShareInstance - 删除轻量算力共享平台虚机实例"""
+
+    fields = {
+        "UHostId": fields.Str(required=True, load_from="UHostId"),
     }
 
 
