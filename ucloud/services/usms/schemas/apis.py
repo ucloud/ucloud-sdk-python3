@@ -72,10 +72,12 @@ class AddUSMSSignatureQualificationRequestSchema(schema.RequestSchema):
             required=False, dump_to="HandlerIDNumber"
         ),
         "HandlerName": fields.Str(required=False, dump_to="HandlerName"),
+        "HandlerPhone": fields.Str(required=True, dump_to="HandlerPhone"),
         "ManagerIDNumber": fields.Str(
             required=False, dump_to="ManagerIDNumber"
         ),
         "ManagerName": fields.Str(required=False, dump_to="ManagerName"),
+        "ManagerPhone": fields.Str(required=False, dump_to="ManagerPhone"),
         "Name": fields.Str(required=True, dump_to="Name"),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "Status": fields.Int(required=True, dump_to="Status"),
@@ -354,6 +356,45 @@ class GetUSMSSignatureQualificationResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetUSMSTemplateSendStatistics
+
+获取模板发送统计数据
+"""
+
+
+class GetUSMSTemplateSendStatisticsRequestSchema(schema.RequestSchema):
+    """GetUSMSTemplateSendStatistics - 获取模板发送统计数据"""
+
+    fields = {
+        "BrevityCode": fields.Str(required=False, dump_to="BrevityCode"),
+        "Domestic": fields.Int(required=True, dump_to="Domestic"),
+        "EndDate": fields.Str(required=True, dump_to="EndDate"),
+        "NumPerPage": fields.Int(required=True, dump_to="NumPerPage"),
+        "OrderBy": fields.Str(required=True, dump_to="OrderBy"),
+        "OrderType": fields.Str(required=True, dump_to="OrderType"),
+        "Page": fields.Int(required=True, dump_to="Page"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "StartDate": fields.Str(required=True, dump_to="StartDate"),
+        "TemplateId": fields.Str(required=False, dump_to="TemplateId"),
+    }
+
+
+class GetUSMSTemplateSendStatisticsResponseSchema(schema.ResponseSchema):
+    """GetUSMSTemplateSendStatistics - 获取模板发送统计数据"""
+
+    fields = {
+        "Data": fields.List(
+            models.TemplateStatisticsDataInfoSchema(),
+            required=False,
+            load_from="Data",
+        ),
+        "Message": fields.Str(required=True, load_from="Message"),
+        "StatisticsData": models.StatisticsDataSchema(),
+        "Total": fields.Int(required=True, load_from="Total"),
+    }
+
+
+"""
 API: QueryUSMSSignature
 
 调用接口QueryUSMSSignature查询短信签名申请状态
@@ -566,10 +607,12 @@ class UpdateUSMSSignatureQualificationRequestSchema(schema.RequestSchema):
             required=False, dump_to="HandlerIDNumber"
         ),
         "HandlerName": fields.Str(required=False, dump_to="HandlerName"),
+        "HandlerPhone": fields.Str(required=False, dump_to="HandlerPhone"),
         "ManagerIDNumber": fields.Str(
             required=False, dump_to="ManagerIDNumber"
         ),
         "ManagerName": fields.Str(required=False, dump_to="ManagerName"),
+        "ManagerPhone": fields.Str(required=False, dump_to="ManagerPhone"),
         "Name": fields.Str(required=False, dump_to="Name"),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "QualificationId": fields.Str(required=True, dump_to="QualificationId"),
