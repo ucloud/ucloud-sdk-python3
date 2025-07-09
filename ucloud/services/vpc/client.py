@@ -285,10 +285,17 @@ class VPCClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **PrioritySecGroup** (str) - (Required) 包含安全组 ID 和优先级的 PrioritySecGroup 数组，该字段和资源 ID 只支持一个批量。不支持 .n 格式。Type 为 PrioritySecGroup JSON 格式数组。
-        - **ResourceId** (str) - (Required) 资源短 ID 数组，安全组参赛和该字段只支持一个批量。不支持 .n 格式。Type 为 string 数组。
+        - **ResourceId** (list) - (Required) 资源短 ID，安全组参赛和该字段只支持一个批量。支持 string 数组。
+        - **PrioritySecGroup** (list) - 见 **AssociateSecGroupParamPrioritySecGroup** 模型定义
 
         **Response**
+
+
+        **Request Model**
+
+        **AssociateSecGroupParamPrioritySecGroup**
+        - **Priority** (int) - 绑定优先级。该字段和资源 ID 只支持一个批量。支持 PrioritySecGroup 的 JSON 格式数组。
+        - **SecGroupId** (str) - 安全组 ID。该字段和资源 ID 只支持一个批量。支持 PrioritySecGroup 的 JSON 格式数组。
 
 
         """
@@ -718,6 +725,7 @@ class VPCClient(Client):
         - **Direction** (str) - "Ingress/Egress"，入站规则/出站规则
         - **DstPort** (str) - 目的端口。逗号分隔，如 "80,443"、"443,2000-10000"
         - **IPRange** (str) - IP 地址信息，逗号分隔。
+        - **IPVersion** (str) - IP 版本，如 “IPv4”。支持 IPv6 后废弃
         - **Priority** (int) - 规则优先级。范围为 1~200
         - **ProtocolType** (str) - 协议类型。"TCP","UDP","ICMP","ICMPv6","ALL"
         - **Remark** (str) - 规则备注
@@ -1061,7 +1069,7 @@ class VPCClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **SecGroupId** (str) - (Required) 安全组资源 Id 数组。不支持 .n 格式。Type 为 string 数组
+        - **SecGroupId** (list) - (Required) 安全组资源 Id。支持 string 数组格式。
 
         **Response**
 
@@ -1087,7 +1095,7 @@ class VPCClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **RuleId** (str) - (Required) 安全组规则 ID 数组。不支持 .n 格式。Type 为 string 数组。
+        - **RuleId** (list) - (Required) 安全组规则 ID。支持 string 数组格式。
         - **SecGroupId** (str) - (Required) 所属安全组 ID。
 
         **Response**
@@ -1742,7 +1750,7 @@ class VPCClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Limit** (int) - 分页查询时的最大返回资源数量。
         - **Offset** (int) - 分页查询时的偏移量。传入了 ResourceId 则不分页。
-        - **ResourceId** (str) - 资源 ID 数组，如果指定则不分页；否则分页获取该账号下的指定类型的资源。不支持 .n 格式。Type 为 string 数组。
+        - **ResourceId** (list) - 资源 ID 数组，如果指定则不分页；否则分页获取该账号下的指定类型的资源。支持  string 数组格式。
         - **ResourceType** (str) - 资源类型，如 uhost, uni
         - **VPCId** (str) - VPC ID。非必须，分页使用（分页时，也可不传）；ResourceId 非空时，忽略
 
@@ -1904,6 +1912,7 @@ class VPCClient(Client):
         - **Direction** (str) - "Ingress/Egress"，入站规则/出站规则
         - **DstPort** (str) - 目标端口
         - **IPRange** (str) - 地址
+        - **IPVersion** (str) - IP 版本，如 "IPv4"。支持 IPv6 后废弃
         - **Priority** (int) - 优先级
         - **ProtocolType** (str) - 协议类型
         - **Remark** (str) - 安全组规则备注
@@ -2437,8 +2446,8 @@ class VPCClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Force** (bool) - 是否强制解绑。默认为 false。为 true 表示强制解绑，用于删除资源前的解绑，因为开启安全组特性的资源至少绑定一个安全组，正常情况下是不允许解绑所有安全组。
-        - **ResourceId** (str) - 资源ID数组，为空表示解绑资源上所有安全组，安全组ID和资源ID至少传一个，且只能有一个批量。不支持 .n 格式。Type 为 string 数组。
-        - **SecGroupId** (str) - 安全组ID数组，为空表示解绑安全组绑定的所以资源，安全组ID和资源ID至少传一个,且只能有一个批量。不支持 .n 格式。Type 为 string 数组。
+        - **ResourceId** (list) - 资源ID，不传表示解绑资源上所有安全组，安全组ID和资源ID至少传一个，且只能有一个批量。支持 string 数组格式。
+        - **SecGroupId** (list) - 安全组ID，不传表示解绑安全组绑定的所以资源，安全组ID和资源ID至少传一个,且只能有一个批量。支持 string 数组格式。
 
         **Response**
 
@@ -3090,6 +3099,7 @@ class VPCClient(Client):
         - **Direction** (str) - "Ingress/Egress"，入站规则/出站规则
         - **DstPort** (str) - 目的端口。逗号分隔，如 "80,443"、"443,2000-10000"
         - **IPRange** (str) - IP 地址信息，逗号分隔。
+        - **IPVersion** (str) - IP 版本，如 “IPv4”。支持 IPv6 后废弃
         - **Priority** (int) - 规则优先级。范围为 1~200
         - **ProtocolType** (str) - 协议类型。"TCP","UDP","ICMP","ICMPv6","ALL"
         - **Remark** (str) - 规则备注
