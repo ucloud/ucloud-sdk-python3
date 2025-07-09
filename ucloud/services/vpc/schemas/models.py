@@ -117,6 +117,16 @@ class NatGWIPResInfoSchema(schema.ResponseSchema):
     }
 
 
+class NatGatewaySubnetSetSchema(schema.ResponseSchema):
+    """NatGatewaySubnetSet - natgw里面的子网信息"""
+
+    fields = {
+        "Subnet": fields.Str(required=True, load_from="Subnet"),
+        "SubnetName": fields.Str(required=True, load_from="SubnetName"),
+        "SubnetworkId": fields.Str(required=True, load_from="SubnetworkId"),
+    }
+
+
 class NatGatewayIPSetSchema(schema.ResponseSchema):
     """NatGatewayIPSet - IPSet信息"""
 
@@ -126,16 +136,6 @@ class NatGatewayIPSetSchema(schema.ResponseSchema):
         "EIPId": fields.Str(required=True, load_from="EIPId"),
         "IPResInfo": fields.List(NatGWIPResInfoSchema()),
         "Weight": fields.Int(required=True, load_from="Weight"),
-    }
-
-
-class NatGatewaySubnetSetSchema(schema.ResponseSchema):
-    """NatGatewaySubnetSet - natgw里面的子网信息"""
-
-    fields = {
-        "Subnet": fields.Str(required=True, load_from="Subnet"),
-        "SubnetName": fields.Str(required=True, load_from="SubnetName"),
-        "SubnetworkId": fields.Str(required=True, load_from="SubnetworkId"),
     }
 
 
@@ -231,6 +231,15 @@ class AclInfoSchema(schema.ResponseSchema):
     }
 
 
+class UNIIpInfoSchema(schema.ResponseSchema):
+    """UNIIpInfo - 虚拟网卡内网IP信息"""
+
+    fields = {
+        "IpAddr": fields.List(fields.Str()),
+        "IpType": fields.Str(required=False, load_from="IpType"),
+    }
+
+
 class UNIQuotaInfoSchema(schema.ResponseSchema):
     """UNIQuotaInfo - 虚拟网卡内网IP配额使用情况"""
 
@@ -241,15 +250,6 @@ class UNIQuotaInfoSchema(schema.ResponseSchema):
         "PrivateIpQuota": fields.Int(
             required=False, load_from="PrivateIpQuota"
         ),
-    }
-
-
-class UNIIpInfoSchema(schema.ResponseSchema):
-    """UNIIpInfo - 虚拟网卡内网IP信息"""
-
-    fields = {
-        "IpAddr": fields.List(fields.Str()),
-        "IpType": fields.Str(required=False, load_from="IpType"),
     }
 
 
@@ -299,6 +299,17 @@ class ResourceSecgroupInfoSchema(schema.ResponseSchema):
     }
 
 
+class BindingSecGroupInfoSchema(schema.ResponseSchema):
+    """BindingSecGroupInfo -"""
+
+    fields = {
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Priority": fields.Int(required=False, load_from="Priority"),
+        "SecGroupId": fields.Str(required=False, load_from="SecGroupId"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+    }
+
+
 class ResourceExInfoSchema(schema.ResponseSchema):
     """ResourceExInfo - 资源额外信息（for 安全组）"""
 
@@ -313,17 +324,6 @@ class ResourceExInfoSchema(schema.ResponseSchema):
             required=False, load_from="SuperResourceName"
         ),
         "Uni": fields.List(ResourceSecgroupInfoSchema()),
-    }
-
-
-class BindingSecGroupInfoSchema(schema.ResponseSchema):
-    """BindingSecGroupInfo -"""
-
-    fields = {
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Priority": fields.Int(required=False, load_from="Priority"),
-        "SecGroupId": fields.Str(required=False, load_from="SecGroupId"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
     }
 
 
@@ -393,6 +393,7 @@ class SecGroupRuleInfoSchema(schema.ResponseSchema):
         "Direction": fields.Str(required=False, load_from="Direction"),
         "DstPort": fields.Str(required=False, load_from="DstPort"),
         "IPRange": fields.Str(required=False, load_from="IPRange"),
+        "IPVersion": fields.Str(required=False, load_from="IPVersion"),
         "Priority": fields.Int(required=False, load_from="Priority"),
         "ProtocolType": fields.Str(required=False, load_from="ProtocolType"),
         "Remark": fields.Str(required=False, load_from="Remark"),

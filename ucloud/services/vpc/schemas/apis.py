@@ -213,16 +213,25 @@ API: AssociateSecGroup
 """
 
 
+class AssociateSecGroupParamPrioritySecGroupSchema(schema.RequestSchema):
+    """AssociateSecGroupParamPrioritySecGroup -"""
+
+    fields = {
+        "Priority": fields.Int(required=True, dump_to="Priority"),
+        "SecGroupId": fields.Str(required=True, dump_to="SecGroupId"),
+    }
+
+
 class AssociateSecGroupRequestSchema(schema.RequestSchema):
     """AssociateSecGroup - 绑定资源到安全组"""
 
     fields = {
-        "PrioritySecGroup": fields.Str(
-            required=True, dump_to="PrioritySecGroup"
+        "PrioritySecGroup": fields.List(
+            AssociateSecGroupParamPrioritySecGroupSchema()
         ),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
+        "ResourceId": fields.List(fields.Str()),
     }
 
 
@@ -571,6 +580,7 @@ class CreateSecGroupRuleParamRuleSchema(schema.RequestSchema):
         "Direction": fields.Str(required=True, dump_to="Direction"),
         "DstPort": fields.Str(required=True, dump_to="DstPort"),
         "IPRange": fields.Str(required=True, dump_to="IPRange"),
+        "IPVersion": fields.Str(required=False, dump_to="IPVersion"),
         "Priority": fields.Int(required=True, dump_to="Priority"),
         "ProtocolType": fields.Str(required=True, dump_to="ProtocolType"),
         "Remark": fields.Str(required=True, dump_to="Remark"),
@@ -887,7 +897,7 @@ class DeleteSecGroupRequestSchema(schema.RequestSchema):
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "SecGroupId": fields.Str(required=True, dump_to="SecGroupId"),
+        "SecGroupId": fields.List(fields.Str()),
     }
 
 
@@ -910,7 +920,7 @@ class DeleteSecGroupRuleRequestSchema(schema.RequestSchema):
     fields = {
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "RuleId": fields.Str(required=True, dump_to="RuleId"),
+        "RuleId": fields.List(fields.Str()),
         "SecGroupId": fields.Str(required=True, dump_to="SecGroupId"),
     }
 
@@ -1355,7 +1365,7 @@ class DescribeResourceSecGroupRequestSchema(schema.RequestSchema):
         "Offset": fields.Int(required=False, dump_to="Offset"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
+        "ResourceId": fields.List(fields.Str()),
         "ResourceType": fields.Str(required=False, dump_to="ResourceType"),
         "VPCId": fields.Str(required=False, dump_to="VPCId"),
     }
@@ -1829,8 +1839,8 @@ class DisassociateSecGroupRequestSchema(schema.RequestSchema):
         "Force": fields.Bool(required=False, dump_to="Force"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
-        "SecGroupId": fields.Str(required=False, dump_to="SecGroupId"),
+        "ResourceId": fields.List(fields.Str()),
+        "SecGroupId": fields.List(fields.Str()),
     }
 
 
@@ -2388,6 +2398,7 @@ class UpdateSecGroupRuleParamRuleSchema(schema.RequestSchema):
         "Direction": fields.Str(required=True, dump_to="Direction"),
         "DstPort": fields.Str(required=True, dump_to="DstPort"),
         "IPRange": fields.Str(required=True, dump_to="IPRange"),
+        "IPVersion": fields.Str(required=False, dump_to="IPVersion"),
         "Priority": fields.Int(required=True, dump_to="Priority"),
         "ProtocolType": fields.Str(required=True, dump_to="ProtocolType"),
         "Remark": fields.Str(required=True, dump_to="Remark"),
