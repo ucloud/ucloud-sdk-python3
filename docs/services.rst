@@ -248,6 +248,13 @@ UNVS
    :members:
 
 
+UPFS
+----
+
+.. autoclass:: ucloud.services.upfs.client.UPFSClient
+   :members:
+
+
 UPgSQL
 ------
 
