@@ -352,6 +352,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def upfs(self):
+        from ucloud.services.upfs.client import UPFSClient
+
+        return UPFSClient(
+            self._auto_config("upfs"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def uphost(self):
         from ucloud.services.uphost.client import UPHostClient
 
