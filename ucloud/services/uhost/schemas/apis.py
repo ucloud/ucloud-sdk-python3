@@ -10,12 +10,12 @@ from ucloud.services.uhost.schemas import models
 """
 API: AddUHostToIsolationGroup
 
-将已有不在隔离组中的云主机添加到隔离组中
+
 """
 
 
 class AddUHostToIsolationGroupRequestSchema(schema.RequestSchema):
-    """AddUHostToIsolationGroup - 将已有不在隔离组中的云主机添加到隔离组中"""
+    """AddUHostToIsolationGroup -"""
 
     fields = {
         "GroupId": fields.Str(required=True, dump_to="GroupId"),
@@ -27,7 +27,7 @@ class AddUHostToIsolationGroupRequestSchema(schema.RequestSchema):
 
 
 class AddUHostToIsolationGroupResponseSchema(schema.ResponseSchema):
-    """AddUHostToIsolationGroup - 将已有不在隔离组中的云主机添加到隔离组中"""
+    """AddUHostToIsolationGroup -"""
 
     fields = {
         "UHostId": fields.Str(required=False, load_from="UHostId"),
@@ -142,24 +142,12 @@ API: CreateUHostInstance
 """
 
 
-class CreateUHostInstanceParamDisksCustomBackupSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamDisksCustomBackup -"""
-
-    fields = {}
-
-
-class CreateUHostInstanceParamDisksSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamDisks -"""
+class CreateUHostInstanceParamSecGroupIdSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamSecGroupId -"""
 
     fields = {
-        "BackupType": fields.Str(required=False, dump_to="BackupType"),
-        "CouponId": fields.Str(required=False, dump_to="CouponId"),
-        "Encrypted": fields.Bool(required=False, dump_to="Encrypted"),
-        "IsBoot": fields.Str(required=True, dump_to="IsBoot"),
-        "KmsKeyId": fields.Str(required=False, dump_to="KmsKeyId"),
-        "Size": fields.Int(required=True, dump_to="Size"),
-        "SnapshotId": fields.Str(required=False, dump_to="SnapshotId"),
-        "Type": fields.Str(required=True, dump_to="Type"),
+        "Id": fields.Str(required=False, dump_to="Id"),
+        "Priority": fields.Int(required=False, dump_to="Priority"),
     }
 
 
@@ -227,27 +215,25 @@ class CreateUHostInstanceParamNetworkInterfaceSchema(schema.RequestSchema):
     }
 
 
-class CreateUHostInstanceParamSecGroupIdSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamSecGroupId -"""
+class CreateUHostInstanceParamDisksCustomBackupSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamDisksCustomBackup -"""
+
+    fields = {}
+
+
+class CreateUHostInstanceParamDisksSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamDisks -"""
 
     fields = {
-        "Id": fields.Str(required=False, dump_to="Id"),
-        "Priority": fields.Int(required=False, dump_to="Priority"),
+        "BackupType": fields.Str(required=False, dump_to="BackupType"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "Encrypted": fields.Bool(required=False, dump_to="Encrypted"),
+        "IsBoot": fields.Str(required=True, dump_to="IsBoot"),
+        "KmsKeyId": fields.Str(required=False, dump_to="KmsKeyId"),
+        "Size": fields.Int(required=True, dump_to="Size"),
+        "SnapshotId": fields.Str(required=False, dump_to="SnapshotId"),
+        "Type": fields.Str(required=True, dump_to="Type"),
     }
-
-
-class CreateUHostInstanceParamVirtualGpuGPUVirtualGpuSchema(
-    schema.RequestSchema
-):
-    """CreateUHostInstanceParamVirtualGpuGPUVirtualGpu -"""
-
-    fields = {}
-
-
-class CreateUHostInstanceParamVirtualGpuSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamVirtualGpu -"""
-
-    fields = {}
 
 
 class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
@@ -461,7 +447,7 @@ class DescribeAvailableInstanceTypesRequestSchema(schema.RequestSchema):
     fields = {
         "MachineTypes": fields.List(fields.Str()),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Region": fields.Str(required=True, dump_to="Region"),
+        "Region": fields.Str(required=False, dump_to="Region"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
@@ -707,7 +693,14 @@ class GetAttachedDiskUpgradePriceResponseSchema(schema.ResponseSchema):
     """GetAttachedDiskUpgradePrice - 获取挂载磁盘的升级价格"""
 
     fields = {
+        "ListPrice": fields.Float(required=False, load_from="ListPrice"),
+        "ListPriceDetail": models.DiskUpgradePriceDetailSchema(),
+        "OriginalPrice": fields.Float(
+            required=False, load_from="OriginalPrice"
+        ),
+        "OriginalPriceDetail": models.DiskUpgradePriceDetailSchema(),
         "Price": fields.Float(required=False, load_from="Price"),
+        "PriceDetail": models.DiskUpgradePriceDetailSchema(),
     }
 
 
@@ -716,6 +709,12 @@ API: GetUHostInstancePrice
 
 根据UHost实例配置，获取UHost实例的价格。
 """
+
+
+class GetUHostInstancePriceParamVolumesSchema(schema.RequestSchema):
+    """GetUHostInstancePriceParamVolumes -"""
+
+    fields = {}
 
 
 class GetUHostInstancePriceParamDisksSchema(schema.RequestSchema):
@@ -727,18 +726,6 @@ class GetUHostInstancePriceParamDisksSchema(schema.RequestSchema):
         "Size": fields.Int(required=True, dump_to="Size"),
         "Type": fields.Str(required=True, dump_to="Type"),
     }
-
-
-class GetUHostInstancePriceParamVirtualGpuSchema(schema.RequestSchema):
-    """GetUHostInstancePriceParamVirtualGpu -"""
-
-    fields = {}
-
-
-class GetUHostInstancePriceParamVolumesSchema(schema.RequestSchema):
-    """GetUHostInstancePriceParamVolumes -"""
-
-    fields = {}
 
 
 class GetUHostInstancePriceRequestSchema(schema.RequestSchema):
@@ -1218,6 +1205,7 @@ class ReinstallUHostInstanceRequestSchema(schema.RequestSchema):
         "DNSServers": fields.List(
             fields.Str()
         ),  # Deprecated, will be removed at 1.0
+        "HostName": fields.Str(required=False, dump_to="HostName"),
         "ImageId": fields.Str(required=False, dump_to="ImageId"),
         "KeyPairId": fields.Str(required=False, dump_to="KeyPairId"),
         "LoginMode": fields.Str(required=False, dump_to="LoginMode"),
