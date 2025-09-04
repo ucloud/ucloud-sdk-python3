@@ -45,15 +45,18 @@ class BillDetailItemSchema(schema.ResponseSchema):
         "AmountFree": fields.Str(required=True, load_from="AmountFree"),
         "AmountReal": fields.Str(required=True, load_from="AmountReal"),
         "AzGroupCName": fields.Str(required=True, load_from="AzGroupCName"),
+        "BusinessGroup": fields.Str(required=True, load_from="BusinessGroup"),
         "ChargeType": fields.Str(required=True, load_from="ChargeType"),
         "CreateTime": fields.Int(required=True, load_from="CreateTime"),
         "EndTime": fields.Int(required=True, load_from="EndTime"),
         "ItemDetails": fields.List(ItemDetailSchema()),
         "OrderNo": fields.Str(required=True, load_from="OrderNo"),
         "OrderType": fields.Str(required=True, load_from="OrderType"),
+        "ProjectId": fields.Str(required=True, load_from="ProjectId"),
         "ProjectName": fields.Str(required=True, load_from="ProjectName"),
         "ResourceExtendInfo": fields.List(ResourceExtendInfoSchema()),
         "ResourceId": fields.Str(required=True, load_from="ResourceId"),
+        "ResourceLabel": fields.Str(),
         "ResourceType": fields.Str(required=True, load_from="ResourceType"),
         "ResourceTypeCode": fields.Int(
             required=True, load_from="ResourceTypeCode"
