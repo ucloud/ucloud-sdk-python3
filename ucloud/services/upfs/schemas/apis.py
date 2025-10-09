@@ -146,6 +146,7 @@ class ExtendUPFSVolumeRequestSchema(schema.RequestSchema):
         "Region": fields.Str(required=True, dump_to="Region"),
         "Size": fields.Int(required=True, dump_to="Size"),
         "VolumeId": fields.Str(required=True, dump_to="VolumeId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
 
