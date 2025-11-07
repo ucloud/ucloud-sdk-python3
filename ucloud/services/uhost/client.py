@@ -213,19 +213,27 @@ class UHostClient(Client):
 
         **Request Model**
 
-        **CreateUHostInstanceParamSecGroupId**
-        - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
-        - **Priority** (int) - 安全组优先级。取值范围[1, 5]
-
-
-        **CreateUHostInstanceParamFeatures**
-        - **UNI** (bool) - 弹性网卡特性。开启了弹性网卡权限位，此特性才生效，默认 false 未开启，true 开启。
+        **CreateUHostInstanceParamVolumes**
 
 
         **CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSH**
         - **Area** (str) -
         - **AreaCode** (str) -
         - **Port** (int) -
+
+
+        **CreateUHostInstanceParamDisksCustomBackup**
+
+
+        **CreateUHostInstanceParamDisks**
+        - **BackupType** (str) - 磁盘备份方案。枚举值：\\ > NONE，无备份 \\ > SNAPSHOT，快照 \\当前磁盘支持的备份模式参考  `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ ,默认值:NONE
+        - **CouponId** (str) - 云盘代金券id。不适用于系统盘/本地盘。请通过DescribeCoupon接口查询，或登录用户中心查看
+        - **Encrypted** (bool) - 【功能仅部分可用区开放，详询技术支持】磁盘是否加密。加密：true, 不加密: false加密必须传入对应的的KmsKeyId,默认值false
+        - **IsBoot** (str) - 是否是系统盘。枚举值：\\ > True，是系统盘 \\ > False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
+        - **KmsKeyId** (str) - 【功能仅部分可用区开放，详询技术支持】kms key id。选择加密盘时必填。
+        - **Size** (int) - 磁盘大小，单位GB。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
+        - **SnapshotId** (str) - 从快照创建盘时所用快照id，目前仅支持数据盘
+        - **Type** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
 
 
         **CreateUHostInstanceParamNetworkInterfaceEIP**
@@ -244,21 +252,13 @@ class UHostClient(Client):
         - **EIP** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceEIP** 模型定义
 
 
-        **CreateUHostInstanceParamDisksCustomBackup**
+        **CreateUHostInstanceParamSecGroupId**
+        - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
+        - **Priority** (int) - 安全组优先级。取值范围[1, 5]
 
 
-        **CreateUHostInstanceParamDisks**
-        - **BackupType** (str) - 磁盘备份方案。枚举值：\\ > NONE，无备份 \\ > SNAPSHOT，快照 \\当前磁盘支持的备份模式参考  `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ ,默认值:NONE
-        - **CouponId** (str) - 云盘代金券id。不适用于系统盘/本地盘。请通过DescribeCoupon接口查询，或登录用户中心查看
-        - **Encrypted** (bool) - 【功能仅部分可用区开放，详询技术支持】磁盘是否加密。加密：true, 不加密: false加密必须传入对应的的KmsKeyId,默认值false
-        - **IsBoot** (str) - 是否是系统盘。枚举值：\\ > True，是系统盘 \\ > False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
-        - **KmsKeyId** (str) - 【功能仅部分可用区开放，详询技术支持】kms key id。选择加密盘时必填。
-        - **Size** (int) - 磁盘大小，单位GB。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
-        - **SnapshotId** (str) - 从快照创建盘时所用快照id，目前仅支持数据盘
-        - **Type** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
-
-
-        **CreateUHostInstanceParamVolumes**
+        **CreateUHostInstanceParamFeatures**
+        - **UNI** (bool) - 弹性网卡特性。开启了弹性网卡权限位，此特性才生效，默认 false 未开启，true 开启。
 
 
         """
@@ -391,9 +391,10 @@ class UHostClient(Client):
 
         **Response Model**
 
-        **Performance**
-        - **Rate** (int) - 交互展示参数，可忽略
-        - **Value** (float) - 值，单位是TFlops
+        **CpuPlatforms**
+        - **Amd** (list) - 返回AMD的CPU平台信息，例如：AMD: ['Amd/Epyc2']
+        - **Ampere** (list) - 返回Arm的CPU平台信息，例如：Ampere: ['Ampere/Altra']
+        - **Intel** (list) - 返回Intel的CPU平台信息，例如：Intel: ['Intel/CascadeLake','Intel/CascadelakeR','Intel/IceLake']
 
 
         **BootDiskInfo**
@@ -416,15 +417,15 @@ class UHostClient(Client):
         - **Name** (str) - 磁盘介质类别信息，磁盘主要分类如下：云盘|cloudDisk、普通本地盘|normalLocalDisk和SSD本地盘|ssdLocalDisk。
 
 
-        **CpuPlatforms**
-        - **Amd** (list) - 返回AMD的CPU平台信息，例如：AMD: ['Amd/Epyc2']
-        - **Ampere** (list) - 返回Arm的CPU平台信息，例如：Ampere: ['Ampere/Altra']
-        - **Intel** (list) - 返回Intel的CPU平台信息，例如：Intel: ['Intel/CascadeLake','Intel/CascadelakeR','Intel/IceLake']
+        **FeatureModes**
+        - **MinimalCpuPlatform** (list) - 这个特性必须是列出来的CPU平台及以上的CPU才支持
+        - **Name** (str) - 模式|特性名称
+        - **RelatedToImageFeature** (list) - 为镜像上支持这个特性的标签。例如DescribeImage返回的字段Features包含HotPlug，说明该镜像支持热升级。
 
 
-        **GraphicsMemory**
-        - **Rate** (int) - 交互展示参数，可忽略
-        - **Value** (int) - 值，单位是GB
+        **Features**
+        - **Modes** (list) - 见 **FeatureModes** 模型定义
+        - **Name** (str) - 可支持的特性名称。目前支持的特性网络增强|NetCapability、热升级|Hotplug
 
 
         **Collection**
@@ -438,15 +439,14 @@ class UHostClient(Client):
         - **Gpu** (int) - Gpu为GPU可支持的规格即GPU颗数，非GPU机型，Gpu为0
 
 
-        **FeatureModes**
-        - **MinimalCpuPlatform** (list) - 这个特性必须是列出来的CPU平台及以上的CPU才支持
-        - **Name** (str) - 模式|特性名称
-        - **RelatedToImageFeature** (list) - 为镜像上支持这个特性的标签。例如DescribeImage返回的字段Features包含HotPlug，说明该镜像支持热升级。
+        **Performance**
+        - **Rate** (int) - 交互展示参数，可忽略
+        - **Value** (float) - 值，单位是TFlops
 
 
-        **Features**
-        - **Modes** (list) - 见 **FeatureModes** 模型定义
-        - **Name** (str) - 可支持的特性名称。目前支持的特性网络增强|NetCapability、热升级|Hotplug
+        **GraphicsMemory**
+        - **Rate** (int) - 交互展示参数，可忽略
+        - **Value** (int) - 值，单位是GB
 
 
         **AvailableInstanceTypes**
@@ -618,11 +618,6 @@ class UHostClient(Client):
 
         **Response Model**
 
-        **UHostKeyPair**
-        - **KeyPairId** (str) - 密钥对ID
-        - **KeyPairState** (str) - 主机密钥对状态，Normal 正常，Deleted 删除
-
-
         **UHostDiskSet**
         - **BackupType** (str) - 备份方案。若开通了数据方舟，则为DATAARK
         - **DiskId** (str) - 磁盘ID
@@ -633,6 +628,17 @@ class UHostClient(Client):
         - **Name** (str) - UDisk名字（仅当磁盘是UDisk时返回）
         - **Size** (int) - 磁盘大小，单位: GB
         - **Type** (str) - 【建议不再使用】磁盘类型。系统盘: Boot，数据盘: Data,网络盘：Udisk
+
+
+        **UDSetUDHostAttribute**
+        - **HostBinding** (bool) - 是否绑定私有专区宿主机
+        - **UDHostId** (str) - 私有专区宿主机
+        - **UDSetId** (str) - 私有专区
+
+
+        **UHostKeyPair**
+        - **KeyPairId** (str) - 密钥对ID
+        - **KeyPairState** (str) - 主机密钥对状态，Normal 正常，Deleted 删除
 
 
         **UHostIPSet**
@@ -651,12 +657,6 @@ class UHostClient(Client):
 
         **SpotAttribute**
         - **RecycleTime** (int) - 回收时间
-
-
-        **UDSetUDHostAttribute**
-        - **HostBinding** (bool) - 是否绑定私有专区宿主机
-        - **UDHostId** (str) - 私有专区宿主机
-        - **UDSetId** (str) - 私有专区
 
 
         **UHostInstanceSet**

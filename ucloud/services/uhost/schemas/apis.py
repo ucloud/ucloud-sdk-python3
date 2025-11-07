@@ -142,21 +142,10 @@ API: CreateUHostInstance
 """
 
 
-class CreateUHostInstanceParamSecGroupIdSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamSecGroupId -"""
+class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamVolumes -"""
 
-    fields = {
-        "Id": fields.Str(required=False, dump_to="Id"),
-        "Priority": fields.Int(required=False, dump_to="Priority"),
-    }
-
-
-class CreateUHostInstanceParamFeaturesSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamFeatures -"""
-
-    fields = {
-        "UNI": fields.Bool(required=False, dump_to="UNI"),
-    }
+    fields = {}
 
 
 class CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSHSchema(
@@ -168,6 +157,27 @@ class CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSHSchema(
         "Area": fields.Str(required=False, dump_to="Area"),
         "AreaCode": fields.Str(required=False, dump_to="AreaCode"),
         "Port": fields.Int(required=False, dump_to="Port"),
+    }
+
+
+class CreateUHostInstanceParamDisksCustomBackupSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamDisksCustomBackup -"""
+
+    fields = {}
+
+
+class CreateUHostInstanceParamDisksSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamDisks -"""
+
+    fields = {
+        "BackupType": fields.Str(required=False, dump_to="BackupType"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "Encrypted": fields.Bool(required=False, dump_to="Encrypted"),
+        "IsBoot": fields.Str(required=True, dump_to="IsBoot"),
+        "KmsKeyId": fields.Str(required=False, dump_to="KmsKeyId"),
+        "Size": fields.Int(required=True, dump_to="Size"),
+        "SnapshotId": fields.Str(required=False, dump_to="SnapshotId"),
+        "Type": fields.Str(required=True, dump_to="Type"),
     }
 
 
@@ -215,31 +225,21 @@ class CreateUHostInstanceParamNetworkInterfaceSchema(schema.RequestSchema):
     }
 
 
-class CreateUHostInstanceParamDisksCustomBackupSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamDisksCustomBackup -"""
-
-    fields = {}
-
-
-class CreateUHostInstanceParamDisksSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamDisks -"""
+class CreateUHostInstanceParamSecGroupIdSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamSecGroupId -"""
 
     fields = {
-        "BackupType": fields.Str(required=False, dump_to="BackupType"),
-        "CouponId": fields.Str(required=False, dump_to="CouponId"),
-        "Encrypted": fields.Bool(required=False, dump_to="Encrypted"),
-        "IsBoot": fields.Str(required=True, dump_to="IsBoot"),
-        "KmsKeyId": fields.Str(required=False, dump_to="KmsKeyId"),
-        "Size": fields.Int(required=True, dump_to="Size"),
-        "SnapshotId": fields.Str(required=False, dump_to="SnapshotId"),
-        "Type": fields.Str(required=True, dump_to="Type"),
+        "Id": fields.Str(required=False, dump_to="Id"),
+        "Priority": fields.Int(required=False, dump_to="Priority"),
     }
 
 
-class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamVolumes -"""
+class CreateUHostInstanceParamFeaturesSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamFeatures -"""
 
-    fields = {}
+    fields = {
+        "UNI": fields.Bool(required=False, dump_to="UNI"),
+    }
 
 
 class CreateUHostInstanceRequestSchema(schema.RequestSchema):
