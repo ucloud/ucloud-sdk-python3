@@ -432,6 +432,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def ipv6gw(self):
+        from ucloud.services.ipv6gw.client import ipv6gwClient
+
+        return ipv6gwClient(
+            self._auto_config("ipv6gw"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def vpc(self):
         from ucloud.services.vpc.client import VPCClient
 

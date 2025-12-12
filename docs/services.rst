@@ -296,3 +296,10 @@ VPC
 .. autoclass:: ucloud.services.vpc.client.VPCClient
    :members:
 
+
+ipv6gw
+------
+
+.. autoclass:: ucloud.services.ipv6gw.client.ipv6gwClient
+   :members:
+
