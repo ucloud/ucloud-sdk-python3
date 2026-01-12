@@ -15,6 +15,133 @@ class ipv6gwClient(Client):
             config, transport, middleware, logger
         )
 
+    def allocate_ipv_6internet_bandwidth(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """AllocateIpv6InternetBandwidth - 分配ipv6公网带宽
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Bandwidth** (int) - (Required) 出向带宽峰值。带宽值范围[1, 2000]
+        - **Ipv6AddressId** (str) - (Required) Ipv6地址ID
+        - **ChargeType** (str) - 付费方式；默认值："Month";枚举值："Dynamic" -> 按时付费，"Month" -> 月付，"Year" ->年付，"Day" -> 天付
+        - **Ipv6GatewayId** (str) - ipv6网关ID；与VPCId二选一必填
+        - **Name** (str) - 资源名称；默认值："Ipv6InternetBandwidth"
+        - **PayMode** (str) - 付费模式；默认值："Bandwidth"；枚举值："Bandwidth" -> 带宽计费
+        - **Quantity** (int) - 购买数量；默认值：1。 月付时，此参数传0，代表了购买至月末。
+        - **Remark** (str) - 备注
+        - **Tag** (str) - 业务组名称；默认值："Default"
+        - **VPCId** (str) - vpcId；与Ipv6GatewayId二选一必填
+
+        **Response**
+
+        - **InternetBandwidthId** (str) - 开通公网带宽后，对应的公网带宽实例 ID。
+        - **Ipv6Address** (str) - ipv6地址
+        - **Ipv6AddressId** (str) - ipv6地址ID
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.AllocateIpv6InternetBandwidthRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("AllocateIpv6InternetBandwidth", d, **kwargs)
+        return apis.AllocateIpv6InternetBandwidthResponseSchema().loads(resp)
+
+    def create_ipv_6gateway(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateIpv6Gateway - 创建ipv6网关
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **VPCId** (str) - (Required) ipv6网关所属的VPCID
+        - **Name** (str) - IPv6 网关的名称 默认值 Ipv6Gateway
+        - **Remark** (str) - IPv6 网关的备注信息。
+        - **Tag** (str) - 业务组名称；默认值："Default"
+
+        **Response**
+
+        - **Ipv6GatewayId** (str) - ipv6网关ID
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateIpv6GatewayRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateIpv6Gateway", d, **kwargs)
+        return apis.CreateIpv6GatewayResponseSchema().loads(resp)
+
+    def delete_ipv_6gateway(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteIpv6Gateway - 删除ipv6网关
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Ipv6GatewayId** (str) - (Required) ipv6网关ID
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteIpv6GatewayRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteIpv6Gateway", d, **kwargs)
+        return apis.DeleteIpv6GatewayResponseSchema().loads(resp)
+
+    def delete_ipv_6internet_bandwidth(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteIpv6InternetBandwidth - 删除ipv6公网带宽
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **InternetBandwidthId** (str) - ipv6公网带宽ID；与Ipv6AddressId二选一必填
+        - **Ipv6AddressId** (str) - ipv6 ID；与InternetBandwidthId二选一必填
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteIpv6InternetBandwidthRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteIpv6InternetBandwidth", d, **kwargs)
+        return apis.DeleteIpv6InternetBandwidthResponseSchema().loads(resp)
+
     def modify_ipv_6internet_bandwidth(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
