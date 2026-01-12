@@ -8,6 +8,121 @@ from ucloud.services.ipv6gw.schemas import models
 
 
 """
+API: AllocateIpv6InternetBandwidth
+
+分配ipv6公网带宽
+"""
+
+
+class AllocateIpv6InternetBandwidthRequestSchema(schema.RequestSchema):
+    """AllocateIpv6InternetBandwidth - 分配ipv6公网带宽"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=True, dump_to="Bandwidth"),
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "Ipv6AddressId": fields.Str(required=True, dump_to="Ipv6AddressId"),
+        "Ipv6GatewayId": fields.Str(required=False, dump_to="Ipv6GatewayId"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "PayMode": fields.Str(required=False, dump_to="PayMode"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "VPCId": fields.Str(required=False, dump_to="VPCId"),
+    }
+
+
+class AllocateIpv6InternetBandwidthResponseSchema(schema.ResponseSchema):
+    """AllocateIpv6InternetBandwidth - 分配ipv6公网带宽"""
+
+    fields = {
+        "InternetBandwidthId": fields.Str(
+            required=True, load_from="InternetBandwidthId"
+        ),
+        "Ipv6Address": fields.Str(required=False, load_from="Ipv6Address"),
+        "Ipv6AddressId": fields.Str(required=False, load_from="Ipv6AddressId"),
+    }
+
+
+"""
+API: CreateIpv6Gateway
+
+创建ipv6网关
+"""
+
+
+class CreateIpv6GatewayRequestSchema(schema.RequestSchema):
+    """CreateIpv6Gateway - 创建ipv6网关"""
+
+    fields = {
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "VPCId": fields.Str(required=True, dump_to="VPCId"),
+    }
+
+
+class CreateIpv6GatewayResponseSchema(schema.ResponseSchema):
+    """CreateIpv6Gateway - 创建ipv6网关"""
+
+    fields = {
+        "Ipv6GatewayId": fields.Str(required=True, load_from="Ipv6GatewayId"),
+    }
+
+
+"""
+API: DeleteIpv6Gateway
+
+删除ipv6网关
+"""
+
+
+class DeleteIpv6GatewayRequestSchema(schema.RequestSchema):
+    """DeleteIpv6Gateway - 删除ipv6网关"""
+
+    fields = {
+        "Ipv6GatewayId": fields.Str(required=True, dump_to="Ipv6GatewayId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DeleteIpv6GatewayResponseSchema(schema.ResponseSchema):
+    """DeleteIpv6Gateway - 删除ipv6网关"""
+
+    fields = {}
+
+
+"""
+API: DeleteIpv6InternetBandwidth
+
+删除ipv6公网带宽
+"""
+
+
+class DeleteIpv6InternetBandwidthRequestSchema(schema.RequestSchema):
+    """DeleteIpv6InternetBandwidth - 删除ipv6公网带宽"""
+
+    fields = {
+        "InternetBandwidthId": fields.Str(
+            required=False, dump_to="InternetBandwidthId"
+        ),
+        "Ipv6AddressId": fields.Str(required=False, dump_to="Ipv6AddressId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DeleteIpv6InternetBandwidthResponseSchema(schema.ResponseSchema):
+    """DeleteIpv6InternetBandwidth - 删除ipv6公网带宽"""
+
+    fields = {}
+
+
+"""
 API: ModifyIpv6InternetBandwidth
 
 修改ipv6公网带宽值
