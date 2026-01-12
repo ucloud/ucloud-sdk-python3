@@ -30,22 +30,14 @@ class KeyPairSchema(schema.ResponseSchema):
     }
 
 
-class GraphicsMemorySchema(schema.ResponseSchema):
-    """GraphicsMemory - GPU的显存指标"""
+class BootDiskInfoSchema(schema.ResponseSchema):
+    """BootDiskInfo - 系统盘信息"""
 
     fields = {
-        "Rate": fields.Int(required=False, load_from="Rate"),
-        "Value": fields.Int(required=False, load_from="Value"),
-    }
-
-
-class CpuPlatformsSchema(schema.ResponseSchema):
-    """CpuPlatforms - CPU平台信息"""
-
-    fields = {
-        "Amd": fields.List(fields.Str()),
-        "Ampere": fields.List(fields.Str()),
-        "Intel": fields.List(fields.Str()),
+        "Features": fields.List(fields.Str()),
+        "InstantResize": fields.Bool(required=False, load_from="InstantResize"),
+        "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
+        "Name": fields.Str(required=False, load_from="Name"),
     }
 
 
@@ -56,17 +48,6 @@ class DataDiskInfoSchema(schema.ResponseSchema):
         "Features": fields.List(fields.Str()),
         "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
         "MinimalSize": fields.Int(required=False, load_from="MinimalSize"),
-        "Name": fields.Str(required=False, load_from="Name"),
-    }
-
-
-class BootDiskInfoSchema(schema.ResponseSchema):
-    """BootDiskInfo - 系统盘信息"""
-
-    fields = {
-        "Features": fields.List(fields.Str()),
-        "InstantResize": fields.Bool(required=False, load_from="InstantResize"),
-        "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
         "Name": fields.Str(required=False, load_from="Name"),
     }
 
@@ -100,6 +81,34 @@ class FeaturesSchema(schema.ResponseSchema):
     }
 
 
+class GraphicsMemorySchema(schema.ResponseSchema):
+    """GraphicsMemory - GPU的显存指标"""
+
+    fields = {
+        "Rate": fields.Int(required=False, load_from="Rate"),
+        "Value": fields.Int(required=False, load_from="Value"),
+    }
+
+
+class PerformanceSchema(schema.ResponseSchema):
+    """Performance - GPU的性能指标"""
+
+    fields = {
+        "Rate": fields.Int(required=False, load_from="Rate"),
+        "Value": fields.Float(required=False, load_from="Value"),
+    }
+
+
+class CpuPlatformsSchema(schema.ResponseSchema):
+    """CpuPlatforms - CPU平台信息"""
+
+    fields = {
+        "Amd": fields.List(fields.Str()),
+        "Ampere": fields.List(fields.Str()),
+        "Intel": fields.List(fields.Str()),
+    }
+
+
 class CollectionSchema(schema.ResponseSchema):
     """Collection - CPU和内存可支持的规格"""
 
@@ -119,15 +128,6 @@ class MachineSizesSchema(schema.ResponseSchema):
     }
 
 
-class PerformanceSchema(schema.ResponseSchema):
-    """Performance - GPU的性能指标"""
-
-    fields = {
-        "Rate": fields.Int(required=False, load_from="Rate"),
-        "Value": fields.Float(required=False, load_from="Value"),
-    }
-
-
 class AvailableInstanceTypesSchema(schema.ResponseSchema):
     """AvailableInstanceTypes - https://ushare.ucloudadmin.com/pages/viewpage.action?pageId=104662646"""
 
@@ -137,7 +137,7 @@ class AvailableInstanceTypesSchema(schema.ResponseSchema):
         "Disks": fields.List(DisksSchema()),
         "Features": fields.List(FeaturesSchema()),
         "GraphicsMemory": GraphicsMemorySchema(),
-        "InstanceType": fields.Str(required=True, load_from="InstanceType"),
+        "InstanceType": fields.Str(required=False, load_from="InstanceType"),
         "MachineClass": fields.Str(required=False, load_from="MachineClass"),
         "MachineSizes": fields.List(MachineSizesSchema()),
         "Name": fields.Str(required=False, load_from="Name"),
@@ -216,13 +216,27 @@ class IsolationGroupSchema(schema.ResponseSchema):
     }
 
 
-class UDSetUDHostAttributeSchema(schema.ResponseSchema):
-    """UDSetUDHostAttribute - 私有专区对应的宿主机属性"""
+class SpotAttributeSchema(schema.ResponseSchema):
+    """SpotAttribute - 竞价实例属性"""
 
     fields = {
-        "HostBinding": fields.Bool(required=False, load_from="HostBinding"),
-        "UDHostId": fields.Str(required=False, load_from="UDHostId"),
-        "UDSetId": fields.Str(required=False, load_from="UDSetId"),
+        "RecycleTime": fields.Int(required=False, load_from="RecycleTime"),
+    }
+
+
+class UHostDiskSetSchema(schema.ResponseSchema):
+    """UHostDiskSet - DescribeUHostInstance"""
+
+    fields = {
+        "BackupType": fields.Str(required=False, load_from="BackupType"),
+        "DiskId": fields.Str(required=False, load_from="DiskId"),
+        "DiskType": fields.Str(required=True, load_from="DiskType"),
+        "Drive": fields.Str(required=False, load_from="Drive"),
+        "Encrypted": fields.Str(required=False, load_from="Encrypted"),
+        "IsBoot": fields.Str(required=True, load_from="IsBoot"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "Type": fields.Str(required=False, load_from="Type"),
     }
 
 
@@ -246,19 +260,13 @@ class UHostIPSetSchema(schema.ResponseSchema):
     }
 
 
-class UHostDiskSetSchema(schema.ResponseSchema):
-    """UHostDiskSet - DescribeUHostInstance"""
+class UDSetUDHostAttributeSchema(schema.ResponseSchema):
+    """UDSetUDHostAttribute - 私有专区对应的宿主机属性"""
 
     fields = {
-        "BackupType": fields.Str(required=False, load_from="BackupType"),
-        "DiskId": fields.Str(required=False, load_from="DiskId"),
-        "DiskType": fields.Str(required=True, load_from="DiskType"),
-        "Drive": fields.Str(required=False, load_from="Drive"),
-        "Encrypted": fields.Str(required=False, load_from="Encrypted"),
-        "IsBoot": fields.Str(required=True, load_from="IsBoot"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Size": fields.Int(required=False, load_from="Size"),
-        "Type": fields.Str(required=False, load_from="Type"),
+        "HostBinding": fields.Bool(required=False, load_from="HostBinding"),
+        "UDHostId": fields.Str(required=False, load_from="UDHostId"),
+        "UDSetId": fields.Str(required=False, load_from="UDSetId"),
     }
 
 
@@ -268,14 +276,6 @@ class UHostKeyPairSchema(schema.ResponseSchema):
     fields = {
         "KeyPairId": fields.Str(required=False, load_from="KeyPairId"),
         "KeyPairState": fields.Str(required=False, load_from="KeyPairState"),
-    }
-
-
-class SpotAttributeSchema(schema.ResponseSchema):
-    """SpotAttribute - 竞价实例属性"""
-
-    fields = {
-        "RecycleTime": fields.Int(required=False, load_from="RecycleTime"),
     }
 
 
