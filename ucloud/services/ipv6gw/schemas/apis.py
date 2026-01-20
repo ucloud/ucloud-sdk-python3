@@ -123,6 +123,45 @@ class DeleteIpv6InternetBandwidthResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeIpv6GatewayAttribute
+
+查看指定ipv6网关详情, 该接口仅返回能开启公网带宽的ipv6信息
+"""
+
+
+class DescribeIpv6GatewayAttributeRequestSchema(schema.RequestSchema):
+    """DescribeIpv6GatewayAttribute - 查看指定ipv6网关详情, 该接口仅返回能开启公网带宽的ipv6信息"""
+
+    fields = {
+        "Ipv6GatewayId": fields.Str(required=True, dump_to="Ipv6GatewayId"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "ObjectType": fields.Str(required=False, dump_to="ObjectType"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DescribeIpv6GatewayAttributeResponseSchema(schema.ResponseSchema):
+    """DescribeIpv6GatewayAttribute - 查看指定ipv6网关详情, 该接口仅返回能开启公网带宽的ipv6信息"""
+
+    fields = {
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "Ipv6AddressInfos": fields.List(
+            models.IPv6AddressInfoSchema(),
+            required=False,
+            load_from="Ipv6AddressInfos",
+        ),
+        "Ipv6GatewayId": fields.Str(required=False, load_from="Ipv6GatewayId"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+    }
+
+
+"""
 API: ModifyIpv6InternetBandwidth
 
 修改ipv6公网带宽值
