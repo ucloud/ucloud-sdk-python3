@@ -142,6 +142,63 @@ class ipv6gwClient(Client):
         resp = self.invoke("DeleteIpv6InternetBandwidth", d, **kwargs)
         return apis.DeleteIpv6InternetBandwidthResponseSchema().loads(resp)
 
+    def describe_ipv_6gateway_attribute(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeIpv6GatewayAttribute - 查看指定ipv6网关详情, 该接口仅返回能开启公网带宽的ipv6信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Ipv6GatewayId** (str) - (Required) ipv6网关ID
+        - **Limit** (int) - 返回数据长度，默认值为20，最大值为100
+        - **ObjectType** (str) - ipv6地址绑定资源类型。传空则返回不按资源类型过滤。枚举值:"uhost" -> 云主机; "uni" -> 虚拟网卡; "alb" -> 应用型负载均衡; "nlb" -> 网络型负载均衡
+        - **Offset** (int) - 列表起始位置偏移量，默认值为0
+
+        **Response**
+
+        - **CreateTime** (int) - 创建时间
+        - **Ipv6AddressInfos** (list) - 见 **IPv6AddressInfo** 模型定义
+        - **Ipv6GatewayId** (str) - ipv6网关ID
+        - **Name** (str) - 名称
+        - **Remark** (str) - 备注
+        - **Tag** (str) - 业务组
+        - **TotalCount** (int) - 总数
+        - **VPCId** (str) - vpc ID
+
+        **Response Model**
+
+        **IPv6AddressInfo**
+        - **AutoRenew** (str) - 是否自动续费。枚举值："Yes" -> 是; "No" -> 否; "UnKnown" -> 未知
+        - **Bandwidth** (int) - 带宽值
+        - **ChargeType** (str) - 收费类型
+        - **Expire** (str) - 是否过期。 枚举值: "Expired" -> 过期; "UnExpired" -> 未过期; "UnKnown" -> 未知
+        - **ExpireTime** (int) - 过期时间
+        - **InternetBandwidthId** (str) - ipv6外网带宽Id
+        - **Ipv6Address** (str) - ipv6地址
+        - **Ipv6AddressId** (str) - ipv6地址ID
+        - **ObjectId** (str) - 绑定的资源ID
+        - **ObjectName** (str) - 绑定对象名称
+        - **ObjectType** (str) - 绑定对象资源类型
+        - **OperatorName** (str) - 线路名称。枚举值: "ChinaMobile" -> 移动; "BGP" -> BGP; "Unicom" -> 联通; "Telecom" -> 电信
+        - **PayMode** (str) - 付费模式。枚举值："Bandwidth" -> 带宽计费
+        - **Status** (str) - 状态。 枚举值:"Public" -> 已开启公网带宽; "Normal" -> 未开启公网带宽
+        - **SubnetId** (str) - 子网ID
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeIpv6GatewayAttributeRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeIpv6GatewayAttribute", d, **kwargs)
+        return apis.DescribeIpv6GatewayAttributeResponseSchema().loads(resp)
+
     def modify_ipv_6internet_bandwidth(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
