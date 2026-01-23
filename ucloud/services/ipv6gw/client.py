@@ -199,6 +199,48 @@ class ipv6gwClient(Client):
         resp = self.invoke("DescribeIpv6GatewayAttribute", d, **kwargs)
         return apis.DescribeIpv6GatewayAttributeResponseSchema().loads(resp)
 
+    def describe_ipv_6gateways(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeIpv6Gateways - ipv6网关列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Ipv6GatewayIds** (list) - ipv6网关ID列表，最大长度为20。指定Ipv6GatewayIds查询时，将忽略其他条件
+        - **Limit** (int) - 返回数据长度，默认值为20，最大值为100
+        - **Offset** (int) - 列表起始位置偏移量，默认值为0
+        - **VPCId** (str) - vpc ID
+
+        **Response**
+
+        - **Ipv6GatewayInfos** (list) - 见 **IPv6GateWayInfo** 模型定义
+        - **TotalCount** (int) - Ipv6Gateway总数。指定Ipv6GatewayIds / VPCId时，返回数量受限
+
+        **Response Model**
+
+        **IPv6GateWayInfo**
+        - **CreateTime** (int) - 创建时间
+        - **Ipv6GatewayId** (str) - ipv6 网关 ID
+        - **Name** (str) - 名称
+        - **Remark** (str) - 备注
+        - **Tag** (str) - 业务组
+        - **VPCId** (str) - vpc ID
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeIpv6GatewaysRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeIpv6Gateways", d, **kwargs)
+        return apis.DescribeIpv6GatewaysResponseSchema().loads(resp)
+
     def modify_ipv_6internet_bandwidth(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
