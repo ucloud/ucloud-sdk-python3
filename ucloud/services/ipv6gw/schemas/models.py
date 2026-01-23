@@ -25,3 +25,16 @@ class IPv6AddressInfoSchema(schema.ResponseSchema):
         "Status": fields.Str(required=False, load_from="Status"),
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
     }
+
+
+class IPv6GateWayInfoSchema(schema.ResponseSchema):
+    """IPv6GateWayInfo - ipv6 网关信息"""
+
+    fields = {
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "Ipv6GatewayId": fields.Str(required=False, load_from="Ipv6GatewayId"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+    }

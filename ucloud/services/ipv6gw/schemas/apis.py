@@ -162,6 +162,39 @@ class DescribeIpv6GatewayAttributeResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeIpv6Gateways
+
+ipv6网关列表
+"""
+
+
+class DescribeIpv6GatewaysRequestSchema(schema.RequestSchema):
+    """DescribeIpv6Gateways - ipv6网关列表"""
+
+    fields = {
+        "Ipv6GatewayIds": fields.List(fields.Str()),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "VPCId": fields.Str(required=False, dump_to="VPCId"),
+    }
+
+
+class DescribeIpv6GatewaysResponseSchema(schema.ResponseSchema):
+    """DescribeIpv6Gateways - ipv6网关列表"""
+
+    fields = {
+        "Ipv6GatewayInfos": fields.List(
+            models.IPv6GateWayInfoSchema(),
+            required=False,
+            load_from="Ipv6GatewayInfos",
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
 API: ModifyIpv6InternetBandwidth
 
 修改ipv6公网带宽值
