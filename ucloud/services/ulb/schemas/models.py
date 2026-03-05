@@ -30,90 +30,6 @@ class BackendSetSchema(schema.ResponseSchema):
     }
 
 
-class ForwardTargetSetSchema(schema.ResponseSchema):
-    """ForwardTargetSet - 转发的后端服务节点"""
-
-    fields = {
-        "Id": fields.Str(required=True, load_from="Id"),
-        "Weight": fields.Int(required=False, load_from="Weight"),
-    }
-
-
-class PathConfigSetSchema(schema.ResponseSchema):
-    """PathConfigSet - 路径相关配置"""
-
-    fields = {
-        "Values": fields.List(fields.Str()),
-    }
-
-
-class HostConfigSetSchema(schema.ResponseSchema):
-    """HostConfigSet - 域名相关配置"""
-
-    fields = {
-        "MatchMode": fields.Str(required=False, load_from="MatchMode"),
-        "Values": fields.List(fields.Str()),
-    }
-
-
-class ForwardConfigSetSchema(schema.ResponseSchema):
-    """ForwardConfigSet - 转发服务节点相关配置"""
-
-    fields = {
-        "Targets": fields.List(ForwardTargetSetSchema()),
-    }
-
-
-class RuleConditionSchema(schema.ResponseSchema):
-    """RuleCondition - 转发规则匹配条件"""
-
-    fields = {
-        "HostConfig": HostConfigSetSchema(),
-        "PathConfig": PathConfigSetSchema(),
-        "Type": fields.Str(required=True, load_from="Type"),
-    }
-
-
-class RuleActionSchema(schema.ResponseSchema):
-    """RuleAction - 转发动作"""
-
-    fields = {
-        "ForwardConfig": ForwardConfigSetSchema(),
-        "Type": fields.Str(required=True, load_from="Type"),
-    }
-
-
-class StickinessConfigSetSchema(schema.ResponseSchema):
-    """StickinessConfigSet - 会话保持相关配置"""
-
-    fields = {
-        "CookieName": fields.Str(required=False, load_from="CookieName"),
-        "Enabled": fields.Bool(required=False, load_from="Enabled"),
-        "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
-class CertificateSchema(schema.ResponseSchema):
-    """Certificate - （应用型专用）服务器证书信息"""
-
-    fields = {
-        "IsDefault": fields.Bool(required=False, load_from="IsDefault"),
-        "SSLId": fields.Str(required=False, load_from="SSLId"),
-    }
-
-
-class RuleSchema(schema.ResponseSchema):
-    """Rule - （应用型专用）转发规则信息"""
-
-    fields = {
-        "IsDefault": fields.Bool(required=False, load_from="IsDefault"),
-        "Pass": fields.Bool(required=False, load_from="Pass"),
-        "RuleActions": fields.List(RuleActionSchema()),
-        "RuleConditions": fields.List(RuleConditionSchema()),
-        "RuleId": fields.Str(required=False, load_from="RuleId"),
-    }
-
-
 class TargetSchema(schema.ResponseSchema):
     """Target - 服务节点信息"""
 
@@ -133,13 +49,146 @@ class TargetSchema(schema.ResponseSchema):
     }
 
 
+class CertificateSchema(schema.ResponseSchema):
+    """Certificate - （应用型专用）服务器证书信息"""
+
+    fields = {
+        "IsDefault": fields.Bool(required=False, load_from="IsDefault"),
+        "SSLId": fields.Str(required=False, load_from="SSLId"),
+    }
+
+
+class PathConfigSetSchema(schema.ResponseSchema):
+    """PathConfigSet - 路径相关配置"""
+
+    fields = {
+        "Values": fields.List(fields.Str()),
+    }
+
+
+class FixedResponseConfigSetSchema(schema.ResponseSchema):
+    """FixedResponseConfigSet - 静态返回相关配置"""
+
+    fields = {
+        "Content": fields.Str(required=False, load_from="Content"),
+        "HttpCode": fields.Int(required=True, load_from="HttpCode"),
+    }
+
+
 class HealthCheckConfigSetSchema(schema.ResponseSchema):
     """HealthCheckConfigSet - 健康检查相关配置"""
 
     fields = {
         "Domain": fields.Str(required=False, load_from="Domain"),
         "Enabled": fields.Bool(required=False, load_from="Enabled"),
+        "Method": fields.Str(required=False, load_from="Method"),
         "Path": fields.Str(required=False, load_from="Path"),
+        "ResponseCode": fields.Str(required=False, load_from="ResponseCode"),
+        "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
+class CorsConfigSetSchema(schema.ResponseSchema):
+    """CorsConfigSet - 跨域相关配置"""
+
+    fields = {
+        "AllowCredentials": fields.Str(
+            required=False, load_from="AllowCredentials"
+        ),
+        "AllowHeaders": fields.List(fields.Str()),
+        "AllowMethods": fields.List(fields.Str()),
+        "AllowOrigin": fields.List(fields.Str()),
+        "ExposeHeaders": fields.List(fields.Str()),
+        "MaxAge": fields.Int(required=False, load_from="MaxAge"),
+    }
+
+
+class ForwardTargetSetSchema(schema.ResponseSchema):
+    """ForwardTargetSet - 转发的后端服务节点"""
+
+    fields = {
+        "Id": fields.Str(required=True, load_from="Id"),
+        "Weight": fields.Int(required=False, load_from="Weight"),
+    }
+
+
+class ForwardConfigSetSchema(schema.ResponseSchema):
+    """ForwardConfigSet - 转发服务节点相关配置"""
+
+    fields = {
+        "Targets": fields.List(ForwardTargetSetSchema()),
+    }
+
+
+class InsertHeaderConfigSetSchema(schema.ResponseSchema):
+    """InsertHeaderConfigSet - 插入 header 相关配置"""
+
+    fields = {
+        "Key": fields.Str(required=True, load_from="Key"),
+        "Value": fields.Str(required=True, load_from="Value"),
+        "ValueType": fields.Str(required=True, load_from="ValueType"),
+    }
+
+
+class RemoveHeaderConfigSetSchema(schema.ResponseSchema):
+    """RemoveHeaderConfigSet - 删除 header 相关配置"""
+
+    fields = {
+        "Key": fields.Str(required=True, load_from="Key"),
+    }
+
+
+class RuleActionSchema(schema.ResponseSchema):
+    """RuleAction - 转发动作"""
+
+    fields = {
+        "CorsConfig": CorsConfigSetSchema(),
+        "FixedResponseConfig": FixedResponseConfigSetSchema(),
+        "ForwardConfig": ForwardConfigSetSchema(),
+        "InsertHeaderConfig": InsertHeaderConfigSetSchema(),
+        "Order": fields.Int(required=False, load_from="Order"),
+        "RemoveHeaderConfig": RemoveHeaderConfigSetSchema(),
+        "Type": fields.Str(required=True, load_from="Type"),
+    }
+
+
+class HostConfigSetSchema(schema.ResponseSchema):
+    """HostConfigSet - 域名相关配置"""
+
+    fields = {
+        "MatchMode": fields.Str(required=False, load_from="MatchMode"),
+        "Values": fields.List(fields.Str()),
+    }
+
+
+class RuleConditionSchema(schema.ResponseSchema):
+    """RuleCondition - 转发规则匹配条件"""
+
+    fields = {
+        "HostConfig": HostConfigSetSchema(),
+        "PathConfig": PathConfigSetSchema(),
+        "Type": fields.Str(required=True, load_from="Type"),
+    }
+
+
+class RuleSchema(schema.ResponseSchema):
+    """Rule - （应用型专用）转发规则信息"""
+
+    fields = {
+        "IsDefault": fields.Bool(required=False, load_from="IsDefault"),
+        "Pass": fields.Bool(required=False, load_from="Pass"),
+        "RuleActions": fields.List(RuleActionSchema()),
+        "RuleConditions": fields.List(RuleConditionSchema()),
+        "RuleId": fields.Str(required=False, load_from="RuleId"),
+    }
+
+
+class StickinessConfigSetSchema(schema.ResponseSchema):
+    """StickinessConfigSet - 会话保持相关配置"""
+
+    fields = {
+        "CookieName": fields.Str(required=False, load_from="CookieName"),
+        "Enabled": fields.Bool(required=False, load_from="Enabled"),
         "Type": fields.Str(required=False, load_from="Type"),
     }
 
@@ -177,12 +226,14 @@ class ListenerSchema(schema.ResponseSchema):
     }
 
 
-class FirewallSetSchema(schema.ResponseSchema):
-    """FirewallSet - ulb防火墙信息"""
+class SecGroupInfoSchema(schema.ResponseSchema):
+    """SecGroupInfo - 安全组详细信息"""
 
     fields = {
-        "FirewallId": fields.Str(required=False, load_from="FirewallId"),
-        "FirewallName": fields.Str(required=False, load_from="FirewallName"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Priority": fields.Int(required=False, load_from="Priority"),
+        "SecgroupId": fields.Str(required=False, load_from="SecgroupId"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
     }
 
 
@@ -210,6 +261,15 @@ class IPInfoSchema(schema.ResponseSchema):
     }
 
 
+class FirewallSetSchema(schema.ResponseSchema):
+    """FirewallSet - ulb防火墙信息"""
+
+    fields = {
+        "FirewallId": fields.Str(required=False, load_from="FirewallId"),
+        "FirewallName": fields.Str(required=False, load_from="FirewallName"),
+    }
+
+
 class LoadBalancerSchema(schema.ResponseSchema):
     """LoadBalancer - 负载均衡实例信息"""
 
@@ -230,6 +290,7 @@ class LoadBalancerSchema(schema.ResponseSchema):
         "Name": fields.Str(required=False, load_from="Name"),
         "PurchaseValue": fields.Int(required=False, load_from="PurchaseValue"),
         "Remark": fields.Str(required=False, load_from="Remark"),
+        "SecGroup": fields.List(SecGroupInfoSchema()),
         "SnatIPs": fields.List(fields.Str()),
         "Status": fields.Str(required=False, load_from="Status"),
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
@@ -290,6 +351,7 @@ class SSLInfoSchema(schema.ResponseSchema):
 
     fields = {
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "DNSNames": fields.Str(required=False, load_from="DNSNames"),
         "Domains": fields.Str(required=False, load_from="Domains"),
         "HashValue": fields.Str(required=False, load_from="HashValue"),
         "NotAfter": fields.Int(required=False, load_from="NotAfter"),
@@ -375,6 +437,18 @@ class TLSAndCiphersSchema(schema.ResponseSchema):
     }
 
 
+class ULBIPSetSchema(schema.ResponseSchema):
+    """ULBIPSet - DescribeULB"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "BandwidthType": fields.Int(required=False, load_from="BandwidthType"),
+        "EIP": fields.Str(required=False, load_from="EIP"),
+        "EIPId": fields.Str(required=False, load_from="EIPId"),
+        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
+    }
+
+
 class PolicyBackendSetSchema(schema.ResponseSchema):
     """PolicyBackendSet - 内容转发下rs详细信息"""
 
@@ -415,21 +489,13 @@ class ULBPolicySetSchema(schema.ResponseSchema):
     }
 
 
-class BindSecurityPolicySchema(schema.ResponseSchema):
-    """BindSecurityPolicy - VServer绑定的安全策略组信息"""
+class LoggerSetSchema(schema.ResponseSchema):
+    """LoggerSet - ulb日志信息"""
 
     fields = {
-        "SSLCiphers": fields.List(fields.Str()),
-        "SecurityPolicyId": fields.Str(
-            required=False, load_from="SecurityPolicyId"
-        ),
-        "SecurityPolicyName": fields.Str(
-            required=False, load_from="SecurityPolicyName"
-        ),
-        "SecurityPolicyType": fields.Int(
-            required=False, load_from="SecurityPolicyType"
-        ),
-        "TLSVersion": fields.Str(required=False, load_from="TLSVersion"),
+        "BucketName": fields.Str(required=False, load_from="BucketName"),
+        "TokenID": fields.Str(required=False, load_from="TokenID"),
+        "TokenName": fields.Str(required=False, load_from="TokenName"),
     }
 
 
@@ -459,13 +525,21 @@ class ULBBackendSetSchema(schema.ResponseSchema):
     }
 
 
-class LoggerSetSchema(schema.ResponseSchema):
-    """LoggerSet - ulb日志信息"""
+class BindSecurityPolicySchema(schema.ResponseSchema):
+    """BindSecurityPolicy - VServer绑定的安全策略组信息"""
 
     fields = {
-        "BucketName": fields.Str(required=False, load_from="BucketName"),
-        "TokenID": fields.Str(required=False, load_from="TokenID"),
-        "TokenName": fields.Str(required=False, load_from="TokenName"),
+        "SSLCiphers": fields.List(fields.Str()),
+        "SecurityPolicyId": fields.Str(
+            required=False, load_from="SecurityPolicyId"
+        ),
+        "SecurityPolicyName": fields.Str(
+            required=False, load_from="SecurityPolicyName"
+        ),
+        "SecurityPolicyType": fields.Int(
+            required=False, load_from="SecurityPolicyType"
+        ),
+        "TLSVersion": fields.Str(required=False, load_from="TLSVersion"),
     }
 
 
@@ -502,18 +576,6 @@ class ULBVServerSetSchema(schema.ResponseSchema):
         "ULBId": fields.Str(required=False, load_from="ULBId"),
         "VServerId": fields.Str(required=False, load_from="VServerId"),
         "VServerName": fields.Str(required=False, load_from="VServerName"),
-    }
-
-
-class ULBIPSetSchema(schema.ResponseSchema):
-    """ULBIPSet - DescribeULB"""
-
-    fields = {
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "BandwidthType": fields.Int(required=False, load_from="BandwidthType"),
-        "EIP": fields.Str(required=False, load_from="EIP"),
-        "EIPId": fields.Str(required=False, load_from="EIPId"),
-        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
     }
 
 
