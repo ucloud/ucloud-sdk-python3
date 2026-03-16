@@ -241,6 +241,13 @@ ULightHost
    :members:
 
 
+ULogService
+-----------
+
+.. autoclass:: ucloud.services.ulogservice.client.ULogServiceClient
+   :members:
+
+
 UMongoDB
 --------
 
