@@ -322,6 +322,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def ulogservice(self):
+        from ucloud.services.ulogservice.client import ULogServiceClient
+
+        return ULogServiceClient(
+            self._auto_config("ulogservice"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def umem(self):
         from ucloud.services.umem.client import UMemClient
 
