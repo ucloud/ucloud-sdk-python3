@@ -312,16 +312,6 @@ class Client(client.Client):
             self.logger,
         )
 
-    def ulighthost(self):
-        from ucloud.services.ulighthost.client import ULightHostClient
-
-        return ULightHostClient(
-            self._auto_config("ulighthost"),
-            self.transport,
-            self.middleware,
-            self.logger,
-        )
-
     def ulogservice(self):
         from ucloud.services.ulogservice.client import ULogServiceClient
 

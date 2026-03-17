@@ -8,6 +8,90 @@ from ucloud.services.ucompshare.schemas import models
 
 
 """
+API: CheckULHostResourceCapacity
+
+检查轻量应用云主机资源余量
+"""
+
+
+class CheckULHostResourceCapacityRequestSchema(schema.RequestSchema):
+    """CheckULHostResourceCapacity - 检查轻量应用云主机资源余量"""
+
+    fields = {
+        "BundleId": fields.Str(required=True, dump_to="BundleId"),
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "ImageId": fields.Str(required=True, dump_to="ImageId"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SecurityGroupId": fields.Str(
+            required=False, dump_to="SecurityGroupId"
+        ),
+        "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
+        "VPCId": fields.Str(required=False, dump_to="VPCId"),
+    }
+
+
+class CheckULHostResourceCapacityResponseSchema(schema.ResponseSchema):
+    """CheckULHostResourceCapacity - 检查轻量应用云主机资源余量"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "ResourceEnough": fields.Bool(
+            required=True, load_from="ResourceEnough"
+        ),
+    }
+
+
+"""
+API: CreateCompShareCustomImage
+
+制作算力平台实例自制镜像
+"""
+
+
+class CreateCompShareCustomImageParamSoftwaresSchema(schema.RequestSchema):
+    """CreateCompShareCustomImageParamSoftwares -"""
+
+    fields = {
+        "Application": fields.List(fields.Str()),
+        "CUDAVersion": fields.Str(required=False, dump_to="CUDAVersion"),
+        "Framework": fields.Str(required=False, dump_to="Framework"),
+        "FrameworkVersion": fields.Str(
+            required=False, dump_to="FrameworkVersion"
+        ),
+    }
+
+
+class CreateCompShareCustomImageRequestSchema(schema.RequestSchema):
+    """CreateCompShareCustomImage - 制作算力平台实例自制镜像"""
+
+    fields = {
+        "Description": fields.Str(required=False, dump_to="Description"),
+        "Name": fields.Str(required=True, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Softwares": CreateCompShareCustomImageParamSoftwaresSchema(
+            required=False, dump_to="Softwares"
+        ),
+        "UHostId": fields.Str(required=True, dump_to="UHostId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class CreateCompShareCustomImageResponseSchema(schema.ResponseSchema):
+    """CreateCompShareCustomImage - 制作算力平台实例自制镜像"""
+
+    fields = {
+        "CompShareImageId": fields.Str(
+            required=True, load_from="CompShareImageId"
+        ),
+    }
+
+
+"""
 API: CreateCompShareInstance
 
 创建轻量级算力平台主机资源
@@ -34,6 +118,7 @@ class CreateCompShareInstanceRequestSchema(schema.RequestSchema):
             required=True, dump_to="CompShareImageId"
         ),
         "Disks": fields.List(CreateCompShareInstanceParamDisksSchema()),
+        "EnableUS3": fields.Bool(required=False, dump_to="EnableUS3"),
         "GPU": fields.Int(required=True, dump_to="GPU"),
         "GpuType": fields.Str(required=True, dump_to="GpuType"),
         "LoginMode": fields.Str(required=False, dump_to="LoginMode"),
@@ -102,6 +187,159 @@ class CreateULHostInstanceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeAvailableCompShareInstanceTypes
+
+获取某个地域下可售/售罄的所有机型信息
+"""
+
+
+class DescribeAvailableCompShareInstanceTypesRequestSchema(
+    schema.RequestSchema
+):
+    """DescribeAvailableCompShareInstanceTypes - 获取某个地域下可售/售罄的所有机型信息"""
+
+    fields = {
+        "MachineTypes": fields.List(fields.Str()),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DescribeAvailableCompShareInstanceTypesResponseSchema(
+    schema.ResponseSchema
+):
+    """DescribeAvailableCompShareInstanceTypes - 获取某个地域下可售/售罄的所有机型信息"""
+
+    fields = {
+        "AvailableInstanceTypes": fields.List(
+            models.AvailableInstanceTypesSchema(),
+            required=True,
+            load_from="AvailableInstanceTypes",
+        ),
+        "Status": fields.Str(required=False, load_from="Status"),
+    }
+
+
+"""
+API: DescribeCommunityImages
+
+获取社区镜像列表
+"""
+
+
+class DescribeCommunityImagesParamSortConditionSchema(schema.RequestSchema):
+    """DescribeCommunityImagesParamSortCondition -"""
+
+    fields = {
+        "ASC": fields.Str(required=False, dump_to="ASC"),
+        "Field": fields.Str(required=False, dump_to="Field"),
+    }
+
+
+class DescribeCommunityImagesRequestSchema(schema.RequestSchema):
+    """DescribeCommunityImages - 获取社区镜像列表"""
+
+    fields = {
+        "Author": fields.Str(required=False, dump_to="Author"),
+        "CompShareImageId": fields.Str(
+            required=False, dump_to="CompShareImageId"
+        ),
+        "Limit": fields.Str(required=False, dump_to="Limit"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SortCondition": DescribeCommunityImagesParamSortConditionSchema(
+            required=False, dump_to="SortCondition"
+        ),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DescribeCommunityImagesResponseSchema(schema.ResponseSchema):
+    """DescribeCommunityImages - 获取社区镜像列表"""
+
+    fields = {
+        "ImageSet": fields.List(
+            models.CompShareImageSchema(), required=False, load_from="ImageSet"
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
+API: DescribeCompShareCustomImages
+
+获取自制镜像列表
+"""
+
+
+class DescribeCompShareCustomImagesRequestSchema(schema.RequestSchema):
+    """DescribeCompShareCustomImages - 获取自制镜像列表"""
+
+    fields = {
+        "CompShareImageId": fields.Str(
+            required=False, dump_to="CompShareImageId"
+        ),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DescribeCompShareCustomImagesResponseSchema(schema.ResponseSchema):
+    """DescribeCompShareCustomImages - 获取自制镜像列表"""
+
+    fields = {
+        "ImageSet": fields.List(
+            models.CompShareImageSchema(), required=True, load_from="ImageSet"
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
+API: DescribeCompShareImages
+
+可获取平台、应用镜像信息
+"""
+
+
+class DescribeCompShareImagesRequestSchema(schema.RequestSchema):
+    """DescribeCompShareImages - 可获取平台、应用镜像信息"""
+
+    fields = {
+        "Author": fields.Str(required=False, dump_to="Author"),
+        "CompShareImageId": fields.Str(
+            required=False, dump_to="CompShareImageId"
+        ),
+        "ImageType": fields.Str(required=False, dump_to="ImageType"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DescribeCompShareImagesResponseSchema(schema.ResponseSchema):
+    """DescribeCompShareImages - 可获取平台、应用镜像信息"""
+
+    fields = {
+        "ImageSet": fields.List(
+            models.CompShareImageSchema(), required=True, load_from="ImageSet"
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
 API: DescribeCompShareInstance
 
 获取用户所有地域下主机资源信息列表
@@ -136,6 +374,77 @@ class DescribeCompShareInstanceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeCompShareSupportZone
+
+获取支持的可用区信息列表
+"""
+
+
+class DescribeCompShareSupportZoneRequestSchema(schema.RequestSchema):
+    """DescribeCompShareSupportZone - 获取支持的可用区信息列表"""
+
+    fields = {
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DescribeCompShareSupportZoneResponseSchema(schema.ResponseSchema):
+    """DescribeCompShareSupportZone - 获取支持的可用区信息列表"""
+
+    fields = {
+        "ZoneInfo": fields.List(
+            models.SupportZoneSchema(), required=True, load_from="ZoneInfo"
+        ),
+    }
+
+
+"""
+API: DescribeTeamMemberUnpaidOrder
+
+获取团队队员未支付订单
+"""
+
+
+class DescribeTeamMemberUnpaidOrderRequestSchema(schema.RequestSchema):
+    """DescribeTeamMemberUnpaidOrder - 获取团队队员未支付订单"""
+
+    fields = {
+        "BeginTime": fields.Int(required=True, dump_to="BeginTime"),
+        "ChargeTypes": fields.List(fields.Str()),
+        "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "OrderBy": fields.Str(required=False, dump_to="OrderBy"),
+        "OrderDir": fields.Str(required=False, dump_to="OrderDir"),
+        "OrderNos": fields.List(fields.Str()),
+        "OrderStates": fields.List(fields.Str()),
+        "OrderTypes": fields.List(fields.Str()),
+        "Regions": fields.List(fields.Int()),
+        "ResourceIds": fields.List(fields.Str()),
+        "ResourceTypes": fields.List(fields.Int()),
+        "TeamId": fields.Int(required=True, dump_to="TeamId"),
+        "VirtualCompanyId": fields.Int(
+            required=True, dump_to="VirtualCompanyId"
+        ),
+    }
+
+
+class DescribeTeamMemberUnpaidOrderResponseSchema(schema.ResponseSchema):
+    """DescribeTeamMemberUnpaidOrder - 获取团队队员未支付订单"""
+
+    fields = {
+        "Limit": fields.Int(required=True, load_from="Limit"),
+        "Offset": fields.Int(required=True, load_from="Offset"),
+        "OrderInfos": fields.List(
+            models.UnpaidOrderInfoSchema(),
+            required=True,
+            load_from="OrderInfos",
+        ),
+        "Total": fields.Int(required=True, load_from="Total"),
+    }
+
+
+"""
 API: DescribeULHostBundles
 
 获取轻量应用云主机套餐列表
@@ -159,6 +468,42 @@ class DescribeULHostBundlesResponseSchema(schema.ResponseSchema):
             models.BundleSchema(), required=True, load_from="Bundles"
         ),
         "Message": fields.Str(required=False, load_from="Message"),
+    }
+
+
+"""
+API: DescribeULHostImage
+
+获取指定数据中心镜像列表
+"""
+
+
+class DescribeULHostImageRequestSchema(schema.RequestSchema):
+    """DescribeULHostImage - 获取指定数据中心镜像列表"""
+
+    fields = {
+        "ImageId": fields.Str(required=False, dump_to="ImageId"),
+        "ImageIds": fields.List(fields.Str()),
+        "ImageType": fields.Str(required=False, dump_to="ImageType"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "OsType": fields.Str(required=False, dump_to="OsType"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Scene": fields.Str(required=False, dump_to="Scene"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DescribeULHostImageResponseSchema(schema.ResponseSchema):
+    """DescribeULHostImage - 获取指定数据中心镜像列表"""
+
+    fields = {
+        "ImageSet": fields.List(
+            models.ULHostImageSetSchema(), required=False, load_from="ImageSet"
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
     }
 
 
@@ -469,6 +814,37 @@ class ResetULHostInstancePasswordResponseSchema(schema.ResponseSchema):
 
 
 """
+API: ResizeCompShareInstance
+
+修改算力平台实例配置
+"""
+
+
+class ResizeCompShareInstanceRequestSchema(schema.RequestSchema):
+    """ResizeCompShareInstance - 修改算力平台实例配置"""
+
+    fields = {
+        "Cpu": fields.Int(required=False, dump_to="Cpu"),
+        "DiskId": fields.Str(required=False, dump_to="DiskId"),
+        "DiskSpace": fields.Str(required=False, dump_to="DiskSpace"),
+        "Gpu": fields.Int(required=False, dump_to="Gpu"),
+        "Memory": fields.Int(required=False, dump_to="Memory"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UHostId": fields.Str(required=True, dump_to="UHostId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ResizeCompShareInstanceResponseSchema(schema.ResponseSchema):
+    """ResizeCompShareInstance - 修改算力平台实例配置"""
+
+    fields = {
+        "UHostId": fields.Str(required=True, load_from="UHostId"),
+    }
+
+
+"""
 API: StartCompShareInstance
 
 启动算力平台实例
@@ -568,6 +944,32 @@ class StopULHostInstanceResponseSchema(schema.ResponseSchema):
     fields = {
         "ULHostId": fields.Str(required=False, load_from="ULHostId"),
     }
+
+
+"""
+API: TerminateCompShareCustomImage
+
+删除算力平台自制镜像
+"""
+
+
+class TerminateCompShareCustomImageRequestSchema(schema.RequestSchema):
+    """TerminateCompShareCustomImage - 删除算力平台自制镜像"""
+
+    fields = {
+        "CompShareImageId": fields.Str(
+            required=True, dump_to="CompShareImageId"
+        ),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class TerminateCompShareCustomImageResponseSchema(schema.ResponseSchema):
+    """TerminateCompShareCustomImage - 删除算力平台自制镜像"""
+
+    fields = {}
 
 
 """

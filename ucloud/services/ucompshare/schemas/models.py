@@ -3,6 +3,181 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class BootDiskInfoSchema(schema.ResponseSchema):
+    """BootDiskInfo - 系统盘信息"""
+
+    fields = {
+        "Features": fields.List(fields.Str()),
+        "InstantResize": fields.Bool(required=False, load_from="InstantResize"),
+        "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
+        "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
+class FeatureModesSchema(schema.ResponseSchema):
+    """FeatureModes - 可以支持的模式类别"""
+
+    fields = {
+        "MinimalCpuPlatform": fields.List(fields.Str()),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "RelatedToImageFeature": fields.List(fields.Str()),
+    }
+
+
+class FeaturesSchema(schema.ResponseSchema):
+    """Features - 虚机可支持的特性"""
+
+    fields = {
+        "Modes": fields.List(FeatureModesSchema()),
+        "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
+class GraphicsMemorySchema(schema.ResponseSchema):
+    """GraphicsMemory - GPU的显存指标"""
+
+    fields = {
+        "Rate": fields.Int(required=False, load_from="Rate"),
+        "Value": fields.Int(required=False, load_from="Value"),
+    }
+
+
+class PerformanceSchema(schema.ResponseSchema):
+    """Performance - GPU的性能指标"""
+
+    fields = {
+        "Rate": fields.Int(required=False, load_from="Rate"),
+        "Value": fields.Float(required=False, load_from="Value"),
+    }
+
+
+class CpuPlatformsSchema(schema.ResponseSchema):
+    """CpuPlatforms - CPU平台信息"""
+
+    fields = {
+        "Amd": fields.List(fields.Str()),
+        "Ampere": fields.List(fields.Str()),
+        "Intel": fields.List(fields.Str()),
+    }
+
+
+class CollectionSchema(schema.ResponseSchema):
+    """Collection - CPU和内存可支持的规格"""
+
+    fields = {
+        "Cpu": fields.Int(required=False, load_from="Cpu"),
+        "Memory": fields.List(fields.Int()),
+        "MinimalCpuPlatform": fields.List(fields.Str()),
+    }
+
+
+class MachineSizesSchema(schema.ResponseSchema):
+    """MachineSizes - GPU、CPU和内存信息"""
+
+    fields = {
+        "Collection": fields.List(CollectionSchema()),
+        "Gpu": fields.Int(required=False, load_from="Gpu"),
+    }
+
+
+class DataDiskInfoSchema(schema.ResponseSchema):
+    """DataDiskInfo - 数据盘信息"""
+
+    fields = {
+        "Features": fields.List(fields.Str()),
+        "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
+        "MinimalSize": fields.Int(required=False, load_from="MinimalSize"),
+        "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
+class DisksSchema(schema.ResponseSchema):
+    """Disks - 磁盘信息"""
+
+    fields = {
+        "BootDisk": fields.List(BootDiskInfoSchema()),
+        "DataDisk": fields.List(DataDiskInfoSchema()),
+        "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
+class AvailableInstanceTypesSchema(schema.ResponseSchema):
+    """AvailableInstanceTypes - https://ushare.ucloudadmin.com/pages/viewpage.action?pageId=104662646"""
+
+    fields = {
+        "CpuPlatforms": CpuPlatformsSchema(),
+        "Disks": fields.List(DisksSchema()),
+        "Features": fields.List(FeaturesSchema()),
+        "GraphicsMemory": GraphicsMemorySchema(),
+        "InstanceType": fields.Str(required=True, load_from="InstanceType"),
+        "MachineClass": fields.Str(required=False, load_from="MachineClass"),
+        "MachineSizes": fields.List(MachineSizesSchema()),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "ParentType": fields.Str(required=False, load_from="ParentType"),
+        "Performance": PerformanceSchema(),
+        "Status": fields.Str(required=False, load_from="Status"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+    }
+
+
+class ProjectsSchema(schema.ResponseSchema):
+    """Projects - 项目详情"""
+
+    fields = {
+        "AccountId": fields.Str(required=False, load_from="AccountId"),
+        "AccountName": fields.Str(required=False, load_from="AccountName"),
+    }
+
+
+class SoftwareSchema(schema.ResponseSchema):
+    """Software -"""
+
+    fields = {
+        "Applications": fields.List(fields.Str()),
+        "CUDAVersion": fields.Str(required=False, load_from="CUDAVersion"),
+        "Framework": fields.Str(required=False, load_from="Framework"),
+        "FrameworkVersion": fields.Str(
+            required=False, load_from="FrameworkVersion"
+        ),
+    }
+
+
+class CompShareImageSchema(schema.ResponseSchema):
+    """CompShareImage - 算力共享平台镜像详情"""
+
+    fields = {
+        "AuthInfo": fields.Int(required=False, load_from="AuthInfo"),
+        "Author": fields.Str(required=False, load_from="Author"),
+        "CompShareImageId": fields.Str(
+            required=False, load_from="CompShareImageId"
+        ),
+        "Container": fields.Str(required=False, load_from="Container"),
+        "Cover": fields.Str(required=False, load_from="Cover"),
+        "CreateTime": fields.Str(required=False, load_from="CreateTime"),
+        "CreatedCount": fields.Str(required=False, load_from="CreatedCount"),
+        "Description": fields.Str(required=False, load_from="Description"),
+        "FailedReason": fields.Str(required=False, load_from="FailedReason"),
+        "FavoritesCount": fields.Str(
+            required=False, load_from="FavoritesCount"
+        ),
+        "ImageOwnerAlias": fields.Str(
+            required=False, load_from="ImageOwnerAlias"
+        ),
+        "ImageType": fields.Str(required=False, load_from="ImageType"),
+        "IsOfficial": fields.Bool(required=False, load_from="IsOfficial"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Owner": ProjectsSchema(),
+        "Price": fields.Float(required=False, load_from="Price"),
+        "PubTime": fields.Str(required=False, load_from="PubTime"),
+        "Readme": fields.Str(required=False, load_from="Readme"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "Softwares": SoftwareSchema(),
+        "Status": fields.Str(required=False, load_from="Status"),
+        "Tags": fields.List(fields.Str()),
+        "Visibility": fields.Int(required=False, load_from="Visibility"),
+    }
+
+
 class WithoutGpuSpecSchema(schema.ResponseSchema):
     """WithoutGpuSpec - 无卡云主机规格信息"""
 
@@ -31,6 +206,47 @@ class UHostDiskSetSchema(schema.ResponseSchema):
     }
 
 
+class GpuMonitorInfoSchema(schema.ResponseSchema):
+    """GpuMonitorInfo - GPU卡监控信息"""
+
+    fields = {
+        "GPU": fields.Str(required=False, load_from="GPU"),
+        "GpuUsageRate": fields.Str(required=False, load_from="GpuUsageRate"),
+        "MemoryUsageRate": fields.Str(
+            required=False, load_from="MemoryUsageRate"
+        ),
+    }
+
+
+class MonitorMessageSchema(schema.ResponseSchema):
+    """MonitorMessage - 监控信息"""
+
+    fields = {
+        "CpuUsageRate": fields.Str(required=False, load_from="CpuUsageRate"),
+        "GpuInfo": fields.List(GpuMonitorInfoSchema()),
+        "MemUsageRate": fields.Str(required=False, load_from="MemUsageRate"),
+    }
+
+
+class DiskPriceInfoSchema(schema.ResponseSchema):
+    """DiskPriceInfo - 磁盘价格信息列表"""
+
+    fields = {
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "IsBoot": fields.Bool(required=False, load_from="IsBoot"),
+        "Price": fields.Float(required=False, load_from="Price"),
+    }
+
+
+class SoftwareAddrSchema(schema.ResponseSchema):
+    """SoftwareAddr -"""
+
+    fields = {
+        "Name": fields.Str(required=False, load_from="Name"),
+        "URL": fields.Str(required=False, load_from="URL"),
+    }
+
+
 class UHostIPSetSchema(schema.ResponseSchema):
     """UHostIPSet -"""
 
@@ -48,24 +264,6 @@ class UHostIPSetSchema(schema.ResponseSchema):
         "Type": fields.Str(required=False, load_from="Type"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
         "Weight": fields.Int(required=False, load_from="Weight"),
-    }
-
-
-class GraphicsMemorySchema(schema.ResponseSchema):
-    """GraphicsMemory - GPU的显存指标"""
-
-    fields = {
-        "Rate": fields.Int(required=False, load_from="Rate"),
-        "Value": fields.Int(required=False, load_from="Value"),
-    }
-
-
-class SoftwareAddrSchema(schema.ResponseSchema):
-    """SoftwareAddr -"""
-
-    fields = {
-        "Name": fields.Str(required=False, load_from="Name"),
-        "URL": fields.Str(required=False, load_from="URL"),
     }
 
 
@@ -100,6 +298,8 @@ class CompShareInstanceSetSchema(schema.ResponseSchema):
         "CpuArch": fields.Str(required=False, load_from="CpuArch"),
         "CpuPlatform": fields.Str(required=False, load_from="CpuPlatform"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "DiscountType": fields.Int(required=False, load_from="DiscountType"),
+        "DiskPriceInfo": fields.List(DiskPriceInfoSchema()),
         "DiskSet": fields.List(UHostDiskSetSchema()),
         "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
         "GPU": fields.Int(required=False, load_from="GPU"),
@@ -119,6 +319,7 @@ class CompShareInstanceSetSchema(schema.ResponseSchema):
         "IsExpire": fields.Str(required=False, load_from="IsExpire"),
         "MachineType": fields.Str(required=False, load_from="MachineType"),
         "Memory": fields.Int(required=False, load_from="Memory"),
+        "MonitorMessages": MonitorMessageSchema(),
         "Name": fields.Str(required=False, load_from="Name"),
         "OsName": fields.Str(required=False, load_from="OsName"),
         "OsType": fields.Str(required=False, load_from="OsType"),
@@ -126,6 +327,7 @@ class CompShareInstanceSetSchema(schema.ResponseSchema):
         "PodId": fields.Str(
             required=False, load_from="PodId"
         ),  # Deprecated, will be removed at 1.0
+        "PostPayPowerOffBillingResource": fields.List(DiskPriceInfoSchema()),
         "PostPayShutdown": fields.Bool(
             required=False, load_from="PostPayShutdown"
         ),  # Deprecated, will be removed at 1.0
@@ -135,6 +337,7 @@ class CompShareInstanceSetSchema(schema.ResponseSchema):
         "QemuVersion": fields.Str(
             required=False, load_from="QemuVersion"
         ),  # Deprecated, will be removed at 1.0
+        "ReleaseTime": fields.Int(required=False, load_from="ReleaseTime"),
         "Remark": fields.Str(required=False, load_from="Remark"),
         "SetId": fields.Int(
             required=False, load_from="SetId"
@@ -143,7 +346,12 @@ class CompShareInstanceSetSchema(schema.ResponseSchema):
         "SshLoginCommand": fields.Str(
             required=False, load_from="SshLoginCommand"
         ),
+        "StartTime": fields.Int(required=False, load_from="StartTime"),
         "State": fields.Str(required=False, load_from="State"),
+        "StopSchedulerTime": fields.Int(
+            required=False, load_from="StopSchedulerTime"
+        ),
+        "StopTime": fields.Int(required=False, load_from="StopTime"),
         "SupportWithoutGpuStart": fields.Bool(
             required=False, load_from="SupportWithoutGpuStart"
         ),
@@ -155,8 +363,55 @@ class CompShareInstanceSetSchema(schema.ResponseSchema):
         "UUID": fields.Str(
             required=False, load_from="UUID"
         ),  # Deprecated, will be removed at 1.0
+        "UpdateTime": fields.Int(required=False, load_from="UpdateTime"),
         "WithoutGpuSpec": WithoutGpuSpecSchema(),
         "Zone": fields.Str(required=False, load_from="Zone"),
+    }
+
+
+class SupportZoneSchema(schema.ResponseSchema):
+    """SupportZone - compshare支持的可用区信息列表"""
+
+    fields = {
+        "Describe": fields.Str(required=False, load_from="Describe"),
+        "Region": fields.Str(required=False, load_from="Region"),
+        "RegionId": fields.Int(required=False, load_from="RegionId"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+        "ZoneId": fields.Int(required=False, load_from="ZoneId"),
+    }
+
+
+class UnpaidOrderDetailSchema(schema.ResponseSchema):
+    """UnpaidOrderDetail - 未支付订单详情"""
+
+    fields = {
+        "BillItemId": fields.Str(required=False, load_from="BillItemId"),
+        "Multiple": fields.Int(required=False, load_from="Multiple"),
+        "ProductId": fields.Int(required=False, load_from="ProductId"),
+        "PurchaseValue": fields.Int(required=False, load_from="PurchaseValue"),
+    }
+
+
+class UnpaidOrderInfoSchema(schema.ResponseSchema):
+    """UnpaidOrderInfo - 未支付订单信息"""
+
+    fields = {
+        "Amount": fields.Int(required=False, load_from="Amount"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "EndTime": fields.Int(required=False, load_from="EndTime"),
+        "OrderDetail": fields.List(UnpaidOrderDetailSchema()),
+        "OrderNo": fields.Str(required=False, load_from="OrderNo"),
+        "OrderState": fields.Str(required=False, load_from="OrderState"),
+        "OrderType": fields.Str(required=False, load_from="OrderType"),
+        "OriginalPrice": fields.Str(required=False, load_from="OriginalPrice"),
+        "Quantity": fields.Str(required=False, load_from="Quantity"),
+        "RegionId": fields.Str(required=False, load_from="RegionId"),
+        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
+        "ResourceType": fields.Str(required=False, load_from="ResourceType"),
+        "StartTime": fields.Int(required=False, load_from="StartTime"),
+        "TradeNo": fields.Str(required=False, load_from="TradeNo"),
+        "UpdateTime": fields.Int(required=False, load_from="UpdateTime"),
     }
 
 
@@ -170,6 +425,35 @@ class BundleSchema(schema.ResponseSchema):
         "Memory": fields.Int(required=False, load_from="Memory"),
         "SysDiskSpace": fields.Int(required=False, load_from="SysDiskSpace"),
         "TrafficPacket": fields.Int(required=False, load_from="TrafficPacket"),
+    }
+
+
+class ULHostImageSetSchema(schema.ResponseSchema):
+    """ULHostImageSet - DescribeULHostImage"""
+
+    fields = {
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "DisplayName": fields.Str(required=False, load_from="DisplayName"),
+        "Features": fields.List(fields.Str()),
+        "ImageDescription": fields.Str(
+            required=False, load_from="ImageDescription"
+        ),
+        "ImageId": fields.Str(required=False, load_from="ImageId"),
+        "ImageLogoLink": fields.Str(required=False, load_from="ImageLogoLink"),
+        "ImageName": fields.Str(required=False, load_from="ImageName"),
+        "ImageSize": fields.Int(required=False, load_from="ImageSize"),
+        "ImageType": fields.Str(required=False, load_from="ImageType"),
+        "IntegratedSoftware": fields.Str(
+            required=False, load_from="IntegratedSoftware"
+        ),
+        "MaintainEol": fields.Str(required=False, load_from="MaintainEol"),
+        "MinimalCPU": fields.Str(required=False, load_from="MinimalCPU"),
+        "OsName": fields.Str(required=False, load_from="OsName"),
+        "OsType": fields.Str(required=False, load_from="OsType"),
+        "SceneCategories": fields.List(fields.Str()),
+        "State": fields.Str(required=False, load_from="State"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
     }
 
 

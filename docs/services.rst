@@ -234,13 +234,6 @@ UK8S
    :members:
 
 
-ULightHost
-----------
-
-.. autoclass:: ucloud.services.ulighthost.client.ULightHostClient
-   :members:
-
-
 ULogService
 -----------
 
