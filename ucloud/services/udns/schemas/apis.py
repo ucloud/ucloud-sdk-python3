@@ -167,8 +167,11 @@ class DescribeUDNSRecordRequestSchema(schema.RequestSchema):
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Query": fields.Str(required=False, dump_to="Query"),
         "RecordIds": fields.List(fields.Str()),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "SortDir": fields.Str(required=False, dump_to="SortDir"),
+        "SortKey": fields.Str(required=False, dump_to="SortKey"),
     }
 
 
@@ -255,6 +258,7 @@ class ModifyUDNSRecordRequestSchema(schema.RequestSchema):
         "Region": fields.Str(required=True, dump_to="Region"),
         "Remark": fields.Str(required=False, dump_to="Remark"),
         "TTL": fields.Int(required=False, dump_to="TTL"),
+        "Type": fields.Str(required=False, dump_to="Type"),
         "Value": fields.Str(required=False, dump_to="Value"),
         "ValueType": fields.Str(required=False, dump_to="ValueType"),
     }

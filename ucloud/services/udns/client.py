@@ -202,7 +202,10 @@ class UDNSClient(Client):
         - **DNSZoneId** (str) - (Required) 域名资源ID
         - **Limit** (int) - 数据分页值, 默认为20
         - **Offset** (int) - 数据偏移量, 默认为0
+        - **Query** (str) - 模糊查询记录
         - **RecordIds** (list) - 域名记录资源ID
+        - **SortDir** (str) - 排序方式，支持asc desc
+        - **SortKey** (str) - 排序字段，只支持host update_time
 
         **Response**
 
@@ -270,6 +273,7 @@ class UDNSClient(Client):
         **ZoneInfo**
         - **ChargeType** (str) - 计费类型（Dynamic、Month、Year）
         - **CreateTime** (int) - 创建时间
+        - **DNSZoneId** (str) - UDNS私有域名 Zone ID
         - **DNSZoneName** (str) - 域名名称
         - **ExpireTime** (int) - 过期时间
         - **IsAutoRenew** (str) - 是否开启自动续费（Yes No）
@@ -333,6 +337,7 @@ class UDNSClient(Client):
         - **RecordId** (str) - (Required) 域名记录资源ID
         - **Remark** (str) - 记录的备注信息
         - **TTL** (int) - TTL值，单位为秒
+        - **Type** (str) - 记录类型。枚举值，“A”,"CNAME","MX","AAAA","SRV","PTR","TXT"。
         - **Value** (str) - 数值组，支持逗号分割。格式为：Value|权重|Enable，其中权重支持1-10，Enable为枚举值（1为启用，0为禁用）。输入格式示例：192.168.1.1|1|1,192.168.1.2|10|0。
         - **ValueType** (str) - 值类型。枚举值，“Normal”，标准；“Multivalue”，多值返回。仅在值为“Multivalue”时，Value的权重生效。
 
