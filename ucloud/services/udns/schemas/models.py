@@ -45,6 +45,7 @@ class ZoneInfoSchema(schema.ResponseSchema):
     fields = {
         "ChargeType": fields.Str(required=True, load_from="ChargeType"),
         "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "DNSZoneId": fields.Str(required=True, load_from="DNSZoneId"),
         "DNSZoneName": fields.Str(required=True, load_from="DNSZoneName"),
         "ExpireTime": fields.Int(required=True, load_from="ExpireTime"),
         "IsAutoRenew": fields.Str(required=True, load_from="IsAutoRenew"),
