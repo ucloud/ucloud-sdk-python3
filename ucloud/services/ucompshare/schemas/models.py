@@ -3,6 +3,16 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class CpuPlatformsSchema(schema.ResponseSchema):
+    """CpuPlatforms - CPU平台信息"""
+
+    fields = {
+        "Amd": fields.List(fields.Str()),
+        "Ampere": fields.List(fields.Str()),
+        "Intel": fields.List(fields.Str()),
+    }
+
+
 class BootDiskInfoSchema(schema.ResponseSchema):
     """BootDiskInfo - 系统盘信息"""
 
@@ -11,6 +21,55 @@ class BootDiskInfoSchema(schema.ResponseSchema):
         "InstantResize": fields.Bool(required=False, load_from="InstantResize"),
         "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
         "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
+class DataDiskInfoSchema(schema.ResponseSchema):
+    """DataDiskInfo - 数据盘信息"""
+
+    fields = {
+        "Features": fields.List(fields.Str()),
+        "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
+        "MinimalSize": fields.Int(required=False, load_from="MinimalSize"),
+        "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
+class DisksSchema(schema.ResponseSchema):
+    """Disks - 磁盘信息"""
+
+    fields = {
+        "BootDisk": fields.List(BootDiskInfoSchema()),
+        "DataDisk": fields.List(DataDiskInfoSchema()),
+        "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
+class CollectionSchema(schema.ResponseSchema):
+    """Collection - CPU和内存可支持的规格"""
+
+    fields = {
+        "Cpu": fields.Int(required=False, load_from="Cpu"),
+        "Memory": fields.List(fields.Int()),
+        "MinimalCpuPlatform": fields.List(fields.Str()),
+    }
+
+
+class MachineSizesSchema(schema.ResponseSchema):
+    """MachineSizes - GPU、CPU和内存信息"""
+
+    fields = {
+        "Collection": fields.List(CollectionSchema()),
+        "Gpu": fields.Int(required=False, load_from="Gpu"),
+    }
+
+
+class PerformanceSchema(schema.ResponseSchema):
+    """Performance - GPU的性能指标"""
+
+    fields = {
+        "Rate": fields.Int(required=False, load_from="Rate"),
+        "Value": fields.Float(required=False, load_from="Value"),
     }
 
 
@@ -39,65 +98,6 @@ class GraphicsMemorySchema(schema.ResponseSchema):
     fields = {
         "Rate": fields.Int(required=False, load_from="Rate"),
         "Value": fields.Int(required=False, load_from="Value"),
-    }
-
-
-class PerformanceSchema(schema.ResponseSchema):
-    """Performance - GPU的性能指标"""
-
-    fields = {
-        "Rate": fields.Int(required=False, load_from="Rate"),
-        "Value": fields.Float(required=False, load_from="Value"),
-    }
-
-
-class CpuPlatformsSchema(schema.ResponseSchema):
-    """CpuPlatforms - CPU平台信息"""
-
-    fields = {
-        "Amd": fields.List(fields.Str()),
-        "Ampere": fields.List(fields.Str()),
-        "Intel": fields.List(fields.Str()),
-    }
-
-
-class CollectionSchema(schema.ResponseSchema):
-    """Collection - CPU和内存可支持的规格"""
-
-    fields = {
-        "Cpu": fields.Int(required=False, load_from="Cpu"),
-        "Memory": fields.List(fields.Int()),
-        "MinimalCpuPlatform": fields.List(fields.Str()),
-    }
-
-
-class MachineSizesSchema(schema.ResponseSchema):
-    """MachineSizes - GPU、CPU和内存信息"""
-
-    fields = {
-        "Collection": fields.List(CollectionSchema()),
-        "Gpu": fields.Int(required=False, load_from="Gpu"),
-    }
-
-
-class DataDiskInfoSchema(schema.ResponseSchema):
-    """DataDiskInfo - 数据盘信息"""
-
-    fields = {
-        "Features": fields.List(fields.Str()),
-        "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
-        "MinimalSize": fields.Int(required=False, load_from="MinimalSize"),
-        "Name": fields.Str(required=False, load_from="Name"),
-    }
-
-
-class DisksSchema(schema.ResponseSchema):
-    """Disks - 磁盘信息"""
-
-    fields = {
-        "BootDisk": fields.List(BootDiskInfoSchema()),
-        "DataDisk": fields.List(DataDiskInfoSchema()),
-        "Name": fields.Str(required=False, load_from="Name"),
     }
 
 
@@ -148,61 +148,60 @@ class CompShareImageSchema(schema.ResponseSchema):
     fields = {
         "AuthInfo": fields.Int(required=False, load_from="AuthInfo"),
         "Author": fields.Str(required=False, load_from="Author"),
+        "AutoStart": fields.Bool(required=False, load_from="AutoStart"),
         "CompShareImageId": fields.Str(
             required=False, load_from="CompShareImageId"
         ),
         "Container": fields.Str(required=False, load_from="Container"),
         "Cover": fields.Str(required=False, load_from="Cover"),
-        "CreateTime": fields.Str(required=False, load_from="CreateTime"),
-        "CreatedCount": fields.Str(required=False, load_from="CreatedCount"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "CreatedCount": fields.Int(required=False, load_from="CreatedCount"),
         "Description": fields.Str(required=False, load_from="Description"),
         "FailedReason": fields.Str(required=False, load_from="FailedReason"),
-        "FavoritesCount": fields.Str(
+        "FavoritesCount": fields.Int(
             required=False, load_from="FavoritesCount"
         ),
+        "GroupId": fields.Str(required=False, load_from="GroupId"),
+        "ImageCharge": fields.Bool(required=False, load_from="ImageCharge"),
         "ImageOwnerAlias": fields.Str(
             required=False, load_from="ImageOwnerAlias"
         ),
         "ImageType": fields.Str(required=False, load_from="ImageType"),
+        "ImageUseTime": fields.Int(required=False, load_from="ImageUseTime"),
         "IsOfficial": fields.Bool(required=False, load_from="IsOfficial"),
         "Name": fields.Str(required=False, load_from="Name"),
         "Owner": ProjectsSchema(),
         "Price": fields.Float(required=False, load_from="Price"),
-        "PubTime": fields.Str(required=False, load_from="PubTime"),
+        "PubTime": fields.Int(required=False, load_from="PubTime"),
         "Readme": fields.Str(required=False, load_from="Readme"),
         "Size": fields.Int(required=False, load_from="Size"),
         "Softwares": SoftwareSchema(),
+        "SourceGpuType": fields.Str(required=False, load_from="SourceGpuType"),
         "Status": fields.Str(required=False, load_from="Status"),
         "Tags": fields.List(fields.Str()),
+        "VersionDesc": fields.Str(required=False, load_from="VersionDesc"),
+        "VersionName": fields.Str(required=False, load_from="VersionName"),
         "Visibility": fields.Int(required=False, load_from="Visibility"),
     }
 
 
-class WithoutGpuSpecSchema(schema.ResponseSchema):
-    """WithoutGpuSpec - 无卡云主机规格信息"""
+class UHostIPSetSchema(schema.ResponseSchema):
+    """UHostIPSet -"""
 
     fields = {
-        "Cpu": fields.Int(required=False, load_from="Cpu"),
-        "Gpu": fields.Int(required=False, load_from="Gpu"),
-        "Memory": fields.Int(required=False, load_from="Memory"),
-    }
-
-
-class UHostDiskSetSchema(schema.ResponseSchema):
-    """UHostDiskSet -"""
-
-    fields = {
-        "BackupType": fields.Str(
-            required=False, load_from="BackupType"
-        ),  # Deprecated, will be removed at 1.0
-        "DiskId": fields.Str(required=False, load_from="DiskId"),
-        "DiskType": fields.Str(required=True, load_from="DiskType"),
-        "Drive": fields.Str(required=False, load_from="Drive"),
-        "Encrypted": fields.Str(required=False, load_from="Encrypted"),
-        "IsBoot": fields.Str(required=True, load_from="IsBoot"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Size": fields.Int(required=False, load_from="Size"),
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "Default": fields.Str(required=False, load_from="Default"),
+        "IP": fields.Str(required=False, load_from="IP"),
+        "IPId": fields.Str(required=False, load_from="IPId"),
+        "IPMode": fields.Str(required=True, load_from="IPMode"),
+        "Mac": fields.Str(required=False, load_from="Mac"),
+        "NetworkInterfaceId": fields.Str(
+            required=False, load_from="NetworkInterfaceId"
+        ),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
         "Type": fields.Str(required=False, load_from="Type"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "Weight": fields.Int(required=False, load_from="Weight"),
     }
 
 
@@ -238,6 +237,16 @@ class DiskPriceInfoSchema(schema.ResponseSchema):
     }
 
 
+class WithoutGpuSpecSchema(schema.ResponseSchema):
+    """WithoutGpuSpec - 无卡云主机规格信息"""
+
+    fields = {
+        "Cpu": fields.Int(required=False, load_from="Cpu"),
+        "Gpu": fields.Int(required=False, load_from="Gpu"),
+        "Memory": fields.Int(required=False, load_from="Memory"),
+    }
+
+
 class SoftwareAddrSchema(schema.ResponseSchema):
     """SoftwareAddr -"""
 
@@ -247,23 +256,21 @@ class SoftwareAddrSchema(schema.ResponseSchema):
     }
 
 
-class UHostIPSetSchema(schema.ResponseSchema):
-    """UHostIPSet -"""
+class UHostDiskSetSchema(schema.ResponseSchema):
+    """UHostDiskSet -"""
 
     fields = {
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "Default": fields.Str(required=False, load_from="Default"),
-        "IP": fields.Str(required=False, load_from="IP"),
-        "IPId": fields.Str(required=False, load_from="IPId"),
-        "IPMode": fields.Str(required=True, load_from="IPMode"),
-        "Mac": fields.Str(required=False, load_from="Mac"),
-        "NetworkInterfaceId": fields.Str(
-            required=False, load_from="NetworkInterfaceId"
-        ),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "BackupType": fields.Str(
+            required=False, load_from="BackupType"
+        ),  # Deprecated, will be removed at 1.0
+        "DiskId": fields.Str(required=False, load_from="DiskId"),
+        "DiskType": fields.Str(required=True, load_from="DiskType"),
+        "Drive": fields.Str(required=False, load_from="Drive"),
+        "Encrypted": fields.Str(required=False, load_from="Encrypted"),
+        "IsBoot": fields.Str(required=True, load_from="IsBoot"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Size": fields.Int(required=False, load_from="Size"),
         "Type": fields.Str(required=False, load_from="Type"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-        "Weight": fields.Int(required=False, load_from="Weight"),
     }
 
 
@@ -369,6 +376,15 @@ class CompShareInstanceSetSchema(schema.ResponseSchema):
     }
 
 
+class SoftwarePortSchema(schema.ResponseSchema):
+    """SoftwarePort - 应用端口信息"""
+
+    fields = {
+        "Port": fields.Int(required=False, load_from="Port"),
+        "Software": fields.Str(required=False, load_from="Software"),
+    }
+
+
 class SupportZoneSchema(schema.ResponseSchema):
     """SupportZone - compshare支持的可用区信息列表"""
 
@@ -378,6 +394,88 @@ class SupportZoneSchema(schema.ResponseSchema):
         "RegionId": fields.Int(required=False, load_from="RegionId"),
         "Zone": fields.Str(required=False, load_from="Zone"),
         "ZoneId": fields.Int(required=False, load_from="ZoneId"),
+    }
+
+
+class ModelRepositoryModelSchema(schema.ResponseSchema):
+    """ModelRepositoryModel - 模型库模型信息"""
+
+    fields = {
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Path": fields.Str(required=False, load_from="Path"),
+        "Size": fields.Str(required=False, load_from="Size"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+    }
+
+
+class CompshareImageGroupSchema(schema.ResponseSchema):
+    """CompshareImageGroup - 镜像组信息"""
+
+    fields = {
+        "CreatedCount": fields.Int(required=False, load_from="CreatedCount"),
+        "Data": fields.List(CompShareImageSchema()),
+        "FavoritesCount": fields.Int(
+            required=False, load_from="FavoritesCount"
+        ),
+        "GroupId": fields.Str(required=False, load_from="GroupId"),
+        "ImageDesc": fields.Str(required=False, load_from="ImageDesc"),
+        "ImageName": fields.Str(required=False, load_from="ImageName"),
+        "ImageUseTime": fields.Int(required=False, load_from="ImageUseTime"),
+        "IsFavorite": fields.Bool(required=False, load_from="IsFavorite"),
+        "RecommendCount": fields.Int(
+            required=False, load_from="RecommendCount"
+        ),
+        "Status": fields.Str(required=False, load_from="Status"),
+    }
+
+
+class ResourceTagItemSchema(schema.ResponseSchema):
+    """ResourceTagItem - 资源标识"""
+
+    fields = {
+        "KeyId": fields.Str(required=False, load_from="KeyId"),
+        "Value": fields.Str(required=False, load_from="Value"),
+    }
+
+
+class OrderDetailItemSchema(schema.ResponseSchema):
+    """OrderDetailItem - 配置详情"""
+
+    fields = {
+        "ProductName": fields.Str(required=False, load_from="ProductName"),
+        "Value": fields.Str(required=False, load_from="Value"),
+    }
+
+
+class OrderInfoSchema(schema.ResponseSchema):
+    """OrderInfo - 订单信息"""
+
+    fields = {
+        "Amount": fields.Str(required=False, load_from="Amount"),
+        "AmountCoupon": fields.Str(required=False, load_from="AmountCoupon"),
+        "AmountFree": fields.Str(required=False, load_from="AmountFree"),
+        "AmountReal": fields.Str(required=False, load_from="AmountReal"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "Count": fields.Int(required=False, load_from="Count"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "EndTime": fields.Int(required=False, load_from="EndTime"),
+        "OrderDetail": fields.List(OrderDetailItemSchema()),
+        "OrderDetailOld": fields.List(OrderDetailItemSchema()),
+        "OrderNo": fields.Str(required=False, load_from="OrderNo"),
+        "OrderState": fields.Str(required=False, load_from="OrderState"),
+        "OrderType": fields.Str(required=False, load_from="OrderType"),
+        "OriginalPrice": fields.Str(required=False, load_from="OriginalPrice"),
+        "ProjectName": fields.Str(required=False, load_from="ProjectName"),
+        "Quantity": fields.Str(required=False, load_from="Quantity"),
+        "RegionId": fields.Str(required=False, load_from="RegionId"),
+        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
+        "ResourceTag": fields.List(ResourceTagItemSchema()),
+        "ResourceType": fields.Str(required=False, load_from="ResourceType"),
+        "SpotDiscount": fields.Str(required=False, load_from="SpotDiscount"),
+        "StartTime": fields.Int(required=False, load_from="StartTime"),
+        "TradeNo": fields.Str(required=False, load_from="TradeNo"),
+        "UpdateTime": fields.Int(required=False, load_from="UpdateTime"),
     }
 
 
@@ -513,6 +611,89 @@ class ULHostInstanceSetSchema(schema.ResponseSchema):
     }
 
 
+class DiskUpgradePriceDetailSchema(schema.ResponseSchema):
+    """DiskUpgradePriceDetail -"""
+
+    fields = {
+        "Snapshot": fields.Float(required=False, load_from="Snapshot"),
+        "UDisk": fields.Float(required=False, load_from="UDisk"),
+    }
+
+
+class CompSharePriceDetailSchema(schema.ResponseSchema):
+    """CompSharePriceDetail - 算力平台实例询价详情"""
+
+    fields = {
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "CompShareImage": fields.Float(
+            required=False, load_from="CompShareImage"
+        ),
+        "Disks": fields.Float(required=False, load_from="Disks"),
+        "Instance": fields.Float(required=False, load_from="Instance"),
+        "InstanceDiscountType": fields.Int(
+            required=False, load_from="InstanceDiscountType"
+        ),
+        "ListPrice": fields.Str(required=False, load_from="ListPrice"),
+        "OriginalPrice": fields.Float(
+            required=False, load_from="OriginalPrice"
+        ),
+    }
+
+
+class UHostRefundPriceSetSchema(schema.ResponseSchema):
+    """UHostRefundPriceSet - 删除退费详情"""
+
+    fields = {
+        "Code": fields.Int(required=True, load_from="Code"),
+        "ErrMessage": fields.Str(required=False, load_from="ErrMessage"),
+        "RefundPrice": fields.Float(required=False, load_from="RefundPrice"),
+        "UHostId": fields.Str(required=True, load_from="UHostId"),
+    }
+
+
+class CompShareTeamDetailInfoSchema(schema.ResponseSchema):
+    """CompShareTeamDetailInfo - 团队信息"""
+
+    fields = {
+        "CompanyId": fields.Int(required=False, load_from="CompanyId"),
+        "Deleted": fields.Int(required=False, load_from="Deleted"),
+        "Description": fields.Str(required=False, load_from="Description"),
+        "Id": fields.Int(required=False, load_from="Id"),
+        "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
+class TeamRelationSchema(schema.ResponseSchema):
+    """TeamRelation - 团队关系信息"""
+
+    fields = {
+        "AllocateAmount": fields.Int(
+            required=False, load_from="AllocateAmount"
+        ),
+        "AvailableAmount": fields.Int(
+            required=False, load_from="AvailableAmount"
+        ),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "RemarkName": fields.Str(required=False, load_from="RemarkName"),
+        "Status": fields.Str(required=False, load_from="Status"),
+        "TeamId": fields.Int(required=False, load_from="TeamId"),
+        "TeamName": fields.Str(required=False, load_from="TeamName"),
+        "UserCompanyId": fields.Int(required=False, load_from="UserCompanyId"),
+        "VirtualCompanyId": fields.Int(
+            required=False, load_from="VirtualCompanyId"
+        ),
+    }
+
+
+class OpenClawModelInfoSchema(schema.ResponseSchema):
+    """OpenClawModelInfo - OpenClaw 模型信息"""
+
+    fields = {
+        "Id": fields.Str(required=False, load_from="Id"),
+        "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
 class ULHostPriceSetSchema(schema.ResponseSchema):
     """ULHostPriceSet - 轻量应用主机价格详情"""
 
@@ -522,4 +703,62 @@ class ULHostPriceSetSchema(schema.ResponseSchema):
             required=False, load_from="OriginalPrice"
         ),
         "Price": fields.Float(required=False, load_from="Price"),
+    }
+
+
+class CompShareTeamInfoSchema(schema.ResponseSchema):
+    """CompShareTeamInfo - 团队列表信息Detail"""
+
+    fields = {
+        "CompanyId": fields.Int(required=False, load_from="CompanyId"),
+        "Description": fields.Str(required=False, load_from="Description"),
+        "Id": fields.Int(required=False, load_from="Id"),
+        "MemberCount": fields.Int(required=False, load_from="MemberCount"),
+        "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
+class CompShareTeamInviteInfoSchema(schema.ResponseSchema):
+    """CompShareTeamInviteInfo - 邀请成员信息"""
+
+    fields = {
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "RemarkName": fields.Str(required=False, load_from="RemarkName"),
+        "Status": fields.Str(required=False, load_from="Status"),
+        "TeamId": fields.Int(required=False, load_from="TeamId"),
+        "TeamName": fields.Str(required=False, load_from="TeamName"),
+        "UserCompanyId": fields.Int(required=False, load_from="UserCompanyId"),
+        "VirtualCompanyId": fields.Int(
+            required=False, load_from="VirtualCompanyId"
+        ),
+    }
+
+
+class CompShareTeamJoinedInfoSchema(schema.ResponseSchema):
+    """CompShareTeamJoinedInfo - 加入成员信息"""
+
+    fields = {
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "IsPersonalAccount": fields.Bool(
+            required=False, load_from="IsPersonalAccount"
+        ),
+        "RemarkName": fields.Str(required=False, load_from="RemarkName"),
+        "Status": fields.Str(required=False, load_from="Status"),
+        "TeamId": fields.Int(required=False, load_from="TeamId"),
+        "TeamName": fields.Str(required=False, load_from="TeamName"),
+        "UserCompanyId": fields.Int(required=False, load_from="UserCompanyId"),
+        "VirtualCompanyId": fields.Int(
+            required=False, load_from="VirtualCompanyId"
+        ),
+    }
+
+
+class CompShareTeamOperateLogInfoSchema(schema.ResponseSchema):
+    """CompShareTeamOperateLogInfo - 算力团队操作日志信息"""
+
+    fields = {
+        "Content": fields.Str(required=False, load_from="Content"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "OperateType": fields.Str(required=False, load_from="OperateType"),
+        "Status": fields.Str(required=False, load_from="Status"),
     }
