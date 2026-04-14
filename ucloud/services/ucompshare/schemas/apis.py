@@ -8,6 +8,83 @@ from ucloud.services.ucompshare.schemas import models
 
 
 """
+API: AttachCompshareDisk
+
+将一个可用的UDisk挂载到某台主机上
+"""
+
+
+class AttachCompshareDiskRequestSchema(schema.RequestSchema):
+    """AttachCompshareDisk - 将一个可用的UDisk挂载到某台主机上"""
+
+    fields = {
+        "EnableCrossPodAttach": fields.Str(
+            required=False, dump_to="EnableCrossPodAttach"
+        ),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UDiskId": fields.Str(required=True, dump_to="UDiskId"),
+        "UHostId": fields.Str(required=False, dump_to="UHostId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class AttachCompshareDiskResponseSchema(schema.ResponseSchema):
+    """AttachCompshareDisk - 将一个可用的UDisk挂载到某台主机上"""
+
+    fields = {}
+
+
+"""
+API: AttachUS3
+
+挂载us3
+"""
+
+
+class AttachUS3RequestSchema(schema.RequestSchema):
+    """AttachUS3 - 挂载us3"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UHostId": fields.Str(required=True, dump_to="UHostId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class AttachUS3ResponseSchema(schema.ResponseSchema):
+    """AttachUS3 - 挂载us3"""
+
+    fields = {}
+
+
+"""
+API: CheckCompShareNetOptimizer
+
+检查算力平台账号是否开通访问加速
+"""
+
+
+class CheckCompShareNetOptimizerRequestSchema(schema.RequestSchema):
+    """CheckCompShareNetOptimizer - 检查算力平台账号是否开通访问加速"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class CheckCompShareNetOptimizerResponseSchema(schema.ResponseSchema):
+    """CheckCompShareNetOptimizer - 检查算力平台账号是否开通访问加速"""
+
+    fields = {
+        "Optimized": fields.Bool(required=True, load_from="Optimized"),
+    }
+
+
+"""
 API: CheckULHostResourceCapacity
 
 检查轻量应用云主机资源余量
@@ -41,6 +118,39 @@ class CheckULHostResourceCapacityResponseSchema(schema.ResponseSchema):
         "Message": fields.Str(required=True, load_from="Message"),
         "ResourceEnough": fields.Bool(
             required=True, load_from="ResourceEnough"
+        ),
+    }
+
+
+"""
+API: CopyCompShareCustomImage
+
+复制算力平台镜像
+"""
+
+
+class CopyCompShareCustomImageRequestSchema(schema.RequestSchema):
+    """CopyCompShareCustomImage - 复制算力平台镜像"""
+
+    fields = {
+        "CompShareImageId": fields.Str(
+            required=True, dump_to="CompShareImageId"
+        ),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "TargetImageName": fields.Str(
+            required=False, dump_to="TargetImageName"
+        ),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class CopyCompShareCustomImageResponseSchema(schema.ResponseSchema):
+    """CopyCompShareCustomImage - 复制算力平台镜像"""
+
+    fields = {
+        "NewCompShareImageId": fields.Str(
+            required=True, load_from="NewCompShareImageId"
         ),
     }
 
@@ -150,6 +260,71 @@ class CreateCompShareInstanceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: CreateCompShareTeam
+
+创建团队
+"""
+
+
+class CreateCompShareTeamRequestSchema(schema.RequestSchema):
+    """CreateCompShareTeam - 创建团队"""
+
+    fields = {
+        "Description": fields.Str(required=False, dump_to="Description"),
+        "Name": fields.Str(required=True, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class CreateCompShareTeamResponseSchema(schema.ResponseSchema):
+    """CreateCompShareTeam - 创建团队"""
+
+    fields = {
+        "Message": fields.Str(required=False, load_from="Message"),
+    }
+
+
+"""
+API: CreateCompShareTeamRelation
+
+发送团队邀请
+"""
+
+
+class CreateCompShareTeamRelationParamUserInfoSchema(schema.RequestSchema):
+    """CreateCompShareTeamRelationParamUserInfo -"""
+
+    fields = {
+        "RemarkName": fields.Str(required=False, dump_to="RemarkName"),
+        "UserCompanyId": fields.Int(required=True, dump_to="UserCompanyId"),
+    }
+
+
+class CreateCompShareTeamRelationRequestSchema(schema.RequestSchema):
+    """CreateCompShareTeamRelation - 发送团队邀请"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "TeamId": fields.Int(required=True, dump_to="TeamId"),
+        "UserInfo": fields.List(
+            CreateCompShareTeamRelationParamUserInfoSchema()
+        ),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class CreateCompShareTeamRelationResponseSchema(schema.ResponseSchema):
+    """CreateCompShareTeamRelation - 发送团队邀请"""
+
+    fields = {
+        "ErrorMap": fields.Str(),
+    }
+
+
+"""
 API: CreateULHostInstance
 
 创建轻量应用云主机
@@ -183,6 +358,87 @@ class CreateULHostInstanceResponseSchema(schema.ResponseSchema):
     fields = {
         "Message": fields.Str(required=True, load_from="Message"),
         "ULHostId": fields.Str(required=True, load_from="ULHostId"),
+    }
+
+
+"""
+API: DeleteCompShareStopScheduler
+
+删除实例定时关机任务
+"""
+
+
+class DeleteCompShareStopSchedulerRequestSchema(schema.RequestSchema):
+    """DeleteCompShareStopScheduler - 删除实例定时关机任务"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UHostId": fields.Str(required=True, dump_to="UHostId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DeleteCompShareStopSchedulerResponseSchema(schema.ResponseSchema):
+    """DeleteCompShareStopScheduler - 删除实例定时关机任务"""
+
+    fields = {}
+
+
+"""
+API: DeleteCompShareTeam
+
+删除团队
+"""
+
+
+class DeleteCompShareTeamRequestSchema(schema.RequestSchema):
+    """DeleteCompShareTeam - 删除团队"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "TeamId": fields.Int(required=True, dump_to="TeamId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DeleteCompShareTeamResponseSchema(schema.ResponseSchema):
+    """DeleteCompShareTeam - 删除团队"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: DeleteCompshareDisk
+
+卸载并删除算力磁盘
+"""
+
+
+class DeleteCompshareDiskRequestSchema(schema.RequestSchema):
+    """DeleteCompshareDisk - 卸载并删除算力磁盘"""
+
+    fields = {
+        "OrganizationID": fields.Int(required=True, dump_to="OrganizationID"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "TopOrganizationID": fields.Int(
+            required=True, dump_to="TopOrganizationID"
+        ),
+        "UDiskId": fields.Str(required=True, dump_to="UDiskId"),
+        "UHostId": fields.Str(required=False, dump_to="UHostId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DeleteCompshareDiskResponseSchema(schema.ResponseSchema):
+    """DeleteCompshareDisk - 卸载并删除算力磁盘"""
+
+    fields = {
+        "UDiskId": fields.Str(required=True, load_from="UDiskId"),
     }
 
 
@@ -303,6 +559,88 @@ class DescribeCompShareCustomImagesResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeCompShareGpuInventory
+
+查询GPU卡余量库存
+"""
+
+
+class DescribeCompShareGpuInventoryRequestSchema(schema.RequestSchema):
+    """DescribeCompShareGpuInventory - 查询GPU卡余量库存"""
+
+    fields = {
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DescribeCompShareGpuInventoryResponseSchema(schema.ResponseSchema):
+    """DescribeCompShareGpuInventory - 查询GPU卡余量库存"""
+
+    fields = {
+        "GpuInventoryByZone": fields.Str(),
+        "SpotUnsupportedGpuTypes": fields.List(
+            fields.Str(), required=False, load_from="SpotUnsupportedGpuTypes"
+        ),
+        "UpdateTime": fields.Int(required=False, load_from="UpdateTime"),
+    }
+
+
+"""
+API: DescribeCompShareImageShareAccounts
+
+获取镜像共享的账号列表
+"""
+
+
+class DescribeCompShareImageShareAccountsRequestSchema(schema.RequestSchema):
+    """DescribeCompShareImageShareAccounts - 获取镜像共享的账号列表"""
+
+    fields = {
+        "CompShareImageId": fields.Str(
+            required=True, dump_to="CompShareImageId"
+        ),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DescribeCompShareImageShareAccountsResponseSchema(schema.ResponseSchema):
+    """DescribeCompShareImageShareAccounts - 获取镜像共享的账号列表"""
+
+    fields = {
+        "AccountSet": fields.List(
+            models.ProjectsSchema(), required=True, load_from="AccountSet"
+        ),
+    }
+
+
+"""
+API: DescribeCompShareImageTags
+
+获取镜像标签列表
+"""
+
+
+class DescribeCompShareImageTagsRequestSchema(schema.RequestSchema):
+    """DescribeCompShareImageTags - 获取镜像标签列表"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DescribeCompShareImageTagsResponseSchema(schema.ResponseSchema):
+    """DescribeCompShareImageTags - 获取镜像标签列表"""
+
+    fields = {
+        "Tags": fields.List(fields.Str(), required=True, load_from="Tags"),
+    }
+
+
+"""
 API: DescribeCompShareImages
 
 可获取平台、应用镜像信息
@@ -374,6 +712,90 @@ class DescribeCompShareInstanceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeCompShareMachineTypeFamilies
+
+获取实例规格族列表（所有机型的信息）
+"""
+
+
+class DescribeCompShareMachineTypeFamiliesRequestSchema(schema.RequestSchema):
+    """DescribeCompShareMachineTypeFamilies - 获取实例规格族列表（所有机型的信息）"""
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+    }
+
+
+class DescribeCompShareMachineTypeFamiliesResponseSchema(schema.ResponseSchema):
+    """DescribeCompShareMachineTypeFamilies - 获取实例规格族列表（所有机型的信息）"""
+
+    fields = {
+        "MachineTypes": fields.List(
+            fields.Str(), required=True, load_from="MachineTypes"
+        ),
+    }
+
+
+"""
+API: DescribeCompShareSharingImages
+
+获取算力平台共享镜像列表
+"""
+
+
+class DescribeCompShareSharingImagesRequestSchema(schema.RequestSchema):
+    """DescribeCompShareSharingImages - 获取算力平台共享镜像列表"""
+
+    fields = {
+        "CompShareImageId": fields.Str(
+            required=False, dump_to="CompShareImageId"
+        ),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DescribeCompShareSharingImagesResponseSchema(schema.ResponseSchema):
+    """DescribeCompShareSharingImages - 获取算力平台共享镜像列表"""
+
+    fields = {
+        "ImageSet": fields.List(
+            models.CompShareImageSchema(), required=True, load_from="ImageSet"
+        ),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
+API: DescribeCompShareSoftwarePort
+
+获取算力平台应用及端口号列表
+"""
+
+
+class DescribeCompShareSoftwarePortRequestSchema(schema.RequestSchema):
+    """DescribeCompShareSoftwarePort - 获取算力平台应用及端口号列表"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DescribeCompShareSoftwarePortResponseSchema(schema.ResponseSchema):
+    """DescribeCompShareSoftwarePort - 获取算力平台应用及端口号列表"""
+
+    fields = {
+        "SoftwarePort": fields.List(
+            models.SoftwarePortSchema(), required=True, load_from="SoftwarePort"
+        ),
+    }
+
+
+"""
 API: DescribeCompShareSupportZone
 
 获取支持的可用区信息列表
@@ -395,6 +817,178 @@ class DescribeCompShareSupportZoneResponseSchema(schema.ResponseSchema):
         "ZoneInfo": fields.List(
             models.SupportZoneSchema(), required=True, load_from="ZoneInfo"
         ),
+    }
+
+
+"""
+API: DescribeModelRepositoryModels
+
+模型仓库模型列表
+"""
+
+
+class DescribeModelRepositoryModelsRequestSchema(schema.RequestSchema):
+    """DescribeModelRepositoryModels - 模型仓库模型列表"""
+
+    fields = {
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Tags": fields.Str(required=False, dump_to="Tags"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DescribeModelRepositoryModelsResponseSchema(schema.ResponseSchema):
+    """DescribeModelRepositoryModels - 模型仓库模型列表"""
+
+    fields = {
+        "Models": fields.List(
+            models.ModelRepositoryModelSchema(),
+            required=True,
+            load_from="Models",
+        ),
+    }
+
+
+"""
+API: DescribeModelRepositoryTags
+
+模型仓库标签列表
+"""
+
+
+class DescribeModelRepositoryTagsRequestSchema(schema.RequestSchema):
+    """DescribeModelRepositoryTags - 模型仓库标签列表"""
+
+    fields = {
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DescribeModelRepositoryTagsResponseSchema(schema.ResponseSchema):
+    """DescribeModelRepositoryTags - 模型仓库标签列表"""
+
+    fields = {
+        "Tags": fields.List(fields.Str(), required=True, load_from="Tags"),
+    }
+
+
+"""
+API: DescribeSelfCommunityImages
+
+个人中心社区镜像查询
+"""
+
+
+class DescribeSelfCommunityImagesRequestSchema(schema.RequestSchema):
+    """DescribeSelfCommunityImages - 个人中心社区镜像查询"""
+
+    fields = {
+        "CompShareImageId": fields.Str(
+            required=False, dump_to="CompShareImageId"
+        ),
+        "GroupId": fields.Str(required=False, dump_to="GroupId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DescribeSelfCommunityImagesResponseSchema(schema.ResponseSchema):
+    """DescribeSelfCommunityImages - 个人中心社区镜像查询"""
+
+    fields = {
+        "AvailableTotalCount": fields.Int(
+            required=True, load_from="AvailableTotalCount"
+        ),
+        "ImageSetGroup": fields.List(
+            models.CompshareImageGroupSchema(),
+            required=True,
+            load_from="ImageSetGroup",
+        ),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
+API: DescribeTeamMemberOrder
+
+获取团队订单
+"""
+
+
+class DescribeTeamMemberOrderRequestSchema(schema.RequestSchema):
+    """DescribeTeamMemberOrder - 获取团队订单"""
+
+    fields = {
+        "BeginTime": fields.Int(required=True, dump_to="BeginTime"),
+        "ChargeTypes": fields.List(fields.Str()),
+        "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "OrderBy": fields.Str(required=False, dump_to="OrderBy"),
+        "OrderDir": fields.Str(required=False, dump_to="OrderDir"),
+        "OrderNos": fields.List(fields.Str()),
+        "OrderStates": fields.List(fields.Str()),
+        "OrderTypes": fields.List(fields.Str()),
+        "Regions": fields.List(fields.Int()),
+        "ResourceIds": fields.List(fields.Str()),
+        "ResourceTypes": fields.List(fields.Int()),
+        "TeamId": fields.Int(required=True, dump_to="TeamId"),
+        "VirtualCompanyId": fields.Int(
+            required=True, dump_to="VirtualCompanyId"
+        ),
+    }
+
+
+class DescribeTeamMemberOrderResponseSchema(schema.ResponseSchema):
+    """DescribeTeamMemberOrder - 获取团队订单"""
+
+    fields = {
+        "Limit": fields.Int(required=True, load_from="Limit"),
+        "Offset": fields.Int(required=True, load_from="Offset"),
+        "OrderInfos": fields.List(
+            models.OrderInfoSchema(), required=True, load_from="OrderInfos"
+        ),
+        "Total": fields.Int(required=True, load_from="Total"),
+    }
+
+
+"""
+API: DescribeTeamMemberOrderCount
+
+获取团队成员订单总览
+"""
+
+
+class DescribeTeamMemberOrderCountRequestSchema(schema.RequestSchema):
+    """DescribeTeamMemberOrderCount - 获取团队成员订单总览"""
+
+    fields = {
+        "BeginTime": fields.Int(required=True, dump_to="BeginTime"),
+        "ChargeTypes": fields.Str(required=False, dump_to="ChargeTypes"),
+        "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "OrderStates": fields.Str(required=False, dump_to="OrderStates"),
+        "OrderTypes": fields.Str(required=False, dump_to="OrderTypes"),
+        "Regions": fields.Str(required=False, dump_to="Regions"),
+        "ResourceTypes": fields.Str(required=False, dump_to="ResourceTypes"),
+        "TeamId": fields.Int(required=True, dump_to="TeamId"),
+        "VirtualCompanyId": fields.Int(
+            required=True, dump_to="VirtualCompanyId"
+        ),
+    }
+
+
+class DescribeTeamMemberOrderCountResponseSchema(schema.ResponseSchema):
+    """DescribeTeamMemberOrderCount - 获取团队成员订单总览"""
+
+    fields = {
+        "Amount": fields.Str(required=True, load_from="Amount"),
+        "AmountCoupon": fields.Str(required=True, load_from="AmountCoupon"),
+        "AmountFree": fields.Str(required=True, load_from="AmountFree"),
+        "AmountReal": fields.Str(required=True, load_from="AmountReal"),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
     }
 
 
@@ -441,6 +1035,43 @@ class DescribeTeamMemberUnpaidOrderResponseSchema(schema.ResponseSchema):
             load_from="OrderInfos",
         ),
         "Total": fields.Int(required=True, load_from="Total"),
+    }
+
+
+"""
+API: DescribeTeamMemberUnpaidOrderCount
+
+获取团队成员未支付订单总览
+"""
+
+
+class DescribeTeamMemberUnpaidOrderCountRequestSchema(schema.RequestSchema):
+    """DescribeTeamMemberUnpaidOrderCount - 获取团队成员未支付订单总览"""
+
+    fields = {
+        "BeginTime": fields.Int(required=True, dump_to="BeginTime"),
+        "ChargeTypes": fields.List(fields.Str()),
+        "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "OrderStates": fields.List(fields.Str()),
+        "OrderTypes": fields.List(fields.Str()),
+        "OrganizationId": fields.Int(required=False, dump_to="OrganizationId"),
+        "Regions": fields.List(fields.Int()),
+        "ResourceIds": fields.Str(required=False, dump_to="ResourceIds"),
+        "ResourceTypes": fields.Int(required=False, dump_to="ResourceTypes"),
+        "TeamId": fields.Int(required=True, dump_to="TeamId"),
+        "TransactionNos": fields.List(fields.Str()),
+        "VirtualCompanyId": fields.Int(
+            required=True, dump_to="VirtualCompanyId"
+        ),
+    }
+
+
+class DescribeTeamMemberUnpaidOrderCountResponseSchema(schema.ResponseSchema):
+    """DescribeTeamMemberUnpaidOrderCount - 获取团队成员未支付订单总览"""
+
+    fields = {
+        "Amount": fields.Str(required=True, load_from="Amount"),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
     }
 
 
@@ -540,6 +1171,482 @@ class DescribeULHostInstanceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeUserCommunityImages
+
+获取社区镜像列表(登录状态)
+"""
+
+
+class DescribeUserCommunityImagesParamSortConditionSchema(schema.RequestSchema):
+    """DescribeUserCommunityImagesParamSortCondition -"""
+
+    fields = {
+        "ASC": fields.Str(required=False, dump_to="ASC"),
+        "Field": fields.Str(required=False, dump_to="Field"),
+    }
+
+
+class DescribeUserCommunityImagesRequestSchema(schema.RequestSchema):
+    """DescribeUserCommunityImages - 获取社区镜像列表(登录状态)"""
+
+    fields = {
+        "Author": fields.Str(required=False, dump_to="Author"),
+        "CompShareImageId": fields.Str(
+            required=False, dump_to="CompShareImageId"
+        ),
+        "FuzzySearch": fields.Str(required=False, dump_to="FuzzySearch"),
+        "IsFree": fields.Bool(required=False, dump_to="IsFree"),
+        "IsOfficial": fields.Bool(required=False, dump_to="IsOfficial"),
+        "Limit": fields.Str(required=False, dump_to="Limit"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SortCondition": DescribeUserCommunityImagesParamSortConditionSchema(
+            required=False, dump_to="SortCondition"
+        ),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DescribeUserCommunityImagesResponseSchema(schema.ResponseSchema):
+    """DescribeUserCommunityImages - 获取社区镜像列表(登录状态)"""
+
+    fields = {
+        "AvailableTotalCount": fields.Int(
+            required=False, load_from="AvailableTotalCount"
+        ),
+        "ImageSetGroup": fields.List(
+            models.CompshareImageGroupSchema(),
+            required=False,
+            load_from="ImageSetGroup",
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
+API: DetachCompshareDisk
+
+卸载某个已经挂载在指定UHost实例上的UDisk
+"""
+
+
+class DetachCompshareDiskRequestSchema(schema.RequestSchema):
+    """DetachCompshareDisk - 卸载某个已经挂载在指定UHost实例上的UDisk"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UDiskId": fields.Str(required=True, dump_to="UDiskId"),
+        "UHostId": fields.Str(required=False, dump_to="UHostId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DetachCompshareDiskResponseSchema(schema.ResponseSchema):
+    """DetachCompshareDisk - 卸载某个已经挂载在指定UHost实例上的UDisk"""
+
+    fields = {}
+
+
+"""
+API: DownloadTeamOrder
+
+下载团队订单
+"""
+
+
+class DownloadTeamOrderRequestSchema(schema.RequestSchema):
+    """DownloadTeamOrder - 下载团队订单"""
+
+    fields = {
+        "BeginTime": fields.Int(required=False, dump_to="BeginTime"),
+        "EndTime": fields.Int(required=False, dump_to="EndTime"),
+        "OrderStates": fields.List(fields.Str()),
+        "TeamId": fields.Int(required=True, dump_to="TeamId"),
+        "VirtualCompanyId": fields.Int(
+            required=False, dump_to="VirtualCompanyId"
+        ),
+    }
+
+
+class DownloadTeamOrderResponseSchema(schema.ResponseSchema):
+    """DownloadTeamOrder - 下载团队订单"""
+
+    fields = {
+        "Amount": fields.Str(required=True, load_from="Amount"),
+        "AmountCoupon": fields.Str(required=True, load_from="AmountCoupon"),
+        "AmountFree": fields.Str(required=True, load_from="AmountFree"),
+        "AmountReal": fields.Str(required=True, load_from="AmountReal"),
+        "ChargeType": fields.Str(required=True, load_from="ChargeType"),
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "EndTime": fields.Int(required=True, load_from="EndTime"),
+        "OrderNo": fields.Str(required=True, load_from="OrderNo"),
+        "OrderType": fields.Str(required=True, load_from="OrderType"),
+        "RemarkName": fields.Str(required=True, load_from="RemarkName"),
+        "ResourceId": fields.Str(required=True, load_from="ResourceId"),
+        "ResourceType": fields.Str(required=True, load_from="ResourceType"),
+        "StartTime": fields.Int(required=True, load_from="StartTime"),
+        "VirtualCompanyId": fields.Int(
+            required=True, load_from="VirtualCompanyId"
+        ),
+    }
+
+
+"""
+API: GetCompShareAttachedDiskUpgradePrice
+
+获取算力平台实例磁盘升级价格
+"""
+
+
+class GetCompShareAttachedDiskUpgradePriceRequestSchema(schema.RequestSchema):
+    """GetCompShareAttachedDiskUpgradePrice - 获取算力平台实例磁盘升级价格"""
+
+    fields = {
+        "DiskId": fields.Str(required=True, dump_to="DiskId"),
+        "DiskSpace": fields.Str(required=True, dump_to="DiskSpace"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UHostId": fields.Str(required=True, dump_to="UHostId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class GetCompShareAttachedDiskUpgradePriceResponseSchema(schema.ResponseSchema):
+    """GetCompShareAttachedDiskUpgradePrice - 获取算力平台实例磁盘升级价格"""
+
+    fields = {
+        "ListPrice": fields.Float(required=True, load_from="ListPrice"),
+        "ListPriceDetail": models.DiskUpgradePriceDetailSchema(),
+        "OriginalPrice": fields.Float(required=True, load_from="OriginalPrice"),
+        "OriginalPriceDetail": models.DiskUpgradePriceDetailSchema(),
+        "Price": fields.Float(required=True, load_from="Price"),
+        "PriceDetail": models.DiskUpgradePriceDetailSchema(),
+    }
+
+
+"""
+API: GetCompShareImageCreateProgress
+
+获取算力平台镜像制作进度
+"""
+
+
+class GetCompShareImageCreateProgressRequestSchema(schema.RequestSchema):
+    """GetCompShareImageCreateProgress - 获取算力平台镜像制作进度"""
+
+    fields = {
+        "CompShareImageId": fields.Str(
+            required=True, dump_to="CompShareImageId"
+        ),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class GetCompShareImageCreateProgressResponseSchema(schema.ResponseSchema):
+    """GetCompShareImageCreateProgress - 获取算力平台镜像制作进度"""
+
+    fields = {
+        "Process": fields.Float(required=True, load_from="Process"),
+        "RemainingDuration": fields.Str(
+            required=True, load_from="RemainingDuration"
+        ),
+        "TotalDuration": fields.Str(required=True, load_from="TotalDuration"),
+    }
+
+
+"""
+API: GetCompShareInstanceMonitor
+
+获取实例监控指标
+"""
+
+
+class GetCompShareInstanceMonitorRequestSchema(schema.RequestSchema):
+    """GetCompShareInstanceMonitor - 获取实例监控指标"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UHostIds": fields.List(fields.Str()),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class GetCompShareInstanceMonitorResponseSchema(schema.ResponseSchema):
+    """GetCompShareInstanceMonitor - 获取实例监控指标"""
+
+    fields = {}
+
+
+"""
+API: GetCompShareInstancePrice
+
+获取算力平台实例价格
+"""
+
+
+class GetCompShareInstancePriceParamDisksSchema(schema.RequestSchema):
+    """GetCompShareInstancePriceParamDisks -"""
+
+    fields = {
+        "IsBoot": fields.Bool(required=False, dump_to="IsBoot"),
+        "Size": fields.Int(required=False, dump_to="Size"),
+        "Type": fields.Str(required=False, dump_to="Type"),
+    }
+
+
+class GetCompShareInstancePriceRequestSchema(schema.RequestSchema):
+    """GetCompShareInstancePrice - 获取算力平台实例价格"""
+
+    fields = {
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "CompShareImageId": fields.Str(
+            required=False, dump_to="CompShareImageId"
+        ),
+        "Cpu": fields.Str(required=False, dump_to="Cpu"),
+        "Disks": fields.List(GetCompShareInstancePriceParamDisksSchema()),
+        "Gpu": fields.Str(required=False, dump_to="Gpu"),
+        "GpuType": fields.Str(required=False, dump_to="GpuType"),
+        "Memory": fields.Str(required=False, dump_to="Memory"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class GetCompShareInstancePriceResponseSchema(schema.ResponseSchema):
+    """GetCompShareInstancePrice - 获取算力平台实例价格"""
+
+    fields = {
+        "ListPriceDetail": fields.List(
+            models.CompSharePriceDetailSchema(),
+            required=False,
+            load_from="ListPriceDetail",
+        ),
+        "OriginalPriceDetail": fields.List(
+            models.CompSharePriceDetailSchema(),
+            required=False,
+            load_from="OriginalPriceDetail",
+        ),
+        "PriceDetail": fields.List(
+            models.CompSharePriceDetailSchema(),
+            required=False,
+            load_from="PriceDetail",
+        ),
+    }
+
+
+"""
+API: GetCompShareInstanceUpgradePrice
+
+获取算力平台实例升降级价格
+"""
+
+
+class GetCompShareInstanceUpgradePriceRequestSchema(schema.RequestSchema):
+    """GetCompShareInstanceUpgradePrice - 获取算力平台实例升降级价格"""
+
+    fields = {
+        "CompShareImageId": fields.Str(
+            required=False, dump_to="CompShareImageId"
+        ),
+        "Cpu": fields.Int(required=False, dump_to="Cpu"),
+        "Gpu": fields.Int(required=False, dump_to="Gpu"),
+        "Memory": fields.Int(required=False, dump_to="Memory"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UHostId": fields.Str(required=True, dump_to="UHostId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class GetCompShareInstanceUpgradePriceResponseSchema(schema.ResponseSchema):
+    """GetCompShareInstanceUpgradePrice - 获取算力平台实例升降级价格"""
+
+    fields = {
+        "ListPrice": fields.Float(required=True, load_from="ListPrice"),
+        "OriginalPrice": fields.Float(required=True, load_from="OriginalPrice"),
+        "Price": fields.Float(required=True, load_from="Price"),
+    }
+
+
+"""
+API: GetCompShareInstanceUserPrice
+
+获取算力平台实例用户价格
+"""
+
+
+class GetCompShareInstanceUserPriceParamDisksSchema(schema.RequestSchema):
+    """GetCompShareInstanceUserPriceParamDisks -"""
+
+    fields = {
+        "IsBoot": fields.Bool(required=False, dump_to="IsBoot"),
+        "Size": fields.Int(required=False, dump_to="Size"),
+        "Type": fields.Str(required=False, dump_to="Type"),
+    }
+
+
+class GetCompShareInstanceUserPriceRequestSchema(schema.RequestSchema):
+    """GetCompShareInstanceUserPrice - 获取算力平台实例用户价格"""
+
+    fields = {
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "CompShareImageId": fields.Str(
+            required=False, dump_to="CompShareImageId"
+        ),
+        "Cpu": fields.Str(required=False, dump_to="Cpu"),
+        "Disks": fields.List(GetCompShareInstanceUserPriceParamDisksSchema()),
+        "Gpu": fields.Str(required=False, dump_to="Gpu"),
+        "GpuType": fields.Str(required=False, dump_to="GpuType"),
+        "Memory": fields.Str(required=False, dump_to="Memory"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class GetCompShareInstanceUserPriceResponseSchema(schema.ResponseSchema):
+    """GetCompShareInstanceUserPrice - 获取算力平台实例用户价格"""
+
+    fields = {
+        "ListPriceDetail": fields.List(
+            models.CompSharePriceDetailSchema(),
+            required=False,
+            load_from="ListPriceDetail",
+        ),
+        "OriginalPriceDetail": fields.List(
+            models.CompSharePriceDetailSchema(),
+            required=False,
+            load_from="OriginalPriceDetail",
+        ),
+        "PriceDetail": fields.List(
+            models.CompSharePriceDetailSchema(),
+            required=False,
+            load_from="PriceDetail",
+        ),
+    }
+
+
+"""
+API: GetCompShareRefundPrice
+
+获取算力平台实例删除扣除费用。包括主机、磁盘等资源的费用
+"""
+
+
+class GetCompShareRefundPriceRequestSchema(schema.RequestSchema):
+    """GetCompShareRefundPrice - 获取算力平台实例删除扣除费用。包括主机、磁盘等资源的费用"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UHostIds": fields.List(fields.Str()),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class GetCompShareRefundPriceResponseSchema(schema.ResponseSchema):
+    """GetCompShareRefundPrice - 获取算力平台实例删除扣除费用。包括主机、磁盘等资源的费用"""
+
+    fields = {
+        "RefundPriceSet": fields.List(
+            models.UHostRefundPriceSetSchema(),
+            required=True,
+            load_from="RefundPriceSet",
+        ),
+    }
+
+
+"""
+API: GetCompShareTeamInfo
+
+获取团队详细信息
+"""
+
+
+class GetCompShareTeamInfoRequestSchema(schema.RequestSchema):
+    """GetCompShareTeamInfo - 获取团队详细信息"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "TeamId": fields.Int(required=True, dump_to="TeamId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class GetCompShareTeamInfoResponseSchema(schema.ResponseSchema):
+    """GetCompShareTeamInfo - 获取团队详细信息"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "Team": models.CompShareTeamDetailInfoSchema(),
+        "TeamRelation": fields.List(
+            models.TeamRelationSchema(),
+            required=False,
+            load_from="TeamRelation",
+        ),
+    }
+
+
+"""
+API: GetOpenClawModelList
+
+获取OpenClaw模型列表
+"""
+
+
+class GetOpenClawModelListRequestSchema(schema.RequestSchema):
+    """GetOpenClawModelList - 获取OpenClaw模型列表"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+    }
+
+
+class GetOpenClawModelListResponseSchema(schema.ResponseSchema):
+    """GetOpenClawModelList - 获取OpenClaw模型列表"""
+
+    fields = {
+        "Models": models.OpenClawModelInfoSchema(),
+    }
+
+
+"""
+API: GetSoftwareURL
+
+获取算力平台实例应用URL
+"""
+
+
+class GetSoftwareURLRequestSchema(schema.RequestSchema):
+    """GetSoftwareURL - 获取算力平台实例应用URL"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Software": fields.Str(required=True, dump_to="Software"),
+        "UHostId": fields.Str(required=True, dump_to="UHostId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class GetSoftwareURLResponseSchema(schema.ResponseSchema):
+    """GetSoftwareURL - 获取算力平台实例应用URL"""
+
+    fields = {
+        "URL": fields.Str(required=True, load_from="URL"),
+    }
+
+
+"""
 API: GetULHostInstancePrice
 
 获取轻量应用云主机套餐价格 
@@ -599,6 +1706,224 @@ class GetULHostRenewPriceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: ListCompShareTeam
+
+获取团队列表
+"""
+
+
+class ListCompShareTeamRequestSchema(schema.RequestSchema):
+    """ListCompShareTeam - 获取团队列表"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class ListCompShareTeamResponseSchema(schema.ResponseSchema):
+    """ListCompShareTeam - 获取团队列表"""
+
+    fields = {
+        "Teams": fields.List(
+            models.CompShareTeamInfoSchema(), required=False, load_from="Teams"
+        ),
+    }
+
+
+"""
+API: ListCompShareTeamInvite
+
+获取邀请成员的列表
+"""
+
+
+class ListCompShareTeamInviteRequestSchema(schema.RequestSchema):
+    """ListCompShareTeamInvite - 获取邀请成员的列表"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "TeamId": fields.Int(required=False, dump_to="TeamId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class ListCompShareTeamInviteResponseSchema(schema.ResponseSchema):
+    """ListCompShareTeamInvite - 获取邀请成员的列表"""
+
+    fields = {
+        "Invites": fields.List(
+            models.CompShareTeamInviteInfoSchema(),
+            required=True,
+            load_from="Invites",
+        ),
+        "Message": fields.Str(required=False, load_from="Message"),
+    }
+
+
+"""
+API: ListCompShareTeamJoined
+
+获取加入团队信息列表
+"""
+
+
+class ListCompShareTeamJoinedRequestSchema(schema.RequestSchema):
+    """ListCompShareTeamJoined - 获取加入团队信息列表"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Status": fields.Str(required=False, dump_to="Status"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class ListCompShareTeamJoinedResponseSchema(schema.ResponseSchema):
+    """ListCompShareTeamJoined - 获取加入团队信息列表"""
+
+    fields = {
+        "JoinedTeams": fields.List(
+            models.CompShareTeamJoinedInfoSchema(),
+            required=True,
+            load_from="JoinedTeams",
+        ),
+    }
+
+
+"""
+API: ListCompShareTeamOperateLog
+
+获取团队操作日志列表
+"""
+
+
+class ListCompShareTeamOperateLogRequestSchema(schema.RequestSchema):
+    """ListCompShareTeamOperateLog - 获取团队操作日志列表"""
+
+    fields = {
+        "BeginTime": fields.Int(required=True, dump_to="BeginTime"),
+        "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "OperateType": fields.List(fields.Str()),
+        "OrderByASC": fields.Bool(required=False, dump_to="OrderByASC"),
+        "Status": fields.List(fields.Str()),
+        "TeamId": fields.Int(required=True, dump_to="TeamId"),
+    }
+
+
+class ListCompShareTeamOperateLogResponseSchema(schema.ResponseSchema):
+    """ListCompShareTeamOperateLog - 获取团队操作日志列表"""
+
+    fields = {
+        "Logs": fields.List(
+            models.CompShareTeamOperateLogInfoSchema(),
+            required=True,
+            load_from="Logs",
+        ),
+        "OperateTypeList": fields.List(
+            fields.Str(), required=False, load_from="OperateTypeList"
+        ),
+        "StatusList": fields.List(
+            fields.Str(), required=False, load_from="StatusList"
+        ),
+        "Total": fields.Int(required=True, load_from="Total"),
+    }
+
+
+"""
+API: ListMemberProductType
+
+获取成员订单产品类型
+"""
+
+
+class ListMemberProductTypeRequestSchema(schema.RequestSchema):
+    """ListMemberProductType - 获取成员订单产品类型"""
+
+    fields = {
+        "BeginTime": fields.Int(required=True, dump_to="BeginTime"),
+        "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "OrderStates": fields.List(fields.Str()),
+        "TeamId": fields.Int(required=True, dump_to="TeamId"),
+        "VirtualCompanyId": fields.Int(
+            required=False, dump_to="VirtualCompanyId"
+        ),
+    }
+
+
+class ListMemberProductTypeResponseSchema(schema.ResponseSchema):
+    """ListMemberProductType - 获取成员订单产品类型"""
+
+    fields = {
+        "ProductTypeList": fields.List(
+            fields.Str(), required=True, load_from="ProductTypeList"
+        ),
+    }
+
+
+"""
+API: ModifyCompShareImageShareAccount
+
+管理镜像的共享账号列表
+"""
+
+
+class ModifyCompShareImageShareAccountRequestSchema(schema.RequestSchema):
+    """ModifyCompShareImageShareAccount - 管理镜像的共享账号列表"""
+
+    fields = {
+        "AddAccounts": fields.List(fields.Int()),
+        "CompShareImageId": fields.Str(
+            required=True, dump_to="CompShareImageId"
+        ),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "RemoveAccounts": fields.List(fields.Int()),
+    }
+
+
+class ModifyCompShareImageShareAccountResponseSchema(schema.ResponseSchema):
+    """ModifyCompShareImageShareAccount - 管理镜像的共享账号列表"""
+
+    fields = {
+        "InvalidAccounts": fields.List(
+            fields.Int(), required=False, load_from="InvalidAccounts"
+        ),
+    }
+
+
+"""
+API: ModifyCompShareInstanceName
+
+修改算力平台实例名称
+"""
+
+
+class ModifyCompShareInstanceNameRequestSchema(schema.RequestSchema):
+    """ModifyCompShareInstanceName - 修改算力平台实例名称"""
+
+    fields = {
+        "Name": fields.Str(required=True, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UHostId": fields.Str(required=True, dump_to="UHostId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ModifyCompShareInstanceNameResponseSchema(schema.ResponseSchema):
+    """ModifyCompShareInstanceName - 修改算力平台实例名称"""
+
+    fields = {
+        "UHostId": fields.Str(required=True, load_from="UHostId"),
+    }
+
+
+"""
 API: ModifyULHostAttribute
 
 修改指定ULHost实例属性信息，包含名称和备注
@@ -649,6 +1974,57 @@ class PoweroffULHostInstanceResponseSchema(schema.ResponseSchema):
     fields = {
         "ULHostId": fields.Str(required=True, load_from="ULHostId"),
     }
+
+
+"""
+API: PublishCompShareImage
+
+将自制镜像发布到镜像社区
+"""
+
+
+class PublishCompShareImageParamSoftwaresSchema(schema.RequestSchema):
+    """PublishCompShareImageParamSoftwares -"""
+
+    fields = {
+        "Applications": fields.List(fields.Str()),
+        "CUDAVersion": fields.Str(required=False, dump_to="CUDAVersion"),
+        "Framework": fields.Str(required=False, dump_to="Framework"),
+        "FrameworkVersion": fields.Str(
+            required=False, dump_to="FrameworkVersion"
+        ),
+    }
+
+
+class PublishCompShareImageRequestSchema(schema.RequestSchema):
+    """PublishCompShareImage - 将自制镜像发布到镜像社区"""
+
+    fields = {
+        "AutoStart": fields.Str(required=False, dump_to="AutoStart"),
+        "CommunityImageName": fields.Str(
+            required=False, dump_to="CommunityImageName"
+        ),
+        "CompShareImageId": fields.Str(
+            required=True, dump_to="CompShareImageId"
+        ),
+        "Cover": fields.Str(required=False, dump_to="Cover"),
+        "Description": fields.Str(required=False, dump_to="Description"),
+        "Price": fields.Float(required=True, dump_to="Price"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Readme": fields.Str(required=False, dump_to="Readme"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Softwares": PublishCompShareImageParamSoftwaresSchema(
+            required=False, dump_to="Softwares"
+        ),
+        "Tags": fields.List(fields.Str()),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class PublishCompShareImageResponseSchema(schema.ResponseSchema):
+    """PublishCompShareImage - 将自制镜像发布到镜像社区"""
+
+    fields = {}
 
 
 """
@@ -814,6 +2190,33 @@ class ResetULHostInstancePasswordResponseSchema(schema.ResponseSchema):
 
 
 """
+API: ResizeCompShareDisk
+
+修改磁盘
+"""
+
+
+class ResizeCompShareDiskRequestSchema(schema.RequestSchema):
+    """ResizeCompShareDisk - 修改磁盘"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Size": fields.Int(required=True, dump_to="Size"),
+        "UDiskId": fields.Str(required=True, dump_to="UDiskId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ResizeCompShareDiskResponseSchema(schema.ResponseSchema):
+    """ResizeCompShareDisk - 修改磁盘"""
+
+    fields = {
+        "UDiskId": fields.Str(required=True, load_from="UDiskId"),
+    }
+
+
+"""
 API: ResizeCompShareInstance
 
 修改算力平台实例配置
@@ -841,6 +2244,35 @@ class ResizeCompShareInstanceResponseSchema(schema.ResponseSchema):
 
     fields = {
         "UHostId": fields.Str(required=True, load_from="UHostId"),
+    }
+
+
+"""
+API: SetCompShareTeamRelation
+
+设置邀请信息
+"""
+
+
+class SetCompShareTeamRelationRequestSchema(schema.RequestSchema):
+    """SetCompShareTeamRelation - 设置邀请信息"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "RemarkName": fields.Str(required=False, dump_to="RemarkName"),
+        "Status": fields.Str(required=True, dump_to="Status"),
+        "TeamId": fields.Str(required=True, dump_to="TeamId"),
+        "UserCompanyId": fields.Str(required=False, dump_to="UserCompanyId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class SetCompShareTeamRelationResponseSchema(schema.ResponseSchema):
+    """SetCompShareTeamRelation - 设置邀请信息"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
     }
 
 
@@ -1022,4 +2454,89 @@ class TerminateULHostInstanceResponseSchema(schema.ResponseSchema):
     fields = {
         "InRecycle": fields.Str(required=True, load_from="InRecycle"),
         "ULHostId": fields.Str(required=False, load_from="ULHostId"),
+    }
+
+
+"""
+API: UpdateCompShareImage
+
+编辑算力平台自制镜像信息
+"""
+
+
+class UpdateCompShareImageRequestSchema(schema.RequestSchema):
+    """UpdateCompShareImage - 编辑算力平台自制镜像信息"""
+
+    fields = {
+        "CompShareImageId": fields.Str(
+            required=True, dump_to="CompShareImageId"
+        ),
+        "Cover": fields.Str(required=False, dump_to="Cover"),
+        "Description": fields.Str(required=False, dump_to="Description"),
+        "Framework": fields.Str(required=False, dump_to="Framework"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Readme": fields.Str(required=False, dump_to="Readme"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Softwares": fields.Str(required=False, dump_to="Softwares"),
+        "Tags": fields.List(fields.Str()),
+        "Visibility": fields.Int(required=False, dump_to="Visibility"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class UpdateCompShareImageResponseSchema(schema.ResponseSchema):
+    """UpdateCompShareImage - 编辑算力平台自制镜像信息"""
+
+    fields = {}
+
+
+"""
+API: UpdateCompShareStopScheduler
+
+更新实例定时关机时间，若不存在则新建此定时任务
+"""
+
+
+class UpdateCompShareStopSchedulerRequestSchema(schema.RequestSchema):
+    """UpdateCompShareStopScheduler - 更新实例定时关机时间，若不存在则新建此定时任务"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "StopTime": fields.Int(required=True, dump_to="StopTime"),
+        "UHostId": fields.Str(required=True, dump_to="UHostId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class UpdateCompShareStopSchedulerResponseSchema(schema.ResponseSchema):
+    """UpdateCompShareStopScheduler - 更新实例定时关机时间，若不存在则新建此定时任务"""
+
+    fields = {}
+
+
+"""
+API: UpdateCompShareTeam
+
+更改团队信息
+"""
+
+
+class UpdateCompShareTeamRequestSchema(schema.RequestSchema):
+    """UpdateCompShareTeam - 更改团队信息"""
+
+    fields = {
+        "Description": fields.Str(required=False, dump_to="Description"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class UpdateCompShareTeamResponseSchema(schema.ResponseSchema):
+    """UpdateCompShareTeam - 更改团队信息"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
     }

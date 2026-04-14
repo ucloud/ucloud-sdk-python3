@@ -15,6 +15,87 @@ class UCompShareClient(Client):
             config, transport, middleware, logger
         )
 
+    def attach_compshare_disk(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """AttachCompshareDisk - 将一个可用的UDisk挂载到某台主机上
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **UDiskId** (str) - (Required) 需要挂载的UDisk实例ID.
+        - **EnableCrossPodAttach** (str) - 是否允许跨pod挂载（Yes：允许跨pod挂载，No：不允许跨pod挂载，不填默认No）
+        - **UHostId** (str) - UHost实例ID。【UHostId和HostId必须选填一个，本字段即将废弃，建议使用HostId】
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.AttachCompshareDiskRequestSchema().dumps(d)
+
+        resp = self.invoke("AttachCompshareDisk", d, **kwargs)
+        return apis.AttachCompshareDiskResponseSchema().loads(resp)
+
+    def attach_us_33(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """AttachUS3 - 挂载us3
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **UHostId** (str) - (Required) 实例Id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.AttachUS3RequestSchema().dumps(d)
+
+        resp = self.invoke("AttachUS3", d, **kwargs)
+        return apis.AttachUS3ResponseSchema().loads(resp)
+
+    def check_comp_share_net_optimizer(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CheckCompShareNetOptimizer - 检查算力平台账号是否开通访问加速
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Optimized** (bool) - 是否已开通
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CheckCompShareNetOptimizerRequestSchema().dumps(d)
+
+        resp = self.invoke("CheckCompShareNetOptimizer", d, **kwargs)
+        return apis.CheckCompShareNetOptimizerResponseSchema().loads(resp)
+
     def check_ul_host_resource_capacity(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -50,6 +131,38 @@ class UCompShareClient(Client):
 
         resp = self.invoke("CheckULHostResourceCapacity", d, **kwargs)
         return apis.CheckULHostResourceCapacityResponseSchema().loads(resp)
+
+    def copy_comp_share_custom_image(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CopyCompShareCustomImage - 复制算力平台镜像
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CompShareImageId** (str) - (Required) 镜像Id
+        - **TargetImageName** (str) - 目标镜像名称
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **NewCompShareImageId** (str) - 复制后的镜像Id
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CopyCompShareCustomImageRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CopyCompShareCustomImage", d, **kwargs)
+        return apis.CopyCompShareCustomImageResponseSchema().loads(resp)
 
     def create_comp_share_custom_image(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -147,6 +260,77 @@ class UCompShareClient(Client):
         resp = self.invoke("CreateCompShareInstance", d, **kwargs)
         return apis.CreateCompShareInstanceResponseSchema().loads(resp)
 
+    def create_comp_share_team(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateCompShareTeam - 创建团队
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Name** (str) - (Required) 团队名称
+        - **Description** (str) - 团队简介
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateCompShareTeamRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateCompShareTeam", d, **kwargs)
+        return apis.CreateCompShareTeamResponseSchema().loads(resp)
+
+    def create_comp_share_team_relation(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateCompShareTeamRelation - 发送团队邀请
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **TeamId** (int) - (Required) 团队Id
+        - **UserInfo** (list) - 见 **CreateCompShareTeamRelationParamUserInfo** 模型定义
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **ErrorMap** (dict) - 错误信息Map：key：被邀请成员的公司Id ，value ：报错信息ErrorInfo（object），ErrorInfo.Message 报错信息，ErrorInfo.Code 报错Code
+
+        **Request Model**
+
+        **CreateCompShareTeamRelationParamUserInfo**
+        - **RemarkName** (str) - 被邀请成员的备注名称
+        - **UserCompanyId** (int) - 被邀请成员的公司Id
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateCompShareTeamRelationRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateCompShareTeamRelation", d, **kwargs)
+        return apis.CreateCompShareTeamRelationResponseSchema().loads(resp)
+
     def create_ul_host_instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -187,6 +371,92 @@ class UCompShareClient(Client):
         resp = self.invoke("CreateULHostInstance", d, **kwargs)
         return apis.CreateULHostInstanceResponseSchema().loads(resp)
 
+    def delete_comp_share_stop_scheduler(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteCompShareStopScheduler - 删除实例定时关机任务
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **UHostId** (str) - (Required) UHost实例ID。【UHostId和HostId必须选填一个，本字段即将废弃，建议使用HostId】
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteCompShareStopSchedulerRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteCompShareStopScheduler", d, **kwargs)
+        return apis.DeleteCompShareStopSchedulerResponseSchema().loads(resp)
+
+    def delete_comp_share_team(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteCompShareTeam - 删除团队
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **TeamId** (int) - (Required) 团队Id
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteCompShareTeamRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteCompShareTeam", d, **kwargs)
+        return apis.DeleteCompShareTeamResponseSchema().loads(resp)
+
+    def delete_compshare_disk(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteCompshareDisk - 卸载并删除算力磁盘
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **OrganizationID** (int) - (Required) 项目id
+        - **TopOrganizationID** (int) - (Required) 公司id
+        - **UDiskId** (str) - (Required) 磁盘ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **UHostId** (str) - 主机ID
+
+        **Response**
+
+        - **UDiskId** (str) - 已删除磁盘id
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteCompshareDiskRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteCompshareDisk", d, **kwargs)
+        return apis.DeleteCompshareDiskResponseSchema().loads(resp)
+
     def describe_available_comp_share_instance_types(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -206,6 +476,44 @@ class UCompShareClient(Client):
 
         **Response Model**
 
+        **Performance**
+        - **Rate** (int) - 交互展示参数，可忽略
+        - **Value** (float) - 值，单位是TFlops
+
+
+        **FeatureModes**
+        - **MinimalCpuPlatform** (list) - 这个特性必须是列出来的CPU平台及以上的CPU才支持
+        - **Name** (str) - 模式|特性名称
+        - **RelatedToImageFeature** (list) - 为镜像上支持这个特性的标签。例如DescribeImage返回的字段Features包含HotPlug，说明该镜像支持热升级。
+
+
+        **Features**
+        - **Modes** (list) - 见 **FeatureModes** 模型定义
+        - **Name** (str) - 可支持的特性名称。目前支持的特性网络增强|NetCapability、热升级|Hotplug
+
+
+        **GraphicsMemory**
+        - **Rate** (int) - 交互展示参数，可忽略
+        - **Value** (int) - 值，单位是GB
+
+
+        **Collection**
+        - **Cpu** (int) - CPU规格
+        - **Memory** (list) - 内存规格
+        - **MinimalCpuPlatform** (list) - CPU和内存规格只能在列出来的CPU平台支持
+
+
+        **MachineSizes**
+        - **Collection** (list) - 见 **Collection** 模型定义
+        - **Gpu** (int) - Gpu为GPU可支持的规格即GPU颗数，非GPU机型，Gpu为0
+
+
+        **CpuPlatforms**
+        - **Amd** (list) - 返回AMD的CPU平台信息，例如：AMD: ['Amd/Epyc2']
+        - **Ampere** (list) - 返回Arm的CPU平台信息，例如：Ampere: ['Ampere/Altra']
+        - **Intel** (list) - 返回Intel的CPU平台信息，例如：Intel: ['Intel/CascadeLake','Intel/CascadelakeR','Intel/IceLake']
+
+
         **BootDiskInfo**
         - **Features** (list) - 磁盘可支持的服务
         - **InstantResize** (bool) - 系统盘是否允许扩容，如果是本地盘，则不允许扩容，InstantResize为false。
@@ -224,44 +532,6 @@ class UCompShareClient(Client):
         - **BootDisk** (list) - 见 **BootDiskInfo** 模型定义
         - **DataDisk** (list) - 见 **DataDiskInfo** 模型定义
         - **Name** (str) - 磁盘介质类别信息，磁盘主要分类如下：云盘|cloudDisk、普通本地盘|normalLocalDisk和SSD本地盘|ssdLocalDisk。
-
-
-        **FeatureModes**
-        - **MinimalCpuPlatform** (list) - 这个特性必须是列出来的CPU平台及以上的CPU才支持
-        - **Name** (str) - 模式|特性名称
-        - **RelatedToImageFeature** (list) - 为镜像上支持这个特性的标签。例如DescribeImage返回的字段Features包含HotPlug，说明该镜像支持热升级。
-
-
-        **Features**
-        - **Modes** (list) - 见 **FeatureModes** 模型定义
-        - **Name** (str) - 可支持的特性名称。目前支持的特性网络增强|NetCapability、热升级|Hotplug
-
-
-        **Collection**
-        - **Cpu** (int) - CPU规格
-        - **Memory** (list) - 内存规格
-        - **MinimalCpuPlatform** (list) - CPU和内存规格只能在列出来的CPU平台支持
-
-
-        **CpuPlatforms**
-        - **Amd** (list) - 返回AMD的CPU平台信息，例如：AMD: ['Amd/Epyc2']
-        - **Ampere** (list) - 返回Arm的CPU平台信息，例如：Ampere: ['Ampere/Altra']
-        - **Intel** (list) - 返回Intel的CPU平台信息，例如：Intel: ['Intel/CascadeLake','Intel/CascadelakeR','Intel/IceLake']
-
-
-        **Performance**
-        - **Rate** (int) - 交互展示参数，可忽略
-        - **Value** (float) - 值，单位是TFlops
-
-
-        **GraphicsMemory**
-        - **Rate** (int) - 交互展示参数，可忽略
-        - **Value** (int) - 值，单位是GB
-
-
-        **MachineSizes**
-        - **Collection** (list) - 见 **Collection** 模型定义
-        - **Gpu** (int) - Gpu为GPU可支持的规格即GPU颗数，非GPU机型，Gpu为0
 
 
         **AvailableInstanceTypes**
@@ -400,16 +670,16 @@ class UCompShareClient(Client):
 
         **Response Model**
 
-        **Projects**
-        - **AccountId** (str) - 账号Id
-        - **AccountName** (str) - 账号昵称
-
-
         **Software**
         - **Applications** (list) - 【array of string】应用列表
         - **CUDAVersion** (str) - CUDA版本
         - **Framework** (str) - 框架名称
         - **FrameworkVersion** (str) - 框架版本
+
+
+        **Projects**
+        - **AccountId** (str) - 账号Id
+        - **AccountName** (str) - 账号昵称
 
 
         **CompShareImage**
@@ -453,6 +723,96 @@ class UCompShareClient(Client):
         resp = self.invoke("DescribeCompShareCustomImages", d, **kwargs)
         return apis.DescribeCompShareCustomImagesResponseSchema().loads(resp)
 
+    def describe_comp_share_gpu_inventory(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeCompShareGpuInventory - 查询GPU卡余量库存
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **GpuInventoryByZone** (dict) - 返回为嵌套map：，key为池子名称 （Exclusive：独占，Spot ：抢占） value : 库存余量信息map {key 可用区ID，value：GPU卡余量map （key：GPU机型，value：余量GPU卡数量），举例：{"Exclusive":{10027:{"2080":10}}}}
+        - **SpotUnsupportedGpuTypes** (list) - 不支持抢占的GPU机型
+        - **UpdateTime** (int) - 缓存更新时间（5min更新一次）
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeCompShareGpuInventoryRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeCompShareGpuInventory", d, **kwargs)
+        return apis.DescribeCompShareGpuInventoryResponseSchema().loads(resp)
+
+    def describe_comp_share_image_share_accounts(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeCompShareImageShareAccounts - 获取镜像共享的账号列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CompShareImageId** (str) - (Required) 镜像Id
+
+        **Response**
+
+        - **AccountSet** (list) - 见 **Projects** 模型定义
+
+        **Response Model**
+
+        **Projects**
+        - **AccountId** (str) - 账号Id
+        - **AccountName** (str) - 账号昵称
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeCompShareImageShareAccountsRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeCompShareImageShareAccounts", d, **kwargs)
+        return apis.DescribeCompShareImageShareAccountsResponseSchema().loads(
+            resp
+        )
+
+    def describe_comp_share_image_tags(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeCompShareImageTags - 获取镜像标签列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Tags** (list) - 【Array of string】镜像标签列表
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeCompShareImageTagsRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeCompShareImageTags", d, **kwargs)
+        return apis.DescribeCompShareImageTagsResponseSchema().loads(resp)
+
     def describe_comp_share_images(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -478,16 +838,16 @@ class UCompShareClient(Client):
 
         **Response Model**
 
-        **Projects**
-        - **AccountId** (str) - 账号Id
-        - **AccountName** (str) - 账号昵称
-
-
         **Software**
         - **Applications** (list) - 【array of string】应用列表
         - **CUDAVersion** (str) - CUDA版本
         - **Framework** (str) - 框架名称
         - **FrameworkVersion** (str) - 框架版本
+
+
+        **Projects**
+        - **AccountId** (str) - 账号Id
+        - **AccountName** (str) - 账号昵称
 
 
         **CompShareImage**
@@ -550,26 +910,22 @@ class UCompShareClient(Client):
 
         **Response Model**
 
-        **SoftwareAddr**
-        - **Name** (str) - 软件名称
-        - **URL** (str) - 软件地址
-
-
-        **UHostDiskSet**
-        - **DiskId** (str) - 磁盘ID
-        - **DiskType** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
-        - **Drive** (str) - 磁盘盘符
-        - **Encrypted** (str) - "true": 加密盘 "false"：非加密盘
-        - **IsBoot** (str) - 是否是系统盘。枚举值：\\ > True，是系统盘 \\ > False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
-        - **Name** (str) - UDisk名字（仅当磁盘是UDisk时返回）
-        - **Size** (int) - 磁盘大小，单位: GB
-        - **Type** (str) - 【建议不再使用】磁盘类型。系统盘: Boot，数据盘: Data,网络盘：Udisk
-
-
         **GpuMonitorInfo**
         - **GPU** (str) - GPU卡名称
         - **GpuUsageRate** (str) - GPU卡使用率
         - **MemoryUsageRate** (str) - GPU显存使用率
+
+
+        **MonitorMessage**
+        - **CpuUsageRate** (str) - CPU使用率
+        - **GpuInfo** (list) - 见 **GpuMonitorInfo** 模型定义
+        - **MemUsageRate** (str) - 内存使用率
+
+
+        **WithoutGpuSpec**
+        - **Cpu** (int) - cpu
+        - **Gpu** (int) - gpu
+        - **Memory** (int) - 内存
 
 
         **UHostIPSet**
@@ -586,10 +942,20 @@ class UCompShareClient(Client):
         - **Weight** (int) - 当前EIP的权重。权重最大的为当前的出口IP。
 
 
-        **MonitorMessage**
-        - **CpuUsageRate** (str) - CPU使用率
-        - **GpuInfo** (list) - 见 **GpuMonitorInfo** 模型定义
-        - **MemUsageRate** (str) - 内存使用率
+        **UHostDiskSet**
+        - **DiskId** (str) - 磁盘ID
+        - **DiskType** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
+        - **Drive** (str) - 磁盘盘符
+        - **Encrypted** (str) - "true": 加密盘 "false"：非加密盘
+        - **IsBoot** (str) - 是否是系统盘。枚举值：\\ > True，是系统盘 \\ > False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
+        - **Name** (str) - UDisk名字（仅当磁盘是UDisk时返回）
+        - **Size** (int) - 磁盘大小，单位: GB
+        - **Type** (str) - 【建议不再使用】磁盘类型。系统盘: Boot，数据盘: Data,网络盘：Udisk
+
+
+        **SoftwareAddr**
+        - **Name** (str) - 软件名称
+        - **URL** (str) - 软件地址
 
 
         **DiskPriceInfo**
@@ -601,12 +967,6 @@ class UCompShareClient(Client):
         **GraphicsMemory**
         - **Rate** (int) - 交互展示参数，可忽略
         - **Value** (int) - 值，单位是GB
-
-
-        **WithoutGpuSpec**
-        - **Cpu** (int) - cpu
-        - **Gpu** (int) - gpu
-        - **Memory** (int) - 内存
 
 
         **CompShareInstanceSet**
@@ -671,6 +1031,143 @@ class UCompShareClient(Client):
         resp = self.invoke("DescribeCompShareInstance", d, **kwargs)
         return apis.DescribeCompShareInstanceResponseSchema().loads(resp)
 
+    def describe_comp_share_machine_type_families(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeCompShareMachineTypeFamilies - 获取实例规格族列表（所有机型的信息）
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。因为子账号要iam鉴权而填写
+
+        **Response**
+
+        - **MachineTypes** (list) - 机型配置列表
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.DescribeCompShareMachineTypeFamiliesRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeCompShareMachineTypeFamilies", d, **kwargs)
+        return apis.DescribeCompShareMachineTypeFamiliesResponseSchema().loads(
+            resp
+        )
+
+    def describe_comp_share_sharing_images(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeCompShareSharingImages - 获取算力平台共享镜像列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CompShareImageId** (str) - 镜像Id
+        - **Limit** (int) - 返回数据长度，默认为20，最大100
+        - **Offset** (int) - 列表起始位置偏移量，默认为0
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **ImageSet** (list) - 见 **CompShareImage** 模型定义
+        - **TotalCount** (int) - 总数
+
+        **Response Model**
+
+        **Software**
+        - **Applications** (list) - 【array of string】应用列表
+        - **CUDAVersion** (str) - CUDA版本
+        - **Framework** (str) - 框架名称
+        - **FrameworkVersion** (str) - 框架版本
+
+
+        **Projects**
+        - **AccountId** (str) - 账号Id
+        - **AccountName** (str) - 账号昵称
+
+
+        **CompShareImage**
+        - **AuthInfo** (int) - 镜像作者认证信息
+        - **Author** (str) - 镜像作者昵称
+        - **AutoStart** (bool) - 是否支持自启动 default:false
+        - **CompShareImageId** (str) - 镜像Id
+        - **Container** (str) - 是否为容器镜像。- True 容器镜像- False 虚机镜像
+        - **Cover** (str) - 镜像封面URL
+        - **CreateTime** (int) - 创建时间戳
+        - **CreatedCount** (int) - 镜像引用创建计数
+        - **Description** (str) - 镜像描述信息
+        - **FailedReason** (str) - 镜像制作失败错误原因
+        - **FavoritesCount** (int) - 镜像收藏计数
+        - **GroupId** (str) - 镜像组id
+        - **ImageCharge** (bool) - 是否镜像收费  default: false
+        - **ImageOwnerAlias** (str) - 镜像来源。- Official 平台镜像；- Community 社区镜像
+        - **ImageType** (str) - 镜像类型。- System 平台提供的公共镜像；- App 平台提供的应用镜像；- Custom 自制镜像；- Community 社区镜像
+        - **ImageUseTime** (int) - 镜像使用时长
+        - **IsOfficial** (bool) - 来源是否为官方镜像【仅自制镜像信息返回该字段】
+        - **Name** (str) - 镜像名称
+        - **Owner** (dict) - 见 **Projects** 模型定义
+        - **Price** (float) - 镜像价格。单位：元
+        - **PubTime** (int) - 发布时间戳
+        - **Readme** (str) - 镜像详细描述。仅指定镜像Id查询时返回
+        - **Size** (int) - 镜像大小。单位MB
+        - **Softwares** (dict) - 见 **Software** 模型定义
+        - **SourceGpuType** (str) - 自制镜像来源机型
+        - **Status** (str) - 镜像状态。- Making 制作中；- Available 可用；- UnAvailable 不可用；- Reviewing 审核中;- Offline 已下线
+        - **Tags** (list) - 【array of string】镜像标签
+        - **VersionDesc** (str) - 版本描述
+        - **VersionName** (str) - 版本名称
+        - **Visibility** (int) - 可见性。0：私密镜像；1：公开至镜像社区
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeCompShareSharingImagesRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeCompShareSharingImages", d, **kwargs)
+        return apis.DescribeCompShareSharingImagesResponseSchema().loads(resp)
+
+    def describe_comp_share_software_port(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeCompShareSoftwarePort - 获取算力平台应用及端口号列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **SoftwarePort** (list) - 见 **SoftwarePort** 模型定义
+
+        **Response Model**
+
+        **SoftwarePort**
+        - **Port** (int) - 端口号。范围: [1, 65535]
+        - **Software** (str) - 应用名称
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeCompShareSoftwarePortRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeCompShareSoftwarePort", d, **kwargs)
+        return apis.DescribeCompShareSoftwarePortResponseSchema().loads(resp)
+
     def describe_comp_share_support_zone(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -704,6 +1201,271 @@ class UCompShareClient(Client):
 
         resp = self.invoke("DescribeCompShareSupportZone", d, **kwargs)
         return apis.DescribeCompShareSupportZoneResponseSchema().loads(resp)
+
+    def describe_model_repository_models(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeModelRepositoryModels - 模型仓库模型列表
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Name** (str) - 模型名称
+        - **Tags** (str) - 模型标签列表, 标签之间英文逗号:"," 相连接
+
+        **Response**
+
+        - **Models** (list) - 见 **ModelRepositoryModel** 模型定义
+
+        **Response Model**
+
+        **ModelRepositoryModel**
+        - **CreateTime** (int) - 创建时间
+        - **Name** (str) - 模型名称
+        - **Path** (str) - 模型路径
+        - **Size** (str) - 模型大小
+        - **Tag** (str) - 模型标签
+
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeModelRepositoryModelsRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeModelRepositoryModels", d, **kwargs)
+        return apis.DescribeModelRepositoryModelsResponseSchema().loads(resp)
+
+    def describe_model_repository_tags(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeModelRepositoryTags - 模型仓库标签列表
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Tags** (list) - 标签列表
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeModelRepositoryTagsRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeModelRepositoryTags", d, **kwargs)
+        return apis.DescribeModelRepositoryTagsResponseSchema().loads(resp)
+
+    def describe_self_community_images(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeSelfCommunityImages - 个人中心社区镜像查询
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CompShareImageId** (str) - 镜像ID
+        - **GroupId** (str) - 版本组ID
+
+        **Response**
+
+        - **AvailableTotalCount** (int) - 仅计算当前ImageSetGroup中已发布的镜像信息，若某个Group中不存在已上线，则不统计
+        - **ImageSetGroup** (list) - 见 **CompshareImageGroup** 模型定义
+        - **TotalCount** (int) - 镜像总数
+
+        **Response Model**
+
+        **Projects**
+        - **AccountId** (str) - 账号Id
+        - **AccountName** (str) - 账号昵称
+
+
+        **Software**
+        - **Applications** (list) - 【array of string】应用列表
+        - **CUDAVersion** (str) - CUDA版本
+        - **Framework** (str) - 框架名称
+        - **FrameworkVersion** (str) - 框架版本
+
+
+        **CompShareImage**
+        - **AuthInfo** (int) - 镜像作者认证信息
+        - **Author** (str) - 镜像作者昵称
+        - **AutoStart** (bool) - 是否支持自启动 default:false
+        - **CompShareImageId** (str) - 镜像Id
+        - **Container** (str) - 是否为容器镜像。- True 容器镜像- False 虚机镜像
+        - **Cover** (str) - 镜像封面URL
+        - **CreateTime** (int) - 创建时间戳
+        - **CreatedCount** (int) - 镜像引用创建计数
+        - **Description** (str) - 镜像描述信息
+        - **FailedReason** (str) - 镜像制作失败错误原因
+        - **FavoritesCount** (int) - 镜像收藏计数
+        - **GroupId** (str) - 镜像组id
+        - **ImageCharge** (bool) - 是否镜像收费  default: false
+        - **ImageOwnerAlias** (str) - 镜像来源。- Official 平台镜像；- Community 社区镜像
+        - **ImageType** (str) - 镜像类型。- System 平台提供的公共镜像；- App 平台提供的应用镜像；- Custom 自制镜像；- Community 社区镜像
+        - **ImageUseTime** (int) - 镜像使用时长
+        - **IsOfficial** (bool) - 来源是否为官方镜像【仅自制镜像信息返回该字段】
+        - **Name** (str) - 镜像名称
+        - **Owner** (dict) - 见 **Projects** 模型定义
+        - **Price** (float) - 镜像价格。单位：元
+        - **PubTime** (int) - 发布时间戳
+        - **Readme** (str) - 镜像详细描述。仅指定镜像Id查询时返回
+        - **Size** (int) - 镜像大小。单位MB
+        - **Softwares** (dict) - 见 **Software** 模型定义
+        - **SourceGpuType** (str) - 自制镜像来源机型
+        - **Status** (str) - 镜像状态。- Making 制作中；- Available 可用；- UnAvailable 不可用；- Reviewing 审核中;- Offline 已下线
+        - **Tags** (list) - 【array of string】镜像标签
+        - **VersionDesc** (str) - 版本描述
+        - **VersionName** (str) - 版本名称
+        - **Visibility** (int) - 可见性。0：私密镜像；1：公开至镜像社区
+
+
+        **CompshareImageGroup**
+        - **CreatedCount** (int) - 引用创建次数
+        - **Data** (list) - 见 **CompShareImage** 模型定义
+        - **FavoritesCount** (int) - 收藏数
+        - **GroupId** (str) - 版本组ID
+        - **ImageDesc** (str) - 镜像描述
+        - **ImageName** (str) - 镜像名称
+        - **ImageUseTime** (int) - 镜像使用时长 , 单位：小时
+        - **IsFavorite** (bool) - 是否被收藏
+        - **RecommendCount** (int) - 推荐数
+        - **Status** (str) - 镜像组状态 Available 可用；UnAvailable 不可用
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeSelfCommunityImagesRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeSelfCommunityImages", d, **kwargs)
+        return apis.DescribeSelfCommunityImagesResponseSchema().loads(resp)
+
+    def describe_team_member_order(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeTeamMemberOrder - 获取团队订单
+
+        **Request**
+
+        - **BeginTime** (int) - (Required) 起始时间，需使用时间戳
+        - **EndTime** (int) - (Required) 结束时间，需使用时间戳，结束时间需大于起始时间
+        - **TeamId** (int) - (Required) 团队ID
+        - **VirtualCompanyId** (int) - (Required) 团队虚拟账号ID
+        - **ChargeTypes** (list) - 付费方式
+        - **Limit** (int) - 返回数据长度，默认为25，最大100
+        - **Offset** (int) - 列表起始位置偏移量，默认为0
+        - **OrderBy** (str) - 排序参数
+        - **OrderDir** (str) - 排序方式
+        - **OrderNos** (list) - 订单号
+        - **OrderStates** (list) - 订单状态
+        - **OrderTypes** (list) - 订单类型
+        - **Regions** (list) - 可用区
+        - **ResourceIds** (list) - 资源ID
+        - **ResourceTypes** (list) - 产品类型
+
+        **Response**
+
+        - **Limit** (int) - 分页大小
+        - **Offset** (int) - 分页偏移
+        - **OrderInfos** (list) - 见 **OrderInfo** 模型定义
+        - **Total** (int) - 总条数
+
+        **Response Model**
+
+        **OrderDetailItem**
+        - **ProductName** (str) - 产品名
+        - **Value** (str) - 配置
+
+
+        **ResourceTagItem**
+        - **KeyId** (str) - 标识名称
+        - **Value** (str) - 标识信息
+
+
+        **OrderInfo**
+        - **Amount** (str) - 订单金额
+        - **AmountCoupon** (str) - 优惠券金额
+        - **AmountFree** (str) - 赠金
+        - **AmountReal** (str) - 真实金额
+        - **ChargeType** (str) - 付费方式
+        - **Count** (int) - 购买数量
+        - **CreateTime** (int) - 创建时间
+        - **EndTime** (int) - 订单结束时间
+        - **OrderDetail** (list) - 见 **OrderDetailItem** 模型定义
+        - **OrderDetailOld** (list) - 见 **OrderDetailItem** 模型定义
+        - **OrderNo** (str) - 订单号
+        - **OrderState** (str) - 订单状态
+        - **OrderType** (str) - 订单类型
+        - **OriginalPrice** (str) - 折扣率
+        - **ProjectName** (str) - 项目名称
+        - **Quantity** (str) - 购买量
+        - **RegionId** (str) - 可用区
+        - **ResourceId** (str) - 资源ID
+        - **ResourceTag** (list) - 见 **ResourceTagItem** 模型定义
+        - **ResourceType** (str) - 产品类型
+        - **SpotDiscount** (str) - 抢占式折扣，仅抢占式才展示
+        - **StartTime** (int) - 订单起始时间
+        - **TradeNo** (str) - 交易号
+        - **UpdateTime** (int) - 更新时间
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.DescribeTeamMemberOrderRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeTeamMemberOrder", d, **kwargs)
+        return apis.DescribeTeamMemberOrderResponseSchema().loads(resp)
+
+    def describe_team_member_order_count(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeTeamMemberOrderCount - 获取团队成员订单总览
+
+        **Request**
+
+        - **BeginTime** (int) - (Required) 起始时间，需使用时间戳
+        - **EndTime** (int) - (Required) 结束时间，需使用时间戳，结束时间需大于起始时间
+        - **TeamId** (int) - (Required) 团队ID
+        - **VirtualCompanyId** (int) - (Required) 团队虚拟账号ID
+        - **ChargeTypes** (str) - 付费方式
+        - **OrderStates** (str) - 订单状态
+        - **OrderTypes** (str) - 订单类型
+        - **Regions** (str) - 可用区
+        - **ResourceTypes** (str) - 产品类型
+
+        **Response**
+
+        - **Amount** (str) - 订单总金额
+        - **AmountCoupon** (str) - 代金券
+        - **AmountFree** (str) - 赠送金额
+        - **AmountReal** (str) - 真实金额
+        - **TotalCount** (int) - 订单数量
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.DescribeTeamMemberOrderCountRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeTeamMemberOrderCount", d, **kwargs)
+        return apis.DescribeTeamMemberOrderCountResponseSchema().loads(resp)
 
     def describe_team_member_unpaid_order(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -771,6 +1533,42 @@ class UCompShareClient(Client):
 
         resp = self.invoke("DescribeTeamMemberUnpaidOrder", d, **kwargs)
         return apis.DescribeTeamMemberUnpaidOrderResponseSchema().loads(resp)
+
+    def describe_team_member_unpaid_order_count(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeTeamMemberUnpaidOrderCount - 获取团队成员未支付订单总览
+
+        **Request**
+
+        - **BeginTime** (int) - (Required) 起始时间，需使用时间戳
+        - **EndTime** (int) - (Required) 结束时间，需使用时间戳，结束时间需大于起始时间
+        - **TeamId** (int) - (Required) 团队ID
+        - **VirtualCompanyId** (int) - (Required) 虚拟账号公司ID
+        - **ChargeTypes** (list) - 付费方式
+        - **OrderStates** (list) - 订单状态
+        - **OrderTypes** (list) - 订单类型
+        - **OrganizationId** (int) - 组织ID
+        - **Regions** (list) - 可用区
+        - **ResourceIds** (str) - 资源ID
+        - **ResourceTypes** (int) - 产品类型
+        - **TransactionNos** (list) - 交易流水号
+
+        **Response**
+
+        - **Amount** (str) - 欠费订单总金额
+        - **TotalCount** (int) - 欠费订单数
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.DescribeTeamMemberUnpaidOrderCountRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeTeamMemberUnpaidOrderCount", d, **kwargs)
+        return apis.DescribeTeamMemberUnpaidOrderCountResponseSchema().loads(
+            resp
+        )
 
     def describe_ul_host_bundles(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -899,15 +1697,6 @@ class UCompShareClient(Client):
         - **UsedSize** (int) - 当前周期已使用流量
 
 
-        **ULHostDiskSet**
-        - **DiskId** (str) - 磁盘Id
-        - **DiskType** (str) - 磁盘类型。如："CLOUD_RSSD"、"CLOUD_SSD"
-        - **Drive** (str) - 磁盘盘符。系统盘："vda"
-        - **IsBoot** (str) - 是否为系统盘。是："True"；否："False"
-        - **Size** (int) - 磁盘大小。单位：GB
-        - **Type** (str) - 磁盘类型。系统盘："Boot"；数据盘："Data"
-
-
         **UHostIPSet**
         - **Bandwidth** (int) - IP对应的带宽, 单位: Mb  (内网IP不显示带宽信息)
         - **Default** (str) - 内网 Private 类型下，表示是否为默认网卡。true: 是默认网卡；其他值：不是。
@@ -920,6 +1709,15 @@ class UCompShareClient(Client):
         - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
         - **VPCId** (str) - IP地址对应的VPC ID。（北京一不支持，字段返回为空）
         - **Weight** (int) - 当前EIP的权重。权重最大的为当前的出口IP。
+
+
+        **ULHostDiskSet**
+        - **DiskId** (str) - 磁盘Id
+        - **DiskType** (str) - 磁盘类型。如："CLOUD_RSSD"、"CLOUD_SSD"
+        - **Drive** (str) - 磁盘盘符。系统盘："vda"
+        - **IsBoot** (str) - 是否为系统盘。是："True"；否："False"
+        - **Size** (int) - 磁盘大小。单位：GB
+        - **Type** (str) - 磁盘类型。系统盘："Boot"；数据盘："Data"
 
 
         **ULHostInstanceSet**
@@ -955,6 +1753,575 @@ class UCompShareClient(Client):
 
         resp = self.invoke("DescribeULHostInstance", d, **kwargs)
         return apis.DescribeULHostInstanceResponseSchema().loads(resp)
+
+    def describe_user_community_images(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUserCommunityImages - 获取社区镜像列表(登录状态)
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Author** (str) - 搜索指定作者发布的镜像
+        - **CompShareImageId** (str) - 镜像Id。支持指定镜像Id查询
+        - **FuzzySearch** (str) - 模糊搜索，支持 镜像名称、作者名称
+        - **IsFree** (bool) - 是否只筛选免费镜像
+        - **IsOfficial** (bool) - 是否只筛选官方镜像
+        - **Limit** (str) - 返回数据长度，默认为20，最大100
+        - **Name** (str) - 镜像名称。模糊搜索
+        - **Offset** (int) - 列表起始位置偏移量，默认为0
+        - **SortCondition** (dict) - 见 **DescribeUserCommunityImagesParamSortCondition** 模型定义
+        - **Tag** (str) - 按标签名称搜索，精确匹配
+
+        **Response**
+
+        - **AvailableTotalCount** (int) - 版本组可用数量
+        - **ImageSetGroup** (list) - 见 **CompshareImageGroup** 模型定义
+        - **TotalCount** (int) - 总数量
+
+        **Request Model**
+
+        **DescribeUserCommunityImagesParamSortCondition**
+        - **ASC** (str) - 是否升序排列
+        - **Field** (str) - 排序条件。- Favor：按热度排序，获取热点镜像；- PubTime：按发布时间排序，获取最新社区镜像；- Price 按价格排序；- CreatedCount 按使用量排序；- ImageUseTime 镜像使用时长排序- FavoritesCount 收藏数排序默认："PubTime"
+
+
+        **Response Model**
+
+        **Software**
+        - **Applications** (list) - 【array of string】应用列表
+        - **CUDAVersion** (str) - CUDA版本
+        - **Framework** (str) - 框架名称
+        - **FrameworkVersion** (str) - 框架版本
+
+
+        **Projects**
+        - **AccountId** (str) - 账号Id
+        - **AccountName** (str) - 账号昵称
+
+
+        **CompShareImage**
+        - **AuthInfo** (int) - 镜像作者认证信息
+        - **Author** (str) - 镜像作者昵称
+        - **AutoStart** (bool) - 是否支持自启动 default:false
+        - **CompShareImageId** (str) - 镜像Id
+        - **Container** (str) - 是否为容器镜像。- True 容器镜像- False 虚机镜像
+        - **Cover** (str) - 镜像封面URL
+        - **CreateTime** (int) - 创建时间戳
+        - **CreatedCount** (int) - 镜像引用创建计数
+        - **Description** (str) - 镜像描述信息
+        - **FailedReason** (str) - 镜像制作失败错误原因
+        - **FavoritesCount** (int) - 镜像收藏计数
+        - **GroupId** (str) - 镜像组id
+        - **ImageCharge** (bool) - 是否镜像收费  default: false
+        - **ImageOwnerAlias** (str) - 镜像来源。- Official 平台镜像；- Community 社区镜像
+        - **ImageType** (str) - 镜像类型。- System 平台提供的公共镜像；- App 平台提供的应用镜像；- Custom 自制镜像；- Community 社区镜像
+        - **ImageUseTime** (int) - 镜像使用时长
+        - **IsOfficial** (bool) - 来源是否为官方镜像【仅自制镜像信息返回该字段】
+        - **Name** (str) - 镜像名称
+        - **Owner** (dict) - 见 **Projects** 模型定义
+        - **Price** (float) - 镜像价格。单位：元
+        - **PubTime** (int) - 发布时间戳
+        - **Readme** (str) - 镜像详细描述。仅指定镜像Id查询时返回
+        - **Size** (int) - 镜像大小。单位MB
+        - **Softwares** (dict) - 见 **Software** 模型定义
+        - **SourceGpuType** (str) - 自制镜像来源机型
+        - **Status** (str) - 镜像状态。- Making 制作中；- Available 可用；- UnAvailable 不可用；- Reviewing 审核中;- Offline 已下线
+        - **Tags** (list) - 【array of string】镜像标签
+        - **VersionDesc** (str) - 版本描述
+        - **VersionName** (str) - 版本名称
+        - **Visibility** (int) - 可见性。0：私密镜像；1：公开至镜像社区
+
+
+        **CompshareImageGroup**
+        - **CreatedCount** (int) - 引用创建次数
+        - **Data** (list) - 见 **CompShareImage** 模型定义
+        - **FavoritesCount** (int) - 收藏数
+        - **GroupId** (str) - 版本组ID
+        - **ImageDesc** (str) - 镜像描述
+        - **ImageName** (str) - 镜像名称
+        - **ImageUseTime** (int) - 镜像使用时长 , 单位：小时
+        - **IsFavorite** (bool) - 是否被收藏
+        - **RecommendCount** (int) - 推荐数
+        - **Status** (str) - 镜像组状态 Available 可用；UnAvailable 不可用
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeUserCommunityImagesRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeUserCommunityImages", d, **kwargs)
+        return apis.DescribeUserCommunityImagesResponseSchema().loads(resp)
+
+    def detach_compshare_disk(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DetachCompshareDisk - 卸载某个已经挂载在指定UHost实例上的UDisk
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **UDiskId** (str) - (Required) 需要卸载的UDisk实例ID
+        - **UHostId** (str) - UHost实例ID。【UHostId和HostId必须选填一个，本字段即将废弃，建议使用HostId】
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DetachCompshareDiskRequestSchema().dumps(d)
+
+        resp = self.invoke("DetachCompshareDisk", d, **kwargs)
+        return apis.DetachCompshareDiskResponseSchema().loads(resp)
+
+    def download_team_order(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DownloadTeamOrder - 下载团队订单
+
+        **Request**
+
+        - **TeamId** (int) - (Required) 团队ID
+        - **BeginTime** (int) - 起始时间，需使用时间戳
+        - **EndTime** (int) - 结束时间，需使用时间戳，结束时间需大于起始时间
+        - **OrderStates** (list) - 订单状态
+        - **VirtualCompanyId** (int) - 团队虚拟账号ID
+
+        **Response**
+
+        - **Amount** (str) - 总金额
+        - **AmountCoupon** (str) - 代金券
+        - **AmountFree** (str) - 赠金
+        - **AmountReal** (str) - 现金
+        - **ChargeType** (str) - 计费方式
+        - **CreateTime** (int) - 创建时间
+        - **EndTime** (int) - 结束时间
+        - **OrderNo** (str) - 订单号
+        - **OrderType** (str) - 订单类型
+        - **RemarkName** (str) - 成员备注
+        - **ResourceId** (str) - 资源ID
+        - **ResourceType** (str) - 产品类型
+        - **StartTime** (int) - 开始时间
+        - **VirtualCompanyId** (int) - 成员ID
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.DownloadTeamOrderRequestSchema().dumps(d)
+
+        resp = self.invoke("DownloadTeamOrder", d, **kwargs)
+        return apis.DownloadTeamOrderResponseSchema().loads(resp)
+
+    def get_comp_share_attached_disk_upgrade_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetCompShareAttachedDiskUpgradePrice - 获取算力平台实例磁盘升级价格
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **DiskId** (str) - (Required) 磁盘Id
+        - **DiskSpace** (str) - (Required) 目标大小。单位：GB
+        - **UHostId** (str) - (Required) 实例Id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **ListPrice** (float) - 列表价
+        - **ListPriceDetail** (dict) - 见 **DiskUpgradePriceDetail** 模型定义
+        - **OriginalPrice** (float) - 原价
+        - **OriginalPriceDetail** (dict) - 见 **DiskUpgradePriceDetail** 模型定义
+        - **Price** (float) - 升级价格
+        - **PriceDetail** (dict) - 见 **DiskUpgradePriceDetail** 模型定义
+
+        **Response Model**
+
+        **DiskUpgradePriceDetail**
+        - **Snapshot** (float) - 快照价格
+        - **UDisk** (float) - 磁盘价格
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetCompShareAttachedDiskUpgradePriceRequestSchema().dumps(d)
+
+        resp = self.invoke("GetCompShareAttachedDiskUpgradePrice", d, **kwargs)
+        return apis.GetCompShareAttachedDiskUpgradePriceResponseSchema().loads(
+            resp
+        )
+
+    def get_comp_share_image_create_progress(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetCompShareImageCreateProgress - 获取算力平台镜像制作进度
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CompShareImageId** (str) - (Required) 镜像Id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Process** (float) - 处理进度 0 ~ 100
+        - **RemainingDuration** (str) - 预估剩余总时间 单位秒
+        - **TotalDuration** (str) - 预估处理总时间 单位秒
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetCompShareImageCreateProgressRequestSchema().dumps(d)
+
+        resp = self.invoke("GetCompShareImageCreateProgress", d, **kwargs)
+        return apis.GetCompShareImageCreateProgressResponseSchema().loads(resp)
+
+    def get_comp_share_instance_monitor(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetCompShareInstanceMonitor - 获取实例监控指标
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **UHostIds** (list) - 【数组】UHost主机的资源ID，例如UHostIds.0代表希望获取信息 的主机1，UHostIds.1代表主机2。 如果不传入，则返回当前Region 所有符合条件的UHost实例。
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetCompShareInstanceMonitorRequestSchema().dumps(d)
+
+        resp = self.invoke("GetCompShareInstanceMonitor", d, **kwargs)
+        return apis.GetCompShareInstanceMonitorResponseSchema().loads(resp)
+
+    def get_comp_share_instance_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetCompShareInstancePrice - 获取算力平台实例价格
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ChargeType** (str) - 计费模式。枚举值为： \\ > Year，按年付费； \\ > Month，按月付费；\\ > Dynamic，按小时付费；\\ Day，按天付费\\ 如果不传某个枚举值，默认返回月付价格
+        - **CompShareImageId** (str) - 镜像Id
+        - **Cpu** (str) - CPU核数。可选范围参照控制台。默认值: 16
+        - **Disks** (list) - 见 **GetCompShareInstancePriceParamDisks** 模型定义
+        - **Gpu** (str) - GPU卡核心数。默认值：1
+        - **GpuType** (str) - GpuType。枚举值：["4090"]
+        - **Memory** (str) - 内存大小。单位：MB。取值为1024的倍数（可选范围参照好控制台）。默认值：32768
+
+        **Response**
+
+        - **ListPriceDetail** (list) - 见 **CompSharePriceDetail** 模型定义
+        - **OriginalPriceDetail** (list) - 见 **CompSharePriceDetail** 模型定义
+        - **PriceDetail** (list) - 见 **CompSharePriceDetail** 模型定义
+
+        **Request Model**
+
+        **GetCompShareInstancePriceParamDisks**
+        - **IsBoot** (bool) - 是否是系统盘。枚举值：\\ > True，是系统盘 \\ > False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
+        - **Size** (int) - 磁盘大小，单位GB。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
+        - **Type** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
+
+
+        **Response Model**
+
+        **CompSharePriceDetail**
+        - **ChargeType** (str) - 计费类型
+        - **CompShareImage** (float) - 镜像价格/Gpu/小时
+        - **Disks** (float) - 磁盘价格
+        - **Instance** (float) - 实例价格
+        - **InstanceDiscountType** (int) - 主机折扣类型  1:夜间折扣 2:节日折扣
+        - **ListPrice** (str) - 列表价
+        - **OriginalPrice** (float) - 原价
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetCompShareInstancePriceRequestSchema().dumps(d)
+
+        resp = self.invoke("GetCompShareInstancePrice", d, **kwargs)
+        return apis.GetCompShareInstancePriceResponseSchema().loads(resp)
+
+    def get_comp_share_instance_upgrade_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetCompShareInstanceUpgradePrice - 获取算力平台实例升降级价格
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **UHostId** (str) - (Required) UHost Id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CompShareImageId** (str) - 镜像Id
+        - **Cpu** (int) - 目标Cpu核心数。默认原配置
+        - **Gpu** (int) - 目标Gpu卡数。默认原配置
+        - **Memory** (int) - 目标内存大小。单位：MB。默认原配置
+
+        **Response**
+
+        - **ListPrice** (float) - 列表价
+        - **OriginalPrice** (float) - 原价
+        - **Price** (float) - 价格
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetCompShareInstanceUpgradePriceRequestSchema().dumps(d)
+
+        resp = self.invoke("GetCompShareInstanceUpgradePrice", d, **kwargs)
+        return apis.GetCompShareInstanceUpgradePriceResponseSchema().loads(resp)
+
+    def get_comp_share_instance_user_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetCompShareInstanceUserPrice - 获取算力平台实例用户价格
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ChargeType** (str) - 计费模式。枚举值为： \\ > Year，按年付费； \\ > Month，按月付费；\\ > Dynamic，按小时付费；\\ Day，按天付费\\ 如果不传某个枚举值，默认返回月付价格
+        - **CompShareImageId** (str) - 镜像Id
+        - **Cpu** (str) - CPU核数。可选范围参照控制台。默认值: 16
+        - **Disks** (list) - 见 **GetCompShareInstanceUserPriceParamDisks** 模型定义
+        - **Gpu** (str) - GPU卡核心数。默认值：1
+        - **GpuType** (str) - GpuType。枚举值：["4090"]
+        - **Memory** (str) - 内存大小。单位：MB。取值为1024的倍数（可选范围参照好控制台）。默认值：32768
+
+        **Response**
+
+        - **ListPriceDetail** (list) - 见 **CompSharePriceDetail** 模型定义
+        - **OriginalPriceDetail** (list) - 见 **CompSharePriceDetail** 模型定义
+        - **PriceDetail** (list) - 见 **CompSharePriceDetail** 模型定义
+
+        **Request Model**
+
+        **GetCompShareInstanceUserPriceParamDisks**
+        - **IsBoot** (bool) - 是否是系统盘。枚举值：\\ > True，是系统盘 \\ > False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
+        - **Size** (int) - 磁盘大小，单位GB。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
+        - **Type** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
+
+
+        **Response Model**
+
+        **CompSharePriceDetail**
+        - **ChargeType** (str) - 计费类型
+        - **CompShareImage** (float) - 镜像价格/Gpu/小时
+        - **Disks** (float) - 磁盘价格
+        - **Instance** (float) - 实例价格
+        - **InstanceDiscountType** (int) - 主机折扣类型  1:夜间折扣 2:节日折扣
+        - **ListPrice** (str) - 列表价
+        - **OriginalPrice** (float) - 原价
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetCompShareInstanceUserPriceRequestSchema().dumps(d)
+
+        resp = self.invoke("GetCompShareInstanceUserPrice", d, **kwargs)
+        return apis.GetCompShareInstanceUserPriceResponseSchema().loads(resp)
+
+    def get_comp_share_refund_price(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetCompShareRefundPrice - 获取算力平台实例删除扣除费用。包括主机、磁盘等资源的费用
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **UHostIds** (list) - (Required) 【数组】UHost实例ID。参见  `DescribeUHostInstance <https://docs.ucloud.cn/api/ucompshare-api/describe_uhost_instance.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **RefundPriceSet** (list) - 见 **UHostRefundPriceSet** 模型定义
+
+        **Response Model**
+
+        **UHostRefundPriceSet**
+        - **Code** (int) - 实例操作结果的错误码。0为成功
+        - **ErrMessage** (str) - 当 Code 非 0 时提供详细的描述信息
+        - **RefundPrice** (float) - 实例的删除退费金额
+        - **UHostId** (str) - UHost实例ID
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetCompShareRefundPriceRequestSchema().dumps(d)
+
+        resp = self.invoke("GetCompShareRefundPrice", d, **kwargs)
+        return apis.GetCompShareRefundPriceResponseSchema().loads(resp)
+
+    def get_comp_share_team_info(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetCompShareTeamInfo - 获取团队详细信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **TeamId** (int) - (Required) 团队Id
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+        - **Team** (dict) - 见 **CompShareTeamDetailInfo** 模型定义
+        - **TeamRelation** (list) - 见 **TeamRelation** 模型定义
+
+        **Response Model**
+
+        **CompShareTeamDetailInfo**
+        - **CompanyId** (int) - 管理者公司Id
+        - **Deleted** (int) - 删除状态 0: 未删除 1: 已删除
+        - **Description** (str) - 团队简介
+        - **Id** (int) - 团队Id
+        - **Name** (str) - 团队名称
+
+
+        **TeamRelation**
+        - **AllocateAmount** (int) - 已分配金额
+        - **AvailableAmount** (int) - 余额
+        - **CreateTime** (int) - 邀请时间
+        - **RemarkName** (str) - 备注名称
+        - **Status** (str) - 邀请状态：Pending（待同意）、Joined（已加入）、Rejected（拒绝）、Canceled（取消）
+        - **TeamId** (int) - 团队ID
+        - **TeamName** (str) - 团队名称
+        - **UserCompanyId** (int) - 成员公司Id
+        - **VirtualCompanyId** (int) - 虚拟账号公司Id
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetCompShareTeamInfoRequestSchema().dumps(d)
+
+        resp = self.invoke("GetCompShareTeamInfo", d, **kwargs)
+        return apis.GetCompShareTeamInfoResponseSchema().loads(resp)
+
+    def get_open_claw_model_list(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetOpenClawModelList - 获取OpenClaw模型列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+
+        **Response**
+
+        - **Models** (dict) - 见 **OpenClawModelInfo** 模型定义
+
+        **Response Model**
+
+        **OpenClawModelInfo**
+        - **Id** (str) - 模型Id
+        - **Name** (str) - 模型名称
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetOpenClawModelListRequestSchema().dumps(d)
+
+        resp = self.invoke("GetOpenClawModelList", d, **kwargs)
+        return apis.GetOpenClawModelListResponseSchema().loads(resp)
+
+    def get_software_url(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetSoftwareURL - 获取算力平台实例应用URL
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Software** (str) - (Required) 应用名称
+        - **UHostId** (str) - (Required) 实例Id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **URL** (str) - 应用的URL
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetSoftwareURLRequestSchema().dumps(d)
+
+        resp = self.invoke("GetSoftwareURL", d, **kwargs)
+        return apis.GetSoftwareURLResponseSchema().loads(resp)
 
     def get_ul_host_instance_price(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1031,6 +2398,250 @@ class UCompShareClient(Client):
         resp = self.invoke("GetULHostRenewPrice", d, **kwargs)
         return apis.GetULHostRenewPriceResponseSchema().loads(resp)
 
+    def list_comp_share_team(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListCompShareTeam - 获取团队列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Teams** (list) - 见 **CompShareTeamInfo** 模型定义
+
+        **Response Model**
+
+        **CompShareTeamInfo**
+        - **CompanyId** (int) - 管理者公司Id
+        - **Description** (str) - 团队简介
+        - **Id** (int) - 团队Id
+        - **MemberCount** (int) - 成员数量
+        - **Name** (str) - 团队名称
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ListCompShareTeamRequestSchema().dumps(d)
+
+        resp = self.invoke("ListCompShareTeam", d, **kwargs)
+        return apis.ListCompShareTeamResponseSchema().loads(resp)
+
+    def list_comp_share_team_invite(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListCompShareTeamInvite - 获取邀请成员的列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **TeamId** (int) - 团队ID
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Invites** (list) - 见 **CompShareTeamInviteInfo** 模型定义
+        - **Message** (str) - 错误信息
+
+        **Response Model**
+
+        **CompShareTeamInviteInfo**
+        - **CreateTime** (int) - 邀请时间
+        - **RemarkName** (str) - 备注名称
+        - **Status** (str) - 邀请状态：Pending（待同意）、Joined（已加入）、Rejected（拒绝）、Canceled（取消）
+        - **TeamId** (int) - 团队ID
+        - **TeamName** (str) - 团队名称
+        - **UserCompanyId** (int) - 成员公司Id
+        - **VirtualCompanyId** (int) - 虚拟账号公司Id
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ListCompShareTeamInviteRequestSchema().dumps(d)
+
+        resp = self.invoke("ListCompShareTeamInvite", d, **kwargs)
+        return apis.ListCompShareTeamInviteResponseSchema().loads(resp)
+
+    def list_comp_share_team_joined(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListCompShareTeamJoined - 获取加入团队信息列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Status** (str) - 邀请状态：Pending（待同意）、Joined（已加入）、Rejected（拒绝）、Canceled（取消）
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **JoinedTeams** (list) - 见 **CompShareTeamJoinedInfo** 模型定义
+
+        **Response Model**
+
+        **CompShareTeamJoinedInfo**
+        - **CreateTime** (int) - 邀请时间
+        - **IsPersonalAccount** (bool) - 当前是否为个人账号
+        - **RemarkName** (str) - 备注名称
+        - **Status** (str) - 邀请状态：Pending（待同意）、Joined（已加入）、Rejected（拒绝）、Canceled（取消）
+        - **TeamId** (int) - 团队ID
+        - **TeamName** (str) - 团队名称
+        - **UserCompanyId** (int) - 成员公司Id
+        - **VirtualCompanyId** (int) - 虚拟账号公司Id
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ListCompShareTeamJoinedRequestSchema().dumps(d)
+
+        resp = self.invoke("ListCompShareTeamJoined", d, **kwargs)
+        return apis.ListCompShareTeamJoinedResponseSchema().loads(resp)
+
+    def list_comp_share_team_operate_log(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListCompShareTeamOperateLog - 获取团队操作日志列表
+
+        **Request**
+
+        - **BeginTime** (int) - (Required) 起始时间，需使用时间戳
+        - **EndTime** (int) - (Required) 结束时间，需使用时间戳，结束时间需大于起始时间
+        - **TeamId** (int) - (Required) 团队ID
+        - **Limit** (int) - 返回数据长度，默认为25，最大100
+        - **Offset** (int) - 列表起始位置偏移量，默认为0
+        - **OperateType** (list) - 操作类型，详细参考返回值
+        - **OrderByASC** (bool) - 排序方式：true表示按创建时间升序，false表示降序（默认）
+        - **Status** (list) - 操作状态，详细参考返回值
+
+        **Response**
+
+        - **Logs** (list) - 见 **CompShareTeamOperateLogInfo** 模型定义
+        - **OperateTypeList** (list) - 操作类型枚举列表
+        - **StatusList** (list) - 状态枚举列表
+        - **Total** (int) - 总条目数
+
+        **Response Model**
+
+        **CompShareTeamOperateLogInfo**
+        - **Content** (str) - 操作内容
+        - **CreateTime** (int) - 操作日志的创建时间
+        - **OperateType** (str) - 操作类型
+        - **Status** (str) - 操作状态
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.ListCompShareTeamOperateLogRequestSchema().dumps(d)
+
+        resp = self.invoke("ListCompShareTeamOperateLog", d, **kwargs)
+        return apis.ListCompShareTeamOperateLogResponseSchema().loads(resp)
+
+    def list_member_product_type(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListMemberProductType - 获取成员订单产品类型
+
+        **Request**
+
+        - **BeginTime** (int) - (Required) 起始时间，需使用时间戳
+        - **EndTime** (int) - (Required) 结束时间，需使用时间戳，结束时间需大于起始时间
+        - **TeamId** (int) - (Required) 团队ID
+        - **OrderStates** (list) - 订单状态
+        - **VirtualCompanyId** (int) - 成员虚拟ID
+
+        **Response**
+
+        - **ProductTypeList** (list) - 产品类型列表
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.ListMemberProductTypeRequestSchema().dumps(d)
+
+        resp = self.invoke("ListMemberProductType", d, **kwargs)
+        return apis.ListMemberProductTypeResponseSchema().loads(resp)
+
+    def modify_comp_share_image_share_account(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyCompShareImageShareAccount - 管理镜像的共享账号列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CompShareImageId** (str) - (Required) 镜像Id
+        - **AddAccounts** (list) - 添加被共享的账号Id，每次最多10个。与RemoveAccounts.N不能同时为空
+        - **RemoveAccounts** (list) - 移除被共享的账号Id，每次最多10个。与AddAccounts.N不能同时为空
+
+        **Response**
+
+        - **InvalidAccounts** (list) - 无效的账号Id列表
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ModifyCompShareImageShareAccountRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyCompShareImageShareAccount", d, **kwargs)
+        return apis.ModifyCompShareImageShareAccountResponseSchema().loads(resp)
+
+    def modify_comp_share_instance_name(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyCompShareInstanceName - 修改算力平台实例名称
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Name** (str) - (Required) 名称
+        - **UHostId** (str) - (Required) 实例Id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **UHostId** (str) - 实例Id
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ModifyCompShareInstanceNameRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyCompShareInstanceName", d, **kwargs)
+        return apis.ModifyCompShareInstanceNameResponseSchema().loads(resp)
+
     def modify_ul_host_attribute(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1087,6 +2698,53 @@ class UCompShareClient(Client):
 
         resp = self.invoke("PoweroffULHostInstance", d, **kwargs)
         return apis.PoweroffULHostInstanceResponseSchema().loads(resp)
+
+    def publish_comp_share_image(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """PublishCompShareImage - 将自制镜像发布到镜像社区
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CompShareImageId** (str) - (Required) 镜像Id
+        - **Price** (float) - (Required) 镜像价格。单位：元，支持00.00
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **AutoStart** (str) - 是否支持自启动 false: 不支持 true:支持
+        - **CommunityImageName** (str) - 发布社区镜像名称
+        - **Cover** (str) - 封面。base64编码的图片
+        - **Description** (str) - 镜像描述信息
+        - **Readme** (str) - 镜像详情描述【富文本】
+        - **Softwares** (dict) - 见 **PublishCompShareImageParamSoftwares** 模型定义
+        - **Tags** (list) - 【array of string】镜像标签。最多支持3个标签
+
+        **Response**
+
+
+        **Request Model**
+
+        **PublishCompShareImageParamSoftwares**
+        - **Applications** (list) - 镜像应用列表
+        - **CUDAVersion** (str) - 镜像CUDA版本
+        - **Framework** (str) - 镜像框架名称
+        - **FrameworkVersion** (str) - 镜像框架版本
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.PublishCompShareImageRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("PublishCompShareImage", d, **kwargs)
+        return apis.PublishCompShareImageResponseSchema().loads(resp)
 
     def reboot_comp_share_instance(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1260,6 +2918,35 @@ class UCompShareClient(Client):
         resp = self.invoke("ResetULHostInstancePassword", d, **kwargs)
         return apis.ResetULHostInstancePasswordResponseSchema().loads(resp)
 
+    def resize_comp_share_disk(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ResizeCompShareDisk - 修改磁盘
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Size** (int) - (Required) 大小
+        - **UDiskId** (str) - (Required) 磁盘id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **UDiskId** (str) - 磁盘id
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ResizeCompShareDiskRequestSchema().dumps(d)
+
+        resp = self.invoke("ResizeCompShareDisk", d, **kwargs)
+        return apis.ResizeCompShareDiskResponseSchema().loads(resp)
+
     def resize_comp_share_instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1292,6 +2979,37 @@ class UCompShareClient(Client):
 
         resp = self.invoke("ResizeCompShareInstance", d, **kwargs)
         return apis.ResizeCompShareInstanceResponseSchema().loads(resp)
+
+    def set_comp_share_team_relation(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """SetCompShareTeamRelation - 设置邀请信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Status** (str) - (Required) 发送邀请操作：Agree（同意）、Reject（拒绝）、Cancel（取消）、UpdateRemarkName（更改备注）
+        - **TeamId** (str) - (Required) 团队Id
+        - **RemarkName** (str) - 备注名称
+        - **UserCompanyId** (str) - 取消邀请的成员公司Id
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.SetCompShareTeamRelationRequestSchema().dumps(d)
+
+        resp = self.invoke("SetCompShareTeamRelation", d, **kwargs)
+        return apis.SetCompShareTeamRelationResponseSchema().loads(resp)
 
     def start_comp_share_instance(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1486,3 +3204,94 @@ class UCompShareClient(Client):
 
         resp = self.invoke("TerminateULHostInstance", d, **kwargs)
         return apis.TerminateULHostInstanceResponseSchema().loads(resp)
+
+    def update_comp_share_image(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateCompShareImage - 编辑算力平台自制镜像信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CompShareImageId** (str) - (Required) 镜像Id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Cover** (str) - 镜像封面图。Base64编码后的字符串
+        - **Description** (str) - 镜像描述信息
+        - **Framework** (str) - 镜像框架信息
+        - **Readme** (str) - 镜像详情描述信息，支持富文本
+        - **Softwares** (str) - 镜像软件信息
+        - **Tags** (list) - 镜像标签列表，最多支持3个标签
+        - **Visibility** (int) - 可见性 0：私密；1：公开
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateCompShareImageRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateCompShareImage", d, **kwargs)
+        return apis.UpdateCompShareImageResponseSchema().loads(resp)
+
+    def update_comp_share_stop_scheduler(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateCompShareStopScheduler - 更新实例定时关机时间，若不存在则新建此定时任务
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **StopTime** (int) - (Required) 定时关机时间
+        - **UHostId** (str) - (Required) UHost实例ID。【UHostId和HostId必须选填一个，本字段即将废弃，建议使用HostId】
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateCompShareStopSchedulerRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateCompShareStopScheduler", d, **kwargs)
+        return apis.UpdateCompShareStopSchedulerResponseSchema().loads(resp)
+
+    def update_comp_share_team(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateCompShareTeam - 更改团队信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Description** (str) - 团队简介
+        - **Name** (str) - 团队名称
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateCompShareTeamRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateCompShareTeam", d, **kwargs)
+        return apis.UpdateCompShareTeamResponseSchema().loads(resp)
