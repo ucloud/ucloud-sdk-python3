@@ -46,6 +46,38 @@ class UMongoDBClient(Client):
         resp = self.invoke("BackupUMongoDBCluster", d, **kwargs)
         return apis.BackupUMongoDBClusterResponseSchema().loads(resp)
 
+    def backup_umon_go_db_log(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """BackupUMongoDBLog - 日志打包
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Begin** (int) - (Required) 日志开始时间,最早为7x24小时前
+        - **ClusterId** (str) - (Required) 集群id
+        - **End** (int) - (Required) 日志结束时间,时间区间不能超过24小时
+        - **LogType** (str) - (Required) 日志类型:SlowLog,ErrorLog
+        - **Name** (str) - (Required) 日志包名称
+        - **NodeId** (str) - (Required) 节点id, 慢日志 mongos 节点不可选
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.BackupUMongoDBLogRequestSchema().dumps(d)
+
+        resp = self.invoke("BackupUMongoDBLog", d, **kwargs)
+        return apis.BackupUMongoDBLogResponseSchema().loads(resp)
+
     def create_umon_go_db_config_template(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -91,20 +123,35 @@ class UMongoDBClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **AdminPassword** (str) - (Required) 管理员密码
-        - **DBVersion** (str) - (Required) 副本集的Mongodb的版本，例如MongoDB_3_6, MongoDB_4_2
-        - **DiskSpace** (int) - (Required) 磁盘空间(GB)
-        - **MachineTypeId** (str) - (Required) 机型配置
+        - **DBVersion** (str) - (Required) 副本集的Mongodb的版本，例如MongoDB 3.6, MongoDB 4.2
+        - **DiskSpace** (int) - (Required) 磁盘空间 (GB)：取值范围 20~32000，仅支持 10 的整数倍
+        - **MachineTypeId** (str) - (Required) 机型配置,如 o.mongo2m.medium
         - **Name** (str) - (Required) 副本集实例名称，至少6位
-        - **NodeCount** (int) - (Required) 副本集节点数量
+        - **NodeCount** (int) - (Required) 副本集节点数量：仅支持 3、5、7 奇数节点
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ChargeType** (str) - 付费方式：Year， Month， Dynamic，Trial，默认: Month
+        - **CrossZones** (list) - 跨可用区列表
+        - **Labels** (list) - 见 **CreateUMongoDBReplSetParamLabels** 模型定义
         - **ListenPort** (int) - mongo服务端口
         - **Quantity** (int) - 购买时长，默认值1
+        - **SecGroupId** (list) - 见 **CreateUMongoDBReplSetParamSecGroupId** 模型定义
         - **SubnetId** (str) - 子网ID
         - **Tag** (str) - 实例所在的业务组名称
         - **VPCId** (str) - VPC的ID
 
         **Response**
+
+
+        **Request Model**
+
+        **CreateUMongoDBReplSetParamSecGroupId**
+        - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
+        - **Priority** (int) - 安全组优先级。取值范围[1, 5]
+
+
+        **CreateUMongoDBReplSetParamLabels**
+        - **Key** (str) - 用户资源标签的键值
+        - **Value** (str) - 用户资源标签值
 
 
         """
@@ -132,24 +179,38 @@ class UMongoDBClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **AdminPassword** (str) - (Required) 管理员密码
-        - **DBVersion** (str) - (Required) 副本集的Mongodb的版本，例如MongoDB-3.6, MongoDB-4.2
-        - **DiskSpace** (int) - (Required) 数据节点磁盘空间(GB)
-        - **MachineTypeId** (str) - (Required) 数据节点机型配置
+        - **DBVersion** (str) - (Required) 副本集的Mongodb的版本，例如MongoDB 3.6, MongoDB 4.2
+        - **DiskSpace** (int) - (Required) 数据节点磁盘空间(GB):取值范围 20~32000，仅支持 10 的整数倍
+        - **MachineTypeId** (str) - (Required) 数据节点机型配置,如 o.mongo2m.medium
         - **MongosNodeCount** (int) - (Required) Mongos节点数量
         - **Name** (str) - (Required) 副本集实例名称，至少6位
         - **NodeCount** (int) - (Required) 每个分片中节点数量
         - **ShardCount** (int) - (Required) 分片数量
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ChargeType** (str) - 付费方式：Year， Month， Dynamic，Trial，默认: Month
+        - **Labels** (list) - 见 **CreateUMongoDBShardedClusterParamLabels** 模型定义
         - **ListenPort** (int) - mongo服务端口
         - **MongosMachineTypeId** (str) - Mongos节点机型配置
         - **Quantity** (int) - 购买时长，默认值1
+        - **SecGroupId** (list) - 见 **CreateUMongoDBShardedClusterParamSecGroupId** 模型定义
         - **SubnetId** (str) - 子网ID
         - **Tag** (str) - 实例所在的业务组名称
         - **TemplateId** (str) - 参数配置模版id
         - **VPCId** (str) - VPC的ID
 
         **Response**
+
+
+        **Request Model**
+
+        **CreateUMongoDBShardedClusterParamSecGroupId**
+        - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
+        - **Priority** (int) - 安全组优先级。取值范围[1, 5]
+
+
+        **CreateUMongoDBShardedClusterParamLabels**
+        - **Key** (str) - 用户资源标签的键值
+        - **Value** (str) - 用户资源标签值
 
 
         """
@@ -177,10 +238,11 @@ class UMongoDBClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterId** (str) - (Required) 集群ID
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BackupId** (str) - 文件备份ID
+        - **Category** (str) - 类型:如 oplog
         - **PackageId** (int) - 打包ID
         - **ValidTime** (int) - 备份链接过期时间（单位秒）
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -218,45 +280,9 @@ class UMongoDBClient(Client):
 
         **Response Model**
 
-        **ClusterInfo**
-        - **ClusterId** (str) - 集群ID
-        - **ClusterType** (str) - 集群类型，ReplicaSet :副本集，SharedCluster：分片集
-        - **ConfigMachineType** (str) - Config配置集群节点配置，分片集有效
-        - **ConfigNodeCount** (int) - Config配置集群节点数量，分片集有效
-        - **ConfigReplicaInfo** (dict) - 见 **ReplicaInfo** 模型定义
-        - **ConnectURL** (str) - 副本集的访问地址
-        - **CreateTime** (int) - DB实例创建时间
-        - **DBVersion** (str) - 副本集的Mongodb的版本
-        - **DataReplicaInfos** (list) - 见 **ReplicaInfo** 模型定义
-        - **DeleteTime** (int) - DB实例删除时间
-        - **DiskSpace** (int) - 磁盘空间(GB), 默认根据配置机型
-        - **InstanceName** (str) - 实例名称
-        - **MachineTypeId** (str) - 计算规格
-        - **MongosCount** (int) - Mongos节点数量，分片集有效
-        - **MongosInfo** (list) - 见 **NodeInfo** 模型定义
-        - **ShardCount** (int) - 分片数量，分片集有效
-        - **ShardNodeCount** (int) - 每分片节点数量，分片集有效
-        - **State** (str) - 副本集/分片集群状态标记 Initing：初始化中，InitFailed：安装失败，Starting：启动中，StartFailed：启动失败，Running：运行，Stopping：关闭中，Stopped：已关闭, StopFailed：关闭失败，Deleting：删除中，Deleted：已删除，DeleteFailed：删除失败，Restarting：重启中，RestartFailed：重启失败。
-        - **SubnetId** (str) - 子网ID
-        - **Tag** (str) - 实例业务组
-        - **VPCId** (str) - VPC的ID
-        - **Zone** (str) - 可用区
-        - **ZoneId** (int) -
-
-
-        **ReplicaInfo**
-        - **ClusterId** (str) - 集群ID
-        - **CreateTime** (int) - 副本集创建时间
-        - **DeleteTime** (int) - 副本集删除时间
-        - **IsolationGroupId** (str) - 隔离组ID
-        - **MachineType** (str) - 机器类型
-        - **MachineTypeId** (str) - 机器类型Id
-        - **ModifyTime** (int) - 副本集修改时间
-        - **NodeCount** (int) - 副本集下的节点数量
-        - **NodeInfos** (list) - 见 **NodeInfo** 模型定义
-        - **ReplicaId** (str) - 副本集ID
-        - **ReplicaType** (str) - 副本类型,ConfigRepl或者DataRepl
-        - **State** (str) - 副本集/分片集群状态标记 Initing：初始化中，InitFailed：安装失败，Starting：启动中，StartFailed：启动失败，Running：运行，Stopping：关闭中，Stopped：已关闭, StopFailed：关闭失败，Deleting：删除中，Deleted：已删除，DeleteFailed：删除失败，Restarting：重启中，RestartFailed：重启失败。
+        **DiskInfo**
+        - **DiskId** (str) - 磁盘id
+        - **DiskSize** (int) - 磁盘容量单位GB
 
 
         **NodeInfo**
@@ -276,9 +302,60 @@ class UMongoDBClient(Client):
         - **ZoneId** (int) - 可用区ID
 
 
-        **DiskInfo**
-        - **DiskId** (str) - 磁盘id
-        - **DiskSize** (int) - 磁盘容量单位GB
+        **ReplicaInfo**
+        - **ClusterId** (str) - 集群ID
+        - **CreateTime** (int) - 副本集创建时间
+        - **DeleteTime** (int) - 副本集删除时间
+        - **IsolationGroupId** (str) - 隔离组ID
+        - **MachineType** (str) - 机器类型
+        - **MachineTypeId** (str) - 机器类型Id
+        - **ModifyTime** (int) - 副本集修改时间
+        - **NodeCount** (int) - 副本集下的节点数量
+        - **NodeInfos** (list) - 见 **NodeInfo** 模型定义
+        - **ReplicaId** (str) - 副本集ID
+        - **ReplicaType** (str) - 副本类型,ConfigRepl或者DataRepl
+        - **State** (str) - 副本集/分片集群状态标记 Initing：初始化中，InitFailed：安装失败，Starting：启动中，StartFailed：启动失败，Running：运行，Stopping：关闭中，Stopped：已关闭, StopFailed：关闭失败，Deleting：删除中，Deleted：已删除，DeleteFailed：删除失败，Restarting：重启中，RestartFailed：重启失败。
+
+
+        **MongodbMachineType**
+        - **Cpu** (int) - cpu核数
+        - **Description** (str) - 配置简称  2C4G
+        - **Group** (str) - 配置分组，2m , 4m
+        - **MachineTypeId** (str) - 机器类型ID o.mongo2m.medium，o.mongo2m.xlarge
+        - **Memory** (int) - 内存用量(GB)
+        - **UHhostMachineType** (str) - 机器类型，N/O
+
+
+        **ClusterInfo**
+        - **ClusterId** (str) - 集群ID
+        - **ClusterType** (str) - 集群类型，ReplicaSet :副本集，SharedCluster：分片集
+        - **ConfigComputeType** (dict) - 见 **MongodbMachineType** 模型定义
+        - **ConfigMachineType** (str) - Config配置集群节点配置，分片集有效
+        - **ConfigNodeCount** (int) - Config配置集群节点数量，分片集有效
+        - **ConfigReplicaInfo** (dict) - 见 **ReplicaInfo** 模型定义
+        - **ConnectURL** (str) - 副本集的访问地址
+        - **CreateTime** (int) - DB实例创建时间
+        - **CrossZones** (list) - 跨用区列表
+        - **DBVersion** (str) - 副本集的Mongodb的版本
+        - **DataComputeType** (dict) - 见 **MongodbMachineType** 模型定义
+        - **DataReplicaInfos** (list) - 见 **ReplicaInfo** 模型定义
+        - **DeleteTime** (int) - DB实例删除时间
+        - **DiskSpace** (int) - 磁盘空间(GB), 默认根据配置机型
+        - **EnableSSL** (int) - 是否开启了SSL；1->未开启 2->开启
+        - **InstanceName** (str) - 实例名称
+        - **MachineTypeId** (str) - 计算规格
+        - **MongosComputeType** (dict) - 见 **MongodbMachineType** 模型定义
+        - **MongosCount** (int) - Mongos节点数量，分片集有效
+        - **MongosInfo** (list) - 见 **NodeInfo** 模型定义
+        - **SSLExpirationTime** (int) - SSL到期时间
+        - **ShardCount** (int) - 分片数量，分片集有效
+        - **ShardNodeCount** (int) - 每分片节点数量，分片集有效
+        - **State** (str) - 副本集/分片集群状态标记 Initing：初始化中，InitFailed：安装失败，Starting：启动中，StartFailed：启动失败，Running：运行，Stopping：关闭中，Stopped：已关闭, StopFailed：关闭失败，Deleting：删除中，Deleted：已删除，DeleteFailed：删除失败，Restarting：重启中，RestartFailed：重启失败,Upgrading: 升降级中，UpgradeFailed: 升降级失败,Switching:主备切换中，UpdatingSSL：修改SSL中，UpdateSSLFail：修改SSL失败
+        - **SubnetId** (str) - 子网ID
+        - **Tag** (str) - 实例业务组
+        - **VPCId** (str) - VPC的ID
+        - **Zone** (str) - 可用区
+        - **ZoneId** (int) -
 
 
         """
@@ -351,17 +428,6 @@ class UMongoDBClient(Client):
 
         **Response Model**
 
-        **ConfigTemplateItem**
-        - **ConfigName** (str) - 配置名称
-        - **ConfigOption** (dict) - 见 **ConfigOptions** 模型定义
-        - **ConfigValue** (str) - 配置值
-        - **CreateTime** (int) - 创建时间
-        - **ItemId** (str) - itemId
-        - **ModifyTime** (int) - 修改时间
-        - **NodeType** (str) - 节点类型: DataNode:数据节点 | ConfigSrvNode:配置节点 | MongosNode:路由节点
-        - **TemplateId** (str) - 模板ID
-
-
         **ConfigOptions**
         - **AllowedApplyType** (str) - 允许应用类型
         - **Description** (str) - 描述
@@ -377,6 +443,17 @@ class UMongoDBClient(Client):
         - **OptionValues** (str) - 配置选项值范围
 
 
+        **ConfigTemplateItem**
+        - **ConfigName** (str) - 配置名称
+        - **ConfigOption** (dict) - 见 **ConfigOptions** 模型定义
+        - **ConfigValue** (str) - 配置值
+        - **CreateTime** (int) - 创建时间
+        - **ItemId** (str) - itemId
+        - **ModifyTime** (int) - 修改时间
+        - **NodeType** (str) - 节点类型: DataNode:数据节点 | ConfigSrvNode:配置节点 | MongosNode:路由节点
+        - **TemplateId** (str) - 模板ID
+
+
         """
         # build request
         d = {
@@ -388,6 +465,40 @@ class UMongoDBClient(Client):
 
         resp = self.invoke("GetUMongoDBCfgTempItem", d, **kwargs)
         return apis.GetUMongoDBCfgTempItemResponseSchema().loads(resp)
+
+    def get_umon_go_db_log(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUMongoDBLog - 查询某一段时间内集群节点的错误日志或慢查询日志
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Begin** (int) - (Required) 查询的日志开始的时间戳（Unix Timestamp）。对于实时查询，这个参数应该是上次轮询请求时的时间戳，后台会返回从该值到当前时间的日志内容
+        - **ClusterId** (str) - (Required) 集群id
+        - **LogType** (str) - (Required) 日志类型:SlowLog,ErrorLog
+        - **NodeId** (str) - (Required) 节点id, 慢日志 mongos 节点不可选
+        - **End** (int) - 查询日志的结束时间戳(Unix Timestamp），对于实时查询不传该值，与BeginTime的差值不超过24小时：(EndTime-BeginTime) < 24*60*60
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **IsTruncate** (bool) - 是否已被截断
+        - **Log** (str) - 查询到的日志内容，一段纯文本
+        - **MaxLine** (int) - 支持的最大行数
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetUMongoDBLogRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUMongoDBLog", d, **kwargs)
+        return apis.GetUMongoDBLogResponseSchema().loads(resp)
 
     def get_umon_go_db_recover_time_range(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -444,11 +555,13 @@ class UMongoDBClient(Client):
         - **BackupType** (str) - 备份类型
         - **BatchId** (str) - 批次id
         - **ClusterId** (str) - 实例ID
+        - **DiskSize** (int) - 磁盘大小
         - **EndTime** (int) - 备份结束时间
         - **ReplicaType** (str) - 副本类型,ConfigRepl或者DataRepl
         - **StartTime** (int) - 备份开始时间
         - **State** (str) - 备份状态
         - **VirtualClusterId** (str) - 虚拟节点id
+        - **Zone** (str) - 可用区
 
 
         """
@@ -503,6 +616,158 @@ class UMongoDBClient(Client):
 
         resp = self.invoke("ListUMongoDBConfigTemplate", d, **kwargs)
         return apis.ListUMongoDBConfigTemplateResponseSchema().loads(resp)
+
+    def list_umon_go_db_instances(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListUMongoDBInstances - 获取副本集/分片集群列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ClusterId** (str) - 集群ID
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **DataSet** (list) - 见 **MongodbInstance** 模型定义
+        - **Message** (str) - 错误信息
+
+        **Response Model**
+
+        **MongodbMachineType**
+        - **Cpu** (int) - cpu核数
+        - **Description** (str) - 配置简称  2C4G
+        - **Group** (str) - 配置分组，2m , 4m
+        - **MachineTypeId** (str) - 机器类型ID o.mongo2m.medium，o.mongo2m.xlarge
+        - **Memory** (int) - 内存用量(GB)
+        - **UHhostMachineType** (str) - 机器类型，N/O
+
+
+        **MongodbInstance**
+        - **ClusterId** (str) - 副本集/分片集群ID
+        - **ClusterType** (str) - 集群类型，ReplicaSet :副本集，SharedCluster：分片集
+        - **ConnectURL** (str) - 副本集/分片集群的访问地址
+        - **CreateTime** (int) - 副本集/分片集群的创建时间
+        - **CrossZones** (list) - 跨可用区列表
+        - **DBVersion** (str) - 副本集/分片集群的Mongodb的版本，包括MongoDB-3.6, MongoDB-4.2
+        - **DataComputeType** (dict) - 见 **MongodbMachineType** 模型定义
+        - **DiskSpace** (int) - 数据节点磁盘空间(GB)
+        - **ExpiredTime** (int) - DB实例过期时间，采用UTC计时时间戳
+        - **IPv6ConnectURL** (str) - 副本集/分片集IPv6访问地址
+        - **Name** (str) - 副本集/分片集群实例名称
+        - **State** (str) - 副本集/分片集群状态标记 Initing：初始化中，InitFailed：安装失败，Starting：启动中，StartFailed：启动失败，Running：运行，Stopping：关闭中，Stopped：已关闭, StopFailed：关闭失败，Deleting：删除中，Deleted：已删除，DeleteFailed：删除失败，Restarting：重启中，RestartFailed：重启失败,Upgrading: 升降级中，UpgradeFailed: 升降级失败,Switching:主备切换中
+        - **SubnetId** (str) - 子网ID
+        - **Tag** (str) - 业务组
+        - **VPCId** (str) - VPC的ID
+        - **Zone** (str) - 可用区
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ListUMongoDBInstancesRequestSchema().dumps(d)
+
+        resp = self.invoke("ListUMongoDBInstances", d, **kwargs)
+        return apis.ListUMongoDBInstancesResponseSchema().loads(resp)
+
+    def list_umon_go_db_log_package(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListUMongoDBLogPackage - 日志打包列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ClusterId** (str) - (Required) 集群id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **NodeId** (str) - 节点id
+
+        **Response**
+
+        - **DataSet** (list) - 见 **PackageInfo** 模型定义
+
+        **Response Model**
+
+        **PackageInfo**
+        - **Begin** (int) - 开始时间
+        - **ClusterId** (str) - 集群id
+        - **CreateTime** (int) - 创建时间
+        - **End** (int) - 结束时间
+        - **FinishTime** (int) - 完成时间
+        - **Id** (int) - id
+        - **Name** (str) - 名称
+        - **NodeId** (str) - 节点id
+        - **PackageType** (str) - SlowLog,ErrorLog
+        - **Role** (str) - 角色
+        - **Size** (int) - 大小,单位字节
+        - **State** (str) - Package_Running,Package_Success,Package_Failed,Package_Deleting,Package_Deleted,Package_DeleteFailed
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ListUMongoDBLogPackageRequestSchema().dumps(d)
+
+        resp = self.invoke("ListUMongoDBLogPackage", d, **kwargs)
+        return apis.ListUMongoDBLogPackageResponseSchema().loads(resp)
+
+    def list_umon_go_db_machine_spec(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListUMongoDBMachineSpec - 获取UMongoDB支持机器类型列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ClassType** (str) - 机型,如O
+        - **DiskType** (str) - 磁盘类型，如CLOUD_RSSD
+
+        **Response**
+
+        - **DataSet** (list) - 见 **MongodbMachineSpec** 模型定义
+
+        **Response Model**
+
+        **MongodbMachineType**
+        - **Cpu** (int) - cpu核数
+        - **Description** (str) - 配置简称  2C4G
+        - **Group** (str) - 配置分组，2m , 4m
+        - **MachineTypeId** (str) - 机器类型ID o.mongo2m.medium，o.mongo2m.xlarge
+        - **Memory** (int) - 内存用量(GB)
+        - **UHhostMachineType** (str) - 机器类型，N/O
+
+
+        **MongodbMachineSpec**
+        - **ClassType** (str) - 规格类型;O | N
+        - **ComputeType** (list) - 见 **MongodbMachineType** 模型定义
+        - **DefaultMachineType** (dict) - 见 **MongodbMachineType** 模型定义
+        - **DiskType** (list) - 磁盘类型;CLOUD_RSSD | CLOUD_SSD | LOCAL_SSD
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ListUMongoDBMachineSpecRequestSchema().dumps(d)
+
+        resp = self.invoke("ListUMongoDBMachineSpec", d, **kwargs)
+        return apis.ListUMongoDBMachineSpecResponseSchema().loads(resp)
 
     def list_umon_go_db_machine_type(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -664,6 +929,35 @@ class UMongoDBClient(Client):
 
         resp = self.invoke("ModifyUMongoDBBackupParam", d, **kwargs)
         return apis.ModifyUMongoDBBackupParamResponseSchema().loads(resp)
+
+    def resize_umon_go_db_instance(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ResizeUMongoDBInstance - 集群配置升降级
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ClusterId** (str) - (Required) 集群资源ID
+        - **DiskSpace** (int) - 集群数据节点磁盘配置
+        - **MachineTypeId** (str) - 集群数据节点机型配置
+        - **MongosMachineTypeId** (str) - 集群Mongos节点机型配置
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ResizeUMongoDBInstanceRequestSchema().dumps(d)
+
+        resp = self.invoke("ResizeUMongoDBInstance", d, **kwargs)
+        return apis.ResizeUMongoDBInstanceResponseSchema().loads(resp)
 
     def restart_umon_go_db_cluster(
         self, req: typing.Optional[dict] = None, **kwargs

@@ -3,6 +3,21 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class MongodbMachineTypeSchema(schema.ResponseSchema):
+    """MongodbMachineType -"""
+
+    fields = {
+        "Cpu": fields.Int(required=True, load_from="Cpu"),
+        "Description": fields.Str(required=True, load_from="Description"),
+        "Group": fields.Str(required=False, load_from="Group"),
+        "MachineTypeId": fields.Str(required=True, load_from="MachineTypeId"),
+        "Memory": fields.Int(required=True, load_from="Memory"),
+        "UHhostMachineType": fields.Str(
+            required=False, load_from="UHhostMachineType"
+        ),
+    }
+
+
 class DiskInfoSchema(schema.ResponseSchema):
     """DiskInfo - 磁盘信息"""
 
@@ -62,6 +77,7 @@ class ClusterInfoSchema(schema.ResponseSchema):
     fields = {
         "ClusterId": fields.Str(required=False, load_from="ClusterId"),
         "ClusterType": fields.Str(required=False, load_from="ClusterType"),
+        "ConfigComputeType": MongodbMachineTypeSchema(),
         "ConfigMachineType": fields.Str(
             required=False, load_from="ConfigMachineType"
         ),
@@ -71,14 +87,21 @@ class ClusterInfoSchema(schema.ResponseSchema):
         "ConfigReplicaInfo": ReplicaInfoSchema(),
         "ConnectURL": fields.Str(required=False, load_from="ConnectURL"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "CrossZones": fields.List(fields.Str()),
         "DBVersion": fields.Str(required=False, load_from="DBVersion"),
+        "DataComputeType": MongodbMachineTypeSchema(),
         "DataReplicaInfos": fields.List(ReplicaInfoSchema()),
         "DeleteTime": fields.Int(required=False, load_from="DeleteTime"),
         "DiskSpace": fields.Int(required=False, load_from="DiskSpace"),
+        "EnableSSL": fields.Int(required=False, load_from="EnableSSL"),
         "InstanceName": fields.Str(required=False, load_from="InstanceName"),
         "MachineTypeId": fields.Str(required=False, load_from="MachineTypeId"),
+        "MongosComputeType": MongodbMachineTypeSchema(),
         "MongosCount": fields.Int(required=False, load_from="MongosCount"),
         "MongosInfo": fields.List(NodeInfoSchema()),
+        "SSLExpirationTime": fields.Int(
+            required=False, load_from="SSLExpirationTime"
+        ),
         "ShardCount": fields.Int(required=False, load_from="ShardCount"),
         "ShardNodeCount": fields.Int(
             required=False, load_from="ShardNodeCount"
@@ -169,6 +192,7 @@ class BackupInfoSchema(schema.ResponseSchema):
         "BackupType": fields.Str(required=False, load_from="BackupType"),
         "BatchId": fields.Str(required=False, load_from="BatchId"),
         "ClusterId": fields.Str(required=False, load_from="ClusterId"),
+        "DiskSize": fields.Int(required=False, load_from="DiskSize"),
         "EndTime": fields.Int(required=False, load_from="EndTime"),
         "ReplicaType": fields.Str(required=False, load_from="ReplicaType"),
         "StartTime": fields.Int(required=False, load_from="StartTime"),
@@ -176,6 +200,7 @@ class BackupInfoSchema(schema.ResponseSchema):
         "VirtualClusterId": fields.Str(
             required=False, load_from="VirtualClusterId"
         ),
+        "Zone": fields.Str(required=False, load_from="Zone"),
     }
 
 
@@ -197,18 +222,58 @@ class ConfigTemplateSchema(schema.ResponseSchema):
     }
 
 
-class MongodbMachineTypeSchema(schema.ResponseSchema):
-    """MongodbMachineType -"""
+class MongodbInstanceSchema(schema.ResponseSchema):
+    """MongodbInstance - 集群信息"""
 
     fields = {
-        "Cpu": fields.Int(required=True, load_from="Cpu"),
-        "Description": fields.Str(required=True, load_from="Description"),
-        "Group": fields.Str(required=False, load_from="Group"),
-        "MachineTypeId": fields.Str(required=True, load_from="MachineTypeId"),
-        "Memory": fields.Int(required=True, load_from="Memory"),
-        "UHhostMachineType": fields.Str(
-            required=False, load_from="UHhostMachineType"
+        "ClusterId": fields.Str(required=True, load_from="ClusterId"),
+        "ClusterType": fields.Str(required=True, load_from="ClusterType"),
+        "ConnectURL": fields.Str(required=True, load_from="ConnectURL"),
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "CrossZones": fields.List(fields.Str()),
+        "DBVersion": fields.Str(required=True, load_from="DBVersion"),
+        "DataComputeType": MongodbMachineTypeSchema(),
+        "DiskSpace": fields.Int(required=False, load_from="DiskSpace"),
+        "ExpiredTime": fields.Int(required=False, load_from="ExpiredTime"),
+        "IPv6ConnectURL": fields.Str(
+            required=False, load_from="IPv6ConnectURL"
         ),
+        "Name": fields.Str(required=True, load_from="Name"),
+        "State": fields.Str(required=True, load_from="State"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "Zone": fields.Str(required=True, load_from="Zone"),
+    }
+
+
+class PackageInfoSchema(schema.ResponseSchema):
+    """PackageInfo - 打包模型"""
+
+    fields = {
+        "Begin": fields.Int(required=False, load_from="Begin"),
+        "ClusterId": fields.Str(required=False, load_from="ClusterId"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "End": fields.Int(required=False, load_from="End"),
+        "FinishTime": fields.Int(required=False, load_from="FinishTime"),
+        "Id": fields.Int(required=False, load_from="Id"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "NodeId": fields.Str(required=False, load_from="NodeId"),
+        "PackageType": fields.Str(required=False, load_from="PackageType"),
+        "Role": fields.Str(required=False, load_from="Role"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "State": fields.Str(required=False, load_from="State"),
+    }
+
+
+class MongodbMachineSpecSchema(schema.ResponseSchema):
+    """MongodbMachineSpec - 规格类型"""
+
+    fields = {
+        "ClassType": fields.Str(required=False, load_from="ClassType"),
+        "ComputeType": fields.List(MongodbMachineTypeSchema()),
+        "DefaultMachineType": MongodbMachineTypeSchema(),
+        "DiskType": fields.List(fields.Str()),
     }
 
 
