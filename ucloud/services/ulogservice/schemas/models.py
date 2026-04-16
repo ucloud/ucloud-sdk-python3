@@ -3,6 +3,31 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class LogSetInfoSchema(schema.ResponseSchema):
+    """LogSetInfo -"""
+
+    fields = {
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "LogSetName": fields.Str(required=False, load_from="LogSetName"),
+        "LogSetRemark": fields.Str(required=False, load_from="LogSetRemark"),
+        "TopicCount": fields.Int(required=False, load_from="TopicCount"),
+        "UpdateTime": fields.Int(required=False, load_from="UpdateTime"),
+    }
+
+
+class TopicInfoSchema(schema.ResponseSchema):
+    """TopicInfo - 主题信息"""
+
+    fields = {
+        "IsReserved": fields.Int(required=False, load_from="IsReserved"),
+        "ReserveAge": fields.Int(required=False, load_from="ReserveAge"),
+        "TopicDesc": fields.Str(required=False, load_from="TopicDesc"),
+        "TopicId": fields.Str(required=False, load_from="TopicId"),
+        "TopicName": fields.Str(required=False, load_from="TopicName"),
+        "TopicShardNum": fields.Int(required=False, load_from="TopicShardNum"),
+    }
+
+
 class LogContentSchema(schema.ResponseSchema):
     """LogContent - 日志内容"""
 
