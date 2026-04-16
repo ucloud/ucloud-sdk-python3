@@ -37,6 +37,35 @@ class BackupUMongoDBClusterResponseSchema(schema.ResponseSchema):
 
 
 """
+API: BackupUMongoDBLog
+
+日志打包
+"""
+
+
+class BackupUMongoDBLogRequestSchema(schema.RequestSchema):
+    """BackupUMongoDBLog - 日志打包"""
+
+    fields = {
+        "Begin": fields.Int(required=True, dump_to="Begin"),
+        "ClusterId": fields.Str(required=True, dump_to="ClusterId"),
+        "End": fields.Int(required=True, dump_to="End"),
+        "LogType": fields.Str(required=True, dump_to="LogType"),
+        "Name": fields.Str(required=True, dump_to="Name"),
+        "NodeId": fields.Str(required=True, dump_to="NodeId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class BackupUMongoDBLogResponseSchema(schema.ResponseSchema):
+    """BackupUMongoDBLog - 日志打包"""
+
+    fields = {}
+
+
+"""
 API: CreateUMongoDBConfigTemplate
 
 创建配置模板
@@ -73,14 +102,34 @@ API: CreateUMongoDBReplSet
 """
 
 
+class CreateUMongoDBReplSetParamSecGroupIdSchema(schema.RequestSchema):
+    """CreateUMongoDBReplSetParamSecGroupId -"""
+
+    fields = {
+        "Id": fields.Str(required=False, dump_to="Id"),
+        "Priority": fields.Int(required=False, dump_to="Priority"),
+    }
+
+
+class CreateUMongoDBReplSetParamLabelsSchema(schema.RequestSchema):
+    """CreateUMongoDBReplSetParamLabels -"""
+
+    fields = {
+        "Key": fields.Str(required=False, dump_to="Key"),
+        "Value": fields.Str(required=False, dump_to="Value"),
+    }
+
+
 class CreateUMongoDBReplSetRequestSchema(schema.RequestSchema):
     """CreateUMongoDBReplSet - 创建一个Mongodb副本集群"""
 
     fields = {
         "AdminPassword": fields.Str(required=True, dump_to="AdminPassword"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "CrossZones": fields.List(fields.Str()),
         "DBVersion": fields.Str(required=True, dump_to="DBVersion"),
         "DiskSpace": fields.Int(required=True, dump_to="DiskSpace"),
+        "Labels": fields.List(CreateUMongoDBReplSetParamLabelsSchema()),
         "ListenPort": fields.Int(required=False, dump_to="ListenPort"),
         "MachineTypeId": fields.Str(required=True, dump_to="MachineTypeId"),
         "Name": fields.Str(required=True, dump_to="Name"),
@@ -88,6 +137,7 @@ class CreateUMongoDBReplSetRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "SecGroupId": fields.List(CreateUMongoDBReplSetParamSecGroupIdSchema()),
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
         "Tag": fields.Str(required=False, dump_to="Tag"),
         "VPCId": fields.Str(required=False, dump_to="VPCId"),
@@ -108,6 +158,24 @@ API: CreateUMongoDBShardedCluster
 """
 
 
+class CreateUMongoDBShardedClusterParamSecGroupIdSchema(schema.RequestSchema):
+    """CreateUMongoDBShardedClusterParamSecGroupId -"""
+
+    fields = {
+        "Id": fields.Str(required=False, dump_to="Id"),
+        "Priority": fields.Int(required=False, dump_to="Priority"),
+    }
+
+
+class CreateUMongoDBShardedClusterParamLabelsSchema(schema.RequestSchema):
+    """CreateUMongoDBShardedClusterParamLabels -"""
+
+    fields = {
+        "Key": fields.Str(required=False, dump_to="Key"),
+        "Value": fields.Str(required=False, dump_to="Value"),
+    }
+
+
 class CreateUMongoDBShardedClusterRequestSchema(schema.RequestSchema):
     """CreateUMongoDBShardedCluster - 创建一个Mongodb分片集群"""
 
@@ -116,6 +184,7 @@ class CreateUMongoDBShardedClusterRequestSchema(schema.RequestSchema):
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "DBVersion": fields.Str(required=True, dump_to="DBVersion"),
         "DiskSpace": fields.Int(required=True, dump_to="DiskSpace"),
+        "Labels": fields.List(CreateUMongoDBShardedClusterParamLabelsSchema()),
         "ListenPort": fields.Int(required=False, dump_to="ListenPort"),
         "MachineTypeId": fields.Str(required=True, dump_to="MachineTypeId"),
         "MongosMachineTypeId": fields.Str(
@@ -127,6 +196,9 @@ class CreateUMongoDBShardedClusterRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "SecGroupId": fields.List(
+            CreateUMongoDBShardedClusterParamSecGroupIdSchema()
+        ),
         "ShardCount": fields.Int(required=True, dump_to="ShardCount"),
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
         "Tag": fields.Str(required=False, dump_to="Tag"),
@@ -154,12 +226,13 @@ class DescribeUMongoDBBackupURLRequestSchema(schema.RequestSchema):
 
     fields = {
         "BackupId": fields.Str(required=False, dump_to="BackupId"),
+        "Category": fields.Str(required=False, dump_to="Category"),
         "ClusterId": fields.Str(required=True, dump_to="ClusterId"),
         "PackageId": fields.Int(required=False, dump_to="PackageId"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ValidTime": fields.Int(required=False, dump_to="ValidTime"),
-        "Zone": fields.Str(required=True, dump_to="Zone"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
 
@@ -261,6 +334,38 @@ class GetUMongoDBCfgTempItemResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetUMongoDBLog
+
+查询某一段时间内集群节点的错误日志或慢查询日志
+"""
+
+
+class GetUMongoDBLogRequestSchema(schema.RequestSchema):
+    """GetUMongoDBLog - 查询某一段时间内集群节点的错误日志或慢查询日志"""
+
+    fields = {
+        "Begin": fields.Int(required=True, dump_to="Begin"),
+        "ClusterId": fields.Str(required=True, dump_to="ClusterId"),
+        "End": fields.Int(required=False, dump_to="End"),
+        "LogType": fields.Str(required=True, dump_to="LogType"),
+        "NodeId": fields.Str(required=True, dump_to="NodeId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class GetUMongoDBLogResponseSchema(schema.ResponseSchema):
+    """GetUMongoDBLog - 查询某一段时间内集群节点的错误日志或慢查询日志"""
+
+    fields = {
+        "IsTruncate": fields.Bool(required=False, load_from="IsTruncate"),
+        "Log": fields.Str(required=True, load_from="Log"),
+        "MaxLine": fields.Int(required=False, load_from="MaxLine"),
+    }
+
+
+"""
 API: GetUMongoDBRecoverTimeRange
 
 获取UMongoDB可回档时间范围
@@ -340,6 +445,95 @@ class ListUMongoDBConfigTemplateResponseSchema(schema.ResponseSchema):
             models.ConfigTemplateSchema(), required=True, load_from="DataSet"
         ),
         "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: ListUMongoDBInstances
+
+获取副本集/分片集群列表
+"""
+
+
+class ListUMongoDBInstancesRequestSchema(schema.RequestSchema):
+    """ListUMongoDBInstances - 获取副本集/分片集群列表"""
+
+    fields = {
+        "ClusterId": fields.Str(required=False, dump_to="ClusterId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class ListUMongoDBInstancesResponseSchema(schema.ResponseSchema):
+    """ListUMongoDBInstances - 获取副本集/分片集群列表"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.MongodbInstanceSchema(), required=False, load_from="DataSet"
+        ),
+        "Message": fields.Str(required=False, load_from="Message"),
+    }
+
+
+"""
+API: ListUMongoDBLogPackage
+
+日志打包列表
+"""
+
+
+class ListUMongoDBLogPackageRequestSchema(schema.RequestSchema):
+    """ListUMongoDBLogPackage - 日志打包列表"""
+
+    fields = {
+        "ClusterId": fields.Str(required=True, dump_to="ClusterId"),
+        "NodeId": fields.Str(required=False, dump_to="NodeId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ListUMongoDBLogPackageResponseSchema(schema.ResponseSchema):
+    """ListUMongoDBLogPackage - 日志打包列表"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.PackageInfoSchema(), required=True, load_from="DataSet"
+        ),
+    }
+
+
+"""
+API: ListUMongoDBMachineSpec
+
+获取UMongoDB支持机器类型列表
+"""
+
+
+class ListUMongoDBMachineSpecRequestSchema(schema.RequestSchema):
+    """ListUMongoDBMachineSpec - 获取UMongoDB支持机器类型列表"""
+
+    fields = {
+        "ClassType": fields.Str(required=False, dump_to="ClassType"),
+        "DiskType": fields.Str(required=False, dump_to="DiskType"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ListUMongoDBMachineSpecResponseSchema(schema.ResponseSchema):
+    """ListUMongoDBMachineSpec - 获取UMongoDB支持机器类型列表"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.MongodbMachineSpecSchema(),
+            required=True,
+            load_from="DataSet",
+        ),
     }
 
 
@@ -485,6 +679,34 @@ class ModifyUMongoDBBackupParamResponseSchema(schema.ResponseSchema):
     fields = {
         "Message": fields.Str(required=True, load_from="Message"),
     }
+
+
+"""
+API: ResizeUMongoDBInstance
+
+集群配置升降级
+"""
+
+
+class ResizeUMongoDBInstanceRequestSchema(schema.RequestSchema):
+    """ResizeUMongoDBInstance - 集群配置升降级"""
+
+    fields = {
+        "ClusterId": fields.Str(required=True, dump_to="ClusterId"),
+        "DiskSpace": fields.Int(required=False, dump_to="DiskSpace"),
+        "MachineTypeId": fields.Str(required=False, dump_to="MachineTypeId"),
+        "MongosMachineTypeId": fields.Str(
+            required=False, dump_to="MongosMachineTypeId"
+        ),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class ResizeUMongoDBInstanceResponseSchema(schema.ResponseSchema):
+    """ResizeUMongoDBInstance - 集群配置升降级"""
+
+    fields = {}
 
 
 """
