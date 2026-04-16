@@ -8,6 +8,166 @@ from ucloud.services.ulogservice.schemas import models
 
 
 """
+API: CreateULogServiceLogSet
+
+创建日志集
+"""
+
+
+class CreateULogServiceLogSetRequestSchema(schema.RequestSchema):
+    """CreateULogServiceLogSet - 创建日志集"""
+
+    fields = {
+        "LogSetName": fields.Str(required=True, dump_to="LogSetName"),
+        "LogSetRemark": fields.Str(required=False, dump_to="LogSetRemark"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class CreateULogServiceLogSetResponseSchema(schema.ResponseSchema):
+    """CreateULogServiceLogSet - 创建日志集"""
+
+    fields = {
+        "LogSetId": fields.Str(required=False, load_from="LogSetId"),
+    }
+
+
+"""
+API: CreateULogServiceTopic
+
+创建ULogService主题
+"""
+
+
+class CreateULogServiceTopicRequestSchema(schema.RequestSchema):
+    """CreateULogServiceTopic - 创建ULogService主题"""
+
+    fields = {
+        "LogSetId": fields.Str(required=False, dump_to="LogSetId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ReserveAge": fields.Int(required=True, dump_to="ReserveAge"),
+        "TopicName": fields.Str(required=True, dump_to="TopicName"),
+        "TopicShardNum": fields.Int(required=False, dump_to="TopicShardNum"),
+    }
+
+
+class CreateULogServiceTopicResponseSchema(schema.ResponseSchema):
+    """CreateULogServiceTopic - 创建ULogService主题"""
+
+    fields = {
+        "TopicId": fields.Str(required=False, load_from="TopicId"),
+    }
+
+
+"""
+API: DeleteULogServiceLogSet
+
+删除日志集
+"""
+
+
+class DeleteULogServiceLogSetRequestSchema(schema.RequestSchema):
+    """DeleteULogServiceLogSet - 删除日志集"""
+
+    fields = {
+        "LogSetId": fields.Str(required=True, dump_to="LogSetId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DeleteULogServiceLogSetResponseSchema(schema.ResponseSchema):
+    """DeleteULogServiceLogSet - 删除日志集"""
+
+    fields = {}
+
+
+"""
+API: DeleteULogServiceTopic
+
+删除ULogService主题
+"""
+
+
+class DeleteULogServiceTopicRequestSchema(schema.RequestSchema):
+    """DeleteULogServiceTopic - 删除ULogService主题"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "TopicId": fields.Str(required=True, dump_to="TopicId"),
+    }
+
+
+class DeleteULogServiceTopicResponseSchema(schema.ResponseSchema):
+    """DeleteULogServiceTopic - 删除ULogService主题"""
+
+    fields = {
+        "Message": fields.Str(required=False, load_from="Message"),
+    }
+
+
+"""
+API: ListULogServiceLogSet
+
+查询日志集列表
+"""
+
+
+class ListULogServiceLogSetRequestSchema(schema.RequestSchema):
+    """ListULogServiceLogSet - 查询日志集列表"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ListULogServiceLogSetResponseSchema(schema.ResponseSchema):
+    """ListULogServiceLogSet - 查询日志集列表"""
+
+    fields = {
+        "Data": fields.List(
+            models.LogSetInfoSchema(), required=False, load_from="Data"
+        ),
+    }
+
+
+"""
+API: ListULogServiceTopic
+
+获取ULogService主题
+"""
+
+
+class ListULogServiceTopicRequestSchema(schema.RequestSchema):
+    """ListULogServiceTopic - 获取ULogService主题"""
+
+    fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class ListULogServiceTopicResponseSchema(schema.ResponseSchema):
+    """ListULogServiceTopic - 获取ULogService主题"""
+
+    fields = {
+        "Data": fields.List(
+            models.TopicInfoSchema(), required=True, load_from="Data"
+        ),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
 API: QueryULogServiceLog
 
 查询ULogService日志

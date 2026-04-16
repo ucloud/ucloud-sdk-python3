@@ -15,6 +15,202 @@ class ULogServiceClient(Client):
             config, transport, middleware, logger
         )
 
+    def create_u_log_service_log_set(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateULogServiceLogSet - 创建日志集
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **LogSetName** (str) - (Required) 日志集名称  长度为1~64位
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **LogSetRemark** (str) - 日志集备注  长度为0~255位
+
+        **Response**
+
+        - **LogSetId** (str) - 日志集资源ID
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateULogServiceLogSetRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateULogServiceLogSet", d, **kwargs)
+        return apis.CreateULogServiceLogSetResponseSchema().loads(resp)
+
+    def create_u_log_service_topic(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateULogServiceTopic - 创建ULogService主题
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ReserveAge** (int) - (Required) 保存时间 1~360 天，-1表示永久保存
+        - **TopicName** (str) - (Required) 主题名称，校验规则"^[\w]{1,23}$"
+        - **LogSetId** (str) - 日志集ID
+        - **TopicShardNum** (int) - 分区数量 数字1~20
+
+        **Response**
+
+        - **TopicId** (str) - 主题ID
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateULogServiceTopicRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateULogServiceTopic", d, **kwargs)
+        return apis.CreateULogServiceTopicResponseSchema().loads(resp)
+
+    def delete_u_log_service_log_set(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteULogServiceLogSet - 删除日志集
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **LogSetId** (str) - (Required) 日志集ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteULogServiceLogSetRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteULogServiceLogSet", d, **kwargs)
+        return apis.DeleteULogServiceLogSetResponseSchema().loads(resp)
+
+    def delete_u_log_service_topic(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteULogServiceTopic - 删除ULogService主题
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **TopicId** (str) - (Required) 主题Id
+
+        **Response**
+
+        - **Message** (str) - 错误信息，成功情况下为空字符串
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteULogServiceTopicRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteULogServiceTopic", d, **kwargs)
+        return apis.DeleteULogServiceTopicResponseSchema().loads(resp)
+
+    def list_u_log_service_log_set(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListULogServiceLogSet - 查询日志集列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Data** (list) - 见 **LogSetInfo** 模型定义
+
+        **Response Model**
+
+        **LogSetInfo**
+        - **CreateTime** (int) - 创建时间
+        - **LogSetName** (str) - 日志集名称
+        - **LogSetRemark** (str) - 日志集备注
+        - **TopicCount** (int) - 日志集下主题数量
+        - **UpdateTime** (int) - 更新时间
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ListULogServiceLogSetRequestSchema().dumps(d)
+
+        resp = self.invoke("ListULogServiceLogSet", d, **kwargs)
+        return apis.ListULogServiceLogSetResponseSchema().loads(resp)
+
+    def list_u_log_service_topic(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListULogServiceTopic - 获取ULogService主题
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Limit** (int) - 分页限制数,默认为30
+        - **Offset** (int) - 分页起始条目数, 默认为0
+
+        **Response**
+
+        - **Data** (list) - 见 **TopicInfo** 模型定义
+        - **TotalCount** (int) - 主题总数
+
+        **Response Model**
+
+        **TopicInfo**
+        - **IsReserved** (int) - 是否保留：0 - NORMAL, 1 - RESERVED
+        - **ReserveAge** (int) - 保存时间 1~360 天，-1表示永久保存
+        - **TopicDesc** (str) - 主题描述
+        - **TopicId** (str) - 主题ID
+        - **TopicName** (str) - 主题名称
+        - **TopicShardNum** (int) - 分区数量 数字1~20
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ListULogServiceTopicRequestSchema().dumps(d)
+
+        resp = self.invoke("ListULogServiceTopic", d, **kwargs)
+        return apis.ListULogServiceTopicResponseSchema().loads(resp)
+
     def query_u_log_service_log(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -24,7 +220,7 @@ class ULogServiceClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **QueryCriteria** (str) - (Required) 查询条件Json格式，使用Base64编码
+        - **QueryCriteria** (str) - (Required) 查询条件，使用Base64编码。目前只支持查询索引，多个索引查询使用AND。比如:index1:http AND index2:http2
         - **SortOrder** (str) - (Required) 日志时间排序;可选值ASC|DESC
         - **TopicId** (str) - (Required) 主题ID
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
