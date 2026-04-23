@@ -30,22 +30,12 @@ class KeyPairSchema(schema.ResponseSchema):
     }
 
 
-class CollectionSchema(schema.ResponseSchema):
-    """Collection - CPU和内存可支持的规格"""
+class PerformanceSchema(schema.ResponseSchema):
+    """Performance - GPU的性能指标"""
 
     fields = {
-        "Cpu": fields.Int(required=False, load_from="Cpu"),
-        "Memory": fields.List(fields.Int()),
-        "MinimalCpuPlatform": fields.List(fields.Str()),
-    }
-
-
-class MachineSizesSchema(schema.ResponseSchema):
-    """MachineSizes - GPU、CPU和内存信息"""
-
-    fields = {
-        "Collection": fields.List(CollectionSchema()),
-        "Gpu": fields.Int(required=False, load_from="Gpu"),
+        "Rate": fields.Int(required=False, load_from="Rate"),
+        "Value": fields.Float(required=False, load_from="Value"),
     }
 
 
@@ -71,15 +61,6 @@ class DataDiskInfoSchema(schema.ResponseSchema):
     }
 
 
-class PerformanceSchema(schema.ResponseSchema):
-    """Performance - GPU的性能指标"""
-
-    fields = {
-        "Rate": fields.Int(required=False, load_from="Rate"),
-        "Value": fields.Float(required=False, load_from="Value"),
-    }
-
-
 class DisksSchema(schema.ResponseSchema):
     """Disks - 磁盘信息"""
 
@@ -87,6 +68,64 @@ class DisksSchema(schema.ResponseSchema):
         "BootDisk": fields.List(BootDiskInfoSchema()),
         "DataDisk": fields.List(DataDiskInfoSchema()),
         "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
+class GraphicsMemorySchema(schema.ResponseSchema):
+    """GraphicsMemory - GPU的显存指标"""
+
+    fields = {
+        "Rate": fields.Int(required=False, load_from="Rate"),
+        "Value": fields.Int(required=False, load_from="Value"),
+    }
+
+
+class CpuPlatformWithModelsSchema(schema.ResponseSchema):
+    """CpuPlatformWithModels -"""
+
+    fields = {
+        "CpuFrequency": fields.Str(required=False, load_from="CpuFrequency"),
+        "CpuModels": fields.List(fields.Str()),
+        "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
+class UHostFamilySchema(schema.ResponseSchema):
+    """UHostFamily -"""
+
+    fields = {
+        "CpuFrequency": fields.Str(required=False, load_from="CpuFrequency"),
+        "CpuPlatforms": fields.List(CpuPlatformWithModelsSchema()),
+        "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
+class CpuPlatformsSchema(schema.ResponseSchema):
+    """CpuPlatforms - CPU平台信息"""
+
+    fields = {
+        "Amd": fields.List(fields.Str()),
+        "Ampere": fields.List(fields.Str()),
+        "Intel": fields.List(fields.Str()),
+    }
+
+
+class CollectionSchema(schema.ResponseSchema):
+    """Collection - CPU和内存可支持的规格"""
+
+    fields = {
+        "Cpu": fields.Int(required=False, load_from="Cpu"),
+        "Memory": fields.List(fields.Int()),
+        "MinimalCpuPlatform": fields.List(fields.Str()),
+    }
+
+
+class MachineSizesSchema(schema.ResponseSchema):
+    """MachineSizes - GPU、CPU和内存信息"""
+
+    fields = {
+        "Collection": fields.List(CollectionSchema()),
+        "Gpu": fields.Int(required=False, load_from="Gpu"),
     }
 
 
@@ -109,25 +148,6 @@ class FeaturesSchema(schema.ResponseSchema):
     }
 
 
-class GraphicsMemorySchema(schema.ResponseSchema):
-    """GraphicsMemory - GPU的显存指标"""
-
-    fields = {
-        "Rate": fields.Int(required=False, load_from="Rate"),
-        "Value": fields.Int(required=False, load_from="Value"),
-    }
-
-
-class CpuPlatformsSchema(schema.ResponseSchema):
-    """CpuPlatforms - CPU平台信息"""
-
-    fields = {
-        "Amd": fields.List(fields.Str()),
-        "Ampere": fields.List(fields.Str()),
-        "Intel": fields.List(fields.Str()),
-    }
-
-
 class AvailableInstanceTypesSchema(schema.ResponseSchema):
     """AvailableInstanceTypes - https://ushare.ucloudadmin.com/pages/viewpage.action?pageId=104662646"""
 
@@ -144,6 +164,7 @@ class AvailableInstanceTypesSchema(schema.ResponseSchema):
         "ParentType": fields.Str(required=False, load_from="ParentType"),
         "Performance": PerformanceSchema(),
         "Status": fields.Str(required=False, load_from="Status"),
+        "UHostFamilies": fields.List(UHostFamilySchema()),
         "Zone": fields.Str(required=False, load_from="Zone"),
     }
 
@@ -216,22 +237,28 @@ class IsolationGroupSchema(schema.ResponseSchema):
     }
 
 
+class UHostDiskSetSchema(schema.ResponseSchema):
+    """UHostDiskSet - DescribeUHostInstance"""
+
+    fields = {
+        "BackupType": fields.Str(required=False, load_from="BackupType"),
+        "DiskId": fields.Str(required=False, load_from="DiskId"),
+        "DiskType": fields.Str(required=True, load_from="DiskType"),
+        "Drive": fields.Str(required=False, load_from="Drive"),
+        "Encrypted": fields.Str(required=False, load_from="Encrypted"),
+        "IsBoot": fields.Str(required=True, load_from="IsBoot"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
 class UHostKeyPairSchema(schema.ResponseSchema):
     """UHostKeyPair - 主机密钥信息"""
 
     fields = {
         "KeyPairId": fields.Str(required=False, load_from="KeyPairId"),
         "KeyPairState": fields.Str(required=False, load_from="KeyPairState"),
-    }
-
-
-class UDSetUDHostAttributeSchema(schema.ResponseSchema):
-    """UDSetUDHostAttribute - 私有专区对应的宿主机属性"""
-
-    fields = {
-        "HostBinding": fields.Bool(required=False, load_from="HostBinding"),
-        "UDHostId": fields.Str(required=False, load_from="UDHostId"),
-        "UDSetId": fields.Str(required=False, load_from="UDSetId"),
     }
 
 
@@ -255,19 +282,13 @@ class UHostIPSetSchema(schema.ResponseSchema):
     }
 
 
-class UHostDiskSetSchema(schema.ResponseSchema):
-    """UHostDiskSet - DescribeUHostInstance"""
+class UDSetUDHostAttributeSchema(schema.ResponseSchema):
+    """UDSetUDHostAttribute - 私有专区对应的宿主机属性"""
 
     fields = {
-        "BackupType": fields.Str(required=False, load_from="BackupType"),
-        "DiskId": fields.Str(required=False, load_from="DiskId"),
-        "DiskType": fields.Str(required=True, load_from="DiskType"),
-        "Drive": fields.Str(required=False, load_from="Drive"),
-        "Encrypted": fields.Str(required=False, load_from="Encrypted"),
-        "IsBoot": fields.Str(required=True, load_from="IsBoot"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Size": fields.Int(required=False, load_from="Size"),
-        "Type": fields.Str(required=False, load_from="Type"),
+        "HostBinding": fields.Bool(required=False, load_from="HostBinding"),
+        "UDHostId": fields.Str(required=False, load_from="UDHostId"),
+        "UDSetId": fields.Str(required=False, load_from="UDSetId"),
     }
 
 
@@ -342,6 +363,7 @@ class UHostInstanceSetSchema(schema.ResponseSchema):
             required=False, load_from="TotalDiskSpace"
         ),
         "UDHostAttribute": UDSetUDHostAttributeSchema(),
+        "UHostFamily": fields.Str(required=False, load_from="UHostFamily"),
         "UHostId": fields.Str(required=False, load_from="UHostId"),
         "UHostType": fields.Str(required=False, load_from="UHostType"),
         "Zone": fields.Str(required=False, load_from="Zone"),
@@ -407,8 +429,12 @@ class UHostPriceSetSchema(schema.ResponseSchema):
 
     fields = {
         "ChargeType": fields.Str(required=True, load_from="ChargeType"),
-        "ListPrice": fields.Float(required=False, load_from="ListPrice"),
-        "ListPriceDetail": PriceDetailSchema(),
+        "ListPrice": fields.Float(
+            required=False, load_from="ListPrice"
+        ),  # Deprecated, will be removed at 1.0
+        "ListPriceDetail": PriceDetailSchema(
+            required=False, load_from="ListPriceDetail"
+        ),  # Deprecated, will be removed at 1.0
         "OriginalPrice": fields.Float(required=True, load_from="OriginalPrice"),
         "OriginalPriceDetail": PriceDetailSchema(),
         "Price": fields.Float(required=True, load_from="Price"),
@@ -421,7 +447,9 @@ class UHostRefundPriceSetSchema(schema.ResponseSchema):
 
     fields = {
         "Code": fields.Int(required=True, load_from="Code"),
-        "Message": fields.Str(required=False, load_from="Message"),
+        "Message": fields.Str(
+            required=False, load_from="Message"
+        ),  # Deprecated, will be removed at 1.0
         "RefundPrice": fields.Float(required=False, load_from="RefundPrice"),
         "UHostId": fields.Str(required=True, load_from="UHostId"),
     }
