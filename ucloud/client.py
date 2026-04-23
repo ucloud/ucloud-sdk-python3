@@ -292,6 +292,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def uhadoop(self):
+        from ucloud.services.uhadoop.client import UHadoopClient
+
+        return UHadoopClient(
+            self._auto_config("uhadoop"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def uhost(self):
         from ucloud.services.uhost.client import UHostClient
 

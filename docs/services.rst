@@ -234,6 +234,13 @@ UGN
    :members:
 
 
+UHadoop
+-------
+
+.. autoclass:: ucloud.services.uhadoop.client.UHadoopClient
+   :members:
+
+
 UHub
 ----
 
