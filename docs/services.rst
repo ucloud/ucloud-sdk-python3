@@ -150,6 +150,13 @@ UBill
    :members:
 
 
+UClickhouse
+-----------
+
+.. autoclass:: ucloud.services.uclickhouse.client.UClickhouseClient
+   :members:
+
+
 UCompShare
 ----------
 
@@ -199,6 +206,13 @@ UEC
    :members:
 
 
+UES
+---
+
+.. autoclass:: ucloud.services.ues.client.UESClient
+   :members:
+
+
 UFS
 ---
 
@@ -220,6 +234,13 @@ UGN
    :members:
 
 
+UHadoop
+-------
+
+.. autoclass:: ucloud.services.uhadoop.client.UHadoopClient
+   :members:
+
+
 UHub
 ----
 
@@ -231,6 +252,13 @@ UK8S
 ----
 
 .. autoclass:: ucloud.services.uk8s.client.UK8SClient
+   :members:
+
+
+UKafka
+------
+
+.. autoclass:: ucloud.services.ukafka.client.UKafkaClient
    :members:
 
 
