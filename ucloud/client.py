@@ -142,6 +142,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def uclickhouse(self):
+        from ucloud.services.uclickhouse.client import UClickhouseClient
+
+        return UClickhouseClient(
+            self._auto_config("uclickhouse"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def ucompshare(self):
         from ucloud.services.ucompshare.client import UCompShareClient
 
