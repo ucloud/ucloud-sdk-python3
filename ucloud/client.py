@@ -142,6 +142,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def uclickhouse(self):
+        from ucloud.services.uclickhouse.client import UClickhouseClient
+
+        return UClickhouseClient(
+            self._auto_config("uclickhouse"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def ucompshare(self):
         from ucloud.services.ucompshare.client import UCompShareClient
 
@@ -242,6 +252,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def ues(self):
+        from ucloud.services.ues.client import UESClient
+
+        return UESClient(
+            self._auto_config("ues"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def ufs(self):
         from ucloud.services.ufs.client import UFSClient
 
@@ -267,6 +287,16 @@ class Client(client.Client):
 
         return UGNClient(
             self._auto_config("ugn"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
+    def uhadoop(self):
+        from ucloud.services.uhadoop.client import UHadoopClient
+
+        return UHadoopClient(
+            self._auto_config("uhadoop"),
             self.transport,
             self.middleware,
             self.logger,
