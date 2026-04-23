@@ -150,6 +150,13 @@ UBill
    :members:
 
 
+UClickhouse
+-----------
+
+.. autoclass:: ucloud.services.uclickhouse.client.UClickhouseClient
+   :members:
+
+
 UCompShare
 ----------
 
