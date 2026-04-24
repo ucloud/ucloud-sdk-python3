@@ -142,47 +142,12 @@ API: CreateUHostInstance
 """
 
 
-class CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSHSchema(
-    schema.RequestSchema
-):
-    """CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSH -"""
-
-    fields = {
-        "Area": fields.Str(required=False, dump_to="Area"),
-        "AreaCode": fields.Str(required=False, dump_to="AreaCode"),
-        "Port": fields.Int(required=False, dump_to="Port"),
-    }
-
-
-class CreateUHostInstanceParamLabelsSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamLabels -"""
-
-    fields = {
-        "Key": fields.Str(required=False, dump_to="Key"),
-        "Value": fields.Str(required=False, dump_to="Value"),
-    }
-
-
-class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamVolumes -"""
-
-    fields = {}
-
-
 class CreateUHostInstanceParamSecGroupIdSchema(schema.RequestSchema):
     """CreateUHostInstanceParamSecGroupId -"""
 
     fields = {
         "Id": fields.Str(required=False, dump_to="Id"),
         "Priority": fields.Int(required=False, dump_to="Priority"),
-    }
-
-
-class CreateUHostInstanceParamFeaturesSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamFeatures -"""
-
-    fields = {
-        "UNI": fields.Bool(required=False, dump_to="UNI"),
     }
 
 
@@ -215,6 +180,29 @@ class CreateUHostInstanceParamDisksSchema(schema.RequestSchema):
     }
 
 
+class CreateUHostInstanceParamNetworkInterfaceIPv6Schema(schema.RequestSchema):
+    """CreateUHostInstanceParamNetworkInterfaceIPv6 -"""
+
+    fields = {
+        "Address": fields.Str(required=False, dump_to="Address"),
+        "ShareBandwidthId": fields.Str(
+            required=False, dump_to="ShareBandwidthId"
+        ),  # Deprecated, will be removed at 1.0
+    }
+
+
+class CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSHSchema(
+    schema.RequestSchema
+):
+    """CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSH -"""
+
+    fields = {
+        "Area": fields.Str(required=False, dump_to="Area"),
+        "AreaCode": fields.Str(required=False, dump_to="AreaCode"),
+        "Port": fields.Int(required=False, dump_to="Port"),
+    }
+
+
 class CreateUHostInstanceParamNetworkInterfaceEIPSchema(schema.RequestSchema):
     """CreateUHostInstanceParamNetworkInterfaceEIP -"""
 
@@ -232,19 +220,6 @@ class CreateUHostInstanceParamNetworkInterfaceEIPSchema(schema.RequestSchema):
     }
 
 
-class CreateUHostInstanceParamNetworkInterfaceIPv6Schema(schema.RequestSchema):
-    """CreateUHostInstanceParamNetworkInterfaceIPv6 -"""
-
-    fields = {
-        "Address": fields.Str(
-            required=False, dump_to="Address"
-        ),  # Deprecated, will be removed at 1.0
-        "ShareBandwidthId": fields.Str(
-            required=False, dump_to="ShareBandwidthId"
-        ),  # Deprecated, will be removed at 1.0
-    }
-
-
 class CreateUHostInstanceParamNetworkInterfaceSchema(schema.RequestSchema):
     """CreateUHostInstanceParamNetworkInterface -"""
 
@@ -255,7 +230,30 @@ class CreateUHostInstanceParamNetworkInterfaceSchema(schema.RequestSchema):
         ),
         "IPv6": CreateUHostInstanceParamNetworkInterfaceIPv6Schema(
             required=False, dump_to="IPv6"
-        ),  # Deprecated, will be removed at 1.0
+        ),
+    }
+
+
+class CreateUHostInstanceParamLabelsSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamLabels -"""
+
+    fields = {
+        "Key": fields.Str(required=False, dump_to="Key"),
+        "Value": fields.Str(required=False, dump_to="Value"),
+    }
+
+
+class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamVolumes -"""
+
+    fields = {}
+
+
+class CreateUHostInstanceParamFeaturesSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamFeatures -"""
+
+    fields = {
+        "UNI": fields.Bool(required=False, dump_to="UNI"),
     }
 
 
@@ -356,6 +354,7 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
         ),  # Deprecated, will be removed at 1.0
         "UDHostId": fields.Str(required=False, dump_to="UDHostId"),
         "UDSetId": fields.Str(required=False, dump_to="UDSetId"),
+        "UHostFamily": fields.Str(required=False, dump_to="UHostFamily"),
         "UHostType": fields.Str(required=False, dump_to="UHostType"),
         "UserData": fields.Str(required=False, dump_to="UserData"),
         "UserDataScript": fields.Str(
@@ -782,6 +781,7 @@ class GetUHostInstancePriceRequestSchema(schema.RequestSchema):
         "UDSetUHostInstance": fields.Bool(
             required=False, dump_to="UDSetUHostInstance"
         ),
+        "UHostFamily": fields.Str(required=False, dump_to="UHostFamily"),
         "UHostType": fields.Str(required=False, dump_to="UHostType"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
     }

@@ -203,6 +203,7 @@ class UHostClient(Client):
         - **Tag** (str) - 业务组。默认：Default（Default即为未分组）。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定业务组。
         - **UDHostId** (str) - 【私有专区属性】专区宿主机id
         - **UDSetId** (str) - 【私有专区属性】专区id
+        - **UHostFamily** (str) - 规格族。 由机型代号和 CPU 平台组成，用于指定云主机的硬件类型与处理器平台。 当 MachineType 为 "O"（快杰型）时，支持以下取值：- o1i：快杰型 O1 代，Intel 平台 - o1a：快杰型 O1 代，AMD 平台- o1r：快杰型 O1 代，ARM 平台 - o2i：快杰型 O2 代，Intel 平台 默认值：o1i 或 o1a（系统将根据资源情况自动选择） 当 MachineType 为 "OM"（快杰共享型）时，支持以下取值： - om1i：快杰内存增强型 OM1 代，Intel 平台 - om2i：快杰内存增强型 OM2 代，Intel 平台注意：规格族必须与 MachineType 匹配，否则请求将被拒绝。
         - **UHostType** (str) - 【建议后续不再使用】云主机机型（V1.0），在本字段和字段MachineType中，仅需要其中1个字段即可。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
         - **UserData** (str) - 用户自定义数据。当镜像支持Cloud-init Feature时可填写此字段。注意：1、总数据量大小不超过 16K；2、使用base64编码
         - **VPCId** (str) - VPC ID。默认为当前地域的默认VPC。
@@ -214,27 +215,9 @@ class UHostClient(Client):
 
         **Request Model**
 
-        **CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSH**
-        - **Area** (str) -
-        - **AreaCode** (str) -
-        - **Port** (int) -
-
-
-        **CreateUHostInstanceParamLabels**
-        - **Key** (str) - 用户资源标签的键值
-        - **Value** (str) - 用户资源标签的值
-
-
-        **CreateUHostInstanceParamVolumes**
-
-
         **CreateUHostInstanceParamSecGroupId**
         - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
         - **Priority** (int) - 安全组优先级。取值范围[1, 5]
-
-
-        **CreateUHostInstanceParamFeatures**
-        - **UNI** (bool) - 弹性网卡特性。开启了弹性网卡权限位，此特性才生效，默认 false 未开启，true 开启。
 
 
         **CreateUHostInstanceParamDisksCustomBackup**
@@ -256,6 +239,16 @@ class UHostClient(Client):
         - **Type** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
 
 
+        **CreateUHostInstanceParamNetworkInterfaceIPv6**
+        - **Address** (str) - 第N个网卡对应的IPv6地址，默认不分配IPv6，“Auto”自动分配，不为空的其他字符串为实际要分配的IPv6地址。当前仅支持分配一个IPv6地址
+
+
+        **CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSH**
+        - **Area** (str) -
+        - **AreaCode** (str) -
+        - **Port** (int) -
+
+
         **CreateUHostInstanceParamNetworkInterfaceEIP**
         - **Bandwidth** (int) - 【若绑定EIP，此参数必填】弹性IP的外网带宽, 单位为Mbps. 共享带宽模式下非必传, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-800]
         - **CouponId** (str) - 当前EIP代金券id。请通过DescribeCoupon接口查询，或登录用户中心查看。
@@ -264,12 +257,22 @@ class UHostClient(Client):
         - **ShareBandwidthId** (str) - 绑定的共享带宽Id，仅当PayMode为ShareBandwidth时有效
 
 
-        **CreateUHostInstanceParamNetworkInterfaceIPv6**
-
-
         **CreateUHostInstanceParamNetworkInterface**
         - **CreateCernetIp** (bool) - 申请并绑定一个教育网EIP。True为申请并绑定，False为不会申请绑定，默认False。当前只支持具有HPC特性的机型。
         - **EIP** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceEIP** 模型定义
+        - **IPv6** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceIPv6** 模型定义
+
+
+        **CreateUHostInstanceParamLabels**
+        - **Key** (str) - 用户资源标签的键值
+        - **Value** (str) - 用户资源标签的值
+
+
+        **CreateUHostInstanceParamVolumes**
+
+
+        **CreateUHostInstanceParamFeatures**
+        - **UNI** (bool) - 弹性网卡特性。开启了弹性网卡权限位，此特性才生效，默认 false 未开启，true 开启。
 
 
         """
@@ -413,15 +416,28 @@ class UHostClient(Client):
         - **Gpu** (int) - Gpu为GPU可支持的规格即GPU颗数，非GPU机型，Gpu为0
 
 
+        **CpuPlatformWithModels**
+        - **CpuFrequency** (str) - CPU频率
+        - **CpuModels** (list) - CPU Model列表
+        - **Name** (str) - CPU平台
+
+
+        **UHostFamily**
+        - **CpuFrequency** (str) - CPU频率信息
+        - **CpuPlatforms** (list) - 见 **CpuPlatformWithModels** 模型定义
+        - **Name** (str) - 规格族
+
+
         **CpuPlatforms**
         - **Amd** (list) - 返回AMD的CPU平台信息，例如：AMD: ['Amd/Epyc2']
         - **Ampere** (list) - 返回Arm的CPU平台信息，例如：Ampere: ['Ampere/Altra']
         - **Intel** (list) - 返回Intel的CPU平台信息，例如：Intel: ['Intel/CascadeLake','Intel/CascadelakeR','Intel/IceLake']
 
 
-        **GraphicsMemory**
-        - **Rate** (int) - 交互展示参数，可忽略
-        - **Value** (int) - 值，单位是GB
+        **FeatureModes**
+        - **MinimalCpuPlatform** (list) - 这个特性必须是列出来的CPU平台及以上的CPU才支持
+        - **Name** (str) - 模式|特性名称
+        - **RelatedToImageFeature** (list) - 为镜像上支持这个特性的标签。例如DescribeImage返回的字段Features包含HotPlug，说明该镜像支持热升级。
 
 
         **BootDiskInfo**
@@ -438,10 +454,9 @@ class UHostClient(Client):
         - **Name** (str) - 数据盘类别，包含普通云盘|CLOUD_NORMAL、SSD云盘|CLOUD_SSD和RSSD云盘|CLOUD_RSSD。普通本地盘只包含普通本地盘|LOCAL_NORMAL一种。SSD本地盘只包含SSD本地盘|LOCAL_SSD一种。
 
 
-        **FeatureModes**
-        - **MinimalCpuPlatform** (list) - 这个特性必须是列出来的CPU平台及以上的CPU才支持
-        - **Name** (str) - 模式|特性名称
-        - **RelatedToImageFeature** (list) - 为镜像上支持这个特性的标签。例如DescribeImage返回的字段Features包含HotPlug，说明该镜像支持热升级。
+        **Performance**
+        - **Rate** (int) - 交互展示参数，可忽略
+        - **Value** (float) - 值，单位是TFlops
 
 
         **Features**
@@ -449,9 +464,9 @@ class UHostClient(Client):
         - **Name** (str) - 可支持的特性名称。目前支持的特性网络增强|NetCapability、热升级|Hotplug
 
 
-        **Performance**
+        **GraphicsMemory**
         - **Rate** (int) - 交互展示参数，可忽略
-        - **Value** (float) - 值，单位是TFlops
+        - **Value** (int) - 值，单位是GB
 
 
         **Disks**
@@ -473,6 +488,7 @@ class UHostClient(Client):
         - **ParentType** (str) - 父机型
         - **Performance** (dict) - 见 **Performance** 模型定义
         - **Status** (str) - 机型状态：可售|Normal 、 公测|Beta、售罄|Soldout、隐藏|Hidden
+        - **UHostFamilies** (list) - 见 **UHostFamily** 模型定义
         - **Zone** (str) - 可用区信息
 
 
@@ -629,27 +645,9 @@ class UHostClient(Client):
 
         **Response Model**
 
-        **UDSetUDHostAttribute**
-        - **HostBinding** (bool) - 是否绑定私有专区宿主机
-        - **UDHostId** (str) - 私有专区宿主机
-        - **UDSetId** (str) - 私有专区
-
-
         **UHostKeyPair**
         - **KeyPairId** (str) - 密钥对ID
         - **KeyPairState** (str) - 主机密钥对状态，Normal 正常，Deleted 删除
-
-
-        **UHostDiskSet**
-        - **BackupType** (str) - 备份方案。若开通了数据方舟，则为DATAARK
-        - **DiskId** (str) - 磁盘ID
-        - **DiskType** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
-        - **Drive** (str) - 磁盘盘符
-        - **Encrypted** (str) - "true": 加密盘 "false"：非加密盘
-        - **IsBoot** (str) - 是否是系统盘。枚举值：\\ > True，是系统盘 \\ > False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
-        - **Name** (str) - UDisk名字（仅当磁盘是UDisk时返回）
-        - **Size** (int) - 磁盘大小，单位: GB
-        - **Type** (str) - 【建议不再使用】磁盘类型。系统盘: Boot，数据盘: Data,网络盘：Udisk
 
 
         **UHostIPSet**
@@ -664,6 +662,24 @@ class UHostClient(Client):
         - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
         - **VPCId** (str) - IP地址对应的VPC ID。（北京一不支持，字段返回为空）
         - **Weight** (int) - 当前EIP的权重。权重最大的为当前的出口IP。
+
+
+        **UDSetUDHostAttribute**
+        - **HostBinding** (bool) - 是否绑定私有专区宿主机
+        - **UDHostId** (str) - 私有专区宿主机
+        - **UDSetId** (str) - 私有专区
+
+
+        **UHostDiskSet**
+        - **BackupType** (str) - 备份方案。若开通了数据方舟，则为DATAARK
+        - **DiskId** (str) - 磁盘ID
+        - **DiskType** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
+        - **Drive** (str) - 磁盘盘符
+        - **Encrypted** (str) - "true": 加密盘 "false"：非加密盘
+        - **IsBoot** (str) - 是否是系统盘。枚举值：\\ > True，是系统盘 \\ > False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
+        - **Name** (str) - UDisk名字（仅当磁盘是UDisk时返回）
+        - **Size** (int) - 磁盘大小，单位: GB
+        - **Type** (str) - 【建议不再使用】磁盘类型。系统盘: Boot，数据盘: Data,网络盘：Udisk
 
 
         **SpotAttribute**
@@ -716,6 +732,7 @@ class UHostClient(Client):
         - **TimemachineFeature** (str) - 【建议不再使用】数据方舟模式。枚举值：\\ > Yes: 开启方舟； \\ > no，未开启方舟
         - **TotalDiskSpace** (int) - 总的数据盘存储空间。
         - **UDHostAttribute** (dict) - 见 **UDSetUDHostAttribute** 模型定义
+        - **UHostFamily** (str) - 规格族。 由机型代号和 CPU 平台组成，用于指定云主机的硬件类型与处理器平台。 当 MachineType 为 "O"（快杰型）时，支持以下取值： - o1i：快杰型 O1 代，Intel 平台 - o1a：快杰型 O1 代，AMD 平台 - o1r：快杰型 O1 代，ARM 平台 - o2i：快杰型 O2 代，Intel 平台 默认值：o1i 或 o1a或o1r（系统将根据资源情况自动选择） 当 MachineType 为 "OM"（快杰共享型）时，支持以下取值： - om1i：快杰内存增强型 OM1 代，Intel 平台 - om2i：快杰内存增强型 OM2 代，Intel 平台
         - **UHostId** (str) - UHost实例ID
         - **UHostType** (str) - 【建议不再使用】云主机机型（旧）。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
@@ -906,17 +923,18 @@ class UHostClient(Client):
         - **CPU** (int) - (Required) CPU核数。可选参数：1-64。可选范围参照控制台。默认值: 4
         - **Count** (int) - (Required) 购买台数，范围[1,5]
         - **Memory** (int) - (Required) 内存大小。单位：MB。范围 ：[1024, 262144]，取值为1024的倍数（可选范围参照好控制台）。默认值：8192
-        - **ChargeType** (str) - 计费模式。枚举值为： \\ > Year，按年付费； \\ > Month，按月付费；\\ > Dynamic，按小时付费 // >Preemptive 抢占式实例 \\ 如果不传某个枚举值，默认返回年付、月付、时付的价格组合集。
+        - **ChargeType** (str) - 计费模式。枚举值为： \\ > Year，按年付费； \\ > Month，按月付费；\\ > Dynamic，按小时付费 // >Spot 抢占式实例 \\ 如果不传某个枚举值，默认返回年付、月付、时付的价格组合集。
         - **CpuPlatform** (str) - 取值"Intel" "Amd"，默认值“Intel”
         - **Disks** (list) - 见 **GetUHostInstancePriceParamDisks** 模型定义
         - **GPU** (int) - GPU卡核心数。仅GPU机型支持此字段。
-        - **GpuType** (str) - GPU类型，枚举值["K80", "P40", "V100", "T4","T4S","2080Ti","2080Ti-4C","1080Ti", "T4/4","MI100","V100S"]
+        - **GpuType** (str) - GPU类型，枚举值["K80", "P40", "V100", "T4","T4A", "T4S","2080Ti","2080Ti-4C","1080Ti", "T4/4", "MI100", "V100S",2080","2080TiS","2080TiPro","3090","4090","4090Pro","A100","A800"]
         - **ImageId** (str) - 镜像Id，可通过  `DescribeImage <https://docs.ucloud.cn/api/uhost-api/describe_image.html>`_  获取镜像ID， 如果镜像ID不传，系统盘大小必传
         - **MachineType** (str) - 云主机机型（V2版本概念）。枚举值["N", "C", "G", "O", "OS", "OPRO", "OMAX", "O.BM", "O.EPC"]。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
         - **NetCapability** (str) - 网络增强。枚举值：Normal，不开启; Super，开启网络增强1.0。 默认值为Normal。
         - **Quantity** (int) - 购买时长。默认: 1。按小时购买(Dynamic)时无需此参数。 月付时，此参数传0，代表了购买至月末。
         - **ShowPriceDetails** (bool) - 返回价格详细信息
         - **UDSetUHostInstance** (bool) - 专区云主机。如果要在专区宿主机上创建云主机，该参数可以填写为true
+        - **UHostFamily** (str) - 规格族。 由机型代号和 CPU 平台组成，用于指定云主机的硬件类型与处理器平台。当 MachineType 为 "O"（快杰型）时，支持以下取值： - o1i：快杰型 O1 代，Intel 平台 - o1a：快杰型 O1 代，AMD 平台- o1r：快杰型 O1 代，ARM 平台 - o2i：快杰型 O2 代，Intel 平台 默认值：o1i 或 o1a或o1r（系统将根据资源情况自动选择） 当 MachineType 为 "OM"（快杰共享型）时，支持以下取值： - om1i：快杰内存增强型 OM1 代，Intel 平台 - om2i：快杰内存增强型 OM2 代，Intel 平台注意：规格族必须与 MachineType 匹配，否则请求将被拒绝。
         - **UHostType** (str) - 【待废弃】云主机机型（V1版本概念）。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
@@ -947,9 +965,7 @@ class UHostClient(Client):
 
         **UHostPriceSet**
         - **ChargeType** (str) - 计费类型。Year，Month，Dynamic
-        - **ListPrice** (float) - 产品列表价。
-        - **ListPriceDetail** (dict) - 见 **PriceDetail** 模型定义
-        - **OriginalPrice** (float) - 限时优惠的折前原价（即列表价乘以商务折扣后的单价）。
+        - **OriginalPrice** (float) - 限时优惠的折前原价。
         - **OriginalPriceDetail** (dict) - 见 **PriceDetail** 模型定义
         - **Price** (float) - 价格，单位: 元，保留小数点后两位有效数字
         - **PriceDetail** (dict) - 见 **PriceDetail** 模型定义
@@ -1017,7 +1033,6 @@ class UHostClient(Client):
 
         **UHostRefundPriceSet**
         - **Code** (int) - 实例操作结果的错误码。0为成功
-        - **Message** (str) - 当 Code 非 0 时提供详细的描述信息
         - **RefundPrice** (float) - 实例的删除退费金额
         - **UHostId** (str) - UHost实例ID
 
