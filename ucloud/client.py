@@ -292,6 +292,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def uhids(self):
+        from ucloud.services.uhids.client import UHIDSClient
+
+        return UHIDSClient(
+            self._auto_config("uhids"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def uhadoop(self):
         from ucloud.services.uhadoop.client import UHadoopClient
 
