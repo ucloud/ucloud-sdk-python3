@@ -234,6 +234,13 @@ UGN
    :members:
 
 
+UHIDS
+-----
+
+.. autoclass:: ucloud.services.uhids.client.UHIDSClient
+   :members:
+
+
 UHadoop
 -------
 
