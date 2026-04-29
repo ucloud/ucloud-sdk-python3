@@ -13,34 +13,115 @@ class TiDBClient(Client):
     ):
         super(TiDBClient, self).__init__(config, transport, middleware, logger)
 
-    def create_ti_db_service(
+    def create_ti_db_cluster_service(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """CreateTiDBService - 创建TiDB服务
+        """CreateTiDBClusterService - 创建预付费实例
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目 ID
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **Name** (str) - (Required) 服务名称， 长度不超过64
-        - **Password** (str) - (Required) 服务root账号的密码， 长度不超过32
-        - **SubnetId** (str) - (Required) 子网 ID
-        - **VPCId** (str) - (Required) VPC ID
-        - **DTType** (str) - 容灾类型：10:同可用区，20:跨可用区，默认是同可用区
-        - **Ip** (str) - ipv4
-        - **Port** (str) - 端口
-        - **TikvMemoryHardTh** (str) - 实例类型:   0: 旗舰版，30: 体验版，60: 轻量版
+        - **ChargeType** (str) - (Required) 计费模式。枚举值为： Year，按年付费； Month，按月付费； Dynamic，按小时付费（需开启权限）。默认为月付
+        - **Coupon** (str) - (Required) 代金券Id
+        - **DTType** (str) - (Required) 容灾类型：10:同可用区，20:跨可用区，默认是同可用区
+        - **Name** (str) - (Required) 集群名称
+        - **Password** (str) - (Required) 集群密码
+        - **PubUlbId** (str) - (Required) 公网Ulb ID
+        - **Quantity** (float) - (Required) 购买时长。默认: 1。按小时购买(Dynamic)时无需此参数。 月付时，此参数传0，代表了购买至月末
+        - **SubnetId** (str) - (Required) 子网ID
+        - **VPCId** (str) - (Required) VPC id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ActivityId** (int) - 活动ID。
+        - **AlertStrategyIds** (list) - 告警策略IDs
+        - **DbVersion** (str) - 集群版本号
+        - **Ip** (str) - 指定Ip地址
+        - **Labels** (list) - 见 **CreateTiDBClusterServiceParamLabels** 模型定义
+        - **NodeConfig** (list) - 见 **CreateTiDBClusterServiceParamNodeConfig** 模型定义
+        - **OrderDetail** (list) - 见 **CreateTiDBClusterServiceParamOrderDetail** 模型定义
+        - **Port** (str) - 指定端口
+        - **PromotionId** (str) - 活动ID。若有产品折扣，则由各产品与计费约定。
+        - **RuleId** (int) - 活动规则ID。
+        - **SecGroupInfo** (list) - 见 **CreateTiDBClusterServiceParamSecGroupInfo** 模型定义
+        - **TemplateId** (str) - 参数模版ID
+
+        **Response**
+
+        - **Data** (dict) - 见 **ServiceData** 模型定义
+
+        **Request Model**
+
+        **CreateTiDBClusterServiceParamLabels**
+        - **Key** (str) - 用户资源标签的键值
+        - **Value** (str) - 用户资源标签的值
+
+
+        **CreateTiDBClusterServiceParamOrderDetail**
+        - **Multiple** (int) - 计费项数量
+        - **ProductName** (str) - 计费项名称，CPU / MEM / DISK
+
+
+        **CreateTiDBClusterServiceParamSecGroupInfo**
+        - **Priority** (int) - 安全组优先级。取值范围[1, 5]
+        - **SecGroupId** (str) - 安全组 ID。至多可以同时绑定5个安全组。
+
+
+        **CreateTiDBClusterServiceParamNodeConfig**
+        - **ConfigId** (str) - 节点规格ID
+        - **DiskSize** (int) - 节点磁盘容量
+        - **NodeCount** (int) - 节点数量
+        - **ServerType** (str) - 节点类型
+
+
+        **Response Model**
+
+        **ServiceData**
+        - **Id** (str) - 服务ID
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateTiDBClusterServiceRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateTiDBClusterService", d, **kwargs)
+        return apis.CreateTiDBClusterServiceResponseSchema().loads(resp)
+
+    def create_ti_db_service(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateTiDBService -
+
+        **Request**
+
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **Name** (str) - (Required)
+        - **Password** (str) - (Required)
+        - **SubnetId** (str) - (Required)
+        - **VPCId** (str) - (Required)
+        - **DTType** (str) -
+        - **Ip** (str) -
+        - **Port** (str) -
+        - **TikvMemoryHardTh** (str) -
 
         **Response**
 
         - **Data** (dict) - 见 **ServiceID** 模型定义
-        - **Message** (str) - 返回信息
-        - **ServiceId** (str) - 服务ID
+        - **Message** (str) -
+        - **ServiceId** (str) -
 
         **Response Model**
 
         **ServiceID**
-        - **Id** (str) - 服务ID
+        - **Id** (str) -
 
 
         """
@@ -58,20 +139,49 @@ class TiDBClient(Client):
         resp = self.invoke("CreateTiDBService", d, **kwargs)
         return apis.CreateTiDBServiceResponseSchema().loads(resp)
 
-    def delete_ti_db_service(
+    def delete_ti_db_cluster_service(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DeleteTiDBService - 删除一个服务
+        """DeleteTiDBClusterService - 删除预付费实例
 
         **Request**
 
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **Id** (str) - (Required) 资源ID
+        - **Id** (str) - (Required) 集群ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **DeleteBackup** (bool) - 是否清理备份数据
 
         **Response**
 
-        - **Message** (str) - 返回信息
-        - **ServiceId** (str) - ServiceId
+        - **ServiceId** (str) - 集群ID
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteTiDBClusterServiceRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteTiDBClusterService", d, **kwargs)
+        return apis.DeleteTiDBClusterServiceResponseSchema().loads(resp)
+
+    def delete_ti_db_service(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteTiDBService -
+
+        **Request**
+
+        - **Region** (str) - (Config)
+        - **Id** (str) - (Required)
+
+        **Response**
+
+        - **Message** (str) -
+        - **ServiceId** (str) -
 
         """
         # build request
@@ -81,20 +191,238 @@ class TiDBClient(Client):
         req and d.update(req)
         d = apis.DeleteTiDBServiceRequestSchema().dumps(d)
 
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("DeleteTiDBService", d, **kwargs)
         return apis.DeleteTiDBServiceResponseSchema().loads(resp)
 
-    def set_ti_db_config(
+    def get_ti_db_cluster_service(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """SetTiDBConfig - 设置TiDB服务实例参数
+        """GetTiDBClusterService - 获取预付费实例详情
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **Id** (str) - (Required) 资源Id
-        - **Configs** (list) - 见 **SetTiDBConfigParamConfigs** 模型定义
+        - **Id** (str) - (Required) 实例ID
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Data** (dict) - 见 **UTiDBServiceData** 模型定义
+
+        **Response Model**
+
+        **UTiDBServiceData**
+        - **AutoBackup** (str) - 自动备份状态
+        - **BinlogState** (str) - 集群Binlog服务状态
+        - **CreateTime** (int) - 创建时间
+        - **DTType** (int) - 容灾类型
+        - **DashboardUrl** (str) - Dashboard地址
+        - **GrafanaUrl** (str) - grafana地址
+        - **Id** (str) - 集群ID
+        - **Ip** (str) - 集群ip
+        - **Name** (str) - 集群名称
+        - **Port** (int) - 集群端口
+        - **State** (str) - 集群状态
+        - **SubnetId** (str) - 子网ID
+        - **TiFlashState** (str) - 集群TiFlash服务状态
+        - **VPCId** (str) - 私有网Id
+        - **Version** (str) - 集群版本
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetTiDBClusterServiceRequestSchema().dumps(d)
+
+        resp = self.invoke("GetTiDBClusterService", d, **kwargs)
+        return apis.GetTiDBClusterServiceResponseSchema().loads(resp)
+
+    def get_ti_db_cluster_uhost_specs(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetTiDBClusterUhostSpecs - 拉取预付费机器规格信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **NodeTypes** (list) - (Required) 节点类型列表
+
+        **Response**
+
+        - **Data** (list) - 见 **UhostSpecs** 模型定义
+
+        **Response Model**
+
+        **UhostSpecs**
+        - **ConfigId** (str) - 节点规格ID
+        - **ConfigName** (str) - 节点规格名称
+        - **CoreNum** (int) - CPU核数
+        - **DiskStep** (int) - 磁盘容量变更步长
+        - **MaxDiskCapacity** (int) - 最大磁盘容量
+        - **Memory** (int) - 内存
+        - **MinDiskCapacity** (int) - 最小磁盘容量
+        - **NodeType** (str) - 节点类型
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetTiDBClusterUhostSpecsRequestSchema().dumps(d)
+
+        resp = self.invoke("GetTiDBClusterUhostSpecs", d, **kwargs)
+        return apis.GetTiDBClusterUhostSpecsResponseSchema().loads(resp)
+
+    def list_ti_db_cluster_backup(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListTiDBClusterBackup - 列出按实例备份tidb的备份列表
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Id** (str) - (Required) 实例id
+        - **Limit** (int) - 返回数据长度，默认为30，最大30
+        - **Offset** (int) - 列表起始位置偏移量，默认为0
+
+        **Response**
+
+        - **Data** (dict) - 见 **BackupData** 模型定义
+        - **TotalCount** (int) - 备份总数
+
+        **Response Model**
+
+        **BackupData**
+        - **BackupEndTime** (int) - 备份结束时间
+        - **BackupId** (str) - 备份 ID
+        - **BackupSize** (int) - 备份文件大小，单位：MB
+        - **BackupStartTime** (int) - 备份起始时间
+        - **BackupType** (str) - 备份方式
+        - **State** (str) - 备份状态
+
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ListTiDBClusterBackupRequestSchema().dumps(d)
+
+        resp = self.invoke("ListTiDBClusterBackup", d, **kwargs)
+        return apis.ListTiDBClusterBackupResponseSchema().loads(resp)
+
+    def list_ti_db_cluster_restore(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListTiDBClusterRestore - 列出实例恢复列表
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Id** (str) - (Required) 实例的服务Id
+        - **Limit** (int) - (Required) 返回数据长度，默认为30，最大30
+        - **Offset** (int) - (Required) 列表起始位置偏移量，默认为0
+
+        **Response**
+
+        - **RestoreData** (dict) - 见 **RestoreData** 模型定义
+
+        **Response Model**
+
+        **RestoreData**
+        - **BackupId** (str) - 备份Id
+        - **RestoreEndTime** (int) - 恢复的结束时间
+        - **RestoreId** (str) - 恢复的Id
+        - **RestoreStartTime** (int) - 恢复的起始时间
+        - **SourceServiceId** (str) - 源实例Id
+        - **State** (str) - 恢复的状态
+        - **TargetServiceId** (str) - 目标实例Id
+
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ListTiDBClusterRestoreRequestSchema().dumps(d)
+
+        resp = self.invoke("ListTiDBClusterRestore", d, **kwargs)
+        return apis.ListTiDBClusterRestoreResponseSchema().loads(resp)
+
+    def list_ti_db_cluster_service(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListTiDBClusterService - 拉取预付费实例列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Limit** (str) - 返回数据长度，默认为20，最大100
+        - **Offset** (str) - 列表起始位置偏移量，默认为0
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Data** (list) - 见 **UTiDBServiceData** 模型定义
+
+        **Response Model**
+
+        **UTiDBServiceData**
+        - **AutoBackup** (str) - 自动备份状态
+        - **BinlogState** (str) - 集群Binlog服务状态
+        - **CreateTime** (int) - 创建时间
+        - **DTType** (int) - 容灾类型
+        - **DashboardUrl** (str) - Dashboard地址
+        - **GrafanaUrl** (str) - grafana地址
+        - **Id** (str) - 集群ID
+        - **Ip** (str) - 集群ip
+        - **Name** (str) - 集群名称
+        - **Port** (int) - 集群端口
+        - **State** (str) - 集群状态
+        - **SubnetId** (str) - 子网ID
+        - **TiFlashState** (str) - 集群TiFlash服务状态
+        - **VPCId** (str) - 私有网Id
+        - **Version** (str) - 集群版本
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ListTiDBClusterServiceRequestSchema().dumps(d)
+
+        resp = self.invoke("ListTiDBClusterService", d, **kwargs)
+        return apis.ListTiDBClusterServiceResponseSchema().loads(resp)
+
+    def modify_ti_db_cluster_binlog(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyTiDBClusterBinlog - 开启/关闭 binlog
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Enable** (str) - (Required) binlog 状态
+        - **Id** (str) - (Required) TIDB service id
+        - **NodeConfig** (dict) - 见 **ModifyTiDBClusterBinlogParamNodeConfig** 模型定义
 
         **Response**
 
@@ -102,9 +430,187 @@ class TiDBClient(Client):
 
         **Request Model**
 
+        **ModifyTiDBClusterBinlogParamNodeConfig**
+        - **ConfigId** (str) - 节点配置ID
+        - **DiskSize** (int) - 节点磁盘大小
+        - **NodeCount** (int) - 节点个数
+        - **ServerType** (str) - 节点角色
+
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ModifyTiDBClusterBinlogRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyTiDBClusterBinlog", d, **kwargs)
+        return apis.ModifyTiDBClusterBinlogResponseSchema().loads(resp)
+
+    def modify_ti_db_cluster_node(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyTiDBClusterNode - 集群扩缩容
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Id** (str) - (Required) TIDB service id
+        - **ScaleType** (str) - (Required) 扩缩类型，枚举值为：SCALEOUT，扩容；SCALEIN，缩容；
+        - **NodeConfig** (dict) - 见 **ModifyTiDBClusterNodeParamNodeConfig** 模型定义
+        - **ServerId** (str) - 缩容节点ID，缩容时必填
+        - **StartTime** (int) - 开始时间
+
+        **Response**
+
+        - **ServiceId** (str) - ServiceId
+
+        **Request Model**
+
+        **ModifyTiDBClusterNodeParamNodeConfig**
+        - **ConfigId** (str) - 节点配置ID
+        - **NodeCount** (int) - 节点个数
+        - **ServerType** (str) - 节点角色
+
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ModifyTiDBClusterNodeRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyTiDBClusterNode", d, **kwargs)
+        return apis.ModifyTiDBClusterNodeResponseSchema().loads(resp)
+
+    def modify_ti_db_cluster_ti_flash(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyTiDBClusterTiFlash - 开启/关闭 tiflash
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Enable** (str) - (Required) tiflash 状态
+        - **Id** (str) - (Required) TIDB service id
+        - **NodeConfig** (dict) - 见 **ModifyTiDBClusterTiFlashParamNodeConfig** 模型定义
+
+        **Response**
+
+        - **ServiceId** (str) - ServiceId
+
+        **Request Model**
+
+        **ModifyTiDBClusterTiFlashParamNodeConfig**
+        - **ConfigId** (str) - 节点配置ID
+        - **DiskSize** (int) - 节点磁盘大小
+        - **NodeCount** (int) - 节点个数
+        - **ServerType** (str) - 节点角色
+
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ModifyTiDBClusterTiFlashRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyTiDBClusterTiFlash", d, **kwargs)
+        return apis.ModifyTiDBClusterTiFlashResponseSchema().loads(resp)
+
+    def modify_ti_db_cluster_uhost_disk(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyTiDBClusterUhostDisk - 变更集群节点磁盘容量
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Id** (str) - (Required) 实例ID
+        - **ScaleType** (str) - (Required) 扩缩类型，枚举值为：SCALEOUT，扩容；SCALEIN，缩容；
+        - **NodeConfig** (dict) - 见 **ModifyTiDBClusterUhostDiskParamNodeConfig** 模型定义
+        - **StartTime** (int) - 开始时间
+
+        **Response**
+
+        - **ServiceId** (str) - 实例ID
+
+        **Request Model**
+
+        **ModifyTiDBClusterUhostDiskParamNodeConfig**
+        - **DiskSize** (int) - 磁盘容量
+        - **ServerType** (str) - 节点角色
+
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ModifyTiDBClusterUhostDiskRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyTiDBClusterUhostDisk", d, **kwargs)
+        return apis.ModifyTiDBClusterUhostDiskResponseSchema().loads(resp)
+
+    def modify_ti_db_cluster_uhost_specs(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyTiDBClusterUhostSpecs - 修改集群主机规格
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Id** (str) - (Required) 实例ID
+        - **NodeConfig** (dict) - 见 **ModifyTiDBClusterUhostSpecsParamNodeConfig** 模型定义
+        - **StartTime** (int) - 开始时间
+
+        **Response**
+
+        - **ServiceId** (str) - 实例ID
+
+        **Request Model**
+
+        **ModifyTiDBClusterUhostSpecsParamNodeConfig**
+        - **ConfigId** (str) - 机器规格ID
+        - **ServerType** (str) - 节点角色
+
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ModifyTiDBClusterUhostSpecsRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyTiDBClusterUhostSpecs", d, **kwargs)
+        return apis.ModifyTiDBClusterUhostSpecsResponseSchema().loads(resp)
+
+    def set_ti_db_config(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """SetTiDBConfig -
+
+        **Request**
+
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **Id** (str) - (Required)
+        - **Configs** (list) - 见 **SetTiDBConfigParamConfigs** 模型定义
+
+        **Response**
+
+        - **ServiceId** (str) -
+
+        **Request Model**
+
         **SetTiDBConfigParamConfigs**
-        - **Name** (str) - 修改的参数名: proxysql_mysql-max_connections:类型：string, 描述:  所有用户总共的最大连接数 。proxysql_max_connections:  类型：string, 描述:  每个用户的最大连接数。tidb_gc:  类型：string, 描述:   tikv_gc_life_time。
-        - **Value** (str) - 对应修改的参数值: string
+        - **Name** (str) -
+        - **Value** (str) -
 
 
         """
@@ -116,5 +622,94 @@ class TiDBClient(Client):
         req and d.update(req)
         d = apis.SetTiDBConfigRequestSchema().dumps(d)
 
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("SetTiDBConfig", d, **kwargs)
         return apis.SetTiDBConfigResponseSchema().loads(resp)
+
+    def start_ti_db_cluster_backup(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """StartTiDBClusterBackup - 开始按实例计费的tidb的备份
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Id** (str) - (Required) 实例的服务Id
+        - **BackupFilter** (str) - 备份过滤规则
+        - **BackupTs** (str) - 备份时间
+
+        **Response**
+
+        - **BackupId** (str) - 备份id
+        - **Message** (str) - 返回信息
+        - **ServiceId** (str) - 实例id
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.StartTiDBClusterBackupRequestSchema().dumps(d)
+
+        resp = self.invoke("StartTiDBClusterBackup", d, **kwargs)
+        return apis.StartTiDBClusterBackupResponseSchema().loads(resp)
+
+    def start_ti_db_cluster_restore(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """StartTiDBClusterRestore - 开始按实例计费tidb的恢复
+
+        **Request**
+
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **BackupId** (str) - (Required) 备份id
+        - **Id** (str) - (Required) 实例id
+
+        **Response**
+
+        - **Message** (str) - 返回信息
+        - **RestoreId** (str) - 恢复任务Id
+        - **ServiceId** (str) - 实例id
+
+        """
+        # build request
+        d = {
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.StartTiDBClusterRestoreRequestSchema().dumps(d)
+
+        resp = self.invoke("StartTiDBClusterRestore", d, **kwargs)
+        return apis.StartTiDBClusterRestoreResponseSchema().loads(resp)
+
+    def upgrade_ti_db_cluster(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpgradeTiDBCluster - 升级预付费tidb集群
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **DbVersion** (str) - (Required) 目标版本号
+        - **Id** (str) - (Required) 实例id
+        - **StartTime** (int) - 任务开始时间
+
+        **Response**
+
+        - **Message** (str) - 返回信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpgradeTiDBClusterRequestSchema().dumps(d)
+
+        resp = self.invoke("UpgradeTiDBCluster", d, **kwargs)
+        return apis.UpgradeTiDBClusterResponseSchema().loads(resp)

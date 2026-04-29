@@ -115,6 +115,13 @@ ISMS
    :members:
 
 
+NLB
+---
+
+.. autoclass:: ucloud.services.nlb.client.NLBClient
+   :members:
+
+
 STS
 ---
 
