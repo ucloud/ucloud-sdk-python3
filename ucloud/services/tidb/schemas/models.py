@@ -3,9 +3,93 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class ServiceIDSchema(schema.ResponseSchema):
-    """ServiceID - 服务ID"""
+class ServiceDataSchema(schema.ResponseSchema):
+    """ServiceData - 服务ID"""
 
     fields = {
         "Id": fields.Str(required=True, load_from="Id"),
+    }
+
+
+class ServiceIDSchema(schema.ResponseSchema):
+    """ServiceID -"""
+
+    fields = {
+        "Id": fields.Str(required=True, load_from="Id"),
+    }
+
+
+class UTiDBServiceDataSchema(schema.ResponseSchema):
+    """UTiDBServiceData - 预付费实例详情"""
+
+    fields = {
+        "AutoBackup": fields.Str(required=False, load_from="AutoBackup"),
+        "BinlogState": fields.Str(required=False, load_from="BinlogState"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "DTType": fields.Int(required=False, load_from="DTType"),
+        "DashboardUrl": fields.Str(required=False, load_from="DashboardUrl"),
+        "GrafanaUrl": fields.Str(required=False, load_from="GrafanaUrl"),
+        "Id": fields.Str(required=False, load_from="Id"),
+        "Ip": fields.Str(required=False, load_from="Ip"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Port": fields.Int(required=False, load_from="Port"),
+        "State": fields.Str(required=False, load_from="State"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "TiFlashState": fields.Str(required=False, load_from="TiFlashState"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "Version": fields.Str(required=False, load_from="Version"),
+    }
+
+
+class UhostSpecsSchema(schema.ResponseSchema):
+    """UhostSpecs - 预付费机器规格"""
+
+    fields = {
+        "ConfigId": fields.Str(required=False, load_from="ConfigId"),
+        "ConfigName": fields.Str(required=False, load_from="ConfigName"),
+        "CoreNum": fields.Int(required=False, load_from="CoreNum"),
+        "DiskStep": fields.Int(required=False, load_from="DiskStep"),
+        "MaxDiskCapacity": fields.Int(
+            required=False, load_from="MaxDiskCapacity"
+        ),
+        "Memory": fields.Int(required=False, load_from="Memory"),
+        "MinDiskCapacity": fields.Int(
+            required=False, load_from="MinDiskCapacity"
+        ),
+        "NodeType": fields.Str(required=False, load_from="NodeType"),
+    }
+
+
+class BackupDataSchema(schema.ResponseSchema):
+    """BackupData - Backup数据"""
+
+    fields = {
+        "BackupEndTime": fields.Int(required=True, load_from="BackupEndTime"),
+        "BackupId": fields.Str(required=True, load_from="BackupId"),
+        "BackupSize": fields.Int(required=True, load_from="BackupSize"),
+        "BackupStartTime": fields.Int(
+            required=True, load_from="BackupStartTime"
+        ),
+        "BackupType": fields.Str(required=True, load_from="BackupType"),
+        "State": fields.Str(required=True, load_from="State"),
+    }
+
+
+class RestoreDataSchema(schema.ResponseSchema):
+    """RestoreData - 恢复的数据"""
+
+    fields = {
+        "BackupId": fields.Str(required=True, load_from="BackupId"),
+        "RestoreEndTime": fields.Int(required=True, load_from="RestoreEndTime"),
+        "RestoreId": fields.Str(required=True, load_from="RestoreId"),
+        "RestoreStartTime": fields.Int(
+            required=True, load_from="RestoreStartTime"
+        ),
+        "SourceServiceId": fields.Str(
+            required=True, load_from="SourceServiceId"
+        ),
+        "State": fields.Str(required=True, load_from="State"),
+        "TargetServiceId": fields.Str(
+            required=True, load_from="TargetServiceId"
+        ),
     }

@@ -62,6 +62,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def nlb(self):
+        from ucloud.services.nlb.client import NLBClient
+
+        return NLBClient(
+            self._auto_config("nlb"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def sts(self):
         from ucloud.services.sts.client import STSClient
 

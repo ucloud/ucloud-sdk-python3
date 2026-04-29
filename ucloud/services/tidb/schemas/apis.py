@@ -8,14 +8,104 @@ from ucloud.services.tidb.schemas import models
 
 
 """
+API: CreateTiDBClusterService
+
+创建预付费实例
+"""
+
+
+class CreateTiDBClusterServiceParamLabelsSchema(schema.RequestSchema):
+    """CreateTiDBClusterServiceParamLabels -"""
+
+    fields = {
+        "Key": fields.Str(required=False, dump_to="Key"),
+        "Value": fields.Str(required=False, dump_to="Value"),
+    }
+
+
+class CreateTiDBClusterServiceParamOrderDetailSchema(schema.RequestSchema):
+    """CreateTiDBClusterServiceParamOrderDetail -"""
+
+    fields = {
+        "Multiple": fields.Int(required=True, dump_to="Multiple"),
+        "ProductName": fields.Str(required=True, dump_to="ProductName"),
+    }
+
+
+class CreateTiDBClusterServiceParamSecGroupInfoSchema(schema.RequestSchema):
+    """CreateTiDBClusterServiceParamSecGroupInfo -"""
+
+    fields = {
+        "Priority": fields.Int(required=False, dump_to="Priority"),
+        "SecGroupId": fields.Str(required=False, dump_to="SecGroupId"),
+    }
+
+
+class CreateTiDBClusterServiceParamNodeConfigSchema(schema.RequestSchema):
+    """CreateTiDBClusterServiceParamNodeConfig -"""
+
+    fields = {
+        "ConfigId": fields.Str(required=True, dump_to="ConfigId"),
+        "DiskSize": fields.Int(required=True, dump_to="DiskSize"),
+        "NodeCount": fields.Int(required=True, dump_to="NodeCount"),
+        "ServerType": fields.Str(required=True, dump_to="ServerType"),
+    }
+
+
+class CreateTiDBClusterServiceRequestSchema(schema.RequestSchema):
+    """CreateTiDBClusterService - 创建预付费实例"""
+
+    fields = {
+        "ActivityId": fields.Int(required=False, dump_to="ActivityId"),
+        "AlertStrategyIds": fields.List(fields.Int()),
+        "ChargeType": fields.Str(required=True, dump_to="ChargeType"),
+        "Coupon": fields.Str(required=True, dump_to="Coupon"),
+        "DTType": fields.Str(required=True, dump_to="DTType"),
+        "DbVersion": fields.Str(required=False, dump_to="DbVersion"),
+        "Ip": fields.Str(required=False, dump_to="Ip"),
+        "Labels": fields.List(CreateTiDBClusterServiceParamLabelsSchema()),
+        "Name": fields.Str(required=True, dump_to="Name"),
+        "NodeConfig": fields.List(
+            CreateTiDBClusterServiceParamNodeConfigSchema()
+        ),
+        "OrderDetail": fields.List(
+            CreateTiDBClusterServiceParamOrderDetailSchema()
+        ),
+        "Password": fields.Str(required=True, dump_to="Password"),
+        "Port": fields.Str(required=False, dump_to="Port"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "PromotionId": fields.Str(required=False, dump_to="PromotionId"),
+        "PubUlbId": fields.Str(required=True, dump_to="PubUlbId"),
+        "Quantity": fields.Float(required=True, dump_to="Quantity"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "RuleId": fields.Int(required=False, dump_to="RuleId"),
+        "SecGroupInfo": fields.List(
+            CreateTiDBClusterServiceParamSecGroupInfoSchema()
+        ),
+        "SubnetId": fields.Str(required=True, dump_to="SubnetId"),
+        "TemplateId": fields.Str(required=False, dump_to="TemplateId"),
+        "VPCId": fields.Str(required=True, dump_to="VPCId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class CreateTiDBClusterServiceResponseSchema(schema.ResponseSchema):
+    """CreateTiDBClusterService - 创建预付费实例"""
+
+    fields = {
+        "Data": models.ServiceDataSchema(),
+    }
+
+
+"""
 API: CreateTiDBService
 
-创建TiDB服务
+
 """
 
 
 class CreateTiDBServiceRequestSchema(schema.RequestSchema):
-    """CreateTiDBService - 创建TiDB服务"""
+    """CreateTiDBService -"""
 
     fields = {
         "DTType": fields.Str(required=False, dump_to="DTType"),
@@ -34,24 +124,51 @@ class CreateTiDBServiceRequestSchema(schema.RequestSchema):
 
 
 class CreateTiDBServiceResponseSchema(schema.ResponseSchema):
-    """CreateTiDBService - 创建TiDB服务"""
+    """CreateTiDBService -"""
 
     fields = {
-        "Data": models.ServiceIDSchema(),
+        "Data": models.ServiceIDSchema(required=False, load_from="Data"),
         "Message": fields.Str(required=False, load_from="Message"),
         "ServiceId": fields.Str(required=False, load_from="ServiceId"),
     }
 
 
 """
+API: DeleteTiDBClusterService
+
+删除预付费实例
+"""
+
+
+class DeleteTiDBClusterServiceRequestSchema(schema.RequestSchema):
+    """DeleteTiDBClusterService - 删除预付费实例"""
+
+    fields = {
+        "DeleteBackup": fields.Bool(required=False, dump_to="DeleteBackup"),
+        "Id": fields.Str(required=True, dump_to="Id"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DeleteTiDBClusterServiceResponseSchema(schema.ResponseSchema):
+    """DeleteTiDBClusterService - 删除预付费实例"""
+
+    fields = {
+        "ServiceId": fields.Str(required=True, load_from="ServiceId"),
+    }
+
+
+"""
 API: DeleteTiDBService
 
-删除一个服务
+
 """
 
 
 class DeleteTiDBServiceRequestSchema(schema.RequestSchema):
-    """DeleteTiDBService - 删除一个服务"""
+    """DeleteTiDBService -"""
 
     fields = {
         "Id": fields.Str(required=True, dump_to="Id"),
@@ -60,7 +177,7 @@ class DeleteTiDBServiceRequestSchema(schema.RequestSchema):
 
 
 class DeleteTiDBServiceResponseSchema(schema.ResponseSchema):
-    """DeleteTiDBService - 删除一个服务"""
+    """DeleteTiDBService -"""
 
     fields = {
         "Message": fields.Str(required=True, load_from="Message"),
@@ -69,9 +186,337 @@ class DeleteTiDBServiceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetTiDBClusterService
+
+获取预付费实例详情
+"""
+
+
+class GetTiDBClusterServiceRequestSchema(schema.RequestSchema):
+    """GetTiDBClusterService - 获取预付费实例详情"""
+
+    fields = {
+        "Id": fields.Str(required=True, dump_to="Id"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class GetTiDBClusterServiceResponseSchema(schema.ResponseSchema):
+    """GetTiDBClusterService - 获取预付费实例详情"""
+
+    fields = {
+        "Data": models.UTiDBServiceDataSchema(),
+    }
+
+
+"""
+API: GetTiDBClusterUhostSpecs
+
+拉取预付费机器规格信息
+"""
+
+
+class GetTiDBClusterUhostSpecsRequestSchema(schema.RequestSchema):
+    """GetTiDBClusterUhostSpecs - 拉取预付费机器规格信息"""
+
+    fields = {
+        "NodeTypes": fields.List(fields.Str()),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class GetTiDBClusterUhostSpecsResponseSchema(schema.ResponseSchema):
+    """GetTiDBClusterUhostSpecs - 拉取预付费机器规格信息"""
+
+    fields = {
+        "Data": fields.List(
+            models.UhostSpecsSchema(), required=True, load_from="Data"
+        ),
+    }
+
+
+"""
+API: ListTiDBClusterBackup
+
+列出按实例备份tidb的备份列表
+"""
+
+
+class ListTiDBClusterBackupRequestSchema(schema.RequestSchema):
+    """ListTiDBClusterBackup - 列出按实例备份tidb的备份列表"""
+
+    fields = {
+        "Id": fields.Str(required=True, dump_to="Id"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class ListTiDBClusterBackupResponseSchema(schema.ResponseSchema):
+    """ListTiDBClusterBackup - 列出按实例备份tidb的备份列表"""
+
+    fields = {
+        "Data": models.BackupDataSchema(),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
+API: ListTiDBClusterRestore
+
+列出实例恢复列表
+"""
+
+
+class ListTiDBClusterRestoreRequestSchema(schema.RequestSchema):
+    """ListTiDBClusterRestore - 列出实例恢复列表"""
+
+    fields = {
+        "Id": fields.Str(required=True, dump_to="Id"),
+        "Limit": fields.Int(required=True, dump_to="Limit"),
+        "Offset": fields.Int(required=True, dump_to="Offset"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class ListTiDBClusterRestoreResponseSchema(schema.ResponseSchema):
+    """ListTiDBClusterRestore - 列出实例恢复列表"""
+
+    fields = {
+        "RestoreData": models.RestoreDataSchema(),
+    }
+
+
+"""
+API: ListTiDBClusterService
+
+拉取预付费实例列表
+"""
+
+
+class ListTiDBClusterServiceRequestSchema(schema.RequestSchema):
+    """ListTiDBClusterService - 拉取预付费实例列表"""
+
+    fields = {
+        "Limit": fields.Str(required=False, dump_to="Limit"),
+        "Offset": fields.Str(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class ListTiDBClusterServiceResponseSchema(schema.ResponseSchema):
+    """ListTiDBClusterService - 拉取预付费实例列表"""
+
+    fields = {
+        "Data": fields.List(
+            models.UTiDBServiceDataSchema(), required=True, load_from="Data"
+        ),
+    }
+
+
+"""
+API: ModifyTiDBClusterBinlog
+
+开启/关闭 binlog
+"""
+
+
+class ModifyTiDBClusterBinlogParamNodeConfigSchema(schema.RequestSchema):
+    """ModifyTiDBClusterBinlogParamNodeConfig -"""
+
+    fields = {
+        "ConfigId": fields.Str(required=True, dump_to="ConfigId"),
+        "DiskSize": fields.Int(required=True, dump_to="DiskSize"),
+        "NodeCount": fields.Int(required=True, dump_to="NodeCount"),
+        "ServerType": fields.Str(required=True, dump_to="ServerType"),
+    }
+
+
+class ModifyTiDBClusterBinlogRequestSchema(schema.RequestSchema):
+    """ModifyTiDBClusterBinlog - 开启/关闭 binlog"""
+
+    fields = {
+        "Enable": fields.Str(required=True, dump_to="Enable"),
+        "Id": fields.Str(required=True, dump_to="Id"),
+        "NodeConfig": ModifyTiDBClusterBinlogParamNodeConfigSchema(
+            required=False, dump_to="NodeConfig"
+        ),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class ModifyTiDBClusterBinlogResponseSchema(schema.ResponseSchema):
+    """ModifyTiDBClusterBinlog - 开启/关闭 binlog"""
+
+    fields = {
+        "ServiceId": fields.Str(required=False, load_from="ServiceId"),
+    }
+
+
+"""
+API: ModifyTiDBClusterNode
+
+集群扩缩容
+"""
+
+
+class ModifyTiDBClusterNodeParamNodeConfigSchema(schema.RequestSchema):
+    """ModifyTiDBClusterNodeParamNodeConfig -"""
+
+    fields = {
+        "ConfigId": fields.Str(required=True, dump_to="ConfigId"),
+        "NodeCount": fields.Int(required=True, dump_to="NodeCount"),
+        "ServerType": fields.Str(required=True, dump_to="ServerType"),
+    }
+
+
+class ModifyTiDBClusterNodeRequestSchema(schema.RequestSchema):
+    """ModifyTiDBClusterNode - 集群扩缩容"""
+
+    fields = {
+        "Id": fields.Str(required=True, dump_to="Id"),
+        "NodeConfig": ModifyTiDBClusterNodeParamNodeConfigSchema(
+            required=False, dump_to="NodeConfig"
+        ),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ScaleType": fields.Str(required=True, dump_to="ScaleType"),
+        "ServerId": fields.Str(required=False, dump_to="ServerId"),
+        "StartTime": fields.Int(required=False, dump_to="StartTime"),
+    }
+
+
+class ModifyTiDBClusterNodeResponseSchema(schema.ResponseSchema):
+    """ModifyTiDBClusterNode - 集群扩缩容"""
+
+    fields = {
+        "ServiceId": fields.Str(required=False, load_from="ServiceId"),
+    }
+
+
+"""
+API: ModifyTiDBClusterTiFlash
+
+开启/关闭 tiflash
+"""
+
+
+class ModifyTiDBClusterTiFlashParamNodeConfigSchema(schema.RequestSchema):
+    """ModifyTiDBClusterTiFlashParamNodeConfig -"""
+
+    fields = {
+        "ConfigId": fields.Str(required=True, dump_to="ConfigId"),
+        "DiskSize": fields.Int(required=True, dump_to="DiskSize"),
+        "NodeCount": fields.Int(required=True, dump_to="NodeCount"),
+        "ServerType": fields.Str(required=True, dump_to="ServerType"),
+    }
+
+
+class ModifyTiDBClusterTiFlashRequestSchema(schema.RequestSchema):
+    """ModifyTiDBClusterTiFlash - 开启/关闭 tiflash"""
+
+    fields = {
+        "Enable": fields.Str(required=True, dump_to="Enable"),
+        "Id": fields.Str(required=True, dump_to="Id"),
+        "NodeConfig": ModifyTiDBClusterTiFlashParamNodeConfigSchema(
+            required=False, dump_to="NodeConfig"
+        ),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class ModifyTiDBClusterTiFlashResponseSchema(schema.ResponseSchema):
+    """ModifyTiDBClusterTiFlash - 开启/关闭 tiflash"""
+
+    fields = {
+        "ServiceId": fields.Str(required=False, load_from="ServiceId"),
+    }
+
+
+"""
+API: ModifyTiDBClusterUhostDisk
+
+变更集群节点磁盘容量
+"""
+
+
+class ModifyTiDBClusterUhostDiskParamNodeConfigSchema(schema.RequestSchema):
+    """ModifyTiDBClusterUhostDiskParamNodeConfig -"""
+
+    fields = {
+        "DiskSize": fields.Int(required=True, dump_to="DiskSize"),
+        "ServerType": fields.Str(required=True, dump_to="ServerType"),
+    }
+
+
+class ModifyTiDBClusterUhostDiskRequestSchema(schema.RequestSchema):
+    """ModifyTiDBClusterUhostDisk - 变更集群节点磁盘容量"""
+
+    fields = {
+        "Id": fields.Str(required=True, dump_to="Id"),
+        "NodeConfig": ModifyTiDBClusterUhostDiskParamNodeConfigSchema(
+            required=False, dump_to="NodeConfig"
+        ),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ScaleType": fields.Str(required=True, dump_to="ScaleType"),
+        "StartTime": fields.Int(required=False, dump_to="StartTime"),
+    }
+
+
+class ModifyTiDBClusterUhostDiskResponseSchema(schema.ResponseSchema):
+    """ModifyTiDBClusterUhostDisk - 变更集群节点磁盘容量"""
+
+    fields = {
+        "ServiceId": fields.Str(required=True, load_from="ServiceId"),
+    }
+
+
+"""
+API: ModifyTiDBClusterUhostSpecs
+
+修改集群主机规格
+"""
+
+
+class ModifyTiDBClusterUhostSpecsParamNodeConfigSchema(schema.RequestSchema):
+    """ModifyTiDBClusterUhostSpecsParamNodeConfig -"""
+
+    fields = {
+        "ConfigId": fields.Str(required=True, dump_to="ConfigId"),
+        "ServerType": fields.Str(required=True, dump_to="ServerType"),
+    }
+
+
+class ModifyTiDBClusterUhostSpecsRequestSchema(schema.RequestSchema):
+    """ModifyTiDBClusterUhostSpecs - 修改集群主机规格"""
+
+    fields = {
+        "Id": fields.Str(required=True, dump_to="Id"),
+        "NodeConfig": ModifyTiDBClusterUhostSpecsParamNodeConfigSchema(
+            required=False, dump_to="NodeConfig"
+        ),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "StartTime": fields.Int(required=False, dump_to="StartTime"),
+    }
+
+
+class ModifyTiDBClusterUhostSpecsResponseSchema(schema.ResponseSchema):
+    """ModifyTiDBClusterUhostSpecs - 修改集群主机规格"""
+
+    fields = {
+        "ServiceId": fields.Str(required=True, load_from="ServiceId"),
+    }
+
+
+"""
 API: SetTiDBConfig
 
-设置TiDB服务实例参数
+
 """
 
 
@@ -85,7 +530,7 @@ class SetTiDBConfigParamConfigsSchema(schema.RequestSchema):
 
 
 class SetTiDBConfigRequestSchema(schema.RequestSchema):
-    """SetTiDBConfig - 设置TiDB服务实例参数"""
+    """SetTiDBConfig -"""
 
     fields = {
         "Configs": fields.List(SetTiDBConfigParamConfigsSchema()),
@@ -96,8 +541,90 @@ class SetTiDBConfigRequestSchema(schema.RequestSchema):
 
 
 class SetTiDBConfigResponseSchema(schema.ResponseSchema):
-    """SetTiDBConfig - 设置TiDB服务实例参数"""
+    """SetTiDBConfig -"""
 
     fields = {
         "ServiceId": fields.Str(required=False, load_from="ServiceId"),
+    }
+
+
+"""
+API: StartTiDBClusterBackup
+
+开始按实例计费的tidb的备份
+"""
+
+
+class StartTiDBClusterBackupRequestSchema(schema.RequestSchema):
+    """StartTiDBClusterBackup - 开始按实例计费的tidb的备份"""
+
+    fields = {
+        "BackupFilter": fields.Str(required=False, dump_to="BackupFilter"),
+        "BackupTs": fields.Str(required=False, dump_to="BackupTs"),
+        "Id": fields.Str(required=True, dump_to="Id"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class StartTiDBClusterBackupResponseSchema(schema.ResponseSchema):
+    """StartTiDBClusterBackup - 开始按实例计费的tidb的备份"""
+
+    fields = {
+        "BackupId": fields.Str(required=True, load_from="BackupId"),
+        "Message": fields.Str(required=False, load_from="Message"),
+        "ServiceId": fields.Str(required=True, load_from="ServiceId"),
+    }
+
+
+"""
+API: StartTiDBClusterRestore
+
+开始按实例计费tidb的恢复
+"""
+
+
+class StartTiDBClusterRestoreRequestSchema(schema.RequestSchema):
+    """StartTiDBClusterRestore - 开始按实例计费tidb的恢复"""
+
+    fields = {
+        "BackupId": fields.Str(required=True, dump_to="BackupId"),
+        "Id": fields.Str(required=True, dump_to="Id"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class StartTiDBClusterRestoreResponseSchema(schema.ResponseSchema):
+    """StartTiDBClusterRestore - 开始按实例计费tidb的恢复"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "RestoreId": fields.Str(required=True, load_from="RestoreId"),
+        "ServiceId": fields.Str(required=True, load_from="ServiceId"),
+    }
+
+
+"""
+API: UpgradeTiDBCluster
+
+升级预付费tidb集群
+"""
+
+
+class UpgradeTiDBClusterRequestSchema(schema.RequestSchema):
+    """UpgradeTiDBCluster - 升级预付费tidb集群"""
+
+    fields = {
+        "DbVersion": fields.Str(required=True, dump_to="DbVersion"),
+        "Id": fields.Str(required=True, dump_to="Id"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "StartTime": fields.Int(required=False, dump_to="StartTime"),
+    }
+
+
+class UpgradeTiDBClusterResponseSchema(schema.ResponseSchema):
+    """UpgradeTiDBCluster - 升级预付费tidb集群"""
+
+    fields = {
+        "Message": fields.Str(required=False, load_from="Message"),
     }
