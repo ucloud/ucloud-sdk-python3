@@ -19,7 +19,7 @@ class AddUKafkaInstanceNodeRequestSchema(schema.RequestSchema):
 
     fields = {
         "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
-        "NodeCount": fields.Int(required=True, dump_to="NodeCount"),
+        "NodeCount": fields.Str(required=True, dump_to="NodeCount"),
         "NodeType": fields.Str(required=True, dump_to="NodeType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
@@ -38,12 +38,12 @@ class AddUKafkaInstanceNodeResponseSchema(schema.ResponseSchema):
 """
 API: CreateUKafkaInstance
 
-创建一个ukafka实例
+创建实例接口。\\ 创建实例前需要按以下步骤准备必要参数：\\ 1.获取Region（地域）和 Zone（可用区），访问链接：https://docs.ucloud.cn/api/summary/regionlist 可以获取所有支持的地域和可用区；\\ 2.获取FrameworkVersion，访问链接：https://docs.ucloud.cn/api/ukafka-api/list_ukafka_framework_version，响应字段的FrameworkVersions[N].Version是支持的 Kafka 版本；\\ 3.ChargeType付费类型，可用值：Dynamic为按小时付费，Month为按月付费，Year为按年付费；\\ 4.获取NodeType机型详情，访问链接：https://docs.ucloud.cn/api/ukafka-api/get_ukafka_node_type，响应字段的NodeTypeSet[N].NodeTypeName是支持的所有机型；\\ 5.获取DiskSize磁盘大小范围 ，访问链接：https://docs.ucloud.cn/api/ukafka-api/get_ukafka_node_type，该接口响应字段的NodeTypeSet[N].MinDiskSize和NodeTypeSet[N].MaxDiskSize是磁盘大小的取值范围；\\ 6.InstanceName，自定义输入实例名称，只能包含中英文、数字以及- _ .
 """
 
 
 class CreateUKafkaInstanceRequestSchema(schema.RequestSchema):
-    """CreateUKafkaInstance - 创建一个ukafka实例"""
+    """CreateUKafkaInstance - 创建实例接口。\\ 创建实例前需要按以下步骤准备必要参数：\\ 1.获取Region（地域）和 Zone（可用区），访问链接：https://docs.ucloud.cn/api/summary/regionlist 可以获取所有支持的地域和可用区；\\ 2.获取FrameworkVersion，访问链接：https://docs.ucloud.cn/api/ukafka-api/list_ukafka_framework_version，响应字段的FrameworkVersions[N].Version是支持的 Kafka 版本；\\ 3.ChargeType付费类型，可用值：Dynamic为按小时付费，Month为按月付费，Year为按年付费；\\ 4.获取NodeType机型详情，访问链接：https://docs.ucloud.cn/api/ukafka-api/get_ukafka_node_type，响应字段的NodeTypeSet[N].NodeTypeName是支持的所有机型；\\ 5.获取DiskSize磁盘大小范围 ，访问链接：https://docs.ucloud.cn/api/ukafka-api/get_ukafka_node_type，该接口响应字段的NodeTypeSet[N].MinDiskSize和NodeTypeSet[N].MaxDiskSize是磁盘大小的取值范围；\\ 6.InstanceName，自定义输入实例名称，只能包含中英文、数字以及- _ ."""
 
     fields = {
         "BusinessId": fields.Str(required=False, dump_to="BusinessId"),
@@ -75,7 +75,7 @@ class CreateUKafkaInstanceRequestSchema(schema.RequestSchema):
 
 
 class CreateUKafkaInstanceResponseSchema(schema.ResponseSchema):
-    """CreateUKafkaInstance - 创建一个ukafka实例"""
+    """CreateUKafkaInstance - 创建实例接口。\\ 创建实例前需要按以下步骤准备必要参数：\\ 1.获取Region（地域）和 Zone（可用区），访问链接：https://docs.ucloud.cn/api/summary/regionlist 可以获取所有支持的地域和可用区；\\ 2.获取FrameworkVersion，访问链接：https://docs.ucloud.cn/api/ukafka-api/list_ukafka_framework_version，响应字段的FrameworkVersions[N].Version是支持的 Kafka 版本；\\ 3.ChargeType付费类型，可用值：Dynamic为按小时付费，Month为按月付费，Year为按年付费；\\ 4.获取NodeType机型详情，访问链接：https://docs.ucloud.cn/api/ukafka-api/get_ukafka_node_type，响应字段的NodeTypeSet[N].NodeTypeName是支持的所有机型；\\ 5.获取DiskSize磁盘大小范围 ，访问链接：https://docs.ucloud.cn/api/ukafka-api/get_ukafka_node_type，该接口响应字段的NodeTypeSet[N].MinDiskSize和NodeTypeSet[N].MaxDiskSize是磁盘大小的取值范围；\\ 6.InstanceName，自定义输入实例名称，只能包含中英文、数字以及- _ ."""
 
     fields = {
         "InstanceId": fields.Str(required=True, load_from="InstanceId"),
@@ -136,7 +136,7 @@ class DescribeUKafkaConsumerResponseSchema(schema.ResponseSchema):
 
     fields = {
         "GroupName": fields.Str(required=False, load_from="GroupName"),
-        "Topics": fields.Str(required=False, load_from="Topics"),
+        "Topics": fields.List(fields.Str(), required=False, load_from="Topics"),
         "Type": fields.Str(required=False, load_from="Type"),
     }
 
@@ -144,12 +144,12 @@ class DescribeUKafkaConsumerResponseSchema(schema.ResponseSchema):
 """
 API: DescribeUKafkaInstance
 
-获取整个集群的信息
+获取整个实例的信息。实例ID，可以通过ListUKafkaInstance 接口的ClusterSet. ClusterInstanceId 获取
 """
 
 
 class DescribeUKafkaInstanceRequestSchema(schema.RequestSchema):
-    """DescribeUKafkaInstance - 获取整个集群的信息"""
+    """DescribeUKafkaInstance - 获取整个实例的信息。实例ID，可以通过ListUKafkaInstance 接口的ClusterSet. ClusterInstanceId 获取"""
 
     fields = {
         "ClusterInstanceId": fields.Str(
@@ -162,7 +162,7 @@ class DescribeUKafkaInstanceRequestSchema(schema.RequestSchema):
 
 
 class DescribeUKafkaInstanceResponseSchema(schema.ResponseSchema):
-    """DescribeUKafkaInstance - 获取整个集群的信息"""
+    """DescribeUKafkaInstance - 获取整个实例的信息。实例ID，可以通过ListUKafkaInstance 接口的ClusterSet. ClusterInstanceId 获取"""
 
     fields = {
         "ClusterSet": fields.List(
@@ -203,12 +203,12 @@ class GetUKafkaNodeTypeResponseSchema(schema.ResponseSchema):
 """
 API: IsUKafkaTopicNameExist
 
-检查一个topic名称是否已经在集群中了
+检查一个topic名称是否已经在集群中了。实例ID，可以通过ListUKafkaInstance 接口的ClusterSet. ClusterInstanceId 获取
 """
 
 
 class IsUKafkaTopicNameExistRequestSchema(schema.RequestSchema):
-    """IsUKafkaTopicNameExist - 检查一个topic名称是否已经在集群中了"""
+    """IsUKafkaTopicNameExist - 检查一个topic名称是否已经在集群中了。实例ID，可以通过ListUKafkaInstance 接口的ClusterSet. ClusterInstanceId 获取"""
 
     fields = {
         "ClusterInstanceId": fields.Str(
@@ -222,7 +222,7 @@ class IsUKafkaTopicNameExistRequestSchema(schema.RequestSchema):
 
 
 class IsUKafkaTopicNameExistResponseSchema(schema.ResponseSchema):
-    """IsUKafkaTopicNameExist - 检查一个topic名称是否已经在集群中了"""
+    """IsUKafkaTopicNameExist - 检查一个topic名称是否已经在集群中了。实例ID，可以通过ListUKafkaInstance 接口的ClusterSet. ClusterInstanceId 获取"""
 
     fields = {
         "IsExist": fields.Str(required=True, load_from="IsExist"),
@@ -290,34 +290,36 @@ class ListUKafkaFrameworkVersionResponseSchema(schema.ResponseSchema):
 """
 API: ListUKafkaInstance
 
-列举集群信息
+获取实例列表信息
 """
 
 
 class ListUKafkaInstanceRequestSchema(schema.RequestSchema):
-    """ListUKafkaInstance - 列举集群信息"""
+    """ListUKafkaInstance - 获取实例列表信息"""
 
     fields = {
         "BusinessId": fields.Str(required=False, dump_to="BusinessId"),
         "ClusterInstanceId": fields.Str(
             required=False, dump_to="ClusterInstanceId"
-        ),
-        "Filter": fields.Str(required=False, dump_to="Filter"),
+        ),  # Deprecated, will be removed at 1.0
+        "Filter": fields.Str(
+            required=False, dump_to="Filter"
+        ),  # Deprecated, will be removed at 1.0
         "Limit": fields.Str(required=False, dump_to="Limit"),
         "Offset": fields.Str(required=False, dump_to="Offset"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
         "VPCId": fields.Str(required=False, dump_to="VPCId"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
 
 class ListUKafkaInstanceResponseSchema(schema.ResponseSchema):
-    """ListUKafkaInstance - 列举集群信息"""
+    """ListUKafkaInstance - 获取实例列表信息"""
 
     fields = {
-        "ClusterSet": fields.Str(required=True, load_from="ClusterSet"),
+        "ClusterSet": models.ClusterSetSchema(),
         "Message": fields.Str(required=False, load_from="Message"),
         "TotalCount": fields.Str(required=True, load_from="TotalCount"),
     }
@@ -326,12 +328,12 @@ class ListUKafkaInstanceResponseSchema(schema.ResponseSchema):
 """
 API: ListUKafkaTopics
 
-展示kafka集群上所有topic
+获取 kafka 实例 topic  列表信息。实例ID，可以通过ListUKafkaInstance 接口的ClusterSet. ClusterInstanceId 获取
 """
 
 
 class ListUKafkaTopicsRequestSchema(schema.RequestSchema):
-    """ListUKafkaTopics - 展示kafka集群上所有topic"""
+    """ListUKafkaTopics - 获取 kafka 实例 topic  列表信息。实例ID，可以通过ListUKafkaInstance 接口的ClusterSet. ClusterInstanceId 获取"""
 
     fields = {
         "ClusterInstanceId": fields.Str(
@@ -344,7 +346,7 @@ class ListUKafkaTopicsRequestSchema(schema.RequestSchema):
 
 
 class ListUKafkaTopicsResponseSchema(schema.ResponseSchema):
-    """ListUKafkaTopics - 展示kafka集群上所有topic"""
+    """ListUKafkaTopics - 获取 kafka 实例 topic  列表信息。实例ID，可以通过ListUKafkaInstance 接口的ClusterSet. ClusterInstanceId 获取"""
 
     fields = {
         "Length": fields.Int(required=False, load_from="Length"),
@@ -357,12 +359,12 @@ class ListUKafkaTopicsResponseSchema(schema.ResponseSchema):
 """
 API: ModifyUKafkaInstanceType
 
-规格升降级
+规格升降级，仅升级CPU 和内存
 """
 
 
 class ModifyUKafkaInstanceTypeRequestSchema(schema.RequestSchema):
-    """ModifyUKafkaInstanceType - 规格升降级"""
+    """ModifyUKafkaInstanceType - 规格升降级，仅升级CPU 和内存"""
 
     fields = {
         "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
@@ -374,7 +376,7 @@ class ModifyUKafkaInstanceTypeRequestSchema(schema.RequestSchema):
 
 
 class ModifyUKafkaInstanceTypeResponseSchema(schema.ResponseSchema):
-    """ModifyUKafkaInstanceType - 规格升降级"""
+    """ModifyUKafkaInstanceType - 规格升降级，仅升级CPU 和内存"""
 
     fields = {
         "Message": fields.Str(required=False, load_from="Message"),

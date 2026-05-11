@@ -58,17 +58,17 @@ class UHadoopClient(Client):
     def create_uhadoop_instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """CreateUHadoopInstance - 新建一个uhadoop集群
+        """CreateUHadoopInstance - 创建实例接口。\\ 创建实例前需要按以下步骤准备必要参数：\\ 1.获取Region（地域）和 Zone（可用区），访问链接：https://docs.ucloud.cn/api/summary/regionlist 可以获取所有支持的地域和可用区；\\ 2.FrameworkVersion，访问链接：https://docs.ucloud.cn/api/uhadoop-api/list_uhadoop_framework_app_by_use_case，响应字段的AppConfigSet[N].FrameworkVersion是框架版本是支持的 UHadoop 版本；\\ 3.ChargeType付费类型，可用值：Dynamic为按小时付费，Month为按月付费，Year为按年付费；\\ 4.InstanceGroupConfigs需要获取NodeType机型详情，访问链接：https://docs.ucloud.cn/api/uhadoop-api/get_uhadoop_node_type，响应字段的InstanceTypeSet[N].NodeType是机型名称，响应字段的InstanceTypeSet[N].SuitableRole是机型可用的节点类型；\\ 5.获取DiskSize磁盘大小范围 ，访问链接：https://docs.ucloud.cn/api/uhadoop-api/get_uhadoop_node_type，该接口响应字段的InstanceTypeSet[N].DiskSet[N].DiskMinSize和InstanceTypeSet[N].DiskSet[N].DiskMaxSize是磁盘大小的取值范围；\\ 6.InstanceName，自定义输入实例名称，只能包含中英文、数字以及- _ ;\\7.Password,集群机器的登录密码,需要输入base64编码后的内容;\\8.AppConfigs 集群需要安装的组件，访问链接，https://docs.ucloud.cn/api/uhadoop-api/list_uhadoop_framework_app ，AppConfigSet[N].AppName是组件名称，AppConfigSet[N].AppVersion是组件版本
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **AppConfig** (list) - (Required) 集群需要安装的组件，格式：组件#版本通过ListUHadoopFrameworkApp接口获取，例如：Spark#3.3.0
+        - **AppConfigs** (list) - (Required) 集群需要安装的组件，格式：组件#版本通过ListUHadoopFrameworkApp接口获取，例如：Spark#3.3.0
         - **Framework** (str) - (Required) 框架，值为'Hadoop'|'HDFS'|'MR'|'StarRocks'之一,框架，例如Hadoop|MR|HDFS|StarRocks Hadoop框架包含存储与计算服务 MR集群包含计算服务 HDFS只包含存储服务,StarRocks为StarRocks集群
         - **FrameworkVersion** (str) - (Required) 版本,例如：3.2.1-udh3.0,通过ListUHadoopFrameworkApp接口获取
         - **InstanceGroupConfigs** (list) - (Required) 节点配置，里面包括NodeType（机型），NodeRole（节点类别，值为其中之一：master|core|task），Count（数量），DataDiskType（数据盘类别），DataDiskSize（数据盘大小），DataDiskNum（数据盘数量），BootDiskType（系统盘类型），BootDiskSize（系统盘大小），通过GetUHadoopNodeType接口获取，示例为：InstanceGroupConfigs.0.NodeType=o.hadoop2m.xlargeInstanceGroupConfigs.0.NodeRole=masterInstanceGroupConfigs.0.Count=2InstanceGroupConfigs.0.DataDiskType=CLOUD_RSSDInstanceGroupConfigs.0.DataDiskSize=100InstanceGroupConfigs.0.DataDiskNum=1InstanceGroupConfigs.0.BootDiskType=CLOUD_RSSDInstanceGroupConfigs.0.BootDiskSize=50InstanceGroupConfigs.1.NodeType=o.hadoop2m.xlargeInstanceGroupConfigs.1.NodeRole=coreInstanceGroupConfigs.1.Count=3InstanceGroupConfigs.1.DataDiskType=CLOUD_RSSDInstanceGroupConfigs.1.DataDiskSize=200InstanceGroupConfigs.1.DataDiskNum=1InstanceGroupConfigs.1.BootDiskType=CLOUD_RSSDInstanceGroupConfigs.1.BootDiskSize=50
-        - **Password** (str) - (Required) 集群机器的登录密码
+        - **Password** (str) - (Required) 集群机器的登录密码,需要输入base64编码后的内容
         - **SubnetId** (str) - (Required) 子网ID
         - **VPCId** (str) - (Required) VPCId
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
