@@ -25,7 +25,7 @@ class UKafkaClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **InstanceId** (str) - (Required) 实例ID
-        - **NodeCount** (int) - (Required) 新添加节点数量
+        - **NodeCount** (str) - (Required) 新添加节点数量
         - **NodeType** (str) - (Required) 机型，支持的机型可通过GetUKafkaNodeType 接口返回的InstanceTypeSet[].InstanceTypeName
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
@@ -51,7 +51,7 @@ class UKafkaClient(Client):
     def create_ukafka_instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """CreateUKafkaInstance - 创建一个ukafka实例
+        """CreateUKafkaInstance - 创建实例接口。\\ 创建实例前需要按以下步骤准备必要参数：\\ 1.获取Region（地域）和 Zone（可用区），访问链接：https://docs.ucloud.cn/api/summary/regionlist 可以获取所有支持的地域和可用区；\\ 2.获取FrameworkVersion，访问链接：https://docs.ucloud.cn/api/ukafka-api/list_ukafka_framework_version，响应字段的FrameworkVersions[N].Version是支持的 Kafka 版本；\\ 3.ChargeType付费类型，可用值：Dynamic为按小时付费，Month为按月付费，Year为按年付费；\\ 4.获取NodeType机型详情，访问链接：https://docs.ucloud.cn/api/ukafka-api/get_ukafka_node_type，响应字段的NodeTypeSet[N].NodeTypeName是支持的所有机型；\\ 5.获取DiskSize磁盘大小范围 ，访问链接：https://docs.ucloud.cn/api/ukafka-api/get_ukafka_node_type，该接口响应字段的NodeTypeSet[N].MinDiskSize和NodeTypeSet[N].MaxDiskSize是磁盘大小的取值范围；\\ 6.InstanceName，自定义输入实例名称，只能包含中英文、数字以及- _ .
 
         **Request**
 
@@ -60,7 +60,7 @@ class UKafkaClient(Client):
         - **ChargeType** (str) - (Required) 付费方式
         - **DiskSize** (int) - (Required) 数据盘大小。支持范围根据GetUKafkaNodeType 接口返回的InstanceTypeSet[].MaxDiskSize 和MinDiskSize获取
         - **FrameworkVersion** (str) - (Required) kafka版本，支持的版本可通过ListUKafkaFrameworkVersion 接口返回字段的FrameworkVersions获取
-        - **InstanceName** (str) - (Required) 实例名，可自定义
+        - **InstanceName** (str) - (Required) 实例名，可自定义。只能包含中英文、数字以及- _ .
         - **NodeType** (str) - (Required) 机型，支持的机型可通过GetUKafkaNodeType 接口返回的InstanceTypeSet[].InstanceTypeName
         - **SubnetId** (str) - (Required) 子网 ID
         - **VPCId** (str) - (Required) VPCID
@@ -70,7 +70,7 @@ class UKafkaClient(Client):
         - **DiskThreshold** (str) - 磁盘清理阈值，支持范围[70,90]。DiskControllerType 为CLEAN 时必填。默认值 90
         - **IsSecurityEnabled** (str) - 是否开启安全组，支持"true","false"，默认 false
         - **LogRetentionHours** (str) - kafka 日志保存时间，支持范围[1,240]。默认 72 小时
-        - **NodeCount** (int) - 集群节点数量。默认 3 节点
+        - **NodeCount** (int) - 实例节点数量。默认 3 节点
         - **Quantity** (str) - 实例数量，默认 1
 
         **Response**
@@ -130,7 +130,7 @@ class UKafkaClient(Client):
 
         - **ProjectId** (str) - (Config) 项目 ID。不填写为默认项目，子帐号必须填写。 请参考  `GetProjectList 接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **ClusterInstanceId** (str) - (Required) Kafka 集群 ID
+        - **ClusterInstanceId** (str) - (Required) 实例 ID
         - **ConsumerGroup** (str) - (Required) 消费组组名
         - **Type** (str) - (Required) 消费者组类型（同消费者组列表返回的类型值）
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
@@ -138,7 +138,7 @@ class UKafkaClient(Client):
         **Response**
 
         - **GroupName** (str) - 消费者组组名
-        - **Topics** (str) - 消费者组所订阅 topic 信息
+        - **Topics** (list) - 消费者组所订阅 topic 信息
         - **Type** (str) - 消费者组类型
 
         """
@@ -156,7 +156,7 @@ class UKafkaClient(Client):
     def describe_ukafka_instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DescribeUKafkaInstance - 获取整个集群的信息
+        """DescribeUKafkaInstance - 获取整个实例的信息。实例ID，可以通过ListUKafkaInstance 接口的ClusterSet. ClusterInstanceId 获取
 
         **Request**
 
@@ -184,15 +184,6 @@ class UKafkaClient(Client):
         - **Protocal** (str) - 访问协议
 
 
-        **UHostConfig**
-        - **BootDiskSize** (int) - 节点系统盘大小（单位G)【删除】
-        - **CPU** (int) - 节点 CPU 核心数
-        - **DataDiskSize** (int) - 节点数据盘大小（单位G)
-        - **DiskType** (str) - 节点数据盘类型
-        - **Memory** (int) - 节点内存(单位MB)
-        - **OS** (str) - 节点内部系统名称【删除】
-
-
         **Endpoints**
         - **PlainText** (dict) - 见 **Url** 模型定义
         - **SaslPlainText** (dict) - 见 **Url** 模型定义
@@ -201,6 +192,15 @@ class UKafkaClient(Client):
         **IP**
         - **IP** (str) - IP地址
         - **Type** (str) - IP类型
+
+
+        **UHostConfig**
+        - **BootDiskSize** (int) - 节点系统盘大小（单位G)【删除】
+        - **CPU** (int) - 节点 CPU 核心数
+        - **DataDiskSize** (int) - 节点数据盘大小（单位G)
+        - **DiskType** (str) - 节点数据盘类型
+        - **Memory** (int) - 节点内存(单位MB)
+        - **OS** (str) - 节点内部系统名称【删除】
 
 
         **Broker**
@@ -289,7 +289,10 @@ class UKafkaClient(Client):
         - **CPU** (int) - CPU核心数
         - **DiskSet** (dict) - 见 **DiskSet** 模型定义
         - **DiskType** (str) - 磁盘类型。RSSD 表示固态云盘，SSD 表示本地固态盘，COMMON 表示本地 SATA 盘
+        - **IsOpenSecGroup** (bool) - 该机型是否支持安全组
+        - **MaxDiskSize** (int) - 机型最大支持磁盘大小
         - **Memory** (str) - 内存大小（单位 MB）
+        - **MinDiskSize** (int) - 机型最小支持磁盘大小
         - **NodeTypeName** (str) - 机型名称
 
 
@@ -308,15 +311,15 @@ class UKafkaClient(Client):
     def is_ukafka_topic_name_exist(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """IsUKafkaTopicNameExist - 检查一个topic名称是否已经在集群中了
+        """IsUKafkaTopicNameExist - 检查一个topic名称是否已经在集群中了。实例ID，可以通过ListUKafkaInstance 接口的ClusterSet. ClusterInstanceId 获取
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **ClusterInstanceId** (str) - (Required) 集群ID
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ClusterInstanceId** (str) - (Required) 实例ID，可以通过ListUKafkaInstance 接口的ClusterSet. ClusterInstanceId 获取
         - **TopicName** (str) - (Required) 待检查的topic名称
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -341,10 +344,10 @@ class UKafkaClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目 ID。不填写为默认项目，子帐号必须填写。 请参考  `GetProjectList 接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **ClusterInstanceId** (str) - (Required) Kafka 集群 ID
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目 ID。不填写为默认项目，子帐号必须填写。 请参考  `GetProjectList 接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ClusterInstanceId** (str) - (Required) 实例ID，可以通过ListUKafkaInstance 接口的ClusterSet. ClusterInstanceId 获取
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -353,6 +356,7 @@ class UKafkaClient(Client):
         **Response Model**
 
         **Group**
+        - **GroupId** (str) - 消费者组资源ID
         - **GroupName** (str) - 消费者组组名
         - **NumOfTopics** (int) - 订阅 Topic 数量
         - **Type** (str) - 消费者组类型
@@ -408,26 +412,49 @@ class UKafkaClient(Client):
     def list_ukafka_instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ListUKafkaInstance - 列举集群信息
+        """ListUKafkaInstance - 获取实例列表信息
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BusinessId** (str) - 业务组 ID
-        - **ClusterInstanceId** (str) - 实例ID
-        - **Filter** (str) - 是否过滤删除了的节点，默认为‘true’
         - **Limit** (str) - 默认为60
         - **Offset** (str) - 默认为0
         - **SubnetId** (str) - SubnetId
         - **VPCId** (str) - VPCId
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
-        - **ClusterSet** (str) - 信息
+        - **ClusterSet** (dict) - 见 **ClusterSet** 模型定义
         - **Message** (str) - 错误信息
         - **TotalCount** (str) - 总数
+
+        **Response Model**
+
+        **ClusterSet**
+        - **AutoRenew** (str) - 是否自动续费
+        - **BusinessId** (str) - 业务组 ID
+        - **ChargeType** (str) - 付费类型
+        - **ClusterInstanceId** (str) - 实例id
+        - **ClusterInstanceName** (str) - 实例名称
+        - **CreateTime** (int) - 实例创建时间戳
+        - **ExpireTime** (int) - 实例过期时间
+        - **Framework** (str) - 框架
+        - **FrameworkVersion** (str) - Kafka 框架版本
+        - **InstanceGroupType** (str) - 实例机型
+        - **NewMessage** (str) - 事件状态未读消息（已废弃）
+        - **RedundantCount** (int) - 冗余计数（已废弃）
+        - **Remark** (str) - 实例备注
+        - **RunningTime** (int) - 实例运行时间
+        - **State** (str) - 实例当前状态,集群状态："Running"| "Abnormal"| "Creating"| "Deleting"| "CreateFailed"| "DeleteFailed"| "Unavailable"| "Deleted"| "Updating"| "Deploying"| "Migrating"| "ExpandFailed"
+        - **SubnetId** (str) - 所属子网 id
+        - **Tag** (str) - 实例标记
+        - **UHostCount** (int) - 实例节点个数
+        - **VPCId** (str) - 所属 VPC id
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
 
         """
         # build request
@@ -444,18 +471,18 @@ class UKafkaClient(Client):
     def list_ukafka_topics(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ListUKafkaTopics - 展示kafka集群上所有topic
+        """ListUKafkaTopics - 获取 kafka 实例 topic  列表信息。实例ID，可以通过ListUKafkaInstance 接口的ClusterSet. ClusterInstanceId 获取
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目 ID。不填写为默认项目，子帐号必须填写。 请参考  `GetProjectList 接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **ClusterInstanceId** (str) - (Required) 集群资源id
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目 ID。不填写为默认项目，子帐号必须填写。 请参考  `GetProjectList 接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ClusterInstanceId** (str) - (Required) 实例ID，可以通过ListUKafkaInstance 接口的ClusterSet. ClusterInstanceId 获取
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
-        - **Length** (int) - 列表长度
+        - **Length** (int) - topic 列表长度
         - **TopicList** (list) - 见 **TopicInfo** 模型定义
 
         **Response Model**
@@ -484,14 +511,14 @@ class UKafkaClient(Client):
     def modify_ukafka_instance_type(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ModifyUKafkaInstanceType - 规格升降级
+        """ModifyUKafkaInstanceType - 规格升降级，仅升级CPU 和内存
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **InstanceId** (str) - (Required) 实例ID
-        - **NodeType** (str) - (Required) 目标机型，支持的机型可通过GetUKafkaNodeType 接口返回的InstanceTypeSet[].InstanceTypeName
+        - **NodeType** (str) - (Required) 目标机型，支持的机型可通过GetUKafkaNodeType 接口返回的InstanceTypeSet[].InstanceTypeName。仅升级CPU 和内存
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**

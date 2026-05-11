@@ -3,21 +3,12 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class UrlSchema(schema.ResponseSchema):
-    """Url -"""
+class IPSchema(schema.ResponseSchema):
+    """IP - IP 信息"""
 
     fields = {
-        "Addr": fields.Str(required=False, load_from="Addr"),
-        "Protocal": fields.Str(required=False, load_from="Protocal"),
-    }
-
-
-class EndpointsSchema(schema.ResponseSchema):
-    """Endpoints - kafka broker 连接信息"""
-
-    fields = {
-        "PlainText": UrlSchema(),
-        "SaslPlainText": UrlSchema(),
+        "IP": fields.Str(required=False, load_from="IP"),
+        "Type": fields.Str(required=False, load_from="Type"),
     }
 
 
@@ -34,15 +25,6 @@ class UHostConfigSchema(schema.ResponseSchema):
     }
 
 
-class IPSchema(schema.ResponseSchema):
-    """IP - IP 信息"""
-
-    fields = {
-        "IP": fields.Str(required=False, load_from="IP"),
-        "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
 class BrokerOfTopicInfoSchema(schema.ResponseSchema):
     """BrokerOfTopicInfo - broker 的 topic 相关信息"""
 
@@ -56,6 +38,24 @@ class BrokerOfTopicInfoSchema(schema.ResponseSchema):
         "TotalPartitions": fields.Int(
             required=False, load_from="TotalPartitions"
         ),
+    }
+
+
+class UrlSchema(schema.ResponseSchema):
+    """Url -"""
+
+    fields = {
+        "Addr": fields.Str(required=False, load_from="Addr"),
+        "Protocal": fields.Str(required=False, load_from="Protocal"),
+    }
+
+
+class EndpointsSchema(schema.ResponseSchema):
+    """Endpoints - kafka broker 连接信息"""
+
+    fields = {
+        "PlainText": UrlSchema(),
+        "SaslPlainText": UrlSchema(),
     }
 
 
@@ -90,7 +90,7 @@ class BrokerSchema(schema.ResponseSchema):
 
 
 class ClusterInfoSchema(schema.ResponseSchema):
-    """ClusterInfo - 集群信息"""
+    """ClusterInfo - 实例信息"""
 
     fields = {
         "AutoRenew": fields.Str(required=False, load_from="AutoRenew"),
@@ -143,7 +143,12 @@ class InstanceTypeSchema(schema.ResponseSchema):
         "CPU": fields.Int(required=False, load_from="CPU"),
         "DiskSet": DiskSetSchema(),
         "DiskType": fields.Str(required=False, load_from="DiskType"),
+        "IsOpenSecGroup": fields.Bool(
+            required=False, load_from="IsOpenSecGroup"
+        ),
+        "MaxDiskSize": fields.Int(required=False, load_from="MaxDiskSize"),
         "Memory": fields.Str(required=False, load_from="Memory"),
+        "MinDiskSize": fields.Int(required=False, load_from="MinDiskSize"),
         "NodeTypeName": fields.Str(required=False, load_from="NodeTypeName"),
     }
 
@@ -152,6 +157,7 @@ class GroupSchema(schema.ResponseSchema):
     """Group - Kafka 消费者组每一项的信息"""
 
     fields = {
+        "GroupId": fields.Str(required=False, load_from="GroupId"),
         "GroupName": fields.Str(required=False, load_from="GroupName"),
         "NumOfTopics": fields.Int(required=False, load_from="NumOfTopics"),
         "Type": fields.Str(required=False, load_from="Type"),
@@ -164,6 +170,43 @@ class VersionSchema(schema.ResponseSchema):
     fields = {
         "Label": fields.Str(required=False, load_from="Label"),
         "Version": fields.Str(required=False, load_from="Version"),
+    }
+
+
+class ClusterSetSchema(schema.ResponseSchema):
+    """ClusterSet - 实例信息"""
+
+    fields = {
+        "AutoRenew": fields.Str(required=False, load_from="AutoRenew"),
+        "BusinessId": fields.Str(required=False, load_from="BusinessId"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "ClusterInstanceId": fields.Str(
+            required=False, load_from="ClusterInstanceId"
+        ),
+        "ClusterInstanceName": fields.Str(
+            required=False, load_from="ClusterInstanceName"
+        ),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "Framework": fields.Str(required=False, load_from="Framework"),
+        "FrameworkVersion": fields.Str(
+            required=False, load_from="FrameworkVersion"
+        ),
+        "InstanceGroupType": fields.Str(
+            required=False, load_from="InstanceGroupType"
+        ),
+        "NewMessage": fields.Str(required=False, load_from="NewMessage"),
+        "RedundantCount": fields.Int(
+            required=False, load_from="RedundantCount"
+        ),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "RunningTime": fields.Int(required=False, load_from="RunningTime"),
+        "State": fields.Str(required=False, load_from="State"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "UHostCount": fields.Int(required=False, load_from="UHostCount"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
     }
 
 
