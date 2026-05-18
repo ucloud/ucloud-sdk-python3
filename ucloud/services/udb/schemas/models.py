@@ -3,6 +3,15 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class UFileDataSetSchema(schema.ResponseSchema):
+    """UFileDataSet - 增加ufile的描述"""
+
+    fields = {
+        "Bucket": fields.Str(required=False, load_from="Bucket"),
+        "TokenID": fields.Str(required=False, load_from="TokenID"),
+    }
+
+
 class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
     """UDBSlaveInstanceSet - DescribeUDBSlaveInstance"""
 
@@ -65,33 +74,6 @@ class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
         "VPCId": fields.Str(required=False, load_from="VPCId"),
         "VirtualIP": fields.Str(required=False, load_from="VirtualIP"),
         "VirtualIPMac": fields.Str(required=False, load_from="VirtualIPMac"),
-        "Zone": fields.Str(required=False, load_from="Zone"),
-    }
-
-
-class UFileDataSetSchema(schema.ResponseSchema):
-    """UFileDataSet - 增加ufile的描述"""
-
-    fields = {
-        "Bucket": fields.Str(required=False, load_from="Bucket"),
-        "TokenID": fields.Str(required=False, load_from="TokenID"),
-    }
-
-
-class MongoDBShardedClusterSetSchema(schema.ResponseSchema):
-    """MongoDBShardedClusterSet -"""
-
-    fields = {
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "DBId": fields.Str(required=False, load_from="DBId"),
-        "DBTypeId": fields.Str(required=False, load_from="DBTypeId"),
-        "MongosCount": fields.Int(required=False, load_from="MongosCount"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "ShardsrvCount": fields.Int(required=False, load_from="ShardsrvCount"),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "Tag": fields.Str(required=False, load_from="Tag"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-        "VirtualIPs": fields.List(fields.Str()),
         "Zone": fields.Str(required=False, load_from="Zone"),
     }
 
@@ -170,6 +152,24 @@ class UDBInstanceSetSchema(schema.ResponseSchema):
     }
 
 
+class MongoDBShardedClusterSetSchema(schema.ResponseSchema):
+    """MongoDBShardedClusterSet -"""
+
+    fields = {
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "DBId": fields.Str(required=False, load_from="DBId"),
+        "DBTypeId": fields.Str(required=False, load_from="DBTypeId"),
+        "MongosCount": fields.Int(required=False, load_from="MongosCount"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "ShardsrvCount": fields.Int(required=False, load_from="ShardsrvCount"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "VirtualIPs": fields.List(fields.Str()),
+        "Zone": fields.Str(required=False, load_from="Zone"),
+    }
+
+
 class UDBBackupSetSchema(schema.ResponseSchema):
     """UDBBackupSet - DescribeUDBBackup"""
 
@@ -187,6 +187,23 @@ class UDBBackupSetSchema(schema.ResponseSchema):
         "MD5": fields.Str(required=False, load_from="MD5"),
         "State": fields.Str(required=False, load_from="State"),
         "Zone": fields.Str(required=False, load_from="Zone"),
+    }
+
+
+class BinlogBackupSetSchema(schema.ResponseSchema):
+    """BinlogBackupSet - DescribeUDBBinlogBackup"""
+
+    fields = {
+        "BackupId": fields.Int(required=False, load_from="BackupId"),
+        "BackupName": fields.Str(required=False, load_from="BackupName"),
+        "BackupSize": fields.Int(required=False, load_from="BackupSize"),
+        "BackupTime": fields.Int(required=False, load_from="BackupTime"),
+        "BinlogType": fields.Str(required=False, load_from="BinlogType"),
+        "DBId": fields.Str(required=False, load_from="DBId"),
+        "LogEndTime": fields.Int(required=False, load_from="LogEndTime"),
+        "LogStartTime": fields.Int(required=False, load_from="LogStartTime"),
+        "ServerId": fields.Str(required=False, load_from="ServerId"),
+        "State": fields.Str(required=False, load_from="State"),
     }
 
 
@@ -250,6 +267,7 @@ class UDBParamGroupSetSchema(schema.ResponseSchema):
         "Description": fields.Str(required=False, load_from="Description"),
         "GroupId": fields.Int(required=False, load_from="GroupId"),
         "GroupName": fields.Str(required=False, load_from="GroupName"),
+        "GroupType": fields.Int(required=False, load_from="GroupType"),
         "Modifiable": fields.Bool(required=False, load_from="Modifiable"),
         "ParamMember": fields.List(UDBParamMemberSetSchema()),
         "RegionFlag": fields.Bool(required=False, load_from="RegionFlag"),

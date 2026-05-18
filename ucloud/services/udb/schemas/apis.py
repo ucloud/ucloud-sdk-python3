@@ -274,16 +274,29 @@ API: CreateUDBInstance
 """
 
 
+class CreateUDBInstanceParamLabelsSchema(schema.RequestSchema):
+    """CreateUDBInstanceParamLabels -"""
+
+    fields = {
+        "Key": fields.Str(required=False, dump_to="Key"),
+        "Value": fields.Str(required=False, dump_to="Value"),
+    }
+
+
 class CreateUDBInstanceRequestSchema(schema.RequestSchema):
     """CreateUDBInstance - 创建UDB实例（包括创建mysql master节点、mongodb primary/configsvr节点和从备份恢复实例）"""
 
     fields = {
         "AdminPassword": fields.Str(required=True, dump_to="AdminPassword"),
         "AdminUser": fields.Str(required=False, dump_to="AdminUser"),
+        "AlarmTemplateId": fields.Str(
+            required=False, dump_to="AlarmTemplateId"
+        ),
         "BackupCount": fields.Int(required=False, dump_to="BackupCount"),
         "BackupDuration": fields.Int(required=False, dump_to="BackupDuration"),
         "BackupId": fields.Int(required=False, dump_to="BackupId"),
         "BackupTime": fields.Int(required=False, dump_to="BackupTime"),
+        "BackupURL": fields.Str(required=False, dump_to="BackupURL"),
         "BackupZone": fields.Str(required=False, dump_to="BackupZone"),
         "CPU": fields.Int(required=False, dump_to="CPU"),
         "CaseSensitivityParam": fields.Int(
@@ -306,6 +319,7 @@ class CreateUDBInstanceRequestSchema(schema.RequestSchema):
         ),  # Deprecated, will be removed at 1.0
         "InstanceMode": fields.Str(required=False, dump_to="InstanceMode"),
         "InstanceType": fields.Str(required=False, dump_to="InstanceType"),
+        "Labels": fields.List(CreateUDBInstanceParamLabelsSchema()),
         "MachineType": fields.Str(required=False, dump_to="MachineType"),
         "MemoryLimit": fields.Int(required=False, dump_to="MemoryLimit"),
         "Name": fields.Str(required=True, dump_to="Name"),
@@ -315,9 +329,14 @@ class CreateUDBInstanceRequestSchema(schema.RequestSchema):
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SSDType": fields.Str(required=False, dump_to="SSDType"),
+        "SemisyncFlag": fields.Int(required=False, dump_to="SemisyncFlag"),
+        "SpecificationClass": fields.Str(
+            required=False, dump_to="SpecificationClass"
+        ),
         "SpecificationType": fields.Str(
             required=False, dump_to="SpecificationType"
         ),
+        "StorageClass": fields.Str(required=False, dump_to="StorageClass"),
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
         "Tag": fields.Str(required=False, dump_to="Tag"),
         "UDBCId": fields.Str(
@@ -375,6 +394,76 @@ class CreateUDBInstanceByRecoveryRequestSchema(schema.RequestSchema):
 
 class CreateUDBInstanceByRecoveryResponseSchema(schema.ResponseSchema):
     """CreateUDBInstanceByRecovery - 创建db，将新创建的db恢复到指定db某个指定时间点"""
+
+    fields = {
+        "DBId": fields.Str(required=False, load_from="DBId"),
+    }
+
+
+"""
+API: CreateUDBMySQLInstance
+
+创建UDB实例（包括创建mysql NVMe、共享型和O2实例以及从备份恢复实例）
+"""
+
+
+class CreateUDBMySQLInstanceParamLabelsSchema(schema.RequestSchema):
+    """CreateUDBMySQLInstanceParamLabels -"""
+
+    fields = {
+        "Key": fields.Str(required=False, dump_to="Key"),
+        "Value": fields.Str(required=False, dump_to="Value"),
+    }
+
+
+class CreateUDBMySQLInstanceRequestSchema(schema.RequestSchema):
+    """CreateUDBMySQLInstance - 创建UDB实例（包括创建mysql NVMe、共享型和O2实例以及从备份恢复实例）"""
+
+    fields = {
+        "AdminPassword": fields.Str(required=True, dump_to="AdminPassword"),
+        "AlarmTemplateId": fields.Str(
+            required=False, dump_to="AlarmTemplateId"
+        ),
+        "BackupCount": fields.Int(required=False, dump_to="BackupCount"),
+        "BackupDuration": fields.Int(required=False, dump_to="BackupDuration"),
+        "BackupId": fields.Int(required=False, dump_to="BackupId"),
+        "BackupTime": fields.Int(required=False, dump_to="BackupTime"),
+        "BackupURL": fields.Str(required=False, dump_to="BackupURL"),
+        "BackupZone": fields.Str(required=False, dump_to="BackupZone"),
+        "CaseSensitivityParam": fields.Int(
+            required=False, dump_to="CaseSensitivityParam"
+        ),
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "DBSubVersion": fields.Str(required=False, dump_to="DBSubVersion"),
+        "DBTypeId": fields.Str(required=True, dump_to="DBTypeId"),
+        "DisableSemisync": fields.Bool(
+            required=False, dump_to="DisableSemisync"
+        ),
+        "DiskSpace": fields.Int(required=True, dump_to="DiskSpace"),
+        "InstanceMode": fields.Str(required=False, dump_to="InstanceMode"),
+        "Labels": fields.List(CreateUDBMySQLInstanceParamLabelsSchema()),
+        "MachineType": fields.Str(required=True, dump_to="MachineType"),
+        "Name": fields.Str(required=True, dump_to="Name"),
+        "ParamGroupId": fields.Int(required=True, dump_to="ParamGroupId"),
+        "Port": fields.Int(required=True, dump_to="Port"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SemisyncFlag": fields.Int(required=False, dump_to="SemisyncFlag"),
+        "SpecificationClass": fields.Str(
+            required=True, dump_to="SpecificationClass"
+        ),
+        "StorageClass": fields.Str(required=True, dump_to="StorageClass"),
+        "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "VPCId": fields.Str(required=False, dump_to="VPCId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class CreateUDBMySQLInstanceResponseSchema(schema.ResponseSchema):
+    """CreateUDBMySQLInstance - 创建UDB实例（包括创建mysql NVMe、共享型和O2实例以及从备份恢复实例）"""
 
     fields = {
         "DBId": fields.Str(required=False, load_from="DBId"),
@@ -475,6 +564,68 @@ class CreateUDBRouteInstanceRequestSchema(schema.RequestSchema):
 
 class CreateUDBRouteInstanceResponseSchema(schema.ResponseSchema):
     """CreateUDBRouteInstance - 创建mongos实例"""
+
+    fields = {
+        "DBId": fields.Str(required=False, load_from="DBId"),
+    }
+
+
+"""
+API: CreateUDBSQLServerInstance
+
+创建UDB实例（包括创建SQLServer实例以及从备份恢复实例）
+"""
+
+
+class CreateUDBSQLServerInstanceParamLabelsSchema(schema.RequestSchema):
+    """CreateUDBSQLServerInstanceParamLabels -"""
+
+    fields = {
+        "Key": fields.Str(required=False, dump_to="Key"),
+        "Value": fields.Str(required=False, dump_to="Value"),
+    }
+
+
+class CreateUDBSQLServerInstanceRequestSchema(schema.RequestSchema):
+    """CreateUDBSQLServerInstance - 创建UDB实例（包括创建SQLServer实例以及从备份恢复实例）"""
+
+    fields = {
+        "AdminPassword": fields.Str(required=True, dump_to="AdminPassword"),
+        "AlarmTemplateId": fields.Str(
+            required=False, dump_to="AlarmTemplateId"
+        ),
+        "BackupCount": fields.Int(required=False, dump_to="BackupCount"),
+        "BackupDuration": fields.Int(required=False, dump_to="BackupDuration"),
+        "BackupId": fields.Int(required=False, dump_to="BackupId"),
+        "BackupTime": fields.Int(required=False, dump_to="BackupTime"),
+        "BackupURL": fields.Str(required=False, dump_to="BackupURL"),
+        "CPU": fields.Int(required=False, dump_to="CPU"),
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "DBTypeId": fields.Str(required=True, dump_to="DBTypeId"),
+        "DiskSpace": fields.Int(required=True, dump_to="DiskSpace"),
+        "InstanceMode": fields.Str(required=False, dump_to="InstanceMode"),
+        "Labels": fields.List(CreateUDBSQLServerInstanceParamLabelsSchema()),
+        "MachineType": fields.Str(required=False, dump_to="MachineType"),
+        "MemoryLimit": fields.Int(required=False, dump_to="MemoryLimit"),
+        "Name": fields.Str(required=True, dump_to="Name"),
+        "Port": fields.Int(required=True, dump_to="Port"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Quantity": fields.Int(required=False, dump_to="Quantity"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SpecificationClass": fields.Str(
+            required=True, dump_to="SpecificationClass"
+        ),
+        "StorageClass": fields.Str(required=True, dump_to="StorageClass"),
+        "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+        "VPCId": fields.Str(required=False, dump_to="VPCId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class CreateUDBSQLServerInstanceResponseSchema(schema.ResponseSchema):
+    """CreateUDBSQLServerInstance - 创建UDB实例（包括创建SQLServer实例以及从备份恢复实例）"""
 
     fields = {
         "DBId": fields.Str(required=False, load_from="DBId"),
@@ -738,6 +889,39 @@ class DescribeUDBBackupBlacklistResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeUDBBinlogBackup
+
+列表UDB实例Binlog自动备份信息
+"""
+
+
+class DescribeUDBBinlogBackupRequestSchema(schema.RequestSchema):
+    """DescribeUDBBinlogBackup - 列表UDB实例Binlog自动备份信息"""
+
+    fields = {
+        "BeginTime": fields.Int(required=False, dump_to="BeginTime"),
+        "DBId": fields.Str(required=False, dump_to="DBId"),
+        "EndTime": fields.Int(required=False, dump_to="EndTime"),
+        "Limit": fields.Int(required=True, dump_to="Limit"),
+        "Offset": fields.Int(required=True, dump_to="Offset"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DescribeUDBBinlogBackupResponseSchema(schema.ResponseSchema):
+    """DescribeUDBBinlogBackup - 列表UDB实例Binlog自动备份信息"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.BinlogBackupSetSchema(), required=False, load_from="DataSet"
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
 API: DescribeUDBBinlogBackupURL
 
 获取UDB的Binlog或者错误日志或者慢查询日志的备份地址
@@ -749,6 +933,7 @@ class DescribeUDBBinlogBackupURLRequestSchema(schema.RequestSchema):
 
     fields = {
         "BackupId": fields.Int(required=True, dump_to="BackupId"),
+        "BinlogType": fields.Str(required=True, dump_to="BinlogType"),
         "DBId": fields.Str(required=True, dump_to="DBId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
@@ -979,9 +1164,13 @@ class DescribeUDBInstancePriceRequestSchema(schema.RequestSchema):
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SSDType": fields.Str(required=False, dump_to="SSDType"),
+        "SpecificationClass": fields.Str(
+            required=False, dump_to="SpecificationClass"
+        ),
         "SpecificationType": fields.Int(
             required=False, dump_to="SpecificationType"
         ),
+        "StorageClass": fields.Str(required=False, dump_to="StorageClass"),
         "UseSSD": fields.Str(
             required=False, dump_to="UseSSD"
         ),  # Deprecated, will be removed at 1.0
