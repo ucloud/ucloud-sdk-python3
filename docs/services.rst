@@ -339,6 +339,13 @@ UVMS
    :members:
 
 
+UWSC
+----
+
+.. autoclass:: ucloud.services.uwsc.client.UWSCClient
+   :members:
+
+
 VPC
 ---
 
