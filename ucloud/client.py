@@ -502,6 +502,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def uwsc(self):
+        from ucloud.services.uwsc.client import UWSCClient
+
+        return UWSCClient(
+            self._auto_config("uwsc"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def ipv6gw(self):
         from ucloud.services.ipv6gw.client import ipv6gwClient
 
