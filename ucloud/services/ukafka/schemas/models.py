@@ -3,6 +3,22 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class BrokerOfTopicInfoSchema(schema.ResponseSchema):
+    """BrokerOfTopicInfo - broker 的 topic 相关信息"""
+
+    fields = {
+        "PartitionOnBroker": fields.Str(
+            required=False, load_from="PartitionOnBroker"
+        ),
+        "Partitions": fields.Str(required=False, load_from="Partitions"),
+        "Replication": fields.Int(required=False, load_from="Replication"),
+        "TopicName": fields.Str(required=False, load_from="TopicName"),
+        "TotalPartitions": fields.Int(
+            required=False, load_from="TotalPartitions"
+        ),
+    }
+
+
 class IPSchema(schema.ResponseSchema):
     """IP - IP 信息"""
 
@@ -22,22 +38,6 @@ class UHostConfigSchema(schema.ResponseSchema):
         "DiskType": fields.Str(required=False, load_from="DiskType"),
         "Memory": fields.Int(required=False, load_from="Memory"),
         "OS": fields.Str(required=False, load_from="OS"),
-    }
-
-
-class BrokerOfTopicInfoSchema(schema.ResponseSchema):
-    """BrokerOfTopicInfo - broker 的 topic 相关信息"""
-
-    fields = {
-        "PartitionOnBroker": fields.Str(
-            required=False, load_from="PartitionOnBroker"
-        ),
-        "Partitions": fields.Str(required=False, load_from="Partitions"),
-        "Replication": fields.Int(required=False, load_from="Replication"),
-        "TopicName": fields.Str(required=False, load_from="TopicName"),
-        "TotalPartitions": fields.Int(
-            required=False, load_from="TotalPartitions"
-        ),
     }
 
 

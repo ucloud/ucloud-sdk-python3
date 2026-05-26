@@ -68,8 +68,8 @@ class CreateUKafkaInstanceRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Str(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "SubnetId": fields.Str(required=True, dump_to="SubnetId"),
-        "VPCId": fields.Str(required=True, dump_to="VPCId"),
+        "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
+        "VPCId": fields.Str(required=False, dump_to="VPCId"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
