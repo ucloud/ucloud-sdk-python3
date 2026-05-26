@@ -62,8 +62,6 @@ class UKafkaClient(Client):
         - **FrameworkVersion** (str) - (Required) kafka版本，支持的版本可通过ListUKafkaFrameworkVersion 接口返回字段的FrameworkVersions获取
         - **InstanceName** (str) - (Required) 实例名，可自定义。只能包含中英文、数字以及- _ .
         - **NodeType** (str) - (Required) 机型，支持的机型可通过GetUKafkaNodeType 接口返回的InstanceTypeSet[].InstanceTypeName
-        - **SubnetId** (str) - (Required) 子网 ID
-        - **VPCId** (str) - (Required) VPCID
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BusinessId** (str) - 业务组，默认Default
         - **DiskControllerType** (str) - 磁盘管理方式,支持值：NONE、CLEAN。默认值：NONE
@@ -72,6 +70,8 @@ class UKafkaClient(Client):
         - **LogRetentionHours** (str) - kafka 日志保存时间，支持范围[1,240]。默认 72 小时
         - **NodeCount** (int) - 实例节点数量。默认 3 节点
         - **Quantity** (str) - 实例数量，默认 1
+        - **SubnetId** (str) - 子网 ID，不填时为默认子网 ID
+        - **VPCId** (str) - VPCID，不填时为默认VPCID
 
         **Response**
 
@@ -171,6 +171,16 @@ class UKafkaClient(Client):
 
         **Response Model**
 
+        **IP**
+        - **IP** (str) - IP地址
+        - **Type** (str) - IP类型
+
+
+        **Url**
+        - **Addr** (str) - 访问地址
+        - **Protocal** (str) - 访问协议
+
+
         **BrokerOfTopicInfo**
         - **PartitionOnBroker** (str) - topic 在 broker 上分布的 partition 数量
         - **Partitions** (str) - topic 在 broker上 partition 列表
@@ -179,19 +189,9 @@ class UKafkaClient(Client):
         - **TotalPartitions** (int) - partition 数量
 
 
-        **Url**
-        - **Addr** (str) - 访问地址
-        - **Protocal** (str) - 访问协议
-
-
         **Endpoints**
         - **PlainText** (dict) - 见 **Url** 模型定义
         - **SaslPlainText** (dict) - 见 **Url** 模型定义
-
-
-        **IP**
-        - **IP** (str) - IP地址
-        - **Type** (str) - IP类型
 
 
         **UHostConfig**
