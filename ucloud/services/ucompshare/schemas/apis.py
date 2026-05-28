@@ -2291,7 +2291,7 @@ class StartCompShareInstanceRequestSchema(schema.RequestSchema):
         "Region": fields.Str(required=True, dump_to="Region"),
         "UHostId": fields.Str(required=True, dump_to="UHostId"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
-        "WithoutGpu": fields.Str(required=False, dump_to="WithoutGpu"),
+        "WithoutGpu": fields.Bool(required=False, dump_to="WithoutGpu"),
     }
 
 
