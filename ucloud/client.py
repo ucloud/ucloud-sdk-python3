@@ -122,6 +122,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def uai_modelverse(self):
+        from ucloud.services.uai_modelverse.client import UAI_ModelverseClient
+
+        return UAI_ModelverseClient(
+            self._auto_config("uai_modelverse"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def uaccount(self):
         from ucloud.services.uaccount.client import UAccountClient
 
