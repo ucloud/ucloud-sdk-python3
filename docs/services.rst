@@ -150,10 +150,17 @@ UADS
    :members:
 
 
-UAI_Modelverse
+UAI-Modelverse
 --------------
 
-.. autoclass:: ucloud.services.uai_modelverse.client.UAI_ModelverseClient
+.. autoclass:: ucloud.services.uai-modelverse.client.UAI-ModelverseClient
+   :members:
+
+
+UAS
+---
+
+.. autoclass:: ucloud.services.uas.client.UASClient
    :members:
 
 
