@@ -157,6 +157,13 @@ UAI_Modelverse
    :members:
 
 
+UAS
+---
+
+.. autoclass:: ucloud.services.uas.client.UASClient
+   :members:
+
+
 UBill
 -----
 
