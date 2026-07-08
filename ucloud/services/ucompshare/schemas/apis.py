@@ -372,7 +372,7 @@ class DeleteCompShareStopSchedulerRequestSchema(schema.RequestSchema):
     """DeleteCompShareStopScheduler - 删除实例定时关机任务"""
 
     fields = {
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "UHostId": fields.Str(required=True, dump_to="UHostId"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
@@ -2491,6 +2491,34 @@ class UpdateCompShareImageResponseSchema(schema.ResponseSchema):
 
 
 """
+API: UpdateCompShareInstancePorts
+
+更改Pod实例的端口信息
+"""
+
+
+class UpdateCompShareInstancePortsRequestSchema(schema.RequestSchema):
+    """UpdateCompShareInstancePorts - 更改Pod实例的端口信息"""
+
+    fields = {
+        "HttpPorts": fields.List(fields.Int()),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "TcpPorts": fields.List(fields.Int()),
+        "UHostId": fields.Str(required=False, dump_to="UHostId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class UpdateCompShareInstancePortsResponseSchema(schema.ResponseSchema):
+    """UpdateCompShareInstancePorts - 更改Pod实例的端口信息"""
+
+    fields = {
+        "UHostId": fields.Str(required=False, load_from="UHostId"),
+    }
+
+
+"""
 API: UpdateCompShareStopScheduler
 
 更新实例定时关机时间，若不存在则新建此定时任务
@@ -2501,7 +2529,7 @@ class UpdateCompShareStopSchedulerRequestSchema(schema.RequestSchema):
     """UpdateCompShareStopScheduler - 更新实例定时关机时间，若不存在则新建此定时任务"""
 
     fields = {
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "StopTime": fields.Int(required=True, dump_to="StopTime"),
         "UHostId": fields.Str(required=True, dump_to="UHostId"),
