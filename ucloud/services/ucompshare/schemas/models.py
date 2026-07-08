@@ -3,16 +3,6 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class CpuPlatformsSchema(schema.ResponseSchema):
-    """CpuPlatforms - CPU平台信息"""
-
-    fields = {
-        "Amd": fields.List(fields.Str()),
-        "Ampere": fields.List(fields.Str()),
-        "Intel": fields.List(fields.Str()),
-    }
-
-
 class BootDiskInfoSchema(schema.ResponseSchema):
     """BootDiskInfo - 系统盘信息"""
 
@@ -61,6 +51,16 @@ class MachineSizesSchema(schema.ResponseSchema):
     fields = {
         "Collection": fields.List(CollectionSchema()),
         "Gpu": fields.Int(required=False, load_from="Gpu"),
+    }
+
+
+class CpuPlatformsSchema(schema.ResponseSchema):
+    """CpuPlatforms - CPU平台信息"""
+
+    fields = {
+        "Amd": fields.List(fields.Str()),
+        "Ampere": fields.List(fields.Str()),
+        "Intel": fields.List(fields.Str()),
     }
 
 
@@ -120,15 +120,6 @@ class AvailableInstanceTypesSchema(schema.ResponseSchema):
     }
 
 
-class ProjectsSchema(schema.ResponseSchema):
-    """Projects - 项目详情"""
-
-    fields = {
-        "AccountId": fields.Str(required=False, load_from="AccountId"),
-        "AccountName": fields.Str(required=False, load_from="AccountName"),
-    }
-
-
 class SoftwareSchema(schema.ResponseSchema):
     """Software -"""
 
@@ -139,6 +130,15 @@ class SoftwareSchema(schema.ResponseSchema):
         "FrameworkVersion": fields.Str(
             required=False, load_from="FrameworkVersion"
         ),
+    }
+
+
+class ProjectsSchema(schema.ResponseSchema):
+    """Projects - 项目详情"""
+
+    fields = {
+        "AccountId": fields.Str(required=False, load_from="AccountId"),
+        "AccountName": fields.Str(required=False, load_from="AccountName"),
     }
 
 
@@ -205,6 +205,16 @@ class UHostIPSetSchema(schema.ResponseSchema):
     }
 
 
+class DiskPriceInfoSchema(schema.ResponseSchema):
+    """DiskPriceInfo - 磁盘价格信息列表"""
+
+    fields = {
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "IsBoot": fields.Bool(required=False, load_from="IsBoot"),
+        "Price": fields.Float(required=False, load_from="Price"),
+    }
+
+
 class GpuMonitorInfoSchema(schema.ResponseSchema):
     """GpuMonitorInfo - GPU卡监控信息"""
 
@@ -227,13 +237,12 @@ class MonitorMessageSchema(schema.ResponseSchema):
     }
 
 
-class DiskPriceInfoSchema(schema.ResponseSchema):
-    """DiskPriceInfo - 磁盘价格信息列表"""
+class SoftwareAddrSchema(schema.ResponseSchema):
+    """SoftwareAddr -"""
 
     fields = {
-        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "IsBoot": fields.Bool(required=False, load_from="IsBoot"),
-        "Price": fields.Float(required=False, load_from="Price"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "URL": fields.Str(required=False, load_from="URL"),
     }
 
 
@@ -244,15 +253,6 @@ class WithoutGpuSpecSchema(schema.ResponseSchema):
         "Cpu": fields.Int(required=False, load_from="Cpu"),
         "Gpu": fields.Int(required=False, load_from="Gpu"),
         "Memory": fields.Int(required=False, load_from="Memory"),
-    }
-
-
-class SoftwareAddrSchema(schema.ResponseSchema):
-    """SoftwareAddr -"""
-
-    fields = {
-        "Name": fields.Str(required=False, load_from="Name"),
-        "URL": fields.Str(required=False, load_from="URL"),
     }
 
 
@@ -555,19 +555,6 @@ class ULHostImageSetSchema(schema.ResponseSchema):
     }
 
 
-class ULHostDiskSetSchema(schema.ResponseSchema):
-    """ULHostDiskSet - 轻量应用主机的磁盘信息"""
-
-    fields = {
-        "DiskId": fields.Str(required=False, load_from="DiskId"),
-        "DiskType": fields.Str(required=False, load_from="DiskType"),
-        "Drive": fields.Str(required=False, load_from="Drive"),
-        "IsBoot": fields.Str(required=False, load_from="IsBoot"),
-        "Size": fields.Int(required=False, load_from="Size"),
-        "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
 class ExclusiveUTPInfoSchema(schema.ResponseSchema):
     """ExclusiveUTPInfo - 流量包详情"""
 
@@ -579,6 +566,19 @@ class ExclusiveUTPInfoSchema(schema.ResponseSchema):
         "NextResetTime": fields.Int(required=False, load_from="NextResetTime"),
         "TotalSize": fields.Int(required=False, load_from="TotalSize"),
         "UsedSize": fields.Int(required=False, load_from="UsedSize"),
+    }
+
+
+class ULHostDiskSetSchema(schema.ResponseSchema):
+    """ULHostDiskSet - 轻量应用主机的磁盘信息"""
+
+    fields = {
+        "DiskId": fields.Str(required=False, load_from="DiskId"),
+        "DiskType": fields.Str(required=False, load_from="DiskType"),
+        "Drive": fields.Str(required=False, load_from="Drive"),
+        "IsBoot": fields.Str(required=False, load_from="IsBoot"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "Type": fields.Str(required=False, load_from="Type"),
     }
 
 
@@ -651,18 +651,6 @@ class UHostRefundPriceSetSchema(schema.ResponseSchema):
     }
 
 
-class CompShareTeamDetailInfoSchema(schema.ResponseSchema):
-    """CompShareTeamDetailInfo - 团队信息"""
-
-    fields = {
-        "CompanyId": fields.Int(required=False, load_from="CompanyId"),
-        "Deleted": fields.Int(required=False, load_from="Deleted"),
-        "Description": fields.Str(required=False, load_from="Description"),
-        "Id": fields.Int(required=False, load_from="Id"),
-        "Name": fields.Str(required=False, load_from="Name"),
-    }
-
-
 class TeamRelationSchema(schema.ResponseSchema):
     """TeamRelation - 团队关系信息"""
 
@@ -682,6 +670,18 @@ class TeamRelationSchema(schema.ResponseSchema):
         "VirtualCompanyId": fields.Int(
             required=False, load_from="VirtualCompanyId"
         ),
+    }
+
+
+class CompShareTeamDetailInfoSchema(schema.ResponseSchema):
+    """CompShareTeamDetailInfo - 团队信息"""
+
+    fields = {
+        "CompanyId": fields.Int(required=False, load_from="CompanyId"),
+        "Deleted": fields.Int(required=False, load_from="Deleted"),
+        "Description": fields.Str(required=False, load_from="Description"),
+        "Id": fields.Int(required=False, load_from="Id"),
+        "Name": fields.Str(required=False, load_from="Name"),
     }
 
 
