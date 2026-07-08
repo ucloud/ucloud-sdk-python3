@@ -481,15 +481,24 @@ class UCompShareClient(Client):
         - **Value** (float) - 值，单位是TFlops
 
 
-        **FeatureModes**
-        - **MinimalCpuPlatform** (list) - 这个特性必须是列出来的CPU平台及以上的CPU才支持
-        - **Name** (str) - 模式|特性名称
-        - **RelatedToImageFeature** (list) - 为镜像上支持这个特性的标签。例如DescribeImage返回的字段Features包含HotPlug，说明该镜像支持热升级。
+        **BootDiskInfo**
+        - **Features** (list) - 磁盘可支持的服务
+        - **InstantResize** (bool) - 系统盘是否允许扩容，如果是本地盘，则不允许扩容，InstantResize为false。
+        - **MaximalSize** (int) - MaximalSize为磁盘最大值
+        - **Name** (str) - 系统盘类别，包含普通云盘|CLOUD_NORMAL、SSD云盘|CLOUD_SSD和RSSD云盘|CLOUD_RSSD。普通本地盘只包含普通本地盘|LOCAL_NORMAL一种。SSD本地盘只包含SSD本地盘|LOCAL_SSD一种。
 
 
-        **Features**
-        - **Modes** (list) - 见 **FeatureModes** 模型定义
-        - **Name** (str) - 可支持的特性名称。目前支持的特性网络增强|NetCapability、热升级|Hotplug
+        **DataDiskInfo**
+        - **Features** (list) - 数据盘可支持的服务
+        - **MaximalSize** (int) - MaximalSize为磁盘最大值
+        - **MinimalSize** (int) - 磁盘最小值，如果没有该字段，最小值取基础镜像Size值即可（linux为20G，windows为40G）。
+        - **Name** (str) - 数据盘类别，包含普通云盘|CLOUD_NORMAL、SSD云盘|CLOUD_SSD和RSSD云盘|CLOUD_RSSD。普通本地盘只包含普通本地盘|LOCAL_NORMAL一种。SSD本地盘只包含SSD本地盘|LOCAL_SSD一种。
+
+
+        **Disks**
+        - **BootDisk** (list) - 见 **BootDiskInfo** 模型定义
+        - **DataDisk** (list) - 见 **DataDiskInfo** 模型定义
+        - **Name** (str) - 磁盘介质类别信息，磁盘主要分类如下：云盘|cloudDisk、普通本地盘|normalLocalDisk和SSD本地盘|ssdLocalDisk。
 
 
         **GraphicsMemory**
@@ -514,24 +523,15 @@ class UCompShareClient(Client):
         - **Intel** (list) - 返回Intel的CPU平台信息，例如：Intel: ['Intel/CascadeLake','Intel/CascadelakeR','Intel/IceLake']
 
 
-        **BootDiskInfo**
-        - **Features** (list) - 磁盘可支持的服务
-        - **InstantResize** (bool) - 系统盘是否允许扩容，如果是本地盘，则不允许扩容，InstantResize为false。
-        - **MaximalSize** (int) - MaximalSize为磁盘最大值
-        - **Name** (str) - 系统盘类别，包含普通云盘|CLOUD_NORMAL、SSD云盘|CLOUD_SSD和RSSD云盘|CLOUD_RSSD。普通本地盘只包含普通本地盘|LOCAL_NORMAL一种。SSD本地盘只包含SSD本地盘|LOCAL_SSD一种。
+        **FeatureModes**
+        - **MinimalCpuPlatform** (list) - 这个特性必须是列出来的CPU平台及以上的CPU才支持
+        - **Name** (str) - 模式|特性名称
+        - **RelatedToImageFeature** (list) - 为镜像上支持这个特性的标签。例如DescribeImage返回的字段Features包含HotPlug，说明该镜像支持热升级。
 
 
-        **DataDiskInfo**
-        - **Features** (list) - 数据盘可支持的服务
-        - **MaximalSize** (int) - MaximalSize为磁盘最大值
-        - **MinimalSize** (int) - 磁盘最小值，如果没有该字段，最小值取基础镜像Size值即可（linux为20G，windows为40G）。
-        - **Name** (str) - 数据盘类别，包含普通云盘|CLOUD_NORMAL、SSD云盘|CLOUD_SSD和RSSD云盘|CLOUD_RSSD。普通本地盘只包含普通本地盘|LOCAL_NORMAL一种。SSD本地盘只包含SSD本地盘|LOCAL_SSD一种。
-
-
-        **Disks**
-        - **BootDisk** (list) - 见 **BootDiskInfo** 模型定义
-        - **DataDisk** (list) - 见 **DataDiskInfo** 模型定义
-        - **Name** (str) - 磁盘介质类别信息，磁盘主要分类如下：云盘|cloudDisk、普通本地盘|normalLocalDisk和SSD本地盘|ssdLocalDisk。
+        **Features**
+        - **Modes** (list) - 见 **FeatureModes** 模型定义
+        - **Name** (str) - 可支持的特性名称。目前支持的特性网络增强|NetCapability、热升级|Hotplug
 
 
         **AvailableInstanceTypes**
@@ -670,16 +670,16 @@ class UCompShareClient(Client):
 
         **Response Model**
 
+        **Projects**
+        - **AccountId** (str) - 账号Id
+        - **AccountName** (str) - 账号昵称
+
+
         **Software**
         - **Applications** (list) - 【array of string】应用列表
         - **CUDAVersion** (str) - CUDA版本
         - **Framework** (str) - 框架名称
         - **FrameworkVersion** (str) - 框架版本
-
-
-        **Projects**
-        - **AccountId** (str) - 账号Id
-        - **AccountName** (str) - 账号昵称
 
 
         **CompShareImage**
@@ -838,16 +838,16 @@ class UCompShareClient(Client):
 
         **Response Model**
 
+        **Projects**
+        - **AccountId** (str) - 账号Id
+        - **AccountName** (str) - 账号昵称
+
+
         **Software**
         - **Applications** (list) - 【array of string】应用列表
         - **CUDAVersion** (str) - CUDA版本
         - **Framework** (str) - 框架名称
         - **FrameworkVersion** (str) - 框架版本
-
-
-        **Projects**
-        - **AccountId** (str) - 账号Id
-        - **AccountName** (str) - 账号昵称
 
 
         **CompShareImage**
@@ -910,22 +910,15 @@ class UCompShareClient(Client):
 
         **Response Model**
 
-        **GpuMonitorInfo**
-        - **GPU** (str) - GPU卡名称
-        - **GpuUsageRate** (str) - GPU卡使用率
-        - **MemoryUsageRate** (str) - GPU显存使用率
-
-
-        **MonitorMessage**
-        - **CpuUsageRate** (str) - CPU使用率
-        - **GpuInfo** (list) - 见 **GpuMonitorInfo** 模型定义
-        - **MemUsageRate** (str) - 内存使用率
-
-
-        **WithoutGpuSpec**
-        - **Cpu** (int) - cpu
-        - **Gpu** (int) - gpu
-        - **Memory** (int) - 内存
+        **UHostDiskSet**
+        - **DiskId** (str) - 磁盘ID
+        - **DiskType** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
+        - **Drive** (str) - 磁盘盘符
+        - **Encrypted** (str) - "true": 加密盘 "false"：非加密盘
+        - **IsBoot** (str) - 是否是系统盘。枚举值：\\ > True，是系统盘 \\ > False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
+        - **Name** (str) - UDisk名字（仅当磁盘是UDisk时返回）
+        - **Size** (int) - 磁盘大小，单位: GB
+        - **Type** (str) - 【建议不再使用】磁盘类型。系统盘: Boot，数据盘: Data,网络盘：Udisk
 
 
         **UHostIPSet**
@@ -942,20 +935,10 @@ class UCompShareClient(Client):
         - **Weight** (int) - 当前EIP的权重。权重最大的为当前的出口IP。
 
 
-        **UHostDiskSet**
-        - **DiskId** (str) - 磁盘ID
-        - **DiskType** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
-        - **Drive** (str) - 磁盘盘符
-        - **Encrypted** (str) - "true": 加密盘 "false"：非加密盘
-        - **IsBoot** (str) - 是否是系统盘。枚举值：\\ > True，是系统盘 \\ > False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
-        - **Name** (str) - UDisk名字（仅当磁盘是UDisk时返回）
-        - **Size** (int) - 磁盘大小，单位: GB
-        - **Type** (str) - 【建议不再使用】磁盘类型。系统盘: Boot，数据盘: Data,网络盘：Udisk
-
-
-        **SoftwareAddr**
-        - **Name** (str) - 软件名称
-        - **URL** (str) - 软件地址
+        **GpuMonitorInfo**
+        - **GPU** (str) - GPU卡名称
+        - **GpuUsageRate** (str) - GPU卡使用率
+        - **MemoryUsageRate** (str) - GPU显存使用率
 
 
         **DiskPriceInfo**
@@ -964,9 +947,26 @@ class UCompShareClient(Client):
         - **Price** (float) - 磁盘价格
 
 
+        **WithoutGpuSpec**
+        - **Cpu** (int) - cpu
+        - **Gpu** (int) - gpu
+        - **Memory** (int) - 内存
+
+
+        **MonitorMessage**
+        - **CpuUsageRate** (str) - CPU使用率
+        - **GpuInfo** (list) - 见 **GpuMonitorInfo** 模型定义
+        - **MemUsageRate** (str) - 内存使用率
+
+
         **GraphicsMemory**
         - **Rate** (int) - 交互展示参数，可忽略
         - **Value** (int) - 值，单位是GB
+
+
+        **SoftwareAddr**
+        - **Name** (str) - 软件名称
+        - **URL** (str) - 软件地址
 
 
         **CompShareInstanceSet**
@@ -1285,16 +1285,16 @@ class UCompShareClient(Client):
 
         **Response Model**
 
-        **Projects**
-        - **AccountId** (str) - 账号Id
-        - **AccountName** (str) - 账号昵称
-
-
         **Software**
         - **Applications** (list) - 【array of string】应用列表
         - **CUDAVersion** (str) - CUDA版本
         - **Framework** (str) - 框架名称
         - **FrameworkVersion** (str) - 框架版本
+
+
+        **Projects**
+        - **AccountId** (str) - 账号Id
+        - **AccountName** (str) - 账号昵称
 
 
         **CompShareImage**

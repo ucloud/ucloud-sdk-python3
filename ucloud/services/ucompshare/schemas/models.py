@@ -3,13 +3,23 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class CpuPlatformsSchema(schema.ResponseSchema):
-    """CpuPlatforms - CPU平台信息"""
+class CollectionSchema(schema.ResponseSchema):
+    """Collection - CPU和内存可支持的规格"""
 
     fields = {
-        "Amd": fields.List(fields.Str()),
-        "Ampere": fields.List(fields.Str()),
-        "Intel": fields.List(fields.Str()),
+        "Cpu": fields.Int(required=False, load_from="Cpu"),
+        "Memory": fields.List(fields.Int()),
+        "MinimalCpuPlatform": fields.List(fields.Str()),
+    }
+
+
+class FeatureModesSchema(schema.ResponseSchema):
+    """FeatureModes - 可以支持的模式类别"""
+
+    fields = {
+        "MinimalCpuPlatform": fields.List(fields.Str()),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "RelatedToImageFeature": fields.List(fields.Str()),
     }
 
 
@@ -45,16 +55,6 @@ class DisksSchema(schema.ResponseSchema):
     }
 
 
-class CollectionSchema(schema.ResponseSchema):
-    """Collection - CPU和内存可支持的规格"""
-
-    fields = {
-        "Cpu": fields.Int(required=False, load_from="Cpu"),
-        "Memory": fields.List(fields.Int()),
-        "MinimalCpuPlatform": fields.List(fields.Str()),
-    }
-
-
 class MachineSizesSchema(schema.ResponseSchema):
     """MachineSizes - GPU、CPU和内存信息"""
 
@@ -73,13 +73,13 @@ class PerformanceSchema(schema.ResponseSchema):
     }
 
 
-class FeatureModesSchema(schema.ResponseSchema):
-    """FeatureModes - 可以支持的模式类别"""
+class CpuPlatformsSchema(schema.ResponseSchema):
+    """CpuPlatforms - CPU平台信息"""
 
     fields = {
-        "MinimalCpuPlatform": fields.List(fields.Str()),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "RelatedToImageFeature": fields.List(fields.Str()),
+        "Amd": fields.List(fields.Str()),
+        "Ampere": fields.List(fields.Str()),
+        "Intel": fields.List(fields.Str()),
     }
 
 
@@ -185,6 +185,34 @@ class CompShareImageSchema(schema.ResponseSchema):
     }
 
 
+class DiskPriceInfoSchema(schema.ResponseSchema):
+    """DiskPriceInfo - 磁盘价格信息列表"""
+
+    fields = {
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "IsBoot": fields.Bool(required=False, load_from="IsBoot"),
+        "Price": fields.Float(required=False, load_from="Price"),
+    }
+
+
+class UHostDiskSetSchema(schema.ResponseSchema):
+    """UHostDiskSet -"""
+
+    fields = {
+        "BackupType": fields.Str(
+            required=False, load_from="BackupType"
+        ),  # Deprecated, will be removed at 1.0
+        "DiskId": fields.Str(required=False, load_from="DiskId"),
+        "DiskType": fields.Str(required=True, load_from="DiskType"),
+        "Drive": fields.Str(required=False, load_from="Drive"),
+        "Encrypted": fields.Str(required=False, load_from="Encrypted"),
+        "IsBoot": fields.Str(required=True, load_from="IsBoot"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
 class UHostIPSetSchema(schema.ResponseSchema):
     """UHostIPSet -"""
 
@@ -227,13 +255,12 @@ class MonitorMessageSchema(schema.ResponseSchema):
     }
 
 
-class DiskPriceInfoSchema(schema.ResponseSchema):
-    """DiskPriceInfo - 磁盘价格信息列表"""
+class SoftwareAddrSchema(schema.ResponseSchema):
+    """SoftwareAddr -"""
 
     fields = {
-        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "IsBoot": fields.Bool(required=False, load_from="IsBoot"),
-        "Price": fields.Float(required=False, load_from="Price"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "URL": fields.Str(required=False, load_from="URL"),
     }
 
 
@@ -244,33 +271,6 @@ class WithoutGpuSpecSchema(schema.ResponseSchema):
         "Cpu": fields.Int(required=False, load_from="Cpu"),
         "Gpu": fields.Int(required=False, load_from="Gpu"),
         "Memory": fields.Int(required=False, load_from="Memory"),
-    }
-
-
-class SoftwareAddrSchema(schema.ResponseSchema):
-    """SoftwareAddr -"""
-
-    fields = {
-        "Name": fields.Str(required=False, load_from="Name"),
-        "URL": fields.Str(required=False, load_from="URL"),
-    }
-
-
-class UHostDiskSetSchema(schema.ResponseSchema):
-    """UHostDiskSet -"""
-
-    fields = {
-        "BackupType": fields.Str(
-            required=False, load_from="BackupType"
-        ),  # Deprecated, will be removed at 1.0
-        "DiskId": fields.Str(required=False, load_from="DiskId"),
-        "DiskType": fields.Str(required=True, load_from="DiskType"),
-        "Drive": fields.Str(required=False, load_from="Drive"),
-        "Encrypted": fields.Str(required=False, load_from="Encrypted"),
-        "IsBoot": fields.Str(required=True, load_from="IsBoot"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Size": fields.Int(required=False, load_from="Size"),
-        "Type": fields.Str(required=False, load_from="Type"),
     }
 
 
@@ -430,20 +430,20 @@ class CompshareImageGroupSchema(schema.ResponseSchema):
     }
 
 
-class ResourceTagItemSchema(schema.ResponseSchema):
-    """ResourceTagItem - 资源标识"""
-
-    fields = {
-        "KeyId": fields.Str(required=False, load_from="KeyId"),
-        "Value": fields.Str(required=False, load_from="Value"),
-    }
-
-
 class OrderDetailItemSchema(schema.ResponseSchema):
     """OrderDetailItem - 配置详情"""
 
     fields = {
         "ProductName": fields.Str(required=False, load_from="ProductName"),
+        "Value": fields.Str(required=False, load_from="Value"),
+    }
+
+
+class ResourceTagItemSchema(schema.ResponseSchema):
+    """ResourceTagItem - 资源标识"""
+
+    fields = {
+        "KeyId": fields.Str(required=False, load_from="KeyId"),
         "Value": fields.Str(required=False, load_from="Value"),
     }
 
@@ -555,19 +555,6 @@ class ULHostImageSetSchema(schema.ResponseSchema):
     }
 
 
-class ULHostDiskSetSchema(schema.ResponseSchema):
-    """ULHostDiskSet - 轻量应用主机的磁盘信息"""
-
-    fields = {
-        "DiskId": fields.Str(required=False, load_from="DiskId"),
-        "DiskType": fields.Str(required=False, load_from="DiskType"),
-        "Drive": fields.Str(required=False, load_from="Drive"),
-        "IsBoot": fields.Str(required=False, load_from="IsBoot"),
-        "Size": fields.Int(required=False, load_from="Size"),
-        "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
 class ExclusiveUTPInfoSchema(schema.ResponseSchema):
     """ExclusiveUTPInfo - 流量包详情"""
 
@@ -579,6 +566,19 @@ class ExclusiveUTPInfoSchema(schema.ResponseSchema):
         "NextResetTime": fields.Int(required=False, load_from="NextResetTime"),
         "TotalSize": fields.Int(required=False, load_from="TotalSize"),
         "UsedSize": fields.Int(required=False, load_from="UsedSize"),
+    }
+
+
+class ULHostDiskSetSchema(schema.ResponseSchema):
+    """ULHostDiskSet - 轻量应用主机的磁盘信息"""
+
+    fields = {
+        "DiskId": fields.Str(required=False, load_from="DiskId"),
+        "DiskType": fields.Str(required=False, load_from="DiskType"),
+        "Drive": fields.Str(required=False, load_from="Drive"),
+        "IsBoot": fields.Str(required=False, load_from="IsBoot"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "Type": fields.Str(required=False, load_from="Type"),
     }
 
 
