@@ -158,7 +158,6 @@ class UK8SClient(Client):
         - **ClusterId** (str) - (Required) UK8S集群ID。 可从UK8S控制台获取。
         - **Count** (int) - (Required) 创建Node节点数量，取值范围是[1,50]。
         - **Mem** (int) - (Required) 内存大小。单位：MB。范围 ：[4096, 262144]，取值为1024的倍数（可选范围参考控制台）。默认值：8192
-        - **Password** (str) - (Required) Node节点密码。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定密码。密码需使用base64进行编码，如下：# echo -n Password1 | base64
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BootDiskSize** (int) - 系统盘大小，单位GB。默认40。范围：[40, 500]。注意SSD本地盘无法调整。
         - **BootDiskType** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。默认为SSD云盘
@@ -170,21 +169,61 @@ class UK8SClient(Client):
         - **ImageId** (str) - 镜像 Id，不填时后台程序会自动选用一个可用的镜像 Id，支持用户自定义镜像，自定义镜像必须基于基础镜像制作。
         - **InitScript** (str) - 用户自定义Shell脚本。与UserData的区别在于InitScript在节点初始化完毕后才执行，UserData则是云主机初始化时执行。
         - **IsolationGroup** (str) - 硬件隔离组id。可通过DescribeIsolationGroup获取。
+        - **KubeletConfiguration** (dict) - 见 **AddUK8SUHostNodeParamKubeletConfiguration** 模型定义
         - **Labels** (str) - Node节点标签。key=value形式,多组用”,“隔开，最多5组。 如env=pro,type=game
         - **MachineType** (str) - 云主机机型。枚举值["N", "C", "G", "O", "OS"]。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
         - **MaxPods** (int) - 默认110，生产环境建议小于等于110。
         - **MinimalCpuPlatform** (str) - 最低cpu平台，枚举值["Intel/Auto", "Intel/IvyBridge", "Intel/Haswell", "Intel/Broadwell", "Intel/Skylake", "Intel/Cascadelake"；"Intel/CascadelakeR"; “Amd/Epyc2”,"Amd/Auto"],默认值是"Intel/Auto"
+        - **NamePrefix** (str) - 自定义主机名前缀。完整的自定义主机名为{NamePrefix}-{NodeIP}。
+        - **NetCapability** (str) - 网络增强特性。枚举值：Normal，不开启; Super，开启网络增强1.0； Ultra，开启网络增强2.0；Extreme，开启网络增强3.0; Infiniband, 开启网络增强4.0（详情参考主机官网文档）
+        - **NetworkInterface** (list) - 见 **AddUK8SUHostNodeParamNetworkInterface** 模型定义
         - **NodeGroupId** (str) - 节点池id
+        - **Password** (str) - Node节点密码。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定密码。密码需使用base64进行编码，如下：# echo -n Password1 | base64
         - **Quantity** (int) - 购买时长。默认: 1。按小时购买(Dynamic)时无需此参数。 月付时，此参数传0，代表了购买至月末。
+        - **SecGroupId** (list) - 见 **AddUK8SUHostNodeParamSecGroupId** 模型定义
+        - **SecurityGroupId** (str) - 防火墙ID，默认：Web推荐防火墙。如何查询SecurityGroupId请参见  `DescribeFirewall <https://docs.ucloud.cn/api/uk8s-api/api/unet-api/describe_firewall.html>`_ 。
+        - **SecurityMode** (str) - 主机安全模式。Firewall：防火墙；SecGroup：安全组；默认值：Firewall。
         - **SubnetId** (str) - 子网 ID。默认为集群创建时填写的子网ID，也可以填写集群同VPC内的子网ID。
         - **Tag** (str) - 业务组
         - **Taints** (str) - Node节点污点，形式为key=value:effect，多组taints用”,“隔开,最多支持五组。
+        - **UHostFamily** (str) - 主机规格族
+        - **UNIFeature** (bool) - 弹性网卡特性。开启了弹性网卡权限位，此特性才生效，默认 false 未开启，true 开启。
         - **UserData** (str) - 用户自定义数据。当镜像支持Cloud-init Feature时可填写此字段。注意：1、总数据量大小不超过 16K；2、使用base64编码。
+        - **UserLabels** (list) - 见 **AddUK8SUHostNodeParamUserLabels** 模型定义
 
         **Response**
 
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息。
         - **NodeIds** (list) - Node实例Id集合
+
+        **Request Model**
+
+        **AddUK8SUHostNodeParamUserLabels**
+        - **Key** (str) - UK8S用户资源标签的键值
+        - **Value** (str) - UK8S用户资源标签的值
+
+
+        **AddUK8SUHostNodeParamSecGroupId**
+        - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
+        - **Name** (str) - 安全组名称。
+        - **Priority** (str) - 安全组优先级。取值范围[1, 5]
+
+
+        **AddUK8SUHostNodeParamNetworkInterfaceEIP**
+        - **Bandwidth** (int) - 【若绑定EIP，此参数必填】弹性IP的外网带宽, 单位为Mbps. 共享带宽模式下非必传, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-800]
+        - **CouponId** (str) - 当前EIP代金券id。请通过DescribeCoupon接口查询，或登录用户中心查看。
+        - **OperatorName** (str) - 【若绑定EIP，此参数必填】弹性IP的线路。枚举值: 国际: International，BGP: Bgp。各地域允许的线路参数如下: cn-sh1: Bgp cn-sh2: Bgp cn-gd: Bgp cn-bj1: Bgp cn-bj2: Bgp hk: International us-ca: International th-bkk: International kr-seoul:International us-ws:International ge-fra:International sg:International tw-kh:International.其他海外线路均为 International
+        - **PayMode** (str) - 弹性IP的计费模式. 枚举值: "Traffic", 流量计费; "Bandwidth", 带宽计费; "ShareBandwidth",共享带宽模式. "Free":免费带宽模式,默认为 "Bandwidth"
+        - **ShareBandwidthId** (str) - 绑定的共享带宽Id，仅当PayMode为ShareBandwidth时有效
+
+
+        **AddUK8SUHostNodeParamNetworkInterface**
+        - **EIP** (dict) - 见 **AddUK8SUHostNodeParamNetworkInterfaceEIP** 模型定义
+
+
+        **AddUK8SUHostNodeParamKubeletConfiguration**
+        - **ContainerLogMaxFiles** (str) - 全量KubeletConfiguration.XXX定义参考AddUK8SNodeGroup接口: https://uxiao.ucloudadmin.com/#/api-manager/api/detail/UK8S/AddUK8SNodeGroup
+
 
         """
         # build request
@@ -221,21 +260,25 @@ class UK8SClient(Client):
         - **ChargeType** (str) - 集群所有节点的付费模式。枚举值为： Year，按年付费； Month，按月付费； Dynamic，按小时付费（需开启权限），默认按月。
         - **ClusterDomain** (str) - 创建集群的时候定义clusterdomain
         - **ExternalApiServer** (str) - 是否允许外网访问apiserver，开启：Yes 不开启：No。默认为No。
+        - **ForwardSrcIPMethod** (str) - LbClass为nlb的时候支持的源ip转发模式，目前只支持Toa,为空则不开源ip功能 枚举："",Toa
         - **ImageId** (str) - Master节点和Node节点的镜像 ID，不填则随机选择可用的基础镜像。支持用户自定义镜像。
         - **InitScript** (str) - 用户自定义脚本，与UserData不同，自定义脚本将在集群安装完毕后执行。注意：1、总数据量大小不超多16K；2、使用base64编码。
         - **K8sVersion** (str) - k8s集群的版本，版本信息请参考UK8S集群创建页，不指定的话默认为当前支持的最高版本。
         - **KubeProxy** (dict) - 见 **CreateUK8SClusterV2ParamKubeProxy** 模型定义
+        - **LbClass** (str) - master lb 类型默认ulb，可选ulb nlb
         - **Master** (list) - 见 **CreateUK8SClusterV2ParamMaster** 模型定义
         - **MasterBootDiskSize** (int) - Master节点系统盘大小，单位GB，默认为40。范围：[40, 500]。注意SSD本地盘无法调整。
         - **MasterBootDiskType** (str) - Master节点系统盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。默认为SSD云盘
         - **MasterDataDiskSize** (int) - Master节点的数据盘大小，单位GB，默认为0。范围 ：[20, 1000]
         - **MasterDataDiskType** (str) - Master节点数据盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。默认为SSD云盘
+        - **MasterImageId** (str) - Master节点的镜像 ID，不填则使用ImageId参数。支持用户自定义镜像。
         - **MasterIsolationGroup** (str) - 【无效，已删除】当前将自动为Master节点创建隔离组，确保Master节点归属于不同物理机。
         - **MasterMinimalCpuPlatform** (str) - Master节点的最低cpu平台，不选则随机。枚举值["Intel/Auto", "Intel/IvyBridge", "Intel/Haswell", "Intel/Broadwell", "Intel/Skylake", "Intel/Cascadelake"。
         - **Nodes** (list) - 见 **CreateUK8SClusterV2ParamNodes** 模型定义
         - **Quantity** (int) - 购买时长。默认为1。按小时购买(Dynamic)时无需此参数。 月付时，此参数传0，代表了购买至月末。
         - **Tag** (str) - 业务组
         - **UserData** (str) - 用户自定义数据。注意：1、总数据量大小不超多16K；2、使用base64编码。
+        - **UserLabels** (str) - UK8S用户标签，key=value形式,多组用”,“隔开，最多5组。 如env=pro,type=game
 
         **Response**
 
@@ -243,12 +286,33 @@ class UK8SClient(Client):
 
         **Request Model**
 
-        **CreateUK8SClusterV2ParamKubeProxy**
-        - **Mode** (str) - 集群kube-proxy模式。支持iptables和ipvs，默认为iptables。
+        **CreateUK8SClusterV2ParamMasterSecGroupId**
+        - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
+        - **Name** (str) - 安全组名称。
+        - **Priority** (str) - 安全组优先级。取值范围[1, 5]
 
 
         **CreateUK8SClusterV2ParamMaster**
+        - **SecGroupId** (list) - 见 **CreateUK8SClusterV2ParamMasterSecGroupId** 模型定义
         - **Zone** (str) - Master节点所属可用区，需要设置 Master.0.Zone、 Master.1.Zone、Master.2.Zone 三个 Master 节点的可用区。 三个节点可部署在不同可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+
+        **CreateUK8SClusterV2ParamNodesNetworkInterfaceEIP**
+        - **Bandwidth** (int) - 【若绑定EIP，此参数必填】弹性IP的外网带宽, 单位为Mbps. 共享带宽模式下非必传, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-800]
+        - **CouponId** (str) - 当前EIP代金券id。请通过DescribeCoupon接口查询，或登录用户中心查看。
+        - **OperatorName** (str) - 【若绑定EIP，此参数必填】弹性IP的线路。枚举值: 国际: International BGP: Bgp 各地域允许的线路参数如下: cn-sh1: Bgp cn-sh2: Bgp cn-gd: Bgp cn-bj1: Bgp cn-bj2: Bgp hk: International us-ca: International th-bkk: International kr-seoul:International us-ws:International ge-fra:International sg:International tw-kh:International.其他海外线路均为 International
+        - **PayMode** (str) - 弹性IP的计费模式. 枚举值: "Traffic", 流量计费; "Bandwidth", 带宽计费; "ShareBandwidth",共享带宽模式. "Free":免费带宽模式,默认为 "Bandwidth"
+        - **ShareBandwidthId** (str) - 绑定的共享带宽Id，仅当PayMode为ShareBandwidth时有效
+
+
+        **CreateUK8SClusterV2ParamNodesNetworkInterface**
+        - **EIP** (dict) - 见 **CreateUK8SClusterV2ParamNodesNetworkInterfaceEIP** 模型定义
+
+
+        **CreateUK8SClusterV2ParamNodesSecGroupId**
+        - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
+        - **Name** (str) - 安全组名称。
+        - **Priority** (str) - 安全组优先级。取值范围[1, 5]
 
 
         **CreateUK8SClusterV2ParamNodes**
@@ -260,14 +324,25 @@ class UK8SClient(Client):
         - **DataDiskType** (str) - 一组Node节点的数据盘类型，请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。默认为SSD云盘
         - **GPU** (int) - 一组Node节点的GPU卡核心数，仅GPU机型支持此字段。
         - **GpuType** (str) - 一组Node节点的GPU类型，枚举值["K80", "P40", "V100"]，最新值参考Console。
+        - **ImageId** (str) - Node节点的镜像 ID，不填则使用ImageId参数。支持用户自定义镜像。
         - **IsolationGroup** (str) - 一组Node节点的隔离组Id，归属于同一隔离组的虚拟机节点将落在不同的物理机上，单个隔离组最多只能容纳8个节点。参见DescribeIsolationGroup。
         - **Labels** (str) - Node节点标签，形式为key=value，多组Labels用”,“隔开,最多支持五组。
         - **MachineType** (str) - 一组Nodes节点云主机机型，如["N", "C", "O", "OS"]，具体请参照云主机机型。
         - **MaxPods** (int) - Node节点上可运行最大节点数，默认为110。
         - **Mem** (int) - 一组Node节点的内存大小。单位：MB,范围 ：[4096, 262144]，取值为1024的倍数，可选范围参考控制台。
         - **MinimalCpuPlatform** (str) - Node节点的最低cpu平台，不选则随机。枚举值["Intel/Auto", "Intel/IvyBridge", "Intel/Haswell", "Intel/Broadwell", "Intel/Skylake", "Intel/Cascadelake"。
+        - **NamePrefix** (str) - 一组Node的自定义主机名前缀。 完整的自定义主机名为{NamePrefix}-{NodeIP}。
+        - **NetworkInterface** (list) - 见 **CreateUK8SClusterV2ParamNodesNetworkInterface** 模型定义
+        - **SecGroupId** (list) - 见 **CreateUK8SClusterV2ParamNodesSecGroupId** 模型定义
+        - **SecurityGroupId** (str) - 防火墙ID，默认：Web推荐防火墙。如何查询SecurityGroupId请参见  `DescribeFirewall <https://docs.ucloud.cn/api/uk8s-api/api/unet-api/describe_firewall.html>`_ 。
+        - **SecurityMode** (str) - 主机安全模式。Firewall：防火墙；SecGroup：安全组；默认值：Firewall。
         - **Taints** (str) - Node节点污点，形式为key=value:effect，多组taints用”,“隔开,最多支持五组。
+        - **UNIFeature** (str) - 弹性网卡特性。开启了弹性网卡权限位，此特性才生效，默认 false 未开启，true 开启。
         - **Zone** (str) - 一组Nodes节点所属可用区，可创建多组Nodes节点，如一组是CPU Nodes节点，另一组是GPU Nodes节点。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+
+        **CreateUK8SClusterV2ParamKubeProxy**
+        - **Mode** (str) - 集群kube-proxy模式。支持iptables和ipvs，默认为iptables。
 
 
         """
@@ -355,24 +430,41 @@ class UK8SClient(Client):
         **Response**
 
         - **ApiServer** (str) - 集群apiserver地址
+        - **Autoscaler** (dict) - 见 **Autoscaler** 模型定义
         - **CACert** (str) - 集群CA根证书
+        - **CNIMode** (str) - CNI模式，可选值VPC/Calico
         - **ClusterDomain** (str) - 自定义或者默认的clusterdomain
         - **ClusterId** (str) - 集群ID
         - **ClusterName** (str) - 资源名字
+        - **ClusterType** (str) - 集群版本
         - **CreateTime** (int) - 创建时间
+        - **DedicatedPodSubnet** (bool) - Pod是否使用独立子网
+        - **DeleteProtection** (int) - 删除保护开关。0表示不开启，1表示开启。默认不开启
+        - **EnableUserAuth** (bool) - 是否开启了授权管理功能
         - **EtcdCert** (str) - 集群etcd服务证书
         - **EtcdKey** (str) - 集群etcd服务密钥
         - **ExternalApiServer** (str) - 集群外部apiserver地址
+        - **ExternalUlb** (str) - 外部 API Server 负载均衡实例 ID
+        - **InternalUlb** (str) - 内部 API Server 负载均衡实例 ID
         - **KubeProxy** (dict) - 见 **KubeProxy** 模型定义
+        - **LbClass** (str) - 负载均衡类型
+        - **LoopbackClientCert** (dict) - 见 **LoopbackClientCert** 模型定义
         - **MasterCount** (int) - Master 节点数量
         - **MasterList** (list) - 见 **UhostInfo** 模型定义
         - **MasterResourceStatus** (str) - Master配置预警：Normal正常；Warning 需要升级；Error    需要紧急升级；
+        - **MonitorType** (str) - 集群的监控类型：no无监控；cloudwatch统一监控平台；prometheus内置监控
+        - **NodeCIDR** (str) - 节点网段
         - **NodeCount** (int) - Node节点数量
         - **NodeList** (list) - 见 **UhostInfo** 模型定义
         - **PodCIDR** (str) - Pod网段
+        - **PodSubnetIds** (list) - Pod使用的独立子网列表
+        - **PodSubnetSecGroups** (list) - Pod独立子网内的ip使用的安全组
+        - **RuntimeName** (str) - 容器运行时名称
+        - **RuntimeVersion** (str) - 容器运行时版本
         - **ServiceCIDR** (str) - 服务网段
         - **Status** (str) - 状态
         - **SubnetId** (str) - 所属子网
+        - **UpdateTime** (int) - 更新时间
         - **VPCId** (str) - 所属VPC
         - **Version** (str) - K8S版本
 
@@ -382,19 +474,33 @@ class UK8SClient(Client):
         - **Mode** (str) - KubeProxy模式，枚举值为[ipvs,iptables]
 
 
-        **UhostInfo**
-        - **CPU** (int) - Cpu数量
-        - **CreateTime** (int) - 创建时间
-        - **DiskSet** (list) - 见 **DiskSet** 模型定义
-        - **ExpireTime** (int) - 到期时间
-        - **IPSet** (list) - 见 **IPSet** 模型定义
-        - **Memory** (int) - 内存
-        - **Name** (str) - 主机名称
-        - **NodeId** (str) - 主机ID
-        - **NodeType** (str) - 节点类型：uhost表示云主机;uphost表示物理云主机
-        - **OsName** (str) - 镜像信息
-        - **State** (str) - 主机状态
-        - **Zone** (str) - 所在机房
+        **LoopbackClientCert**
+        - **ExpireTime** (int) - 证书到期时间
+        - **Warn** (bool) - 证书是否进入过期告警状态
+
+
+        **Autoscaler**
+        - **Enabled** (int) - 打开/关闭
+        - **ScaleDownDelayAfterAdd** (str) - 静默时间
+        - **ScaleDownGpuUtilizationThreshold** (str) - GPU缩容阈值
+        - **ScaleDownUnneededTime** (str) - 缩容触发延时
+        - **ScaleDownUtilizationThreshold** (str) - CPU缩容阈值
+        - **UpdateTime** (int) -
+        - **Version** (str) - 伸缩器版本
+
+
+        **IPSet**
+        - **Bandwidth** (int) - IP对应的带宽, 单位: Mb (内网IP不显示带宽信息)
+        - **Default** (str) - 是否默认的弹性网卡的信息。true: 是默认弹性网卡；其他值：不是。
+        - **IP** (str) - IP地址
+        - **IPId** (str) - IP资源ID (内网IP无对应的资源ID)
+        - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
+
+
+        **SecGroupId**
+        - **Id** (str) - 安全组名称
+        - **Name** (str) - 安全组id
+        - **Priority** (str) - 安全组优先级
 
 
         **DiskSet**
@@ -410,12 +516,26 @@ class UK8SClient(Client):
         - **Type** (str) - 磁盘类型。系统盘: Boot，数据盘: Data,网络盘：Udisk
 
 
-        **IPSet**
-        - **Bandwidth** (int) - IP对应的带宽, 单位: Mb (内网IP不显示带宽信息)
-        - **Default** (str) - 是否默认的弹性网卡的信息。true: 是默认弹性网卡；其他值：不是。
-        - **IP** (str) - IP地址
-        - **IPId** (str) - IP资源ID (内网IP无对应的资源ID)
-        - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
+        **UhostInfo**
+        - **BasicImageName** (str) - 基础镜像名称
+        - **CPU** (int) - Cpu数量
+        - **CreateTime** (int) - 创建时间
+        - **DiskSet** (list) - 见 **DiskSet** 模型定义
+        - **ExpireTime** (int) - 到期时间
+        - **GPU** (int) - GPU 数量
+        - **GpuType** (str) - GPU 型号
+        - **IPSet** (list) - 见 **IPSet** 模型定义
+        - **MachineType** (str) - 主机机型类别
+        - **Memory** (int) - 内存
+        - **Name** (str) - 主机名称
+        - **NodeId** (str) - 主机ID
+        - **NodeType** (str) - 节点类型：uhost表示云主机;uphost表示物理云主机
+        - **OsName** (str) - 镜像信息
+        - **OsType** (str) - 操作系统类型
+        - **SecGroupId** (list) - 见 **SecGroupId** 模型定义
+        - **State** (str) - 主机状态
+        - **TotalDiskSpace** (int) - 节点总磁盘空间
+        - **Zone** (str) - 所在机房
 
 
         """
@@ -437,12 +557,18 @@ class UK8SClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **GPUType** (str) - 适用GPU类型，如1080Ti、4090、V100、A800等，MachineType为G时必须提供
+        - **K8sVersion** (str) - k8s集群版本，如1.28.15
+        - **MachineType** (str) - 适用机型，如O、G、OPRO等，默认为O
+        - **ProductType** (str) - 产品类型，可选值uhost、uphost，不填则返回所有
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
+        - **CustomImageSet** (list) - 虚拟机自制可用镜像集合, 详见ImageInfo 数组
+        - **CustomPHostImageSet** (list) - 裸金属自制可用镜像集合, 详见ImageInfo 数组
         - **ImageSet** (list) - 见 **ImageInfo** 模型定义
         - **Message** (str) - 返回错误消息，当 RetCode 非 0 时提供详细的描述信息。
         - **PHostImageSet** (list) - 见 **ImageInfo** 模型定义
@@ -450,9 +576,15 @@ class UK8SClient(Client):
         **Response Model**
 
         **ImageInfo**
+        - **Features** (list) - 镜像支持的特性
         - **ImageId** (str) - 镜像 Id
         - **ImageName** (str) - 镜像名称
+        - **ImageSize** (int) - 镜像大小
+        - **IntegratedSoftware** (str) - 集成软件名称, 如NV驱动版本、cuda版本
         - **NotSupportGPU** (bool) - 该镜像是否支持GPU机型，枚举值[true:不支持，false:支持]。
+        - **OsName** (str) - OS 名称
+        - **OsType** (str) - OS 类型
+        - **SupportedGPUTypes** (list) - 支持的GPU机型
         - **ZoneId** (int) - 可用区 Id
 
 
@@ -537,6 +669,69 @@ class UK8SClient(Client):
         resp = self.invoke("DescribeUK8SNode", d, **kwargs)
         return apis.DescribeUK8SNodeResponseSchema().loads(resp)
 
+    def get_cluster_config(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetClusterConfig - 获取集群配置文件，管理集群的凭证
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 所在项目
+        - **Region** (str) - (Config) 所在区域
+        - **ClusterId** (str) - (Required) 集群ID
+
+        **Response**
+
+        - **ExternalKubeConfig** (str) - 开启公网apiserver的情况下，有数据返回。
+        - **KubeConfig** (str) - 配置信息
+        - **Updatable** (bool) - 用于标示 kubeconfig 是否可以进行替换更新
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetClusterConfigRequestSchema().dumps(d)
+
+        resp = self.invoke("GetClusterConfig", d, **kwargs)
+        return apis.GetClusterConfigResponseSchema().loads(resp)
+
+    def get_uk8s_versions(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUK8SVersions - 获取支持创建的UK8S集群版本、Containerd版本
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Kind** (str) - (Required) 集群类型，可选值为[Dedicated]
+
+        **Response**
+
+        - **Data** (list) - 见 **UK8SVersionData** 模型定义
+
+        **Response Model**
+
+        **UK8SVersionData**
+        - **ContainerdVersion** (str) - Containerd 版本
+        - **K8sVersion** (str) - K8S 版本
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetUK8SVersionsRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUK8SVersions", d, **kwargs)
+        return apis.GetUK8SVersionsResponseSchema().loads(resp)
+
     def list_uk8s_cluster_node_v2(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -547,6 +742,7 @@ class UK8SClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ClusterId** (str) - (Required) UK8S集群ID
+        - **NodeIds** (str) - 可传一个或多个节点id  不传或为空则返回所有节点
 
         **Response**
 
@@ -555,41 +751,68 @@ class UK8SClient(Client):
 
         **Response Model**
 
-        **NodeInfoV2**
-        - **AsgId** (str) - 节点所属伸缩组ID，非伸缩组创建出来的节点，伸缩组ID为Default。
-        - **CPU** (int) - Node节点CPU核数，单位: 个。
-        - **CreateTime** (int) - 节点创建时间
-        - **ExpireTime** (int) - 节点计费到期时间
-        - **GPU** (int) - 节点的GPU颗数。
-        - **IPSet** (list) - 见 **UHostIPSet** 模型定义
-        - **InstanceId** (str) - 资源ID，如uhost-xxxx，或uphost-xxxxx。
-        - **InstanceName** (str) - 资源名称，初始值等于NodeId，用户可在UHost或UPHost处修改。
-        - **InstanceType** (str) - Node节点的资源类型，枚举值为UHost或UPHost。
-        - **KubeProxy** (dict) - 见 **KubeProxy** 模型定义
-        - **MachineType** (str) - 机型类别，分别对应Uhost的MachineType或PHost的PHostType。
-        - **Memory** (int) - 内存大小，单位: MB。
-        - **NodeId** (str) - NodeId，Node在UK8S处的唯一标示，如uk8s-reewqe5-sdasadsda
-        - **NodeLogInfo** (str) - 加节点时判断是否没有资源，如果返回NORESOURCE则代表没有资源了
-        - **NodeRole** (str) - node角色，枚举值为master、node
-        - **NodeStatus** (str) - Node的状态：枚举值：初始化："Initializing"；启动中："Starting"；运行："Running"；停止中："Stopping"；停止："Stopped"；待删除："ToBeDeleted"；删除中："Deleting"；异常："Error"；安装失败："Install Fail"；
-        - **OsName** (str) - Node节点的镜像名称。
-        - **OsType** (str) - Node节点的操作系统类别，如Linux或Windows。
-        - **Unschedulable** (bool) - 是否允许Pod调度到该节点，枚举值为true或false。
-        - **Zone** (str) - Node所在可用区
+        **KubeProxy**
+        - **Mode** (str) - KubeProxy模式，枚举值为[ipvs,iptables]
 
 
         **UHostIPSet**
         - **Bandwidth** (int) - IP对应的带宽, 单位: Mb (内网IP不显示带宽信息)
         - **IP** (str) - IP地址
         - **IPId** (str) - IP资源ID (内网IP无对应的资源ID)
+        - **IPMode** (str) - IP 协议类型
         - **Mac** (str) - Mac地址
+        - **NetworkInterfaceId** (str) - 网络接口资源 ID
         - **SubnetId** (str) - IP地址对应的子网 ID
         - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
         - **VPCId** (str) - IP地址对应的VPC ID
 
 
-        **KubeProxy**
-        - **Mode** (str) - KubeProxy模式，枚举值为[ipvs,iptables]
+        **NodeInfoV2**
+        - **AsgId** (str) - 节点所属伸缩组ID，非伸缩组创建出来的节点，伸缩组ID为Default。
+        - **BootDiskSize** (int) - 系统盘大小
+        - **CPU** (int) - Node节点CPU核数，单位: 个。
+        - **CPUPlatform** (str) - CPU平台
+        - **CreateTime** (int) - 节点创建时间
+        - **DataDiskSize** (int) - 数据盘大小，如果有多块数据盘会汇总展示，不包括PVC
+        - **ExpireTime** (int) - 节点计费到期时间
+        - **GPU** (int) - 节点的GPU颗数。
+        - **GPUType** (str) - 节点GPU型号(如果为GPU机型)
+        - **IDCId** (str) - 边缘机房id
+        - **IDCName** (str) - 边缘机房
+        - **IPSet** (list) - 见 **UHostIPSet** 模型定义
+        - **ImageAccelable** (bool) - 是否启用了容器镜像加速
+        - **InstanceId** (str) - 资源ID，如uhost-xxxx，或uphost-xxxxx。
+        - **InstanceName** (str) - 资源名称，初始值等于NodeId，用户可在UHost或UPHost处修改。
+        - **InstanceType** (str) - Node节点的资源类型，枚举值为UHost或UPHost。
+        - **KubeProxy** (dict) - 见 **KubeProxy** 模型定义
+        - **KubeletVersion** (str) - Kubelet版本
+        - **Labels** (list) - 节点标签
+        - **MachineType** (str) - 机型类别，分别对应Uhost的MachineType或PHost的PHostType。
+        - **MaxCPU** (int) - CPU最大可用
+        - **MaxMemory** (int) - 内存最大可用
+        - **MaxPod** (int) - pod最大可用
+        - **Memory** (int) - 内存大小，单位: MB。
+        - **NodeGroupId** (str) - 节点池id
+        - **NodeGroupName** (str) - 节点所属节点池名称
+        - **NodeId** (str) - NodeId，Node在UK8S处的唯一标示，如uk8s-reewqe5-sdasadsda
+        - **NodeLogInfo** (str) - 加节点时判断是否没有资源，如果返回NORESOURCE则代表没有资源了
+        - **NodeRole** (str) - node角色，枚举值为master、node
+        - **NodeStatus** (str) - Node的状态：枚举值：初始化："Initializing"；启动中："Starting"；运行："Running"；停止中："Stopping"；停止："Stopped"；待删除："ToBeDeleted"；删除中："Deleting"；异常："Error"；安装失败："Install Fail"；
+        - **OsName** (str) - Node节点的镜像名称。
+        - **OsType** (str) - Node节点的操作系统类别，如Linux或Windows。
+        - **PodCIDR** (str) - Pod CIDR
+        - **Remark** (str) - 节点主机备注信息
+        - **RequestCPU** (int) - 已申请的CPU
+        - **RequestMemory** (int) - 已申请的Memory
+        - **RequestPod** (int) - 已申请的pod
+        - **RuntimeName** (str) - Runtime 名字
+        - **RuntimeVersion** (str) - Runtime 版本
+        - **Tag** (str) - 节点所属业务组
+        - **UHostFamily** (str) - 主机规格族
+        - **Unschedulable** (bool) - 是否允许Pod调度到该节点，枚举值为true或false。
+        - **UsedCPU** (str) - 已使用的CPU
+        - **UsedMemory** (str) - 已使用的Memory
+        - **Zone** (str) - Node所在可用区
 
 
         """
@@ -621,20 +844,32 @@ class UK8SClient(Client):
 
         - **ClusterCount** (int) - 满足条件的集群数量
         - **ClusterSet** (list) - 见 **ClusterSet** 模型定义
+        - **TotalCount** (int) - 总数
 
         **Response Model**
 
+        **LoopbackClientCert**
+        - **ExpireTime** (int) - 证书到期时间
+        - **Warn** (bool) - 证书是否进入过期告警状态
+
+
         **ClusterSet**
         - **ApiServer** (str) - 集群apiserver地址
+        - **CNIMode** (str) - CNI网络模式
         - **ClusterId** (str) - 集群ID
         - **ClusterLogInfo** (str) - 创建集群时判断如果为NORESOURCE则为没资源，否则为空
         - **ClusterName** (str) - 资源名字
+        - **ClusterType** (str) - 计费/管理形态，区分"专有版"和"托管版"两种售卖形态
         - **CreateTime** (int) - 创建时间
+        - **DeleteProtection** (int) - 删除保护开关。0表示不开启，1表示开启。默认不开启
         - **ExternalApiServer** (str) - 集群外部apiserver地址
         - **K8sVersion** (str) - 集群版本
+        - **LoopbackClientCert** (dict) - 见 **LoopbackClientCert** 模型定义
         - **MasterCount** (int) - Master 节点数量
         - **NodeCount** (int) - Node节点数量
         - **PodCIDR** (str) - Pod网段
+        - **RuntimeName** (str) - 容器运行时名称
+        - **RuntimeVersion** (str) - 容器运行时版本号，docker 或 containerd 版本
         - **ServiceCIDR** (str) - 服务网段
         - **Status** (str) - 集群状态，枚举值：初始化："INITIALIZING"；启动中："STARTING"；创建失败："CREATEFAILED"；正常运行："RUNNING"；添加节点："ADDNODE"；删除节点："DELNODE"；删除中："DELETING"；删除失败："DELETEFAILED"；错误："ERROR"；升级插件："UPDATE_PLUGIN"；更新插件信息："UPDATE_PLUGIN_INFO"；异常："ABNORMAL"；升级集群中："UPGRADING"；容器运行时切换："CONVERTING"
         - **SubnetId** (str) - 所属子网
@@ -670,23 +905,106 @@ class UK8SClient(Client):
 
         **Response Model**
 
+        **ReservedResource**
+        - **CPU** (str) - CPU
+        - **EphemeralStorage** (str) - 存储
+        - **Memory** (str) - 内存
+        - **Pid** (str) - Pid
+
+
+        **EIP**
+        - **Bandwidth** (int) - 【若绑定EIP，此参数必填】弹性IP的外网带宽, 单位为Mbps. 共享带宽模式下非必传, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-800]
+        - **CouponId** (str) - 当前EIP代金券id。请通过DescribeCoupon接口查询，或登录用户中心查看。
+        - **OperatorName** (str) - 【若绑定EIP，此参数必填】弹性IP的线路。枚举值: 国际: International，BGP: Bgp。 各地域允许的线路参数如下: cn-sh1: Bgp cn-sh2: Bgp cn-gd: Bgp cn-bj1: Bgp cn-bj2: Bgp hk: International us-ca: International th-bkk: International kr-seoul:International us-ws:International ge-fra:International sg:International tw-kh:International.其他海外线路均为 International
+        - **PayMode** (str) - 弹性IP的计费模式. 枚举值: "Traffic", 流量计费; "Bandwidth", 带宽计费; "ShareBandwidth",共享带宽模式. "Free":免费带宽模式,默认为 "Bandwidth"
+        - **ShareBandwidthId** (str) - 绑定的共享带宽Id，仅当PayMode为ShareBandwidth时有效
+
+
+        **DiskSet**
+        - **BackupType** (str) - 备份方案，枚举类型：BASIC_SNAPSHOT,普通快照；DATAARK,方舟。无快照则不返回该字段。
+        - **DiskId** (str) - 磁盘长ID
+        - **DiskType** (str) - LOCAL_NOMAL| CLOUD_NORMAL| LOCAL_SSD| CLOUD_SSD|EXCLUSIVE_LOCAL_DISK
+        - **Drive** (str) - 磁盘盘符
+        - **Encrypted** (str) - Yes: 加密 No: 非加密
+        - **IOPS** (int) - 当前主机的IOPS值
+        - **IsBoot** (str) - True| False
+        - **Name** (str) - UDisk名字（仅当磁盘是UDisk时返回）
+        - **Size** (int) - 磁盘大小，单位: GB
+        - **Type** (str) - 磁盘类型。系统盘: Boot，数据盘: Data,网络盘：Udisk
+
+
+        **EvictionCondition**
+        - **ImagefsAvailable** (str) - 镜像文件系统存储相关驱逐条件或宽限时间。
+        - **MemoryAvailable** (str) - 内存相关驱逐条件或宽限时间。
+        - **NodefsAvailable** (str) - 节点存储余量相关驱逐条件或宽限时间。
+        - **NodefsInodesFree** (str) - 节点剩余inodes驱逐条件或宽限时间。
+
+
+        **KubeletConfiguration**
+        - **ContainerLogMaxFiles** (int) - 最大日志文件数量
+        - **ContainerLogMaxSize** (str) - 最大日志文件大小
+        - **EvictionHard** (dict) - 见 **EvictionCondition** 模型定义
+        - **EvictionSoft** (dict) - 见 **EvictionCondition** 模型定义
+        - **EvictionSoftGracePeriod** (dict) - 见 **EvictionCondition** 模型定义
+        - **ImageGCHighThresholdPercent** (int) - 镜像垃圾收集阈值
+        - **ImageGCLowThresholdPercent** (int) - 停止镜像垃圾收集阈值
+        - **KubeReserved** (dict) - 见 **ReservedResource** 模型定义
+        - **MaxPods** (int) - 最大Pod数量
+        - **SystemReserved** (dict) - 见 **ReservedResource** 模型定义
+
+
+        **SecGroupId**
+        - **Id** (str) - 安全组名称
+        - **Name** (str) - 安全组id
+        - **Priority** (str) - 安全组优先级
+
+
+        **NetworkInterface**
+        - **EIP** (dict) - 见 **EIP** 模型定义
+
+
         **NodeGroupSet**
         - **BootDiskSize** (int) - 系统盘大小
         - **BootDiskType** (str) - 系统盘类型
         - **CPU** (int) - 虚拟CPU核数
         - **ChargeType** (str) - 付费方式
+        - **CreateTime** (int) - 节点池创建时间
         - **DataDiskSize** (int) - 数据盘大小
         - **DataDiskType** (str) - 数据盘类型
+        - **Disks** (list) - 见 **DiskSet** 模型定义
         - **GPU** (int) - GPU卡核心数
         - **GpuType** (str) - GPU类型
         - **ImageId** (str) - 镜像ID
+        - **ImageName** (str) - 镜像名称
+        - **ImageType** (str) - 镜像类型
+        - **InitScript** (str) - 用户自定义Shell脚本。与UserData的区别在于InitScript在节点初始化完毕后才执行，UserData则是云主机初始化时执行。
+        - **IsolationGroupId** (str) - 硬件隔离组id。可通过DescribeIsolationGroup获取。
+        - **KubeletConfiguration** (dict) - 见 **KubeletConfiguration** 模型定义
+        - **Labels** (str) - Node节点标签。key=value形式,多组用”,“隔开，最多5组。 如env=pro,type=game
         - **MachineType** (str) - 机型
+        - **MaxPods** (int) - int默认110，生产环境建议小于等于110。
         - **Mem** (int) - 内存大小
         - **MinimalCpuPlatform** (str) - cpu平台
+        - **NetCapability** (str) - 网络配置
+        - **NetworkInterface** (list) - 见 **NetworkInterface** 模型定义
         - **NodeGroupId** (str) - 节点池ID
         - **NodeGroupName** (str) - 节点池名字
         - **NodeList** (list) - 节点id列表
+        - **NodeNamePrefix** (str) - 自定义Uhost主机名前缀。完整的自定义Uhost主机名为{NodeNamePrefix}-{NodeIP}。
+        - **OsName** (str) - 操作系统名称
+        - **OsType** (str) - 操作系统类型
+        - **RelatedAsg** (list) - 节点池关联的弹性伸缩组ID
+        - **SecGroupId** (list) - 见 **SecGroupId** 模型定义
+        - **SecurityGroupId** (str) - 防火墙ID，默认：Web推荐防火墙。如何查询SecurityGroupId请参见  `DescribeFirewall <https://docs.ucloud.cn/api/uk8s-api/api/unet-api/describe_firewall.html>`_ 。
+        - **SecurityMode** (str) - 主机安全模式。Firewall：防火墙；SecGroup：安全组；默认值：Firewall。
+        - **SubnetId** (str) - 子网 ID。默认为集群创建时填写的子网ID，也可以填写集群同VPC内的子网ID。
         - **Tag** (str) - 业务组
+        - **Taints** (str) - Node节点污点，形式为key=value:effect，多组taints用”,“隔开,最多支持五组。
+        - **UHostFamily** (str) - 主机规格族
+        - **UNIFeature** (bool) - 是否启用 UNI 网络特性
+        - **UpdateTime** (int) - 节点池更新时间
+        - **UserData** (str) - 用户自定义数据。当镜像支持Cloud-init Feature时可填写此字段。注意：1、总数据量大小不超过 16K；2、使用base64编码。
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
 
         """

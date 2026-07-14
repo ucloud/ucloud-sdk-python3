@@ -136,6 +136,59 @@ API: AddUK8SUHostNode
 """
 
 
+class AddUK8SUHostNodeParamUserLabelsSchema(schema.RequestSchema):
+    """AddUK8SUHostNodeParamUserLabels -"""
+
+    fields = {
+        "Key": fields.Str(required=False, dump_to="Key"),
+        "Value": fields.Str(required=False, dump_to="Value"),
+    }
+
+
+class AddUK8SUHostNodeParamSecGroupIdSchema(schema.RequestSchema):
+    """AddUK8SUHostNodeParamSecGroupId -"""
+
+    fields = {
+        "Id": fields.Str(required=False, dump_to="Id"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "Priority": fields.Str(required=False, dump_to="Priority"),
+    }
+
+
+class AddUK8SUHostNodeParamNetworkInterfaceEIPSchema(schema.RequestSchema):
+    """AddUK8SUHostNodeParamNetworkInterfaceEIP -"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=False, dump_to="Bandwidth"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "OperatorName": fields.Str(required=False, dump_to="OperatorName"),
+        "PayMode": fields.Str(required=False, dump_to="PayMode"),
+        "ShareBandwidthId": fields.Str(
+            required=False, dump_to="ShareBandwidthId"
+        ),
+    }
+
+
+class AddUK8SUHostNodeParamNetworkInterfaceSchema(schema.RequestSchema):
+    """AddUK8SUHostNodeParamNetworkInterface -"""
+
+    fields = {
+        "EIP": AddUK8SUHostNodeParamNetworkInterfaceEIPSchema(
+            required=False, dump_to="EIP"
+        ),
+    }
+
+
+class AddUK8SUHostNodeParamKubeletConfigurationSchema(schema.RequestSchema):
+    """AddUK8SUHostNodeParamKubeletConfiguration -"""
+
+    fields = {
+        "ContainerLogMaxFiles": fields.Str(
+            required=False, dump_to="ContainerLogMaxFiles"
+        ),
+    }
+
+
 class AddUK8SUHostNodeRequestSchema(schema.RequestSchema):
     """AddUK8SUHostNode - 为UK8S集群添加一台Node节点，机型类型为云主机"""
 
@@ -156,6 +209,9 @@ class AddUK8SUHostNodeRequestSchema(schema.RequestSchema):
         "ImageId": fields.Str(required=False, dump_to="ImageId"),
         "InitScript": fields.Str(required=False, dump_to="InitScript"),
         "IsolationGroup": fields.Str(required=False, dump_to="IsolationGroup"),
+        "KubeletConfiguration": AddUK8SUHostNodeParamKubeletConfigurationSchema(
+            required=False, dump_to="KubeletConfiguration"
+        ),
         "Labels": fields.Str(required=False, dump_to="Labels"),
         "MachineType": fields.Str(required=False, dump_to="MachineType"),
         "MaxPods": fields.Int(required=False, dump_to="MaxPods"),
@@ -166,15 +222,28 @@ class AddUK8SUHostNodeRequestSchema(schema.RequestSchema):
         "MinmalCpuPlatform": fields.Str(
             required=False, dump_to="MinmalCpuPlatform"
         ),  # Deprecated, will be removed at 1.0
+        "NamePrefix": fields.Str(required=False, dump_to="NamePrefix"),
+        "NetCapability": fields.Str(required=False, dump_to="NetCapability"),
+        "NetworkInterface": fields.List(
+            AddUK8SUHostNodeParamNetworkInterfaceSchema()
+        ),
         "NodeGroupId": fields.Str(required=False, dump_to="NodeGroupId"),
-        "Password": fields.Str(required=True, dump_to="Password"),
+        "Password": fields.Str(required=False, dump_to="Password"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "SecGroupId": fields.List(AddUK8SUHostNodeParamSecGroupIdSchema()),
+        "SecurityGroupId": fields.Str(
+            required=False, dump_to="SecurityGroupId"
+        ),
+        "SecurityMode": fields.Str(required=False, dump_to="SecurityMode"),
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
         "Tag": fields.Str(required=False, dump_to="Tag"),
         "Taints": fields.Str(required=False, dump_to="Taints"),
+        "UHostFamily": fields.Str(required=False, dump_to="UHostFamily"),
+        "UNIFeature": fields.Bool(required=False, dump_to="UNIFeature"),
         "UserData": fields.Str(required=False, dump_to="UserData"),
+        "UserLabels": fields.List(AddUK8SUHostNodeParamUserLabelsSchema()),
         "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
@@ -197,11 +266,13 @@ API: CreateUK8SClusterV2
 """
 
 
-class CreateUK8SClusterV2ParamKubeProxySchema(schema.RequestSchema):
-    """CreateUK8SClusterV2ParamKubeProxy -"""
+class CreateUK8SClusterV2ParamMasterSecGroupIdSchema(schema.RequestSchema):
+    """CreateUK8SClusterV2ParamMasterSecGroupId -"""
 
     fields = {
-        "Mode": fields.Str(required=False, dump_to="Mode"),
+        "Id": fields.Str(required=False, dump_to="Id"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "Priority": fields.Str(required=False, dump_to="Priority"),
     }
 
 
@@ -209,7 +280,46 @@ class CreateUK8SClusterV2ParamMasterSchema(schema.RequestSchema):
     """CreateUK8SClusterV2ParamMaster -"""
 
     fields = {
+        "SecGroupId": fields.List(
+            CreateUK8SClusterV2ParamMasterSecGroupIdSchema()
+        ),
         "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class CreateUK8SClusterV2ParamNodesNetworkInterfaceEIPSchema(
+    schema.RequestSchema
+):
+    """CreateUK8SClusterV2ParamNodesNetworkInterfaceEIP -"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=False, dump_to="Bandwidth"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "OperatorName": fields.Str(required=False, dump_to="OperatorName"),
+        "PayMode": fields.Str(required=False, dump_to="PayMode"),
+        "ShareBandwidthId": fields.Str(
+            required=False, dump_to="ShareBandwidthId"
+        ),
+    }
+
+
+class CreateUK8SClusterV2ParamNodesNetworkInterfaceSchema(schema.RequestSchema):
+    """CreateUK8SClusterV2ParamNodesNetworkInterface -"""
+
+    fields = {
+        "EIP": CreateUK8SClusterV2ParamNodesNetworkInterfaceEIPSchema(
+            required=False, dump_to="EIP"
+        ),
+    }
+
+
+class CreateUK8SClusterV2ParamNodesSecGroupIdSchema(schema.RequestSchema):
+    """CreateUK8SClusterV2ParamNodesSecGroupId -"""
+
+    fields = {
+        "Id": fields.Str(required=False, dump_to="Id"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "Priority": fields.Str(required=False, dump_to="Priority"),
     }
 
 
@@ -225,6 +335,7 @@ class CreateUK8SClusterV2ParamNodesSchema(schema.RequestSchema):
         "DataDiskType": fields.Str(required=False, dump_to="DataDiskType"),
         "GPU": fields.Int(required=False, dump_to="GPU"),
         "GpuType": fields.Str(required=False, dump_to="GpuType"),
+        "ImageId": fields.Str(required=False, dump_to="ImageId"),
         "IsolationGroup": fields.Str(required=False, dump_to="IsolationGroup"),
         "Labels": fields.Str(required=False, dump_to="Labels"),
         "MachineType": fields.Str(required=True, dump_to="MachineType"),
@@ -236,8 +347,28 @@ class CreateUK8SClusterV2ParamNodesSchema(schema.RequestSchema):
         "MinmalCpuPlatform": fields.Str(
             required=False, dump_to="MinmalCpuPlatform"
         ),  # Deprecated, will be removed at 1.0
+        "NamePrefix": fields.Str(required=False, dump_to="NamePrefix"),
+        "NetworkInterface": fields.List(
+            CreateUK8SClusterV2ParamNodesNetworkInterfaceSchema()
+        ),
+        "SecGroupId": fields.List(
+            CreateUK8SClusterV2ParamNodesSecGroupIdSchema()
+        ),
+        "SecurityGroupId": fields.Str(
+            required=False, dump_to="SecurityGroupId"
+        ),
+        "SecurityMode": fields.Str(required=False, dump_to="SecurityMode"),
         "Taints": fields.Str(required=False, dump_to="Taints"),
+        "UNIFeature": fields.Str(required=False, dump_to="UNIFeature"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class CreateUK8SClusterV2ParamKubeProxySchema(schema.RequestSchema):
+    """CreateUK8SClusterV2ParamKubeProxy -"""
+
+    fields = {
+        "Mode": fields.Str(required=False, dump_to="Mode"),
     }
 
 
@@ -251,12 +382,16 @@ class CreateUK8SClusterV2RequestSchema(schema.RequestSchema):
         "ExternalApiServer": fields.Str(
             required=False, dump_to="ExternalApiServer"
         ),
+        "ForwardSrcIPMethod": fields.Str(
+            required=False, dump_to="ForwardSrcIPMethod"
+        ),
         "ImageId": fields.Str(required=False, dump_to="ImageId"),
         "InitScript": fields.Str(required=False, dump_to="InitScript"),
         "K8sVersion": fields.Str(required=False, dump_to="K8sVersion"),
         "KubeProxy": CreateUK8SClusterV2ParamKubeProxySchema(
             required=False, dump_to="KubeProxy"
         ),
+        "LbClass": fields.Str(required=False, dump_to="LbClass"),
         "Master": fields.List(CreateUK8SClusterV2ParamMasterSchema()),
         "MasterBootDiskSize": fields.Int(
             required=False, dump_to="MasterBootDiskSize"
@@ -271,6 +406,7 @@ class CreateUK8SClusterV2RequestSchema(schema.RequestSchema):
         "MasterDataDiskType": fields.Str(
             required=False, dump_to="MasterDataDiskType"
         ),
+        "MasterImageId": fields.Str(required=False, dump_to="MasterImageId"),
         "MasterIsolationGroup": fields.Str(
             required=False, dump_to="MasterIsolationGroup"
         ),
@@ -293,6 +429,7 @@ class CreateUK8SClusterV2RequestSchema(schema.RequestSchema):
         "SubnetId": fields.Str(required=True, dump_to="SubnetId"),
         "Tag": fields.Str(required=False, dump_to="Tag"),
         "UserData": fields.Str(required=False, dump_to="UserData"),
+        "UserLabels": fields.Str(required=False, dump_to="UserLabels"),
         "VPCId": fields.Str(required=True, dump_to="VPCId"),
     }
 
@@ -380,17 +517,33 @@ class DescribeUK8SClusterResponseSchema(schema.ResponseSchema):
 
     fields = {
         "ApiServer": fields.Str(required=False, load_from="ApiServer"),
+        "Autoscaler": models.AutoscalerSchema(),
         "CACert": fields.Str(required=False, load_from="CACert"),
+        "CNIMode": fields.Str(required=False, load_from="CNIMode"),
         "ClusterDomain": fields.Str(required=False, load_from="ClusterDomain"),
         "ClusterId": fields.Str(required=True, load_from="ClusterId"),
         "ClusterName": fields.Str(required=True, load_from="ClusterName"),
+        "ClusterType": fields.Str(required=False, load_from="ClusterType"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "DedicatedPodSubnet": fields.Bool(
+            required=False, load_from="DedicatedPodSubnet"
+        ),
+        "DeleteProtection": fields.Int(
+            required=False, load_from="DeleteProtection"
+        ),
+        "EnableUserAuth": fields.Bool(
+            required=False, load_from="EnableUserAuth"
+        ),
         "EtcdCert": fields.Str(required=False, load_from="EtcdCert"),
         "EtcdKey": fields.Str(required=False, load_from="EtcdKey"),
         "ExternalApiServer": fields.Str(
             required=False, load_from="ExternalApiServer"
         ),
+        "ExternalUlb": fields.Str(required=False, load_from="ExternalUlb"),
+        "InternalUlb": fields.Str(required=False, load_from="InternalUlb"),
         "KubeProxy": models.KubeProxySchema(),
+        "LbClass": fields.Str(required=False, load_from="LbClass"),
+        "LoopbackClientCert": models.LoopbackClientCertSchema(),
         "MasterCount": fields.Int(required=True, load_from="MasterCount"),
         "MasterList": fields.List(
             models.UhostInfoSchema(), required=False, load_from="MasterList"
@@ -398,14 +551,27 @@ class DescribeUK8SClusterResponseSchema(schema.ResponseSchema):
         "MasterResourceStatus": fields.Str(
             required=False, load_from="MasterResourceStatus"
         ),
+        "MonitorType": fields.Str(required=False, load_from="MonitorType"),
+        "NodeCIDR": fields.Str(required=False, load_from="NodeCIDR"),
         "NodeCount": fields.Int(required=False, load_from="NodeCount"),
         "NodeList": fields.List(
             models.UhostInfoSchema(), required=False, load_from="NodeList"
         ),
         "PodCIDR": fields.Str(required=True, load_from="PodCIDR"),
+        "PodSubnetIds": fields.List(
+            fields.Str(), required=False, load_from="PodSubnetIds"
+        ),
+        "PodSubnetSecGroups": fields.List(
+            fields.Str(), required=False, load_from="PodSubnetSecGroups"
+        ),
+        "RuntimeName": fields.Str(required=False, load_from="RuntimeName"),
+        "RuntimeVersion": fields.Str(
+            required=False, load_from="RuntimeVersion"
+        ),
         "ServiceCIDR": fields.Str(required=True, load_from="ServiceCIDR"),
         "Status": fields.Str(required=False, load_from="Status"),
         "SubnetId": fields.Str(required=True, load_from="SubnetId"),
+        "UpdateTime": fields.Int(required=False, load_from="UpdateTime"),
         "VPCId": fields.Str(required=True, load_from="VPCId"),
         "Version": fields.Str(required=False, load_from="Version"),
     }
@@ -422,6 +588,10 @@ class DescribeUK8SImageRequestSchema(schema.RequestSchema):
     """DescribeUK8SImage - 获取UK8S支持的Node节点操作系统，可基于该操作系统制定自定义镜像"""
 
     fields = {
+        "GPUType": fields.Str(required=False, dump_to="GPUType"),
+        "K8sVersion": fields.Str(required=False, dump_to="K8sVersion"),
+        "MachineType": fields.Str(required=False, dump_to="MachineType"),
+        "ProductType": fields.Str(required=False, dump_to="ProductType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
@@ -432,6 +602,12 @@ class DescribeUK8SImageResponseSchema(schema.ResponseSchema):
     """DescribeUK8SImage - 获取UK8S支持的Node节点操作系统，可基于该操作系统制定自定义镜像"""
 
     fields = {
+        "CustomImageSet": fields.List(
+            fields.Str(), required=False, load_from="CustomImageSet"
+        ),
+        "CustomPHostImageSet": fields.List(
+            fields.Str(), required=False, load_from="CustomPHostImageSet"
+        ),
         "ImageSet": fields.List(
             models.ImageInfoSchema(), required=False, load_from="ImageSet"
         ),
@@ -523,6 +699,62 @@ class DescribeUK8SNodeResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetClusterConfig
+
+获取集群配置文件，管理集群的凭证
+"""
+
+
+class GetClusterConfigRequestSchema(schema.RequestSchema):
+    """GetClusterConfig - 获取集群配置文件，管理集群的凭证"""
+
+    fields = {
+        "ClusterId": fields.Str(required=True, dump_to="ClusterId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class GetClusterConfigResponseSchema(schema.ResponseSchema):
+    """GetClusterConfig - 获取集群配置文件，管理集群的凭证"""
+
+    fields = {
+        "ExternalKubeConfig": fields.Str(
+            required=False, load_from="ExternalKubeConfig"
+        ),
+        "KubeConfig": fields.Str(required=True, load_from="KubeConfig"),
+        "Updatable": fields.Bool(required=False, load_from="Updatable"),
+    }
+
+
+"""
+API: GetUK8SVersions
+
+获取支持创建的UK8S集群版本、Containerd版本
+"""
+
+
+class GetUK8SVersionsRequestSchema(schema.RequestSchema):
+    """GetUK8SVersions - 获取支持创建的UK8S集群版本、Containerd版本"""
+
+    fields = {
+        "Kind": fields.Str(required=True, dump_to="Kind"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class GetUK8SVersionsResponseSchema(schema.ResponseSchema):
+    """GetUK8SVersions - 获取支持创建的UK8S集群版本、Containerd版本"""
+
+    fields = {
+        "Data": fields.List(
+            models.UK8SVersionDataSchema(), required=False, load_from="Data"
+        ),
+    }
+
+
+"""
 API: ListUK8SClusterNodeV2
 
 获取UK8S集群节点信息
@@ -534,6 +766,7 @@ class ListUK8SClusterNodeV2RequestSchema(schema.RequestSchema):
 
     fields = {
         "ClusterId": fields.Str(required=True, dump_to="ClusterId"),
+        "NodeIds": fields.Str(required=False, dump_to="NodeIds"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
     }
@@ -577,6 +810,7 @@ class ListUK8SClusterV2ResponseSchema(schema.ResponseSchema):
         "ClusterSet": fields.List(
             models.ClusterSetSchema(), required=False, load_from="ClusterSet"
         ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
     }
 
 
