@@ -3,6 +3,55 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class LoopbackClientCertSchema(schema.ResponseSchema):
+    """LoopbackClientCert - API Server 回环客户端证书"""
+
+    fields = {
+        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "Warn": fields.Bool(required=False, load_from="Warn"),
+    }
+
+
+class KubeProxySchema(schema.ResponseSchema):
+    """KubeProxy - KubeProxy信息"""
+
+    fields = {
+        "Mode": fields.Str(required=False, load_from="Mode"),
+    }
+
+
+class AutoscalerSchema(schema.ResponseSchema):
+    """Autoscaler -"""
+
+    fields = {
+        "Enabled": fields.Int(required=True, load_from="Enabled"),
+        "ScaleDownDelayAfterAdd": fields.Str(
+            required=True, load_from="ScaleDownDelayAfterAdd"
+        ),
+        "ScaleDownGpuUtilizationThreshold": fields.Str(
+            required=True, load_from="ScaleDownGpuUtilizationThreshold"
+        ),
+        "ScaleDownUnneededTime": fields.Str(
+            required=True, load_from="ScaleDownUnneededTime"
+        ),
+        "ScaleDownUtilizationThreshold": fields.Str(
+            required=True, load_from="ScaleDownUtilizationThreshold"
+        ),
+        "UpdateTime": fields.Int(required=True, load_from="UpdateTime"),
+        "Version": fields.Str(required=True, load_from="Version"),
+    }
+
+
+class SecGroupIdSchema(schema.ResponseSchema):
+    """SecGroupId - 安全组"""
+
+    fields = {
+        "Id": fields.Str(required=False, load_from="Id"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Priority": fields.Str(required=False, load_from="Priority"),
+    }
+
+
 class DiskSetSchema(schema.ResponseSchema):
     """DiskSet - 节点磁盘信息"""
 
@@ -36,26 +85,25 @@ class UhostInfoSchema(schema.ResponseSchema):
     """UhostInfo - 机器信息"""
 
     fields = {
+        "BasicImageName": fields.Str(required=True, load_from="BasicImageName"),
         "CPU": fields.Int(required=True, load_from="CPU"),
         "CreateTime": fields.Int(required=True, load_from="CreateTime"),
         "DiskSet": fields.List(DiskSetSchema()),
         "ExpireTime": fields.Int(required=True, load_from="ExpireTime"),
+        "GPU": fields.Int(required=True, load_from="GPU"),
+        "GpuType": fields.Str(required=True, load_from="GpuType"),
         "IPSet": fields.List(IPSetSchema()),
+        "MachineType": fields.Str(required=True, load_from="MachineType"),
         "Memory": fields.Int(required=True, load_from="Memory"),
         "Name": fields.Str(required=True, load_from="Name"),
         "NodeId": fields.Str(required=True, load_from="NodeId"),
         "NodeType": fields.Str(required=True, load_from="NodeType"),
         "OsName": fields.Str(required=True, load_from="OsName"),
+        "OsType": fields.Str(required=True, load_from="OsType"),
+        "SecGroupId": fields.List(SecGroupIdSchema()),
         "State": fields.Str(required=True, load_from="State"),
+        "TotalDiskSpace": fields.Int(required=True, load_from="TotalDiskSpace"),
         "Zone": fields.Str(required=True, load_from="Zone"),
-    }
-
-
-class KubeProxySchema(schema.ResponseSchema):
-    """KubeProxy - KubeProxy信息"""
-
-    fields = {
-        "Mode": fields.Str(required=False, load_from="Mode"),
     }
 
 
@@ -63,9 +111,17 @@ class ImageInfoSchema(schema.ResponseSchema):
     """ImageInfo - UK8S 可用镜像信息"""
 
     fields = {
+        "Features": fields.List(fields.Str()),
         "ImageId": fields.Str(required=True, load_from="ImageId"),
         "ImageName": fields.Str(required=True, load_from="ImageName"),
+        "ImageSize": fields.Int(required=False, load_from="ImageSize"),
+        "IntegratedSoftware": fields.Str(
+            required=False, load_from="IntegratedSoftware"
+        ),
         "NotSupportGPU": fields.Bool(required=True, load_from="NotSupportGPU"),
+        "OsName": fields.Str(required=True, load_from="OsName"),
+        "OsType": fields.Str(required=True, load_from="OsType"),
+        "SupportedGPUTypes": fields.List(fields.Str()),
         "ZoneId": fields.Int(required=True, load_from="ZoneId"),
     }
 
@@ -85,6 +141,17 @@ class K8SNodeConditionSchema(schema.ResponseSchema):
     }
 
 
+class UK8SVersionDataSchema(schema.ResponseSchema):
+    """UK8SVersionData - UK8S版本信息"""
+
+    fields = {
+        "ContainerdVersion": fields.Str(
+            required=True, load_from="ContainerdVersion"
+        ),
+        "K8sVersion": fields.Str(required=True, load_from="K8sVersion"),
+    }
+
+
 class UHostIPSetSchema(schema.ResponseSchema):
     """UHostIPSet - 云主机IP信息"""
 
@@ -95,7 +162,11 @@ class UHostIPSetSchema(schema.ResponseSchema):
         ),  # Deprecated, will be removed at 1.0
         "IP": fields.Str(required=False, load_from="IP"),
         "IPId": fields.Str(required=False, load_from="IPId"),
+        "IPMode": fields.Str(required=False, load_from="IPMode"),
         "Mac": fields.Str(required=False, load_from="Mac"),
+        "NetworkInterfaceId": fields.Str(
+            required=False, load_from="NetworkInterfaceId"
+        ),
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
         "Type": fields.Str(required=False, load_from="Type"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
@@ -107,24 +178,51 @@ class NodeInfoV2Schema(schema.ResponseSchema):
 
     fields = {
         "AsgId": fields.Str(required=True, load_from="AsgId"),
+        "BootDiskSize": fields.Int(required=True, load_from="BootDiskSize"),
         "CPU": fields.Int(required=True, load_from="CPU"),
+        "CPUPlatform": fields.Str(required=True, load_from="CPUPlatform"),
         "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "DataDiskSize": fields.Int(required=True, load_from="DataDiskSize"),
         "ExpireTime": fields.Int(required=True, load_from="ExpireTime"),
         "GPU": fields.Int(required=False, load_from="GPU"),
+        "GPUType": fields.Str(required=False, load_from="GPUType"),
+        "IDCId": fields.Str(required=False, load_from="IDCId"),
+        "IDCName": fields.Str(required=False, load_from="IDCName"),
         "IPSet": fields.List(UHostIPSetSchema()),
+        "ImageAccelable": fields.Bool(
+            required=False, load_from="ImageAccelable"
+        ),
         "InstanceId": fields.Str(required=True, load_from="InstanceId"),
         "InstanceName": fields.Str(required=True, load_from="InstanceName"),
         "InstanceType": fields.Str(required=True, load_from="InstanceType"),
         "KubeProxy": KubeProxySchema(),
+        "KubeletVersion": fields.Str(required=True, load_from="KubeletVersion"),
+        "Labels": fields.List(fields.Str()),
         "MachineType": fields.Str(required=True, load_from="MachineType"),
+        "MaxCPU": fields.Int(required=True, load_from="MaxCPU"),
+        "MaxMemory": fields.Int(required=True, load_from="MaxMemory"),
+        "MaxPod": fields.Int(required=True, load_from="MaxPod"),
         "Memory": fields.Int(required=True, load_from="Memory"),
+        "NodeGroupId": fields.Str(required=False, load_from="NodeGroupId"),
+        "NodeGroupName": fields.Str(required=False, load_from="NodeGroupName"),
         "NodeId": fields.Str(required=True, load_from="NodeId"),
         "NodeLogInfo": fields.Str(required=True, load_from="NodeLogInfo"),
         "NodeRole": fields.Str(required=True, load_from="NodeRole"),
         "NodeStatus": fields.Str(required=True, load_from="NodeStatus"),
         "OsName": fields.Str(required=True, load_from="OsName"),
         "OsType": fields.Str(required=True, load_from="OsType"),
+        "PodCIDR": fields.Str(required=False, load_from="PodCIDR"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "RequestCPU": fields.Int(required=True, load_from="RequestCPU"),
+        "RequestMemory": fields.Int(required=True, load_from="RequestMemory"),
+        "RequestPod": fields.Int(required=True, load_from="RequestPod"),
+        "RuntimeName": fields.Str(required=True, load_from="RuntimeName"),
+        "RuntimeVersion": fields.Str(required=True, load_from="RuntimeVersion"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "UHostFamily": fields.Str(required=True, load_from="UHostFamily"),
         "Unschedulable": fields.Bool(required=True, load_from="Unschedulable"),
+        "UsedCPU": fields.Str(required=True, load_from="UsedCPU"),
+        "UsedMemory": fields.Str(required=True, load_from="UsedMemory"),
         "Zone": fields.Str(required=True, load_from="Zone"),
     }
 
@@ -134,23 +232,110 @@ class ClusterSetSchema(schema.ResponseSchema):
 
     fields = {
         "ApiServer": fields.Str(required=True, load_from="ApiServer"),
+        "CNIMode": fields.Str(required=True, load_from="CNIMode"),
         "ClusterId": fields.Str(required=True, load_from="ClusterId"),
         "ClusterLogInfo": fields.Str(
             required=False, load_from="ClusterLogInfo"
         ),
         "ClusterName": fields.Str(required=True, load_from="ClusterName"),
+        "ClusterType": fields.Str(required=True, load_from="ClusterType"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "DeleteProtection": fields.Int(
+            required=True, load_from="DeleteProtection"
+        ),
         "ExternalApiServer": fields.Str(
             required=False, load_from="ExternalApiServer"
         ),
         "K8sVersion": fields.Str(required=True, load_from="K8sVersion"),
+        "LoopbackClientCert": LoopbackClientCertSchema(),
         "MasterCount": fields.Int(required=True, load_from="MasterCount"),
         "NodeCount": fields.Int(required=False, load_from="NodeCount"),
         "PodCIDR": fields.Str(required=True, load_from="PodCIDR"),
+        "RuntimeName": fields.Str(required=True, load_from="RuntimeName"),
+        "RuntimeVersion": fields.Str(required=True, load_from="RuntimeVersion"),
         "ServiceCIDR": fields.Str(required=True, load_from="ServiceCIDR"),
         "Status": fields.Str(required=False, load_from="Status"),
         "SubnetId": fields.Str(required=True, load_from="SubnetId"),
         "VPCId": fields.Str(required=True, load_from="VPCId"),
+    }
+
+
+class EvictionConditionSchema(schema.ResponseSchema):
+    """EvictionCondition - 驱逐条件或宽限时间"""
+
+    fields = {
+        "ImagefsAvailable": fields.Str(
+            required=False, load_from="ImagefsAvailable"
+        ),
+        "MemoryAvailable": fields.Str(
+            required=False, load_from="MemoryAvailable"
+        ),
+        "NodefsAvailable": fields.Str(
+            required=False, load_from="NodefsAvailable"
+        ),
+        "NodefsInodesFree": fields.Str(
+            required=False, load_from="NodefsInodesFree"
+        ),
+    }
+
+
+class EIPSchema(schema.ResponseSchema):
+    """EIP - 节点EIP"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "CouponId": fields.Str(required=False, load_from="CouponId"),
+        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
+        "PayMode": fields.Str(required=False, load_from="PayMode"),
+        "ShareBandwidthId": fields.Str(
+            required=False, load_from="ShareBandwidthId"
+        ),
+    }
+
+
+class NetworkInterfaceSchema(schema.ResponseSchema):
+    """NetworkInterface - 网络接口"""
+
+    fields = {
+        "EIP": EIPSchema(),
+    }
+
+
+class ReservedResourceSchema(schema.ResponseSchema):
+    """ReservedResource - 预留资源"""
+
+    fields = {
+        "CPU": fields.Str(required=False, load_from="CPU"),
+        "EphemeralStorage": fields.Str(
+            required=False, load_from="EphemeralStorage"
+        ),
+        "Memory": fields.Str(required=False, load_from="Memory"),
+        "Pid": fields.Str(required=False, load_from="Pid"),
+    }
+
+
+class KubeletConfigurationSchema(schema.ResponseSchema):
+    """KubeletConfiguration - kubelet自定义配置"""
+
+    fields = {
+        "ContainerLogMaxFiles": fields.Int(
+            required=False, load_from="ContainerLogMaxFiles"
+        ),
+        "ContainerLogMaxSize": fields.Str(
+            required=False, load_from="ContainerLogMaxSize"
+        ),
+        "EvictionHard": EvictionConditionSchema(),
+        "EvictionSoft": EvictionConditionSchema(),
+        "EvictionSoftGracePeriod": EvictionConditionSchema(),
+        "ImageGCHighThresholdPercent": fields.Int(
+            required=False, load_from="ImageGCHighThresholdPercent"
+        ),
+        "ImageGCLowThresholdPercent": fields.Int(
+            required=False, load_from="ImageGCLowThresholdPercent"
+        ),
+        "KubeReserved": ReservedResourceSchema(),
+        "MaxPods": fields.Int(required=False, load_from="MaxPods"),
+        "SystemReserved": ReservedResourceSchema(),
     }
 
 
@@ -162,18 +347,49 @@ class NodeGroupSetSchema(schema.ResponseSchema):
         "BootDiskType": fields.Str(required=False, load_from="BootDiskType"),
         "CPU": fields.Int(required=False, load_from="CPU"),
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "DataDiskSize": fields.Int(required=False, load_from="DataDiskSize"),
         "DataDiskType": fields.Str(required=False, load_from="DataDiskType"),
+        "Disks": fields.List(DiskSetSchema()),
         "GPU": fields.Int(required=False, load_from="GPU"),
         "GpuType": fields.Str(required=False, load_from="GpuType"),
         "ImageId": fields.Str(required=False, load_from="ImageId"),
+        "ImageName": fields.Str(required=False, load_from="ImageName"),
+        "ImageType": fields.Str(required=False, load_from="ImageType"),
+        "InitScript": fields.Str(required=False, load_from="InitScript"),
+        "IsolationGroupId": fields.Str(
+            required=False, load_from="IsolationGroupId"
+        ),
+        "KubeletConfiguration": KubeletConfigurationSchema(),
+        "Labels": fields.Str(required=False, load_from="Labels"),
         "MachineType": fields.Str(required=False, load_from="MachineType"),
+        "MaxPods": fields.Int(required=False, load_from="MaxPods"),
         "Mem": fields.Int(required=False, load_from="Mem"),
         "MinimalCpuPlatform": fields.Str(
             required=False, load_from="MinimalCpuPlatform"
         ),
+        "NetCapability": fields.Str(required=False, load_from="NetCapability"),
+        "NetworkInterface": fields.List(NetworkInterfaceSchema()),
         "NodeGroupId": fields.Str(required=False, load_from="NodeGroupId"),
         "NodeGroupName": fields.Str(required=False, load_from="NodeGroupName"),
         "NodeList": fields.List(fields.Str()),
+        "NodeNamePrefix": fields.Str(
+            required=False, load_from="NodeNamePrefix"
+        ),
+        "OsName": fields.Str(required=False, load_from="OsName"),
+        "OsType": fields.Str(required=False, load_from="OsType"),
+        "RelatedAsg": fields.List(fields.Str()),
+        "SecGroupId": fields.List(SecGroupIdSchema()),
+        "SecurityGroupId": fields.Str(
+            required=False, load_from="SecurityGroupId"
+        ),
+        "SecurityMode": fields.Str(required=False, load_from="SecurityMode"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
         "Tag": fields.Str(required=False, load_from="Tag"),
+        "Taints": fields.Str(required=False, load_from="Taints"),
+        "UHostFamily": fields.Str(required=False, load_from="UHostFamily"),
+        "UNIFeature": fields.Bool(required=False, load_from="UNIFeature"),
+        "UpdateTime": fields.Int(required=False, load_from="UpdateTime"),
+        "UserData": fields.Str(required=False, load_from="UserData"),
+        "Zone": fields.Str(required=False, load_from="Zone"),
     }
