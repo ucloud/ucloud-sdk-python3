@@ -8,6 +8,69 @@ from ucloud.services.ugn.schemas import models
 
 
 """
+API: AddRoutePolicy
+
+新增路由策略
+"""
+
+
+class AddRoutePolicyParamPolicyDstNetworksSchema(schema.RequestSchema):
+    """AddRoutePolicyParamPolicyDstNetworks -"""
+
+    fields = {
+        "NetworkId": fields.Str(required=False, dump_to="NetworkId"),
+    }
+
+
+class AddRoutePolicyParamPolicySrcNetworksSchema(schema.RequestSchema):
+    """AddRoutePolicyParamPolicySrcNetworks -"""
+
+    fields = {
+        "NetworkId": fields.Str(required=True, dump_to="NetworkId"),
+        "Prefixes": fields.List(fields.Str()),
+    }
+
+
+class AddRoutePolicyParamPolicySchema(schema.RequestSchema):
+    """AddRoutePolicyParamPolicy -"""
+
+    fields = {
+        "Direction": fields.Str(required=True, dump_to="Direction"),
+        "DstNetworkTypes": fields.List(fields.Str()),
+        "DstNetworks": fields.List(
+            AddRoutePolicyParamPolicyDstNetworksSchema()
+        ),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "Priority": fields.Int(required=True, dump_to="Priority"),
+        "RouteAction": fields.Str(required=True, dump_to="RouteAction"),
+        "RoutePriority": fields.Int(required=False, dump_to="RoutePriority"),
+        "SrcNetworkTypes": fields.List(fields.Str()),
+        "SrcNetworks": fields.List(
+            AddRoutePolicyParamPolicySrcNetworksSchema()
+        ),
+        "SrcRegions": fields.List(fields.Str()),
+    }
+
+
+class AddRoutePolicyRequestSchema(schema.RequestSchema):
+    """AddRoutePolicy - 新增路由策略"""
+
+    fields = {
+        "Policy": AddRoutePolicyParamPolicySchema(
+            required=False, dump_to="Policy"
+        ),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "UGNID": fields.Str(required=True, dump_to="UGNID"),
+    }
+
+
+class AddRoutePolicyResponseSchema(schema.ResponseSchema):
+    """AddRoutePolicy - 新增路由策略"""
+
+    fields = {}
+
+
+"""
 API: AttachUGNInstance
 
 实例加入云联网
@@ -34,6 +97,46 @@ class AttachUGNInstanceResponseSchema(schema.ResponseSchema):
 
     fields = {
         "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: AttachUGNNetworks
+
+批量关联网络实例
+"""
+
+
+class AttachUGNNetworksParamNetworksSchema(schema.RequestSchema):
+    """AttachUGNNetworksParamNetworks -"""
+
+    fields = {
+        "NetworkID": fields.Str(required=True, dump_to="NetworkID"),
+        "OrgName": fields.Str(required=True, dump_to="OrgName"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Type": fields.Str(required=True, dump_to="Type"),
+    }
+
+
+class AttachUGNNetworksRequestSchema(schema.RequestSchema):
+    """AttachUGNNetworks - 批量关联网络实例"""
+
+    fields = {
+        "Networks": fields.List(AttachUGNNetworksParamNetworksSchema()),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "UGNID": fields.Str(required=True, dump_to="UGNID"),
+    }
+
+
+class AttachUGNNetworksResponseSchema(schema.ResponseSchema):
+    """AttachUGNNetworks - 批量关联网络实例"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "Networks": fields.List(
+            models.NetworkSchema(), required=True, load_from="Networks"
+        ),
+        "UGNID": fields.Str(required=False, load_from="UGNID"),
     }
 
 
@@ -99,29 +202,102 @@ class CreateInterRegionBandwidthResponseSchema(schema.ResponseSchema):
 
 
 """
-API: CreateUGN
+API: CreateSimpleUGNBwPackage
 
-
+云联网简洁版创建带宽包
 """
 
 
+class CreateSimpleUGNBwPackageRequestSchema(schema.RequestSchema):
+    """CreateSimpleUGNBwPackage - 云联网简洁版创建带宽包"""
+
+    fields = {
+        "BandWidth": fields.Int(required=True, dump_to="BandWidth"),
+        "ChargeType": fields.Str(required=True, dump_to="ChargeType"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "Path": fields.Str(required=False, dump_to="Path"),
+        "PayMode": fields.Str(required=True, dump_to="PayMode"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Qos": fields.Str(required=False, dump_to="Qos"),
+        "Quantity": fields.Float(required=True, dump_to="Quantity"),
+        "RegionA": fields.Str(required=True, dump_to="RegionA"),
+        "RegionB": fields.Str(required=True, dump_to="RegionB"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "UGNID": fields.Str(required=True, dump_to="UGNID"),
+    }
+
+
+class CreateSimpleUGNBwPackageResponseSchema(schema.ResponseSchema):
+    """CreateSimpleUGNBwPackage - 云联网简洁版创建带宽包"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: CreateUGN
+
+创建云联网
+"""
+
+
+class CreateUGNParamNetworksSchema(schema.RequestSchema):
+    """CreateUGNParamNetworks -"""
+
+    fields = {
+        "NetworkID": fields.Str(required=False, dump_to="NetworkID"),
+        "OrgName": fields.Str(required=False, dump_to="OrgName"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Type": fields.Str(required=False, dump_to="Type"),
+    }
+
+
 class CreateUGNRequestSchema(schema.RequestSchema):
-    """CreateUGN -"""
+    """CreateUGN - 创建云联网"""
 
     fields = {
         "Name": fields.Str(required=False, dump_to="Name"),
-        "Networks": fields.List(fields.Str()),
+        "Networks": fields.List(CreateUGNParamNetworksSchema()),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "Remark": fields.Str(required=False, dump_to="Remark"),
     }
 
 
 class CreateUGNResponseSchema(schema.ResponseSchema):
-    """CreateUGN -"""
+    """CreateUGN - 创建云联网"""
 
     fields = {
         "Message": fields.Str(required=False, load_from="Message"),
+        "Networks": fields.List(
+            models.NetworkSchema(), required=False, load_from="Networks"
+        ),
         "UGNID": fields.Str(required=False, load_from="UGNID"),
+    }
+
+
+"""
+API: DelUGN
+
+删除云联网，仅云联网内无带宽包或网络实例时才可以被删除
+"""
+
+
+class DelUGNRequestSchema(schema.RequestSchema):
+    """DelUGN - 删除云联网，仅云联网内无带宽包或网络实例时才可以被删除"""
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "UGNID": fields.Str(required=True, dump_to="UGNID"),
+    }
+
+
+class DelUGNResponseSchema(schema.ResponseSchema):
+    """DelUGN - 删除云联网，仅云联网内无带宽包或网络实例时才可以被删除"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
     }
 
 
@@ -153,6 +329,29 @@ class DeleteInterRegionBandwidthResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DeleteRoutePolicy
+
+删除路由策略
+"""
+
+
+class DeleteRoutePolicyRequestSchema(schema.RequestSchema):
+    """DeleteRoutePolicy - 删除路由策略"""
+
+    fields = {
+        "PolicyIds": fields.List(fields.Str()),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "UGNID": fields.Str(required=True, dump_to="UGNID"),
+    }
+
+
+class DeleteRoutePolicyResponseSchema(schema.ResponseSchema):
+    """DeleteRoutePolicy - 删除路由策略"""
+
+    fields = {}
+
+
+"""
 API: DeleteUGN
 
 删除云联网
@@ -170,6 +369,31 @@ class DeleteUGNRequestSchema(schema.RequestSchema):
 
 class DeleteUGNResponseSchema(schema.ResponseSchema):
     """DeleteUGN - 删除云联网"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: DeleteUGNBwPackage
+
+删除带宽包，互通地域仅保留默认带宽包
+"""
+
+
+class DeleteUGNBwPackageRequestSchema(schema.RequestSchema):
+    """DeleteUGNBwPackage - 删除带宽包，互通地域仅保留默认带宽包"""
+
+    fields = {
+        "BwPackageID": fields.Str(required=True, dump_to="BwPackageID"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "UGNID": fields.Str(required=True, dump_to="UGNID"),
+    }
+
+
+class DeleteUGNBwPackageResponseSchema(schema.ResponseSchema):
+    """DeleteUGNBwPackage - 删除带宽包，互通地域仅保留默认带宽包"""
 
     fields = {
         "Message": fields.Str(required=True, load_from="Message"),
@@ -220,7 +444,7 @@ class DescribeSimpleUGNRequestSchema(schema.RequestSchema):
     """DescribeSimpleUGN - 获取简洁版UGN详情"""
 
     fields = {
-        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "UGNID": fields.Str(required=True, dump_to="UGNID"),
     }
 
@@ -237,6 +461,9 @@ class DescribeSimpleUGNResponseSchema(schema.ResponseSchema):
         "Message": fields.Str(required=True, load_from="Message"),
         "Networks": fields.List(
             models.SimpleNetworkSchema(), required=True, load_from="Networks"
+        ),
+        "Policies": fields.List(
+            models.PolicySchema(), required=False, load_from="Policies"
         ),
         "Routes": fields.List(
             models.SimpleRouteSchema(), required=True, load_from="Routes"
@@ -360,6 +587,91 @@ class DetachUGNInstanceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DetachUGNNetworks
+
+批量解除关联网络实例
+"""
+
+
+class DetachUGNNetworksRequestSchema(schema.RequestSchema):
+    """DetachUGNNetworks - 批量解除关联网络实例"""
+
+    fields = {
+        "Networks": fields.List(fields.Str()),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "UGNID": fields.Str(required=True, dump_to="UGNID"),
+    }
+
+
+class DetachUGNNetworksResponseSchema(schema.ResponseSchema):
+    """DetachUGNNetworks - 批量解除关联网络实例"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "Networks": fields.List(
+            models.NetworkSchema(), required=True, load_from="Networks"
+        ),
+        "UGNID": fields.Str(required=False, load_from="UGNID"),
+    }
+
+
+"""
+API: EnableRoutePolicy
+
+启用\停用路由策略
+"""
+
+
+class EnableRoutePolicyRequestSchema(schema.RequestSchema):
+    """EnableRoutePolicy - 启用\停用路由策略"""
+
+    fields = {
+        "Enable": fields.Bool(required=True, dump_to="Enable"),
+        "PolicyId": fields.Str(required=True, dump_to="PolicyId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "UGNID": fields.Str(required=True, dump_to="UGNID"),
+    }
+
+
+class EnableRoutePolicyResponseSchema(schema.ResponseSchema):
+    """EnableRoutePolicy - 启用\停用路由策略"""
+
+    fields = {}
+
+
+"""
+API: GetSimpleBuyBwPrice
+
+获取简洁版带宽包价格
+"""
+
+
+class GetSimpleBuyBwPriceRequestSchema(schema.RequestSchema):
+    """GetSimpleBuyBwPrice - 获取简洁版带宽包价格"""
+
+    fields = {
+        "BandWidth": fields.Int(required=False, dump_to="BandWidth"),
+        "ChargeType": fields.Str(required=True, dump_to="ChargeType"),
+        "Path": fields.Str(required=True, dump_to="Path"),
+        "PayMode": fields.Str(required=True, dump_to="PayMode"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Qos": fields.Str(required=True, dump_to="Qos"),
+        "RegionA": fields.Str(required=True, dump_to="RegionA"),
+        "RegionB": fields.Str(required=True, dump_to="RegionB"),
+    }
+
+
+class GetSimpleBuyBwPriceResponseSchema(schema.ResponseSchema):
+    """GetSimpleBuyBwPrice - 获取简洁版带宽包价格"""
+
+    fields = {
+        "CustomPrice": fields.Int(required=True, load_from="CustomPrice"),
+        "OriginalPrice": fields.Int(required=True, load_from="OriginalPrice"),
+        "TotalPrice": fields.Int(required=True, load_from="TotalPrice"),
+    }
+
+
+"""
 API: GetSimpleUGNBwPackages
 
 获取指定云联网内的带宽包
@@ -372,6 +684,7 @@ class GetSimpleUGNBwPackagesRequestSchema(schema.RequestSchema):
     fields = {
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
+        "PackageIds": fields.List(fields.Str()),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "UGNID": fields.Str(required=True, dump_to="UGNID"),
     }
@@ -390,6 +703,64 @@ class GetSimpleUGNBwPackagesResponseSchema(schema.ResponseSchema):
         "Message": fields.Str(required=True, load_from="Message"),
         "Offset": fields.Int(required=True, load_from="Offset"),
         "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
+API: GetSwitchableBillingModes
+
+获取带宽包可以切换的计费类型
+"""
+
+
+class GetSwitchableBillingModesRequestSchema(schema.RequestSchema):
+    """GetSwitchableBillingModes - 获取带宽包可以切换的计费类型"""
+
+    fields = {
+        "BwPackageID": fields.Str(required=True, dump_to="BwPackageID"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+    }
+
+
+class GetSwitchableBillingModesResponseSchema(schema.ResponseSchema):
+    """GetSwitchableBillingModes - 获取带宽包可以切换的计费类型"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "PayModes": fields.List(
+            fields.Str(), required=True, load_from="PayModes"
+        ),
+    }
+
+
+"""
+API: GetUGNRouteTable
+
+获取云联网路由表
+"""
+
+
+class GetUGNRouteTableRequestSchema(schema.RequestSchema):
+    """GetUGNRouteTable - 获取云联网路由表"""
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Type": fields.Str(required=True, dump_to="Type"),
+        "UGNID": fields.Str(required=True, dump_to="UGNID"),
+    }
+
+
+class GetUGNRouteTableResponseSchema(schema.ResponseSchema):
+    """GetUGNRouteTable - 获取云联网路由表"""
+
+    fields = {
+        "Routes": fields.List(
+            models.SimpleRouteSchema(), required=True, load_from="Routes"
+        ),
+        "UGNID": fields.Str(required=True, load_from="UGNID"),
+        "VRoutes": fields.List(
+            models.VRouteSchema(), required=True, load_from="VRoutes"
+        ),
     }
 
 
@@ -420,6 +791,7 @@ class ListSimpleBwPackageResponseSchema(schema.ResponseSchema):
             load_from="BwPackages",
         ),
         "Limit": fields.Int(required=True, load_from="Limit"),
+        "Message": fields.Str(required=False, load_from="Message"),
         "Offset": fields.Int(required=True, load_from="Offset"),
         "TotalCount": fields.Int(required=True, load_from="TotalCount"),
     }
@@ -452,6 +824,32 @@ class ListUGNResponseSchema(schema.ResponseSchema):
         "TotalCount": fields.Int(required=False, load_from="TotalCount"),
         "UGNs": fields.List(
             models.UGNSchema(), required=True, load_from="UGNs"
+        ),
+    }
+
+
+"""
+API: ListUGNRegions
+
+获取UGN的可加入地域列表
+"""
+
+
+class ListUGNRegionsRequestSchema(schema.RequestSchema):
+    """ListUGNRegions - 获取UGN的可加入地域列表"""
+
+    fields = {
+        "SelectedRegions": fields.List(fields.Str()),
+    }
+
+
+class ListUGNRegionsResponseSchema(schema.ResponseSchema):
+    """ListUGNRegions - 获取UGN的可加入地域列表"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "RegionLIst": fields.List(
+            models.UgnRegionSchema(), required=True, load_from="RegionLIst"
         ),
     }
 
@@ -607,6 +1005,37 @@ class SDescribeUGNResponseSchema(schema.ResponseSchema):
 
 
 """
+API: SendUGNApplyNetwork
+
+跨账号网络实例申请加入 UGN
+"""
+
+
+class SendUGNApplyNetworkRequestSchema(schema.RequestSchema):
+    """SendUGNApplyNetwork - 跨账号网络实例申请加入 UGN"""
+
+    fields = {
+        "NetworkID": fields.Str(required=True, dump_to="NetworkID"),
+        "NetworkOrgName": fields.Str(required=True, dump_to="NetworkOrgName"),
+        "NetworkRegion": fields.Str(required=True, dump_to="NetworkRegion"),
+        "NetworkType": fields.Str(required=True, dump_to="NetworkType"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UGNCompanyID": fields.Int(required=True, dump_to="UGNCompanyID"),
+        "UGNID": fields.Str(required=True, dump_to="UGNID"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class SendUGNApplyNetworkResponseSchema(schema.ResponseSchema):
+    """SendUGNApplyNetwork - 跨账号网络实例申请加入 UGN"""
+
+    fields = {
+        "Message": fields.Str(required=False, load_from="Message"),
+    }
+
+
+"""
 API: UnpublishUGNRouteRule
 
 取消发布云联网路由规则
@@ -634,6 +1063,72 @@ class UnpublishUGNRouteRuleResponseSchema(schema.ResponseSchema):
 
     fields = {
         "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: UpdateRoutePolicy
+
+修改路由策略
+"""
+
+
+class UpdateRoutePolicyParamPolicySrcNetworksSchema(schema.RequestSchema):
+    """UpdateRoutePolicyParamPolicySrcNetworks -"""
+
+    fields = {
+        "NetworkId": fields.Str(required=False, dump_to="NetworkId"),
+        "Prefixes": fields.List(fields.Str()),
+    }
+
+
+class UpdateRoutePolicyParamPolicyDstNetworksSchema(schema.RequestSchema):
+    """UpdateRoutePolicyParamPolicyDstNetworks -"""
+
+    fields = {
+        "NetworkId": fields.Str(required=False, dump_to="NetworkId"),
+    }
+
+
+class UpdateRoutePolicyParamPolicySchema(schema.RequestSchema):
+    """UpdateRoutePolicyParamPolicy -"""
+
+    fields = {
+        "Direction": fields.Str(required=False, dump_to="Direction"),
+        "DstNetworkTypes": fields.List(fields.Str()),
+        "DstNetworks": fields.List(
+            UpdateRoutePolicyParamPolicyDstNetworksSchema()
+        ),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "PolicyId": fields.Str(required=True, dump_to="PolicyId"),
+        "Priority": fields.Int(required=False, dump_to="Priority"),
+        "RouteAction": fields.Str(required=False, dump_to="RouteAction"),
+        "RoutePriority": fields.Int(required=False, dump_to="RoutePriority"),
+        "SrcNetworkTypes": fields.List(fields.Str()),
+        "SrcNetworks": fields.List(
+            UpdateRoutePolicyParamPolicySrcNetworksSchema()
+        ),
+        "SrcRegions": fields.List(fields.Str()),
+    }
+
+
+class UpdateRoutePolicyRequestSchema(schema.RequestSchema):
+    """UpdateRoutePolicy - 修改路由策略"""
+
+    fields = {
+        "Policy": UpdateRoutePolicyParamPolicySchema(
+            required=False, dump_to="Policy"
+        ),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "UGNID": fields.Str(required=True, dump_to="UGNID"),
+    }
+
+
+class UpdateRoutePolicyResponseSchema(schema.ResponseSchema):
+    """UpdateRoutePolicy - 修改路由策略"""
+
+    fields = {
+        "Message": fields.Str(required=False, load_from="Message"),
     }
 
 

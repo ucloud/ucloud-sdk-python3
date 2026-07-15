@@ -3,6 +3,23 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class NetworkSchema(schema.ResponseSchema):
+    """Network - 云联网网络实例"""
+
+    fields = {
+        "CompanyID": fields.Int(required=True, load_from="CompanyID"),
+        "InsertTime": fields.Int(required=False, load_from="InsertTime"),
+        "Name": fields.Str(required=True, load_from="Name"),
+        "NetworkID": fields.Str(required=True, load_from="NetworkID"),
+        "OrgID": fields.Int(required=False, load_from="OrgID"),
+        "OrgName": fields.Str(required=True, load_from="OrgName"),
+        "Region": fields.Str(required=True, load_from="Region"),
+        "RegionID": fields.Int(required=False, load_from="RegionID"),
+        "Type": fields.Str(required=True, load_from="Type"),
+        "VNI": fields.Int(required=False, load_from="VNI"),
+    }
+
+
 class InterRegionBandwidthSchema(schema.ResponseSchema):
     """InterRegionBandwidth - 跨域带宽"""
 
@@ -22,34 +39,6 @@ class InterRegionBandwidthSchema(schema.ResponseSchema):
     }
 
 
-class UGNSchema(schema.ResponseSchema):
-    """UGN - 云联网信息"""
-
-    fields = {
-        "BwPackageCount": fields.Int(required=True, load_from="BwPackageCount"),
-        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
-        "Name": fields.Str(required=True, load_from="Name"),
-        "NetworkCount": fields.Int(required=True, load_from="NetworkCount"),
-        "Remark": fields.Str(required=True, load_from="Remark"),
-        "UGNID": fields.Str(required=True, load_from="UGNID"),
-    }
-
-
-class SimpleRouteSchema(schema.ResponseSchema):
-    """SimpleRoute - 简洁版云联网路由条目"""
-
-    fields = {
-        "DstAddr": fields.Str(required=False, load_from="DstAddr"),
-        "NextHopID": fields.Str(required=False, load_from="NextHopID"),
-        "NextHopRegion": fields.Str(required=False, load_from="NextHopRegion"),
-        "NextHopRegionID": fields.Int(
-            required=False, load_from="NextHopRegionID"
-        ),
-        "NextHopType": fields.Str(required=False, load_from="NextHopType"),
-        "Priority": fields.Int(required=False, load_from="Priority"),
-    }
-
-
 class SimpleNetworkSchema(schema.ResponseSchema):
     """SimpleNetwork - 简洁版云联网网络实例"""
 
@@ -62,6 +51,72 @@ class SimpleNetworkSchema(schema.ResponseSchema):
         "Region": fields.Str(required=True, load_from="Region"),
         "RegionID": fields.Int(required=False, load_from="RegionID"),
         "Type": fields.Str(required=True, load_from="Type"),
+    }
+
+
+class NetworkAndPrefixSchema(schema.ResponseSchema):
+    """NetworkAndPrefix - 网络实例及其上报的网段信息"""
+
+    fields = {
+        "NetworkId": fields.Str(required=False, load_from="NetworkId"),
+        "Prefixes": fields.List(fields.Str()),
+    }
+
+
+class PolicySchema(schema.ResponseSchema):
+    """Policy - 路由策略"""
+
+    fields = {
+        "Action": fields.Str(required=False, load_from="Action"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "Direction": fields.Str(required=False, load_from="Direction"),
+        "DstNetworkTypes": fields.List(fields.Str()),
+        "DstNetworks": fields.List(NetworkAndPrefixSchema()),
+        "Enabled": fields.Bool(required=False, load_from="Enabled"),
+        "Matched": fields.Bool(required=False, load_from="Matched"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "PolicyId": fields.Str(required=False, load_from="PolicyId"),
+        "Priority": fields.Int(required=False, load_from="Priority"),
+        "Region": fields.Str(required=False, load_from="Region"),
+        "RoutePriority": fields.Int(required=False, load_from="RoutePriority"),
+        "SrcNetworkTypes": fields.List(fields.Str()),
+        "SrcNetworks": fields.List(NetworkAndPrefixSchema()),
+        "SrcRegions": fields.List(fields.Str()),
+    }
+
+
+class SimpleRouteSchema(schema.ResponseSchema):
+    """SimpleRoute - 简洁版云联网路由条目"""
+
+    fields = {
+        "Conflict": fields.Bool(required=False, load_from="Conflict"),
+        "Deny": fields.Bool(required=False, load_from="Deny"),
+        "DstAddr": fields.Str(required=False, load_from="DstAddr"),
+        "InPolicyId": fields.Str(required=False, load_from="InPolicyId"),
+        "InPolicyName": fields.Str(required=False, load_from="InPolicyName"),
+        "NextHopID": fields.Str(required=False, load_from="NextHopID"),
+        "NextHopRegion": fields.Str(required=False, load_from="NextHopRegion"),
+        "NextHopRegionID": fields.Int(
+            required=False, load_from="NextHopRegionID"
+        ),
+        "NextHopType": fields.Str(required=False, load_from="NextHopType"),
+        "OutPolicyId": fields.Str(required=False, load_from="OutPolicyId"),
+        "OutPolicyName": fields.Str(required=False, load_from="OutPolicyName"),
+        "Priority": fields.Int(required=False, load_from="Priority"),
+        "Restrict": fields.Bool(required=False, load_from="Restrict"),
+    }
+
+
+class UGNSchema(schema.ResponseSchema):
+    """UGN - 云联网信息"""
+
+    fields = {
+        "BwPackageCount": fields.Int(required=True, load_from="BwPackageCount"),
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "Name": fields.Str(required=True, load_from="Name"),
+        "NetworkCount": fields.Int(required=True, load_from="NetworkCount"),
+        "Remark": fields.Str(required=True, load_from="Remark"),
+        "UGNID": fields.Str(required=True, load_from="UGNID"),
     }
 
 
@@ -138,18 +193,39 @@ class RouteRuleSchema(schema.ResponseSchema):
     }
 
 
-class SNetworkSchema(schema.ResponseSchema):
-    """SNetwork - 简洁版云联网网络实例"""
+class VRouteSchema(schema.ResponseSchema):
+    """VRoute - 针对单实例的路由表"""
 
     fields = {
-        "CreateTime": fields.Str(required=False, load_from="CreateTime"),
-        "Name": fields.Str(required=True, load_from="Name"),
-        "NetworkID": fields.Str(required=True, load_from="NetworkID"),
-        "OrgID": fields.Int(required=False, load_from="OrgID"),
-        "OrgName": fields.Str(required=True, load_from="OrgName"),
+        "NetworkId": fields.Str(required=False, load_from="NetworkId"),
+        "Routes": fields.List(SimpleRouteSchema()),
+    }
+
+
+class UgnRegionSchema(schema.ResponseSchema):
+    """UgnRegion -"""
+
+    fields = {
+        "IsOnline": fields.Bool(required=True, load_from="IsOnline"),
+        "IsOverseas": fields.Bool(required=True, load_from="IsOverseas"),
+        "Needs": fields.List(fields.Str()),
+        "RegIonId": fields.Int(required=True, load_from="RegIonId"),
         "Region": fields.Str(required=True, load_from="Region"),
-        "RegionID": fields.Int(required=False, load_from="RegionID"),
-        "Type": fields.Str(required=True, load_from="Type"),
+    }
+
+
+class RouteSchema(schema.ResponseSchema):
+    """Route - 云联网路由条目"""
+
+    fields = {
+        "DstAddr": fields.Str(required=False, load_from="DstAddr"),
+        "NexthopID": fields.Str(required=False, load_from="NexthopID"),
+        "NexthopRegion": fields.Str(required=False, load_from="NexthopRegion"),
+        "NexthopRegionID": fields.Int(
+            required=False, load_from="NexthopRegionID"
+        ),
+        "NexthopType": fields.Str(required=False, load_from="NexthopType"),
+        "Priority": fields.Int(required=False, load_from="Priority"),
     }
 
 
@@ -176,16 +252,16 @@ class SBwPackageSchema(schema.ResponseSchema):
     }
 
 
-class RouteSchema(schema.ResponseSchema):
-    """Route - 云联网路由条目"""
+class SNetworkSchema(schema.ResponseSchema):
+    """SNetwork - 简洁版云联网网络实例"""
 
     fields = {
-        "DstAddr": fields.Str(required=False, load_from="DstAddr"),
-        "NexthopID": fields.Str(required=False, load_from="NexthopID"),
-        "NexthopRegion": fields.Str(required=False, load_from="NexthopRegion"),
-        "NexthopRegionID": fields.Int(
-            required=False, load_from="NexthopRegionID"
-        ),
-        "NexthopType": fields.Str(required=False, load_from="NexthopType"),
-        "Priority": fields.Int(required=False, load_from="Priority"),
+        "CreateTime": fields.Str(required=False, load_from="CreateTime"),
+        "Name": fields.Str(required=True, load_from="Name"),
+        "NetworkID": fields.Str(required=True, load_from="NetworkID"),
+        "OrgID": fields.Int(required=False, load_from="OrgID"),
+        "OrgName": fields.Str(required=True, load_from="OrgName"),
+        "Region": fields.Str(required=True, load_from="Region"),
+        "RegionID": fields.Int(required=False, load_from="RegionID"),
+        "Type": fields.Str(required=True, load_from="Type"),
     }
