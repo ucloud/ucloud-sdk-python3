@@ -3,325 +3,570 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class APIKeySchema(schema.ResponseSchema):
-    """APIKey - apikey"""
 
+
+
+
+
+
+
+
+
+class APIKeySchema(schema.ResponseSchema):
+    """ APIKey - apikey
+    """
     fields = {
-        "ChannelId": fields.Int(required=False, load_from="ChannelId"),
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "DailyLimitAmount": fields.Str(
-            required=False, load_from="DailyLimitAmount"
-        ),
-        "DailyUsedAmount": fields.Str(
-            required=False, load_from="DailyUsedAmount"
-        ),
-        "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
-        "GrantAllModels": fields.Bool(
-            required=False, load_from="GrantAllModels"
-        ),
-        "GrantedModels": fields.List(fields.Str()),
-        "IPWhitelist": fields.Str(required=True, load_from="IPWhitelist"),
-        "Key": fields.Str(required=False, load_from="Key"),
-        "KeyId": fields.Str(required=False, load_from="KeyId"),
-        "ModelverseDisabled": fields.Int(
-            required=False, load_from="ModelverseDisabled"
-        ),
-        "MonthlyLimitAmount": fields.Str(
-            required=False, load_from="MonthlyLimitAmount"
-        ),
-        "MonthlyUsedAmount": fields.Str(
-            required=False, load_from="MonthlyUsedAmount"
-        ),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "OrganizationId": fields.Int(
-            required=False, load_from="OrganizationId"
-        ),
-        "SandBoxDisabled": fields.Int(
-            required=False, load_from="SandBoxDisabled"
-        ),
-        "Status": fields.Int(required=False, load_from="Status"),
-        "TopOrganizationId": fields.Int(
-            required=False, load_from="TopOrganizationId"
-        ),
+    
+        'ChannelId': fields.Int(required=False, load_from='ChannelId'), 
+    
+        'CreateTime': fields.Int(required=False, load_from='CreateTime'), 
+    
+        'DailyLimitAmount': fields.Str(required=False, load_from='DailyLimitAmount'), 
+    
+        'DailyUsedAmount': fields.Str(required=False, load_from='DailyUsedAmount'), 
+    
+        'ExpireTime': fields.Int(required=False, load_from='ExpireTime'), 
+    
+        'GrantAllModels': fields.Bool(required=False, load_from='GrantAllModels'), 
+    
+        'GrantedModels': fields.List(fields.Str()), 
+    
+        'IPWhitelist': fields.Str(required=True, load_from='IPWhitelist'), 
+    
+        'Key': fields.Str(required=False, load_from='Key'), 
+    
+        'KeyId': fields.Str(required=False, load_from='KeyId'), 
+    
+        'ModelverseDisabled': fields.Int(required=False, load_from='ModelverseDisabled'), 
+    
+        'MonthlyLimitAmount': fields.Str(required=False, load_from='MonthlyLimitAmount'), 
+    
+        'MonthlyUsedAmount': fields.Str(required=False, load_from='MonthlyUsedAmount'), 
+    
+        'Name': fields.Str(required=False, load_from='Name'), 
+    
+        'OrganizationId': fields.Int(required=False, load_from='OrganizationId'), 
+    
+        'SandBoxDisabled': fields.Int(required=False, load_from='SandBoxDisabled'), 
+    
+        'Status': fields.Int(required=False, load_from='Status'), 
+    
+        'TopOrganizationId': fields.Int(required=False, load_from='TopOrganizationId'), 
+    
     }
+
 
 
 class DownloadFileDataSchema(schema.ResponseSchema):
-    """DownloadFileData - 下载文件数据"""
-
+    """ DownloadFileData - 下载文件数据
+    """
     fields = {
-        "DownloadURL": fields.Str(required=False, load_from="DownloadURL"),
-        "FileName": fields.Str(required=False, load_from="FileName"),
-        "FileSize": fields.Int(required=False, load_from="FileSize"),
+    
+        'DownloadURL': fields.Str(required=False, load_from='DownloadURL'), 
+    
+        'FileName': fields.Str(required=False, load_from='FileName'), 
+    
+        'FileSize': fields.Int(required=False, load_from='FileSize'), 
+    
     }
 
-
-class FilterOptionIntegerSchema(schema.ResponseSchema):
-    """FilterOptionInteger - 整数类型筛选选项"""
-
-    fields = {
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Value": fields.Int(required=False, load_from="Value"),
-    }
 
 
 class FilterOptionStringSchema(schema.ResponseSchema):
-    """FilterOptionString - 字符串类型筛选选项"""
-
+    """ FilterOptionString - 字符串类型筛选选项
+    """
     fields = {
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Value": fields.Str(required=False, load_from="Value"),
+    
+        'Name': fields.Str(required=False, load_from='Name'), 
+    
+        'Value': fields.Str(required=False, load_from='Value'), 
+    
     }
+
+
+
+class FilterOptionIntegerSchema(schema.ResponseSchema):
+    """ FilterOptionInteger - 整数类型筛选选项
+    """
+    fields = {
+    
+        'Name': fields.Str(required=False, load_from='Name'), 
+    
+        'Value': fields.Int(required=False, load_from='Value'), 
+    
+    }
+
 
 
 class PricingSchema(schema.ResponseSchema):
-    """Pricing - 定价策略"""
-
+    """ Pricing - 定价策略
+    """
     fields = {
-        "Completion": fields.Float(required=False, load_from="Completion"),
-        "Currency": fields.Str(required=False, load_from="Currency"),
-        "Image": fields.Float(required=False, load_from="Image"),
-        "Prompt": fields.Float(required=False, load_from="Prompt"),
+    
+        'Completion': fields.Float(required=False, load_from='Completion'), 
+    
+        'Currency': fields.Str(required=False, load_from='Currency'), 
+    
+        'Image': fields.Float(required=False, load_from='Image'), 
+    
+        'Prompt': fields.Float(required=False, load_from='Prompt'), 
+    
     }
 
 
-class UMinferAPIModelSchema(schema.ResponseSchema):
-    """UMinferAPIModel - 可供api调用的model详情"""
 
+class PriceRateSchema(schema.ResponseSchema):
+    """ PriceRate - 该档位下的收费列表（有序数组）
+    """
     fields = {
-        "CreateAt": fields.Int(required=False, load_from="CreateAt"),
-        "Icon": fields.Str(required=False, load_from="Icon"),
-        "Id": fields.Str(required=False, load_from="Id"),
-        "Language": fields.List(fields.Str()),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Pricing": PricingSchema(),
-        "ServedModelName": fields.Str(
-            required=False, load_from="ServedModelName"
-        ),
-        "SimpleDescribe": fields.Str(
-            required=False, load_from="SimpleDescribe"
-        ),
-        "UpdateAt": fields.Int(required=False, load_from="UpdateAt"),
+    
+        'ChargeItem': fields.Str(required=False, load_from='ChargeItem'), 
+    
+        'ChargeItemDescription': fields.Str(required=False, load_from='ChargeItemDescription'), 
+    
+        'ChargeItemDescriptionEn': fields.Str(required=True, load_from='ChargeItemDescriptionEn'), 
+    
+        'Currency': fields.Str(required=True, load_from='Currency'), 
+    
+        'Price': fields.Str(required=False, load_from='Price'), 
+    
+        'Unit': fields.Str(required=True, load_from='Unit'), 
+    
+        'UnitEn': fields.Str(required=True, load_from='UnitEn'), 
+    
     }
 
 
-class TokenUsageTimestampSchema(schema.ResponseSchema):
-    """TokenUsageTimestamp - 时间戳级别的token使用量"""
 
+class PriceTierSchema(schema.ResponseSchema):
+    """ PriceTier - 价格阶梯
+    """
     fields = {
-        "Count": fields.Int(required=False, load_from="Count"),
-        "Model": fields.Str(required=False, load_from="Model"),
-        "Timestamp": fields.Int(required=False, load_from="Timestamp"),
-        "Type": fields.Str(required=False, load_from="Type"),
+    
+        'Condition': fields.Str(required=False, load_from='Condition'), 
+    
+        'Description': fields.Str(required=False, load_from='Description'), 
+    
+        'DescriptionEn': fields.Str(required=True, load_from='DescriptionEn'), 
+    
+        'Rates': fields.List(PriceRateSchema()), 
+    
     }
 
-
-class TokenUsageSchema(schema.ResponseSchema):
-    """TokenUsage - 某个apikey的某个模型的token使用情况"""
-
-    fields = {
-        "ImageGenerationNum": fields.Int(
-            required=False, load_from="ImageGenerationNum"
-        ),
-        "InTotal": fields.Int(required=False, load_from="InTotal"),
-        "OutTotal": fields.Int(required=False, load_from="OutTotal"),
-        "RequestTotal": fields.Int(required=False, load_from="RequestTotal"),
-        "Total": fields.Int(required=False, load_from="Total"),
-        "Usages": fields.List(TokenUsageTimestampSchema()),
-    }
-
-
-class OrderSummaryItemSchema(schema.ResponseSchema):
-    """OrderSummaryItem - 订单汇总项"""
-
-    fields = {
-        "ChargeType": fields.Int(required=False, load_from="ChargeType"),
-        "DiscountPrice": fields.Str(required=False, load_from="DiscountPrice"),
-        "ListPrice": fields.Str(required=False, load_from="ListPrice"),
-        "ModelID": fields.Str(required=False, load_from="ModelID"),
-        "ModelName": fields.Str(required=False, load_from="ModelName"),
-        "OrderType": fields.Int(required=False, load_from="OrderType"),
-        "OrderTypeDisplay": fields.Str(
-            required=False, load_from="OrderTypeDisplay"
-        ),
-        "PricingSKU": fields.Str(required=False, load_from="PricingSKU"),
-        "PricingUnit": fields.Int(required=False, load_from="PricingUnit"),
-        "PricingUnitName": fields.Str(
-            required=False, load_from="PricingUnitName"
-        ),
-        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
-        "Status": fields.Int(required=False, load_from="Status"),
-        "StatusDisplay": fields.Str(required=False, load_from="StatusDisplay"),
-        "SumBonusAccount": fields.Str(
-            required=False, load_from="SumBonusAccount"
-        ),
-        "SumCashAccount": fields.Str(
-            required=False, load_from="SumCashAccount"
-        ),
-        "SumCoupon": fields.Str(required=False, load_from="SumCoupon"),
-        "SumOrderPrice": fields.Str(required=False, load_from="SumOrderPrice"),
-        "SumOriginalPrice": fields.Str(
-            required=False, load_from="SumOriginalPrice"
-        ),
-        "SumQuantity": fields.Int(required=False, load_from="SumQuantity"),
-        "SumQuantityDisplay": fields.Str(
-            required=False, load_from="SumQuantityDisplay"
-        ),
-        "SumStarCardAccount": fields.Str(
-            required=False, load_from="SumStarCardAccount"
-        ),
-    }
-
-
-class OrderItemDetailSchema(schema.ResponseSchema):
-    """OrderItemDetail - 订单项详情"""
-
-    fields = {
-        "BonusAccount": fields.Str(required=False, load_from="BonusAccount"),
-        "CashAccount": fields.Str(required=False, load_from="CashAccount"),
-        "Channel": fields.Int(required=False, load_from="Channel"),
-        "ChargeType": fields.Int(required=False, load_from="ChargeType"),
-        "ChargeTypeDisplay": fields.Str(
-            required=False, load_from="ChargeTypeDisplay"
-        ),
-        "CompanyID": fields.Int(required=False, load_from="CompanyID"),
-        "Coupon": fields.Str(required=False, load_from="Coupon"),
-        "Currency": fields.Str(required=False, load_from="Currency"),
-        "CurrencyDisplay": fields.Str(
-            required=False, load_from="CurrencyDisplay"
-        ),
-        "DiscountPrice": fields.Str(required=False, load_from="DiscountPrice"),
-        "EndTime": fields.Int(required=False, load_from="EndTime"),
-        "ListPrice": fields.Str(required=False, load_from="ListPrice"),
-        "ModelID": fields.Str(required=False, load_from="ModelID"),
-        "ModelName": fields.Str(required=False, load_from="ModelName"),
-        "OrderNo": fields.Str(required=False, load_from="OrderNo"),
-        "OrderTotalPrice": fields.Str(
-            required=False, load_from="OrderTotalPrice"
-        ),
-        "OrderType": fields.Int(required=False, load_from="OrderType"),
-        "OrderTypeDisplay": fields.Str(
-            required=False, load_from="OrderTypeDisplay"
-        ),
-        "OrganizationID": fields.Int(
-            required=False, load_from="OrganizationID"
-        ),
-        "OrganizationName": fields.Str(
-            required=False, load_from="OrganizationName"
-        ),
-        "OriginalPrice": fields.Str(required=False, load_from="OriginalPrice"),
-        "PaidTime": fields.Int(required=False, load_from="PaidTime"),
-        "PricingSKU": fields.Str(required=False, load_from="PricingSKU"),
-        "PricingUnit": fields.Int(required=False, load_from="PricingUnit"),
-        "PricingUnitDisplay": fields.Str(
-            required=False, load_from="PricingUnitDisplay"
-        ),
-        "ProductCode": fields.Str(required=False, load_from="ProductCode"),
-        "ProductCodeDisplay": fields.Str(
-            required=False, load_from="ProductCodeDisplay"
-        ),
-        "Quantity": fields.Int(required=False, load_from="Quantity"),
-        "QuantityDisplay": fields.Str(
-            required=False, load_from="QuantityDisplay"
-        ),
-        "Region": fields.Str(required=False, load_from="Region"),
-        "RegionDisplay": fields.Str(required=False, load_from="RegionDisplay"),
-        "ResourceID": fields.Str(required=False, load_from="ResourceID"),
-        "StarCardAccount": fields.Str(
-            required=False, load_from="StarCardAccount"
-        ),
-        "StartTime": fields.Int(required=False, load_from="StartTime"),
-        "Status": fields.Int(required=False, load_from="Status"),
-        "StatusDisplay": fields.Str(required=False, load_from="StatusDisplay"),
-        "UnpaidOrderNo": fields.Str(required=False, load_from="UnpaidOrderNo"),
-        "UserEmail": fields.Str(required=False, load_from="UserEmail"),
-    }
 
 
 class SquareModelSchema(schema.ResponseSchema):
-    """SquareModel - 广场模型"""
-
+    """ SquareModel - 广场模型
+    """
     fields = {
-        "CreateAt": fields.Int(required=False, load_from="CreateAt"),
-        "Describe": fields.Str(required=False, load_from="Describe"),
-        "HfUpdateTime": fields.Int(required=False, load_from="HfUpdateTime"),
-        "Icon": fields.Str(required=False, load_from="Icon"),
-        "Id": fields.Str(required=False, load_from="Id"),
-        "Language": fields.List(fields.Str()),
-        "MaxModelLen": fields.Int(required=False, load_from="MaxModelLen"),
-        "ModelType": fields.Str(required=False, load_from="ModelType"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Pricing": PricingSchema(),
-        "SimpleDescribe": fields.Str(
-            required=False, load_from="SimpleDescribe"
-        ),
-        "SupportedCapabilities": fields.List(fields.Str()),
-        "UpdateAt": fields.Int(required=False, load_from="UpdateAt"),
+    
+        'CreateAt': fields.Int(required=False, load_from='CreateAt'), 
+    
+        'Describe': fields.Str(required=False, load_from='Describe'), 
+    
+        'HfUpdateTime': fields.Int(required=False, load_from='HfUpdateTime'), 
+    
+        'Icon': fields.Str(required=False, load_from='Icon'), 
+    
+        'Id': fields.Str(required=False, load_from='Id'), 
+    
+        'Language': fields.List(fields.Str()), 
+    
+        'MaxModelLen': fields.Int(required=False, load_from='MaxModelLen'), 
+    
+        'ModelType': fields.Str(required=False, load_from='ModelType'), 
+    
+        'Name': fields.Str(required=False, load_from='Name'), 
+    
+        'Pricing':  PricingSchema(), 
+    
+        'SimpleDescribe': fields.Str(required=False, load_from='SimpleDescribe'), 
+    
+        'SupportedCapabilities': fields.List(fields.Str()), 
+    
+        'UpdateAt': fields.Int(required=False, load_from='UpdateAt'), 
+    
     }
+
+
+
+class ModelPriceGroupSchema(schema.ResponseSchema):
+    """ ModelPriceGroup - ModelPriceGroup
+    """
+    fields = {
+    
+        'Manufacturer': fields.Str(required=True, load_from='Manufacturer'), 
+    
+        'ModelId': fields.Str(required=False, load_from='ModelId'), 
+    
+        'ModelName': fields.Str(required=False, load_from='ModelName'), 
+    
+        'Tiers': fields.List(PriceTierSchema()), 
+    
+    }
+
+
+
+class RequestLogDetailSchema(schema.ResponseSchema):
+    """ RequestLogDetail - 请求日志详情
+    """
+    fields = {
+    
+        'ApiKeyId': fields.Str(required=False, load_from='ApiKeyId'), 
+    
+        'ClientIp': fields.Str(required=False, load_from='ClientIp'), 
+    
+        'ErrorCode': fields.Str(required=False, load_from='ErrorCode'), 
+    
+        'ErrorMessage': fields.Str(required=False, load_from='ErrorMessage'), 
+    
+        'Extras': fields.Str(required=False, load_from='Extras'), 
+    
+        'FirstTokenLatency': fields.Int(required=False, load_from='FirstTokenLatency'), 
+    
+        'HttpStatusCode': fields.Int(required=False, load_from='HttpStatusCode'), 
+    
+        'IsStream': fields.Bool(required=False, load_from='IsStream'), 
+    
+        'IsSuccess': fields.Bool(required=False, load_from='IsSuccess'), 
+    
+        'Latency': fields.Int(required=False, load_from='Latency'), 
+    
+        'ModelName': fields.Str(required=False, load_from='ModelName'), 
+    
+        'OrganizationId': fields.Str(required=False, load_from='OrganizationId'), 
+    
+        'OutputTokenThroughput': fields.Float(required=False, load_from='OutputTokenThroughput'), 
+    
+        'Region': fields.Str(required=False, load_from='Region'), 
+    
+        'Request': fields.Str(required=False, load_from='Request'), 
+    
+        'RequestId': fields.Str(required=False, load_from='RequestId'), 
+    
+        'Response': fields.Str(required=False, load_from='Response'), 
+    
+        'StartTime': fields.Int(required=False, load_from='StartTime'), 
+    
+        'StartTimeReadable': fields.Str(required=False, load_from='StartTimeReadable'), 
+    
+        'TopOrganizationId': fields.Str(required=False, load_from='TopOrganizationId'), 
+    
+        'Usage': fields.Str(required=False, load_from='Usage'), 
+    
+    }
+
+
+
+class OrderSummaryItemSchema(schema.ResponseSchema):
+    """ OrderSummaryItem - 订单汇总项
+    """
+    fields = {
+    
+        'ChargeType': fields.Int(required=False, load_from='ChargeType'), 
+    
+        'DiscountPrice': fields.Str(required=False, load_from='DiscountPrice'), 
+    
+        'ListPrice': fields.Str(required=False, load_from='ListPrice'), 
+    
+        'ModelID': fields.Str(required=False, load_from='ModelID'), 
+    
+        'ModelName': fields.Str(required=False, load_from='ModelName'), 
+    
+        'OrderType': fields.Int(required=False, load_from='OrderType'), 
+    
+        'OrderTypeDisplay': fields.Str(required=False, load_from='OrderTypeDisplay'), 
+    
+        'PricingSKU': fields.Str(required=False, load_from='PricingSKU'), 
+    
+        'PricingUnit': fields.Int(required=False, load_from='PricingUnit'), 
+    
+        'PricingUnitName': fields.Str(required=False, load_from='PricingUnitName'), 
+    
+        'ResourceId': fields.Str(required=False, load_from='ResourceId'), 
+    
+        'Status': fields.Int(required=False, load_from='Status'), 
+    
+        'StatusDisplay': fields.Str(required=False, load_from='StatusDisplay'), 
+    
+        'SumBonusAccount': fields.Str(required=False, load_from='SumBonusAccount'), 
+    
+        'SumCashAccount': fields.Str(required=False, load_from='SumCashAccount'), 
+    
+        'SumCoupon': fields.Str(required=False, load_from='SumCoupon'), 
+    
+        'SumOrderPrice': fields.Str(required=False, load_from='SumOrderPrice'), 
+    
+        'SumOriginalPrice': fields.Str(required=False, load_from='SumOriginalPrice'), 
+    
+        'SumQuantity': fields.Int(required=False, load_from='SumQuantity'), 
+    
+        'SumQuantityDisplay': fields.Str(required=False, load_from='SumQuantityDisplay'), 
+    
+        'SumStarCardAccount': fields.Str(required=False, load_from='SumStarCardAccount'), 
+    
+    }
+
+
+
+class OrderItemDetailSchema(schema.ResponseSchema):
+    """ OrderItemDetail - 订单项详情
+    """
+    fields = {
+    
+        'BonusAccount': fields.Str(required=False, load_from='BonusAccount'), 
+    
+        'CashAccount': fields.Str(required=False, load_from='CashAccount'), 
+    
+        'Channel': fields.Int(required=False, load_from='Channel'), 
+    
+        'ChargeType': fields.Int(required=False, load_from='ChargeType'), 
+    
+        'ChargeTypeDisplay': fields.Str(required=False, load_from='ChargeTypeDisplay'), 
+    
+        'CompanyID': fields.Int(required=False, load_from='CompanyID'), 
+    
+        'Coupon': fields.Str(required=False, load_from='Coupon'), 
+    
+        'Currency': fields.Str(required=False, load_from='Currency'), 
+    
+        'CurrencyDisplay': fields.Str(required=False, load_from='CurrencyDisplay'), 
+    
+        'DiscountPrice': fields.Str(required=False, load_from='DiscountPrice'), 
+    
+        'EndTime': fields.Int(required=False, load_from='EndTime'), 
+    
+        'ListPrice': fields.Str(required=False, load_from='ListPrice'), 
+    
+        'ModelID': fields.Str(required=False, load_from='ModelID'), 
+    
+        'ModelName': fields.Str(required=False, load_from='ModelName'), 
+    
+        'OrderNo': fields.Str(required=False, load_from='OrderNo'), 
+    
+        'OrderTotalPrice': fields.Str(required=False, load_from='OrderTotalPrice'), 
+    
+        'OrderType': fields.Int(required=False, load_from='OrderType'), 
+    
+        'OrderTypeDisplay': fields.Str(required=False, load_from='OrderTypeDisplay'), 
+    
+        'OrganizationID': fields.Int(required=False, load_from='OrganizationID'), 
+    
+        'OrganizationName': fields.Str(required=False, load_from='OrganizationName'), 
+    
+        'OriginalPrice': fields.Str(required=False, load_from='OriginalPrice'), 
+    
+        'PaidTime': fields.Int(required=False, load_from='PaidTime'), 
+    
+        'PricingSKU': fields.Str(required=False, load_from='PricingSKU'), 
+    
+        'PricingUnit': fields.Int(required=False, load_from='PricingUnit'), 
+    
+        'PricingUnitDisplay': fields.Str(required=False, load_from='PricingUnitDisplay'), 
+    
+        'ProductCode': fields.Str(required=False, load_from='ProductCode'), 
+    
+        'ProductCodeDisplay': fields.Str(required=False, load_from='ProductCodeDisplay'), 
+    
+        'Quantity': fields.Int(required=False, load_from='Quantity'), 
+    
+        'QuantityDisplay': fields.Str(required=False, load_from='QuantityDisplay'), 
+    
+        'Region': fields.Str(required=False, load_from='Region'), 
+    
+        'RegionDisplay': fields.Str(required=False, load_from='RegionDisplay'), 
+    
+        'ResourceID': fields.Str(required=False, load_from='ResourceID'), 
+    
+        'StarCardAccount': fields.Str(required=False, load_from='StarCardAccount'), 
+    
+        'StartTime': fields.Int(required=False, load_from='StartTime'), 
+    
+        'Status': fields.Int(required=False, load_from='Status'), 
+    
+        'StatusDisplay': fields.Str(required=False, load_from='StatusDisplay'), 
+    
+        'UnpaidOrderNo': fields.Str(required=False, load_from='UnpaidOrderNo'), 
+    
+        'UserEmail': fields.Str(required=False, load_from='UserEmail'), 
+    
+    }
+
+
+
+class RequestLogSummarySchema(schema.ResponseSchema):
+    """ RequestLogSummary - 请求日志汇总
+    """
+    fields = {
+    
+        'FailedRequests': fields.Int(required=False, load_from='FailedRequests'), 
+    
+        'TotalRequests': fields.Int(required=False, load_from='TotalRequests'), 
+    
+    }
+
+
+
+class RequestLogItemSchema(schema.ResponseSchema):
+    """ RequestLogItem - 请求日志列表项
+    """
+    fields = {
+    
+        'ApiKeyId': fields.Str(required=False, load_from='ApiKeyId'), 
+    
+        'ApiKeyName': fields.Str(required=False, load_from='ApiKeyName'), 
+    
+        'CacheCreation1hTokens': fields.Int(required=False, load_from='CacheCreation1hTokens'), 
+    
+        'CacheCreation5mTokens': fields.Int(required=False, load_from='CacheCreation5mTokens'), 
+    
+        'CacheCreationTokens': fields.Int(required=False, load_from='CacheCreationTokens'), 
+    
+        'CacheHitTokens': fields.Int(required=False, load_from='CacheHitTokens'), 
+    
+        'CompletionTokens': fields.Int(required=False, load_from='CompletionTokens'), 
+    
+        'ErrorCode': fields.Str(required=False, load_from='ErrorCode'), 
+    
+        'FirstTokenLatency': fields.Int(required=False, load_from='FirstTokenLatency'), 
+    
+        'HasInferenceLog': fields.Bool(required=False, load_from='HasInferenceLog'), 
+    
+        'HttpStatusCode': fields.Int(required=False, load_from='HttpStatusCode'), 
+    
+        'IsSuccess': fields.Bool(required=False, load_from='IsSuccess'), 
+    
+        'Latency': fields.Int(required=False, load_from='Latency'), 
+    
+        'ModelName': fields.Str(required=False, load_from='ModelName'), 
+    
+        'OutputTokenThroughput': fields.Float(required=False, load_from='OutputTokenThroughput'), 
+    
+        'PromptTokens': fields.Int(required=False, load_from='PromptTokens'), 
+    
+        'Region': fields.Str(required=False, load_from='Region'), 
+    
+        'RequestId': fields.Str(required=False, load_from='RequestId'), 
+    
+        'StartTime': fields.Int(required=False, load_from='StartTime'), 
+    
+        'StartTimeReadable': fields.Str(required=False, load_from='StartTimeReadable'), 
+    
+        'TotalTokens': fields.Int(required=False, load_from='TotalTokens'), 
+    
+    }
+
+
+
+class ListUMInferRequestLogsDataSchema(schema.ResponseSchema):
+    """ ListUMInferRequestLogsData - 日志明细列表返回数据
+    """
+    fields = {
+    
+        'Items': fields.List(RequestLogItemSchema()), 
+    
+        'Summary':  RequestLogSummarySchema(), 
+    
+    }
+
 
 
 class UnpaidOrderItemSchema(schema.ResponseSchema):
-    """UnpaidOrderItem - 欠费订单项"""
-
+    """ UnpaidOrderItem - 欠费订单项
+    """
     fields = {
-        "Channel": fields.Int(required=False, load_from="Channel"),
-        "ChargeType": fields.Int(required=False, load_from="ChargeType"),
-        "ChargeTypeDisplay": fields.Str(
-            required=False, load_from="ChargeTypeDisplay"
-        ),
-        "CompanyID": fields.Int(required=False, load_from="CompanyID"),
-        "CreateTime": fields.Str(required=False, load_from="CreateTime"),
-        "Currency": fields.Str(required=False, load_from="Currency"),
-        "CurrencyDisplay": fields.Str(
-            required=False, load_from="CurrencyDisplay"
-        ),
-        "DiscountPrice": fields.Str(required=False, load_from="DiscountPrice"),
-        "EndTime": fields.Int(required=False, load_from="EndTime"),
-        "ListPrice": fields.Str(required=False, load_from="ListPrice"),
-        "ModelID": fields.Str(required=False, load_from="ModelID"),
-        "ModelName": fields.Str(required=False, load_from="ModelName"),
-        "OrderNo": fields.Str(required=False, load_from="OrderNo"),
-        "OrderTotalPrice": fields.Str(
-            required=False, load_from="OrderTotalPrice"
-        ),
-        "OrderType": fields.Int(required=False, load_from="OrderType"),
-        "OrderTypeDisplay": fields.Str(
-            required=False, load_from="OrderTypeDisplay"
-        ),
-        "OrganizationID": fields.Int(
-            required=False, load_from="OrganizationID"
-        ),
-        "OrganizationName": fields.Str(
-            required=False, load_from="OrganizationName"
-        ),
-        "OriginalPrice": fields.Str(required=False, load_from="OriginalPrice"),
-        "PaidTime": fields.Int(required=False, load_from="PaidTime"),
-        "PricingSKU": fields.Str(required=False, load_from="PricingSKU"),
-        "PricingUnit": fields.Int(required=False, load_from="PricingUnit"),
-        "PricingUnitDisplay": fields.Str(
-            required=False, load_from="PricingUnitDisplay"
-        ),
-        "ProductCode": fields.Str(required=False, load_from="ProductCode"),
-        "ProductCodeDisplay": fields.Str(
-            required=False, load_from="ProductCodeDisplay"
-        ),
-        "Quantity": fields.Int(required=False, load_from="Quantity"),
-        "QuantityDisplay": fields.Str(
-            required=False, load_from="QuantityDisplay"
-        ),
-        "Region": fields.Str(required=False, load_from="Region"),
-        "RegionDisplay": fields.Str(required=False, load_from="RegionDisplay"),
-        "ResourceID": fields.Str(required=False, load_from="ResourceID"),
-        "ResourceType": fields.Int(required=False, load_from="ResourceType"),
-        "ResourceTypeDisplay": fields.Str(
-            required=False, load_from="ResourceTypeDisplay"
-        ),
-        "RevocationTime": fields.Str(
-            required=False, load_from="RevocationTime"
-        ),
-        "SourceOrderNo": fields.Str(required=False, load_from="SourceOrderNo"),
-        "StartTime": fields.Int(required=False, load_from="StartTime"),
-        "Status": fields.Int(required=False, load_from="Status"),
-        "StatusDisplay": fields.Str(required=False, load_from="StatusDisplay"),
-        "UserEmail": fields.Str(required=False, load_from="UserEmail"),
+    
+        'Channel': fields.Int(required=False, load_from='Channel'), 
+    
+        'ChargeType': fields.Int(required=False, load_from='ChargeType'), 
+    
+        'ChargeTypeDisplay': fields.Str(required=False, load_from='ChargeTypeDisplay'), 
+    
+        'CompanyID': fields.Int(required=False, load_from='CompanyID'), 
+    
+        'CreateTime': fields.Str(required=False, load_from='CreateTime'), 
+    
+        'Currency': fields.Str(required=False, load_from='Currency'), 
+    
+        'CurrencyDisplay': fields.Str(required=False, load_from='CurrencyDisplay'), 
+    
+        'DiscountPrice': fields.Str(required=False, load_from='DiscountPrice'), 
+    
+        'EndTime': fields.Int(required=False, load_from='EndTime'), 
+    
+        'ListPrice': fields.Str(required=False, load_from='ListPrice'), 
+    
+        'ModelID': fields.Str(required=False, load_from='ModelID'), 
+    
+        'ModelName': fields.Str(required=False, load_from='ModelName'), 
+    
+        'OrderNo': fields.Str(required=False, load_from='OrderNo'), 
+    
+        'OrderTotalPrice': fields.Str(required=False, load_from='OrderTotalPrice'), 
+    
+        'OrderType': fields.Int(required=False, load_from='OrderType'), 
+    
+        'OrderTypeDisplay': fields.Str(required=False, load_from='OrderTypeDisplay'), 
+    
+        'OrganizationID': fields.Int(required=False, load_from='OrganizationID'), 
+    
+        'OrganizationName': fields.Str(required=False, load_from='OrganizationName'), 
+    
+        'OriginalPrice': fields.Str(required=False, load_from='OriginalPrice'), 
+    
+        'PaidTime': fields.Int(required=False, load_from='PaidTime'), 
+    
+        'PricingSKU': fields.Str(required=False, load_from='PricingSKU'), 
+    
+        'PricingUnit': fields.Int(required=False, load_from='PricingUnit'), 
+    
+        'PricingUnitDisplay': fields.Str(required=False, load_from='PricingUnitDisplay'), 
+    
+        'ProductCode': fields.Str(required=False, load_from='ProductCode'), 
+    
+        'ProductCodeDisplay': fields.Str(required=False, load_from='ProductCodeDisplay'), 
+    
+        'Quantity': fields.Int(required=False, load_from='Quantity'), 
+    
+        'QuantityDisplay': fields.Str(required=False, load_from='QuantityDisplay'), 
+    
+        'Region': fields.Str(required=False, load_from='Region'), 
+    
+        'RegionDisplay': fields.Str(required=False, load_from='RegionDisplay'), 
+    
+        'ResourceID': fields.Str(required=False, load_from='ResourceID'), 
+    
+        'ResourceType': fields.Int(required=False, load_from='ResourceType'), 
+    
+        'ResourceTypeDisplay': fields.Str(required=False, load_from='ResourceTypeDisplay'), 
+    
+        'RevocationTime': fields.Str(required=False, load_from='RevocationTime'), 
+    
+        'SourceOrderNo': fields.Str(required=False, load_from='SourceOrderNo'), 
+    
+        'StartTime': fields.Int(required=False, load_from='StartTime'), 
+    
+        'Status': fields.Int(required=False, load_from='Status'), 
+    
+        'StatusDisplay': fields.Str(required=False, load_from='StatusDisplay'), 
+    
+        'UserEmail': fields.Str(required=False, load_from='UserEmail'), 
+    
     }
+
+
+
+class PayResultSchema(schema.ResponseSchema):
+    """ PayResult - 支付结果
+    """
+    fields = {
+    
+        'OrderNo': fields.Str(required=False, load_from='OrderNo'), 
+    
+        'Reason': fields.Str(required=False, load_from='Reason'), 
+    
+        'Success': fields.Bool(required=False, load_from='Success'), 
+    
+    }
+
+

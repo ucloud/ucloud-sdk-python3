@@ -3,26 +3,36 @@
 import typing
 
 
+
+
 from ucloud.core.client import Client
 from ucloud.services.uai_modelverse.schemas import apis
 
 
-class UAI_ModelverseClient(Client):
-    def __init__(
-        self, config: dict, transport=None, middleware=None, logger=None
-    ):
-        super(UAI_ModelverseClient, self).__init__(
-            config, transport, middleware, logger
-        )
 
-    def create_um_infer_api_key(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """CreateUMInferAPIKey - 创建apikey
+
+
+
+
+
+
+class UAI_ModelverseClient(Client):
+    def __init__(self, config: dict, transport=None, middleware=None, logger=None):
+        super(UAI_ModelverseClient, self).__init__(config, transport, middleware, logger)
+
+    
+    
+    
+    
+    
+    
+    
+    def create_um_infer_api_key(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ CreateUMInferAPIKey - 创建apikey
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **Name** (str) - (Required) apikey名称
         - **DailyLimitAmount** (str) - 日限额，单位随用户所在渠道。126渠道单位为美元
         - **GrantAllModels** (bool) - 全部模型访问开关，开启不受 GrantedModels 参数控制，关闭只能访问 GrantedModels 中添加模型
@@ -31,15 +41,15 @@ class UAI_ModelverseClient(Client):
         - **ModelverseDisabled** (int) - 是否modelverse可用 0: 启用 1: 禁用
         - **MonthlyLimitAmount** (str) - 月限额，单位随用户所在渠道。126渠道单位为美元
         - **SandBoxDisabled** (int) - 是否沙盒可用 0: 启用 1: 禁用(astraflow 沙盒控制未上线，暂时无效)
-
+        
         **Response**
 
         - **Data** (dict) - 见 **APIKey** 模型定义
         - **TotalCount** (int) - 总条数
-
+        
         **Response Model**
-
-        **APIKey**
+        
+        **APIKey** 
         - **ChannelId** (int) - 渠道id
         - **CreateTime** (int) - 创建时间
         - **DailyLimitAmount** (str) - 日限额，单位随用户所在渠道。126渠道单位为美元
@@ -56,90 +66,104 @@ class UAI_ModelverseClient(Client):
         - **SandBoxDisabled** (int) - 是否沙盒可用 0: 启用 1: 禁用(astraflow 沙盒控制未上线，暂时无效)
         - **Status** (int) - 状态，1 正常
         - **TopOrganizationId** (int) - 公司id
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.CreateUMInferAPIKeyRequestSchema().dumps(d)
-
+        
         # build options
-        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
-
+        kwargs['max_retries'] = 0 # ignore retry when api is not idempotent
+        
         resp = self.invoke("CreateUMInferAPIKey", d, **kwargs)
         return apis.CreateUMInferAPIKeyResponseSchema().loads(resp)
-
-    def delete_um_infer_api_key(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DeleteUMInferAPIKey - 删除apikey
+    
+    
+    
+    
+    
+    
+    
+    def delete_um_infer_api_key(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DeleteUMInferAPIKey - 删除apikey
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **KeyId** (str) - (Required) 要删除的apikey id
-
+        
         **Response**
 
         - **UminferID** (str) - apikey 的资源ID
+        
+        """
+        # build request
+        d = {
+            'ProjectId': self.config.project_id, 
+        }
+        req and d.update(req)
+        d = apis.DeleteUMInferAPIKeyRequestSchema().dumps(d)
+        
+        resp = self.invoke("DeleteUMInferAPIKey", d, **kwargs)
+        return apis.DeleteUMInferAPIKeyResponseSchema().loads(resp)
+    
+    
+    
+    
+    
+    
+    
+    def download_list_paid_orders(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DownloadListPaidOrders - 生成已完成（已支付）订单明细 Excel 文件并返回 US3 预签名下载链接；查询条件与 ListPaidOrders 完全一致，StartTime/EndTime 必填；取数范围是 [StartTime, EndTime)，即取开始计费时间大于等于StartTime且小于EndTime的数据
+
+        **Request**
+
+        - **EndTime** (int) - (Required) 查询结束时间（Unix 时间戳，秒级），必填；必须大于 StartTime
+        - **StartTime** (int) - (Required) 查询开始时间（Unix 时间戳，秒级），必填
+        - **ModelIds** (list) - 模型ID列表（可选）
+        - **OrderTypes** (list) - 订单类型数组（多选，可选）
+        - **OrganizationIds** (list) - 组织ID列表（可选）
+        - **PricingSkus** (list) - 计费单元（SKU）列表（可选）
+        - **PricingUnits** (list) - 计费单位列表（多选，可选）
+        - **ProductCodes** (list) - 产品类型列表（可选），枚举值：`modelverse`、`sandbox`
+        - **Regions** (list) - 地域列表（可选），参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ResourceIds** (list) - 资源ID列表（可选）
+        
+        **Response**
+
+        - **Data** (dict) - 见 **DownloadFileData** 模型定义
+        
+        **Response Model**
+        
+        **DownloadFileData** 
+        - **DownloadURL** (str) - 文件下载链接（US3 预签名 URL，请在有效期内立即下载）
+        - **FileName** (str) - 文件名
+        - **FileSize** (int) - 文件大小（字节）
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            
         }
         req and d.update(req)
-        d = apis.DeleteUMInferAPIKeyRequestSchema().dumps(d)
-
-        resp = self.invoke("DeleteUMInferAPIKey", d, **kwargs)
-        return apis.DeleteUMInferAPIKeyResponseSchema().loads(resp)
-
-    def download_list_paid_orders(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DownloadListPaidOrders - 生成已完成（已支付）订单明细 Excel 文件并返回 US3 预签名下载链接；查询条件与 ListPaidOrders 完全一致，StartTime/EndTime 必填；取数范围是 [StartTime, EndTime)，即取开始计费时间大于等于StartTime且小于EndTime的数据
-
-        **Request**
-
-        - **EndTime** (int) - (Required) 查询结束时间（Unix 时间戳，秒级），必填；必须大于 StartTime
-        - **StartTime** (int) - (Required) 查询开始时间（Unix 时间戳，秒级），必填
-        - **ModelIds** (list) - 模型ID列表（可选）
-        - **OrderTypes** (list) - 订单类型数组（多选，可选）
-        - **OrganizationIds** (list) - 组织ID列表（可选）
-        - **PricingSkus** (list) - 计费单元（SKU）列表（可选）
-        - **PricingUnits** (list) - 计费单位列表（多选，可选）
-        - **ProductCodes** (list) - 产品类型列表（可选），枚举值：`modelverse`、`sandbox`
-        - **Regions** (list) - 地域列表（可选），参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **ResourceIds** (list) - 资源ID列表（可选）
-
-        **Response**
-
-        - **Data** (dict) - 见 **DownloadFileData** 模型定义
-
-        **Response Model**
-
-        **DownloadFileData**
-        - **DownloadURL** (str) - 文件下载链接（US3 预签名 URL，请在有效期内立即下载）
-        - **FileName** (str) - 文件名
-        - **FileSize** (int) - 文件大小（字节）
-
-
-        """
-        # build request
-        d = {}
-        req and d.update(req)
         d = apis.DownloadListPaidOrdersRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DownloadListPaidOrders", d, **kwargs)
         return apis.DownloadListPaidOrdersResponseSchema().loads(resp)
-
-    def download_list_unpaid_orders(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DownloadListUnpaidOrders - 生成欠费（未支付）订单明细 Excel 文件并返回 US3 预签名下载链接；查询条件与 ListUnpaidOrders 完全一致，StartTime/EndTime 必填
+    
+    
+    
+    
+    
+    
+    
+    def download_list_unpaid_orders(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DownloadListUnpaidOrders - 生成欠费（未支付）订单明细 Excel 文件并返回 US3 预签名下载链接；查询条件与 ListUnpaidOrders 完全一致，StartTime/EndTime 必填
 
         **Request**
 
@@ -151,34 +175,40 @@ class UAI_ModelverseClient(Client):
         - **PricingSkus** (list) - 计费单元（SKU）列表（可选）
         - **PricingUnits** (list) - 计费单位列表（多选，可选）
         - **ProductCodes** (list) - 产品类型列表（可选），枚举值：`modelverse`、`sandbox`
-        - **Regions** (list) - 地域列表（可选），参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Regions** (list) - 地域列表（可选），参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **ResourceIds** (list) - 资源ID列表（可选）
-
+        
         **Response**
 
         - **Data** (dict) - 见 **DownloadFileData** 模型定义
-
+        
         **Response Model**
-
-        **DownloadFileData**
+        
+        **DownloadFileData** 
         - **DownloadURL** (str) - 文件下载链接（US3 预签名 URL，请在有效期内立即下载）
         - **FileName** (str) - 文件名
         - **FileSize** (int) - 文件大小（字节）
-
+        
 
         """
         # build request
-        d = {}
+        d = {
+            
+        }
         req and d.update(req)
         d = apis.DownloadListUnpaidOrdersRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DownloadListUnpaidOrders", d, **kwargs)
         return apis.DownloadListUnpaidOrdersResponseSchema().loads(resp)
-
-    def download_order_summary(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """DownloadOrderSummary - 生成订单汇总 Excel 文件（包含已完成订单和欠费订单两个 sheet），返回 US3 预签名下载链接；StartTime/EndTime 必填
+    
+    
+    
+    
+    
+    
+    
+    def download_order_summary(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DownloadOrderSummary - 生成订单汇总 Excel 文件（包含已完成订单和欠费订单两个 sheet），返回 US3 预签名下载链接；StartTime/EndTime 必填
 
         **Request**
 
@@ -191,39 +221,82 @@ class UAI_ModelverseClient(Client):
         - **PricingSkus** (list) - 计费单元（SKU）列表（可选）
         - **PricingUnits** (list) - 计费单位列表（多选，可选）
         - **ProductCodes** (list) - 产品类型列表（可选），枚举值：`modelverse`、`sandbox`
-        - **Regions** (list) - 地域列表（可选），参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Regions** (list) - 地域列表（可选），参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **ResourceIds** (list) - 资源ID列表（可选）
-
+        
         **Response**
 
         - **Data** (dict) - 见 **DownloadFileData** 模型定义
-
+        
         **Response Model**
-
-        **DownloadFileData**
+        
+        **DownloadFileData** 
         - **DownloadURL** (str) - 文件下载链接（US3 预签名 URL，请在有效期内立即下载）
         - **FileName** (str) - 文件名
         - **FileSize** (int) - 文件大小（字节）
-
+        
 
         """
         # build request
-        d = {}
+        d = {
+            
+        }
         req and d.update(req)
         d = apis.DownloadOrderSummaryRequestSchema().dumps(d)
-
+        
         resp = self.invoke("DownloadOrderSummary", d, **kwargs)
         return apis.DownloadOrderSummaryResponseSchema().loads(resp)
+    
+    
+    
+    
+    
+    
+    
+    def download_um_infer_request_log(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ DownloadUMInferRequestLog - 导出推理请求日志。单次导出时间范围最长 30 天，最多导出 2000 万条日志；同一 TopOrganizationID 同一时间仅允许 1 个导出任务在执行，已有任务执行中时请稍后重试。
 
-    def get_filter_options(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """GetFilterOptions - 查询可用于订单筛选的资源、模型、地域等选项列表
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。请参考  `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 业务地域，如 cn-wlcb。可先调用 ListUMInferRegions 获取可选地域
+        - **Email** (str) - (Required) 接收导出结果的邮箱地址
+        - **EndTime** (int) - (Required) 导出结束时间，Unix 毫秒时间戳，最长支持 30 天范围
+        - **StartTime** (int) - (Required) 导出开始时间，Unix 毫秒时间戳
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ApiKeyIds** (list) - API Key ID 列表，用于过滤
+        - **ModelNames** (list) - 模型名称列表，用于过滤
+        - **RequestId** (str) - 请求 ID，用于精确过滤
+        
+        **Response**
+
+        - **TaskId** (str) - 导出任务 ID
+        - **TotalCount** (int) - 本次导出查询命中的日志行数
+        
+        """
+        # build request
+        d = {
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+        }
+        req and d.update(req)
+        d = apis.DownloadUMInferRequestLogRequestSchema().dumps(d)
+        
+        resp = self.invoke("DownloadUMInferRequestLog", d, **kwargs)
+        return apis.DownloadUMInferRequestLogResponseSchema().loads(resp)
+    
+    
+    
+    
+    
+    
+    
+    def get_filter_options(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ GetFilterOptions - 查询可用于订单筛选的资源、模型、地域等选项列表
 
         **Request**
 
         - **ProductCode** (str) - 产品类型（单选，可选），枚举值：`modelverse`、`sandbox`；为空时返回所有产品下的选项
-
+        
         **Response**
 
         - **Dimensions** (list) - 见 **FilterOptionString** 模型定义
@@ -235,32 +308,38 @@ class UAI_ModelverseClient(Client):
         - **Projects** (list) - 见 **FilterOptionInteger** 模型定义
         - **Regions** (list) - 见 **FilterOptionString** 模型定义
         - **ResourceIds** (list) - 见 **FilterOptionString** 模型定义
-
+        
         **Response Model**
-
-        **FilterOptionString**
+        
+        **FilterOptionString** 
         - **Name** (str) - 显示名称
         - **Value** (str) - 值
+        
 
-
-        **FilterOptionInteger**
+        **FilterOptionInteger** 
         - **Name** (str) - 显示名称
         - **Value** (int) - 值
-
+        
 
         """
         # build request
-        d = {}
+        d = {
+            
+        }
         req and d.update(req)
         d = apis.GetFilterOptionsRequestSchema().dumps(d)
-
+        
         resp = self.invoke("GetFilterOptions", d, **kwargs)
         return apis.GetFilterOptionsResponseSchema().loads(resp)
-
-    def get_order_amount(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """GetOrderAmount - 查询指定条件下订单的金额汇总及数量统计
+    
+    
+    
+    
+    
+    
+    
+    def get_order_amount(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ GetOrderAmount - 查询指定条件下订单的金额汇总及数量统计
 
         **Request**
 
@@ -272,9 +351,9 @@ class UAI_ModelverseClient(Client):
         - **PricingSkus** (list) - 计费单元（SKU）列表（可选）
         - **PricingUnits** (list) - 计费单位列表（可选）
         - **ProductCodes** (list) - 产品类型列表（可选），枚举值：`modelverse`、`sandbox`
-        - **Regions** (list) - 地域列表（可选），参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Regions** (list) - 地域列表（可选），参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **ResourceIds** (list) - 资源ID列表（可选）
-
+        
         **Response**
 
         - **BonusAmount** (str) - 赠金账户总金额
@@ -287,114 +366,218 @@ class UAI_ModelverseClient(Client):
         - **TotalOrderAmount** (str) - 订单总额（所有订单的总金额）
         - **UnpaidAmount** (str) - 待支付金额
         - **UnpaidCount** (int) - 待支付订单数量
-
+        
         """
         # build request
-        d = {}
+        d = {
+            
+        }
         req and d.update(req)
         d = apis.GetOrderAmountRequestSchema().dumps(d)
-
+        
         resp = self.invoke("GetOrderAmount", d, **kwargs)
         return apis.GetOrderAmountResponseSchema().loads(resp)
-
-    def get_um_infer_api_model(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """GetUMInferAPIModel - 获取该apikey能调用api的模型列表
+    
+    
+    
+    
+    
+    
+    
+    def get_uf_square_model_detail(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ GetUFSquareModelDetail - 获取广场模型详情
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **KeyId** (str) - apikey 的id
-        - **ModelType** (int) - 模型类型，1: 文本生成，2: 图片生成。
-        - **SquareId** (str) - 模型广场的id，用来跳转体验中心
-
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **Id** (str) - (Required) 主键
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        
         **Response**
 
-        - **Data** (list) - 见 **UMinferAPIModel** 模型定义
-
+        - **SquareModel** (dict) - 见 **SquareModel** 模型定义
+        
         **Response Model**
-
-        **Pricing**
+        
+        **Pricing** 
         - **Completion** (float) - 输出定价
         - **Currency** (str) - 币种
         - **Image** (float) - 生图定价
         - **Prompt** (float) - 提示词定价
+        - **Unit** (str) - 单位（中文），如“次” “百万”
+        - **UnitEn** (str) - 单位（English），如“Time” “Million”
+        - **Video** (str) - 生视频定价
+        
 
+        **PriceRate** 
+        - **ChargeItem** (str) - 收费项：input/output/thinking/tool...
+        - **ChargeItemDescription** (str) - 收费项描述
+        - **ChargeItemDescriptionEn** (str) - 收费项描述英文描述
+        - **Currency** (str) - 货币单位
+        - **Price** (str) - 价格
+        - **Unit** (str) - 计价单位
+        - **UnitEn** (str) - 计价单位英文
+        
 
-        **UMinferAPIModel**
+        **PriceTier** 
+        - **Condition** (str) - 档位/条件（例如 "32k"、"128k"）
+        - **Description** (str) - 档位描述（例如 "标准上下文 32k"）
+        - **DescriptionEn** (str) - 档位描述（例如 "标准上下文 32k"）
+        - **Rates** (list) - 见 **PriceRate** 模型定义
+        
+
+        **SquareModel** 
         - **CreateAt** (int) - 创建时间
-        - **Icon** (str) - 图标链接
-        - **Id** (str) - id
+        - **Describe** (str) - 详细描述
+        - **HfUpdateTime** (int) - HuggingFace 更新时间
+        - **Icon** (str) - 图标
+        - **Id** (str) - 主键
         - **Language** (list) - 语言
+        - **Manufacturer** (str) - 制造商
+        - **MaxModelLen** (int) - 模型长度
+        - **ModelType** (str) - 模型类型
         - **Name** (str) - 名称
         - **Pricing** (dict) - 见 **Pricing** 模型定义
-        - **ServedModelName** (str) - 使用OpenAI接口调用时，填入的 model值
-        - **SimpleDescribe** (str) - 描述
+        - **SimpleDescribe** (str) - 简要描述
+        - **SupportedCapabilities** (list) - 模型能力
+        - **Tiers** (list) - 见 **PriceTier** 模型定义
         - **UpdateAt** (int) - 更新时间
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
-        d = apis.GetUMInferAPIModelRequestSchema().dumps(d)
-
-        resp = self.invoke("GetUMInferAPIModel", d, **kwargs)
-        return apis.GetUMInferAPIModelResponseSchema().loads(resp)
-
-    def get_um_infer_token_usage(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """GetUMInferTokenUsage - 获取某个key下的某个模型的token使用量
+        d = apis.GetUFSquareModelDetailRequestSchema().dumps(d)
+        
+        resp = self.invoke("GetUFSquareModelDetail", d, **kwargs)
+        return apis.GetUFSquareModelDetailResponseSchema().loads(resp)
+    
+    
+    
+    
+    
+    
+    
+    def get_uf_square_model_prices(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ GetUFSquareModelPrices - 批量查询模型价格
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **EndTime** (int) - (Required) 结束时间戳
-        - **KeyId** (str) - (Required) apikey的id
-        - **Model** (str) - (Required) 模型名称
-        - **StartTime** (int) - (Required) 开始时间戳
-
+        - **Keyword** (str) - 模型名称模糊搜索（例：deepseek-r1）
+        - **Limit** (int) - 返回数据长度，默认为20
+        - **Offset** (int) - 列表起始位置偏移量，默认为0
+        
         **Response**
 
-        - **Data** (dict) - 见 **TokenUsage** 模型定义
-
+        - **Models** (list) - 见 **ModelPriceGroup** 模型定义
+        - **TotalCount** (int) - 总条数用于翻页
+        
         **Response Model**
+        
+        **PriceRate** 
+        - **ChargeItem** (str) - 收费项：input/output/thinking/tool...
+        - **ChargeItemDescription** (str) - 收费项描述
+        - **ChargeItemDescriptionEn** (str) - 收费项描述英文描述
+        - **Currency** (str) - 货币单位
+        - **Price** (str) - 价格
+        - **Unit** (str) - 计价单位
+        - **UnitEn** (str) - 计价单位英文
+        
 
-        **TokenUsageTimestamp**
-        - **Count** (int) - 数量
-        - **Model** (str) - 模型名称
-        - **Timestamp** (int) - unix时间戳
-        - **Type** (str) - 类型，in输入 out输出 total总  request_count 请求次数 image_generation 生图张数
+        **PriceTier** 
+        - **Condition** (str) - 档位/条件（例如 "32k"、"128k"）
+        - **Description** (str) - 档位描述（例如 "标准上下文 32k"）
+        - **DescriptionEn** (str) - 档位描述（例如 "标准上下文 32k"）
+        - **Rates** (list) - 见 **PriceRate** 模型定义
+        
 
-
-        **TokenUsage**
-        - **ImageGenerationNum** (int) - 生图总张数
-        - **InTotal** (int) - 输出总token
-        - **OutTotal** (int) - 输出总token
-        - **RequestTotal** (int) - 请求总次数
-        - **Total** (int) - 总token量
-        - **Usages** (list) - 见 **TokenUsageTimestamp** 模型定义
-
+        **ModelPriceGroup** 
+        - **Manufacturer** (str) - 制造商
+        - **ModelId** (str) - ModelId
+        - **ModelName** (str) - 模型名称
+        - **Tiers** (list) - 见 **PriceTier** 模型定义
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            
         }
         req and d.update(req)
-        d = apis.GetUMInferTokenUsageRequestSchema().dumps(d)
+        d = apis.GetUFSquareModelPricesRequestSchema().dumps(d)
+        
+        resp = self.invoke("GetUFSquareModelPrices", d, **kwargs)
+        return apis.GetUFSquareModelPricesResponseSchema().loads(resp)
+    
+    
+    
+    
+    
+    
+    
+    def get_um_infer_request_log_detail(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ GetUMInferRequestLogDetail - 原始日志详情
 
-        resp = self.invoke("GetUMInferTokenUsage", d, **kwargs)
-        return apis.GetUMInferTokenUsageResponseSchema().loads(resp)
+        **Request**
 
-    def list_paid_order_summary(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """ListPaidOrderSummary - 按指定维度汇总查询已完成（已支付）订单的统计数据
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。请参考  `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 业务地域，如 cn-wlcb。可先调用 ListUMInferRegions 获取可选地域
+        - **RequestId** (str) - (Required) 请求 ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        
+        **Response**
+
+        - **Data** (dict) - 见 **RequestLogDetail** 模型定义
+        
+        **Response Model**
+        
+        **RequestLogDetail** 
+        - **ApiKeyId** (str) - API Key ID
+        - **ClientIp** (str) - 客户端 IP
+        - **ErrorCode** (str) - 错误码
+        - **ErrorMessage** (str) - 错误信息
+        - **Extras** (str) - 扩展信息，本期返回为空
+        - **FirstTokenLatency** (int) - 首 Token 延迟，单位毫秒
+        - **HttpStatusCode** (int) - HTTP 状态码
+        - **IsStream** (bool) - 是否流式请求
+        - **IsSuccess** (bool) - 请求是否成功
+        - **Latency** (int) - 请求总延迟，单位毫秒
+        - **ModelName** (str) - 模型名称
+        - **OrganizationId** (str) - 组织 ID
+        - **OutputTokenThroughput** (float) - 输出 Token 吞吐
+        - **Region** (str) - 业务地域
+        - **Request** (str) - 请求原文，本期返回为空
+        - **RequestId** (str) - 请求 ID
+        - **Response** (str) - 响应原文，本期返回为空
+        - **StartTime** (int) - 请求开始时间，Unix 毫秒时间戳
+        - **StartTimeReadable** (str) - 请求开始时间，可读格式
+        - **TopOrganizationId** (str) - 顶级组织 ID
+        - **Usage** (str) - 模型返回的 usage 原文 JSON
+        
+
+        """
+        # build request
+        d = {
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+        }
+        req and d.update(req)
+        d = apis.GetUMInferRequestLogDetailRequestSchema().dumps(d)
+        
+        resp = self.invoke("GetUMInferRequestLogDetail", d, **kwargs)
+        return apis.GetUMInferRequestLogDetailResponseSchema().loads(resp)
+    
+    
+    
+    
+    
+    
+    
+    def list_paid_order_summary(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ ListPaidOrderSummary - 按指定维度汇总查询已完成（已支付）订单的统计数据
 
         **Request**
 
@@ -407,16 +590,16 @@ class UAI_ModelverseClient(Client):
         - **PricingSkus** (list) - 计费单元（SKU）列表（可选）
         - **PricingUnits** (list) - 计费单位数组（多选，可选）
         - **ProductCodes** (list) - 产品类型列表（多选，可选），枚举值：`modelverse`、`sandbox`
-        - **Regions** (list) - 地域列表（多选，可选），参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Regions** (list) - 地域列表（多选，可选），参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **ResourceIds** (list) - 资源ID数组（多选，可选）
-
+        
         **Response**
 
         - **Summaries** (list) - 见 **OrderSummaryItem** 模型定义
-
+        
         **Response Model**
-
-        **OrderSummaryItem**
+        
+        **OrderSummaryItem** 
         - **ChargeType** (int) - 计费类型
         - **DiscountPrice** (str) - 折后单价
         - **ListPrice** (str) - 列表价（原单价）
@@ -438,21 +621,27 @@ class UAI_ModelverseClient(Client):
         - **SumQuantity** (int) - 总用量（原始值）
         - **SumQuantityDisplay** (str) - 总用量显示（格式化后的字符串，千token和百万token会进行转换）
         - **SumStarCardAccount** (str) - 总星力卡抵扣金额（仅已完成订单返回）
-
+        
 
         """
         # build request
-        d = {}
+        d = {
+            
+        }
         req and d.update(req)
         d = apis.ListPaidOrderSummaryRequestSchema().dumps(d)
-
+        
         resp = self.invoke("ListPaidOrderSummary", d, **kwargs)
         return apis.ListPaidOrderSummaryResponseSchema().loads(resp)
-
-    def list_paid_orders(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """ListPaidOrders - 查询已完成（已支付）的订单明细列表，StartTime/EndTime 必填；取数范围是 [StartTime, EndTime)，即取开始计费时间大于等于StartTime且小于EndTime的数据
+    
+    
+    
+    
+    
+    
+    
+    def list_paid_orders(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ ListPaidOrders - 查询已完成（已支付）的订单明细列表，StartTime/EndTime 必填；取数范围是 [StartTime, EndTime)，即取开始计费时间大于等于StartTime且小于EndTime的数据
 
         **Request**
 
@@ -466,19 +655,19 @@ class UAI_ModelverseClient(Client):
         - **PricingSkus** (list) - 计费 SKU 列表（可选）
         - **PricingUnits** (list) - 计费单位数组（多选，可选）
         - **ProductCodes** (list) - 产品类型列表（多选，可选），枚举值：`modelverse`、`sandbox`
-        - **Regions** (list) - 地域列表（多选，可选），参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Regions** (list) - 地域列表（多选，可选），参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **ResourceIds** (list) - 资源ID数组（多选，可选）
-
+        
         **Response**
 
         - **Orders** (list) - 见 **OrderItemDetail** 模型定义
         - **Page** (int) - 当前页码
         - **PageSize** (int) - 每页数量
         - **Total** (int) - 总记录数
-
+        
         **Response Model**
-
-        **OrderItemDetail**
+        
+        **OrderItemDetail** 
         - **BonusAccount** (str) - 赠金账户扣款金额
         - **CashAccount** (str) - 现金账户扣款金额
         - **Channel** (int) - 渠道
@@ -517,26 +706,32 @@ class UAI_ModelverseClient(Client):
         - **StatusDisplay** (str) - 订单状态显示名
         - **UnpaidOrderNo** (str) - 欠费订单号
         - **UserEmail** (str) - 用户邮箱
-
+        
 
         """
         # build request
-        d = {}
+        d = {
+            
+        }
         req and d.update(req)
         d = apis.ListPaidOrdersRequestSchema().dumps(d)
-
+        
         resp = self.invoke("ListPaidOrders", d, **kwargs)
         return apis.ListPaidOrdersResponseSchema().loads(resp)
-
-    def list_uf_square_model(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """ListUFSquareModel - 查询模型广场数据
+    
+    
+    
+    
+    
+    
+    
+    def list_uf_square_model(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ ListUFSquareModel - 查询模型广场数据
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **Keyword** (str) - 关键字
         - **Language** (list) - 语言，数组类型，可选值 ["chinese", "english"]
         - **Limit** (int) - 每页数量
@@ -545,23 +740,23 @@ class UAI_ModelverseClient(Client):
         - **Offset** (int) - 偏移量
         - **Order** (str) - 排序顺序，默认倒序
         - **OrderBy** (str) - 排序字段
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        
         **Response**
 
         - **SquareModels** (list) - 见 **SquareModel** 模型定义
         - **TotalCount** (int) - 总数
-
+        
         **Response Model**
-
-        **Pricing**
+        
+        **Pricing** 
         - **Completion** (float) - 输出定价
         - **Currency** (str) - 币种
         - **Image** (float) - 生图定价
         - **Prompt** (float) - 提示词定价
+        
 
-
-        **SquareModel**
+        **SquareModel** 
         - **CreateAt** (int) - 创建时间
         - **Describe** (str) - 详细描述
         - **HfUpdateTime** (int) - HuggingFace 更新时间
@@ -575,40 +770,72 @@ class UAI_ModelverseClient(Client):
         - **SimpleDescribe** (str) - 简要描述
         - **SupportedCapabilities** (list) - 模型能力
         - **UpdateAt** (int) - 更新时间
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
-            "Region": self.config.region,
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
         }
         req and d.update(req)
         d = apis.ListUFSquareModelRequestSchema().dumps(d)
-
+        
         resp = self.invoke("ListUFSquareModel", d, **kwargs)
         return apis.ListUFSquareModelResponseSchema().loads(resp)
-
-    def list_um_infer_api_key(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """ListUMInferAPIKey - 列表查询apikey
+    
+    
+    
+    
+    
+    
+    
+    def list_uf_square_model_filters_auth(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ ListUFSquareModelFiltersAuth - 登录状态下获取模型广场过滤器中内容
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        
+        **Response**
+
+        
+        """
+        # build request
+        d = {
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+        }
+        req and d.update(req)
+        d = apis.ListUFSquareModelFiltersAuthRequestSchema().dumps(d)
+        
+        resp = self.invoke("ListUFSquareModelFiltersAuth", d, **kwargs)
+        return apis.ListUFSquareModelFiltersAuthResponseSchema().loads(resp)
+    
+    
+    
+    
+    
+    
+    
+    def list_um_infer_api_key(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ ListUMInferAPIKey - 列表查询apikey
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **Limit** (int) - 返回数据长度，默认为20，最大100
         - **ModelverseDisabled** (int) - 是否modelverse可用 0: 启用 1: 禁用
         - **Offset** (int) - 列表起始位置偏移量，默认为0
         - **SandBoxDisabled** (int) - 是否沙盒可用 0: 启用 1: 禁用(astraflow 沙盒控制未上线，暂时无效)
-
+        
         **Response**
 
         - **Data** (list) - 见 **APIKey** 模型定义
-
+        
         **Response Model**
-
-        **APIKey**
+        
+        **APIKey** 
         - **ChannelId** (int) - 渠道id
         - **CreateTime** (int) - 创建时间
         - **DailyLimitAmount** (str) - 日限额，单位随用户所在渠道。126渠道单位为美元
@@ -627,23 +854,100 @@ class UAI_ModelverseClient(Client):
         - **SandBoxDisabled** (int) - 是否沙盒可用 0: 启用 1: 禁用(astraflow 沙盒控制未上线，暂时无效)
         - **Status** (int) - 状态，1 正常
         - **TopOrganizationId** (int) - 公司id
-
+        
 
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.ListUMInferAPIKeyRequestSchema().dumps(d)
-
+        
         resp = self.invoke("ListUMInferAPIKey", d, **kwargs)
         return apis.ListUMInferAPIKeyResponseSchema().loads(resp)
+    
+    
+    
+    
+    
+    
+    
+    def list_um_infer_request_logs(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ ListUMInferRequestLogs - 日志明细列表
 
-    def list_unpaid_order_summary(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """ListUnpaidOrderSummary - 按指定维度汇总查询欠费订单的统计数据
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。请参考  `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
+        - **Region** (str) - (Config) 业务地域，如 cn-wlcb。可先调用 ListUMInferRegions 获取可选地域
+        - **EndTime** (int) - (Required) 查询结束时间，Unix 毫秒时间戳，必须大于等于 StartTime
+        - **StartTime** (int) - (Required) 查询开始时间，Unix 毫秒时间戳
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
+        - **ApiKeyIds** (list) - API Key ID 列表，用于过滤
+        - **Limit** (int) - 返回数量，默认 20
+        - **ModelNames** (list) - 模型名称列表，用于过滤
+        - **Offset** (int) - 列表偏移量，默认 0
+        - **RequestId** (str) - 请求 ID，用于精确过滤
+        
+        **Response**
+
+        - **Data** (dict) - 见 **ListUMInferRequestLogsData** 模型定义
+        
+        **Response Model**
+        
+        **RequestLogItem** 
+        - **ApiKeyId** (str) - API Key ID
+        - **ApiKeyName** (str) - API Key 名称
+        - **CacheCreation1hTokens** (int) - 1 小时缓存写入 Token 数
+        - **CacheCreation5mTokens** (int) - 5 分钟缓存写入 Token 数
+        - **CacheCreationTokens** (int) - 缓存写入 Token 数
+        - **CacheHitTokens** (int) - 缓存命中 Token 数
+        - **CompletionTokens** (int) - 输出 Token 数
+        - **ErrorCode** (str) - 错误码
+        - **FirstTokenLatency** (int) - 首 Token 延迟，单位毫秒
+        - **HasInferenceLog** (bool) - 是否存在推理日志
+        - **HttpStatusCode** (int) - HTTP 状态码
+        - **IsSuccess** (bool) - 请求是否成功
+        - **Latency** (int) - 请求总延迟，单位毫秒
+        - **ModelName** (str) - 模型名称
+        - **OutputTokenThroughput** (float) - 输出 Token 吞吐
+        - **PromptTokens** (int) - 输入 Token 数
+        - **Region** (str) - 业务地域
+        - **RequestId** (str) - 请求 ID
+        - **StartTime** (int) - 请求开始时间，Unix 毫秒时间戳
+        - **StartTimeReadable** (str) - 请求开始时间，可读格式
+        - **TotalTokens** (int) - 总 Token 数
+        
+
+        **RequestLogSummary** 
+        - **FailedRequests** (int) - 查询条件命中的失败请求数
+        - **TotalRequests** (int) - 查询条件命中的总请求数
+        
+
+        **ListUMInferRequestLogsData** 
+        - **Items** (list) - 见 **RequestLogItem** 模型定义
+        - **Summary** (dict) - 见 **RequestLogSummary** 模型定义
+        
+
+        """
+        # build request
+        d = {
+            'ProjectId': self.config.project_id, 'Region': self.config.region, 
+        }
+        req and d.update(req)
+        d = apis.ListUMInferRequestLogsRequestSchema().dumps(d)
+        
+        resp = self.invoke("ListUMInferRequestLogs", d, **kwargs)
+        return apis.ListUMInferRequestLogsResponseSchema().loads(resp)
+    
+    
+    
+    
+    
+    
+    
+    def list_unpaid_order_summary(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ ListUnpaidOrderSummary - 按指定维度汇总查询欠费订单的统计数据
 
         **Request**
 
@@ -655,16 +959,16 @@ class UAI_ModelverseClient(Client):
         - **OrganizationIds** (list) - 组织ID列表（可选）
         - **PricingSkus** (list) - 计费单元（SKU）列表（可选）
         - **PricingUnits** (list) - 计费单元数组（多选，可选）
-        - **Regions** (list) - 地域列表（多选，可选），参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Regions** (list) - 地域列表（多选，可选），参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **ResourceIds** (list) - Key数组（多选，可选）
-
+        
         **Response**
 
         - **Summaries** (list) - 见 **OrderSummaryItem** 模型定义
-
+        
         **Response Model**
-
-        **OrderSummaryItem**
+        
+        **OrderSummaryItem** 
         - **ChargeType** (int) - 计费类型
         - **DiscountPrice** (str) - 折后单价
         - **ListPrice** (str) - 列表价（原单价）
@@ -686,21 +990,27 @@ class UAI_ModelverseClient(Client):
         - **SumQuantity** (int) - 总用量（原始值）
         - **SumQuantityDisplay** (str) - 总用量显示（格式化后的字符串，千token和百万token会进行转换）
         - **SumStarCardAccount** (str) - 总星力卡抵扣金额（仅已完成订单返回）
-
+        
 
         """
         # build request
-        d = {}
+        d = {
+            
+        }
         req and d.update(req)
         d = apis.ListUnpaidOrderSummaryRequestSchema().dumps(d)
-
+        
         resp = self.invoke("ListUnpaidOrderSummary", d, **kwargs)
         return apis.ListUnpaidOrderSummaryResponseSchema().loads(resp)
-
-    def list_unpaid_orders(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """ListUnpaidOrders - 查询当前欠费（未支付）的订单明细列表
+    
+    
+    
+    
+    
+    
+    
+    def list_unpaid_orders(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ ListUnpaidOrders - 查询当前欠费（未支付）的订单明细列表
 
         **Request**
 
@@ -713,16 +1023,16 @@ class UAI_ModelverseClient(Client):
         - **PricingSkus** (list) - 计费 SKU 列表（可选）
         - **PricingUnits** (list) - 计费单元数组（多选，可选）
         - **ProductCodes** (list) - 产品类型列表（多选，可选），枚举值：`modelverse`、`sandbox`
-        - **Regions** (list) - 地域列表（多选，可选），参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Regions** (list) - 地域列表（多选，可选），参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_ 
         - **ResourceIds** (list) - key数组（多选，可选）
-
+        
         **Response**
 
         - **Orders** (list) - 见 **UnpaidOrderItem** 模型定义
-
+        
         **Response Model**
-
-        **UnpaidOrderItem**
+        
+        **UnpaidOrderItem** 
         - **Channel** (int) - 渠道
         - **ChargeType** (int) - 计费类型
         - **ChargeTypeDisplay** (str) - 计价方式显示名
@@ -761,25 +1071,69 @@ class UAI_ModelverseClient(Client):
         - **Status** (int) - 订单状态
         - **StatusDisplay** (str) - 订单状态显示名
         - **UserEmail** (str) - 用户邮箱
-
+        
 
         """
         # build request
-        d = {}
+        d = {
+            
+        }
         req and d.update(req)
         d = apis.ListUnpaidOrdersRequestSchema().dumps(d)
-
+        
         resp = self.invoke("ListUnpaidOrders", d, **kwargs)
         return apis.ListUnpaidOrdersResponseSchema().loads(resp)
-
-    def update_um_infer_api_key(
-        self, req: typing.Optional[dict] = None, **kwargs
-    ) -> dict:
-        """UpdateUMInferAPIKey - 更新apikey
+    
+    
+    
+    
+    
+    
+    
+    def start_pay_unpaid_orders(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ StartPayUnpaidOrders - 批量支付欠费订单，指定 OrderNos 支付，最多 50 个
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **OrderNos** (list) - (Required) 欠费订单号列表，最多 50 个
+        
+        **Response**
+
+        - **FailureCount** (int) - 支付失败数量
+        - **Results** (dict) - 见 **PayResult** 模型定义
+        - **SuccessCount** (int) - 支付成功数量
+        
+        **Response Model**
+        
+        **PayResult** 
+        - **OrderNo** (str) - 订单号
+        - **Reason** (str) - 失败原因（成功时为空）
+        - **Success** (bool) - 是否支付成功
+        
+
+        """
+        # build request
+        d = {
+            
+        }
+        req and d.update(req)
+        d = apis.StartPayUnpaidOrdersRequestSchema().dumps(d)
+        
+        resp = self.invoke("StartPayUnpaidOrders", d, **kwargs)
+        return apis.StartPayUnpaidOrdersResponseSchema().loads(resp)
+    
+    
+    
+    
+    
+    
+    
+    def update_um_infer_api_key(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """ UpdateUMInferAPIKey - 更新apikey
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_ 
         - **KeyId** (str) - (Required) apikey的id
         - **DailyLimitAmount** (str) - 日限额，单位随用户所在渠道。126渠道单位为美元
         - **GrantAllModels** (bool) - 全部模型访问开关，开启不受 GrantedModels 参数控制，关闭只能访问 GrantedModels 中添加模型
@@ -789,18 +1143,21 @@ class UAI_ModelverseClient(Client):
         - **MonthlyLimitAmount** (str) - 月限额，单位随用户所在渠道。126渠道单位为美元
         - **Name** (str) - 更新的名称
         - **SandBoxDisabled** (int) - 是否沙盒可用 0: 启用 1: 禁用
-
+        
         **Response**
 
         - **UminferID** (str) - apikey 的id
-
+        
         """
         # build request
         d = {
-            "ProjectId": self.config.project_id,
+            'ProjectId': self.config.project_id, 
         }
         req and d.update(req)
         d = apis.UpdateUMInferAPIKeyRequestSchema().dumps(d)
-
+        
         resp = self.invoke("UpdateUMInferAPIKey", d, **kwargs)
         return apis.UpdateUMInferAPIKeyResponseSchema().loads(resp)
+    
+
+
