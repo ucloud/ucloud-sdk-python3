@@ -169,6 +169,38 @@ class DownloadOrderSummaryResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DownloadUMInferRequestLog
+
+导出推理请求日志。单次导出时间范围最长 30 天，最多导出 2000 万条日志；同一 TopOrganizationID 同一时间仅允许 1 个导出任务在执行，已有任务执行中时请稍后重试。
+"""
+
+
+class DownloadUMInferRequestLogRequestSchema(schema.RequestSchema):
+    """DownloadUMInferRequestLog - 导出推理请求日志。单次导出时间范围最长 30 天，最多导出 2000 万条日志；同一 TopOrganizationID 同一时间仅允许 1 个导出任务在执行，已有任务执行中时请稍后重试。"""
+
+    fields = {
+        "ApiKeyIds": fields.List(fields.Str()),
+        "Email": fields.Str(required=True, dump_to="Email"),
+        "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "ModelNames": fields.List(fields.Str()),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "RequestId": fields.Str(required=False, dump_to="RequestId"),
+        "StartTime": fields.Int(required=True, dump_to="StartTime"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DownloadUMInferRequestLogResponseSchema(schema.ResponseSchema):
+    """DownloadUMInferRequestLog - 导出推理请求日志。单次导出时间范围最长 30 天，最多导出 2000 万条日志；同一 TopOrganizationID 同一时间仅允许 1 个导出任务在执行，已有任务执行中时请稍后重试。"""
+
+    fields = {
+        "TaskId": fields.Str(required=False, load_from="TaskId"),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
 API: GetFilterOptions
 
 查询可用于订单筛选的资源、模型、地域等选项列表
@@ -281,14 +313,68 @@ class GetOrderAmountResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetUFSquareModelDetail
+
+获取广场模型详情
+"""
+
+
+class GetUFSquareModelDetailRequestSchema(schema.RequestSchema):
+    """GetUFSquareModelDetail - 获取广场模型详情"""
+
+    fields = {
+        "Id": fields.Str(required=True, dump_to="Id"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class GetUFSquareModelDetailResponseSchema(schema.ResponseSchema):
+    """GetUFSquareModelDetail - 获取广场模型详情"""
+
+    fields = {
+        "SquareModel": models.SquareModelSchema(),
+    }
+
+
+"""
+API: GetUFSquareModelPrices
+
+批量查询模型价格
+"""
+
+
+class GetUFSquareModelPricesRequestSchema(schema.RequestSchema):
+    """GetUFSquareModelPrices - 批量查询模型价格"""
+
+    fields = {
+        "Keyword": fields.Str(required=False, dump_to="Keyword"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+    }
+
+
+class GetUFSquareModelPricesResponseSchema(schema.ResponseSchema):
+    """GetUFSquareModelPrices - 批量查询模型价格"""
+
+    fields = {
+        "Models": fields.List(
+            models.ModelPriceGroupSchema(), required=True, load_from="Models"
+        ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
 API: GetUMInferAPIModel
 
-获取该apikey能调用api的模型列表
+
 """
 
 
 class GetUMInferAPIModelRequestSchema(schema.RequestSchema):
-    """GetUMInferAPIModel - 获取该apikey能调用api的模型列表"""
+    """GetUMInferAPIModel -"""
 
     fields = {
         "KeyId": fields.Str(required=False, dump_to="KeyId"),
@@ -299,7 +385,7 @@ class GetUMInferAPIModelRequestSchema(schema.RequestSchema):
 
 
 class GetUMInferAPIModelResponseSchema(schema.ResponseSchema):
-    """GetUMInferAPIModel - 获取该apikey能调用api的模型列表"""
+    """GetUMInferAPIModel -"""
 
     fields = {
         "Data": fields.List(
@@ -309,14 +395,40 @@ class GetUMInferAPIModelResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetUMInferRequestLogDetail
+
+原始日志详情
+"""
+
+
+class GetUMInferRequestLogDetailRequestSchema(schema.RequestSchema):
+    """GetUMInferRequestLogDetail - 原始日志详情"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "RequestId": fields.Str(required=True, dump_to="RequestId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class GetUMInferRequestLogDetailResponseSchema(schema.ResponseSchema):
+    """GetUMInferRequestLogDetail - 原始日志详情"""
+
+    fields = {
+        "Data": models.RequestLogDetailSchema(),
+    }
+
+
+"""
 API: GetUMInferTokenUsage
 
-获取某个key下的某个模型的token使用量
+
 """
 
 
 class GetUMInferTokenUsageRequestSchema(schema.RequestSchema):
-    """GetUMInferTokenUsage - 获取某个key下的某个模型的token使用量"""
+    """GetUMInferTokenUsage -"""
 
     fields = {
         "EndTime": fields.Int(required=True, dump_to="EndTime"),
@@ -328,10 +440,10 @@ class GetUMInferTokenUsageRequestSchema(schema.RequestSchema):
 
 
 class GetUMInferTokenUsageResponseSchema(schema.ResponseSchema):
-    """GetUMInferTokenUsage - 获取某个key下的某个模型的token使用量"""
+    """GetUMInferTokenUsage -"""
 
     fields = {
-        "Data": models.TokenUsageSchema(),
+        "Data": models.TokenUsageSchema(required=False, load_from="Data"),
     }
 
 
@@ -448,6 +560,29 @@ class ListUFSquareModelResponseSchema(schema.ResponseSchema):
 
 
 """
+API: ListUFSquareModelFiltersAuth
+
+登录状态下获取模型广场过滤器中内容
+"""
+
+
+class ListUFSquareModelFiltersAuthRequestSchema(schema.RequestSchema):
+    """ListUFSquareModelFiltersAuth - 登录状态下获取模型广场过滤器中内容"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ListUFSquareModelFiltersAuthResponseSchema(schema.ResponseSchema):
+    """ListUFSquareModelFiltersAuth - 登录状态下获取模型广场过滤器中内容"""
+
+    fields = {}
+
+
+"""
 API: ListUMInferAPIKey
 
 列表查询apikey
@@ -477,6 +612,38 @@ class ListUMInferAPIKeyResponseSchema(schema.ResponseSchema):
         "Data": fields.List(
             models.APIKeySchema(), required=True, load_from="Data"
         ),
+    }
+
+
+"""
+API: ListUMInferRequestLogs
+
+日志明细列表
+"""
+
+
+class ListUMInferRequestLogsRequestSchema(schema.RequestSchema):
+    """ListUMInferRequestLogs - 日志明细列表"""
+
+    fields = {
+        "ApiKeyIds": fields.List(fields.Str()),
+        "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "ModelNames": fields.List(fields.Str()),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "RequestId": fields.Str(required=False, dump_to="RequestId"),
+        "StartTime": fields.Int(required=True, dump_to="StartTime"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ListUMInferRequestLogsResponseSchema(schema.ResponseSchema):
+    """ListUMInferRequestLogs - 日志明细列表"""
+
+    fields = {
+        "Data": models.ListUMInferRequestLogsDataSchema(),
     }
 
 
@@ -548,6 +715,31 @@ class ListUnpaidOrdersResponseSchema(schema.ResponseSchema):
         "Orders": fields.List(
             models.UnpaidOrderItemSchema(), required=True, load_from="Orders"
         ),
+    }
+
+
+"""
+API: StartPayUnpaidOrders
+
+批量支付欠费订单，指定 OrderNos 支付，最多 50 个
+"""
+
+
+class StartPayUnpaidOrdersRequestSchema(schema.RequestSchema):
+    """StartPayUnpaidOrders - 批量支付欠费订单，指定 OrderNos 支付，最多 50 个"""
+
+    fields = {
+        "OrderNos": fields.List(fields.Str()),
+    }
+
+
+class StartPayUnpaidOrdersResponseSchema(schema.ResponseSchema):
+    """StartPayUnpaidOrders - 批量支付欠费订单，指定 OrderNos 支付，最多 50 个"""
+
+    fields = {
+        "FailureCount": fields.Int(required=True, load_from="FailureCount"),
+        "Results": models.PayResultSchema(),
+        "SuccessCount": fields.Int(required=True, load_from="SuccessCount"),
     }
 
 
