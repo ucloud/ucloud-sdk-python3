@@ -56,6 +56,15 @@ class DownloadFileDataSchema(schema.ResponseSchema):
     }
 
 
+class FilterOptionStringSchema(schema.ResponseSchema):
+    """FilterOptionString - 字符串类型筛选选项"""
+
+    fields = {
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Value": fields.Str(required=False, load_from="Value"),
+    }
+
+
 class FilterOptionIntegerSchema(schema.ResponseSchema):
     """FilterOptionInteger - 整数类型筛选选项"""
 
@@ -65,12 +74,32 @@ class FilterOptionIntegerSchema(schema.ResponseSchema):
     }
 
 
-class FilterOptionStringSchema(schema.ResponseSchema):
-    """FilterOptionString - 字符串类型筛选选项"""
+class PriceRateSchema(schema.ResponseSchema):
+    """PriceRate - 该档位下的收费列表（有序数组）"""
 
     fields = {
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Value": fields.Str(required=False, load_from="Value"),
+        "ChargeItem": fields.Str(required=False, load_from="ChargeItem"),
+        "ChargeItemDescription": fields.Str(
+            required=False, load_from="ChargeItemDescription"
+        ),
+        "ChargeItemDescriptionEn": fields.Str(
+            required=True, load_from="ChargeItemDescriptionEn"
+        ),
+        "Currency": fields.Str(required=True, load_from="Currency"),
+        "Price": fields.Str(required=False, load_from="Price"),
+        "Unit": fields.Str(required=True, load_from="Unit"),
+        "UnitEn": fields.Str(required=True, load_from="UnitEn"),
+    }
+
+
+class PriceTierSchema(schema.ResponseSchema):
+    """PriceTier - 价格阶梯"""
+
+    fields = {
+        "Condition": fields.Str(required=False, load_from="Condition"),
+        "Description": fields.Str(required=False, load_from="Description"),
+        "DescriptionEn": fields.Str(required=True, load_from="DescriptionEn"),
+        "Rates": fields.List(PriceRateSchema()),
     }
 
 
@@ -85,8 +114,41 @@ class PricingSchema(schema.ResponseSchema):
     }
 
 
+class SquareModelSchema(schema.ResponseSchema):
+    """SquareModel - 广场模型"""
+
+    fields = {
+        "CreateAt": fields.Int(required=False, load_from="CreateAt"),
+        "Describe": fields.Str(required=False, load_from="Describe"),
+        "HfUpdateTime": fields.Int(required=False, load_from="HfUpdateTime"),
+        "Icon": fields.Str(required=False, load_from="Icon"),
+        "Id": fields.Str(required=False, load_from="Id"),
+        "Language": fields.List(fields.Str()),
+        "MaxModelLen": fields.Int(required=False, load_from="MaxModelLen"),
+        "ModelType": fields.Str(required=False, load_from="ModelType"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Pricing": PricingSchema(),
+        "SimpleDescribe": fields.Str(
+            required=False, load_from="SimpleDescribe"
+        ),
+        "SupportedCapabilities": fields.List(fields.Str()),
+        "UpdateAt": fields.Int(required=False, load_from="UpdateAt"),
+    }
+
+
+class ModelPriceGroupSchema(schema.ResponseSchema):
+    """ModelPriceGroup - ModelPriceGroup"""
+
+    fields = {
+        "Manufacturer": fields.Str(required=True, load_from="Manufacturer"),
+        "ModelId": fields.Str(required=False, load_from="ModelId"),
+        "ModelName": fields.Str(required=False, load_from="ModelName"),
+        "Tiers": fields.List(PriceTierSchema()),
+    }
+
+
 class UMinferAPIModelSchema(schema.ResponseSchema):
-    """UMinferAPIModel - 可供api调用的model详情"""
+    """UMinferAPIModel -"""
 
     fields = {
         "CreateAt": fields.Int(required=False, load_from="CreateAt"),
@@ -94,7 +156,7 @@ class UMinferAPIModelSchema(schema.ResponseSchema):
         "Id": fields.Str(required=False, load_from="Id"),
         "Language": fields.List(fields.Str()),
         "Name": fields.Str(required=False, load_from="Name"),
-        "Pricing": PricingSchema(),
+        "Pricing": PricingSchema(required=False, load_from="Pricing"),
         "ServedModelName": fields.Str(
             required=False, load_from="ServedModelName"
         ),
@@ -105,8 +167,48 @@ class UMinferAPIModelSchema(schema.ResponseSchema):
     }
 
 
+class RequestLogDetailSchema(schema.ResponseSchema):
+    """RequestLogDetail - 请求日志详情"""
+
+    fields = {
+        "ApiKeyId": fields.Str(required=False, load_from="ApiKeyId"),
+        "ClientIp": fields.Str(required=False, load_from="ClientIp"),
+        "ErrorCode": fields.Str(required=False, load_from="ErrorCode"),
+        "ErrorMessage": fields.Str(required=False, load_from="ErrorMessage"),
+        "Extras": fields.Str(required=False, load_from="Extras"),
+        "FirstTokenLatency": fields.Int(
+            required=False, load_from="FirstTokenLatency"
+        ),
+        "HttpStatusCode": fields.Int(
+            required=False, load_from="HttpStatusCode"
+        ),
+        "IsStream": fields.Bool(required=False, load_from="IsStream"),
+        "IsSuccess": fields.Bool(required=False, load_from="IsSuccess"),
+        "Latency": fields.Int(required=False, load_from="Latency"),
+        "ModelName": fields.Str(required=False, load_from="ModelName"),
+        "OrganizationId": fields.Str(
+            required=False, load_from="OrganizationId"
+        ),
+        "OutputTokenThroughput": fields.Float(
+            required=False, load_from="OutputTokenThroughput"
+        ),
+        "Region": fields.Str(required=False, load_from="Region"),
+        "Request": fields.Str(required=False, load_from="Request"),
+        "RequestId": fields.Str(required=False, load_from="RequestId"),
+        "Response": fields.Str(required=False, load_from="Response"),
+        "StartTime": fields.Int(required=False, load_from="StartTime"),
+        "StartTimeReadable": fields.Str(
+            required=False, load_from="StartTimeReadable"
+        ),
+        "TopOrganizationId": fields.Str(
+            required=False, load_from="TopOrganizationId"
+        ),
+        "Usage": fields.Str(required=False, load_from="Usage"),
+    }
+
+
 class TokenUsageTimestampSchema(schema.ResponseSchema):
-    """TokenUsageTimestamp - 时间戳级别的token使用量"""
+    """TokenUsageTimestamp -"""
 
     fields = {
         "Count": fields.Int(required=False, load_from="Count"),
@@ -117,7 +219,7 @@ class TokenUsageTimestampSchema(schema.ResponseSchema):
 
 
 class TokenUsageSchema(schema.ResponseSchema):
-    """TokenUsage - 某个apikey的某个模型的token使用情况"""
+    """TokenUsage -"""
 
     fields = {
         "ImageGenerationNum": fields.Int(
@@ -238,25 +340,71 @@ class OrderItemDetailSchema(schema.ResponseSchema):
     }
 
 
-class SquareModelSchema(schema.ResponseSchema):
-    """SquareModel - 广场模型"""
+class RequestLogItemSchema(schema.ResponseSchema):
+    """RequestLogItem - 请求日志列表项"""
 
     fields = {
-        "CreateAt": fields.Int(required=False, load_from="CreateAt"),
-        "Describe": fields.Str(required=False, load_from="Describe"),
-        "HfUpdateTime": fields.Int(required=False, load_from="HfUpdateTime"),
-        "Icon": fields.Str(required=False, load_from="Icon"),
-        "Id": fields.Str(required=False, load_from="Id"),
-        "Language": fields.List(fields.Str()),
-        "MaxModelLen": fields.Int(required=False, load_from="MaxModelLen"),
-        "ModelType": fields.Str(required=False, load_from="ModelType"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Pricing": PricingSchema(),
-        "SimpleDescribe": fields.Str(
-            required=False, load_from="SimpleDescribe"
+        "ApiKeyId": fields.Str(required=False, load_from="ApiKeyId"),
+        "ApiKeyName": fields.Str(required=False, load_from="ApiKeyName"),
+        "CacheCreation1hTokens": fields.Int(
+            required=False, load_from="CacheCreation1hTokens"
         ),
-        "SupportedCapabilities": fields.List(fields.Str()),
-        "UpdateAt": fields.Int(required=False, load_from="UpdateAt"),
+        "CacheCreation5mTokens": fields.Int(
+            required=False, load_from="CacheCreation5mTokens"
+        ),
+        "CacheCreationTokens": fields.Int(
+            required=False, load_from="CacheCreationTokens"
+        ),
+        "CacheHitTokens": fields.Int(
+            required=False, load_from="CacheHitTokens"
+        ),
+        "CompletionTokens": fields.Int(
+            required=False, load_from="CompletionTokens"
+        ),
+        "ErrorCode": fields.Str(required=False, load_from="ErrorCode"),
+        "FirstTokenLatency": fields.Int(
+            required=False, load_from="FirstTokenLatency"
+        ),
+        "HasInferenceLog": fields.Bool(
+            required=False, load_from="HasInferenceLog"
+        ),
+        "HttpStatusCode": fields.Int(
+            required=False, load_from="HttpStatusCode"
+        ),
+        "IsSuccess": fields.Bool(required=False, load_from="IsSuccess"),
+        "Latency": fields.Int(required=False, load_from="Latency"),
+        "ModelName": fields.Str(required=False, load_from="ModelName"),
+        "OutputTokenThroughput": fields.Float(
+            required=False, load_from="OutputTokenThroughput"
+        ),
+        "PromptTokens": fields.Int(required=False, load_from="PromptTokens"),
+        "Region": fields.Str(required=False, load_from="Region"),
+        "RequestId": fields.Str(required=False, load_from="RequestId"),
+        "StartTime": fields.Int(required=False, load_from="StartTime"),
+        "StartTimeReadable": fields.Str(
+            required=False, load_from="StartTimeReadable"
+        ),
+        "TotalTokens": fields.Int(required=False, load_from="TotalTokens"),
+    }
+
+
+class RequestLogSummarySchema(schema.ResponseSchema):
+    """RequestLogSummary - 请求日志汇总"""
+
+    fields = {
+        "FailedRequests": fields.Int(
+            required=False, load_from="FailedRequests"
+        ),
+        "TotalRequests": fields.Int(required=False, load_from="TotalRequests"),
+    }
+
+
+class ListUMInferRequestLogsDataSchema(schema.ResponseSchema):
+    """ListUMInferRequestLogsData - 日志明细列表返回数据"""
+
+    fields = {
+        "Items": fields.List(RequestLogItemSchema()),
+        "Summary": RequestLogSummarySchema(),
     }
 
 
@@ -324,4 +472,14 @@ class UnpaidOrderItemSchema(schema.ResponseSchema):
         "Status": fields.Int(required=False, load_from="Status"),
         "StatusDisplay": fields.Str(required=False, load_from="StatusDisplay"),
         "UserEmail": fields.Str(required=False, load_from="UserEmail"),
+    }
+
+
+class PayResultSchema(schema.ResponseSchema):
+    """PayResult - 支付结果"""
+
+    fields = {
+        "OrderNo": fields.Str(required=False, load_from="OrderNo"),
+        "Reason": fields.Str(required=False, load_from="Reason"),
+        "Success": fields.Bool(required=False, load_from="Success"),
     }

@@ -215,6 +215,40 @@ class UAI_ModelverseClient(Client):
         resp = self.invoke("DownloadOrderSummary", d, **kwargs)
         return apis.DownloadOrderSummaryResponseSchema().loads(resp)
 
+    def download_um_infer_request_log(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DownloadUMInferRequestLog - 导出推理请求日志。单次导出时间范围最长 30 天，最多导出 2000 万条日志；同一 TopOrganizationID 同一时间仅允许 1 个导出任务在执行，已有任务执行中时请稍后重试。
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。请参考  `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 业务地域，如 cn-wlcb。可先调用 ListUMInferRegions 获取可选地域
+        - **Email** (str) - (Required) 接收导出结果的邮箱地址
+        - **EndTime** (int) - (Required) 导出结束时间，Unix 毫秒时间戳，最长支持 30 天范围
+        - **StartTime** (int) - (Required) 导出开始时间，Unix 毫秒时间戳
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ApiKeyIds** (list) - API Key ID 列表，用于过滤
+        - **ModelNames** (list) - 模型名称列表，用于过滤
+        - **RequestId** (str) - 请求 ID，用于精确过滤
+
+        **Response**
+
+        - **TaskId** (str) - 导出任务 ID
+        - **TotalCount** (int) - 本次导出查询命中的日志行数
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DownloadUMInferRequestLogRequestSchema().dumps(d)
+
+        resp = self.invoke("DownloadUMInferRequestLog", d, **kwargs)
+        return apis.DownloadUMInferRequestLogResponseSchema().loads(resp)
+
     def get_filter_options(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -297,21 +331,21 @@ class UAI_ModelverseClient(Client):
         resp = self.invoke("GetOrderAmount", d, **kwargs)
         return apis.GetOrderAmountResponseSchema().loads(resp)
 
-    def get_um_infer_api_model(
+    def get_uf_square_model_detail(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """GetUMInferAPIModel - 获取该apikey能调用api的模型列表
+        """GetUFSquareModelDetail - 获取广场模型详情
 
         **Request**
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **KeyId** (str) - apikey 的id
-        - **ModelType** (int) - 模型类型，1: 文本生成，2: 图片生成。
-        - **SquareId** (str) - 模型广场的id，用来跳转体验中心
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Id** (str) - (Required) 主键
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
-        - **Data** (list) - 见 **UMinferAPIModel** 模型定义
+        - **SquareModel** (dict) - 见 **SquareModel** 模型定义
 
         **Response Model**
 
@@ -320,18 +354,144 @@ class UAI_ModelverseClient(Client):
         - **Currency** (str) - 币种
         - **Image** (float) - 生图定价
         - **Prompt** (float) - 提示词定价
+        - **Unit** (str) - 单位（中文），如“次” “百万”
+        - **UnitEn** (str) - 单位（English），如“Time” “Million”
+        - **Video** (str) - 生视频定价
+
+
+        **PriceRate**
+        - **ChargeItem** (str) - 收费项：input/output/thinking/tool...
+        - **ChargeItemDescription** (str) - 收费项描述
+        - **ChargeItemDescriptionEn** (str) - 收费项描述英文描述
+        - **Currency** (str) - 货币单位
+        - **Price** (str) - 价格
+        - **Unit** (str) - 计价单位
+        - **UnitEn** (str) - 计价单位英文
+
+
+        **PriceTier**
+        - **Condition** (str) - 档位/条件（例如 "32k"、"128k"）
+        - **Description** (str) - 档位描述（例如 "标准上下文 32k"）
+        - **DescriptionEn** (str) - 档位描述（例如 "标准上下文 32k"）
+        - **Rates** (list) - 见 **PriceRate** 模型定义
+
+
+        **SquareModel**
+        - **CreateAt** (int) - 创建时间
+        - **Describe** (str) - 详细描述
+        - **HfUpdateTime** (int) - HuggingFace 更新时间
+        - **Icon** (str) - 图标
+        - **Id** (str) - 主键
+        - **Language** (list) - 语言
+        - **Manufacturer** (str) - 制造商
+        - **MaxModelLen** (int) - 模型长度
+        - **ModelType** (str) - 模型类型
+        - **Name** (str) - 名称
+        - **Pricing** (dict) - 见 **Pricing** 模型定义
+        - **SimpleDescribe** (str) - 简要描述
+        - **SupportedCapabilities** (list) - 模型能力
+        - **Tiers** (list) - 见 **PriceTier** 模型定义
+        - **UpdateAt** (int) - 更新时间
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetUFSquareModelDetailRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUFSquareModelDetail", d, **kwargs)
+        return apis.GetUFSquareModelDetailResponseSchema().loads(resp)
+
+    def get_uf_square_model_prices(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUFSquareModelPrices - 批量查询模型价格
+
+        **Request**
+
+        - **Keyword** (str) - 模型名称模糊搜索（例：deepseek-r1）
+        - **Limit** (int) - 返回数据长度，默认为20
+        - **Offset** (int) - 列表起始位置偏移量，默认为0
+
+        **Response**
+
+        - **Models** (list) - 见 **ModelPriceGroup** 模型定义
+        - **TotalCount** (int) - 总条数用于翻页
+
+        **Response Model**
+
+        **PriceRate**
+        - **ChargeItem** (str) - 收费项：input/output/thinking/tool...
+        - **ChargeItemDescription** (str) - 收费项描述
+        - **ChargeItemDescriptionEn** (str) - 收费项描述英文描述
+        - **Currency** (str) - 货币单位
+        - **Price** (str) - 价格
+        - **Unit** (str) - 计价单位
+        - **UnitEn** (str) - 计价单位英文
+
+
+        **PriceTier**
+        - **Condition** (str) - 档位/条件（例如 "32k"、"128k"）
+        - **Description** (str) - 档位描述（例如 "标准上下文 32k"）
+        - **DescriptionEn** (str) - 档位描述（例如 "标准上下文 32k"）
+        - **Rates** (list) - 见 **PriceRate** 模型定义
+
+
+        **ModelPriceGroup**
+        - **Manufacturer** (str) - 制造商
+        - **ModelId** (str) - ModelId
+        - **ModelName** (str) - 模型名称
+        - **Tiers** (list) - 见 **PriceTier** 模型定义
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.GetUFSquareModelPricesRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUFSquareModelPrices", d, **kwargs)
+        return apis.GetUFSquareModelPricesResponseSchema().loads(resp)
+
+    def get_um_infer_api_model(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUMInferAPIModel -
+
+        **Request**
+
+        - **ProjectId** (str) - (Config)
+        - **KeyId** (str) -
+        - **ModelType** (int) -
+        - **SquareId** (str) -
+
+        **Response**
+
+        - **Data** (list) - 见 **UMinferAPIModel** 模型定义
+
+        **Response Model**
+
+        **Pricing**
+        - **Completion** (float) -
+        - **Currency** (str) -
+        - **Image** (float) -
+        - **Prompt** (float) -
 
 
         **UMinferAPIModel**
-        - **CreateAt** (int) - 创建时间
-        - **Icon** (str) - 图标链接
-        - **Id** (str) - id
-        - **Language** (list) - 语言
-        - **Name** (str) - 名称
+        - **CreateAt** (int) -
+        - **Icon** (str) -
+        - **Id** (str) -
+        - **Language** (list) -
+        - **Name** (str) -
         - **Pricing** (dict) - 见 **Pricing** 模型定义
-        - **ServedModelName** (str) - 使用OpenAI接口调用时，填入的 model值
-        - **SimpleDescribe** (str) - 描述
-        - **UpdateAt** (int) - 更新时间
+        - **ServedModelName** (str) -
+        - **SimpleDescribe** (str) -
+        - **UpdateAt** (int) -
 
 
         """
@@ -342,21 +502,78 @@ class UAI_ModelverseClient(Client):
         req and d.update(req)
         d = apis.GetUMInferAPIModelRequestSchema().dumps(d)
 
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
         resp = self.invoke("GetUMInferAPIModel", d, **kwargs)
         return apis.GetUMInferAPIModelResponseSchema().loads(resp)
+
+    def get_um_infer_request_log_detail(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUMInferRequestLogDetail - 原始日志详情
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。请参考  `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 业务地域，如 cn-wlcb。可先调用 ListUMInferRegions 获取可选地域
+        - **RequestId** (str) - (Required) 请求 ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Data** (dict) - 见 **RequestLogDetail** 模型定义
+
+        **Response Model**
+
+        **RequestLogDetail**
+        - **ApiKeyId** (str) - API Key ID
+        - **ClientIp** (str) - 客户端 IP
+        - **ErrorCode** (str) - 错误码
+        - **ErrorMessage** (str) - 错误信息
+        - **Extras** (str) - 扩展信息，本期返回为空
+        - **FirstTokenLatency** (int) - 首 Token 延迟，单位毫秒
+        - **HttpStatusCode** (int) - HTTP 状态码
+        - **IsStream** (bool) - 是否流式请求
+        - **IsSuccess** (bool) - 请求是否成功
+        - **Latency** (int) - 请求总延迟，单位毫秒
+        - **ModelName** (str) - 模型名称
+        - **OrganizationId** (str) - 组织 ID
+        - **OutputTokenThroughput** (float) - 输出 Token 吞吐
+        - **Region** (str) - 业务地域
+        - **Request** (str) - 请求原文，本期返回为空
+        - **RequestId** (str) - 请求 ID
+        - **Response** (str) - 响应原文，本期返回为空
+        - **StartTime** (int) - 请求开始时间，Unix 毫秒时间戳
+        - **StartTimeReadable** (str) - 请求开始时间，可读格式
+        - **TopOrganizationId** (str) - 顶级组织 ID
+        - **Usage** (str) - 模型返回的 usage 原文 JSON
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetUMInferRequestLogDetailRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUMInferRequestLogDetail", d, **kwargs)
+        return apis.GetUMInferRequestLogDetailResponseSchema().loads(resp)
 
     def get_um_infer_token_usage(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """GetUMInferTokenUsage - 获取某个key下的某个模型的token使用量
+        """GetUMInferTokenUsage -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **EndTime** (int) - (Required) 结束时间戳
-        - **KeyId** (str) - (Required) apikey的id
-        - **Model** (str) - (Required) 模型名称
-        - **StartTime** (int) - (Required) 开始时间戳
+        - **ProjectId** (str) - (Config)
+        - **EndTime** (int) - (Required)
+        - **KeyId** (str) - (Required)
+        - **Model** (str) - (Required)
+        - **StartTime** (int) - (Required)
 
         **Response**
 
@@ -365,18 +582,18 @@ class UAI_ModelverseClient(Client):
         **Response Model**
 
         **TokenUsageTimestamp**
-        - **Count** (int) - 数量
-        - **Model** (str) - 模型名称
-        - **Timestamp** (int) - unix时间戳
-        - **Type** (str) - 类型，in输入 out输出 total总  request_count 请求次数 image_generation 生图张数
+        - **Count** (int) -
+        - **Model** (str) -
+        - **Timestamp** (int) -
+        - **Type** (str) -
 
 
         **TokenUsage**
-        - **ImageGenerationNum** (int) - 生图总张数
-        - **InTotal** (int) - 输出总token
-        - **OutTotal** (int) - 输出总token
-        - **RequestTotal** (int) - 请求总次数
-        - **Total** (int) - 总token量
+        - **ImageGenerationNum** (int) -
+        - **InTotal** (int) -
+        - **OutTotal** (int) -
+        - **RequestTotal** (int) -
+        - **Total** (int) -
         - **Usages** (list) - 见 **TokenUsageTimestamp** 模型定义
 
 
@@ -387,6 +604,9 @@ class UAI_ModelverseClient(Client):
         }
         req and d.update(req)
         d = apis.GetUMInferTokenUsageRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("GetUMInferTokenUsage", d, **kwargs)
         return apis.GetUMInferTokenUsageResponseSchema().loads(resp)
@@ -589,6 +809,32 @@ class UAI_ModelverseClient(Client):
         resp = self.invoke("ListUFSquareModel", d, **kwargs)
         return apis.ListUFSquareModelResponseSchema().loads(resp)
 
+    def list_uf_square_model_filters_auth(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListUFSquareModelFiltersAuth - 登录状态下获取模型广场过滤器中内容
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ListUFSquareModelFiltersAuthRequestSchema().dumps(d)
+
+        resp = self.invoke("ListUFSquareModelFiltersAuth", d, **kwargs)
+        return apis.ListUFSquareModelFiltersAuthResponseSchema().loads(resp)
+
     def list_um_infer_api_key(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -639,6 +885,76 @@ class UAI_ModelverseClient(Client):
 
         resp = self.invoke("ListUMInferAPIKey", d, **kwargs)
         return apis.ListUMInferAPIKeyResponseSchema().loads(resp)
+
+    def list_um_infer_request_logs(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListUMInferRequestLogs - 日志明细列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。请参考  `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 业务地域，如 cn-wlcb。可先调用 ListUMInferRegions 获取可选地域
+        - **EndTime** (int) - (Required) 查询结束时间，Unix 毫秒时间戳，必须大于等于 StartTime
+        - **StartTime** (int) - (Required) 查询开始时间，Unix 毫秒时间戳
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ApiKeyIds** (list) - API Key ID 列表，用于过滤
+        - **Limit** (int) - 返回数量，默认 20
+        - **ModelNames** (list) - 模型名称列表，用于过滤
+        - **Offset** (int) - 列表偏移量，默认 0
+        - **RequestId** (str) - 请求 ID，用于精确过滤
+
+        **Response**
+
+        - **Data** (dict) - 见 **ListUMInferRequestLogsData** 模型定义
+
+        **Response Model**
+
+        **RequestLogSummary**
+        - **FailedRequests** (int) - 查询条件命中的失败请求数
+        - **TotalRequests** (int) - 查询条件命中的总请求数
+
+
+        **RequestLogItem**
+        - **ApiKeyId** (str) - API Key ID
+        - **ApiKeyName** (str) - API Key 名称
+        - **CacheCreation1hTokens** (int) - 1 小时缓存写入 Token 数
+        - **CacheCreation5mTokens** (int) - 5 分钟缓存写入 Token 数
+        - **CacheCreationTokens** (int) - 缓存写入 Token 数
+        - **CacheHitTokens** (int) - 缓存命中 Token 数
+        - **CompletionTokens** (int) - 输出 Token 数
+        - **ErrorCode** (str) - 错误码
+        - **FirstTokenLatency** (int) - 首 Token 延迟，单位毫秒
+        - **HasInferenceLog** (bool) - 是否存在推理日志
+        - **HttpStatusCode** (int) - HTTP 状态码
+        - **IsSuccess** (bool) - 请求是否成功
+        - **Latency** (int) - 请求总延迟，单位毫秒
+        - **ModelName** (str) - 模型名称
+        - **OutputTokenThroughput** (float) - 输出 Token 吞吐
+        - **PromptTokens** (int) - 输入 Token 数
+        - **Region** (str) - 业务地域
+        - **RequestId** (str) - 请求 ID
+        - **StartTime** (int) - 请求开始时间，Unix 毫秒时间戳
+        - **StartTimeReadable** (str) - 请求开始时间，可读格式
+        - **TotalTokens** (int) - 总 Token 数
+
+
+        **ListUMInferRequestLogsData**
+        - **Items** (list) - 见 **RequestLogItem** 模型定义
+        - **Summary** (dict) - 见 **RequestLogSummary** 模型定义
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ListUMInferRequestLogsRequestSchema().dumps(d)
+
+        resp = self.invoke("ListUMInferRequestLogs", d, **kwargs)
+        return apis.ListUMInferRequestLogsResponseSchema().loads(resp)
 
     def list_unpaid_order_summary(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -771,6 +1087,38 @@ class UAI_ModelverseClient(Client):
 
         resp = self.invoke("ListUnpaidOrders", d, **kwargs)
         return apis.ListUnpaidOrdersResponseSchema().loads(resp)
+
+    def start_pay_unpaid_orders(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """StartPayUnpaidOrders - 批量支付欠费订单，指定 OrderNos 支付，最多 50 个
+
+        **Request**
+
+        - **OrderNos** (list) - (Required) 欠费订单号列表，最多 50 个
+
+        **Response**
+
+        - **FailureCount** (int) - 支付失败数量
+        - **Results** (dict) - 见 **PayResult** 模型定义
+        - **SuccessCount** (int) - 支付成功数量
+
+        **Response Model**
+
+        **PayResult**
+        - **OrderNo** (str) - 订单号
+        - **Reason** (str) - 失败原因（成功时为空）
+        - **Success** (bool) - 是否支付成功
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.StartPayUnpaidOrdersRequestSchema().dumps(d)
+
+        resp = self.invoke("StartPayUnpaidOrders", d, **kwargs)
+        return apis.StartPayUnpaidOrdersResponseSchema().loads(resp)
 
     def update_um_infer_api_key(
         self, req: typing.Optional[dict] = None, **kwargs
