@@ -3,12 +3,21 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class UFileDataSetSchema(schema.ResponseSchema):
-    """UFileDataSet - 增加ufile的描述"""
+class MongoDBShardedClusterSetSchema(schema.ResponseSchema):
+    """MongoDBShardedClusterSet -"""
 
     fields = {
-        "Bucket": fields.Str(required=False, load_from="Bucket"),
-        "TokenID": fields.Str(required=False, load_from="TokenID"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "DBId": fields.Str(required=False, load_from="DBId"),
+        "DBTypeId": fields.Str(required=False, load_from="DBTypeId"),
+        "MongosCount": fields.Int(required=False, load_from="MongosCount"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "ShardsrvCount": fields.Int(required=False, load_from="ShardsrvCount"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "VirtualIPs": fields.List(fields.Str()),
+        "Zone": fields.Str(required=False, load_from="Zone"),
     }
 
 
@@ -60,11 +69,15 @@ class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
         ),
         "Role": fields.Str(required=False, load_from="Role"),
         "SSDType": fields.Str(required=False, load_from="SSDType"),
+        "SpecificationClass": fields.Str(
+            required=False, load_from="SpecificationClass"
+        ),
         "SpecificationType": fields.Int(
             required=False, load_from="SpecificationType"
         ),
         "SrcDBId": fields.Str(required=False, load_from="SrcDBId"),
         "State": fields.Str(required=False, load_from="State"),
+        "StorageClass": fields.Str(required=False, load_from="StorageClass"),
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
         "SystemFileSize": fields.Float(
             required=False, load_from="SystemFileSize"
@@ -78,11 +91,21 @@ class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
     }
 
 
+class UFileDataSetSchema(schema.ResponseSchema):
+    """UFileDataSet - 增加ufile的描述"""
+
+    fields = {
+        "Bucket": fields.Str(required=False, load_from="Bucket"),
+        "TokenID": fields.Str(required=False, load_from="TokenID"),
+    }
+
+
 class UDBInstanceSetSchema(schema.ResponseSchema):
     """UDBInstanceSet - DescribeUDBInstance"""
 
     fields = {
         "AdminUser": fields.Str(required=False, load_from="AdminUser"),
+        "AutoRenew": fields.Int(required=True, load_from="AutoRenew"),
         "BackupBeginTime": fields.Int(
             required=False, load_from="BackupBeginTime"
         ),
@@ -115,6 +138,9 @@ class UDBInstanceSetSchema(schema.ResponseSchema):
         "DiskUsedSize": fields.Float(required=False, load_from="DiskUsedSize"),
         "EnableSSL": fields.Int(required=False, load_from="EnableSSL"),
         "ExpiredTime": fields.Int(required=False, load_from="ExpiredTime"),
+        "ForceEncryption": fields.Int(
+            required=False, load_from="ForceEncryption"
+        ),
         "IPv6Address": fields.Str(required=False, load_from="IPv6Address"),
         "InstanceMode": fields.Str(required=False, load_from="InstanceMode"),
         "InstanceType": fields.Str(required=False, load_from="InstanceType"),
@@ -133,11 +159,15 @@ class UDBInstanceSetSchema(schema.ResponseSchema):
         "SSLExpirationTime": fields.Int(
             required=False, load_from="SSLExpirationTime"
         ),
+        "SpecificationClass": fields.Str(
+            required=True, load_from="SpecificationClass"
+        ),
         "SpecificationType": fields.Int(
             required=False, load_from="SpecificationType"
         ),
         "SrcDBId": fields.Str(required=False, load_from="SrcDBId"),
         "State": fields.Str(required=False, load_from="State"),
+        "StorageClass": fields.Str(required=True, load_from="StorageClass"),
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
         "SystemFileSize": fields.Float(
             required=False, load_from="SystemFileSize"
@@ -148,24 +178,6 @@ class UDBInstanceSetSchema(schema.ResponseSchema):
         "VPCId": fields.Str(required=False, load_from="VPCId"),
         "VirtualIP": fields.Str(required=False, load_from="VirtualIP"),
         "VirtualIPMac": fields.Str(required=False, load_from="VirtualIPMac"),
-        "Zone": fields.Str(required=False, load_from="Zone"),
-    }
-
-
-class MongoDBShardedClusterSetSchema(schema.ResponseSchema):
-    """MongoDBShardedClusterSet -"""
-
-    fields = {
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "DBId": fields.Str(required=False, load_from="DBId"),
-        "DBTypeId": fields.Str(required=False, load_from="DBTypeId"),
-        "MongosCount": fields.Int(required=False, load_from="MongosCount"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "ShardsrvCount": fields.Int(required=False, load_from="ShardsrvCount"),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "Tag": fields.Str(required=False, load_from="Tag"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-        "VirtualIPs": fields.List(fields.Str()),
         "Zone": fields.Str(required=False, load_from="Zone"),
     }
 
@@ -305,6 +317,18 @@ class ConnNumMapSchema(schema.ResponseSchema):
     }
 
 
+class FailoverRecordSchema(schema.ResponseSchema):
+    """FailoverRecord - 容灾记录"""
+
+    fields = {
+        "EndTime": fields.Int(required=False, load_from="EndTime"),
+        "FailoverState": fields.Str(required=False, load_from="FailoverState"),
+        "FailoverType": fields.Int(required=False, load_from="FailoverType"),
+        "SessionId": fields.Str(required=False, load_from="SessionId"),
+        "StartTime": fields.Int(required=False, load_from="StartTime"),
+    }
+
+
 class MachineTypeSchema(schema.ResponseSchema):
     """MachineType - mysql数据库机型"""
 
@@ -315,6 +339,10 @@ class MachineTypeSchema(schema.ResponseSchema):
         "ID": fields.Str(required=False, load_from="ID"),
         "Memory": fields.Int(required=False, load_from="Memory"),
         "Os": fields.Str(required=False, load_from="Os"),
+        "SpecificationClass": fields.Str(
+            required=False, load_from="SpecificationClass"
+        ),
+        "StorageClass": fields.Str(required=False, load_from="StorageClass"),
     }
 
 

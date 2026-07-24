@@ -16,7 +16,7 @@ class UDBClient(Client):
     def backup_udb_instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """BackupUDBInstance - 备份UDB实例
+        """BackupUDBInstance - 发起实例备份。
 
         **Request**
 
@@ -32,6 +32,7 @@ class UDBClient(Client):
 
         **Response**
 
+        - **BackupId** (int) - 备份记录 ID
 
         """
         # build request
@@ -246,7 +247,7 @@ class UDBClient(Client):
     def create_mongo_db_replica_set(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """CreateMongoDBReplicaSet - 一键创建DB副本集
+        """CreateMongoDBReplicaSet - 一键创建DB副本集,本接口适用于物理机MongoDB，该架构即将下线, 若要使用快杰MongoDB，请参考https://docs.ucloud.cn/api/umongodb-api/index
 
         **Request**
 
@@ -417,20 +418,20 @@ class UDBClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **AdminPassword** (str) - (Required) 管理员密码
-        - **DBTypeId** (str) - (Required) DB类型，mysql按版本细分 mysql-8.4, mysql-8.0,  mysql-5.7, percona-5.7, mysql-5.6, percona-5.6、mysql-5.5
-        - **DiskSpace** (int) - (Required) 磁盘空间(GB), 暂时支持20G - 32T
+        - **AdminPassword** (str) - (Required) 管理员密码。 8-36 位，支持大小写字母、数字、@#$%^*-+=_,?!&()~.|，须包含两类及以上字符
+        - **DBTypeId** (str) - (Required) DB类型，mysql按版本细分 mysql-8.4, mysql-8.0,  mysql-5.7, percona-5.7, mysql-5.6, percona-5.6、mysql-5.5。 可以通过 DescribeUDBType 查询
+        - **DiskSpace** (int) - (Required) 磁盘空间(GB)，支持约 20G–32T，步长通常为 10；
         - **MachineType** (str) - (Required) 规格类型 ID，请通过 ListUDBMachineType 接口获取，返回体中的ID字段为MachineType的值。
-        - **Name** (str) - (Required) 实例名称，至少6位
-        - **ParamGroupId** (int) - (Required) DB实例使用的配置参数组id
+        - **Name** (str) - (Required) 实例名称，至少6位,最大63位
+        - **ParamGroupId** (int) - (Required) DB实例使用的配置参数组id，取值见 DescribeUDBParamGroup 返回的 `GroupId`，且须与 `DBTypeId` 匹配。
         - **Port** (int) - (Required) 端口号，mysql默认3306
         - **SpecificationClass** (str) - (Required) 规格类型 O: NVMe型, O2: O2 ,OM: 共享型
-        - **StorageClass** (str) - (Required) 存储类型 CLOUD_RSSD: RSSD 云盘， CLOUD_SSD_ESSENTIAL: SSD Essential云盘 ，该字段和SpecificationClass组合使用，CLOUD_RSSD对应O型，CLOUD_SSD_ESSENTIAL对应OM型(北京2、乌兰察布支持)，注：圣保罗、丹佛、哈萨克斯坦地域仅支持O2机型，CLOUD_RSSD对应O2型
+        - **StorageClass** (str) - (Required) 存储类型 CLOUD_RSSD: RSSD 云盘， CLOUD_SSD_ESSENTIAL: SSD Essential云盘 ，该字段和SpecificationClass组合使用，CLOUD_RSSD对应O型，CLOUD_SSD_ESSENTIAL对应OM型(北京2、乌兰察布支持)，注：圣保罗、丹佛、哈萨克斯坦地域仅支持O2机型，CLOUD_RSSD对应O2型。 可从 ListUDBMachineType 同条规格读取
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **AlarmTemplateId** (str) - 告警模版id
         - **BackupCount** (int) - 备份策略，每周备份数量，默认7次
         - **BackupDuration** (int) - 备份策略，备份时间间隔，单位小时计，默认24小时
-        - **BackupId** (int) - 备份id，如果指定，则表明从备份恢复实例
+        - **BackupId** (int) - 备份 ID；指定则从备份恢复。取值见 DescribeUDBBackup。
         - **BackupTime** (int) - 备份策略，备份开始时间，单位小时计，默认1点
         - **BackupURL** (str) - 备份文件的US3内网下载地址
         - **BackupZone** (str) - 跨可用区高可用备库所在可用区，参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
@@ -443,9 +444,9 @@ class UDBClient(Client):
         - **Labels** (list) - 见 **CreateUDBMySQLInstanceParamLabels** 模型定义
         - **Quantity** (int) - 购买时长，默认值1
         - **SemisyncFlag** (int) - 半同步开启开关 1：表示开启半同步，2：表示关闭半同步，0：表示默认值，默认也是开启半同步
-        - **SubnetId** (str) - 子网ID
+        - **SubnetId** (str) - 子网 ID。与 `VPCId` 须同属一个 VPC
         - **Tag** (str) - 实例所在的业务组名称
-        - **VPCId** (str) - VPC的ID
+        - **VPCId** (str) - VPC ID。与 `SubnetId` 成对使用；取值见 UVPC 相关接口
 
         **Response**
 
@@ -511,7 +512,7 @@ class UDBClient(Client):
     def create_udb_replication_instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """CreateUDBReplicationInstance - 创建MongoDB的副本节点（包括仲裁）
+        """CreateUDBReplicationInstance - 创建MongoDB的副本节点（包括仲裁）, 本接口适用于物理机MongoDB，该架构即将下线, 若要使用快杰MongoDB，请参考https://docs.ucloud.cn/api/umongodb-api/index
 
         **Request**
 
@@ -550,12 +551,12 @@ class UDBClient(Client):
     def create_udb_route_instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """CreateUDBRouteInstance - 创建mongos实例
+        """CreateUDBRouteInstance - 本接口适用于物理机MongoDB，该架构即将下线, 若要使用快杰MongoDB，请参考https://docs.ucloud.cn/api/umongodb-api/index
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ConfigsvrId** (list) - (Required) 配置服务器的dbid，允许一个或者三个。
         - **DBTypeId** (str) - (Required) DB类型id，mongodb按版本细分有1：mongodb-2.4，2：mongodb-2.6,3：mongodb-3.0，4：mongodb-3.2
         - **DiskSpace** (int) - (Required) 磁盘空间(GB), 暂时支持20G - 500G
@@ -567,7 +568,7 @@ class UDBClient(Client):
         - **CouponId** (str) - 使用的代金券id
         - **Quantity** (int) - 购买时长，默认值1
         - **UseSSD** (bool) - 是否使用SSD，默认为ture
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -1045,6 +1046,45 @@ class UDBClient(Client):
         resp = self.invoke("DescribeUDBBackupBlacklist", d, **kwargs)
         return apis.DescribeUDBBackupBlacklistResponseSchema().loads(resp)
 
+    def describe_udb_backup_strategy(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUDBBackupStrategy - 获取实例备份策略
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **DBId** (str) - (Required) 实例ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **BackupBeginTime** (int) - 备份策略，不可修改，开始时间，单位小时计，默认3点
+        - **BackupDate** (str) - 备份日期标记位。共7位,每一位为一周中一天的备份情况 0表示关闭当天备份,1表示打开当天备份。最右边的一位 为星期天的备份开关，其余从右到左依次为星期一到星期 六的备份配置开关，每周必须至少设置两天备份。 例如：1100000 表示打开星期六和星期五的自动备份功能
+        - **BackupMethod** (str) - 默认的备份方式，nobackup表示不备份， snapshot 表示使用快照备份，logic 表示使用逻辑备份，xtrabackup表示使用物理备份。ark_snapshot 方舟快照备份
+        - **SaveDays** (int) - 保留多少天
+        - **UserUFileData** (dict) - 见 **UFileDataSet** 模型定义
+
+        **Response Model**
+
+        **UFileDataSet**
+        - **Bucket** (str) - bucket名称
+        - **TokenID** (str) - Ufile的令牌tokenid
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeUDBBackupStrategyRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeUDBBackupStrategy", d, **kwargs)
+        return apis.DescribeUDBBackupStrategyResponseSchema().loads(resp)
+
     def describe_udb_binlog_backup(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1092,6 +1132,35 @@ class UDBClient(Client):
 
         resp = self.invoke("DescribeUDBBinlogBackup", d, **kwargs)
         return apis.DescribeUDBBinlogBackupResponseSchema().loads(resp)
+
+    def describe_udb_binlog_backup_strategy(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUDBBinlogBackupStrategy - 获取UDB实例binlog自动备份策略
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **DBId** (str) - (Required) DB实例Id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **BinlogRemoteSaveDays** (int) - 远端binlog保存时长(天)
+        - **EnableBinlogBackup** (bool) - 是否开启binlog自动备份，false:关闭,true:开启
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeUDBBinlogBackupStrategyRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeUDBBinlogBackupStrategy", d, **kwargs)
+        return apis.DescribeUDBBinlogBackupStrategyResponseSchema().loads(resp)
 
     def describe_udb_binlog_backup_url(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1179,9 +1248,11 @@ class UDBClient(Client):
         - **ReplicationDelaySeconds** (int) - 延时从库时长
         - **Role** (str) - DB实例角色，mysql区分master/slave，mongodb多种角色
         - **SSDType** (str) - SSD类型，SATA/PCI-E
+        - **SpecificationClass** (str) - 规格类型 O: NVME, OM: 共享型，N: 通用型 空的话，显示为-
         - **SpecificationType** (int) - 实例计算规格类型，0或不传代表使用内存方式购买，1代表使用内存-cpu可选配比方式购买，需要填写MachineType
         - **SrcDBId** (str) - 对mysql的slave而言是master的DBId，对master则为空， 对mongodb则是副本集id
         - **State** (str) - DB状态标记 Init：初始化中，Fail：安装失败，Starting：启动中，Running：运行，Shutdown：关闭中，Shutoff：已关闭，Delete：已删除，Upgrading：升级中，Promoting：提升为独库进行中，Recovering：恢复中，Recover fail：恢复失败,Remakeing:重做中,RemakeFail:重做失败, MajorVersionUpgrading:小版本升级中，MajorVersionUpgradeWaitForSwitch:高可用等待切换，MajorVersionUpgradeFail
+        - **StorageClass** (str) - CLOUD_SSD: SSD云盘, CLOUD_RSSD: RSSD 云盘， CLOUD_SSD_ESSENTIAL: SSD Essential云盘，LOCAL_SSD: SSD本地盘
         - **SubnetId** (str) - 子网ID
         - **SystemFileSize** (float) - DB实例系统文件大小，单位GB
         - **Tag** (str) - 获取资源其他信息
@@ -1199,6 +1270,7 @@ class UDBClient(Client):
 
         **UDBInstanceSet**
         - **AdminUser** (str) - 管理员帐户名，默认root
+        - **AutoRenew** (int) - 0 不自动续费， 1 自动续费
         - **BackupBeginTime** (int) - 备份策略，不可修改，开始时间，单位小时计，默认3点
         - **BackupBlacklist** (str) - 备份策略，备份黑名单，mongodb则不适用
         - **BackupCount** (int) - 备份策略，不可修改，备份文件保留的数量，默认7次
@@ -1212,14 +1284,15 @@ class UDBClient(Client):
         - **ClusterRole** (str) - 当DB类型为mongodb时，返回该实例所在集群中的角色，包括：mongos、configsrv_sccc、configsrv_csrs、shardsrv_datanode、shardsrv_arbiter，其中congfigsrv分为sccc和csrs两种模式，shardsrv分为datanode和arbiter两种模式
         - **CreateTime** (int) - DB实例创建时间，采用UTC计时时间戳
         - **DBId** (str) - DB实例id
-        - **DBSubVersion** (str) - mysql实例提供具体小版本信息
-        - **DBTypeId** (str) - DB类型id，mysql/mongodb按版本细分各有一个id 目前id的取值范围为[1,7],数值对应的版本如下： 1：mysql-5.5，2：mysql-5.1，3：percona-5.5 4：mongodb-2.4，5：mongodb-2.6，6：mysql-5.6， 7：percona-5.6
+        - **DBSubVersion** (str) - 实例提供具体内核版本信息
+        - **DBTypeId** (str) - DB类型，mysql/mongodb 按版本细分 mysql-8.4, mysql-8.0, mysql-5.7, percona-5.7, mysql-5.6, percona-5.6、mysql-5.5、mongodb-2.4 、mongodb-2.6 等。可以通过 DescribeUDBType 查询
         - **DataFileSize** (float) - DB实例数据文件大小，单位GB
         - **DataSet** (list) - 见 **UDBSlaveInstanceSet** 模型定义
         - **DiskSpace** (int) - 磁盘空间(GB), 默认根据配置机型
         - **DiskUsedSize** (float) - DB实例磁盘已使用空间，单位GB
         - **EnableSSL** (int) - mysql是否开启了SSL；1->未开启  2->开启
         - **ExpiredTime** (int) - DB实例过期时间，采用UTC计时时间戳
+        - **ForceEncryption** (int) - 是否强制加密，1为强制加密，0是不强制加密
         - **IPv6Address** (str) - 该实例的ipv6地址
         - **InstanceMode** (str) - UDB实例模式类型, 可选值如下: “Normal”： 普通版UDB实例 “HA”: 高可用版UDB实例
         - **InstanceType** (str) - UDB数据库机型
@@ -1234,9 +1307,11 @@ class UDBClient(Client):
         - **Role** (str) - DB实例角色，mysql区分master/slave，mongodb多种角色
         - **SSDType** (str) - SSD类型，SATA/PCI-E/NVMe
         - **SSLExpirationTime** (int) - SSL到期时间
+        - **SpecificationClass** (str) - 规格类型 O: NVME, OM: 共享型，N: 通用型空的话，显示为-
         - **SpecificationType** (int) - 是否使用可选cpu类型规格
         - **SrcDBId** (str) - 对mysql的slave而言是master的DBId，对master则为空， 对mongodb则是副本集id
         - **State** (str) - DB状态标记 Init：初始化中，Fail：安装失败，Starting：启动中，Running：运行，Shutdown：关闭中，Shutoff：已关闭，Delete：已删除，Upgrading：升级中，Promoting：提升为独库进行中，Recovering：恢复中，Recover fail：恢复失败, Remakeing:重做中,RemakeFail:重做失败，VersionUpgrading:小版本升级中，VersionUpgradeWaitForSwitch:高可用等待切换，VersionUpgradeFail：小版本升级失败，UpdatingSSL：修改SSL中，UpdateSSLFail：修改SSL失败,MajorVersionUpgrading:小版本升级中，MajorVersionUpgradeWaitForSwitch:高可用等待切换，MajorVersionUpgradeFail
+        - **StorageClass** (str) - CLOUD_SSD: SSD云盘, CLOUD_RSSD: RSSD 云盘， CLOUD_SSD_ESSENTIAL: SSD Essential云盘，LOCAL_SSD: SSD本地盘
         - **SubnetId** (str) - 子网ID
         - **SystemFileSize** (float) - DB实例系统文件大小，单位GB
         - **Tag** (str) - 获取资源其他信息
@@ -1267,11 +1342,11 @@ class UDBClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **BackupId** (int) - (Required) 备份记录ID
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **BackupZone** (str) - 跨可用区高可用备库所在可用区，参见［可用区列表］
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **BackupId** (int) - (Required) 备份记录 ID，见 BackupUDBInstance 响应或 DescribeUDBBackup
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **BackupZone** (str) - 跨可用区高可用备库所在可用区，参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -1442,7 +1517,7 @@ class UDBClient(Client):
         - **Count** (int) - 购买DB实例数量,最大数量为10台, 默认为1台
         - **InstanceMode** (str) - 实例的部署类型。可选值为：Normal: 普通单点实例，Slave: 从库实例，HA: 高可用部署实例，默认是Normal
         - **InstanceType** (str) - 对于快杰机型，请使用最新的 SpecificationClass 和 StorageClass 字段进行创建。目前仅有少量地域支持 SATA_SSD 存储类型；若创建的是 SATA_SSD 机型，可通过该字段指定。字段说明：SATA_SSD：SATA SSD 机型（仅部分地域支持）NVMe_SSD：快杰机型
-        - **MachineType** (str) - 规格类型ID,当SpecificationType为1时有效
+        - **MachineType** (str) - 规格类型ID,当SpecificationType为1时有效。取值见 ListUDBMachineType
         - **Quantity** (int) - DB购买多少个"计费时间单位"，默认值为1。比如：买2个月，Quantity就是2。如果计费单位是“按月”，并且Quantity为0，表示“购买到月底”
         - **SSDType** (str) - 该字段已废弃。
         - **SpecificationClass** (str) - 规格类型 O: NVME, OM: 共享型，N: 通用型
@@ -1731,12 +1806,13 @@ class UDBClient(Client):
         - **CompatibleWithDBType** (str) - 返回从备份创建实例时，该版本号所支持的备份创建版本。如果没传，则表示不是从备份创建。
         - **DBClusterType** (str) - DB实例类型，如mysql，sqlserver，mongo，postgresql
         - **DBSubVersion** (str) - 返回从备份创建实例时，该小版本号所支持的备份创建小版本。如果没传，则表示不是从备份创建。
-        - **DiskType** (str) - 返回支持某种磁盘类型的DB类型，如Normal、SSD、NVMe_SSD。如果没传，则表示任何磁盘类型均可。
-        - **InstanceMode** (str) - 返回支持某种实例类型的DB类型。如果没传，则表示任何实例类型均可。normal:单点,ha:高可用,sharded_cluster:分片集群
+        - **DiskType** (str) - 返回支持某种磁盘类型的DB类型，如Normal、SSD、NVMe_SSD,CLOUD_SSD_ESSENTIAL。如果没传，则表示任何磁盘类型均可。
+        - **InstanceMode** (str) - 返回支持某种实例类型的DB类型。如果没传，则表示任何实例类型均可。Normal:单点,HA:高可用,sharded_cluster:分片集群。区分大小写
 
         **Response**
 
         - **DataSet** (list) - 见 **UDBTypeSet** 模型定义
+        - **DedaultType** (dict) - 见 **UDBTypeSet** 模型定义
 
         **Response Model**
 
@@ -1959,6 +2035,47 @@ class UDBClient(Client):
         resp = self.invoke("GetUDBInstanceSSLCertURL", d, **kwargs)
         return apis.GetUDBInstanceSSLCertURLResponseSchema().loads(resp)
 
+    def list_udb_instance_failover_record(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListUDBInstanceFailoverRecord - 获取实例容灾记录列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **DBId** (str) - (Required) 实例id
+        - **EndTime** (int) - (Required) 结束时间
+        - **StartTime** (int) - (Required) 开始时间
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Dataset** (list) - 见 **FailoverRecord** 模型定义
+        - **Message** (str) - 错误信息
+
+        **Response Model**
+
+        **FailoverRecord**
+        - **EndTime** (int) - 结束时间
+        - **FailoverState** (str) - 容灾状态
+        - **FailoverType** (int) - 容灾类型
+        - **SessionId** (str) - 时间ID
+        - **StartTime** (int) - 开始时间
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ListUDBInstanceFailoverRecordRequestSchema().dumps(d)
+
+        resp = self.invoke("ListUDBInstanceFailoverRecord", d, **kwargs)
+        return apis.ListUDBInstanceFailoverRecordResponseSchema().loads(resp)
+
     def list_udb_machine_type(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1985,7 +2102,9 @@ class UDBClient(Client):
         - **Group** (str) - 内存/cpu配比
         - **ID** (str) - 计算规格id, 目前支持CPU和内存比1:2、1:4、1:8三类配比规格;规格的格式为："机型.配比.CPU核数规格"；机型支持o和n两种机型，分别代表快杰NVMe和SSD云盘机型；配比映射关系如下:2m代表CPU内存配比1比2，4m代表CPU内存配比1比4，8m代表CPU内存配比1比8，CPU核数规格射关系如下：small代表1C，medium代表2C，xlarge代表4C，2xlarge代表8C，4xlarge代表16C，8xlarge代表32C，16xlarge代表64C，例如 "o.mysql4m.medium"表示创建快杰NVMe机型2C8G的实例，"o.mysql8m.4xlarge"表示创建快杰NVMe机型16C128G的实例
         - **Memory** (int) - 规格内存大小，单位（GB）
-        - **Os** (str) - 内部云主机机型，可选"o/n"
+        - **Os** (str) - 内部云主机机型，可选"O/N/OM"
+        - **SpecificationClass** (str) - 规格类型 O: NVMe型, OM: 共享型，N: 通用型
+        - **StorageClass** (str) - 存储类型 CLOUD_SSD: SSD云盘, CLOUD_RSSD: RSSD 云盘， CLOUD_SSD_ESSENTIAL: SSD Essential云盘
 
 
         """
@@ -2076,7 +2195,7 @@ class UDBClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **DBId** (str) - (Required) 实例的ID,该值可以通过DescribeUDBInstance获取
-        - **Password** (str) - (Required) 实例的新密码
+        - **Password** (str) - (Required) 实例的新密码。 8-36 位，支持大小写字母、数字、@#$%^*-+=_,?!&()~.|，须包含两类及以上字符
         - **AccountName** (str) - sqlserver帐号，仅在sqlserver的情况下填该参数
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
@@ -2215,14 +2334,14 @@ class UDBClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **DBId** (str) - (Required) 实例的Id
+        - **DBId** (str) - (Required) DB实例Id,该值可以通过DescribeUDBInstance获取
         - **DiskSpace** (int) - (Required) 磁盘空间(GB), 暂时支持20G-32T
         - **MemoryLimit** (int) - (Required) 内存限制(MB)，目前支持以下几档 2000M/4000M/ 6000M/8000M/ 12000M/16000M/ 24000M/32000M/ 48000M/64000M/96000M/128000M/192000M/256000M/320000M。
         - **CPU** (int) - 数据库的CPU核数（只对普通版的SQLServer有用）
         - **CouponId** (str) - 使用的代金券id
         - **InstanceMode** (str) - UDB实例模式类型, 可选值如下: "Normal": 普通版UDB实例 "HA": 高可用版UDB实例 默认是"Normal"
         - **InstanceType** (str) - UDB数据库机型: "Normal": "标准机型" ,  "SATA_SSD": "SSD机型" , "PCIE_SSD": "SSD高性能机型" ,  "Normal_Volume": "标准大容量机型",  "SATA_SSD_Volume": "SSD大容量机型" ,  "PCIE_SSD_Volume": "SSD高性能大容量机型"，“NVMe_SSD”：“快杰机型”
-        - **MachineType** (str) - 规格类型ID,当SpecificationType为1时有效
+        - **MachineType** (str) - 规格类型ID,当SpecificationType为1时有效, 可以通过 ListUDBMachineType 查询。
         - **SSDType** (str) - SSD类型，可选值为"SATA"、“NVMe”
         - **SpecificationType** (str) - 实例计算规格类型，0或不传代表使用内存方式购买，1代表使用内存-cpu可选配比方式购买，需要填写MachineType
         - **StartAfterUpgrade** (bool) - DB关闭状态下升降级，升降级后是否启动DB，默认为false
