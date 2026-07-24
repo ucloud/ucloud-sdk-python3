@@ -10,12 +10,12 @@ from ucloud.services.udb.schemas import models
 """
 API: BackupUDBInstance
 
-备份UDB实例
+发起实例备份。
 """
 
 
 class BackupUDBInstanceRequestSchema(schema.RequestSchema):
-    """BackupUDBInstance - 备份UDB实例"""
+    """BackupUDBInstance - 发起实例备份。"""
 
     fields = {
         "BackupMethod": fields.Str(required=False, dump_to="BackupMethod"),
@@ -31,9 +31,11 @@ class BackupUDBInstanceRequestSchema(schema.RequestSchema):
 
 
 class BackupUDBInstanceResponseSchema(schema.ResponseSchema):
-    """BackupUDBInstance - 备份UDB实例"""
+    """BackupUDBInstance - 发起实例备份。"""
 
-    fields = {}
+    fields = {
+        "BackupId": fields.Int(required=False, load_from="BackupId"),
+    }
 
 
 """
@@ -218,12 +220,12 @@ class ClearUDBLogResponseSchema(schema.ResponseSchema):
 """
 API: CreateMongoDBReplicaSet
 
-一键创建DB副本集
+一键创建DB副本集,本接口适用于物理机MongoDB，该架构即将下线, 若要使用快杰MongoDB，请参考https://docs.ucloud.cn/api/umongodb-api/index
 """
 
 
 class CreateMongoDBReplicaSetRequestSchema(schema.RequestSchema):
-    """CreateMongoDBReplicaSet - 一键创建DB副本集"""
+    """CreateMongoDBReplicaSet - 一键创建DB副本集,本接口适用于物理机MongoDB，该架构即将下线, 若要使用快杰MongoDB，请参考https://docs.ucloud.cn/api/umongodb-api/index"""
 
     fields = {
         "AdminPassword": fields.Str(required=True, dump_to="AdminPassword"),
@@ -260,7 +262,7 @@ class CreateMongoDBReplicaSetRequestSchema(schema.RequestSchema):
 
 
 class CreateMongoDBReplicaSetResponseSchema(schema.ResponseSchema):
-    """CreateMongoDBReplicaSet - 一键创建DB副本集"""
+    """CreateMongoDBReplicaSet - 一键创建DB副本集,本接口适用于物理机MongoDB，该架构即将下线, 若要使用快杰MongoDB，请参考https://docs.ucloud.cn/api/umongodb-api/index"""
 
     fields = {
         "DBIds": fields.List(fields.Str(), required=False, load_from="DBIds"),
@@ -503,12 +505,12 @@ class CreateUDBParamGroupResponseSchema(schema.ResponseSchema):
 """
 API: CreateUDBReplicationInstance
 
-创建MongoDB的副本节点（包括仲裁）
+创建MongoDB的副本节点（包括仲裁）, 本接口适用于物理机MongoDB，该架构即将下线, 若要使用快杰MongoDB，请参考https://docs.ucloud.cn/api/umongodb-api/index
 """
 
 
 class CreateUDBReplicationInstanceRequestSchema(schema.RequestSchema):
-    """CreateUDBReplicationInstance - 创建MongoDB的副本节点（包括仲裁）"""
+    """CreateUDBReplicationInstance - 创建MongoDB的副本节点（包括仲裁）, 本接口适用于物理机MongoDB，该架构即将下线, 若要使用快杰MongoDB，请参考https://docs.ucloud.cn/api/umongodb-api/index"""
 
     fields = {
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
@@ -527,7 +529,7 @@ class CreateUDBReplicationInstanceRequestSchema(schema.RequestSchema):
 
 
 class CreateUDBReplicationInstanceResponseSchema(schema.ResponseSchema):
-    """CreateUDBReplicationInstance - 创建MongoDB的副本节点（包括仲裁）"""
+    """CreateUDBReplicationInstance - 创建MongoDB的副本节点（包括仲裁）, 本接口适用于物理机MongoDB，该架构即将下线, 若要使用快杰MongoDB，请参考https://docs.ucloud.cn/api/umongodb-api/index"""
 
     fields = {
         "DBId": fields.Str(required=False, load_from="DBId"),
@@ -537,12 +539,12 @@ class CreateUDBReplicationInstanceResponseSchema(schema.ResponseSchema):
 """
 API: CreateUDBRouteInstance
 
-创建mongos实例
+本接口适用于物理机MongoDB，该架构即将下线, 若要使用快杰MongoDB，请参考https://docs.ucloud.cn/api/umongodb-api/index
 """
 
 
 class CreateUDBRouteInstanceRequestSchema(schema.RequestSchema):
-    """CreateUDBRouteInstance - 创建mongos实例"""
+    """CreateUDBRouteInstance - 本接口适用于物理机MongoDB，该架构即将下线, 若要使用快杰MongoDB，请参考https://docs.ucloud.cn/api/umongodb-api/index"""
 
     fields = {
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
@@ -563,7 +565,7 @@ class CreateUDBRouteInstanceRequestSchema(schema.RequestSchema):
 
 
 class CreateUDBRouteInstanceResponseSchema(schema.ResponseSchema):
-    """CreateUDBRouteInstance - 创建mongos实例"""
+    """CreateUDBRouteInstance - 本接口适用于物理机MongoDB，该架构即将下线, 若要使用快杰MongoDB，请参考https://docs.ucloud.cn/api/umongodb-api/index"""
 
     fields = {
         "DBId": fields.Str(required=False, load_from="DBId"),
@@ -889,6 +891,38 @@ class DescribeUDBBackupBlacklistResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeUDBBackupStrategy
+
+获取实例备份策略
+"""
+
+
+class DescribeUDBBackupStrategyRequestSchema(schema.RequestSchema):
+    """DescribeUDBBackupStrategy - 获取实例备份策略"""
+
+    fields = {
+        "DBId": fields.Str(required=True, dump_to="DBId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DescribeUDBBackupStrategyResponseSchema(schema.ResponseSchema):
+    """DescribeUDBBackupStrategy - 获取实例备份策略"""
+
+    fields = {
+        "BackupBeginTime": fields.Int(
+            required=True, load_from="BackupBeginTime"
+        ),
+        "BackupDate": fields.Str(required=True, load_from="BackupDate"),
+        "BackupMethod": fields.Str(required=True, load_from="BackupMethod"),
+        "SaveDays": fields.Int(required=True, load_from="SaveDays"),
+        "UserUFileData": models.UFileDataSetSchema(),
+    }
+
+
+"""
 API: DescribeUDBBinlogBackup
 
 列表UDB实例Binlog自动备份信息
@@ -918,6 +952,37 @@ class DescribeUDBBinlogBackupResponseSchema(schema.ResponseSchema):
             models.BinlogBackupSetSchema(), required=False, load_from="DataSet"
         ),
         "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
+API: DescribeUDBBinlogBackupStrategy
+
+获取UDB实例binlog自动备份策略
+"""
+
+
+class DescribeUDBBinlogBackupStrategyRequestSchema(schema.RequestSchema):
+    """DescribeUDBBinlogBackupStrategy - 获取UDB实例binlog自动备份策略"""
+
+    fields = {
+        "DBId": fields.Str(required=True, dump_to="DBId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DescribeUDBBinlogBackupStrategyResponseSchema(schema.ResponseSchema):
+    """DescribeUDBBinlogBackupStrategy - 获取UDB实例binlog自动备份策略"""
+
+    fields = {
+        "BinlogRemoteSaveDays": fields.Int(
+            required=True, load_from="BinlogRemoteSaveDays"
+        ),
+        "EnableBinlogBackup": fields.Bool(
+            required=True, load_from="EnableBinlogBackup"
+        ),
     }
 
 
@@ -1424,6 +1489,7 @@ class DescribeUDBTypeResponseSchema(schema.ResponseSchema):
         "DataSet": fields.List(
             models.UDBTypeSetSchema(), required=False, load_from="DataSet"
         ),
+        "DedaultType": models.UDBTypeSetSchema(),
     }
 
 
@@ -1607,6 +1673,37 @@ class GetUDBInstanceSSLCertURLResponseSchema(schema.ResponseSchema):
     fields = {
         "InnerUrl": fields.Str(required=True, load_from="InnerUrl"),
         "InternetUrl": fields.Str(required=True, load_from="InternetUrl"),
+    }
+
+
+"""
+API: ListUDBInstanceFailoverRecord
+
+获取实例容灾记录列表
+"""
+
+
+class ListUDBInstanceFailoverRecordRequestSchema(schema.RequestSchema):
+    """ListUDBInstanceFailoverRecord - 获取实例容灾记录列表"""
+
+    fields = {
+        "DBId": fields.Str(required=True, dump_to="DBId"),
+        "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "StartTime": fields.Int(required=True, dump_to="StartTime"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ListUDBInstanceFailoverRecordResponseSchema(schema.ResponseSchema):
+    """ListUDBInstanceFailoverRecord - 获取实例容灾记录列表"""
+
+    fields = {
+        "Dataset": fields.List(
+            models.FailoverRecordSchema(), required=True, load_from="Dataset"
+        ),
+        "Message": fields.Str(required=True, load_from="Message"),
     }
 
 
