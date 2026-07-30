@@ -74,6 +74,17 @@ class FilterOptionIntegerSchema(schema.ResponseSchema):
     }
 
 
+class PricingSchema(schema.ResponseSchema):
+    """Pricing - 定价策略"""
+
+    fields = {
+        "Completion": fields.Float(required=False, load_from="Completion"),
+        "Currency": fields.Str(required=False, load_from="Currency"),
+        "Image": fields.Float(required=False, load_from="Image"),
+        "Prompt": fields.Float(required=False, load_from="Prompt"),
+    }
+
+
 class PriceRateSchema(schema.ResponseSchema):
     """PriceRate - 该档位下的收费列表（有序数组）"""
 
@@ -100,17 +111,6 @@ class PriceTierSchema(schema.ResponseSchema):
         "Description": fields.Str(required=False, load_from="Description"),
         "DescriptionEn": fields.Str(required=True, load_from="DescriptionEn"),
         "Rates": fields.List(PriceRateSchema()),
-    }
-
-
-class PricingSchema(schema.ResponseSchema):
-    """Pricing - 定价策略"""
-
-    fields = {
-        "Completion": fields.Float(required=False, load_from="Completion"),
-        "Currency": fields.Str(required=False, load_from="Currency"),
-        "Image": fields.Float(required=False, load_from="Image"),
-        "Prompt": fields.Float(required=False, load_from="Prompt"),
     }
 
 
