@@ -35,6 +35,94 @@ class AddUHostToIsolationGroupResponseSchema(schema.ResponseSchema):
 
 
 """
+API: CheckUHostResourceCapacity
+
+主机创建资源余量检查
+"""
+
+
+class CheckUHostResourceCapacityParamDisksCustomBackupSchema(
+    schema.RequestSchema
+):
+    """CheckUHostResourceCapacityParamDisksCustomBackup -"""
+
+    fields = {
+        "Day": fields.Str(required=False, dump_to="Day"),
+        "Hour": fields.Str(required=False, dump_to="Hour"),
+        "Journal": fields.Str(required=False, dump_to="Journal"),
+    }
+
+
+class CheckUHostResourceCapacityParamDisksSchema(schema.RequestSchema):
+    """CheckUHostResourceCapacityParamDisks -"""
+
+    fields = {
+        "BackupMode": fields.Str(required=False, dump_to="BackupMode"),
+        "BackupType": fields.Str(required=False, dump_to="BackupType"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "CustomBackup": CheckUHostResourceCapacityParamDisksCustomBackupSchema(
+            required=False, dump_to="CustomBackup"
+        ),
+        "IsBoot": fields.Str(required=True, dump_to="IsBoot"),
+        "Size": fields.Int(required=True, dump_to="Size"),
+        "SnapshotId": fields.Str(required=False, dump_to="SnapshotId"),
+        "Type": fields.Str(required=True, dump_to="Type"),
+    }
+
+
+class CheckUHostResourceCapacityParamFeaturesSchema(schema.RequestSchema):
+    """CheckUHostResourceCapacityParamFeatures -"""
+
+    fields = {
+        "UNI": fields.Bool(required=False, dump_to="UNI"),
+    }
+
+
+class CheckUHostResourceCapacityRequestSchema(schema.RequestSchema):
+    """CheckUHostResourceCapacity - 主机创建资源余量检查"""
+
+    fields = {
+        "CPU": fields.Int(required=False, dump_to="CPU"),
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "Disks": fields.List(CheckUHostResourceCapacityParamDisksSchema()),
+        "Features": CheckUHostResourceCapacityParamFeaturesSchema(
+            required=False, dump_to="Features"
+        ),
+        "GPU": fields.Int(required=False, dump_to="GPU"),
+        "GpuType": fields.Str(required=False, dump_to="GpuType"),
+        "HotplugFeature": fields.Bool(required=False, dump_to="HotplugFeature"),
+        "ImageId": fields.Str(required=True, dump_to="ImageId"),
+        "IsolationGroup": fields.Str(required=False, dump_to="IsolationGroup"),
+        "MachineType": fields.Str(required=False, dump_to="MachineType"),
+        "MaxCount": fields.Int(required=False, dump_to="MaxCount"),
+        "Memory": fields.Int(required=False, dump_to="Memory"),
+        "MinCount": fields.Int(required=False, dump_to="MinCount"),
+        "MinimalCpuPlatform": fields.Str(
+            required=False, dump_to="MinimalCpuPlatform"
+        ),
+        "NetCapability": fields.Str(required=False, dump_to="NetCapability"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SecurityMode": fields.Str(required=False, dump_to="SecurityMode"),
+        "UHostFamily": fields.Str(required=False, dump_to="UHostFamily"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class CheckUHostResourceCapacityResponseSchema(schema.ResponseSchema):
+    """CheckUHostResourceCapacity - 主机创建资源余量检查"""
+
+    fields = {
+        "RdmaClusterIds": fields.List(
+            fields.Str(), required=False, load_from="RdmaClusterIds"
+        ),
+        "ResourceEnough": fields.Bool(
+            required=False, load_from="ResourceEnough"
+        ),
+    }
+
+
+"""
 API: CopyCustomImage
 
 复制自制镜像
@@ -142,15 +230,6 @@ API: CreateUHostInstance
 """
 
 
-class CreateUHostInstanceParamSecGroupIdSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamSecGroupId -"""
-
-    fields = {
-        "Id": fields.Str(required=False, dump_to="Id"),
-        "Priority": fields.Int(required=False, dump_to="Priority"),
-    }
-
-
 class CreateUHostInstanceParamDisksCustomBackupSchema(schema.RequestSchema):
     """CreateUHostInstanceParamDisksCustomBackup -"""
 
@@ -180,6 +259,21 @@ class CreateUHostInstanceParamDisksSchema(schema.RequestSchema):
     }
 
 
+class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamVolumes -"""
+
+    fields = {}
+
+
+class CreateUHostInstanceParamLabelsSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamLabels -"""
+
+    fields = {
+        "Key": fields.Str(required=False, dump_to="Key"),
+        "Value": fields.Str(required=False, dump_to="Value"),
+    }
+
+
 class CreateUHostInstanceParamNetworkInterfaceIPv6Schema(schema.RequestSchema):
     """CreateUHostInstanceParamNetworkInterfaceIPv6 -"""
 
@@ -188,6 +282,23 @@ class CreateUHostInstanceParamNetworkInterfaceIPv6Schema(schema.RequestSchema):
         "ShareBandwidthId": fields.Str(
             required=False, dump_to="ShareBandwidthId"
         ),  # Deprecated, will be removed at 1.0
+    }
+
+
+class CreateUHostInstanceParamSecGroupIdSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamSecGroupId -"""
+
+    fields = {
+        "Id": fields.Str(required=False, dump_to="Id"),
+        "Priority": fields.Int(required=False, dump_to="Priority"),
+    }
+
+
+class CreateUHostInstanceParamFeaturesSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamFeatures -"""
+
+    fields = {
+        "UNI": fields.Bool(required=False, dump_to="UNI"),
     }
 
 
@@ -234,29 +345,6 @@ class CreateUHostInstanceParamNetworkInterfaceSchema(schema.RequestSchema):
     }
 
 
-class CreateUHostInstanceParamLabelsSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamLabels -"""
-
-    fields = {
-        "Key": fields.Str(required=False, dump_to="Key"),
-        "Value": fields.Str(required=False, dump_to="Value"),
-    }
-
-
-class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamVolumes -"""
-
-    fields = {}
-
-
-class CreateUHostInstanceParamFeaturesSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamFeatures -"""
-
-    fields = {
-        "UNI": fields.Bool(required=False, dump_to="UNI"),
-    }
-
-
 class CreateUHostInstanceRequestSchema(schema.RequestSchema):
     """CreateUHostInstance - 创建UHost实例。"""
 
@@ -273,6 +361,9 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
         "CPU": fields.Int(required=False, dump_to="CPU"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "DeletionProtection": fields.Bool(
+            required=False, dump_to="DeletionProtection"
+        ),
         "DiskPassword": fields.Str(
             required=False, dump_to="DiskPassword"
         ),  # Deprecated, will be removed at 1.0
@@ -483,6 +574,33 @@ class DescribeAvailableInstanceTypesResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeHostMachineTypeFamilies
+
+获取实例规格族列表（所有机型的信息）
+"""
+
+
+class DescribeHostMachineTypeFamiliesRequestSchema(schema.RequestSchema):
+    """DescribeHostMachineTypeFamilies - 获取实例规格族列表（所有机型的信息）"""
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+    }
+
+
+class DescribeHostMachineTypeFamiliesResponseSchema(schema.ResponseSchema):
+    """DescribeHostMachineTypeFamilies - 获取实例规格族列表（所有机型的信息）"""
+
+    fields = {
+        "MachineTypes": fields.List(
+            models.MachineTypesSchema(),
+            required=False,
+            load_from="MachineTypes",
+        ),
+    }
+
+
+"""
 API: DescribeImage
 
 获取指定数据中心镜像列表，用户可通过指定操作系统类型，镜像Id进行过滤。
@@ -548,6 +666,36 @@ class DescribeIsolationGroupResponseSchema(schema.ResponseSchema):
             load_from="IsolationGroupSet",
         ),
         "TotalCount": fields.Int(required=False, load_from="TotalCount"),
+    }
+
+
+"""
+API: DescribeUHostAvailableDiskTypes
+
+获取主机可挂载的磁盘信息
+"""
+
+
+class DescribeUHostAvailableDiskTypesRequestSchema(schema.RequestSchema):
+    """DescribeUHostAvailableDiskTypes - 获取主机可挂载的磁盘信息"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UHostIds": fields.List(fields.Str()),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DescribeUHostAvailableDiskTypesResponseSchema(schema.ResponseSchema):
+    """DescribeUHostAvailableDiskTypes - 获取主机可挂载的磁盘信息"""
+
+    fields = {
+        "DiskTypeSet": fields.List(
+            models.AvailableDiskTypesSchema(),
+            required=True,
+            load_from="DiskTypeSet",
+        ),
     }
 
 
@@ -728,12 +876,6 @@ API: GetUHostInstancePrice
 """
 
 
-class GetUHostInstancePriceParamVolumesSchema(schema.RequestSchema):
-    """GetUHostInstancePriceParamVolumes -"""
-
-    fields = {}
-
-
 class GetUHostInstancePriceParamDisksSchema(schema.RequestSchema):
     """GetUHostInstancePriceParamDisks -"""
 
@@ -743,6 +885,12 @@ class GetUHostInstancePriceParamDisksSchema(schema.RequestSchema):
         "Size": fields.Int(required=True, dump_to="Size"),
         "Type": fields.Str(required=True, dump_to="Type"),
     }
+
+
+class GetUHostInstancePriceParamVolumesSchema(schema.RequestSchema):
+    """GetUHostInstancePriceParamVolumes -"""
+
+    fields = {}
 
 
 class GetUHostInstancePriceRequestSchema(schema.RequestSchema):
