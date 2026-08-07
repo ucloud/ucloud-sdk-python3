@@ -283,6 +283,13 @@ UK8S
    :members:
 
 
+UKMS
+----
+
+.. autoclass:: ucloud.services.ukms.client.UKMSClient
+   :members:
+
+
 UKafka
 ------
 

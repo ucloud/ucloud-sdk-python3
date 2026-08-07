@@ -372,6 +372,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def ukms(self):
+        from ucloud.services.ukms.client import UKMSClient
+
+        return UKMSClient(
+            self._auto_config("ukms"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def ukafka(self):
         from ucloud.services.ukafka.client import UKafkaClient
 
