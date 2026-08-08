@@ -210,7 +210,7 @@ class DisableKeyRequestSchema(schema.RequestSchema):
     """DisableKey - 禁用指定密钥。"""
 
     fields = {
-        "KeyId": fields.Int(required=True, dump_to="KeyId"),
+        "KeyId": fields.Str(required=True, dump_to="KeyId"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
@@ -258,7 +258,7 @@ class EnableKeyRequestSchema(schema.RequestSchema):
     """EnableKey - 启用指定密钥。"""
 
     fields = {
-        "KeyId": fields.Int(required=True, dump_to="KeyId"),
+        "KeyId": fields.Str(required=True, dump_to="KeyId"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
@@ -462,6 +462,7 @@ class GenerateMacRequestSchema(schema.RequestSchema):
 
     fields = {
         "KeyId": fields.Str(required=True, dump_to="KeyId"),
+        "MacAlgorithm": fields.Str(required=True, dump_to="MacAlgorithm"),
         "MacMessage": fields.Str(required=True, dump_to="MacMessage"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
@@ -702,7 +703,8 @@ class ScheduleKeyDeletionRequestSchema(schema.RequestSchema):
     """ScheduleKeyDeletion - 计划删除指定密钥。"""
 
     fields = {
-        "KeyId": fields.Int(required=True, dump_to="KeyId"),
+        "DeleteDay": fields.Int(required=False, dump_to="DeleteDay"),
+        "KeyId": fields.Str(required=True, dump_to="KeyId"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
@@ -820,7 +822,7 @@ class VerifyRequestSchema(schema.RequestSchema):
         "MessageType": fields.Str(required=False, dump_to="MessageType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
+        "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
         "SignatureResult": fields.Str(required=True, dump_to="SignatureResult"),
         "SigningAlgorithm": fields.Str(
             required=True, dump_to="SigningAlgorithm"

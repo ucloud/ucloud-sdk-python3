@@ -234,7 +234,7 @@ class UKMSClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
-        - **KeyId** (int) - (Required) 密钥 DB 数字 ID。
+        - **KeyId** (str) - (Required) 密钥 DB 数字 ID。
         - **ResourceId** (str) - UKMS 实例资源 ID。
 
         **Response**
@@ -286,7 +286,7 @@ class UKMSClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
-        - **KeyId** (int) - (Required) 密钥 DB 数字 ID。
+        - **KeyId** (str) - (Required) 密钥 DB 数字 ID。
         - **ResourceId** (str) - UKMS 实例资源 ID。
 
         **Response**
@@ -504,6 +504,7 @@ class UKMSClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **KeyId** (str) - (Required) 密钥ID
+        - **MacAlgorithm** (str) - (Required) 用于生成消息认证码的 MAC 算法。
         - **MacMessage** (str) - (Required) 待哈希的消息。
 
         **Response**
@@ -783,7 +784,8 @@ class UKMSClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
-        - **KeyId** (int) - (Required) 密钥 DB 数字 ID。
+        - **KeyId** (str) - (Required) 密钥 DB 数字 ID。
+        - **DeleteDay** (int) - 删除等待天数，取值范围为 7~30 天；未填写时默认为 30 天。
         - **ResourceId** (str) - UKMS 实例资源 ID。
 
         **Response**
@@ -896,11 +898,11 @@ class UKMSClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
         - **KeyId** (str) - (Required) 密钥 ID、ARN 或别名。
-        - **ResourceId** (str) - (Required) UKMS 实例资源 ID。
         - **SignatureResult** (str) - (Required) 待验证的签名，Base64 编码。
         - **SigningAlgorithm** (str) - (Required) 签名时使用的算法。可选值：RSASSA_PSS_SHA_256、RSASSA_PSS_SHA_384、RSASSA_PSS_SHA_512、RSASSA_PKCS1_V1_5_SHA_256、RSASSA_PKCS1_V1_5_SHA_384、RSASSA_PKCS1_V1_5_SHA_512、ECDSA_SHA_256、ECDSA_SHA_384、ECDSA_SHA_512；须与密钥 KeySpec 匹配。
         - **SigningMessage** (str) - (Required) 待验签的消息或消息摘要，Base64 编码。
         - **MessageType** (str) - 消息类型。可选值：RAW、DIGEST；默认 RAW。
+        - **ResourceId** (str) - UKMS 实例资源 ID。
 
         **Response**
 
