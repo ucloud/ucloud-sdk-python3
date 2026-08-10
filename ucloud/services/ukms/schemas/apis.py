@@ -584,12 +584,15 @@ class ListAliasesRequestSchema(schema.RequestSchema):
     """ListAliases - 获取 UKMS 实例下的别名列表。"""
 
     fields = {
+        "Alias": fields.Str(required=False, dump_to="Alias"),
         "KeyId": fields.Str(required=False, dump_to="KeyId"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
+        "OrderBy": fields.Str(required=False, dump_to="OrderBy"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
+        "Sort": fields.Str(required=False, dump_to="Sort"),
     }
 
 
@@ -618,9 +621,12 @@ class ListKeysRequestSchema(schema.RequestSchema):
         "Alias": fields.Str(required=False, dump_to="Alias"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
+        "OrderBy": fields.Str(required=False, dump_to="OrderBy"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
+        "Sort": fields.Str(required=False, dump_to="Sort"),
+        "Status": fields.Str(required=False, dump_to="Status"),
     }
 
 
@@ -646,10 +652,13 @@ class ListScheduleDeletionKeysRequestSchema(schema.RequestSchema):
     """ListScheduleDeletionKeys - 获取计划删除密钥列表，调用ScheduleKeyDeletion命令后进入此列表， 默认30天后正式删除。正式删除前可调用CancelScheduleKeyDeletion恢复"""
 
     fields = {
+        "Alias": fields.Str(required=False, dump_to="Alias"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
         "OrderBy": fields.Str(required=False, dump_to="OrderBy"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
+        "Sort": fields.Str(required=False, dump_to="Sort"),
     }
 
 
