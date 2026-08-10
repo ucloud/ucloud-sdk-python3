@@ -626,10 +626,13 @@ class UKMSClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
+        - **Alias** (str) - 按完整别名（含 alias/ 前缀）进行子串模糊匹配
         - **KeyId** (str) - 可选：筛选指定密钥资源长 ID 的别名。
         - **Limit** (int) - 返回数据长度。
         - **Offset** (int) - 列表起始位置偏移量。
+        - **OrderBy** (str) - 排序字段
         - **ResourceId** (str) - UKMS 实例资源 ID。
+        - **Sort** (str) - 排序方向，默认 desc
 
         **Response**
 
@@ -667,7 +670,10 @@ class UKMSClient(Client):
         - **Alias** (str) - 按密钥 ID 或别名模糊过滤。
         - **Limit** (int) - 返回数据长度。最大1000
         - **Offset** (int) - 列表起始位置偏移量。
+        - **OrderBy** (str) - 排序字段
         - **ResourceId** (str) - UKMS 实例资源 ID。
+        - **Sort** (str) - 排序方向，默认 desc
+        - **Status** (str) - 状态筛选：Active、Deactivated、PendingDeletion
 
         **Response**
 
@@ -711,10 +717,13 @@ class UKMSClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Alias** (str) - 按密钥 ID 或别名模糊过滤
         - **Limit** (int) - 输出列表数量，默认返回200个
         - **Offset** (int) - 输出列表起始位置，默认从0开始
         - **OrderBy** (str) - 列表排序方式, 可选项: "-created_time", "created_time","plan_delete_time","-plan_delete_time";默认按-plan_delete_time 计划删除时间升序返回
+        - **ResourceId** (str) - UKMS 实例资源 ID
+        - **Sort** (str) - 排序方向，默认 desc
 
         **Response**
 
@@ -727,13 +736,13 @@ class UKMSClient(Client):
 
         **CMK**
         - **Alias** (str) - 别名，与CMK一一对应
-        - **CreatedTime** (int) - 创建时间 时间戳
+        - **CreatedTime** (int) - 创建时间
         - **Description** (str) - 对密钥的描述说明
-        - **Enabled** (bool) - 是否启用
         - **KeyId** (str) - CMK 的唯一标识符
-        - **LastModifiedTime** (int) - 最后修改时间 时间戳
+        - **KeyType** (str) - 密钥类型，如RSA、EC、DES
         - **PlanDeleteTime** (int) - 计划删除时间 时间戳
-        - **Type** (str) - 密钥类型，仅支持UCloudManagedKeys、CustomerManagedKeys。默认值CustomerManagedKeys
+        - **Status** (str) - 密钥状态 "Pre-Active", "Active", "Deactivated", "Compromised", "Destroyed", "Destroyed Compromised"
+        - **UpdateTime** (int) - 更新时间
 
 
         """

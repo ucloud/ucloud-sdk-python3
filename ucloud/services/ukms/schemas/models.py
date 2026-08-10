@@ -69,16 +69,23 @@ class CMKSchema(schema.ResponseSchema):
     """CMK - 用户主密钥 (Customer Master Key), 用于生成数据密钥 (Data Encryption Key), 加解密数据密钥."""
 
     fields = {
-        "Alias": fields.Str(required=False, load_from="Alias"),
+        "Alias": fields.Str(required=True, load_from="Alias"),
         "CreatedTime": fields.Int(required=True, load_from="CreatedTime"),
-        "Description": fields.Str(required=True, load_from="Description"),
-        "Enabled": fields.Bool(required=True, load_from="Enabled"),
+        "Description": fields.Str(required=False, load_from="Description"),
+        "Enabled": fields.Bool(
+            required=True, load_from="Enabled"
+        ),  # Deprecated, will be removed at 1.0
         "KeyId": fields.Str(required=True, load_from="KeyId"),
+        "KeyType": fields.Str(required=True, load_from="KeyType"),
         "LastModifiedTime": fields.Int(
             required=True, load_from="LastModifiedTime"
-        ),
+        ),  # Deprecated, will be removed at 1.0
         "PlanDeleteTime": fields.Int(
             required=False, load_from="PlanDeleteTime"
         ),
-        "Type": fields.Str(required=True, load_from="Type"),
+        "Status": fields.Str(required=True, load_from="Status"),
+        "Type": fields.Str(
+            required=True, load_from="Type"
+        ),  # Deprecated, will be removed at 1.0
+        "UpdateTime": fields.Int(required=True, load_from="UpdateTime"),
     }
