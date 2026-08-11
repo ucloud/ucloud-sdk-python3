@@ -19,7 +19,11 @@ class KeyMetadataSchema(schema.ResponseSchema):
         "KeyState": fields.Str(required=True, load_from="KeyState"),
         "KeyUsage": fields.List(fields.Str()),
         "KeyVersion": fields.Int(required=True, load_from="KeyVersion"),
+        "OrganizationId": fields.Int(
+            required=False, load_from="OrganizationId"
+        ),
         "Origin": fields.Str(required=True, load_from="Origin"),
+        "ProjectId": fields.Str(required=False, load_from="ProjectId"),
         "ResourceId": fields.Str(required=True, load_from="ResourceId"),
     }
 
@@ -52,10 +56,14 @@ class DEKSchema(schema.ResponseSchema):
         "NextRotationDate": fields.Int(
             required=False, load_from="NextRotationDate"
         ),
+        "OrganizationId": fields.Int(
+            required=False, load_from="OrganizationId"
+        ),
         "Origin": fields.Str(required=True, load_from="Origin"),
         "PlanDeleteTime": fields.Int(
             required=False, load_from="PlanDeleteTime"
         ),
+        "ProjectId": fields.Str(required=False, load_from="ProjectId"),
         "ResourceId": fields.Str(required=True, load_from="ResourceId"),
         "RotationPeriodInDays": fields.Int(
             required=True, load_from="RotationPeriodInDays"
