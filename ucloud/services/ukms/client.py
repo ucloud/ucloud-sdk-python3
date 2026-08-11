@@ -211,7 +211,9 @@ class UKMSClient(Client):
         - **KeyState** (str) - 密钥对外状态。取值：Enabled、Disabled、PendingDeletion、PendingImport、Unavailable。
         - **KeyUsage** (list) - 密钥用途。取值：ENCRYPT_DECRYPT、SIGN_VERIFY、GENERATE_VERIFY_MAC、KEY_AGREEMENT。
         - **KeyVersion** (int) - 当前密钥版本。
+        - **OrganizationId** (int) - 密钥所属组织的数字 ID，来源于密钥关联的资源交易记录。
         - **Origin** (str) - 密钥材料来源。取值：UCLOUD_KMS、EXTERNAL；当前 CreateKey 仅支持 UCLOUD_KMS。
+        - **ProjectId** (str) - 密钥所属项目的对外别名，格式为 org-xxx。该值由项目数字 ID 解析得到，可能因项目别名查询失败而为空。
         - **ResourceId** (str) - 密钥所属的 UKMS 实例资源 ID。
 
 
@@ -690,8 +692,10 @@ class UKMSClient(Client):
         - **KeySpec** (str) - 密钥规格。取值：SYMMETRIC_DEFAULT、RSA_2048、RSA_3072、RSA_4096、ECC_NIST_P256、ECC_NIST_P384、ECC_NIST_P521、HMAC_256、HMAC_384、HMAC_512。
         - **KeyUsage** (list) - 按 KeySpec 派生的密钥用途。取值：ENCRYPT_DECRYPT、SIGN_VERIFY、GENERATE_VERIFY_MAC、KEY_AGREEMENT。
         - **NextRotationDate** (int) - 下次自动轮转时间（Unix 时间戳，秒）；仅在已开启自动轮转时返回。
+        - **OrganizationId** (int) - 密钥所属组织的数字 ID，来源于密钥关联的资源交易记录。
         - **Origin** (str) - 密钥来源，由 Origin 派生。取值：ucloud、import。当前 CreateKey 仅支持 ucloud。
         - **PlanDeleteTime** (int) - 计划删除时间，Unix 时间戳。
+        - **ProjectId** (str) - 密钥所属项目的对外别名，格式为 org-xxx。该值由项目数字 ID 解析得到，可能因项目别名查询失败而为空。
         - **ResourceId** (str) - 密钥所属的 UKMS 实例资源 ID。
         - **RotationPeriodInDays** (int) - 自动轮转周期(天)；未开启时为 0
         - **Status** (str) - 数据库密钥状态。常见取值：Active、Deactivated、PendingDeletion。
