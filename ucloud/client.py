@@ -22,6 +22,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def cloudwatch(self):
+        from ucloud.services.cloudwatch.client import CloudWatchClient
+
+        return CloudWatchClient(
+            self._auto_config("cloudwatch"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def cube(self):
         from ucloud.services.cube.client import CubeClient
 

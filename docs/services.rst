@@ -87,6 +87,13 @@ VPC
 
 
 
+CloudWatch
+----------
+
+.. autoclass:: ucloud.services.cloudwatch.client.CloudWatchClient
+   :members:
+
+
 Cube
 ----
 
