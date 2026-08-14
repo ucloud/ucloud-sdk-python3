@@ -8,6 +8,119 @@ from ucloud.services.ufile.schemas import models
 
 
 """
+API: AddCORSRule
+
+添加跨域规则
+"""
+
+
+class AddCORSRuleRequestSchema(schema.RequestSchema):
+    """AddCORSRule - 添加跨域规则"""
+
+    fields = {
+        "AllowedHeader": fields.Str(required=False, dump_to="AllowedHeader"),
+        "AllowedMethod": fields.Str(required=True, dump_to="AllowedMethod"),
+        "AllowedOrigin": fields.Str(required=True, dump_to="AllowedOrigin"),
+        "BucketName": fields.Str(required=True, dump_to="BucketName"),
+        "ExposeHeader": fields.Str(required=False, dump_to="ExposeHeader"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+    }
+
+
+class AddCORSRuleResponseSchema(schema.ResponseSchema):
+    """AddCORSRule - 添加跨域规则"""
+
+    fields = {
+        "CORSId": fields.Str(required=True, load_from="CORSId"),
+    }
+
+
+"""
+API: AddUFileSSLCert
+
+给指定域名添加证书
+"""
+
+
+class AddUFileSSLCertRequestSchema(schema.RequestSchema):
+    """AddUFileSSLCert - 给指定域名添加证书"""
+
+    fields = {
+        "BucketName": fields.Str(required=True, dump_to="BucketName"),
+        "Certificate": fields.Str(required=False, dump_to="Certificate"),
+        "CertificateKey": fields.Str(required=False, dump_to="CertificateKey"),
+        "CertificateName": fields.Str(required=True, dump_to="CertificateName"),
+        "Domain": fields.Str(required=True, dump_to="Domain"),
+        "USSLId": fields.Str(required=False, dump_to="USSLId"),
+    }
+
+
+class AddUFileSSLCertResponseSchema(schema.ResponseSchema):
+    """AddUFileSSLCert - 给指定域名添加证书"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: BindBucketDomain
+
+绑定自定义域名
+"""
+
+
+class BindBucketDomainRequestSchema(schema.RequestSchema):
+    """BindBucketDomain - 绑定自定义域名"""
+
+    fields = {
+        "BucketName": fields.Str(required=True, dump_to="BucketName"),
+        "Domain": fields.Str(required=True, dump_to="Domain"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+    }
+
+
+class BindBucketDomainResponseSchema(schema.ResponseSchema):
+    """BindBucketDomain - 绑定自定义域名"""
+
+    fields = {
+        "BucketId": fields.Str(required=True, load_from="BucketId"),
+        "BucketName": fields.Str(required=True, load_from="BucketName"),
+    }
+
+
+"""
+API: BuyUFilePkg
+
+购买流量包或存储包
+"""
+
+
+class BuyUFilePkgRequestSchema(schema.RequestSchema):
+    """BuyUFilePkg - 购买流量包或存储包"""
+
+    fields = {
+        "Amount": fields.Int(required=True, dump_to="Amount"),
+        "AmountUnit": fields.Str(required=True, dump_to="AmountUnit"),
+        "Duration": fields.Int(required=True, dump_to="Duration"),
+        "DurationUnit": fields.Str(required=True, dump_to="DurationUnit"),
+        "PkgName": fields.Str(required=True, dump_to="PkgName"),
+        "PkgType": fields.Int(required=True, dump_to="PkgType"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class BuyUFilePkgResponseSchema(schema.ResponseSchema):
+    """BuyUFilePkg - 购买流量包或存储包"""
+
+    fields = {
+        "ResourceId": fields.Str(required=True, load_from="ResourceId"),
+    }
+
+
+"""
 API: CreateBucket
 
 创建Bucket
@@ -21,6 +134,7 @@ class CreateBucketRequestSchema(schema.RequestSchema):
         "BucketName": fields.Str(required=True, dump_to="BucketName"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
         "Type": fields.Str(required=False, dump_to="Type"),
     }
 
@@ -48,12 +162,22 @@ class CreateUFileLifeCycleRequestSchema(schema.RequestSchema):
         "ArchivalDays": fields.Int(required=False, dump_to="ArchivalDays"),
         "BucketName": fields.Str(required=True, dump_to="BucketName"),
         "Days": fields.Int(required=False, dump_to="Days"),
+        "HistVerArchivalDays": fields.Int(
+            required=False, dump_to="HistVerArchivalDays"
+        ),
+        "HistVerDeleteDays": fields.Int(
+            required=False, dump_to="HistVerDeleteDays"
+        ),
+        "HistVerIADays": fields.Int(required=False, dump_to="HistVerIADays"),
         "IADays": fields.Int(required=False, dump_to="IADays"),
         "LifeCycleName": fields.Str(required=True, dump_to="LifeCycleName"),
+        "MaxSize": fields.Int(required=False, dump_to="MaxSize"),
+        "MinSize": fields.Int(required=False, dump_to="MinSize"),
         "Prefix": fields.Str(required=True, dump_to="Prefix"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=False, dump_to="Region"),
         "Status": fields.Str(required=True, dump_to="Status"),
+        "Tags": fields.Str(required=False, dump_to="Tags"),
     }
 
 
@@ -98,6 +222,41 @@ class CreateUFileTokenResponseSchema(schema.ResponseSchema):
 
 
 """
+API: CreateUdsRule
+
+针对对象存储的文件，进行自动触发解压。
+"""
+
+
+class CreateUdsRuleRequestSchema(schema.RequestSchema):
+    """CreateUdsRule - 针对对象存储的文件，进行自动触发解压。"""
+
+    fields = {
+        "ContactGroupId": fields.Str(required=False, dump_to="ContactGroupId"),
+        "DstBucket": fields.Str(required=True, dump_to="DstBucket"),
+        "DstDirectory": fields.Str(required=True, dump_to="DstDirectory"),
+        "DstTokenId": fields.Str(required=True, dump_to="DstTokenId"),
+        "Events": fields.List(fields.Str()),
+        "KeepUS3Name": fields.Bool(required=True, dump_to="KeepUS3Name"),
+        "NotificationTypes": fields.List(fields.Str()),
+        "Ops": fields.List(fields.Str()),
+        "Prefixes": fields.Str(required=True, dump_to="Prefixes"),
+        "RuleName": fields.Str(required=True, dump_to="RuleName"),
+        "SrcBucket": fields.Str(required=True, dump_to="SrcBucket"),
+        "SrcTokenId": fields.Str(required=True, dump_to="SrcTokenId"),
+    }
+
+
+class CreateUdsRuleResponseSchema(schema.ResponseSchema):
+    """CreateUdsRule - 针对对象存储的文件，进行自动触发解压。"""
+
+    fields = {
+        "Message": fields.Str(required=False, load_from="Message"),
+        "RuleId": fields.Str(required=True, load_from="RuleId"),
+    }
+
+
+"""
 API: DeleteBucket
 
 删除Bucket
@@ -123,6 +282,29 @@ class DeleteBucketResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DeleteCORSRule
+
+删除跨域规则
+"""
+
+
+class DeleteCORSRuleRequestSchema(schema.RequestSchema):
+    """DeleteCORSRule - 删除跨域规则"""
+
+    fields = {
+        "BucketName": fields.Str(required=True, dump_to="BucketName"),
+        "CORSId": fields.Str(required=True, dump_to="CORSId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+    }
+
+
+class DeleteCORSRuleResponseSchema(schema.ResponseSchema):
+    """DeleteCORSRule - 删除跨域规则"""
+
+    fields = {}
+
+
+"""
 API: DeleteUFileLifeCycle
 
 删除生命周期管理
@@ -144,6 +326,54 @@ class DeleteUFileLifeCycleResponseSchema(schema.ResponseSchema):
     """DeleteUFileLifeCycle - 删除生命周期管理"""
 
     fields = {}
+
+
+"""
+API: DeleteUFilePkg
+
+删除资源包(退费)
+"""
+
+
+class DeleteUFilePkgRequestSchema(schema.RequestSchema):
+    """DeleteUFilePkg - 删除资源包(退费)"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DeleteUFilePkgResponseSchema(schema.ResponseSchema):
+    """DeleteUFilePkg - 删除资源包(退费)"""
+
+    fields = {}
+
+
+"""
+API: DeleteUFileSSLCert
+
+删除指定域名添加证书
+"""
+
+
+class DeleteUFileSSLCertRequestSchema(schema.RequestSchema):
+    """DeleteUFileSSLCert - 删除指定域名添加证书"""
+
+    fields = {
+        "BucketName": fields.Str(required=True, dump_to="BucketName"),
+        "Domain": fields.Str(required=True, dump_to="Domain"),
+    }
+
+
+class DeleteUFileSSLCertResponseSchema(schema.ResponseSchema):
+    """DeleteUFileSSLCert - 删除指定域名添加证书"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
 
 
 """
@@ -199,6 +429,60 @@ class DescribeBucketResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeCORSRule
+
+获取跨域规则信息
+"""
+
+
+class DescribeCORSRuleRequestSchema(schema.RequestSchema):
+    """DescribeCORSRule - 获取跨域规则信息"""
+
+    fields = {
+        "BucketName": fields.Str(required=True, dump_to="BucketName"),
+        "CORSId": fields.Str(required=False, dump_to="CORSId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+    }
+
+
+class DescribeCORSRuleResponseSchema(schema.ResponseSchema):
+    """DescribeCORSRule - 获取跨域规则信息"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.CORSRuleSetSchema(), required=True, load_from="DataSet"
+        ),
+    }
+
+
+"""
+API: DescribeUFileAvailablePkg
+
+查询可购买的资源包列表
+"""
+
+
+class DescribeUFileAvailablePkgRequestSchema(schema.RequestSchema):
+    """DescribeUFileAvailablePkg - 查询可购买的资源包列表"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DescribeUFileAvailablePkgResponseSchema(schema.ResponseSchema):
+    """DescribeUFileAvailablePkg - 查询可购买的资源包列表"""
+
+    fields = {
+        "PkgList": fields.List(
+            models.AvailablePkgSchema(), required=True, load_from="PkgList"
+        ),
+    }
+
+
+"""
 API: DescribeUFileLifeCycle
 
 获取生命周期信息
@@ -220,9 +504,133 @@ class DescribeUFileLifeCycleResponseSchema(schema.ResponseSchema):
     """DescribeUFileLifeCycle - 获取生命周期信息"""
 
     fields = {
+        "DataSet": fields.List(
+            models.LifeCycleItemSchema(), required=True, load_from="DataSet"
+        ),
         "DateSet": fields.List(
             models.LifeCycleItemSchema(), required=True, load_from="DateSet"
+        ),  # Deprecated, will be removed at 1.0
+    }
+
+
+"""
+API: DescribeUFilePkg
+
+查询已购买的资源包列表
+"""
+
+
+class DescribeUFilePkgRequestSchema(schema.RequestSchema):
+    """DescribeUFilePkg - 查询已购买的资源包列表"""
+
+    fields = {
+        "Expired": fields.Int(required=False, dump_to="Expired"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DescribeUFilePkgResponseSchema(schema.ResponseSchema):
+    """DescribeUFilePkg - 查询已购买的资源包列表"""
+
+    fields = {
+        "Pkgs": fields.List(
+            models.UFilePkgSchema(), required=True, load_from="Pkgs"
         ),
+    }
+
+
+"""
+API: DescribeUFilePkgUsage
+
+查询资源包使用明细
+"""
+
+
+class DescribeUFilePkgUsageRequestSchema(schema.RequestSchema):
+    """DescribeUFilePkgUsage - 查询资源包使用明细"""
+
+    fields = {
+        "EndDate": fields.Str(required=True, dump_to="EndDate"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
+        "StartDate": fields.Str(required=True, dump_to="StartDate"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DescribeUFilePkgUsageResponseSchema(schema.ResponseSchema):
+    """DescribeUFilePkgUsage - 查询资源包使用明细"""
+
+    fields = {
+        "Usage": fields.List(
+            models.PkgUsageSchema(), required=False, load_from="Usage"
+        ),
+    }
+
+
+"""
+API: DescribeUFileReferer
+
+对象存储防盗链列表
+"""
+
+
+class DescribeUFileRefererRequestSchema(schema.RequestSchema):
+    """DescribeUFileReferer - 对象存储防盗链列表"""
+
+    fields = {
+        "BucketName": fields.Str(required=True, dump_to="BucketName"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+    }
+
+
+class DescribeUFileRefererResponseSchema(schema.ResponseSchema):
+    """DescribeUFileReferer - 对象存储防盗链列表"""
+
+    fields = {
+        "BlackList": fields.List(
+            fields.Str(), required=False, load_from="BlackList"
+        ),
+        "NullRefer": fields.Bool(required=True, load_from="NullRefer"),
+        "RefererList": fields.List(
+            fields.Str(), required=True, load_from="RefererList"
+        ),
+        "RefererStatus": fields.Str(required=False, load_from="RefererStatus"),
+        "RefererType": fields.Int(required=True, load_from="RefererType"),
+        "WhiteList": fields.List(
+            fields.Str(), required=False, load_from="WhiteList"
+        ),
+    }
+
+
+"""
+API: DescribeUFileSSLCert
+
+查询指定存储桶所有证书
+"""
+
+
+class DescribeUFileSSLCertRequestSchema(schema.RequestSchema):
+    """DescribeUFileSSLCert - 查询指定存储桶所有证书"""
+
+    fields = {
+        "BucketName": fields.Str(required=True, dump_to="BucketName"),
+    }
+
+
+class DescribeUFileSSLCertResponseSchema(schema.ResponseSchema):
+    """DescribeUFileSSLCert - 查询指定存储桶所有证书"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.UFileSSLCertSchema(), required=False, load_from="DataSet"
+        ),
+        "Message": fields.Str(required=True, load_from="Message"),
     }
 
 
@@ -256,6 +664,141 @@ class DescribeUFileTokenResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeUdsRule
+
+针对解压缩规则进行查询
+"""
+
+
+class DescribeUdsRuleRequestSchema(schema.RequestSchema):
+    """DescribeUdsRule - 针对解压缩规则进行查询"""
+
+    fields = {
+        "BucketName": fields.Str(required=True, dump_to="BucketName"),
+        "RuleId": fields.Str(required=False, dump_to="RuleId"),
+    }
+
+
+class DescribeUdsRuleResponseSchema(schema.ResponseSchema):
+    """DescribeUdsRule - 针对解压缩规则进行查询"""
+
+    fields = {
+        "DataSet": fields.List(
+            fields.Str(), required=False, load_from="DataSet"
+        ),
+        "Message": fields.Str(required=True, load_from="Message"),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
+API: GetBucketQuota
+
+获取bucket配额
+"""
+
+
+class GetBucketQuotaRequestSchema(schema.RequestSchema):
+    """GetBucketQuota - 获取bucket配额"""
+
+    fields = {
+        "BucketName": fields.Str(required=True, dump_to="BucketName"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class GetBucketQuotaResponseSchema(schema.ResponseSchema):
+    """GetBucketQuota - 获取bucket配额"""
+
+    fields = {
+        "BucketName": fields.Str(required=True, load_from="BucketName"),
+        "QuotaLimit": fields.Int(required=True, load_from="QuotaLimit"),
+    }
+
+
+"""
+API: GetBucketStaticPageRule
+
+获取bucket静态网页配置
+"""
+
+
+class GetBucketStaticPageRuleRequestSchema(schema.RequestSchema):
+    """GetBucketStaticPageRule - 获取bucket静态网页配置"""
+
+    fields = {
+        "Bucket": fields.Str(required=True, dump_to="Bucket"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class GetBucketStaticPageRuleResponseSchema(schema.ResponseSchema):
+    """GetBucketStaticPageRule - 获取bucket静态网页配置"""
+
+    fields = {
+        "Rule": models.BucketStaticPageRuleSchema(),
+    }
+
+
+"""
+API: GetProjectRegionQuota
+
+获取项目地域配额
+"""
+
+
+class GetProjectRegionQuotaRequestSchema(schema.RequestSchema):
+    """GetProjectRegionQuota - 获取项目地域配额"""
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class GetProjectRegionQuotaResponseSchema(schema.ResponseSchema):
+    """GetProjectRegionQuota - 获取项目地域配额"""
+
+    fields = {
+        "QuotaLimit": fields.Int(required=True, load_from="QuotaLimit"),
+        "QuotaType": fields.Str(required=True, load_from="QuotaType"),
+        "Region": fields.Str(required=True, load_from="Region"),
+    }
+
+
+"""
+API: GetUFileDailyBill
+
+获取bucket每日账单
+"""
+
+
+class GetUFileDailyBillRequestSchema(schema.RequestSchema):
+    """GetUFileDailyBill - 获取bucket每日账单"""
+
+    fields = {
+        "BucketName": fields.Str(required=False, dump_to="BucketName"),
+        "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "StartTime": fields.Int(required=True, dump_to="StartTime"),
+    }
+
+
+class GetUFileDailyBillResponseSchema(schema.ResponseSchema):
+    """GetUFileDailyBill - 获取bucket每日账单"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.BucketBillsSchema(), required=True, load_from="DataSet"
+        ),
+    }
+
+
+"""
 API: GetUFileDailyReport
 
 查看日消费报表
@@ -281,6 +824,69 @@ class GetUFileDailyReportResponseSchema(schema.ResponseSchema):
         "DataSet": fields.List(
             models.UFileReportItemSchema(), required=True, load_from="DataSet"
         ),
+    }
+
+
+"""
+API: GetUFileMonthlyBill
+
+获取bucket月度账单
+"""
+
+
+class GetUFileMonthlyBillRequestSchema(schema.RequestSchema):
+    """GetUFileMonthlyBill - 获取bucket月度账单"""
+
+    fields = {
+        "BucketName": fields.Str(required=False, dump_to="BucketName"),
+        "EndMonth": fields.Str(required=True, dump_to="EndMonth"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "StartMonth": fields.Str(required=True, dump_to="StartMonth"),
+    }
+
+
+class GetUFileMonthlyBillResponseSchema(schema.ResponseSchema):
+    """GetUFileMonthlyBill - 获取bucket月度账单"""
+
+    fields = {
+        "DataSet": fields.List(
+            models.BucketMonthlyBillsSchema(),
+            required=True,
+            load_from="DataSet",
+        ),
+    }
+
+
+"""
+API: GetUFilePkgPrice
+
+获取对资源进行新购、续费、升级等操作的价格
+"""
+
+
+class GetUFilePkgPriceRequestSchema(schema.RequestSchema):
+    """GetUFilePkgPrice - 获取对资源进行新购、续费、升级等操作的价格"""
+
+    fields = {
+        "Amount": fields.Int(required=False, dump_to="Amount"),
+        "AmountUnit": fields.Str(required=False, dump_to="AmountUnit"),
+        "Duration": fields.Int(required=False, dump_to="Duration"),
+        "DurationUnit": fields.Str(required=False, dump_to="DurationUnit"),
+        "InquiryType": fields.Str(required=True, dump_to="InquiryType"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class GetUFilePkgPriceResponseSchema(schema.ResponseSchema):
+    """GetUFilePkgPrice - 获取对资源进行新购、续费、升级等操作的价格"""
+
+    fields = {
+        "CustomPrice": fields.Int(required=False, load_from="CustomPrice"),
+        "OriginPrice": fields.Int(required=False, load_from="OriginPrice"),
     }
 
 
@@ -394,6 +1000,85 @@ class GetUFileReportResponseSchema(schema.ResponseSchema):
 
 
 """
+API: RenewUFilePkg
+
+资源包续费
+"""
+
+
+class RenewUFilePkgRequestSchema(schema.RequestSchema):
+    """RenewUFilePkg - 资源包续费"""
+
+    fields = {
+        "Duration": fields.Int(required=True, dump_to="Duration"),
+        "DurationUnit": fields.Str(required=True, dump_to="DurationUnit"),
+        "PkgType": fields.Int(required=True, dump_to="PkgType"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class RenewUFilePkgResponseSchema(schema.ResponseSchema):
+    """RenewUFilePkg - 资源包续费"""
+
+    fields = {}
+
+
+"""
+API: SetBucketQuota
+
+设置bucket配额
+"""
+
+
+class SetBucketQuotaRequestSchema(schema.RequestSchema):
+    """SetBucketQuota - 设置bucket配额"""
+
+    fields = {
+        "BucketName": fields.Str(required=True, dump_to="BucketName"),
+        "QuotaLimit": fields.Int(required=True, dump_to="QuotaLimit"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class SetBucketQuotaResponseSchema(schema.ResponseSchema):
+    """SetBucketQuota - 设置bucket配额"""
+
+    fields = {}
+
+
+"""
+API: SetProjectRegionQuota
+
+设置项目地域配额
+"""
+
+
+class SetProjectRegionQuotaRequestSchema(schema.RequestSchema):
+    """SetProjectRegionQuota - 设置项目地域配额"""
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "QuotaLimit": fields.Int(required=True, dump_to="QuotaLimit"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class SetProjectRegionQuotaResponseSchema(schema.ResponseSchema):
+    """SetProjectRegionQuota - 设置项目地域配额"""
+
+    fields = {
+        "QuotaLimit": fields.Str(required=True, load_from="QuotaLimit"),
+        "QuotaType": fields.Str(required=True, load_from="QuotaType"),
+        "Region": fields.Str(required=True, load_from="Region"),
+    }
+
+
+"""
 API: SetUFileReferer
 
 设置对象存储防盗链
@@ -404,6 +1089,7 @@ class SetUFileRefererRequestSchema(schema.RequestSchema):
     """SetUFileReferer - 设置对象存储防盗链"""
 
     fields = {
+        "BlackList": fields.List(fields.Str()),
         "BucketName": fields.Str(required=True, dump_to="BucketName"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "RefererAllowNull": fields.Bool(
@@ -413,6 +1099,7 @@ class SetUFileRefererRequestSchema(schema.RequestSchema):
         "RefererType": fields.Int(required=False, dump_to="RefererType"),
         "Referers": fields.List(fields.Str()),
         "Region": fields.Str(required=False, dump_to="Region"),
+        "WhiteList": fields.List(fields.Str()),
     }
 
 
@@ -435,7 +1122,8 @@ class UpdateBucketRequestSchema(schema.RequestSchema):
     fields = {
         "BucketName": fields.Str(required=True, dump_to="BucketName"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
-        "Type": fields.Str(required=True, dump_to="Type"),
+        "StorageClass": fields.Str(required=False, dump_to="StorageClass"),
+        "Type": fields.Str(required=False, dump_to="Type"),
     }
 
 
@@ -446,6 +1134,61 @@ class UpdateBucketResponseSchema(schema.ResponseSchema):
         "BucketId": fields.Str(required=False, load_from="BucketId"),
         "BucketName": fields.Str(required=False, load_from="BucketName"),
     }
+
+
+"""
+API: UpdateBucketStaticPageRule
+
+修改bucket静态网页配置
+"""
+
+
+class UpdateBucketStaticPageRuleRequestSchema(schema.RequestSchema):
+    """UpdateBucketStaticPageRule - 修改bucket静态网页配置"""
+
+    fields = {
+        "Bucket": fields.Str(required=True, dump_to="Bucket"),
+        "DefaultIndex": fields.Str(required=False, dump_to="DefaultIndex"),
+        "DefaultPage404": fields.Str(required=False, dump_to="DefaultPage404"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "RuleFor404": fields.Str(required=False, dump_to="RuleFor404"),
+        "Status": fields.Str(required=False, dump_to="Status"),
+        "SubDirRedirect": fields.Str(required=False, dump_to="SubDirRedirect"),
+    }
+
+
+class UpdateBucketStaticPageRuleResponseSchema(schema.ResponseSchema):
+    """UpdateBucketStaticPageRule - 修改bucket静态网页配置"""
+
+    fields = {}
+
+
+"""
+API: UpdateCORSRule
+
+更新跨域规则
+"""
+
+
+class UpdateCORSRuleRequestSchema(schema.RequestSchema):
+    """UpdateCORSRule - 更新跨域规则"""
+
+    fields = {
+        "AllowedHeader": fields.Str(required=False, dump_to="AllowedHeader"),
+        "AllowedMethod": fields.Str(required=True, dump_to="AllowedMethod"),
+        "AllowedOrigin": fields.Str(required=True, dump_to="AllowedOrigin"),
+        "BucketName": fields.Str(required=True, dump_to="BucketName"),
+        "CORSId": fields.Str(required=True, dump_to="CORSId"),
+        "ExposeHeader": fields.Str(required=False, dump_to="ExposeHeader"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+    }
+
+
+class UpdateCORSRuleResponseSchema(schema.ResponseSchema):
+    """UpdateCORSRule - 更新跨域规则"""
+
+    fields = {}
 
 
 """
@@ -462,13 +1205,23 @@ class UpdateUFileLifeCycleRequestSchema(schema.RequestSchema):
         "ArchivalDays": fields.Int(required=False, dump_to="ArchivalDays"),
         "BucketName": fields.Str(required=True, dump_to="BucketName"),
         "Days": fields.Int(required=False, dump_to="Days"),
+        "HistVerArchivalDays": fields.Int(
+            required=False, dump_to="HistVerArchivalDays"
+        ),
+        "HistVerDeleteDays": fields.Int(
+            required=False, dump_to="HistVerDeleteDays"
+        ),
+        "HistVerIADays": fields.Int(required=False, dump_to="HistVerIADays"),
         "IADays": fields.Int(required=False, dump_to="IADays"),
         "LifeCycleId": fields.Str(required=True, dump_to="LifeCycleId"),
         "LifeCycleName": fields.Str(required=True, dump_to="LifeCycleName"),
+        "MaxSize": fields.Str(required=False, dump_to="MaxSize"),
+        "MinSize": fields.Int(required=False, dump_to="MinSize"),
         "Prefix": fields.Str(required=True, dump_to="Prefix"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=False, dump_to="Region"),
         "Status": fields.Str(required=True, dump_to="Status"),
+        "Tags": fields.Str(required=False, dump_to="Tags"),
     }
 
 
@@ -476,6 +1229,33 @@ class UpdateUFileLifeCycleResponseSchema(schema.ResponseSchema):
     """UpdateUFileLifeCycle - 更新生命周期管理"""
 
     fields = {}
+
+
+"""
+API: UpdateUFileSSLCert
+
+更新指定域名证书
+"""
+
+
+class UpdateUFileSSLCertRequestSchema(schema.RequestSchema):
+    """UpdateUFileSSLCert - 更新指定域名证书"""
+
+    fields = {
+        "BucketName": fields.Str(required=True, dump_to="BucketName"),
+        "Certificate": fields.Str(required=True, dump_to="Certificate"),
+        "CertificateKey": fields.Str(required=True, dump_to="CertificateKey"),
+        "CertificateName": fields.Str(required=True, dump_to="CertificateName"),
+        "Domain": fields.Str(required=True, dump_to="Domain"),
+    }
+
+
+class UpdateUFileSSLCertResponseSchema(schema.ResponseSchema):
+    """UpdateUFileSSLCert - 更新指定域名证书"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
 
 
 """
