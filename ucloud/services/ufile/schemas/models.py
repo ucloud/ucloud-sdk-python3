@@ -45,8 +45,54 @@ class UFileBucketSetSchema(schema.ResponseSchema):
         "HasUserDomain": fields.Int(required=False, load_from="HasUserDomain"),
         "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
         "Region": fields.Str(required=False, load_from="Region"),
+        "StorageClass": fields.Str(required=False, load_from="StorageClass"),
         "Tag": fields.Str(required=False, load_from="Tag"),
         "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
+class CORSRuleSetSchema(schema.ResponseSchema):
+    """CORSRuleSet - 跨域规则集合"""
+
+    fields = {
+        "AllowedHeader": fields.Str(required=True, load_from="AllowedHeader"),
+        "AllowedMethod": fields.Str(required=True, load_from="AllowedMethod"),
+        "AllowedOrigin": fields.Str(required=True, load_from="AllowedOrigin"),
+        "CORSId": fields.Str(required=True, load_from="CORSId"),
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "ExposeHeader": fields.Str(required=True, load_from="ExposeHeader"),
+        "ModifyTime": fields.Int(required=True, load_from="ModifyTime"),
+    }
+
+
+class AvailablePkgDurationsSchema(schema.ResponseSchema):
+    """AvailablePkgDurations - 可购买的资源包时长"""
+
+    fields = {
+        "Discount": fields.Float(required=True, load_from="Discount"),
+        "Duration": fields.Int(required=False, load_from="Duration"),
+        "Unit": fields.Str(required=False, load_from="Unit"),
+    }
+
+
+class AvailablePkgSpecsSchema(schema.ResponseSchema):
+    """AvailablePkgSpecs - 可购买的资源包规格"""
+
+    fields = {
+        "Amount": fields.Int(required=False, load_from="Amount"),
+        "Durations": fields.List(AvailablePkgDurationsSchema()),
+        "Unit": fields.Str(required=False, load_from="Unit"),
+    }
+
+
+class AvailablePkgSchema(schema.ResponseSchema):
+    """AvailablePkg - 可购买的资源包"""
+
+    fields = {
+        "CommonDurations": fields.List(AvailablePkgDurationsSchema()),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Specs": fields.List(AvailablePkgSpecsSchema()),
+        "Type": fields.Int(required=False, load_from="Type"),
     }
 
 
@@ -60,8 +106,177 @@ class LifeCycleItemSchema(schema.ResponseSchema):
         "IADays": fields.Int(required=False, load_from="IADays"),
         "LifeCycleId": fields.Str(required=False, load_from="LifeCycleId"),
         "LifeCycleName": fields.Str(required=False, load_from="LifeCycleName"),
+        "MaxSize": fields.Str(required=True, load_from="MaxSize"),
+        "MinSize": fields.Str(required=True, load_from="MinSize"),
         "Prefix": fields.Str(required=False, load_from="Prefix"),
         "Status": fields.Str(required=False, load_from="Status"),
+    }
+
+
+class UFilePkgSchema(schema.ResponseSchema):
+    """UFilePkg - 已购买的资源包"""
+
+    fields = {
+        "Amount": fields.Int(required=False, load_from="Amount"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "ExpiredTime": fields.Int(required=False, load_from="ExpiredTime"),
+        "PkgName": fields.Str(required=False, load_from="PkgName"),
+        "PkgType": fields.Int(required=False, load_from="PkgType"),
+        "Region": fields.Str(required=True, load_from="Region"),
+        "RemainAmount": fields.Str(required=False, load_from="RemainAmount"),
+        "ResourceId": fields.Str(required=False, load_from="ResourceId"),
+    }
+
+
+class PkgUsageSchema(schema.ResponseSchema):
+    """PkgUsage - 资源包使用明细"""
+
+    fields = {
+        "Cost": fields.Str(required=False, load_from="Cost"),
+        "Date": fields.Str(required=False, load_from="Date"),
+    }
+
+
+class UFileSSLCertSchema(schema.ResponseSchema):
+    """UFileSSLCert - SSL证书"""
+
+    fields = {
+        "Certificate": fields.Str(required=False, load_from="Certificate"),
+        "CertificateKey": fields.Str(
+            required=False, load_from="CertificateKey"
+        ),
+        "CertificateName": fields.Str(
+            required=False, load_from="CertificateName"
+        ),
+        "Domain": fields.Str(required=False, load_from="Domain"),
+    }
+
+
+class BucketStaticPageRuleSchema(schema.ResponseSchema):
+    """BucketStaticPageRule -"""
+
+    fields = {
+        "DefaultIndex": fields.Str(required=False, load_from="DefaultIndex"),
+        "DefaultPage404": fields.Str(
+            required=False, load_from="DefaultPage404"
+        ),
+        "RuleFor404": fields.Str(required=False, load_from="RuleFor404"),
+        "Status": fields.Str(required=False, load_from="Status"),
+        "SubDirRedirect": fields.Str(
+            required=False, load_from="SubDirRedirect"
+        ),
+    }
+
+
+class BucketLabelsSchema(schema.ResponseSchema):
+    """BucketLabels -"""
+
+    fields = {
+        "Key": fields.Str(required=False, load_from="Key"),
+        "Value": fields.Str(required=False, load_from="Value"),
+    }
+
+
+class UFileDailyBillItemSchema(schema.ResponseSchema):
+    """UFileDailyBillItem - 日消费账单"""
+
+    fields = {
+        "AcExpeditedRetrievalBill": fields.Float(
+            required=False, load_from="AcExpeditedRetrievalBill"
+        ),
+        "AcRestoreBill": fields.Float(
+            required=False, load_from="AcRestoreBill"
+        ),
+        "AcShortStorageBill": fields.Float(
+            required=False, load_from="AcShortStorageBill"
+        ),
+        "AcStorageBill": fields.Float(
+            required=False, load_from="AcStorageBill"
+        ),
+        "BusyFlowBill": fields.Float(required=False, load_from="BusyFlowBill"),
+        "CdnFlowBill": fields.Float(required=False, load_from="CdnFlowBill"),
+        "Date": fields.Int(required=False, load_from="Date"),
+        "FlowBill": fields.Float(required=False, load_from="FlowBill"),
+        "GetCountAcBill": fields.Float(
+            required=False, load_from="GetCountAcBill"
+        ),
+        "GetCountBill": fields.Float(required=False, load_from="GetCountBill"),
+        "GetCountIaBill": fields.Float(
+            required=False, load_from="GetCountIaBill"
+        ),
+        "IaGetSizeBill": fields.Float(
+            required=False, load_from="IaGetSizeBill"
+        ),
+        "IaShortStorageBill": fields.Float(
+            required=False, load_from="IaShortStorageBill"
+        ),
+        "IaStorageBill": fields.Float(
+            required=False, load_from="IaStorageBill"
+        ),
+        "IdleFlowBill": fields.Float(required=False, load_from="IdleFlowBill"),
+        "ImageCompressCountBill": fields.Float(
+            required=False, load_from="ImageCompressCountBill"
+        ),
+        "ImageHandleFlowBill": fields.Float(
+            required=False, load_from="ImageHandleFlowBill"
+        ),
+        "Labels": fields.List(BucketLabelsSchema()),
+        "ObjectTagCountBill": fields.Float(
+            required=False, load_from="ObjectTagCountBill"
+        ),
+        "PutCountAcBill": fields.Float(
+            required=False, load_from="PutCountAcBill"
+        ),
+        "PutCountBill": fields.Float(required=False, load_from="PutCountBill"),
+        "PutCountIaBill": fields.Float(
+            required=False, load_from="PutCountIaBill"
+        ),
+        "StorageBill": fields.Float(required=False, load_from="StorageBill"),
+        "TotalBill": fields.Float(required=False, load_from="TotalBill"),
+    }
+
+
+class BucketBillsSchema(schema.ResponseSchema):
+    """BucketBills - bucket账单"""
+
+    fields = {
+        "BucketBills": fields.List(UFileDailyBillItemSchema()),
+    }
+
+
+class UFileDailyReportItemSchema(schema.ResponseSchema):
+    """UFileDailyReportItem -"""
+
+    fields = {
+        "AcExpeditedRetrieval": fields.Float(
+            required=False, load_from="AcExpeditedRetrieval"
+        ),
+        "AcRestore": fields.Float(required=False, load_from="AcRestore"),
+        "AcShortStorage": fields.Float(
+            required=False, load_from="AcShortStorage"
+        ),
+        "AcStorage": fields.Float(required=False, load_from="AcStorage"),
+        "ApiTimes": fields.Float(required=False, load_from="ApiTimes"),
+        "BusyFlow": fields.Float(required=False, load_from="BusyFlow"),
+        "CdnFlow": fields.Float(required=False, load_from="CdnFlow"),
+        "Date": fields.Int(required=False, load_from="Date"),
+        "Flow": fields.Float(required=False, load_from="Flow"),
+        "IaGetSize": fields.Float(required=False, load_from="IaGetSize"),
+        "IaShortStorage": fields.Float(
+            required=False, load_from="IaShortStorage"
+        ),
+        "IaStorage": fields.Float(required=False, load_from="IaStorage"),
+        "IdleFlow": fields.Float(required=False, load_from="IdleFlow"),
+        "ImageCompressCount": fields.Float(
+            required=False, load_from="ImageCompressCount"
+        ),
+        "ImageHandleFlow": fields.Float(
+            required=False, load_from="ImageHandleFlow"
+        ),
+        "ObjectTagCount": fields.Float(
+            required=False, load_from="ObjectTagCount"
+        ),
+        "Storage": fields.Float(required=False, load_from="Storage"),
     }
 
 
@@ -77,30 +292,79 @@ class UFileTotalReportItemSchema(schema.ResponseSchema):
     }
 
 
-class UFileDailyReportItemSchema(schema.ResponseSchema):
-    """UFileDailyReportItem -"""
-
-    fields = {
-        "AcRestore": fields.Float(required=False, load_from="AcRestore"),
-        "AcStorage": fields.Float(required=False, load_from="AcStorage"),
-        "ApiTimes": fields.Float(required=False, load_from="ApiTimes"),
-        "BusyFlow": fields.Float(required=False, load_from="BusyFlow"),
-        "CdnFlow": fields.Float(required=False, load_from="CdnFlow"),
-        "Date": fields.Int(required=False, load_from="Date"),
-        "Flow": fields.Float(required=False, load_from="Flow"),
-        "IaGetSize": fields.Float(required=False, load_from="IaGetSize"),
-        "IaStorage": fields.Float(required=False, load_from="IaStorage"),
-        "IdleFlow": fields.Float(required=False, load_from="IdleFlow"),
-        "Storage": fields.Float(required=False, load_from="Storage"),
-    }
-
-
 class UFileReportItemSchema(schema.ResponseSchema):
     """UFileReportItem -"""
 
     fields = {
         "Daily": fields.List(UFileDailyReportItemSchema()),
         "Total": fields.List(UFileTotalReportItemSchema()),
+    }
+
+
+class UFileMonthlyBillItemSchema(schema.ResponseSchema):
+    """UFileMonthlyBillItem - 月消费账单"""
+
+    fields = {
+        "AcExpeditedRetrievalBill": fields.Float(
+            required=False, load_from="AcExpeditedRetrievalBill"
+        ),
+        "AcRestoreBill": fields.Float(
+            required=False, load_from="AcRestoreBill"
+        ),
+        "AcShortStorageBill": fields.Float(
+            required=False, load_from="AcShortStorageBill"
+        ),
+        "AcStorageBill": fields.Float(
+            required=False, load_from="AcStorageBill"
+        ),
+        "BusyFlowBill": fields.Float(required=False, load_from="BusyFlowBill"),
+        "CdnFlowBill": fields.Float(required=False, load_from="CdnFlowBill"),
+        "FlowBill": fields.Float(required=False, load_from="FlowBill"),
+        "GetCountAcBill": fields.Float(
+            required=False, load_from="GetCountAcBill"
+        ),
+        "GetCountBill": fields.Float(required=False, load_from="GetCountBill"),
+        "GetCountIaBill": fields.Float(
+            required=False, load_from="GetCountIaBill"
+        ),
+        "IaGetSizeBill": fields.Float(
+            required=False, load_from="IaGetSizeBill"
+        ),
+        "IaShortStorageBill": fields.Float(
+            required=False, load_from="IaShortStorageBill"
+        ),
+        "IaStorageBill": fields.Float(
+            required=False, load_from="IaStorageBill"
+        ),
+        "IdleFlowBill": fields.Float(required=False, load_from="IdleFlowBill"),
+        "ImageCompressCountBill": fields.Float(
+            required=False, load_from="ImageCompressCountBill"
+        ),
+        "ImageHandleFlowBill": fields.Float(
+            required=False, load_from="ImageHandleFlowBill"
+        ),
+        "Labels": fields.List(BucketLabelsSchema()),
+        "Month": fields.Str(required=False, load_from="Month"),
+        "ObjectTagCountBill": fields.Float(
+            required=False, load_from="ObjectTagCountBill"
+        ),
+        "PutCountAcBill": fields.Float(
+            required=False, load_from="PutCountAcBill"
+        ),
+        "PutCountBill": fields.Float(required=False, load_from="PutCountBill"),
+        "PutCountIaBill": fields.Float(
+            required=False, load_from="PutCountIaBill"
+        ),
+        "StorageBill": fields.Float(required=False, load_from="StorageBill"),
+        "TotalBill": fields.Float(required=False, load_from="TotalBill"),
+    }
+
+
+class BucketMonthlyBillsSchema(schema.ResponseSchema):
+    """BucketMonthlyBills - bucket月度账单"""
+
+    fields = {
+        "BucketBills": fields.List(UFileMonthlyBillItemSchema()),
     }
 
 
