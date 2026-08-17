@@ -43,13 +43,13 @@ class UKMSClient(Client):
     def cancel_schedule_key_deletion(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """CancelScheduleKeyDeletion - 取消计划删除密钥
+        """CancelScheduleKeyDeletion -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **KeyId** (str) - (Required) 需要查看的主密钥对应的 KeyId
-        - **ResourceId** (str) - 资源id
+        - **ProjectId** (str) - (Config)
+        - **KeyId** (str) - (Required)
+        - **ResourceId** (str) -
 
         **Response**
 
@@ -61,6 +61,9 @@ class UKMSClient(Client):
         }
         req and d.update(req)
         d = apis.CancelScheduleKeyDeletionRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("CancelScheduleKeyDeletion", d, **kwargs)
         return apis.CancelScheduleKeyDeletionResponseSchema().loads(resp)
@@ -203,7 +206,7 @@ class UKMSClient(Client):
         **KeyMetadata**
         - **CreationDate** (int) - 创建时间，Unix 时间戳。
         - **DeletionDate** (int) - 计划删除时间，Unix 时间戳。
-        - **DeletionProtection** (str) - 是否开启删除保护。取值：true、false。
+        - **DeletionProtection** (bool) - 是否开启删除保护。取值：true、false。
         - **Description** (str) - 密钥描述。
         - **Enabled** (str) - 是否启用。取值：true、false。
         - **KeyId** (str) - 密钥资源长 ID。
@@ -375,7 +378,7 @@ class UKMSClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
         - **KeyId** (str) - (Required) 密钥资源长 ID、ARN 或别名。
-        - **EncryptionContext** (str) - 加密上下文，JSON Object。
+        - **EncryptionContext** (str) - 加密上下文，JSON Object。该参数内容会记录在日志中，请勿传入密码、密钥、令牌等敏感信息。
         - **KeySpec** (str) - 数据密钥规格。可选值：AES_256、AES_128；默认 AES_256。与 NumberOfBytes 二选一，同时填写时 NumberOfBytes 优先。
         - **NumberOfBytes** (int) - 生成数据密钥的字节长度，取值范围 1~1024。与 KeySpec 二选一，同时填写时本字段优先。
         - **ResourceId** (str) - UKMS 实例资源 ID。

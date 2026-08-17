@@ -9,7 +9,7 @@ class KeyMetadataSchema(schema.ResponseSchema):
     fields = {
         "CreationDate": fields.Int(required=True, load_from="CreationDate"),
         "DeletionDate": fields.Int(required=False, load_from="DeletionDate"),
-        "DeletionProtection": fields.Str(
+        "DeletionProtection": fields.Bool(
             required=True, load_from="DeletionProtection"
         ),
         "Description": fields.Str(required=False, load_from="Description"),
