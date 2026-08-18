@@ -58,7 +58,7 @@ class UHadoopClient(Client):
     def create_uhadoop_instance(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """CreateUHadoopInstance - 创建实例接口。\\ 创建实例前需要按以下步骤准备必要参数：\\ 1.获取Region（地域）和 Zone（可用区），访问链接：https://docs.ucloud.cn/api/summary/regionlist 可以获取所有支持的地域和可用区；\\ 2.FrameworkVersion，访问链接：https://docs.ucloud.cn/api/uhadoop-api/list_uhadoop_framework_app_by_use_case，响应字段的AppConfigSet[N].FrameworkVersion是框架版本是支持的 UHadoop 版本；\\ 3.ChargeType付费类型，可用值：Dynamic为按小时付费，Month为按月付费，Year为按年付费；\\ 4.InstanceGroupConfigs需要获取NodeType机型详情，访问链接：https://docs.ucloud.cn/api/uhadoop-api/get_uhadoop_node_type，响应字段的InstanceTypeSet[N].NodeType是机型名称，响应字段的InstanceTypeSet[N].SuitableRole是机型可用的节点类型；\\ 5.获取DiskSize磁盘大小范围 ，访问链接：https://docs.ucloud.cn/api/uhadoop-api/get_uhadoop_node_type，该接口响应字段的InstanceTypeSet[N].DiskSet[N].DiskMinSize和InstanceTypeSet[N].DiskSet[N].DiskMaxSize是磁盘大小的取值范围；\\ 6.InstanceName，自定义输入实例名称，只能包含中英文、数字以及- _ ;\\7.Password,集群机器的登录密码,需要输入base64编码后的内容;\\8.AppConfigs 集群需要安装的组件，访问链接，https://docs.ucloud.cn/api/uhadoop-api/list_uhadoop_framework_app ，AppConfigSet[N].AppName是组件名称，AppConfigSet[N].AppVersion是组件版本
+        """CreateUHadoopInstance - 创建实例接口。\\ 创建实例前需要按以下步骤准备必要参数：\\ 1.获取Region（地域）和 Zone（可用区），访问链接：https://docs.ucloud.cn/api/summary/regionlist 可以获取所有支持的地域和可用区；\\ 2.FrameworkVersion，访问链接：https://docs.ucloud.cn/api/uhadoop-api/list_uhadoop_framework_app_by_use_case，响应字段的AppConfigSet[N].FrameworkVersion是框架版本是支持的 UHadoop 版本；\\ 3.ChargeType付费类型，可用值：Dynamic为按小时付费，Month为按月付费，Year为按年付费；\\ 4.InstanceGroupConfigs需要获取NodeType机型详情，访问链接：https://docs.ucloud.cn/api/uhadoop-api/get_uhadoop_node_type，响应字段的InstanceTypeSet[N].NodeType是机型名称，响应字段的InstanceTypeSet[N].SuitableRole是机型可用的节点类型；\\ 5.获取DiskSize磁盘大小范围 ，访问链接：https://docs.ucloud.cn/api/uhadoop-api/get_uhadoop_node_type，该接口响应字段的InstanceTypeSet[N].DiskSet[N].DiskMinSize和InstanceTypeSet[N].DiskSet[N].DiskMaxSize是磁盘大小的取值范围；\\ 6.InstanceName，自定义输入实例名称，只能包含中英文、数字以及- _ ;\\7.Password,集群机器的登录密码,需要输入base64编码后的内容;\\8.AppConfigs 集群需要安装的组件，访问链接，https://docs.ucloud.cn/api/uhadoop-api/list_uhadoop_framework_app ，返回字段中的AppConfigSet[N].AppName是组件名称，返回字段中的AppConfigSet[N].AppVersion是组件版本
 
         **Request**
 
@@ -68,12 +68,13 @@ class UHadoopClient(Client):
         - **Framework** (str) - (Required) 框架，值为'Hadoop'|'HDFS'|'MR'|'StarRocks'之一,框架，例如Hadoop|MR|HDFS|StarRocks Hadoop框架包含存储与计算服务 MR集群包含计算服务 HDFS只包含存储服务,StarRocks为StarRocks集群
         - **FrameworkVersion** (str) - (Required) 版本,例如：3.2.1-udh3.0,通过ListUHadoopFrameworkApp接口获取
         - **InstanceGroupConfigs** (list) - (Required) 节点配置，里面包括NodeType（机型），NodeRole（节点类别，值为其中之一：master|core|task），Count（数量），DataDiskType（数据盘类别），DataDiskSize（数据盘大小），DataDiskNum（数据盘数量），BootDiskType（系统盘类型），BootDiskSize（系统盘大小），通过GetUHadoopNodeType接口获取，示例为：InstanceGroupConfigs.0.NodeType=o.hadoop2m.xlargeInstanceGroupConfigs.0.NodeRole=masterInstanceGroupConfigs.0.Count=2InstanceGroupConfigs.0.DataDiskType=CLOUD_RSSDInstanceGroupConfigs.0.DataDiskSize=100InstanceGroupConfigs.0.DataDiskNum=1InstanceGroupConfigs.0.BootDiskType=CLOUD_RSSDInstanceGroupConfigs.0.BootDiskSize=50InstanceGroupConfigs.1.NodeType=o.hadoop2m.xlargeInstanceGroupConfigs.1.NodeRole=coreInstanceGroupConfigs.1.Count=3InstanceGroupConfigs.1.DataDiskType=CLOUD_RSSDInstanceGroupConfigs.1.DataDiskSize=200InstanceGroupConfigs.1.DataDiskNum=1InstanceGroupConfigs.1.BootDiskType=CLOUD_RSSDInstanceGroupConfigs.1.BootDiskSize=50
-        - **Password** (str) - (Required) 集群机器的登录密码,需要输入base64编码后的内容
+        - **Password** (str) - (Required) 集群机器的登录密码,需要Base64加密。
         - **SubnetId** (str) - (Required) 子网ID
         - **VPCId** (str) - (Required) VPCId
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BusinessId** (str) - 工作组ID，默认Default
         - **ChargeType** (str) - 支付类别，默认：Month
+        - **DataDiskKmsKeyId** (str) - 集群加密磁盘密钥ID
         - **InstanceName** (str) - 实例名称，默认为实例ID
         - **IsSecurityEnabled** (str) - 是否开启安全组
         - **Quantity** (int) - 数量，默认1
@@ -155,13 +156,60 @@ class UHadoopClient(Client):
 
         **Response Model**
 
+        **IPSet**
+        - **IP** (str) - IP
+        - **Type** (str) - 类别
+
+
+        **AppConfig**
+        - **AppName** (str) - 需要安装的应用如：Hive,HBase, Spark,Hue,Pig等其他组件
+        - **AppStatus** (str) - 应用的状态(运行中)'Running'｜(已停止)'Stopped'｜(启动中)'Starting'｜(停止中)'Stopping'|(启动失败)'StartFailed'|(停止失败)'StopFailed'|(安装中)'Installing'|(安装失败)'InstallFailed'|(未安装)'NotInstalled',
+        - **AppVersion** (str) - 应用的版本号(0.13.1,0.98.6 等等)
+
+
+        **DiskInfo**
+        - **DiskNum** (int) - 磁盘数量
+        - **DiskRole** (str) - 磁盘角色，一般分Boot和Data两种
+        - **DiskSize** (int) - 磁盘大小，单位为GB
+        - **DiskType** (str) - 磁盘类型，分为CLOUD_RSSD(云盘RSSD)、CLOUD_SSD(云盘SSD)、LOCAL_SSD（本地SSD盘）、LOCAL_NORMAL（本地普通盘）、SATA（SATA盘）
+
+
+        **SecurityGroupConfig**
+        - **CreateTime** (int) - 放火墙组创建时间，格式为Unix Timestamp
+        - **GroupId** (str) - 防火墙ID
+        - **GroupName** (str) - 防火墙组的名称
+        - **Type** (str) - 防火墙组类型，枚举值为： 0：用户自定义防火墙； 1：默认 Web防火墙； 2：默认非Web防火墙
+
+
+        **NodeDetail**
+        - **CPU** (int) - CPU数量
+        - **CreateTime** (int) - 创建时间戳
+        - **DiskSet** (list) - 见 **DiskInfo** 模型定义
+        - **ExpireTime** (int) - 节点的到期时间(下次扣款时间)
+        - **FirewallGroupConfig** (list) - 见 **SecurityGroupConfig** 模型定义
+        - **HostType** (str) - 机型种类，可选OutStanding(快杰机型)|Genenal(普通机型)|BareMetal(裸金属机型)三种类型
+        - **IPSet** (list) - 见 **IPSet** 模型定义
+        - **InstanceId** (str) - 实例ID
+        - **IsNewType** (bool) - 是否是新机型,快杰机型，GPU机型，云盘裸金属机型为新机型
+        - **Memory** (int) - 内存大小，单位为MB
+        - **NodeId** (str) - 节点ID
+        - **NodeName** (str) - 节点名称
+        - **NodeRole** (str) - 节点在集群中的⻆色(有Master,Core,Task 3种)
+        - **NodeType** (str) - 机型
+        - **Remark** (str) - 备注
+        - **ResourceId** (str) - 资源ID
+        - **Scaling** (bool) - 是否是弹性伸缩节点
+        - **State** (str) - 运行：Running； 创建中：Creating； 删除中：Deleting； 创建失败：CreateFailed； 不可用：Unavailable； 删除失败：DeleteFailed； 已删除：Deleted； 部署中： Deploying
+
+
         **ClusterInfo**
         - **AppConfigCount** (str) - 组件数量
-        - **AppConfigSet** (str) - 组件集合
+        - **AppConfigSet** (list) - 见 **AppConfig** 模型定义
         - **BusinessId** (str) - 业务组ID
         - **ChargeType** (str) - 付费类型
         - **CoreCount** (str) - core节点数量
         - **CreateTime** (str) - 创建时间
+        - **DataDiskKmsKeyId** (str) - 集群磁盘加密密钥ID
         - **ExpireTime** (str) - 到期时间
         - **Framework** (str) - 框架，值为'Hadoop'|'HDFS'|'MR'|'StarRocks'之一,框架，例如Hadoop|MR|HDFS|StarRocks Hadoop框架包含存储与计算服务 MR集群包含计算服务 HDFS只包含存储服务,StarRocks为StarRocks集群
         - **HadoopVersion** (str) - Hadoop版本，值为 hadoop3.2.1-udh3.0|hadoop3.3.4-udh3.1|hadoop2.8.5-udh2.2
@@ -170,7 +218,7 @@ class UHadoopClient(Client):
         - **IsOpenSecGroup** (str) - 是否开启安全组
         - **MasterCount** (str) - Master节点数量
         - **NodeCount** (str) - 节点数量
-        - **NodeSet** (str) - 节点集合
+        - **NodeSet** (list) - 见 **NodeDetail** 模型定义
         - **ReleaseVersion** (str) - Uhadoop版本，值为 uhadoop 3.0|uhadoop 2.2|uhadoop 3.1
         - **RunningTime** (str) - 运行时间
         - **State** (str) - 状态，值为以下其中之一，Running(运行中)|Creating(创建中)|CreateFailed(创建失败)|Deploying(部署中)|Updating(变更中)

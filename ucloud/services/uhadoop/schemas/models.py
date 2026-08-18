@@ -3,6 +3,72 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class DiskInfoSchema(schema.ResponseSchema):
+    """DiskInfo - 磁盘信息"""
+
+    fields = {
+        "DiskNum": fields.Int(required=True, load_from="DiskNum"),
+        "DiskRole": fields.Str(required=True, load_from="DiskRole"),
+        "DiskSize": fields.Int(required=True, load_from="DiskSize"),
+        "DiskType": fields.Str(required=True, load_from="DiskType"),
+    }
+
+
+class SecurityGroupConfigSchema(schema.ResponseSchema):
+    """SecurityGroupConfig - 防火墙详情"""
+
+    fields = {
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "GroupId": fields.Str(required=True, load_from="GroupId"),
+        "GroupName": fields.Str(required=True, load_from="GroupName"),
+        "Type": fields.Str(required=True, load_from="Type"),
+    }
+
+
+class IPSetSchema(schema.ResponseSchema):
+    """IPSet - IPSet"""
+
+    fields = {
+        "IP": fields.Str(required=False, load_from="IP"),
+        "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
+class NodeDetailSchema(schema.ResponseSchema):
+    """NodeDetail - Host详情"""
+
+    fields = {
+        "CPU": fields.Int(required=True, load_from="CPU"),
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "DiskSet": fields.List(DiskInfoSchema()),
+        "ExpireTime": fields.Int(required=True, load_from="ExpireTime"),
+        "FirewallGroupConfig": fields.List(SecurityGroupConfigSchema()),
+        "HostType": fields.Str(required=True, load_from="HostType"),
+        "IPSet": fields.List(IPSetSchema()),
+        "InstanceId": fields.Str(required=True, load_from="InstanceId"),
+        "IsNewType": fields.Bool(required=True, load_from="IsNewType"),
+        "Memory": fields.Int(required=True, load_from="Memory"),
+        "NodeId": fields.Str(required=True, load_from="NodeId"),
+        "NodeName": fields.Str(required=True, load_from="NodeName"),
+        "NodeRole": fields.Str(required=True, load_from="NodeRole"),
+        "NodeType": fields.Str(required=True, load_from="NodeType"),
+        "Remark": fields.Str(required=True, load_from="Remark"),
+        "ResourceId": fields.Str(required=True, load_from="ResourceId"),
+        "Scaling": fields.Bool(required=False, load_from="Scaling"),
+        "State": fields.Str(required=True, load_from="State"),
+    }
+
+
+class AppConfigSchema(schema.ResponseSchema):
+    """AppConfig - 应用配置详情"""
+
+    fields = {
+        "AppName": fields.Str(required=False, load_from="AppName"),
+        "AppStatus": fields.Str(required=False, load_from="AppStatus"),
+        "AppVersion": fields.Str(required=False, load_from="AppVersion"),
+    }
+
+
 class ClusterInfoSchema(schema.ResponseSchema):
     """ClusterInfo - 集群信息"""
 
@@ -10,11 +76,14 @@ class ClusterInfoSchema(schema.ResponseSchema):
         "AppConfigCount": fields.Str(
             required=False, load_from="AppConfigCount"
         ),
-        "AppConfigSet": fields.Str(required=False, load_from="AppConfigSet"),
+        "AppConfigSet": fields.List(AppConfigSchema()),
         "BusinessId": fields.Str(required=True, load_from="BusinessId"),
         "ChargeType": fields.Str(required=True, load_from="ChargeType"),
         "CoreCount": fields.Str(required=True, load_from="CoreCount"),
         "CreateTime": fields.Str(required=True, load_from="CreateTime"),
+        "DataDiskKmsKeyId": fields.Str(
+            required=False, load_from="DataDiskKmsKeyId"
+        ),
         "ExpireTime": fields.Str(required=True, load_from="ExpireTime"),
         "Framework": fields.Str(required=True, load_from="Framework"),
         "HadoopVersion": fields.Str(required=True, load_from="HadoopVersion"),
@@ -25,7 +94,7 @@ class ClusterInfoSchema(schema.ResponseSchema):
         ),
         "MasterCount": fields.Str(required=True, load_from="MasterCount"),
         "NodeCount": fields.Str(required=False, load_from="NodeCount"),
-        "NodeSet": fields.Str(required=False, load_from="NodeSet"),
+        "NodeSet": fields.List(NodeDetailSchema()),
         "ReleaseVersion": fields.Str(required=True, load_from="ReleaseVersion"),
         "RunningTime": fields.Str(required=False, load_from="RunningTime"),
         "State": fields.Str(required=True, load_from="State"),
@@ -74,16 +143,6 @@ class InstanceTypeSchema(schema.ResponseSchema):
         "Memory": fields.Str(required=True, load_from="Memory"),
         "NodeType": fields.Str(required=True, load_from="NodeType"),
         "SuitableRole": fields.List(fields.Str()),
-    }
-
-
-class AppConfigSchema(schema.ResponseSchema):
-    """AppConfig - 应用配置详情"""
-
-    fields = {
-        "AppName": fields.Str(required=False, load_from="AppName"),
-        "AppStatus": fields.Str(required=False, load_from="AppStatus"),
-        "AppVersion": fields.Str(required=False, load_from="AppVersion"),
     }
 
 

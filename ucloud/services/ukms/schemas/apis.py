@@ -34,12 +34,12 @@ class CancelKeyDeletionResponseSchema(schema.ResponseSchema):
 """
 API: CancelScheduleKeyDeletion
 
-取消计划删除密钥
+
 """
 
 
 class CancelScheduleKeyDeletionRequestSchema(schema.RequestSchema):
-    """CancelScheduleKeyDeletion - 取消计划删除密钥"""
+    """CancelScheduleKeyDeletion -"""
 
     fields = {
         "KeyId": fields.Str(required=True, dump_to="KeyId"),
@@ -49,7 +49,7 @@ class CancelScheduleKeyDeletionRequestSchema(schema.RequestSchema):
 
 
 class CancelScheduleKeyDeletionResponseSchema(schema.ResponseSchema):
-    """CancelScheduleKeyDeletion - 取消计划删除密钥"""
+    """CancelScheduleKeyDeletion -"""
 
     fields = {}
 
