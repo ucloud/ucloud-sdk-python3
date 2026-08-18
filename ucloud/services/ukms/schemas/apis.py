@@ -472,7 +472,10 @@ class GenerateMacRequestSchema(schema.RequestSchema):
 class GenerateMacResponseSchema(schema.ResponseSchema):
     """GenerateMac - 使用HMAC密钥管理服务（KMS）密钥和该密钥支持的MAC算法，为消息生成基于哈希的消息认证码（HMAC）。"""
 
-    fields = {}
+    fields = {
+        "Mac": fields.Str(required=False, load_from="Mac"),
+        "MacAlgorithm": fields.Str(required=False, load_from="MacAlgorithm"),
+    }
 
 
 """
@@ -877,4 +880,8 @@ class VerifyMacRequestSchema(schema.RequestSchema):
 class VerifyMacResponseSchema(schema.ResponseSchema):
     """VerifyMac - 验证签名"""
 
-    fields = {}
+    fields = {
+        "KeyId": fields.Str(required=False, load_from="KeyId"),
+        "MacAlgorithm": fields.Str(required=False, load_from="MacAlgorithm"),
+        "MacValid": fields.Bool(required=False, load_from="MacValid"),
+    }
