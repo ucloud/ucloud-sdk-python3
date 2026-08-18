@@ -1,0 +1,106 @@
+name: CI
+
+# PR 门禁。本仓此前没有任何 workflow，CI 只有一个早已停用的 .travis.yml
+# （且只测 3.5/3.6/3.7），等于生成代码从来没有闸门——本文件就是补这一层。
+#
+# 门禁只保两件事（详见 Makefile 的 ci-syntax）：
+#   G1 生成的代码能被解释器编译 —— 语法错误、非法标识符即失败
+#   G2 生成的代码没有重复声明 —— python 的重复 def/class 不是语法错误，
+#      后者静默覆盖前者，compileall 一律放行，必须另起 ast 扫描
+# 代码风格不进门禁：风格不影响 SDK 能否使用，且格式化已由生成侧的 make fmt 负责，
+# 见 Makefile 里 ci-syntax 上方关于 black 的说明。
+#
+# 分支保护只需把 `ci-gate` 配成 required check，其余 job 增删都不影响它。
+#
+# 版本取 3.12 而不是仓库声明的下界：setup.py 写着 python_requires=">=3.5"，
+# 但那早就不成立（tests 里曾用 3.10 已移除的 collections.Callable，
+# Travis 只测到 3.7 所以从未暴露）。老解释器的兼容性交给 compat.yml 定期跑，
+# 不进 PR 门禁——门禁要回答的是"这次改动有没有把代码写坏"。
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  ci-syntax:
+    name: ci-syntax
+    runs-on: ubuntu-latest
+    # 两条闸全量扫描整棵 ucloud/，但只对**本轮变更的文件**阻断，存量命中只告警。
+    # 原因：uphost 那处重复方法是躺在 master 上的存量缺陷（已删除 API 的旧快照被
+    # publish 集合留了下来），整棵树一律阻断就等于发**任何一个**产品的 codegen PR
+    # 都会被一个与本次发布毫无关系的问题判红，mergeable_state 变 unstable，
+    # 自动合并永久失效——那正是这套门禁要解决的问题本身。
+    # 同源决策见 ucloud-sdk-release/scripts/python-fatal-check.sh（2026-07-31，
+    # 已被 pipeline 2507836 实证：那次发的是 UHost+UAI-Modelverse，根本没重新
+    # 生成 uphost，那处重复照样被扫了出来）。
+    # 变更集怎么算、拿不到时怎么退回，见 scripts/ci-syntax.sh 文件头。
+    env:
+      # 严格集的基点。PR 事件取目标分支侧的 base.sha（配三点式 diff 正好等于本 PR
+      # 引入的改动），push 事件取推送前的 before。两者都拿不到或解析不出时，
+      # 脚本自行退回整棵树严格判定并打印原因，不会静默放行。
+      CI_BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # 默认 fetch-depth: 1 只拉一个 commit，base sha 不在本地对象库里，
+          # git diff 必然解析不出 → 每次都退回整棵树严格判定，分级就白做了。
+          # 只有本 job 需要历史，lint / test 保持浅克隆。
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      # ci-syntax 本身只用 stdlib（compileall + ast），装 .[ci] 是为了让三个 job
+      # 的环境一致，省掉「哪个 job 该装什么」的分叉。
+      - run: pip install -e '.[ci]'
+      - run: make ci-syntax
+
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: pip install -e '.[ci]'
+      # flake8 显式 --exclude 掉了 ucloud/services，也就是这一层只管手写代码；
+      # 生成代码的把关全在 ci-syntax，两者不重叠。
+      - run: make lint
+
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: pip install -e '.[ci]'
+      - run: make test-cov
+      # 上传失败不能影响门禁：codecov 是外部服务，它抖动跟代码质量无关。
+      # 故 continue-on-error，且这个 step 所在的 test job 之外不另设 codecov job。
+      - name: Upload coverage
+        continue-on-error: true
+        uses: codecov/codecov-action@v7
+        with:
+          fail_ci_if_error: false
+
+  ci-gate:
+    name: ci-gate
+    needs: [ci-syntax, lint, test]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Aggregate
+        run: |
+          if [[ "${{ contains(needs.*.result, 'failure') }}" == "true" \
+             || "${{ contains(needs.*.result, 'cancelled') }}" == "true" ]]; then
+            echo "ci-gate: 有 job 失败或被取消"
+            exit 1
+          fi
+          echo "ci-gate: 全部通过"
