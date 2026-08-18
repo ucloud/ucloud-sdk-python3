@@ -3022,6 +3022,7 @@ class UCompShareClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **UHostId** (str) - (Required) 实例Id
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **WithoutGpu** (bool) - 无GPU启动。默认值: False
 
         **Response**
 
