@@ -3,7 +3,6 @@ import uuid
 
 import pytest
 import logging
-import collections
 import requests_mock
 
 from ucloud.client import Client
@@ -102,5 +101,5 @@ def test_client_try_import(client):
             continue
 
         client_factory = getattr(client, name)
-        if isinstance(client_factory, collections.Callable):
+        if callable(client_factory):
             print(client_factory())
