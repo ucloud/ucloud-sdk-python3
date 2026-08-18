@@ -514,6 +514,8 @@ class UKMSClient(Client):
 
         **Response**
 
+        - **Mac** (str) - 针对指定消息生成的基于哈希的消息认证码 (HMAC)、HMAC KMS 密钥和 MAC 算法。
+        - **MacAlgorithm** (str) - 用于生成 HMAC 的 MAC 算法。
 
         """
         # build request
@@ -952,6 +954,9 @@ class UKMSClient(Client):
 
         **Response**
 
+        - **KeyId** (str) - 密钥ID
+        - **MacAlgorithm** (str) - 验证中使用的 MAC 算法。
+        - **MacValid** (bool) - 一个布尔值，表示 HMAC 是否已验证。
 
         """
         # build request
