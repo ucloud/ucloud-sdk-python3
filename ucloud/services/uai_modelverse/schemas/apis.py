@@ -24,6 +24,9 @@ class CreateUMInferAPIKeyRequestSchema(schema.RequestSchema):
         "GrantAllModels": fields.Bool(required=False, dump_to="GrantAllModels"),
         "GrantedModels": fields.Str(required=False, dump_to="GrantedModels"),
         "IPWhitelist": fields.Str(required=False, dump_to="IPWhitelist"),
+        "InferenceLogEnabled": fields.Int(
+            required=False, dump_to="InferenceLogEnabled"
+        ),
         "ModelverseDisabled": fields.Int(
             required=False, dump_to="ModelverseDisabled"
         ),
@@ -534,9 +537,11 @@ class ListUFSquareModelRequestSchema(schema.RequestSchema):
     """ListUFSquareModel - 查询模型广场数据"""
 
     fields = {
+        "Capabilities": fields.List(fields.Str()),
         "Keyword": fields.Str(required=False, dump_to="Keyword"),
         "Language": fields.List(fields.Str()),
         "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Manufacturer": fields.List(fields.Str()),
         "MaxModelLen": fields.List(fields.Int()),
         "ModelType": fields.Str(required=False, dump_to="ModelType"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
@@ -760,6 +765,9 @@ class UpdateUMInferAPIKeyRequestSchema(schema.RequestSchema):
         "GrantAllModels": fields.Bool(required=False, dump_to="GrantAllModels"),
         "GrantedModels": fields.Str(required=False, dump_to="GrantedModels"),
         "IPWhitelist": fields.Str(required=False, dump_to="IPWhitelist"),
+        "InferenceLogEnabled": fields.Int(
+            required=False, dump_to="InferenceLogEnabled"
+        ),
         "KeyId": fields.Str(required=True, dump_to="KeyId"),
         "ModelverseDisabled": fields.Int(
             required=False, dump_to="ModelverseDisabled"

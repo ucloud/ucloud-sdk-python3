@@ -3,6 +3,107 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class VPNInfoSchema(schema.ResponseSchema):
+    """VPNInfo - CE客户网关信息"""
+
+    fields = {
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "IpType": fields.Str(required=False, load_from="IpType"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "PopGwId": fields.Str(required=False, load_from="PopGwId"),
+        "PopGwName": fields.Str(required=False, load_from="PopGwName"),
+        "PublicIp": fields.Str(required=False, load_from="PublicIp"),
+        "Region": fields.Str(required=False, load_from="Region"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "Status": fields.Str(required=False, load_from="Status"),
+        "VPNId": fields.Str(required=False, load_from="VPNId"),
+        "VPNTunnelIds": fields.List(fields.Str()),
+    }
+
+
+class BGPConfSchema(schema.ResponseSchema):
+    """BGPConf - CE隧道 BGP配置"""
+
+    fields = {
+        "LocalAsn": fields.Int(required=False, load_from="LocalAsn"),
+        "LocalIp": fields.Str(required=False, load_from="LocalIp"),
+        "PeerAsn": fields.Int(required=False, load_from="PeerAsn"),
+        "PeerIp": fields.Str(required=False, load_from="PeerIp"),
+        "TunnelCidr": fields.Str(required=False, load_from="TunnelCidr"),
+    }
+
+
+class IPSecConfSchema(schema.ResponseSchema):
+    """IPSecConf - IPSec配置信息"""
+
+    fields = {
+        "AuthenticationAlgorithm": fields.Str(
+            required=False, load_from="AuthenticationAlgorithm"
+        ),
+        "CENetwork": fields.List(fields.Str()),
+        "EncryptionAlgorithm": fields.Str(
+            required=False, load_from="EncryptionAlgorithm"
+        ),
+        "PFSDhGroup": fields.Str(required=False, load_from="PFSDhGroup"),
+        "Protocol": fields.Str(required=False, load_from="Protocol"),
+        "SALifeTime": fields.Str(required=False, load_from="SALifeTime"),
+        "SALifetimeBytes": fields.Str(
+            required=False, load_from="SALifetimeBytes"
+        ),
+    }
+
+
+class DPDConfSchema(schema.ResponseSchema):
+    """DPDConf - DPD 配置"""
+
+    fields = {
+        "Action": fields.Str(required=True, load_from="Action"),
+        "Delay": fields.Int(required=True, load_from="Delay"),
+        "Enabled": fields.Int(required=True, load_from="Enabled"),
+        "Timeout": fields.Int(required=True, load_from="Timeout"),
+    }
+
+
+class IKEConfSchema(schema.ResponseSchema):
+    """IKEConf - IKE配置信息"""
+
+    fields = {
+        "AuthenticationAlgorithm": fields.Str(
+            required=False, load_from="AuthenticationAlgorithm"
+        ),
+        "DhGroup": fields.Str(required=False, load_from="DhGroup"),
+        "EncryptionAlgorithm": fields.Str(
+            required=False, load_from="EncryptionAlgorithm"
+        ),
+        "ExchangeMode": fields.Str(required=False, load_from="ExchangeMode"),
+        "LocalId": fields.Str(required=False, load_from="LocalId"),
+        "PreSharedKey": fields.Str(required=False, load_from="PreSharedKey"),
+        "RemoteId": fields.Str(required=False, load_from="RemoteId"),
+        "SALifeTime": fields.Str(required=False, load_from="SALifeTime"),
+        "Version": fields.Str(required=False, load_from="Version"),
+    }
+
+
+class VPNTunnelInfoSchema(schema.ResponseSchema):
+    """VPNTunnelInfo - 隧道信息"""
+
+    fields = {
+        "BGPConf": BGPConfSchema(),
+        "CloseAction": fields.Str(required=False, load_from="CloseAction"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "DPDConf": DPDConfSchema(),
+        "IKEConf": IKEConfSchema(),
+        "IPSecConf": IPSecConfSchema(),
+        "Mode": fields.Str(required=False, load_from="Mode"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Region": fields.Str(required=False, load_from="Region"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "StartAction": fields.Str(required=False, load_from="StartAction"),
+        "VPNId": fields.Str(required=False, load_from="VPNId"),
+        "VPNTunnelId": fields.Str(required=False, load_from="VPNTunnelId"),
+    }
+
+
 class CPEInfoSchema(schema.ResponseSchema):
     """CPEInfo - CPE信息"""
 
@@ -78,4 +179,59 @@ class WhiteListInfoSchema(schema.ResponseSchema):
         "Name": fields.Str(required=False, load_from="Name"),
         "Remark": fields.Str(required=False, load_from="Remark"),
         "RuleType": fields.Str(required=False, load_from="RuleType"),
+    }
+
+
+class BWPackageInfoSchema(schema.ResponseSchema):
+    """BWPackageInfo - UWAN虚拟路由器带宽包信息"""
+
+    fields = {
+        "BandWidth": fields.Float(required=False, load_from="BandWidth"),
+        "BwId": fields.Str(required=False, load_from="BwId"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "DueTime": fields.Int(required=False, load_from="DueTime"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "PayMode": fields.Str(required=False, load_from="PayMode"),
+        "PublicIp": fields.Str(required=False, load_from="PublicIp"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+    }
+
+
+class UGNBWInfoSchema(schema.ResponseSchema):
+    """UGNBWInfo - UGN带宽包信息"""
+
+    fields = {
+        "UGNBWId": fields.Str(required=False, load_from="UGNBWId"),
+        "UGNBWName": fields.Str(required=False, load_from="UGNBWName"),
+    }
+
+
+class UGNInfoSchema(schema.ResponseSchema):
+    """UGNInfo - UGN信息"""
+
+    fields = {
+        "UGNBWInfos": fields.List(UGNBWInfoSchema()),
+        "UGNId": fields.Str(required=False, load_from="UGNId"),
+        "UGNName": fields.Str(required=False, load_from="UGNName"),
+    }
+
+
+class POPGWInfoSchema(schema.ResponseSchema):
+    """POPGWInfo - UWAN虚拟路由器信息"""
+
+    fields = {
+        "BWPackageInfo": BWPackageInfoSchema(),
+        "CENum": fields.Int(required=False, load_from="CENum"),
+        "CPENum": fields.Int(required=False, load_from="CPENum"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "DueTime": fields.Int(required=False, load_from="DueTime"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "PopGwId": fields.Str(required=False, load_from="PopGwId"),
+        "Region": fields.Str(required=False, load_from="Region"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+        "Type": fields.Str(required=False, load_from="Type"),
+        "UGNInfo": UGNInfoSchema(),
+        "VCPENum": fields.Int(required=False, load_from="VCPENum"),
+        "VNI": fields.Int(required=False, load_from="VNI"),
     }

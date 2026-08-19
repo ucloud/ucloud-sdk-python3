@@ -28,6 +28,7 @@ class UAI_ModelverseClient(Client):
         - **GrantAllModels** (bool) - 全部模型访问开关，开启不受 GrantedModels 参数控制，关闭只能访问 GrantedModels 中添加模型
         - **GrantedModels** (str) - 授权模型，内容为数组格式。当 GrantAllModels 为false时 当前key只可访问数组中模型。例：["deepseek-ai/DeepSeek-V3.2-Think"]
         - **IPWhitelist** (str) - ip白名单，换行分割的多组ip。支持IPv4和网段,输入后回车生效,最多100个, 示例:﻿192.168.1.1192.168.1.10-192.168.1.100192.168.1.10/24
+        - **InferenceLogEnabled** (int) - 是否开启推理日志
         - **ModelverseDisabled** (int) - 是否modelverse可用 0: 启用 1: 禁用
         - **MonthlyLimitAmount** (str) - 月限额，单位随用户所在渠道。126渠道单位为美元
         - **SandBoxDisabled** (int) - 是否沙盒可用 0: 启用 1: 禁用(astraflow 沙盒控制未上线，暂时无效)
@@ -43,14 +44,17 @@ class UAI_ModelverseClient(Client):
         - **ChannelId** (int) - 渠道id
         - **CreateTime** (int) - 创建时间
         - **DailyLimitAmount** (str) - 日限额，单位随用户所在渠道。126渠道单位为美元
+        - **DailyUsedAmount** (str) - 日已使用额，单位随用户所在渠道。126渠道单位为美元
         - **ExpireTime** (int) - 过期时间的unix时间戳，-1 用不过期
         - **GrantAllModels** (bool) - 全部模型访问开关，开启不受 GrantedModels 参数控制，关闭只能访问 GrantedModels 中添加模型
         - **GrantedModels** (list) - 授权的模型，英文逗号分隔，all表示所有模型都有权限
         - **IPWhitelist** (str) - ip白名单，换行分割的多组ip。支持IPv4和网段,输入后回车生效,最多100个, 示例: ﻿ 192.168.1.1 192.168.1.10-192.168.1.100 192.168.1.10/24
+        - **InferenceLogEnabled** (int) - 是否开启推理日志
         - **Key** (str) - 密钥值
         - **KeyId** (str) - 资源ID
         - **ModelverseDisabled** (int) - 是否modelverse可用 0: 启用 1: 禁用
         - **MonthlyLimitAmount** (str) - 月限额，单位随用户所在渠道。126渠道单位为美元
+        - **MonthlyUsedAmount** (str) - 月已使用额，单位随用户所在渠道。126渠道单位为美元
         - **Name** (str) - 名称
         - **OrganizationId** (int) - 项目id
         - **SandBoxDisabled** (int) - 是否沙盒可用 0: 启用 1: 禁用(astraflow 沙盒控制未上线，暂时无效)
@@ -349,16 +353,6 @@ class UAI_ModelverseClient(Client):
 
         **Response Model**
 
-        **Pricing**
-        - **Completion** (float) - 输出定价
-        - **Currency** (str) - 币种
-        - **Image** (float) - 生图定价
-        - **Prompt** (float) - 提示词定价
-        - **Unit** (str) - 单位（中文），如“次” “百万”
-        - **UnitEn** (str) - 单位（English），如“Time” “Million”
-        - **Video** (str) - 生视频定价
-
-
         **PriceRate**
         - **ChargeItem** (str) - 收费项：input/output/thinking/tool...
         - **ChargeItemDescription** (str) - 收费项描述
@@ -374,6 +368,16 @@ class UAI_ModelverseClient(Client):
         - **Description** (str) - 档位描述（例如 "标准上下文 32k"）
         - **DescriptionEn** (str) - 档位描述（例如 "标准上下文 32k"）
         - **Rates** (list) - 见 **PriceRate** 模型定义
+
+
+        **Pricing**
+        - **Completion** (float) - 输出定价
+        - **Currency** (str) - 币种
+        - **Image** (float) - 生图定价
+        - **Prompt** (float) - 提示词定价
+        - **Unit** (str) - 单位（中文），如“次” “百万”
+        - **UnitEn** (str) - 单位（English），如“Time” “Million”
+        - **Video** (str) - 生视频定价
 
 
         **SquareModel**
@@ -757,9 +761,11 @@ class UAI_ModelverseClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Capabilities** (list) - 模型特性，可选值来源于ListUFSquareModelFilters枚举接口。可多选
         - **Keyword** (str) - 关键字
         - **Language** (list) - 语言，数组类型，可选值 ["chinese", "english"]
         - **Limit** (int) - 每页数量
+        - **Manufacturer** (list) - 制造商，可选值来源于ListUFSquareModelFilters枚举接口。可多选
         - **MaxModelLen** (list) - 上下文长度，数组类型，可选值 [0,4096,16384,32768,131072,256000,262144,1048576]
         - **ModelType** (str) - 模型类型
         - **Offset** (int) - 偏移量
@@ -774,26 +780,51 @@ class UAI_ModelverseClient(Client):
 
         **Response Model**
 
+        **PriceRate**
+        - **ChargeItem** (str) - 收费项：input/output/thinking/tool...
+        - **ChargeItemDescription** (str) - 收费项描述
+        - **ChargeItemDescriptionEn** (str) - 收费项描述英文描述
+        - **Currency** (str) - 货币单位
+        - **Price** (str) - 价格
+        - **Unit** (str) - 计价单位
+        - **UnitEn** (str) - 计价单位英文
+
+
         **Pricing**
         - **Completion** (float) - 输出定价
         - **Currency** (str) - 币种
         - **Image** (float) - 生图定价
         - **Prompt** (float) - 提示词定价
+        - **Unit** (str) - 单位（中文），如“次” “百万”
+        - **UnitEn** (str) - 单位（English），如“Time” “Million”
+        - **Video** (str) - 生视频定价
+
+
+        **PriceTier**
+        - **Condition** (str) - 档位/条件（例如 "32k"、"128k"）
+        - **Description** (str) - 档位描述（例如 "标准上下文 32k"）
+        - **DescriptionEn** (str) - 档位描述（例如 "标准上下文 32k"）
+        - **Rates** (list) - 见 **PriceRate** 模型定义
 
 
         **SquareModel**
+        - **BatchName** (str) - 关联的 batch 模型名称
+        - **BatchSquareModelId** (str) - 关联的 batch 模型广场id
         - **CreateAt** (int) - 创建时间
         - **Describe** (str) - 详细描述
         - **HfUpdateTime** (int) - HuggingFace 更新时间
         - **Icon** (str) - 图标
         - **Id** (str) - 主键
+        - **IsHasBatch** (bool) - 是否关联有可用 batch 模型
         - **Language** (list) - 语言
+        - **Manufacturer** (str) - 制造商
         - **MaxModelLen** (int) - 模型长度
         - **ModelType** (str) - 模型类型
         - **Name** (str) - 名称
         - **Pricing** (dict) - 见 **Pricing** 模型定义
         - **SimpleDescribe** (str) - 简要描述
         - **SupportedCapabilities** (list) - 模型能力
+        - **Tiers** (list) - 见 **PriceTier** 模型定义
         - **UpdateAt** (int) - 更新时间
 
 
@@ -910,11 +941,6 @@ class UAI_ModelverseClient(Client):
 
         **Response Model**
 
-        **RequestLogSummary**
-        - **FailedRequests** (int) - 查询条件命中的失败请求数
-        - **TotalRequests** (int) - 查询条件命中的总请求数
-
-
         **RequestLogItem**
         - **ApiKeyId** (str) - API Key ID
         - **ApiKeyName** (str) - API Key 名称
@@ -937,6 +963,11 @@ class UAI_ModelverseClient(Client):
         - **StartTime** (int) - 请求开始时间，Unix 毫秒时间戳
         - **StartTimeReadable** (str) - 请求开始时间，可读格式
         - **TotalTokens** (int) - 总 Token 数
+
+
+        **RequestLogSummary**
+        - **FailedRequests** (int) - 查询条件命中的失败请求数
+        - **TotalRequests** (int) - 查询条件命中的总请求数
 
 
         **ListUMInferRequestLogsData**
@@ -1133,6 +1164,7 @@ class UAI_ModelverseClient(Client):
         - **GrantAllModels** (bool) - 全部模型访问开关，开启不受 GrantedModels 参数控制，关闭只能访问 GrantedModels 中添加模型
         - **GrantedModels** (str) - 授权模型，内容为数组格式。当 GrantAllModels 为false时 当前key只可访问数组中模型。例：["deepseek-ai/DeepSeek-V3.2-Think"]
         - **IPWhitelist** (str) - ip白名单，换行分割的多组ip。支持IPv4和网段,输入后回车生效,最多100个, 示例: ﻿ 192.168.1.1 192.168.1.10-192.168.1.100 192.168.1.10/24
+        - **InferenceLogEnabled** (int) - 是否开启推理日志
         - **ModelverseDisabled** (int) - 是否modelverse可用 0: 启用 1: 禁用
         - **MonthlyLimitAmount** (str) - 月限额，单位随用户所在渠道。126渠道单位为美元
         - **Name** (str) - 更新的名称

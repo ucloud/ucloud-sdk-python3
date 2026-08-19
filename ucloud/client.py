@@ -552,6 +552,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def sandbox(self):
+        from ucloud.services.sandbox.client import sandboxClient
+
+        return sandboxClient(
+            self._auto_config("sandbox"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def vpc(self):
         from ucloud.services.vpc.client import VPCClient
 

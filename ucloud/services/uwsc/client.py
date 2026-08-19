@@ -66,6 +66,122 @@ class UWSCClient(Client):
         resp = self.invoke("BindCPE", d, **kwargs)
         return apis.BindCPEResponseSchema().loads(resp)
 
+    def create_ce_gateway(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateCEGateway - 创建CE客户网关
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **IpType** (str) - (Required) IP类型 枚举值：静态IP(Static) | 动态IP(Dynamic)
+        - **PopGwId** (str) - (Required) 所属UWAN虚拟路由器资源ID
+        - **PublicIp** (str) - (Required) 客户自有公网IP
+        - **Name** (str) - 资源名称
+        - **Remark** (str) - 备注
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+        - **RequestId** (str) - 请求 ID
+        - **VPNId** (str) - 客户网关资源 ID
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateCEGatewayRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateCEGateway", d, **kwargs)
+        return apis.CreateCEGatewayResponseSchema().loads(resp)
+
+    def create_ce_tunnel(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateCETunnel - 创建隧道
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CloseAction** (str) - (Required) IPSec 关闭后动作，枚举值：restart、trap、none
+        - **Mode** (str) - (Required) 路由模式，枚举值：感兴趣流(FLow) | BGP(BGP)
+        - **VPNId** (str) - (Required) 所属CE网关资源ID
+        - **BGPConf** (dict) - 见 **CreateCETunnelParamBGPConf** 模型定义
+        - **DPDConf** (dict) - 见 **CreateCETunnelParamDPDConf** 模型定义
+        - **IKEConf** (dict) - 见 **CreateCETunnelParamIKEConf** 模型定义
+        - **IPSecConf** (dict) - 见 **CreateCETunnelParamIPSecConf** 模型定义
+        - **Name** (str) - 资源名称
+        - **Remark** (str) - 备注
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+        - **VPNTunnelId** (str) - VPN 隧道 ID
+
+        **Request Model**
+
+        **CreateCETunnelParamIKEConf**
+        - **AuthenticationAlgorithm** (str) - IKE 认证算法，取值："md5", "sha1", "sha2-256"
+        - **DhGroup** (str) - DH group，指定IKE交换密钥时使用的DH组。取值："1", "2", "5", "14", "15", "16"
+        - **EncryptionAlgorithm** (str) - IKE 加密算法，取值："aes128", "aes192", "aes256", "aes512", "3des"
+        - **ExchangeMode** (str) - IKE 协商模式，主模式(main)/野蛮模式(aggressive)，IKE V2时不使用该参数
+        - **LocalId** (str) - 本端标识，取值：“auto”，“<ip-address>”
+        - **PreSharedKey** (str) - IKE 共享密钥
+        - **RemoteId** (str) - 对端标识，取值：“auto”，“<ip-address>”
+        - **SALifeTime** (str) - IKE SA的生存周期，取值范围：600-604800
+        - **Version** (str) - IKE 版本，取值： "ike v1"，"ike v2"
+
+
+        **CreateCETunnelParamIPSecConf**
+        - **AuthenticationAlgorithm** (str) - 第二阶段协商的认证算法。取值：md5、sha1、sha2-256。
+        - **CENetwork** (list) - 需要和 VPC 互通的本地数据中心侧的网段，用于第二阶段协商。
+        - **EncryptionAlgorithm** (str) - IPSec 加密算法，取值："aes128", "aes192", "aes256", "aes512", "3des"
+        - **PFSDhGroup** (str) - 第二阶段协商使用的 Diffie-Hellman 密钥交换算法。取值：disabled、1、2、5、14、15、16。
+        - **Protocol** (str) - IPSec 安全协议，取值：“esp”，“ah”
+        - **SALifeTime** (str) - 第二阶段协商出的 SA 的生存周期。单位：秒。取值范围：1200~604800
+        - **SALifetimeBytes** (str) - 第二阶段协商出的 SA 的生存周期。单位：字节 KB。取值范围：8000 – 20000000，默认使用SA超时时间
+
+
+        **CreateCETunnelParamBGPConf**
+        - **LocalAsn** (str) - Ucloud侧的自治系统号。
+        - **LocalIp** (str) - 云端BGP地址。必须从BGP隧道网段内分配。
+        - **PeerAsn** (str) - 对端BGP ASN号。
+        - **PeerIp** (str) - 用户端BGP地址。必须从BGP隧道网段内分配。
+        - **TunnelCidr** (str) - BGP隧道网段。该网段需是一个在 169.254.0.0/16 内的掩码长度为 30 的网段。
+
+
+        **CreateCETunnelParamDPDConf**
+        - **Action** (str) - DPD超时后的动作,Enable为1（开启）时有效。可取值为clear（断开）、restart（重试）和 trap（流量触发）
+        - **Delay** (int) - DPD探测间隔时间。dpdEnable为1（开启）时有效。单位为秒，默认为 10
+        - **Enabled** (int) - 是否开启 DPD（对等体存活检测）功能。取值：0（关闭）、1（开启）
+        - **Timeout** (int) - DPD超时时间。即探测确认对端不存在需要的时间。dpdEnable为1（开启）时有效。单位为秒。取值范围为 30-60（IKEv2 默认为 0）
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateCETunnelRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateCETunnel", d, **kwargs)
+        return apis.CreateCETunnelResponseSchema().loads(resp)
+
     def create_cpe(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """CreateCPE - 创建 CPE
 
@@ -139,6 +255,115 @@ class UWSCClient(Client):
         resp = self.invoke("CreateExportLine", d, **kwargs)
         return apis.CreateExportLineResponseSchema().loads(resp)
 
+    def create_popgw(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """CreatePOPGW - 创建UWAN虚拟路由器
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Name** (str) - (Required) 资源名称
+        - **Quantity** (int) - (Required) UWAN 网关的购买时长，默认为 0，代表有效期至月底。(保持和BWConf.Quantity 相同)
+        - **BWConf** (dict) - 见 **CreatePOPGWParamBWConf** 模型定义
+        - **ChargeType** (str) - 付费方式, 枚举值为: - Year：按年付费; - Month:  按月付费；(月付非必填，默认为 0；年付必填。)
+        - **CouponId** (str) - 代金券ID, 默认不使用
+        - **Remark** (str) - 资源备注信息
+        - **Type** (str) - 入网类型，仅支持“IPSec”
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+        - **PopGwId** (str) - UWAN 网关实例 ID
+        - **RequestId** (str) - 请求 ID
+
+        **Request Model**
+
+        **CreatePOPGWParamBWConf**
+        - **BwMax** (float) - UWAN 网关的带宽规格。取值：1-100。单位：Mbps。
+        - **BwType** (str) - 带宽类型，默认为空字符串
+        - **ChargeType** (str) - 付费方式，枚举值：- Month：月付；- Year：年付；- Postpadi：后付费（仅支持流量计费方式）
+        - **CouponId** (str) - 优惠券 ID
+        - **Name** (str) - 带宽的名称
+        - **PayMode** (str) - 带宽的计费方式，取值：- fixed-bw：固定带宽计费；- traffic：流量计费。
+        - **ProductId** (int) - 产品 ID
+        - **Quantity** (float) - 带宽购买时长，默认为 0，代表有效期至月底
+        - **Remark** (str) - 带宽包备注信息
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreatePOPGWRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreatePOPGW", d, **kwargs)
+        return apis.CreatePOPGWResponseSchema().loads(resp)
+
+    def delete_ce_gateway(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteCEGateway - 删除CE网关
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **VPNId** (str) - (Required) CE 实例 ID
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+        - **RequestId** (str) - 请求 ID
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteCEGatewayRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteCEGateway", d, **kwargs)
+        return apis.DeleteCEGatewayResponseSchema().loads(resp)
+
+    def delete_ce_tunnel(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteCETunnel - 删除隧道
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **VPNTunnelId** (str) - (Required) 资源ID
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+        - **RequestId** (str) - 请求 ID
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteCETunnelRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteCETunnel", d, **kwargs)
+        return apis.DeleteCETunnelResponseSchema().loads(resp)
+
     def delete_export_line(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -189,6 +414,172 @@ class UWSCClient(Client):
 
         resp = self.invoke("DeleteExportLineRules", d, **kwargs)
         return apis.DeleteExportLineRulesResponseSchema().loads(resp)
+
+    def delete_popgw(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
+        """DeletePOPGW - 删除UWAN虚拟路由器
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **PopGwId** (str) - (Required) UWAN虚拟路由器资源ID
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+        - **RequestId** (str) - 请求 ID
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeletePOPGWRequestSchema().dumps(d)
+
+        resp = self.invoke("DeletePOPGW", d, **kwargs)
+        return apis.DeletePOPGWResponseSchema().loads(resp)
+
+    def describe_ce_gateway(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeCEGateway - 查询CE网关，优先级 Region > PopGwId > VPNId
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Limit** (int) - 限制量
+        - **Offset** (int) - 偏移量
+        - **PopGwId** (str) - UWAN 实例 ID
+        - **VPNId** (str) - CE 实例 ID
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+        - **RequestId** (str) - 请求 ID
+        - **TotalCount** (int) - 总数
+        - **VPNInfos** (list) - 见 **VPNInfo** 模型定义
+
+        **Response Model**
+
+        **VPNInfo**
+        - **CreateTime** (int) - 创建时间
+        - **IpType** (str) - CE网关的接入方式：静态IP（Static）,动态IP（Dynamic）
+        - **Name** (str) - CE 名称
+        - **PopGwId** (str) - UWAN 实例 ID
+        - **PopGwName** (str) - UWAN 资源名称
+        - **PublicIp** (str) - 客户自有外网 IP
+        - **Region** (str) - 地域
+        - **Remark** (str) - CE备注
+        - **Status** (str) - 状态（默认为空）
+        - **VPNId** (str) - CE 网关 ID
+        - **VPNTunnelIds** (list) - 子隧道 ID
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeCEGatewayRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeCEGateway", d, **kwargs)
+        return apis.DescribeCEGatewayResponseSchema().loads(resp)
+
+    def describe_ce_tunnel(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeCETunnel - 查询隧道
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Limit** (int) - 返回数据长度，默认为20，最大100
+        - **Offset** (int) - 列表起始位置偏移量，默认为0
+        - **VPNId** (str) - CE 网关 ID
+        - **VPNTunnelId** (str) - 隧道 ID
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+        - **RequestId** (str) - 请求 ID
+        - **TotalCount** (int) - 总数
+        - **VPNTunnelInfos** (list) - 见 **VPNTunnelInfo** 模型定义
+
+        **Response Model**
+
+        **DPDConf**
+        - **Action** (str) - DPD 行为
+        - **Delay** (int) - DPD 探测间隔时间
+        - **Enabled** (int) - 是否开启 DPD
+        - **Timeout** (int) - DPD 探测超时时间
+
+
+        **IPSecConf**
+        - **AuthenticationAlgorithm** (str) - 认证算法
+        - **CENetwork** (list) - 客户网段
+        - **EncryptionAlgorithm** (str) - 加密算法
+        - **PFSDhGroup** (str) - 第二阶段协商使用的 Diffie-Hellman 密钥交换算法
+        - **Protocol** (str) - 安全协议
+        - **SALifeTime** (str) - 第二阶段的 SA 的生存周期
+        - **SALifetimeBytes** (str) - 第二阶段的 SA 的生存周期
+
+
+        **BGPConf**
+        - **LocalAsn** (int) - 本端自治系统号
+        - **LocalIp** (str) - 云端BGP地址
+        - **PeerAsn** (int) - 对端自治系统号
+        - **PeerIp** (str) - 用户端BGP地址
+        - **TunnelCidr** (str) - BGP隧道网段
+
+
+        **IKEConf**
+        - **AuthenticationAlgorithm** (str) - 认证算法
+        - **DhGroup** (str) - 分组信息
+        - **EncryptionAlgorithm** (str) - 加密算法
+        - **ExchangeMode** (str) - 协商模式
+        - **LocalId** (str) - 本端标识
+        - **PreSharedKey** (str) - 预共享密钥
+        - **RemoteId** (str) - 对端标识
+        - **SALifeTime** (str) - IKE SA的生存周期
+        - **Version** (str) - 版本
+
+
+        **VPNTunnelInfo**
+        - **BGPConf** (dict) - 见 **BGPConf** 模型定义
+        - **CloseAction** (str) - 隧道关闭后动作
+        - **CreateTime** (int) - 创建时间
+        - **DPDConf** (dict) - 见 **DPDConf** 模型定义
+        - **IKEConf** (dict) - 见 **IKEConf** 模型定义
+        - **IPSecConf** (dict) - 见 **IPSecConf** 模型定义
+        - **Mode** (str) - 路由模式
+        - **Name** (str) - 隧道名称
+        - **Region** (str) - 地域
+        - **Remark** (str) - 备注
+        - **StartAction** (str) - 隧道协商动作
+        - **VPNId** (str) - CE 网关 ID
+        - **VPNTunnelId** (str) - 隧道 ID
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeCETunnelRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeCETunnel", d, **kwargs)
+        return apis.DescribeCETunnelResponseSchema().loads(resp)
 
     def describe_cpe(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
         """DescribeCPE - 查询 CPE 信息
@@ -329,6 +720,270 @@ class UWSCClient(Client):
         resp = self.invoke("DescribeExportLineRules", d, **kwargs)
         return apis.DescribeExportLineRulesResponseSchema().loads(resp)
 
+    def describe_popgw(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribePOPGW - 查询UWAN虚拟路由器
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **PopGwId** (str) - (Required) UWAN 实例 ID
+        - **Limit** (int) - 限制量
+        - **Offset** (int) - 偏移量
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 消息
+        - **POPGWInfos** (list) - 见 **POPGWInfo** 模型定义
+        - **RequestId** (str) - 请求 ID
+        - **TotalCount** (int) - 总数
+
+        **Response Model**
+
+        **BWPackageInfo**
+        - **BandWidth** (float) - 最大带宽值
+        - **BwId** (str) - UWAN 网关带宽 ID
+        - **ChargeType** (str) - 付费方式eg:(Month)
+        - **DueTime** (int) - 过期时间
+        - **Name** (str) - 带宽包名称
+        - **PayMode** (str) - 计费方式eg:(固定带宽)
+        - **PublicIp** (str) - 网关外网 IP
+        - **Remark** (str) - 备注
+
+
+        **UGNBWInfo**
+        - **UGNBWId** (str) - UGN带宽包ID
+        - **UGNBWName** (str) - UGN带宽包名称
+
+
+        **UGNInfo**
+        - **UGNBWInfos** (list) - 见 **UGNBWInfo** 模型定义
+        - **UGNId** (str) - 云联网 ID
+        - **UGNName** (str) - 云联网名称
+
+
+        **POPGWInfo**
+        - **BWPackageInfo** (dict) - 见 **BWPackageInfo** 模型定义
+        - **CENum** (int) - 客户网关数量
+        - **CPENum** (int) - CPE数量
+        - **ChargeType** (str) - 付费类型
+        - **CreateTime** (int) - 创建时间
+        - **DueTime** (int) - 过期时间
+        - **Name** (str) - 网关名称
+        - **PopGwId** (str) - 网关实例 ID
+        - **Region** (str) - 地域信息
+        - **Remark** (str) - 备注
+        - **Type** (str) - 规格：IPSec、SSL
+        - **UGNInfo** (dict) - 见 **UGNInfo** 模型定义
+        - **VCPENum** (int) - VCPE 数量
+        - **VNI** (int) - 唯一标识
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribePOPGWRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribePOPGW", d, **kwargs)
+        return apis.DescribePOPGWResponseSchema().loads(resp)
+
+    def list_available_region(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListAvailableRegion - 获取可用地域
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+
+        **Response**
+
+        - **Message** (str) - 消息
+        - **Region** (list) - 可用地域
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.ListAvailableRegionRequestSchema().dumps(d)
+
+        resp = self.invoke("ListAvailableRegion", d, **kwargs)
+        return apis.ListAvailableRegionResponseSchema().loads(resp)
+
+    def update_bw_package(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateBWPackage - 更新UWSC带宽包
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **BwId** (str) - (Required) 带宽包资源ID
+        - **BwMax** (float) - (Required) 带宽峰值
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+        - **RequestId** (str) - 请求 ID
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateBWPackageRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateBWPackage", d, **kwargs)
+        return apis.UpdateBWPackageResponseSchema().loads(resp)
+
+    def update_ce_gateway(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateCEGateway - 更新CE网关
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **VPNId** (str) - (Required) CE网关资源ID
+        - **Name** (str) - 资源名称
+        - **PublicIp** (str) - 公网IP
+        - **Remark** (str) - 备注
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+        - **RequestId** (str) - 请求 ID
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateCEGatewayRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateCEGateway", d, **kwargs)
+        return apis.UpdateCEGatewayResponseSchema().loads(resp)
+
+    def update_ce_tunnel(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateCETunnel - 更新隧道配置
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **VPNTunnelId** (str) - (Required) 资源ID
+        - **BGPConf** (dict) - 见 **UpdateCETunnelParamBGPConf** 模型定义
+        - **CloseAction** (str) - IPSec 关闭后动作，枚举值：restart、trap、none
+        - **DPDConf** (dict) - 见 **UpdateCETunnelParamDPDConf** 模型定义
+        - **IKEConf** (dict) - 见 **UpdateCETunnelParamIKEConf** 模型定义
+        - **IPSecConf** (dict) - 见 **UpdateCETunnelParamIPSecConf** 模型定义
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+
+        **Request Model**
+
+        **UpdateCETunnelParamIKEConf**
+        - **AuthenticationAlgorithm** (str) - IKE 认证算法，取值："md5", "sha1", "sha2-256"
+        - **DhGroup** (str) - DH group，指定IKE交换密钥时使用的DH组。取值："1", "2", "5", "14", "15", "16"
+        - **EncryptionAlgorithm** (str) - IKE 加密算法，取值："aes128", "aes192", "aes256", "aes512", "3des"
+        - **ExchangeMode** (str) - IKE 协商模式，主模式(main)/野蛮模式(aggressive)，IKE V2时不使用该参数
+        - **LocalId** (str) - 本端标识，取值：“auto”，“<ip-address>”
+        - **PreSharedKey** (str) - IKE 共享密钥
+        - **RemoteId** (str) - 对端标识，取值：“auto”，“<ip-address>”
+        - **SALifeTime** (str) - IKE SA的生存周期，取值范围：600-604800
+        - **Version** (str) - IKE 版本，取值： "ike v1"，"ike v2"
+
+
+        **UpdateCETunnelParamIPSecConf**
+        - **AuthenticationAlgorithm** (str) - 第二阶段协商的认证算法。取值：md5、sha1、sha2-256。
+        - **CENetwork** (list) - 需要和 VPC 互通的本地数据中心侧的网段，用于第二阶段协商。
+        - **EncryptionAlgorithm** (str) - IPSec 加密算法，取值："aes128", "aes192", "aes256", "aes512", "3des"
+        - **PFSDhGroup** (str) - 第二阶段协商使用的 Diffie-Hellman 密钥交换算法。取值：disabled、1、2、5、14、15、16。
+        - **Protocol** (str) - IPSec 安全协议，取值：“esp”，“ah”
+        - **SALifeTime** (str) - 第二阶段协商出的 SA 的生存周期。单位：秒。取值范围：1200~604800
+        - **SALifetimeBytes** (str) - 第二阶段协商出的 SA 的生存周期。单位：字节 KB。取值范围：8000 – 20000000，默认使用SA超时时间
+
+
+        **UpdateCETunnelParamBGPConf**
+        - **LocalAsn** (str) - Ucloud侧的自治系统号。
+        - **LocalIp** (str) - 云端BGP地址。必须从BGP隧道网段内分配。
+        - **PeerAsn** (str) - 对端BGP ASN号。
+        - **PeerIp** (str) - 用户端BGP地址。必须从BGP隧道网段内分配。
+        - **TunnelCidr** (str) - BGP隧道网段。该网段需是一个在 169.254.0.0/16 内的掩码长度为 30 的网段。
+
+
+        **UpdateCETunnelParamDPDConf**
+        - **Action** (str) - DPD超时后的动作,Enable为1（开启）时有效。可取值为clear（断开）、restart（重试）和 trap（流量触发）
+        - **Delay** (str) - DPD探测间隔时间。dpdEnable为1（开启）时有效。单位为秒，默认为 10
+        - **Enabled** (str) - 是否开启 DPD（对等体存活检测）功能。取值：0（关闭）、1（开启）
+        - **Timeout** (str) - DPD超时时间。即探测确认对端不存在需要的时间。dpdEnable为1（开启）时有效。单位为秒。取值范围为 30-60（IKEv2 默认为 0）
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateCETunnelRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateCETunnel", d, **kwargs)
+        return apis.UpdateCETunnelResponseSchema().loads(resp)
+
+    def update_ce_tunnel_attribute(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateCETunnelAttribute - 更新隧道属性
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **VPNTunnelId** (str) - (Required) 资源ID
+        - **Name** (str) - 资源名称
+        - **Remark** (str) - 备注
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+        - **RequestId** (str) - 请求 ID
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateCETunnelAttributeRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateCETunnelAttribute", d, **kwargs)
+        return apis.UpdateCETunnelAttributeResponseSchema().loads(resp)
+
     def update_export_line(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -354,6 +1009,37 @@ class UWSCClient(Client):
 
         resp = self.invoke("UpdateExportLine", d, **kwargs)
         return apis.UpdateExportLineResponseSchema().loads(resp)
+
+    def update_popgw_attribute(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdatePOPGWAttribute - 更新UWAN虚拟路由器属性
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **PopGwId** (str) - (Required) UWAN虚拟路由器资源ID
+        - **Name** (str) - 资源名称
+        - **Remark** (str) - 备注
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误消息
+        - **RequestId** (str) - 请求 ID
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdatePOPGWAttributeRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdatePOPGWAttribute", d, **kwargs)
+        return apis.UpdatePOPGWAttributeResponseSchema().loads(resp)
 
     def upgrade_export_line(
         self, req: typing.Optional[dict] = None, **kwargs
