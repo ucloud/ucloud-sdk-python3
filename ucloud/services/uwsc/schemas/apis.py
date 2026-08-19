@@ -58,6 +58,144 @@ class BindCPEResponseSchema(schema.ResponseSchema):
 
 
 """
+API: CreateCEGateway
+
+创建CE客户网关
+"""
+
+
+class CreateCEGatewayRequestSchema(schema.RequestSchema):
+    """CreateCEGateway - 创建CE客户网关"""
+
+    fields = {
+        "IpType": fields.Str(required=True, dump_to="IpType"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "PopGwId": fields.Str(required=True, dump_to="PopGwId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "PublicIp": fields.Str(required=True, dump_to="PublicIp"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class CreateCEGatewayResponseSchema(schema.ResponseSchema):
+    """CreateCEGateway - 创建CE客户网关"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "RequestId": fields.Str(required=False, load_from="RequestId"),
+        "VPNId": fields.Str(required=True, load_from="VPNId"),
+    }
+
+
+"""
+API: CreateCETunnel
+
+创建隧道
+"""
+
+
+class CreateCETunnelParamDPDConfSchema(schema.RequestSchema):
+    """CreateCETunnelParamDPDConf -"""
+
+    fields = {
+        "Action": fields.Str(required=False, dump_to="Action"),
+        "Delay": fields.Int(required=False, dump_to="Delay"),
+        "Enabled": fields.Int(required=True, dump_to="Enabled"),
+        "Timeout": fields.Int(required=False, dump_to="Timeout"),
+    }
+
+
+class CreateCETunnelParamIKEConfSchema(schema.RequestSchema):
+    """CreateCETunnelParamIKEConf -"""
+
+    fields = {
+        "AuthenticationAlgorithm": fields.Str(
+            required=True, dump_to="AuthenticationAlgorithm"
+        ),
+        "DhGroup": fields.Str(required=True, dump_to="DhGroup"),
+        "EncryptionAlgorithm": fields.Str(
+            required=True, dump_to="EncryptionAlgorithm"
+        ),
+        "ExchangeMode": fields.Str(required=True, dump_to="ExchangeMode"),
+        "LocalId": fields.Str(required=True, dump_to="LocalId"),
+        "PreSharedKey": fields.Str(required=True, dump_to="PreSharedKey"),
+        "RemoteId": fields.Str(required=True, dump_to="RemoteId"),
+        "SALifeTime": fields.Str(required=True, dump_to="SALifeTime"),
+        "Version": fields.Str(required=True, dump_to="Version"),
+    }
+
+
+class CreateCETunnelParamBGPConfSchema(schema.RequestSchema):
+    """CreateCETunnelParamBGPConf -"""
+
+    fields = {
+        "LocalAsn": fields.Str(required=False, dump_to="LocalAsn"),
+        "LocalIp": fields.Str(required=False, dump_to="LocalIp"),
+        "PeerAsn": fields.Str(required=False, dump_to="PeerAsn"),
+        "PeerIp": fields.Str(required=False, dump_to="PeerIp"),
+        "TunnelCidr": fields.Str(required=False, dump_to="TunnelCidr"),
+    }
+
+
+class CreateCETunnelParamIPSecConfSchema(schema.RequestSchema):
+    """CreateCETunnelParamIPSecConf -"""
+
+    fields = {
+        "AuthenticationAlgorithm": fields.Str(
+            required=True, dump_to="AuthenticationAlgorithm"
+        ),
+        "CENetwork": fields.List(fields.Str()),
+        "EncryptionAlgorithm": fields.Str(
+            required=True, dump_to="EncryptionAlgorithm"
+        ),
+        "PFSDhGroup": fields.Str(required=True, dump_to="PFSDhGroup"),
+        "Protocol": fields.Str(required=True, dump_to="Protocol"),
+        "SALifeTime": fields.Str(required=True, dump_to="SALifeTime"),
+        "SALifetimeBytes": fields.Str(
+            required=False, dump_to="SALifetimeBytes"
+        ),
+    }
+
+
+class CreateCETunnelRequestSchema(schema.RequestSchema):
+    """CreateCETunnel - 创建隧道"""
+
+    fields = {
+        "BGPConf": CreateCETunnelParamBGPConfSchema(
+            required=False, dump_to="BGPConf"
+        ),
+        "CloseAction": fields.Str(required=True, dump_to="CloseAction"),
+        "DPDConf": CreateCETunnelParamDPDConfSchema(
+            required=False, dump_to="DPDConf"
+        ),
+        "IKEConf": CreateCETunnelParamIKEConfSchema(
+            required=False, dump_to="IKEConf"
+        ),
+        "IPSecConf": CreateCETunnelParamIPSecConfSchema(
+            required=False, dump_to="IPSecConf"
+        ),
+        "Mode": fields.Str(required=True, dump_to="Mode"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "VPNId": fields.Str(required=True, dump_to="VPNId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class CreateCETunnelResponseSchema(schema.ResponseSchema):
+    """CreateCETunnel - 创建隧道"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "VPNTunnelId": fields.Str(required=True, load_from="VPNTunnelId"),
+    }
+
+
+"""
 API: CreateCPE
 
 创建 CPE
@@ -125,6 +263,112 @@ class CreateExportLineResponseSchema(schema.ResponseSchema):
 
 
 """
+API: CreatePOPGW
+
+创建UWAN虚拟路由器
+"""
+
+
+class CreatePOPGWParamBWConfSchema(schema.RequestSchema):
+    """CreatePOPGWParamBWConf -"""
+
+    fields = {
+        "BwMax": fields.Float(required=True, dump_to="BwMax"),
+        "BwType": fields.Str(required=False, dump_to="BwType"),
+        "ChargeType": fields.Str(required=True, dump_to="ChargeType"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "Name": fields.Str(required=True, dump_to="Name"),
+        "PayMode": fields.Str(required=True, dump_to="PayMode"),
+        "ProductId": fields.Int(required=False, dump_to="ProductId"),
+        "Quantity": fields.Float(required=False, dump_to="Quantity"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+    }
+
+
+class CreatePOPGWRequestSchema(schema.RequestSchema):
+    """CreatePOPGW - 创建UWAN虚拟路由器"""
+
+    fields = {
+        "BWConf": CreatePOPGWParamBWConfSchema(
+            required=False, dump_to="BWConf"
+        ),
+        "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "Name": fields.Str(required=True, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Quantity": fields.Int(required=True, dump_to="Quantity"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "Type": fields.Str(required=False, dump_to="Type"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class CreatePOPGWResponseSchema(schema.ResponseSchema):
+    """CreatePOPGW - 创建UWAN虚拟路由器"""
+
+    fields = {
+        "Message": fields.Str(required=False, load_from="Message"),
+        "PopGwId": fields.Str(required=False, load_from="PopGwId"),
+        "RequestId": fields.Str(required=False, load_from="RequestId"),
+    }
+
+
+"""
+API: DeleteCEGateway
+
+删除CE网关
+"""
+
+
+class DeleteCEGatewayRequestSchema(schema.RequestSchema):
+    """DeleteCEGateway - 删除CE网关"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "VPNId": fields.Str(required=True, dump_to="VPNId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DeleteCEGatewayResponseSchema(schema.ResponseSchema):
+    """DeleteCEGateway - 删除CE网关"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "RequestId": fields.Str(required=False, load_from="RequestId"),
+    }
+
+
+"""
+API: DeleteCETunnel
+
+删除隧道
+"""
+
+
+class DeleteCETunnelRequestSchema(schema.RequestSchema):
+    """DeleteCETunnel - 删除隧道"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "VPNTunnelId": fields.Str(required=True, dump_to="VPNTunnelId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DeleteCETunnelResponseSchema(schema.ResponseSchema):
+    """DeleteCETunnel - 删除隧道"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "RequestId": fields.Str(required=False, load_from="RequestId"),
+    }
+
+
+"""
 API: DeleteExportLine
 
 删除加速线路
@@ -170,6 +414,103 @@ class DeleteExportLineRulesResponseSchema(schema.ResponseSchema):
 
     fields = {
         "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: DeletePOPGW
+
+删除UWAN虚拟路由器
+"""
+
+
+class DeletePOPGWRequestSchema(schema.RequestSchema):
+    """DeletePOPGW - 删除UWAN虚拟路由器"""
+
+    fields = {
+        "PopGwId": fields.Str(required=True, dump_to="PopGwId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DeletePOPGWResponseSchema(schema.ResponseSchema):
+    """DeletePOPGW - 删除UWAN虚拟路由器"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "RequestId": fields.Str(required=False, load_from="RequestId"),
+    }
+
+
+"""
+API: DescribeCEGateway
+
+查询CE网关，优先级 Region > PopGwId > VPNId
+"""
+
+
+class DescribeCEGatewayRequestSchema(schema.RequestSchema):
+    """DescribeCEGateway - 查询CE网关，优先级 Region > PopGwId > VPNId"""
+
+    fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "PopGwId": fields.Str(required=False, dump_to="PopGwId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "VPNId": fields.Str(required=False, dump_to="VPNId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DescribeCEGatewayResponseSchema(schema.ResponseSchema):
+    """DescribeCEGateway - 查询CE网关，优先级 Region > PopGwId > VPNId"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "RequestId": fields.Str(required=False, load_from="RequestId"),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+        "VPNInfos": fields.List(
+            models.VPNInfoSchema(), required=True, load_from="VPNInfos"
+        ),
+    }
+
+
+"""
+API: DescribeCETunnel
+
+查询隧道
+"""
+
+
+class DescribeCETunnelRequestSchema(schema.RequestSchema):
+    """DescribeCETunnel - 查询隧道"""
+
+    fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "VPNId": fields.Str(required=False, dump_to="VPNId"),
+        "VPNTunnelId": fields.Str(required=False, dump_to="VPNTunnelId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DescribeCETunnelResponseSchema(schema.ResponseSchema):
+    """DescribeCETunnel - 查询隧道"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "RequestId": fields.Str(required=False, load_from="RequestId"),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+        "VPNTunnelInfos": fields.List(
+            models.VPNTunnelInfoSchema(),
+            required=True,
+            load_from="VPNTunnelInfos",
+        ),
     }
 
 
@@ -260,6 +601,252 @@ class DescribeExportLineRulesResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribePOPGW
+
+查询UWAN虚拟路由器
+"""
+
+
+class DescribePOPGWRequestSchema(schema.RequestSchema):
+    """DescribePOPGW - 查询UWAN虚拟路由器"""
+
+    fields = {
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "PopGwId": fields.Str(required=True, dump_to="PopGwId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class DescribePOPGWResponseSchema(schema.ResponseSchema):
+    """DescribePOPGW - 查询UWAN虚拟路由器"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "POPGWInfos": fields.List(
+            models.POPGWInfoSchema(), required=True, load_from="POPGWInfos"
+        ),
+        "RequestId": fields.Str(required=False, load_from="RequestId"),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
+API: ListAvailableRegion
+
+获取可用地域
+"""
+
+
+class ListAvailableRegionRequestSchema(schema.RequestSchema):
+    """ListAvailableRegion - 获取可用地域"""
+
+    fields = {
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+    }
+
+
+class ListAvailableRegionResponseSchema(schema.ResponseSchema):
+    """ListAvailableRegion - 获取可用地域"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "Region": fields.List(fields.Str(), required=True, load_from="Region"),
+    }
+
+
+"""
+API: UpdateBWPackage
+
+更新UWSC带宽包
+"""
+
+
+class UpdateBWPackageRequestSchema(schema.RequestSchema):
+    """UpdateBWPackage - 更新UWSC带宽包"""
+
+    fields = {
+        "BwId": fields.Str(required=True, dump_to="BwId"),
+        "BwMax": fields.Float(required=True, dump_to="BwMax"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class UpdateBWPackageResponseSchema(schema.ResponseSchema):
+    """UpdateBWPackage - 更新UWSC带宽包"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "RequestId": fields.Str(required=False, load_from="RequestId"),
+    }
+
+
+"""
+API: UpdateCEGateway
+
+更新CE网关
+"""
+
+
+class UpdateCEGatewayRequestSchema(schema.RequestSchema):
+    """UpdateCEGateway - 更新CE网关"""
+
+    fields = {
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "PublicIp": fields.Str(required=False, dump_to="PublicIp"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "VPNId": fields.Str(required=True, dump_to="VPNId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class UpdateCEGatewayResponseSchema(schema.ResponseSchema):
+    """UpdateCEGateway - 更新CE网关"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "RequestId": fields.Str(required=False, load_from="RequestId"),
+    }
+
+
+"""
+API: UpdateCETunnel
+
+更新隧道配置
+"""
+
+
+class UpdateCETunnelParamDPDConfSchema(schema.RequestSchema):
+    """UpdateCETunnelParamDPDConf -"""
+
+    fields = {
+        "Action": fields.Str(required=False, dump_to="Action"),
+        "Delay": fields.Str(required=False, dump_to="Delay"),
+        "Enabled": fields.Str(required=False, dump_to="Enabled"),
+        "Timeout": fields.Str(required=False, dump_to="Timeout"),
+    }
+
+
+class UpdateCETunnelParamIKEConfSchema(schema.RequestSchema):
+    """UpdateCETunnelParamIKEConf -"""
+
+    fields = {
+        "AuthenticationAlgorithm": fields.Str(
+            required=True, dump_to="AuthenticationAlgorithm"
+        ),
+        "DhGroup": fields.Str(required=True, dump_to="DhGroup"),
+        "EncryptionAlgorithm": fields.Str(
+            required=True, dump_to="EncryptionAlgorithm"
+        ),
+        "ExchangeMode": fields.Str(required=True, dump_to="ExchangeMode"),
+        "LocalId": fields.Str(required=True, dump_to="LocalId"),
+        "PreSharedKey": fields.Str(required=True, dump_to="PreSharedKey"),
+        "RemoteId": fields.Str(required=True, dump_to="RemoteId"),
+        "SALifeTime": fields.Str(required=True, dump_to="SALifeTime"),
+        "Version": fields.Str(required=True, dump_to="Version"),
+    }
+
+
+class UpdateCETunnelParamBGPConfSchema(schema.RequestSchema):
+    """UpdateCETunnelParamBGPConf -"""
+
+    fields = {
+        "LocalAsn": fields.Str(required=False, dump_to="LocalAsn"),
+        "LocalIp": fields.Str(required=False, dump_to="LocalIp"),
+        "PeerAsn": fields.Str(required=False, dump_to="PeerAsn"),
+        "PeerIp": fields.Str(required=False, dump_to="PeerIp"),
+        "TunnelCidr": fields.Str(required=False, dump_to="TunnelCidr"),
+    }
+
+
+class UpdateCETunnelParamIPSecConfSchema(schema.RequestSchema):
+    """UpdateCETunnelParamIPSecConf -"""
+
+    fields = {
+        "AuthenticationAlgorithm": fields.Str(
+            required=True, dump_to="AuthenticationAlgorithm"
+        ),
+        "CENetwork": fields.List(fields.Str()),
+        "EncryptionAlgorithm": fields.Str(
+            required=True, dump_to="EncryptionAlgorithm"
+        ),
+        "PFSDhGroup": fields.Str(required=True, dump_to="PFSDhGroup"),
+        "Protocol": fields.Str(required=True, dump_to="Protocol"),
+        "SALifeTime": fields.Str(required=True, dump_to="SALifeTime"),
+        "SALifetimeBytes": fields.Str(
+            required=False, dump_to="SALifetimeBytes"
+        ),
+    }
+
+
+class UpdateCETunnelRequestSchema(schema.RequestSchema):
+    """UpdateCETunnel - 更新隧道配置"""
+
+    fields = {
+        "BGPConf": UpdateCETunnelParamBGPConfSchema(
+            required=False, dump_to="BGPConf"
+        ),
+        "CloseAction": fields.Str(required=False, dump_to="CloseAction"),
+        "DPDConf": UpdateCETunnelParamDPDConfSchema(
+            required=False, dump_to="DPDConf"
+        ),
+        "IKEConf": UpdateCETunnelParamIKEConfSchema(
+            required=False, dump_to="IKEConf"
+        ),
+        "IPSecConf": UpdateCETunnelParamIPSecConfSchema(
+            required=False, dump_to="IPSecConf"
+        ),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "VPNTunnelId": fields.Str(required=True, dump_to="VPNTunnelId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class UpdateCETunnelResponseSchema(schema.ResponseSchema):
+    """UpdateCETunnel - 更新隧道配置"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: UpdateCETunnelAttribute
+
+更新隧道属性
+"""
+
+
+class UpdateCETunnelAttributeRequestSchema(schema.RequestSchema):
+    """UpdateCETunnelAttribute - 更新隧道属性"""
+
+    fields = {
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "VPNTunnelId": fields.Str(required=True, dump_to="VPNTunnelId"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class UpdateCETunnelAttributeResponseSchema(schema.ResponseSchema):
+    """UpdateCETunnelAttribute - 更新隧道属性"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "RequestId": fields.Str(required=False, load_from="RequestId"),
+    }
+
+
+"""
 API: UpdateExportLine
 
 修改加速线路
@@ -281,6 +868,35 @@ class UpdateExportLineResponseSchema(schema.ResponseSchema):
 
     fields = {
         "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: UpdatePOPGWAttribute
+
+更新UWAN虚拟路由器属性
+"""
+
+
+class UpdatePOPGWAttributeRequestSchema(schema.RequestSchema):
+    """UpdatePOPGWAttribute - 更新UWAN虚拟路由器属性"""
+
+    fields = {
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "PopGwId": fields.Str(required=True, dump_to="PopGwId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class UpdatePOPGWAttributeResponseSchema(schema.ResponseSchema):
+    """UpdatePOPGWAttribute - 更新UWAN虚拟路由器属性"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "RequestId": fields.Str(required=False, load_from="RequestId"),
     }
 
 
