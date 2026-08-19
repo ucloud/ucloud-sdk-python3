@@ -14,8 +14,8 @@ name: CI
 #
 # 版本取 3.12 而不是仓库声明的下界：setup.py 写着 python_requires=">=3.5"，
 # 但那早就不成立（tests 里曾用 3.10 已移除的 collections.Callable，
-# Travis 只测到 3.7 所以从未暴露）。老解释器的兼容性交给 compat.yml 定期跑，
-# 不进 PR 门禁——门禁要回答的是"这次改动有没有把代码写坏"。
+# Travis 只测到 3.7 所以从未暴露）。老解释器的兼容性不进 PR 门禁——
+# 那是「声明还成不成立」的问题，门禁要回答的是"这次改动有没有把代码写坏"。
 
 on:
   pull_request:
