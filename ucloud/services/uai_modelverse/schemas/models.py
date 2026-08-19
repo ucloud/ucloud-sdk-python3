@@ -111,6 +111,9 @@ class PricingSchema(schema.ResponseSchema):
         "Currency": fields.Str(required=False, load_from="Currency"),
         "Image": fields.Float(required=False, load_from="Image"),
         "Prompt": fields.Float(required=False, load_from="Prompt"),
+        "Unit": fields.Str(required=False, load_from="Unit"),
+        "UnitEn": fields.Str(required=False, load_from="UnitEn"),
+        "Video": fields.Str(required=False, load_from="Video"),
     }
 
 
@@ -118,12 +121,18 @@ class SquareModelSchema(schema.ResponseSchema):
     """SquareModel - 广场模型"""
 
     fields = {
+        "BatchName": fields.Str(required=False, load_from="BatchName"),
+        "BatchSquareModelId": fields.Str(
+            required=True, load_from="BatchSquareModelId"
+        ),
         "CreateAt": fields.Int(required=False, load_from="CreateAt"),
         "Describe": fields.Str(required=False, load_from="Describe"),
         "HfUpdateTime": fields.Int(required=False, load_from="HfUpdateTime"),
         "Icon": fields.Str(required=False, load_from="Icon"),
         "Id": fields.Str(required=False, load_from="Id"),
+        "IsHasBatch": fields.Bool(required=False, load_from="IsHasBatch"),
         "Language": fields.List(fields.Str()),
+        "Manufacturer": fields.Str(required=False, load_from="Manufacturer"),
         "MaxModelLen": fields.Int(required=False, load_from="MaxModelLen"),
         "ModelType": fields.Str(required=False, load_from="ModelType"),
         "Name": fields.Str(required=False, load_from="Name"),
@@ -132,6 +141,7 @@ class SquareModelSchema(schema.ResponseSchema):
             required=False, load_from="SimpleDescribe"
         ),
         "SupportedCapabilities": fields.List(fields.Str()),
+        "Tiers": fields.List(PriceTierSchema()),
         "UpdateAt": fields.Int(required=False, load_from="UpdateAt"),
     }
 
