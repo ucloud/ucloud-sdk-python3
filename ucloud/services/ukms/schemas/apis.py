@@ -392,7 +392,17 @@ class GenerateDataKeyPairRequestSchema(schema.RequestSchema):
 class GenerateDataKeyPairResponseSchema(schema.ResponseSchema):
     """GenerateDataKeyPair - 创建数据密钥对"""
 
-    fields = {}
+    fields = {
+        "DataPublicKey": fields.Str(required=False, load_from="DataPublicKey"),
+        "KeyId": fields.Str(required=False, load_from="KeyId"),
+        "KeyPairSpec": fields.Str(required=False, load_from="KeyPairSpec"),
+        "PrivateKeyCiphertextBlob": fields.Str(
+            required=False, load_from="PrivateKeyCiphertextBlob"
+        ),
+        "PrivateKeyPlaintext": fields.Str(
+            required=False, load_from="PrivateKeyPlaintext"
+        ),
+    }
 
 
 """
@@ -406,7 +416,11 @@ class GenerateDataKeyPairWithoutPlaintextRequestSchema(schema.RequestSchema):
     """GenerateDataKeyPairWithoutPlaintext - 创建数据密钥对（无明文返回）"""
 
     fields = {
+        "EncryptionContext": fields.Str(
+            required=False, dump_to="EncryptionContext"
+        ),
         "KeyId": fields.Str(required=True, dump_to="KeyId"),
+        "KeyPairSpec": fields.Str(required=True, dump_to="KeyPairSpec"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
     }
@@ -498,7 +512,9 @@ class GenerateRandomRequestSchema(schema.RequestSchema):
 class GenerateRandomResponseSchema(schema.ResponseSchema):
     """GenerateRandom - 生成随机数"""
 
-    fields = {}
+    fields = {
+        "Plaintext": fields.Str(required=False, load_from="Plaintext"),
+    }
 
 
 """
@@ -647,12 +663,12 @@ class ListKeysResponseSchema(schema.ResponseSchema):
 """
 API: ListScheduleDeletionKeys
 
-获取计划删除密钥列表，调用ScheduleKeyDeletion命令后进入此列表， 默认30天后正式删除。正式删除前可调用CancelScheduleKeyDeletion恢复
+
 """
 
 
 class ListScheduleDeletionKeysRequestSchema(schema.RequestSchema):
-    """ListScheduleDeletionKeys - 获取计划删除密钥列表，调用ScheduleKeyDeletion命令后进入此列表， 默认30天后正式删除。正式删除前可调用CancelScheduleKeyDeletion恢复"""
+    """ListScheduleDeletionKeys -"""
 
     fields = {
         "Alias": fields.Str(required=False, dump_to="Alias"),
@@ -666,7 +682,7 @@ class ListScheduleDeletionKeysRequestSchema(schema.RequestSchema):
 
 
 class ListScheduleDeletionKeysResponseSchema(schema.ResponseSchema):
-    """ListScheduleDeletionKeys - 获取计划删除密钥列表，调用ScheduleKeyDeletion命令后进入此列表， 默认30天后正式删除。正式删除前可调用CancelScheduleKeyDeletion恢复"""
+    """ListScheduleDeletionKeys -"""
 
     fields = {
         "Objects": fields.List(
@@ -860,12 +876,12 @@ class VerifyResponseSchema(schema.ResponseSchema):
 """
 API: VerifyMac
 
-验证签名
+验证指定消息、HMAC KMS 密钥和 MAC 算法的基于哈希的消息认证码 (HMAC)。为了验证 HMAC，VerifyMac 会使用您指定的消息、HMAC KMS 密钥和 MAC 算法计算 HMAC，并将计算出的 HMAC 与您指定的 HMAC 进行比较。如果两个 HMAC 完全相同，则验证成功；否则，验证失败。  验证结果表明，自计算 HMAC 以来，消息未发生更改，并且使用了指定的密钥来生成和验证 HMAC。
 """
 
 
 class VerifyMacRequestSchema(schema.RequestSchema):
-    """VerifyMac - 验证签名"""
+    """VerifyMac - 验证指定消息、HMAC KMS 密钥和 MAC 算法的基于哈希的消息认证码 (HMAC)。为了验证 HMAC，VerifyMac 会使用您指定的消息、HMAC KMS 密钥和 MAC 算法计算 HMAC，并将计算出的 HMAC 与您指定的 HMAC 进行比较。如果两个 HMAC 完全相同，则验证成功；否则，验证失败。  验证结果表明，自计算 HMAC 以来，消息未发生更改，并且使用了指定的密钥来生成和验证 HMAC。"""
 
     fields = {
         "KeyId": fields.Str(required=True, dump_to="KeyId"),
@@ -878,7 +894,7 @@ class VerifyMacRequestSchema(schema.RequestSchema):
 
 
 class VerifyMacResponseSchema(schema.ResponseSchema):
-    """VerifyMac - 验证签名"""
+    """VerifyMac - 验证指定消息、HMAC KMS 密钥和 MAC 算法的基于哈希的消息认证码 (HMAC)。为了验证 HMAC，VerifyMac 会使用您指定的消息、HMAC KMS 密钥和 MAC 算法计算 HMAC，并将计算出的 HMAC 与您指定的 HMAC 进行比较。如果两个 HMAC 完全相同，则验证成功；否则，验证失败。  验证结果表明，自计算 HMAC 以来，消息未发生更改，并且使用了指定的密钥来生成和验证 HMAC。"""
 
     fields = {
         "KeyId": fields.Str(required=False, load_from="KeyId"),
