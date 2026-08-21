@@ -21,7 +21,7 @@ class KeyMetadataSchema(schema.ResponseSchema):
         "KeyVersion": fields.Int(required=True, load_from="KeyVersion"),
         "OrganizationId": fields.Int(
             required=False, load_from="OrganizationId"
-        ),
+        ),  # Deprecated, will be removed at 1.0
         "Origin": fields.Str(required=True, load_from="Origin"),
         "ProjectId": fields.Str(required=False, load_from="ProjectId"),
         "ResourceId": fields.Str(required=True, load_from="ResourceId"),
@@ -74,26 +74,22 @@ class DEKSchema(schema.ResponseSchema):
 
 
 class CMKSchema(schema.ResponseSchema):
-    """CMK - 用户主密钥 (Customer Master Key), 用于生成数据密钥 (Data Encryption Key), 加解密数据密钥."""
+    """CMK -"""
 
     fields = {
         "Alias": fields.Str(required=True, load_from="Alias"),
         "CreatedTime": fields.Int(required=True, load_from="CreatedTime"),
         "Description": fields.Str(required=False, load_from="Description"),
-        "Enabled": fields.Bool(
-            required=True, load_from="Enabled"
-        ),  # Deprecated, will be removed at 1.0
+        "Enabled": fields.Bool(required=True, load_from="Enabled"),
         "KeyId": fields.Str(required=True, load_from="KeyId"),
         "KeyType": fields.Str(required=True, load_from="KeyType"),
         "LastModifiedTime": fields.Int(
             required=True, load_from="LastModifiedTime"
-        ),  # Deprecated, will be removed at 1.0
+        ),
         "PlanDeleteTime": fields.Int(
             required=False, load_from="PlanDeleteTime"
         ),
         "Status": fields.Str(required=True, load_from="Status"),
-        "Type": fields.Str(
-            required=True, load_from="Type"
-        ),  # Deprecated, will be removed at 1.0
+        "Type": fields.Str(required=True, load_from="Type"),
         "UpdateTime": fields.Int(required=True, load_from="UpdateTime"),
     }

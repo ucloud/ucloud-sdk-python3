@@ -214,7 +214,6 @@ class UKMSClient(Client):
         - **KeyState** (str) - 密钥对外状态。取值：Enabled、Disabled、PendingDeletion、PendingImport、Unavailable。
         - **KeyUsage** (list) - 密钥用途。取值：ENCRYPT_DECRYPT、SIGN_VERIFY、GENERATE_VERIFY_MAC、KEY_AGREEMENT。
         - **KeyVersion** (int) - 当前密钥版本。
-        - **OrganizationId** (int) - 密钥所属组织的数字 ID，来源于密钥关联的资源交易记录。
         - **Origin** (str) - 密钥材料来源。取值：UCLOUD_KMS、EXTERNAL；当前 CreateKey 仅支持 UCLOUD_KMS。
         - **ProjectId** (str) - 密钥所属项目的对外别名，格式为 org-xxx。该值由项目数字 ID 解析得到，可能因项目别名查询失败而为空。
         - **ResourceId** (str) - 密钥所属的 UKMS 实例资源 ID。
@@ -419,6 +418,11 @@ class UKMSClient(Client):
 
         **Response**
 
+        - **DataPublicKey** (str) - 公钥（明文）。
+        - **KeyId** (str) - 用于加密私钥的 KMS 密钥
+        - **KeyPairSpec** (str) - 生成的数据键对类型。
+        - **PrivateKeyCiphertextBlob** (str) - 私钥的加密副本。
+        - **PrivateKeyPlaintext** (str) - 私钥的明文副本。
 
         """
         # build request
@@ -445,6 +449,8 @@ class UKMSClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **KeyId** (str) - (Required) 密钥ID
+        - **KeyPairSpec** (str) - (Required) 指定生成的数据密钥对类型。
+        - **EncryptionContext** (str) - 指定加密私钥时使用的加密上下文。
 
         **Response**
 
@@ -545,6 +551,7 @@ class UKMSClient(Client):
 
         **Response**
 
+        - **Plaintext** (str) - 随机字节串。
 
         """
         # build request
@@ -722,36 +729,39 @@ class UKMSClient(Client):
     def list_schedule_deletion_keys(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ListScheduleDeletionKeys - 获取计划删除密钥列表，调用ScheduleKeyDeletion命令后进入此列表， 默认30天后正式删除。正式删除前可调用CancelScheduleKeyDeletion恢复
+        """ListScheduleDeletionKeys -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Alias** (str) - 按密钥 ID 或别名模糊过滤
-        - **Limit** (int) - 输出列表数量，默认返回200个
-        - **Offset** (int) - 输出列表起始位置，默认从0开始
-        - **OrderBy** (str) - 列表排序方式, 可选项: "-created_time", "created_time","plan_delete_time","-plan_delete_time";默认按-plan_delete_time 计划删除时间升序返回
-        - **ResourceId** (str) - UKMS 实例资源 ID
-        - **Sort** (str) - 排序方向，默认 desc
+        - **ProjectId** (str) - (Config)
+        - **Alias** (str) -
+        - **Limit** (int) -
+        - **Offset** (int) -
+        - **OrderBy** (str) -
+        - **ResourceId** (str) -
+        - **Sort** (str) -
 
         **Response**
 
         - **Objects** (list) - 见 **CMK** 模型定义
-        - **RequestUuid** (str) - 请求唯一标识符
-        - **Status** (str) - 操作结果
-        - **TotalCount** (int) - 符合条件的总数, 不同于Limit
+        - **RequestUuid** (str) -
+        - **Status** (str) -
+        - **TotalCount** (int) -
 
         **Response Model**
 
         **CMK**
-        - **Alias** (str) - 别名，与CMK一一对应
-        - **CreatedTime** (int) - 创建时间
-        - **Description** (str) - 对密钥的描述说明
-        - **KeyId** (str) - CMK 的唯一标识符
-        - **KeyType** (str) - 密钥类型，如RSA、EC、DES
-        - **PlanDeleteTime** (int) - 计划删除时间 时间戳
-        - **Status** (str) - 密钥状态 "Pre-Active", "Active", "Deactivated", "Compromised", "Destroyed", "Destroyed Compromised"
-        - **UpdateTime** (int) - 更新时间
+        - **Alias** (str) -
+        - **CreatedTime** (int) -
+        - **Description** (str) -
+        - **Enabled** (bool) -
+        - **KeyId** (str) -
+        - **KeyType** (str) -
+        - **LastModifiedTime** (int) -
+        - **PlanDeleteTime** (int) -
+        - **Status** (str) -
+        - **Type** (str) -
+        - **UpdateTime** (int) -
 
 
         """
@@ -761,6 +771,9 @@ class UKMSClient(Client):
         }
         req and d.update(req)
         d = apis.ListScheduleDeletionKeysRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("ListScheduleDeletionKeys", d, **kwargs)
         return apis.ListScheduleDeletionKeysResponseSchema().loads(resp)
@@ -941,7 +954,7 @@ class UKMSClient(Client):
         return apis.VerifyResponseSchema().loads(resp)
 
     def verify_mac(self, req: typing.Optional[dict] = None, **kwargs) -> dict:
-        """VerifyMac - 验证签名
+        """VerifyMac - 验证指定消息、HMAC KMS 密钥和 MAC 算法的基于哈希的消息认证码 (HMAC)。为了验证 HMAC，VerifyMac 会使用您指定的消息、HMAC KMS 密钥和 MAC 算法计算 HMAC，并将计算出的 HMAC 与您指定的 HMAC 进行比较。如果两个 HMAC 完全相同，则验证成功；否则，验证失败。  验证结果表明，自计算 HMAC 以来，消息未发生更改，并且使用了指定的密钥来生成和验证 HMAC。
 
         **Request**
 
