@@ -358,6 +358,16 @@ class UAI_ModelverseClient(Client):
 
         **Response Model**
 
+        **Pricing**
+        - **Completion** (float) - 输出定价
+        - **Currency** (str) - 币种
+        - **Image** (float) - 生图定价
+        - **Prompt** (float) - 提示词定价
+        - **Unit** (str) - 单位（中文），如“次” “百万”
+        - **UnitEn** (str) - 单位（English），如“Time” “Million”
+        - **Video** (str) - 生视频定价
+
+
         **PriceRate**
         - **ChargeItem** (str) - 收费项：input/output/thinking/tool...
         - **ChargeItemDescription** (str) - 收费项描述
@@ -373,16 +383,6 @@ class UAI_ModelverseClient(Client):
         - **Description** (str) - 档位描述（例如 "标准上下文 32k"）
         - **DescriptionEn** (str) - 档位描述（例如 "标准上下文 32k"）
         - **Rates** (list) - 见 **PriceRate** 模型定义
-
-
-        **Pricing**
-        - **Completion** (float) - 输出定价
-        - **Currency** (str) - 币种
-        - **Image** (float) - 生图定价
-        - **Prompt** (float) - 提示词定价
-        - **Unit** (str) - 单位（中文），如“次” “百万”
-        - **UnitEn** (str) - 单位（English），如“Time” “Million”
-        - **Video** (str) - 生视频定价
 
 
         **SquareModel**
