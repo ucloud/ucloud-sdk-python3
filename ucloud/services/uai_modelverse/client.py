@@ -281,14 +281,14 @@ class UAI_ModelverseClient(Client):
 
         **Response Model**
 
-        **FilterOptionInteger**
-        - **Name** (str) - 显示名称
-        - **Value** (int) - 值
-
-
         **FilterOptionString**
         - **Name** (str) - 显示名称
         - **Value** (str) - 值
+
+
+        **FilterOptionInteger**
+        - **Name** (str) - 显示名称
+        - **Value** (int) - 值
 
 
         """
@@ -358,16 +358,6 @@ class UAI_ModelverseClient(Client):
 
         **Response Model**
 
-        **Pricing**
-        - **Completion** (float) - 输出定价
-        - **Currency** (str) - 币种
-        - **Image** (float) - 生图定价
-        - **Prompt** (float) - 提示词定价
-        - **Unit** (str) - 单位（中文），如“次” “百万”
-        - **UnitEn** (str) - 单位（English），如“Time” “Million”
-        - **Video** (str) - 生视频定价
-
-
         **PriceRate**
         - **ChargeItem** (str) - 收费项：input/output/thinking/tool...
         - **ChargeItemDescription** (str) - 收费项描述
@@ -383,6 +373,16 @@ class UAI_ModelverseClient(Client):
         - **Description** (str) - 档位描述（例如 "标准上下文 32k"）
         - **DescriptionEn** (str) - 档位描述（例如 "标准上下文 32k"）
         - **Rates** (list) - 见 **PriceRate** 模型定义
+
+
+        **Pricing**
+        - **Completion** (float) - 输出定价
+        - **Currency** (str) - 币种
+        - **Image** (float) - 生图定价
+        - **Prompt** (float) - 提示词定价
+        - **Unit** (str) - 单位（中文），如“次” “百万”
+        - **UnitEn** (str) - 单位（English），如“Time” “Million”
+        - **Video** (str) - 生视频定价
 
 
         **SquareModel**
@@ -949,11 +949,6 @@ class UAI_ModelverseClient(Client):
 
         **Response Model**
 
-        **RequestLogSummary**
-        - **FailedRequests** (int) - 查询条件命中的失败请求数
-        - **TotalRequests** (int) - 查询条件命中的总请求数
-
-
         **RequestLogItem**
         - **ApiKeyId** (str) - API Key ID
         - **ApiKeyName** (str) - API Key 名称
@@ -976,6 +971,11 @@ class UAI_ModelverseClient(Client):
         - **StartTime** (int) - 请求开始时间，Unix 毫秒时间戳
         - **StartTimeReadable** (str) - 请求开始时间，可读格式
         - **TotalTokens** (int) - 总 Token 数
+
+
+        **RequestLogSummary**
+        - **FailedRequests** (int) - 查询条件命中的失败请求数
+        - **TotalRequests** (int) - 查询条件命中的总请求数
 
 
         **ListUMInferRequestLogsData**
