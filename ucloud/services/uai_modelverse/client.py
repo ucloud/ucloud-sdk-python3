@@ -25,10 +25,13 @@ class UAI_ModelverseClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Name** (str) - (Required) apikey名称
         - **DailyLimitAmount** (str) - 日限额，单位随用户所在渠道。126渠道单位为美元
+        - **DeniedModels** (str) - API Key 禁止访问的模型列表。内容为数组格式。
+        - **ExpireTime** (int) - API Key 过期时间，Unix 时间戳，单位为秒。传 -1 表示永不过期。
         - **GrantAllModels** (bool) - 全部模型访问开关，开启不受 GrantedModels 参数控制，关闭只能访问 GrantedModels 中添加模型
         - **GrantedModels** (str) - 授权模型，内容为数组格式。当 GrantAllModels 为false时 当前key只可访问数组中模型。例：["deepseek-ai/DeepSeek-V3.2-Think"]
         - **IPWhitelist** (str) - ip白名单，换行分割的多组ip。支持IPv4和网段,输入后回车生效,最多100个, 示例:﻿192.168.1.1192.168.1.10-192.168.1.100192.168.1.10/24
         - **InferenceLogEnabled** (int) - 是否开启推理日志
+        - **ModelAccessMode** (str) - 模型访问策略：whitelist 表示白名单模式，blacklist 表示黑名单模式。
         - **ModelverseDisabled** (int) - 是否modelverse可用 0: 启用 1: 禁用
         - **MonthlyLimitAmount** (str) - 月限额，单位随用户所在渠道。126渠道单位为美元
         - **SandBoxDisabled** (int) - 是否沙盒可用 0: 启用 1: 禁用(astraflow 沙盒控制未上线，暂时无效)
@@ -45,6 +48,7 @@ class UAI_ModelverseClient(Client):
         - **CreateTime** (int) - 创建时间
         - **DailyLimitAmount** (str) - 日限额，单位随用户所在渠道。126渠道单位为美元
         - **DailyUsedAmount** (str) - 日已使用额，单位随用户所在渠道。126渠道单位为美元
+        - **DeniedModels** (list) - 禁止访问的模型列表。当 ModelAccessMode=blacklist 时生效。
         - **ExpireTime** (int) - 过期时间的unix时间戳，-1 用不过期
         - **GrantAllModels** (bool) - 全部模型访问开关，开启不受 GrantedModels 参数控制，关闭只能访问 GrantedModels 中添加模型
         - **GrantedModels** (list) - 授权的模型，英文逗号分隔，all表示所有模型都有权限
@@ -52,6 +56,7 @@ class UAI_ModelverseClient(Client):
         - **InferenceLogEnabled** (int) - 是否开启推理日志
         - **Key** (str) - 密钥值
         - **KeyId** (str) - 资源ID
+        - **ModelAccessMode** (str) - 模型访问策略。可选值：whitelist（白名单模式，默认）或 blacklist（黑名单模式）。
         - **ModelverseDisabled** (int) - 是否modelverse可用 0: 启用 1: 禁用
         - **MonthlyLimitAmount** (str) - 月限额，单位随用户所在渠道。126渠道单位为美元
         - **MonthlyUsedAmount** (str) - 月已使用额，单位随用户所在渠道。126渠道单位为美元
@@ -276,14 +281,14 @@ class UAI_ModelverseClient(Client):
 
         **Response Model**
 
-        **FilterOptionString**
-        - **Name** (str) - 显示名称
-        - **Value** (str) - 值
-
-
         **FilterOptionInteger**
         - **Name** (str) - 显示名称
         - **Value** (int) - 值
+
+
+        **FilterOptionString**
+        - **Name** (str) - 显示名称
+        - **Value** (str) - 值
 
 
         """
@@ -484,6 +489,9 @@ class UAI_ModelverseClient(Client):
         - **Currency** (str) -
         - **Image** (float) -
         - **Prompt** (float) -
+        - **Unit** (str) -
+        - **UnitEn** (str) -
+        - **Video** (str) -
 
 
         **UMinferAPIModel**
@@ -1161,10 +1169,13 @@ class UAI_ModelverseClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **KeyId** (str) - (Required) apikey的id
         - **DailyLimitAmount** (str) - 日限额，单位随用户所在渠道。126渠道单位为美元
+        - **DeniedModels** (str) - 禁止访问的模型列表。当 ModelAccessMode=blacklist 时生效。数组类型，示例 ["gpt-4o", "sora-2"]
+        - **ExpireTime** (int) - API Key 过期时间，Unix 时间戳，单位为秒。传 -1 表示永不过期。
         - **GrantAllModels** (bool) - 全部模型访问开关，开启不受 GrantedModels 参数控制，关闭只能访问 GrantedModels 中添加模型
         - **GrantedModels** (str) - 授权模型，内容为数组格式。当 GrantAllModels 为false时 当前key只可访问数组中模型。例：["deepseek-ai/DeepSeek-V3.2-Think"]
         - **IPWhitelist** (str) - ip白名单，换行分割的多组ip。支持IPv4和网段,输入后回车生效,最多100个, 示例: ﻿ 192.168.1.1 192.168.1.10-192.168.1.100 192.168.1.10/24
         - **InferenceLogEnabled** (int) - 是否开启推理日志
+        - **ModelAccessMode** (str) - 模型访问策略。可选值：whitelist（白名单模式，默认）或 blacklist（黑名单模式）。
         - **ModelverseDisabled** (int) - 是否modelverse可用 0: 启用 1: 禁用
         - **MonthlyLimitAmount** (str) - 月限额，单位随用户所在渠道。126渠道单位为美元
         - **Name** (str) - 更新的名称

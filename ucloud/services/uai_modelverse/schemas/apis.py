@@ -21,11 +21,16 @@ class CreateUMInferAPIKeyRequestSchema(schema.RequestSchema):
         "DailyLimitAmount": fields.Str(
             required=False, dump_to="DailyLimitAmount"
         ),
+        "DeniedModels": fields.Str(required=False, dump_to="DeniedModels"),
+        "ExpireTime": fields.Int(required=False, dump_to="ExpireTime"),
         "GrantAllModels": fields.Bool(required=False, dump_to="GrantAllModels"),
         "GrantedModels": fields.Str(required=False, dump_to="GrantedModels"),
         "IPWhitelist": fields.Str(required=False, dump_to="IPWhitelist"),
         "InferenceLogEnabled": fields.Int(
             required=False, dump_to="InferenceLogEnabled"
+        ),
+        "ModelAccessMode": fields.Str(
+            required=False, dump_to="ModelAccessMode"
         ),
         "ModelverseDisabled": fields.Int(
             required=False, dump_to="ModelverseDisabled"
@@ -762,6 +767,8 @@ class UpdateUMInferAPIKeyRequestSchema(schema.RequestSchema):
         "DailyLimitAmount": fields.Str(
             required=False, dump_to="DailyLimitAmount"
         ),
+        "DeniedModels": fields.Str(required=False, dump_to="DeniedModels"),
+        "ExpireTime": fields.Int(required=False, dump_to="ExpireTime"),
         "GrantAllModels": fields.Bool(required=False, dump_to="GrantAllModels"),
         "GrantedModels": fields.Str(required=False, dump_to="GrantedModels"),
         "IPWhitelist": fields.Str(required=False, dump_to="IPWhitelist"),
@@ -769,6 +776,9 @@ class UpdateUMInferAPIKeyRequestSchema(schema.RequestSchema):
             required=False, dump_to="InferenceLogEnabled"
         ),
         "KeyId": fields.Str(required=True, dump_to="KeyId"),
+        "ModelAccessMode": fields.Str(
+            required=False, dump_to="ModelAccessMode"
+        ),
         "ModelverseDisabled": fields.Int(
             required=False, dump_to="ModelverseDisabled"
         ),
