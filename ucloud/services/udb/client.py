@@ -835,6 +835,11 @@ class UDBClient(Client):
 
         **Response Model**
 
+        **UFileDataSet**
+        - **Bucket** (str) -
+        - **TokenID** (str) -
+
+
         **UDBSlaveInstanceSet**
         - **AdminUser** (str) -
         - **BackupBeginTime** (int) -
@@ -879,11 +884,6 @@ class UDBClient(Client):
         - **VirtualIP** (str) -
         - **VirtualIPMac** (str) -
         - **Zone** (str) -
-
-
-        **UFileDataSet**
-        - **Bucket** (str) -
-        - **TokenID** (str) -
 
 
         **UDBInstanceSet**

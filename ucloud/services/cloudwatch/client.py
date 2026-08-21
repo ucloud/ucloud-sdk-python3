@@ -270,12 +270,6 @@ class CloudWatchClient(Client):
 
         **Response Model**
 
-        **ConversionRule**
-        - **ConversionFactor** (int) - 转换因子
-        - **From** (str) - 来源
-        - **To** (str) - 目标
-
-
         **MetricUnit**
         - **ConversionFactor** (int) - 转换因子
         - **CreatedAt** (str) - 创建时间
@@ -306,6 +300,12 @@ class CloudWatchClient(Client):
         - **UnitID** (int) - 单位ID
         - **UpdatedAt** (str) - 修改时间
         - **UpdatedBy** (str) - 修改者
+
+
+        **ConversionRule**
+        - **ConversionFactor** (int) - 转换因子
+        - **From** (str) - 来源
+        - **To** (str) - 目标
 
 
         **MetricUnitConfig**
@@ -727,11 +727,6 @@ class CloudWatchClient(Client):
 
         **Response Model**
 
-        **ResourceExtendAttrItem**
-        - **Key** (str) - 键
-        - **Value** (str) - 值
-
-
         **LabelAttrItem**
         - **Key** (str) - 键
         - **Value** (str) - 值
@@ -756,6 +751,11 @@ class CloudWatchClient(Client):
         **ResourceMonitorItem**
         - **Metric** (str) - 指标名
         - **MetricValues** (list) - 见 **MetricSingleSample** 模型定义
+
+
+        **ResourceExtendAttrItem**
+        - **Key** (str) - 键
+        - **Value** (str) - 值
 
 
         **ResourceSummary**

@@ -350,17 +350,6 @@ class OrderItemDetailSchema(schema.ResponseSchema):
     }
 
 
-class RequestLogSummarySchema(schema.ResponseSchema):
-    """RequestLogSummary - 请求日志汇总"""
-
-    fields = {
-        "FailedRequests": fields.Int(
-            required=False, load_from="FailedRequests"
-        ),
-        "TotalRequests": fields.Int(required=False, load_from="TotalRequests"),
-    }
-
-
 class RequestLogItemSchema(schema.ResponseSchema):
     """RequestLogItem - 请求日志列表项"""
 
@@ -406,6 +395,17 @@ class RequestLogItemSchema(schema.ResponseSchema):
             required=False, load_from="StartTimeReadable"
         ),
         "TotalTokens": fields.Int(required=False, load_from="TotalTokens"),
+    }
+
+
+class RequestLogSummarySchema(schema.ResponseSchema):
+    """RequestLogSummary - 请求日志汇总"""
+
+    fields = {
+        "FailedRequests": fields.Int(
+            required=False, load_from="FailedRequests"
+        ),
+        "TotalRequests": fields.Int(required=False, load_from="TotalRequests"),
     }
 
 
