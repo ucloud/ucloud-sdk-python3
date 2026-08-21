@@ -125,11 +125,20 @@ class GetProductMetricsRespDataSchema(schema.ResponseSchema):
     }
 
 
+class ContentAttrItemSchema(schema.ResponseSchema):
+    """ContentAttrItem - 告警内容属性项"""
+
+    fields = {
+        "Key": fields.Str(required=False, load_from="Key"),
+        "Value": fields.Str(required=False, load_from="Value"),
+    }
+
+
 class AlertRecordSchema(schema.ResponseSchema):
     """AlertRecord - 告警记录模型"""
 
     fields = {
-        "ContentAttrList": fields.List(fields.Str()),
+        "ContentAttrList": fields.List(ContentAttrItemSchema()),
         "EndAt": fields.Int(required=False, load_from="EndAt"),
         "Level": fields.Str(required=False, load_from="Level"),
         "MetricID": fields.Int(required=False, load_from="MetricID"),
@@ -261,29 +270,32 @@ class MetricSampleSchema(schema.ResponseSchema):
     }
 
 
+class TagListItemSchema(schema.ResponseSchema):
+    """TagListItem - 标签键值项"""
+
+    fields = {
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "TagValue": fields.Str(required=False, load_from="TagValue"),
+    }
+
+
 class MetricResultSchema(schema.ResponseSchema):
     """MetricResult - 单条时间序列的结果（代码结构体：MetricValues）"""
 
     fields = {
         "ResourceId": fields.Str(required=False, load_from="ResourceId"),
         "ResourceName": fields.Str(required=False, load_from="ResourceName"),
-        "TagList": fields.List(fields.Int()),
+        "TagList": fields.List(TagListItemSchema()),
         "Values": fields.List(MetricSampleSchema()),
     }
 
 
-class ObjectTypeSchema(schema.ResponseSchema):
-    """ObjectType -"""
+class TagEntrySchema(schema.ResponseSchema):
+    """TagEntry - 标签条目"""
 
     fields = {
-        "Id": fields.Int(required=False, load_from="Id"),
-        "Metas": fields.Str(required=False, load_from="Metas"),
-        "ObjectType": fields.Str(required=False, load_from="ObjectType"),
-        "ObjectTypeKey": fields.Str(required=False, load_from="ObjectTypeKey"),
-        "ProductCNName": fields.Str(required=False, load_from="ProductCNName"),
-        "ProductENName": fields.Str(required=False, load_from="ProductENName"),
-        "ProductName": fields.Str(required=False, load_from="ProductName"),
-        "ProductName1": fields.Str(required=False, load_from="ProductName1"),
+        "KeyList": fields.List(fields.Str()),
+        "TagName": fields.Str(required=False, load_from="TagName"),
     }
 
 
@@ -295,7 +307,7 @@ class QueryMetricDataRespItemSchema(schema.ResponseSchema):
         "ErrMsg": fields.Str(required=False, load_from="ErrMsg"),
         "Metric": fields.Str(required=False, load_from="Metric"),
         "Results": fields.List(MetricResultSchema()),
-        "TagEntries": fields.List(ObjectTypeSchema()),
+        "TagEntries": fields.List(TagEntrySchema()),
     }
 
 
@@ -313,7 +325,7 @@ class MetricSingleSampleSchema(schema.ResponseSchema):
 
     fields = {
         "Metric": fields.Str(required=False, load_from="Metric"),
-        "TagsList": fields.List(ProductSchema()),
+        "TagsList": fields.List(TagListItemSchema()),
         "Value": MetricSampleSchema(),
     }
 
@@ -327,12 +339,30 @@ class ResourceMonitorItemSchema(schema.ResponseSchema):
     }
 
 
+class ResourceExtendAttrItemSchema(schema.ResponseSchema):
+    """ResourceExtendAttrItem - 资源扩展属性项"""
+
+    fields = {
+        "Key": fields.Str(required=False, load_from="Key"),
+        "Value": fields.Str(required=False, load_from="Value"),
+    }
+
+
+class LabelAttrItemSchema(schema.ResponseSchema):
+    """LabelAttrItem - 标签扩展属性项"""
+
+    fields = {
+        "Key": fields.Str(required=False, load_from="Key"),
+        "Value": fields.Str(required=False, load_from="Value"),
+    }
+
+
 class ResourceSummarySchema(schema.ResponseSchema):
     """ResourceSummary - 单个资源的总览属性指标等信息"""
 
     fields = {
         "CompanyId": fields.Int(required=False, load_from="CompanyId"),
-        "LabelAttrList": fields.List(ResourceMonitorItemSchema()),
+        "LabelAttrList": fields.List(LabelAttrItemSchema()),
         "MonitorAttr": fields.List(ResourceMonitorItemSchema()),
         "Name": fields.Str(required=False, load_from="Name"),
         "OrganizationId": fields.Int(
@@ -342,7 +372,7 @@ class ResourceSummarySchema(schema.ResponseSchema):
         "ProjectId": fields.Int(required=False, load_from="ProjectId"),
         "Region": fields.Str(required=False, load_from="Region"),
         "RegionCN": fields.Str(required=False, load_from="RegionCN"),
-        "ResourceExtendAttrList": fields.List(ResourceMonitorItemSchema()),
+        "ResourceExtendAttrList": fields.List(ResourceExtendAttrItemSchema()),
         "ResourceId": fields.Str(required=False, load_from="ResourceId"),
         "Status": fields.Int(required=False, load_from="Status"),
         "Zone": fields.Str(required=False, load_from="Zone"),

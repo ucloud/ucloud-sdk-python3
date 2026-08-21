@@ -835,11 +835,6 @@ class UDBClient(Client):
 
         **Response Model**
 
-        **UFileDataSet**
-        - **Bucket** (str) -
-        - **TokenID** (str) -
-
-
         **UDBSlaveInstanceSet**
         - **AdminUser** (str) -
         - **BackupBeginTime** (int) -
@@ -871,9 +866,11 @@ class UDBClient(Client):
         - **ReplicationDelaySeconds** (int) -
         - **Role** (str) -
         - **SSDType** (str) -
+        - **SpecificationClass** (str) -
         - **SpecificationType** (int) -
         - **SrcDBId** (str) -
         - **State** (str) -
+        - **StorageClass** (str) -
         - **SubnetId** (str) -
         - **SystemFileSize** (float) -
         - **Tag** (str) -
@@ -884,8 +881,14 @@ class UDBClient(Client):
         - **Zone** (str) -
 
 
+        **UFileDataSet**
+        - **Bucket** (str) -
+        - **TokenID** (str) -
+
+
         **UDBInstanceSet**
         - **AdminUser** (str) -
+        - **AutoRenew** (int) -
         - **BackupBeginTime** (int) -
         - **BackupBlacklist** (str) -
         - **BackupCount** (int) -
@@ -908,6 +911,7 @@ class UDBClient(Client):
         - **DiskUsedSize** (float) -
         - **EnableSSL** (int) -
         - **ExpiredTime** (int) -
+        - **ForceEncryption** (int) -
         - **IPv6Address** (str) -
         - **InstanceMode** (str) -
         - **InstanceType** (str) -
@@ -922,9 +926,11 @@ class UDBClient(Client):
         - **Role** (str) -
         - **SSDType** (str) -
         - **SSLExpirationTime** (int) -
+        - **SpecificationClass** (str) -
         - **SpecificationType** (int) -
         - **SrcDBId** (str) -
         - **State** (str) -
+        - **StorageClass** (str) -
         - **SubnetId** (str) -
         - **SystemFileSize** (float) -
         - **Tag** (str) -
@@ -1218,6 +1224,11 @@ class UDBClient(Client):
 
         **Response Model**
 
+        **UFileDataSet**
+        - **Bucket** (str) - bucket名称
+        - **TokenID** (str) - Ufile的令牌tokenid
+
+
         **UDBSlaveInstanceSet**
         - **AdminUser** (str) - 管理员帐户名，默认root
         - **BackupBeginTime** (int) - 备份策略，不可修改，开始时间，单位小时计，默认3点
@@ -1261,11 +1272,6 @@ class UDBClient(Client):
         - **VirtualIP** (str) - DB实例虚ip
         - **VirtualIPMac** (str) - DB实例虚ip的mac地址
         - **Zone** (str) - 可用区
-
-
-        **UFileDataSet**
-        - **Bucket** (str) - bucket名称
-        - **TokenID** (str) - Ufile的令牌tokenid
 
 
         **UDBInstanceSet**
@@ -1510,7 +1516,7 @@ class UDBClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **DBTypeId** (str) - (Required) UDB实例的DB版本字符串
         - **DiskSpace** (int) - (Required) 磁盘空间(GB),暂时支持20(GB) - 3000(GB), 输入不带单位
-        - **MemoryLimit** (int) - (Required) 内存限制(MB)，单位为MB.目前支持：2000-96000
+        - **MemoryLimit** (int) - (Required) 内存限制(MB)，目前支持2000‑96000，按1000进制(1GB=1000MB)计算
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **CPU** (int) - CPU个数，如果db类型为sqlserver，则为必填参数
         - **ChargeType** (str) - Year，按年付费； Month，按月付费 Dynamic，按需付费（需开启权限) Trial，试用（需开启权限）默认为月付

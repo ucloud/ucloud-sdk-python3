@@ -276,13 +276,6 @@ class CloudWatchClient(Client):
         - **To** (str) - 目标
 
 
-        **MetricUnitConfig**
-        - **ConversionFactor** (int) - 转换因子
-        - **ConversionRules** (list) - 见 **ConversionRule** 模型定义
-        - **UnitCnNames** (list) - 指标中文名列表
-        - **UnitEnNames** (list) - 指标英文名列表
-
-
         **MetricUnit**
         - **ConversionFactor** (int) - 转换因子
         - **CreatedAt** (str) - 创建时间
@@ -313,6 +306,13 @@ class CloudWatchClient(Client):
         - **UnitID** (int) - 单位ID
         - **UpdatedAt** (str) - 修改时间
         - **UpdatedBy** (str) - 修改者
+
+
+        **MetricUnitConfig**
+        - **ConversionFactor** (int) - 转换因子
+        - **ConversionRules** (list) - 见 **ConversionRule** 模型定义
+        - **UnitCnNames** (list) - 指标中文名列表
+        - **UnitEnNames** (list) - 指标英文名列表
 
 
         **GetProductMetricsRespData**
@@ -361,8 +361,13 @@ class CloudWatchClient(Client):
 
         **Response Model**
 
+        **ContentAttrItem**
+        - **Key** (str) - 键
+        - **Value** (str) - 值
+
+
         **AlertRecord**
-        - **ContentAttrList** (list) - 产品相关的额外属性列表
+        - **ContentAttrList** (list) - 见 **ContentAttrItem** 模型定义
         - **EndAt** (int) - 告警结束时间
         - **Level** (str) - 告警等级
         - **MetricID** (int) - 指标id
@@ -651,15 +656,14 @@ class CloudWatchClient(Client):
 
         **Response Model**
 
-        **ObjectType**
-        - **Id** (int) - ID
-        - **Metas** (str) - {type: spec|basic, key:string, name: string}[] -> JSON字符串
-        - **ObjectType** (str) - 资源类型ID
-        - **ObjectTypeKey** (str) - 资源类型
-        - **ProductCNName** (str) - 产品中文名称
-        - **ProductENName** (str) - 产品英文名称
-        - **ProductName** (str) - 产品名称
-        - **ProductName1** (str) - 产品子名称
+        **TagEntry**
+        - **KeyList** (list) - 标签候选值列表
+        - **TagName** (str) - 标签名称
+
+
+        **TagListItem**
+        - **Tag** (str) - 标签名
+        - **TagValue** (str) - 标签值
 
 
         **MetricSample**
@@ -670,7 +674,7 @@ class CloudWatchClient(Client):
         **MetricResult**
         - **ResourceId** (str) - 资源的短id
         - **ResourceName** (str) - 资源名称
-        - **TagList** (list) - 资源标签列表。每项为 TagListItem：Tag（标签名）和 TagValue（标签值）。
+        - **TagList** (list) - 见 **TagListItem** 模型定义
         - **Values** (list) - 见 **MetricSample** 模型定义
 
 
@@ -679,7 +683,7 @@ class CloudWatchClient(Client):
         - **ErrMsg** (str) - 该指标查询的状态说明
         - **Metric** (str) - 指标名
         - **Results** (list) - 见 **MetricResult** 模型定义
-        - **TagEntries** (list) - 见 **ObjectType** 模型定义
+        - **TagEntries** (list) - 见 **TagEntry** 模型定义
 
 
         **QueryMetricDataResp**
@@ -723,26 +727,29 @@ class CloudWatchClient(Client):
 
         **Response Model**
 
+        **ResourceExtendAttrItem**
+        - **Key** (str) - 键
+        - **Value** (str) - 值
+
+
+        **LabelAttrItem**
+        - **Key** (str) - 键
+        - **Value** (str) - 值
+
+
+        **TagListItem**
+        - **Tag** (str) - 标签名
+        - **TagValue** (str) - 标签值
+
+
         **MetricSample**
         - **Timestamp** (int) - 时间戳
         - **Value** (float) - 样本值
 
 
-        **Product**
-        - **Id** (int) - ID
-        - **Metas** (str) - {Type: 1|2, Key:string, Name: string}[] -> JSON字符串
-        - **ProductChName** (str) - 产品中文名称
-        - **ProductEnName** (str) - 产品英文名称
-        - **ProductGroup** (str) - 产品分组
-        - **ProductKey** (str) - 资源类型唯一key
-        - **ProductName** (str) - 产品名称
-        - **ProductName1** (str) - 产品子名称
-        - **ProductType** (int) - 资源类型ID
-
-
         **MetricSingleSample**
         - **Metric** (str) - 指标名
-        - **TagsList** (list) - 见 **Product** 模型定义
+        - **TagsList** (list) - 见 **TagListItem** 模型定义
         - **Value** (dict) - 见 **MetricSample** 模型定义
 
 
@@ -753,7 +760,7 @@ class CloudWatchClient(Client):
 
         **ResourceSummary**
         - **CompanyId** (int) - 公司id
-        - **LabelAttrList** (list) - 见 **ResourceMonitorItem** 模型定义
+        - **LabelAttrList** (list) - 见 **LabelAttrItem** 模型定义
         - **MonitorAttr** (list) - 见 **ResourceMonitorItem** 模型定义
         - **Name** (str) - 资源名称
         - **OrganizationId** (int) - 项目id
@@ -761,7 +768,7 @@ class CloudWatchClient(Client):
         - **ProjectId** (int) - 项目id
         - **Region** (str) - 地域
         - **RegionCN** (str) - 地域中文名
-        - **ResourceExtendAttrList** (list) - 见 **ResourceMonitorItem** 模型定义
+        - **ResourceExtendAttrList** (list) - 见 **ResourceExtendAttrItem** 模型定义
         - **ResourceId** (str) - 资源id
         - **Status** (int) - 资源状态
         - **Zone** (str) - 可用区
