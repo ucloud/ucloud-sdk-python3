@@ -21,26 +21,6 @@ class VPNInfoSchema(schema.ResponseSchema):
     }
 
 
-class IKEConfSchema(schema.ResponseSchema):
-    """IKEConf - IKE配置信息"""
-
-    fields = {
-        "AuthenticationAlgorithm": fields.Str(
-            required=False, load_from="AuthenticationAlgorithm"
-        ),
-        "DhGroup": fields.Str(required=False, load_from="DhGroup"),
-        "EncryptionAlgorithm": fields.Str(
-            required=False, load_from="EncryptionAlgorithm"
-        ),
-        "ExchangeMode": fields.Str(required=False, load_from="ExchangeMode"),
-        "LocalId": fields.Str(required=False, load_from="LocalId"),
-        "PreSharedKey": fields.Str(required=False, load_from="PreSharedKey"),
-        "RemoteId": fields.Str(required=False, load_from="RemoteId"),
-        "SALifeTime": fields.Str(required=False, load_from="SALifeTime"),
-        "Version": fields.Str(required=False, load_from="Version"),
-    }
-
-
 class IPSecConfSchema(schema.ResponseSchema):
     """IPSecConf - IPSec配置信息"""
 
@@ -61,6 +41,17 @@ class IPSecConfSchema(schema.ResponseSchema):
     }
 
 
+class DPDConfSchema(schema.ResponseSchema):
+    """DPDConf - DPD 配置"""
+
+    fields = {
+        "Action": fields.Str(required=True, load_from="Action"),
+        "Delay": fields.Int(required=True, load_from="Delay"),
+        "Enabled": fields.Int(required=True, load_from="Enabled"),
+        "Timeout": fields.Int(required=True, load_from="Timeout"),
+    }
+
+
 class BGPConfSchema(schema.ResponseSchema):
     """BGPConf - CE隧道 BGP配置"""
 
@@ -73,14 +64,23 @@ class BGPConfSchema(schema.ResponseSchema):
     }
 
 
-class DPDConfSchema(schema.ResponseSchema):
-    """DPDConf - DPD 配置"""
+class IKEConfSchema(schema.ResponseSchema):
+    """IKEConf - IKE配置信息"""
 
     fields = {
-        "Action": fields.Str(required=True, load_from="Action"),
-        "Delay": fields.Int(required=True, load_from="Delay"),
-        "Enabled": fields.Int(required=True, load_from="Enabled"),
-        "Timeout": fields.Int(required=True, load_from="Timeout"),
+        "AuthenticationAlgorithm": fields.Str(
+            required=False, load_from="AuthenticationAlgorithm"
+        ),
+        "DhGroup": fields.Str(required=False, load_from="DhGroup"),
+        "EncryptionAlgorithm": fields.Str(
+            required=False, load_from="EncryptionAlgorithm"
+        ),
+        "ExchangeMode": fields.Str(required=False, load_from="ExchangeMode"),
+        "LocalId": fields.Str(required=False, load_from="LocalId"),
+        "PreSharedKey": fields.Str(required=False, load_from="PreSharedKey"),
+        "RemoteId": fields.Str(required=False, load_from="RemoteId"),
+        "SALifeTime": fields.Str(required=False, load_from="SALifeTime"),
+        "Version": fields.Str(required=False, load_from="Version"),
     }
 
 
@@ -182,6 +182,21 @@ class WhiteListInfoSchema(schema.ResponseSchema):
     }
 
 
+class BWPackageInfoSchema(schema.ResponseSchema):
+    """BWPackageInfo - UWAN虚拟路由器带宽包信息"""
+
+    fields = {
+        "BandWidth": fields.Float(required=False, load_from="BandWidth"),
+        "BwId": fields.Str(required=False, load_from="BwId"),
+        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
+        "DueTime": fields.Int(required=False, load_from="DueTime"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "PayMode": fields.Str(required=False, load_from="PayMode"),
+        "PublicIp": fields.Str(required=False, load_from="PublicIp"),
+        "Remark": fields.Str(required=False, load_from="Remark"),
+    }
+
+
 class UGNBWInfoSchema(schema.ResponseSchema):
     """UGNBWInfo - UGN带宽包信息"""
 
@@ -198,21 +213,6 @@ class UGNInfoSchema(schema.ResponseSchema):
         "UGNBWInfos": fields.List(UGNBWInfoSchema()),
         "UGNId": fields.Str(required=False, load_from="UGNId"),
         "UGNName": fields.Str(required=False, load_from="UGNName"),
-    }
-
-
-class BWPackageInfoSchema(schema.ResponseSchema):
-    """BWPackageInfo - UWAN虚拟路由器带宽包信息"""
-
-    fields = {
-        "BandWidth": fields.Float(required=False, load_from="BandWidth"),
-        "BwId": fields.Str(required=False, load_from="BwId"),
-        "ChargeType": fields.Str(required=False, load_from="ChargeType"),
-        "DueTime": fields.Int(required=False, load_from="DueTime"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "PayMode": fields.Str(required=False, load_from="PayMode"),
-        "PublicIp": fields.Str(required=False, load_from="PublicIp"),
-        "Remark": fields.Str(required=False, load_from="Remark"),
     }
 
 

@@ -130,13 +130,6 @@ class UWSCClient(Client):
 
         **Request Model**
 
-        **CreateCETunnelParamDPDConf**
-        - **Action** (str) - DPD超时后的动作,Enable为1（开启）时有效。可取值为clear（断开）、restart（重试）和 trap（流量触发）
-        - **Delay** (int) - DPD探测间隔时间。dpdEnable为1（开启）时有效。单位为秒，默认为 10
-        - **Enabled** (int) - 是否开启 DPD（对等体存活检测）功能。取值：0（关闭）、1（开启）
-        - **Timeout** (int) - DPD超时时间。即探测确认对端不存在需要的时间。dpdEnable为1（开启）时有效。单位为秒。取值范围为 30-60（IKEv2 默认为 0）
-
-
         **CreateCETunnelParamIKEConf**
         - **AuthenticationAlgorithm** (str) - IKE 认证算法，取值："md5", "sha1", "sha2-256"
         - **DhGroup** (str) - DH group，指定IKE交换密钥时使用的DH组。取值："1", "2", "5", "14", "15", "16"
@@ -149,14 +142,6 @@ class UWSCClient(Client):
         - **Version** (str) - IKE 版本，取值： "ike v1"，"ike v2"
 
 
-        **CreateCETunnelParamBGPConf**
-        - **LocalAsn** (str) - Ucloud侧的自治系统号。
-        - **LocalIp** (str) - 云端BGP地址。必须从BGP隧道网段内分配。
-        - **PeerAsn** (str) - 对端BGP ASN号。
-        - **PeerIp** (str) - 用户端BGP地址。必须从BGP隧道网段内分配。
-        - **TunnelCidr** (str) - BGP隧道网段。该网段需是一个在 169.254.0.0/16 内的掩码长度为 30 的网段。
-
-
         **CreateCETunnelParamIPSecConf**
         - **AuthenticationAlgorithm** (str) - 第二阶段协商的认证算法。取值：md5、sha1、sha2-256。
         - **CENetwork** (list) - 需要和 VPC 互通的本地数据中心侧的网段，用于第二阶段协商。
@@ -165,6 +150,21 @@ class UWSCClient(Client):
         - **Protocol** (str) - IPSec 安全协议，取值：“esp”，“ah”
         - **SALifeTime** (str) - 第二阶段协商出的 SA 的生存周期。单位：秒。取值范围：1200~604800
         - **SALifetimeBytes** (str) - 第二阶段协商出的 SA 的生存周期。单位：字节 KB。取值范围：8000 – 20000000，默认使用SA超时时间
+
+
+        **CreateCETunnelParamBGPConf**
+        - **LocalAsn** (str) - Ucloud侧的自治系统号。
+        - **LocalIp** (str) - 云端BGP地址。必须从BGP隧道网段内分配。
+        - **PeerAsn** (str) - 对端BGP ASN号。
+        - **PeerIp** (str) - 用户端BGP地址。必须从BGP隧道网段内分配。
+        - **TunnelCidr** (str) - BGP隧道网段。该网段需是一个在 169.254.0.0/16 内的掩码长度为 30 的网段。
+
+
+        **CreateCETunnelParamDPDConf**
+        - **Action** (str) - DPD超时后的动作,Enable为1（开启）时有效。可取值为clear（断开）、restart（重试）和 trap（流量触发）
+        - **Delay** (int) - DPD探测间隔时间。dpdEnable为1（开启）时有效。单位为秒，默认为 10
+        - **Enabled** (int) - 是否开启 DPD（对等体存活检测）功能。取值：0（关闭）、1（开启）
+        - **Timeout** (int) - DPD超时时间。即探测确认对端不存在需要的时间。dpdEnable为1（开启）时有效。单位为秒。取值范围为 30-60（IKEv2 默认为 0）
 
 
         """
@@ -516,6 +516,25 @@ class UWSCClient(Client):
 
         **Response Model**
 
+        **IKEConf**
+        - **AuthenticationAlgorithm** (str) - 认证算法
+        - **DhGroup** (str) - 分组信息
+        - **EncryptionAlgorithm** (str) - 加密算法
+        - **ExchangeMode** (str) - 协商模式
+        - **LocalId** (str) - 本端标识
+        - **PreSharedKey** (str) - 预共享密钥
+        - **RemoteId** (str) - 对端标识
+        - **SALifeTime** (str) - IKE SA的生存周期
+        - **Version** (str) - 版本
+
+
+        **DPDConf**
+        - **Action** (str) - DPD 行为
+        - **Delay** (int) - DPD 探测间隔时间
+        - **Enabled** (int) - 是否开启 DPD
+        - **Timeout** (int) - DPD 探测超时时间
+
+
         **IPSecConf**
         - **AuthenticationAlgorithm** (str) - 认证算法
         - **CENetwork** (list) - 客户网段
@@ -532,25 +551,6 @@ class UWSCClient(Client):
         - **PeerAsn** (int) - 对端自治系统号
         - **PeerIp** (str) - 用户端BGP地址
         - **TunnelCidr** (str) - BGP隧道网段
-
-
-        **DPDConf**
-        - **Action** (str) - DPD 行为
-        - **Delay** (int) - DPD 探测间隔时间
-        - **Enabled** (int) - 是否开启 DPD
-        - **Timeout** (int) - DPD 探测超时时间
-
-
-        **IKEConf**
-        - **AuthenticationAlgorithm** (str) - 认证算法
-        - **DhGroup** (str) - 分组信息
-        - **EncryptionAlgorithm** (str) - 加密算法
-        - **ExchangeMode** (str) - 协商模式
-        - **LocalId** (str) - 本端标识
-        - **PreSharedKey** (str) - 预共享密钥
-        - **RemoteId** (str) - 对端标识
-        - **SALifeTime** (str) - IKE SA的生存周期
-        - **Version** (str) - 版本
 
 
         **VPNTunnelInfo**
@@ -743,17 +743,6 @@ class UWSCClient(Client):
 
         **Response Model**
 
-        **UGNBWInfo**
-        - **UGNBWId** (str) - UGN带宽包ID
-        - **UGNBWName** (str) - UGN带宽包名称
-
-
-        **UGNInfo**
-        - **UGNBWInfos** (list) - 见 **UGNBWInfo** 模型定义
-        - **UGNId** (str) - 云联网 ID
-        - **UGNName** (str) - 云联网名称
-
-
         **BWPackageInfo**
         - **BandWidth** (float) - 最大带宽值
         - **BwId** (str) - UWAN 网关带宽 ID
@@ -763,6 +752,17 @@ class UWSCClient(Client):
         - **PayMode** (str) - 计费方式eg:(固定带宽)
         - **PublicIp** (str) - 网关外网 IP
         - **Remark** (str) - 备注
+
+
+        **UGNBWInfo**
+        - **UGNBWId** (str) - UGN带宽包ID
+        - **UGNBWName** (str) - UGN带宽包名称
+
+
+        **UGNInfo**
+        - **UGNBWInfos** (list) - 见 **UGNBWInfo** 模型定义
+        - **UGNId** (str) - 云联网 ID
+        - **UGNName** (str) - 云联网名称
 
 
         **POPGWInfo**
@@ -904,13 +904,6 @@ class UWSCClient(Client):
 
         **Request Model**
 
-        **UpdateCETunnelParamDPDConf**
-        - **Action** (str) - DPD超时后的动作,Enable为1（开启）时有效。可取值为clear（断开）、restart（重试）和 trap（流量触发）
-        - **Delay** (str) - DPD探测间隔时间。dpdEnable为1（开启）时有效。单位为秒，默认为 10
-        - **Enabled** (str) - 是否开启 DPD（对等体存活检测）功能。取值：0（关闭）、1（开启）
-        - **Timeout** (str) - DPD超时时间。即探测确认对端不存在需要的时间。dpdEnable为1（开启）时有效。单位为秒。取值范围为 30-60（IKEv2 默认为 0）
-
-
         **UpdateCETunnelParamIKEConf**
         - **AuthenticationAlgorithm** (str) - IKE 认证算法，取值："md5", "sha1", "sha2-256"
         - **DhGroup** (str) - DH group，指定IKE交换密钥时使用的DH组。取值："1", "2", "5", "14", "15", "16"
@@ -923,14 +916,6 @@ class UWSCClient(Client):
         - **Version** (str) - IKE 版本，取值： "ike v1"，"ike v2"
 
 
-        **UpdateCETunnelParamBGPConf**
-        - **LocalAsn** (str) - Ucloud侧的自治系统号。
-        - **LocalIp** (str) - 云端BGP地址。必须从BGP隧道网段内分配。
-        - **PeerAsn** (str) - 对端BGP ASN号。
-        - **PeerIp** (str) - 用户端BGP地址。必须从BGP隧道网段内分配。
-        - **TunnelCidr** (str) - BGP隧道网段。该网段需是一个在 169.254.0.0/16 内的掩码长度为 30 的网段。
-
-
         **UpdateCETunnelParamIPSecConf**
         - **AuthenticationAlgorithm** (str) - 第二阶段协商的认证算法。取值：md5、sha1、sha2-256。
         - **CENetwork** (list) - 需要和 VPC 互通的本地数据中心侧的网段，用于第二阶段协商。
@@ -939,6 +924,21 @@ class UWSCClient(Client):
         - **Protocol** (str) - IPSec 安全协议，取值：“esp”，“ah”
         - **SALifeTime** (str) - 第二阶段协商出的 SA 的生存周期。单位：秒。取值范围：1200~604800
         - **SALifetimeBytes** (str) - 第二阶段协商出的 SA 的生存周期。单位：字节 KB。取值范围：8000 – 20000000，默认使用SA超时时间
+
+
+        **UpdateCETunnelParamDPDConf**
+        - **Action** (str) - DPD超时后的动作,Enable为1（开启）时有效。可取值为clear（断开）、restart（重试）和 trap（流量触发）
+        - **Delay** (str) - DPD探测间隔时间。dpdEnable为1（开启）时有效。单位为秒，默认为 10
+        - **Enabled** (str) - 是否开启 DPD（对等体存活检测）功能。取值：0（关闭）、1（开启）
+        - **Timeout** (str) - DPD超时时间。即探测确认对端不存在需要的时间。dpdEnable为1（开启）时有效。单位为秒。取值范围为 30-60（IKEv2 默认为 0）
+
+
+        **UpdateCETunnelParamBGPConf**
+        - **LocalAsn** (str) - Ucloud侧的自治系统号。
+        - **LocalIp** (str) - 云端BGP地址。必须从BGP隧道网段内分配。
+        - **PeerAsn** (str) - 对端BGP ASN号。
+        - **PeerIp** (str) - 用户端BGP地址。必须从BGP隧道网段内分配。
+        - **TunnelCidr** (str) - BGP隧道网段。该网段需是一个在 169.254.0.0/16 内的掩码长度为 30 的网段。
 
 
         """

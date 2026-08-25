@@ -387,3 +387,10 @@ ipv6gw
 .. autoclass:: ucloud.services.ipv6gw.client.ipv6gwClient
    :members:
 
+
+sandbox
+-------
+
+.. autoclass:: ucloud.services.sandbox.client.SandboxClient
+   :members:
+
