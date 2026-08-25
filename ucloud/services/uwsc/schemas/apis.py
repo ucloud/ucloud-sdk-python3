@@ -96,17 +96,6 @@ API: CreateCETunnel
 """
 
 
-class CreateCETunnelParamDPDConfSchema(schema.RequestSchema):
-    """CreateCETunnelParamDPDConf -"""
-
-    fields = {
-        "Action": fields.Str(required=False, dump_to="Action"),
-        "Delay": fields.Int(required=False, dump_to="Delay"),
-        "Enabled": fields.Int(required=True, dump_to="Enabled"),
-        "Timeout": fields.Int(required=False, dump_to="Timeout"),
-    }
-
-
 class CreateCETunnelParamIKEConfSchema(schema.RequestSchema):
     """CreateCETunnelParamIKEConf -"""
 
@@ -127,18 +116,6 @@ class CreateCETunnelParamIKEConfSchema(schema.RequestSchema):
     }
 
 
-class CreateCETunnelParamBGPConfSchema(schema.RequestSchema):
-    """CreateCETunnelParamBGPConf -"""
-
-    fields = {
-        "LocalAsn": fields.Str(required=False, dump_to="LocalAsn"),
-        "LocalIp": fields.Str(required=False, dump_to="LocalIp"),
-        "PeerAsn": fields.Str(required=False, dump_to="PeerAsn"),
-        "PeerIp": fields.Str(required=False, dump_to="PeerIp"),
-        "TunnelCidr": fields.Str(required=False, dump_to="TunnelCidr"),
-    }
-
-
 class CreateCETunnelParamIPSecConfSchema(schema.RequestSchema):
     """CreateCETunnelParamIPSecConf -"""
 
@@ -156,6 +133,29 @@ class CreateCETunnelParamIPSecConfSchema(schema.RequestSchema):
         "SALifetimeBytes": fields.Str(
             required=False, dump_to="SALifetimeBytes"
         ),
+    }
+
+
+class CreateCETunnelParamBGPConfSchema(schema.RequestSchema):
+    """CreateCETunnelParamBGPConf -"""
+
+    fields = {
+        "LocalAsn": fields.Str(required=False, dump_to="LocalAsn"),
+        "LocalIp": fields.Str(required=False, dump_to="LocalIp"),
+        "PeerAsn": fields.Str(required=False, dump_to="PeerAsn"),
+        "PeerIp": fields.Str(required=False, dump_to="PeerIp"),
+        "TunnelCidr": fields.Str(required=False, dump_to="TunnelCidr"),
+    }
+
+
+class CreateCETunnelParamDPDConfSchema(schema.RequestSchema):
+    """CreateCETunnelParamDPDConf -"""
+
+    fields = {
+        "Action": fields.Str(required=False, dump_to="Action"),
+        "Delay": fields.Int(required=False, dump_to="Delay"),
+        "Enabled": fields.Int(required=True, dump_to="Enabled"),
+        "Timeout": fields.Int(required=False, dump_to="Timeout"),
     }
 
 
@@ -722,17 +722,6 @@ API: UpdateCETunnel
 """
 
 
-class UpdateCETunnelParamDPDConfSchema(schema.RequestSchema):
-    """UpdateCETunnelParamDPDConf -"""
-
-    fields = {
-        "Action": fields.Str(required=False, dump_to="Action"),
-        "Delay": fields.Str(required=False, dump_to="Delay"),
-        "Enabled": fields.Str(required=False, dump_to="Enabled"),
-        "Timeout": fields.Str(required=False, dump_to="Timeout"),
-    }
-
-
 class UpdateCETunnelParamIKEConfSchema(schema.RequestSchema):
     """UpdateCETunnelParamIKEConf -"""
 
@@ -753,18 +742,6 @@ class UpdateCETunnelParamIKEConfSchema(schema.RequestSchema):
     }
 
 
-class UpdateCETunnelParamBGPConfSchema(schema.RequestSchema):
-    """UpdateCETunnelParamBGPConf -"""
-
-    fields = {
-        "LocalAsn": fields.Str(required=False, dump_to="LocalAsn"),
-        "LocalIp": fields.Str(required=False, dump_to="LocalIp"),
-        "PeerAsn": fields.Str(required=False, dump_to="PeerAsn"),
-        "PeerIp": fields.Str(required=False, dump_to="PeerIp"),
-        "TunnelCidr": fields.Str(required=False, dump_to="TunnelCidr"),
-    }
-
-
 class UpdateCETunnelParamIPSecConfSchema(schema.RequestSchema):
     """UpdateCETunnelParamIPSecConf -"""
 
@@ -782,6 +759,29 @@ class UpdateCETunnelParamIPSecConfSchema(schema.RequestSchema):
         "SALifetimeBytes": fields.Str(
             required=False, dump_to="SALifetimeBytes"
         ),
+    }
+
+
+class UpdateCETunnelParamDPDConfSchema(schema.RequestSchema):
+    """UpdateCETunnelParamDPDConf -"""
+
+    fields = {
+        "Action": fields.Str(required=False, dump_to="Action"),
+        "Delay": fields.Str(required=False, dump_to="Delay"),
+        "Enabled": fields.Str(required=False, dump_to="Enabled"),
+        "Timeout": fields.Str(required=False, dump_to="Timeout"),
+    }
+
+
+class UpdateCETunnelParamBGPConfSchema(schema.RequestSchema):
+    """UpdateCETunnelParamBGPConf -"""
+
+    fields = {
+        "LocalAsn": fields.Str(required=False, dump_to="LocalAsn"),
+        "LocalIp": fields.Str(required=False, dump_to="LocalIp"),
+        "PeerAsn": fields.Str(required=False, dump_to="PeerAsn"),
+        "PeerIp": fields.Str(required=False, dump_to="PeerIp"),
+        "TunnelCidr": fields.Str(required=False, dump_to="TunnelCidr"),
     }
 
 
