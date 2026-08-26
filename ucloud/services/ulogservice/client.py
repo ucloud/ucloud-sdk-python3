@@ -15,6 +15,86 @@ class ULogServiceClient(Client):
             config, transport, middleware, logger
         )
 
+    def bind_u_log_service_group_to_collect_conf(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """BindULogServiceGroupToCollectConf - 日志主题采集配置绑定机器组
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CollectConfId** (int) - (Required) 采集配置id
+        - **TopicId** (str) - (Required) 日志主题ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **MachineGroupIds** (int) - 机器组ID，是一个数组
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.BindULogServiceGroupToCollectConfRequestSchema().dumps(d)
+
+        resp = self.invoke("BindULogServiceGroupToCollectConf", d, **kwargs)
+        return apis.BindULogServiceGroupToCollectConfResponseSchema().loads(
+            resp
+        )
+
+    def create_u_log_service_collect_conf(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateULogServiceCollectConf - 创建日志主题采集配置
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CollectPolicy** (str) - (Required) 采集策略。可选值: full (全量采集存量日志), increment (从当前时间点增量采集)。默认为 full。
+        - **LogType** (str) - (Required) 日志解析类型，决定了如何结构化日志。可选值: json:json 格式，delimiter:分隔符，full_regex:完全正则，multi_line_full_regex:多行完全正则，multi_line_delimiter: 多行分隔符正则，minimal_list:单行全文日志,multi_line:多行全文日志
+        - **Name** (str) - (Required) 配置名称
+        - **TopicId** (str) - (Required) 日志主题ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Delimiter** (str) - 当 LogType 为delimiter 或multi_line_delimiter时可选，支持多字符分隔，需要转换成Base64
+        - **Encode** (str) - 日志原文的编码格式。可选值: utf-8, gbk。默认为 utf-8。
+        - **ExtractRule** (str) - 日志提取正则表达式。当 logType 为正则模式 (如 full_regex,multi_line_full_regex) 时，用于从日志中提取字段。需要转换成Base64
+        - **FilePaths** (list) - 见 **CreateULogServiceCollectConfParamFilePaths** 模型定义
+        - **Keys** (list) - 索引字段key，是一个数组
+        - **MatchRule** (str) - 行首正则表达式。当 logType 为多行模式 (如 multi_line 或 multi_line_full_regex或multi_line_delimiter) 时，用于标识一条新日志的开始。需要转换成Base64
+        - **UnMatchKey** (str) - 如果 UnMatchUpload 为 true，无法解析的日志原文将被存放在此字段指定的 Key 下。默认为 LogParseFailure。
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+
+        **Request Model**
+
+        **CreateULogServiceCollectConfParamFilePaths**
+        - **File** (str) - 定义采集路径的文件名，数组类型
+        - **Path** (str) - 定义采集路径，数组类型
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateULogServiceCollectConfRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateULogServiceCollectConf", d, **kwargs)
+        return apis.CreateULogServiceCollectConfResponseSchema().loads(resp)
+
     def create_u_log_service_log_set(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -47,6 +127,41 @@ class ULogServiceClient(Client):
         resp = self.invoke("CreateULogServiceLogSet", d, **kwargs)
         return apis.CreateULogServiceLogSetResponseSchema().loads(resp)
 
+    def create_u_log_service_machine_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateULogServiceMachineGroup - 创建机器组
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **InstanceId** (str) - (Required) 日志服务实例资源ID
+        - **Name** (str) - (Required) 机器组名称;格式校验：^[\w]{1,23}$
+        - **Type** (str) - (Required) 采集客户端识别模式;可选值 LABEL | IP;
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Ips** (str) - 机器IP，如果Type是IP，那么Ips可以填写IP，是一个数组
+        - **Labels** (str) - 采集客户端识别标识，是一个数组
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateULogServiceMachineGroupRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateULogServiceMachineGroup", d, **kwargs)
+        return apis.CreateULogServiceMachineGroupResponseSchema().loads(resp)
+
     def create_u_log_service_topic(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -56,10 +171,10 @@ class ULogServiceClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **ReserveAge** (int) - (Required) 保存时间 1~360 天，-1表示永久保存
-        - **TopicName** (str) - (Required) 主题名称，校验规则"^[\w]{1,23}$"
-        - **LogSetId** (str) - 日志集ID
-        - **TopicShardNum** (int) - 分区数量 数字1~20
+        - **LogSetId** (str) - (Required) 日志集ID
+        - **ReserveAge** (int) - (Required) 保存时间 1~730 天
+        - **TopicName** (str) - (Required) 主题名称，校验规则"^[\w]{1,64}$"
+        - **TopicShardNum** (int) - (Required) 分区数量，固定是2
 
         **Response**
 
@@ -79,6 +194,35 @@ class ULogServiceClient(Client):
 
         resp = self.invoke("CreateULogServiceTopic", d, **kwargs)
         return apis.CreateULogServiceTopicResponseSchema().loads(resp)
+
+    def delete_u_log_service_collect_conf(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteULogServiceCollectConf - 删除日志主题采集配置
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CollectConfId** (int) - (Required) 日志主题采集配置ID
+        - **TopicId** (str) - (Required) 日志主题ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteULogServiceCollectConfRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteULogServiceCollectConf", d, **kwargs)
+        return apis.DeleteULogServiceCollectConfResponseSchema().loads(resp)
 
     def delete_u_log_service_log_set(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -107,6 +251,34 @@ class ULogServiceClient(Client):
         resp = self.invoke("DeleteULogServiceLogSet", d, **kwargs)
         return apis.DeleteULogServiceLogSetResponseSchema().loads(resp)
 
+    def delete_u_log_service_machine_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteULogServiceMachineGroup - 删除机器组
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Id** (int) - (Required) 删除的机器组ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteULogServiceMachineGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteULogServiceMachineGroup", d, **kwargs)
+        return apis.DeleteULogServiceMachineGroupResponseSchema().loads(resp)
+
     def delete_u_log_service_topic(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -133,6 +305,119 @@ class ULogServiceClient(Client):
 
         resp = self.invoke("DeleteULogServiceTopic", d, **kwargs)
         return apis.DeleteULogServiceTopicResponseSchema().loads(resp)
+
+    def describe_u_log_service_machine_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeULogServiceMachineGroup - 查询日志采集机器组
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Id** (str) - (Required) 机器组ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **MachineGroup** (dict) - 见 **MachineInfo** 模型定义
+        - **Message** (str) - 错误信息
+
+        **Response Model**
+
+        **LogAgent**
+        - **AgentVersion** (str) - LogAgent版本
+        - **HostIp** (str) - 主机IP
+        - **InstanceId** (str) - logagent id
+        - **Label** (str) - 主机标签
+        - **OffLineTime** (str) - 离线时间，单位是ms
+        - **Status** (str) - logagent状态，NORMAL：正常，OFFLINE： 离线
+
+
+        **MachineInfo**
+        - **Id** (int) - 机器组ID
+        - **Ips** (str) - 机器组Ip，数组类型
+        - **Labels** (list) - 机器组标签，数组类型
+        - **LogAgents** (dict) - 见 **LogAgent** 模型定义
+        - **Name** (str) - 机器组名称
+        - **Type** (str) - 机器组类型，取值有：LABEL和IP
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeULogServiceMachineGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeULogServiceMachineGroup", d, **kwargs)
+        return apis.DescribeULogServiceMachineGroupResponseSchema().loads(resp)
+
+    def list_u_log_service_collect_conf(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListULogServiceCollectConf - 查询日志主题采集配置列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **TopicId** (int) - (Required) 日志主题ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CollectConfId** (int) - 采集配置ID
+
+        **Response**
+
+        - **CollectConfs** (dict) - 见 **CollectConf** 模型定义
+        - **Message** (str) - 错误信息
+
+        **Response Model**
+
+        **FilePath**
+        - **File** (str) - 文件名
+        - **Path** (str) - 路径
+
+
+        **MachineGroup**
+        - **CreateTime** (int) - 创建时间
+        - **Id** (str) - 机器组ID
+        - **Name** (str) - 机器组名称
+        - **Type** (str) - 采集器识别类型：LABEL：机器标识，IP：IP类型
+        - **UpdateTime** (int) - 修改时间
+
+
+        **CollectConf**
+        - **CollectPolicy** (str) - 采集策略。可选值: full (全量采集存量日志), increment (从当前时间点增量采集)。默认为 full。
+        - **CreateTime** (int) - CreateTime
+        - **Delimiter** (str) - 当 LogType 为delimiter 或multi_line_delimiter时可选，支持多字符分隔，需要转换成Base64
+        - **Encode** (str) - 日志原文的编码格式。可选值: utf-8, gbk。默认为 utf-8。
+        - **ExtractRule** (str) - 日志提取正则表达式。当 logType 为正则模式 (如 full_regex,multi_line_full_regex) 时，用于从日志中提取字段。需要转换成Base64
+        - **FilePaths** (list) - 见 **FilePath** 模型定义
+        - **Id** (int) - Id
+        - **Keys** (str) - 索引字段key，是一个数组
+        - **LogType** (str) - 日志解析类型，决定了如何结构化日志。可选值: json:json 格式，delimiter:分隔符，full_regex:完全正则，multi_line_full_regex:多行完全正则，multi_line_delimiter: 多行分隔符正则，minimal_list:单行全文日志,multi_line:多行全文日志
+        - **MachineGroups** (list) - 见 **MachineGroup** 模型定义
+        - **MatchRule** (str) - 行首正则表达式。当 logType 为多行模式 (如 multi_line 或 multi_line_full_regex或multi_line_delimiter) 时，用于标识一条新日志的开始。需要转换成Base64
+        - **Name** (str) - 日志采集配置名称
+        - **State** (int) - State
+        - **TopicId** (int) - 日志主题ID
+        - **UnMatchKey** (str) - 如果 UnMatchUpload 为 true，无法解析的日志原文将被存放在此字段指定的 Key 下。默认为 LogParseFailure。
+        - **UpdateTime** (int) - updateTime
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ListULogServiceCollectConfRequestSchema().dumps(d)
+
+        resp = self.invoke("ListULogServiceCollectConf", d, **kwargs)
+        return apis.ListULogServiceCollectConfResponseSchema().loads(resp)
 
     def list_u_log_service_log_set(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -171,6 +456,44 @@ class ULogServiceClient(Client):
         resp = self.invoke("ListULogServiceLogSet", d, **kwargs)
         return apis.ListULogServiceLogSetResponseSchema().loads(resp)
 
+    def list_u_log_service_machine_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListULogServiceMachineGroup - 查看机器组列表
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **MachineGroups** (list) - 见 **MachineGroup** 模型定义
+        - **Message** (str) - 错误信息
+
+        **Response Model**
+
+        **MachineGroup**
+        - **CreateTime** (int) - 创建时间
+        - **Id** (str) - 机器组ID
+        - **Name** (str) - 机器组名称
+        - **Type** (str) - 采集器识别类型：LABEL：机器标识，IP：IP类型
+        - **UpdateTime** (int) - 修改时间
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ListULogServiceMachineGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("ListULogServiceMachineGroup", d, **kwargs)
+        return apis.ListULogServiceMachineGroupResponseSchema().loads(resp)
+
     def list_u_log_service_topic(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -180,6 +503,7 @@ class ULogServiceClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **LogSetId** (str) - (Required) 日志集ID
         - **Limit** (int) - 分页限制数,默认为30
         - **Offset** (int) - 分页起始条目数, 默认为0
 
@@ -192,11 +516,11 @@ class ULogServiceClient(Client):
 
         **TopicInfo**
         - **IsReserved** (int) - 是否保留：0 - NORMAL, 1 - RESERVED
-        - **ReserveAge** (int) - 保存时间 1~360 天，-1表示永久保存
+        - **ReserveAge** (int) - 保存时间 1~730 天
         - **TopicDesc** (str) - 主题描述
         - **TopicId** (str) - 主题ID
         - **TopicName** (str) - 主题名称
-        - **TopicShardNum** (int) - 分区数量 数字1~20
+        - **TopicShardNum** (int) - 分区数量，固定是2
 
 
         """
@@ -228,7 +552,7 @@ class ULogServiceClient(Client):
         - **LastId** (str) - 滚动加载参数,上一页最后一条数据的ID
         - **LastTimestamp** (str) - 滚动加载参数,上一页最后一条数据的timestamp
         - **ScrollId** (str) - Deprecated. 滚动加载参数ScrollId
-        - **Size** (int) - 一次返回条数，默认20
+        - **Size** (int) - 一次返回条数，默认20。仅当检索分析语句不包含SQL时有效。SQL结果条数方式可以在SQL里使用limit语法。
         - **StartTime** (int) - 起始日志时间，秒级时间戳
 
         **Response**
@@ -238,12 +562,21 @@ class ULogServiceClient(Client):
         **Response Model**
 
         **LogContent**
+        - **FileName** (str) - 日志文件路径
+        - **HostName** (str) - 日志来源主机
         - **LogId** (str) - 日志标识ID
         - **LogJson** (str) - JSON格式的日志内容
         - **Timestamp** (int) - 日志时间
 
 
+        **AnalysisField**
+        - **Name** (str) - 字段名
+        - **Type** (str) - 字段类型
+
+
         **LogQueryResult**
+        - **AnalysisRecords** (list) - 当使用SQL语句查询时，数据通过该字段返回
+        - **Columns** (list) - 见 **AnalysisField** 模型定义
         - **Contents** (dict) - 见 **LogContent** 模型定义
         - **IsOver** (bool) - 检索结果是否到底
         - **LastId** (str) - 滚动检索,当前页最后一条数据ID
@@ -264,3 +597,80 @@ class ULogServiceClient(Client):
 
         resp = self.invoke("QueryULogServiceLog", d, **kwargs)
         return apis.QueryULogServiceLogResponseSchema().loads(resp)
+
+    def update_u_log_service_collect_conf(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateULogServiceCollectConf - 修改日志主题采集配置
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CollectConfId** (int) - (Required) 日志主题采集配置ID
+        - **CollectPolicy** (str) - (Required) 采集策略。可选值: full (全量采集存量日志), increment (从当前时间点增量采集)。默认为 full。
+        - **LogType** (str) - (Required) 日志解析类型，决定了如何结构化日志。可选值: json:json 格式，delimiter:分隔符，full_regex:完全正则，multi_line_full_regex:多行完全正则，multi_line_delimiter: 多行分隔符正则，minimal_list:单行全文日志,multi_line:多行全文日志
+        - **TopicId** (str) - (Required) 日志主题ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Delimiter** (str) - 当 LogType 为delimiter 或multi_line_delimiter时可选，支持多字符分隔，需要转换成Base64
+        - **Encode** (str) - 日志原文的编码格式。可选值: utf-8, gbk。默认为 utf-8。
+        - **ExtractRule** (str) - 日志提取正则表达式。当 logType 为正则模式 (如 full_regex,multi_line_full_regex) 时，用于从日志中提取字段。需要转换成Base64
+        - **FilePaths** (list) - 见 **UpdateULogServiceCollectConfParamFilePaths** 模型定义
+        - **Keys** (list) - 索引字段key，是一个数组
+        - **MatchRule** (str) - 行首正则表达式。当 logType 为多行模式 (如 multi_line 或 multi_line_full_regex或multi_line_delimiter) 时，用于标识一条新日志的开始。需要转换成Base64
+        - **UnMatchKey** (str) - 如果 UnMatchUpload 为 true，无法解析的日志原文将被存放在此字段指定的 Key 下。默认为 LogParseFailure。
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+
+        **Request Model**
+
+        **UpdateULogServiceCollectConfParamFilePaths**
+        - **File** (str) - 定义采集路径的文件名，数组类型
+        - **Path** (str) - 定义采集路径，数组类型
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateULogServiceCollectConfRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateULogServiceCollectConf", d, **kwargs)
+        return apis.UpdateULogServiceCollectConfResponseSchema().loads(resp)
+
+    def update_u_log_service_machine_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateULogServiceMachineGroup - 更新日志机器组
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Id** (int) - (Required) 机器组ID
+        - **Name** (str) - (Required) 机器组名称; 格式校验：^[\w]{1,255}$
+        - **Type** (str) - (Required) 采集客户端识别模式;可选值 LABEL | IP;
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Ips** (str) - 机器IP，如果Type是IP，那么Ips可以填写IP，是一个数组
+        - **Labels** (str) - 采集客户端识别标识，数组类型
+
+        **Response**
+
+        - **Message** (str) - 错误信息
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateULogServiceMachineGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateULogServiceMachineGroup", d, **kwargs)
+        return apis.UpdateULogServiceMachineGroupResponseSchema().loads(resp)

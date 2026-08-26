@@ -270,19 +270,6 @@ class CloudWatchClient(Client):
 
         **Response Model**
 
-        **ConversionRule**
-        - **ConversionFactor** (int) - 转换因子
-        - **From** (str) - 来源
-        - **To** (str) - 目标
-
-
-        **MetricUnitConfig**
-        - **ConversionFactor** (int) - 转换因子
-        - **ConversionRules** (list) - 见 **ConversionRule** 模型定义
-        - **UnitCnNames** (list) - 指标中文名列表
-        - **UnitEnNames** (list) - 指标英文名列表
-
-
         **MetricUnit**
         - **ConversionFactor** (int) - 转换因子
         - **CreatedAt** (str) - 创建时间
@@ -313,6 +300,19 @@ class CloudWatchClient(Client):
         - **UnitID** (int) - 单位ID
         - **UpdatedAt** (str) - 修改时间
         - **UpdatedBy** (str) - 修改者
+
+
+        **ConversionRule**
+        - **ConversionFactor** (int) - 转换因子
+        - **From** (str) - 来源
+        - **To** (str) - 目标
+
+
+        **MetricUnitConfig**
+        - **ConversionFactor** (int) - 转换因子
+        - **ConversionRules** (list) - 见 **ConversionRule** 模型定义
+        - **UnitCnNames** (list) - 指标中文名列表
+        - **UnitEnNames** (list) - 指标英文名列表
 
 
         **GetProductMetricsRespData**
@@ -661,14 +661,14 @@ class CloudWatchClient(Client):
         - **TagName** (str) - 标签名称
 
 
-        **MetricSample**
-        - **Timestamp** (int) - 时间戳
-        - **Value** (float) - 样本值
-
-
         **TagListItem**
         - **Tag** (str) - 标签名
         - **TagValue** (str) - 标签值
+
+
+        **MetricSample**
+        - **Timestamp** (int) - 时间戳
+        - **Value** (float) - 样本值
 
 
         **MetricResult**

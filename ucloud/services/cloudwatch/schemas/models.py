@@ -68,6 +68,18 @@ class MetricUnitSchema(schema.ResponseSchema):
     }
 
 
+class ConversionRuleSchema(schema.ResponseSchema):
+    """ConversionRule - 指标单位转换规则"""
+
+    fields = {
+        "ConversionFactor": fields.Int(
+            required=False, load_from="ConversionFactor"
+        ),
+        "From": fields.Str(required=False, load_from="From"),
+        "To": fields.Str(required=False, load_from="To"),
+    }
+
+
 class MetircSchema(schema.ResponseSchema):
     """Metirc - 指标"""
 
@@ -87,18 +99,6 @@ class MetircSchema(schema.ResponseSchema):
         "UnitID": fields.Int(required=False, load_from="UnitID"),
         "UpdatedAt": fields.Str(required=False, load_from="UpdatedAt"),
         "UpdatedBy": fields.Str(required=False, load_from="UpdatedBy"),
-    }
-
-
-class ConversionRuleSchema(schema.ResponseSchema):
-    """ConversionRule - 指标单位转换规则"""
-
-    fields = {
-        "ConversionFactor": fields.Int(
-            required=False, load_from="ConversionFactor"
-        ),
-        "From": fields.Str(required=False, load_from="From"),
-        "To": fields.Str(required=False, load_from="To"),
     }
 
 
@@ -261,21 +261,21 @@ class ListMonitorProductSchema(schema.ResponseSchema):
     }
 
 
-class TagListItemSchema(schema.ResponseSchema):
-    """TagListItem - 标签键值项"""
-
-    fields = {
-        "Tag": fields.Str(required=False, load_from="Tag"),
-        "TagValue": fields.Str(required=False, load_from="TagValue"),
-    }
-
-
 class MetricSampleSchema(schema.ResponseSchema):
     """MetricSample - 指标数据点（代码结构体：MetricPoint）"""
 
     fields = {
         "Timestamp": fields.Int(required=False, load_from="Timestamp"),
         "Value": fields.Float(required=False, load_from="Value"),
+    }
+
+
+class TagListItemSchema(schema.ResponseSchema):
+    """TagListItem - 标签键值项"""
+
+    fields = {
+        "Tag": fields.Str(required=False, load_from="Tag"),
+        "TagValue": fields.Str(required=False, load_from="TagValue"),
     }
 
 
@@ -320,24 +320,6 @@ class QueryMetricDataRespSchema(schema.ResponseSchema):
     }
 
 
-class ResourceExtendAttrItemSchema(schema.ResponseSchema):
-    """ResourceExtendAttrItem - 资源扩展属性项"""
-
-    fields = {
-        "Key": fields.Str(required=False, load_from="Key"),
-        "Value": fields.Str(required=False, load_from="Value"),
-    }
-
-
-class LabelAttrItemSchema(schema.ResponseSchema):
-    """LabelAttrItem - 标签扩展属性项"""
-
-    fields = {
-        "Key": fields.Str(required=False, load_from="Key"),
-        "Value": fields.Str(required=False, load_from="Value"),
-    }
-
-
 class MetricSingleSampleSchema(schema.ResponseSchema):
     """MetricSingleSample - 指标单个样本点结果"""
 
@@ -354,6 +336,24 @@ class ResourceMonitorItemSchema(schema.ResponseSchema):
     fields = {
         "Metric": fields.Str(required=False, load_from="Metric"),
         "MetricValues": fields.List(MetricSingleSampleSchema()),
+    }
+
+
+class ResourceExtendAttrItemSchema(schema.ResponseSchema):
+    """ResourceExtendAttrItem - 资源扩展属性项"""
+
+    fields = {
+        "Key": fields.Str(required=False, load_from="Key"),
+        "Value": fields.Str(required=False, load_from="Value"),
+    }
+
+
+class LabelAttrItemSchema(schema.ResponseSchema):
+    """LabelAttrItem - 标签扩展属性项"""
+
+    fields = {
+        "Key": fields.Str(required=False, load_from="Key"),
+        "Value": fields.Str(required=False, load_from="Value"),
     }
 
 

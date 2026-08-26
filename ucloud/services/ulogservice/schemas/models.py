@@ -3,6 +3,76 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class LogAgentSchema(schema.ResponseSchema):
+    """LogAgent - logagent 信息"""
+
+    fields = {
+        "AgentVersion": fields.Str(required=False, load_from="AgentVersion"),
+        "HostIp": fields.Str(required=False, load_from="HostIp"),
+        "InstanceId": fields.Str(required=False, load_from="InstanceId"),
+        "Label": fields.Str(required=False, load_from="Label"),
+        "OffLineTime": fields.Str(required=False, load_from="OffLineTime"),
+        "Status": fields.Str(required=False, load_from="Status"),
+    }
+
+
+class MachineInfoSchema(schema.ResponseSchema):
+    """MachineInfo - 机器信息"""
+
+    fields = {
+        "Id": fields.Int(required=False, load_from="Id"),
+        "Ips": fields.Str(required=False, load_from="Ips"),
+        "Labels": fields.List(fields.Str()),
+        "LogAgents": LogAgentSchema(),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
+class MachineGroupSchema(schema.ResponseSchema):
+    """MachineGroup - 机器组"""
+
+    fields = {
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "Id": fields.Str(required=False, load_from="Id"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Type": fields.Str(required=False, load_from="Type"),
+        "UpdateTime": fields.Int(required=False, load_from="UpdateTime"),
+    }
+
+
+class FilePathSchema(schema.ResponseSchema):
+    """FilePath - 文件路径"""
+
+    fields = {
+        "File": fields.Str(required=False, load_from="File"),
+        "Path": fields.Str(required=False, load_from="Path"),
+    }
+
+
+class CollectConfSchema(schema.ResponseSchema):
+    """CollectConf - 日志采集配置"""
+
+    fields = {
+        "CollectPolicy": fields.Str(required=False, load_from="CollectPolicy"),
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "Delimiter": fields.Str(required=False, load_from="Delimiter"),
+        "Encode": fields.Str(required=False, load_from="Encode"),
+        "ExtractRule": fields.Str(required=False, load_from="ExtractRule"),
+        "FilePaths": fields.List(FilePathSchema()),
+        "Id": fields.Int(required=False, load_from="Id"),
+        "Keys": fields.Str(required=False, load_from="Keys"),
+        "LogType": fields.Str(required=False, load_from="LogType"),
+        "MachineGroups": fields.List(MachineGroupSchema()),
+        "MatchRule": fields.Str(required=False, load_from="MatchRule"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "State": fields.Int(required=True, load_from="State"),
+        "TopicId": fields.Int(required=True, load_from="TopicId"),
+        "UnMatchKey": fields.Str(required=False, load_from="UnMatchKey"),
+        "UpdateTime": fields.Int(required=False, load_from="UpdateTime"),
+    }
+
+
 class LogSetInfoSchema(schema.ResponseSchema):
     """LogSetInfo -"""
 
@@ -28,10 +98,21 @@ class TopicInfoSchema(schema.ResponseSchema):
     }
 
 
+class AnalysisFieldSchema(schema.ResponseSchema):
+    """AnalysisField - 统计分析结果字段头"""
+
+    fields = {
+        "Name": fields.Str(required=True, load_from="Name"),
+        "Type": fields.Str(required=True, load_from="Type"),
+    }
+
+
 class LogContentSchema(schema.ResponseSchema):
     """LogContent - 日志内容"""
 
     fields = {
+        "FileName": fields.Str(required=True, load_from="FileName"),
+        "HostName": fields.Str(required=True, load_from="HostName"),
         "LogId": fields.Str(required=True, load_from="LogId"),
         "LogJson": fields.Str(required=True, load_from="LogJson"),
         "Timestamp": fields.Int(required=True, load_from="Timestamp"),
@@ -42,6 +123,8 @@ class LogQueryResultSchema(schema.ResponseSchema):
     """LogQueryResult - 日志检索结果"""
 
     fields = {
+        "AnalysisRecords": fields.List(fields.Str()),
+        "Columns": fields.List(AnalysisFieldSchema()),
         "Contents": LogContentSchema(),
         "IsOver": fields.Bool(required=True, load_from="IsOver"),
         "LastId": fields.Str(required=False, load_from="LastId"),
