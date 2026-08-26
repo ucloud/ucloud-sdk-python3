@@ -8,6 +8,83 @@ from ucloud.services.ulogservice.schemas import models
 
 
 """
+API: BindULogServiceGroupToCollectConf
+
+日志主题采集配置绑定机器组
+"""
+
+
+class BindULogServiceGroupToCollectConfRequestSchema(schema.RequestSchema):
+    """BindULogServiceGroupToCollectConf - 日志主题采集配置绑定机器组"""
+
+    fields = {
+        "CollectConfId": fields.Int(required=True, dump_to="CollectConfId"),
+        "MachineGroupIds": fields.Int(
+            required=False, dump_to="MachineGroupIds"
+        ),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "TopicId": fields.Str(required=True, dump_to="TopicId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class BindULogServiceGroupToCollectConfResponseSchema(schema.ResponseSchema):
+    """BindULogServiceGroupToCollectConf - 日志主题采集配置绑定机器组"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: CreateULogServiceCollectConf
+
+创建日志主题采集配置
+"""
+
+
+class CreateULogServiceCollectConfParamFilePathsSchema(schema.RequestSchema):
+    """CreateULogServiceCollectConfParamFilePaths -"""
+
+    fields = {
+        "File": fields.Str(required=False, dump_to="File"),
+        "Path": fields.Str(required=False, dump_to="Path"),
+    }
+
+
+class CreateULogServiceCollectConfRequestSchema(schema.RequestSchema):
+    """CreateULogServiceCollectConf - 创建日志主题采集配置"""
+
+    fields = {
+        "CollectPolicy": fields.Str(required=True, dump_to="CollectPolicy"),
+        "Delimiter": fields.Str(required=False, dump_to="Delimiter"),
+        "Encode": fields.Str(required=False, dump_to="Encode"),
+        "ExtractRule": fields.Str(required=False, dump_to="ExtractRule"),
+        "FilePaths": fields.List(
+            CreateULogServiceCollectConfParamFilePathsSchema()
+        ),
+        "Keys": fields.List(fields.Str()),
+        "LogType": fields.Str(required=True, dump_to="LogType"),
+        "MatchRule": fields.Str(required=False, dump_to="MatchRule"),
+        "Name": fields.Str(required=True, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "TopicId": fields.Str(required=True, dump_to="TopicId"),
+        "UnMatchKey": fields.Str(required=False, dump_to="UnMatchKey"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class CreateULogServiceCollectConfResponseSchema(schema.ResponseSchema):
+    """CreateULogServiceCollectConf - 创建日志主题采集配置"""
+
+    fields = {
+        "Message": fields.Str(required=False, load_from="Message"),
+    }
+
+
+"""
 API: CreateULogServiceLogSet
 
 创建日志集
@@ -35,6 +112,36 @@ class CreateULogServiceLogSetResponseSchema(schema.ResponseSchema):
 
 
 """
+API: CreateULogServiceMachineGroup
+
+创建机器组
+"""
+
+
+class CreateULogServiceMachineGroupRequestSchema(schema.RequestSchema):
+    """CreateULogServiceMachineGroup - 创建机器组"""
+
+    fields = {
+        "InstanceId": fields.Str(required=True, dump_to="InstanceId"),
+        "Ips": fields.Str(required=False, dump_to="Ips"),
+        "Labels": fields.Str(required=False, dump_to="Labels"),
+        "Name": fields.Str(required=True, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Type": fields.Str(required=True, dump_to="Type"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class CreateULogServiceMachineGroupResponseSchema(schema.ResponseSchema):
+    """CreateULogServiceMachineGroup - 创建机器组"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
 API: CreateULogServiceTopic
 
 创建ULogService主题
@@ -45,12 +152,12 @@ class CreateULogServiceTopicRequestSchema(schema.RequestSchema):
     """CreateULogServiceTopic - 创建ULogService主题"""
 
     fields = {
-        "LogSetId": fields.Str(required=False, dump_to="LogSetId"),
+        "LogSetId": fields.Str(required=True, dump_to="LogSetId"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "ReserveAge": fields.Int(required=True, dump_to="ReserveAge"),
         "TopicName": fields.Str(required=True, dump_to="TopicName"),
-        "TopicShardNum": fields.Int(required=False, dump_to="TopicShardNum"),
+        "TopicShardNum": fields.Int(required=True, dump_to="TopicShardNum"),
     }
 
 
@@ -59,6 +166,33 @@ class CreateULogServiceTopicResponseSchema(schema.ResponseSchema):
 
     fields = {
         "TopicId": fields.Str(required=False, load_from="TopicId"),
+    }
+
+
+"""
+API: DeleteULogServiceCollectConf
+
+删除日志主题采集配置
+"""
+
+
+class DeleteULogServiceCollectConfRequestSchema(schema.RequestSchema):
+    """DeleteULogServiceCollectConf - 删除日志主题采集配置"""
+
+    fields = {
+        "CollectConfId": fields.Int(required=True, dump_to="CollectConfId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "TopicId": fields.Str(required=True, dump_to="TopicId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DeleteULogServiceCollectConfResponseSchema(schema.ResponseSchema):
+    """DeleteULogServiceCollectConf - 删除日志主题采集配置"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
     }
 
 
@@ -87,6 +221,32 @@ class DeleteULogServiceLogSetResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DeleteULogServiceMachineGroup
+
+删除机器组
+"""
+
+
+class DeleteULogServiceMachineGroupRequestSchema(schema.RequestSchema):
+    """DeleteULogServiceMachineGroup - 删除机器组"""
+
+    fields = {
+        "Id": fields.Int(required=True, dump_to="Id"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DeleteULogServiceMachineGroupResponseSchema(schema.ResponseSchema):
+    """DeleteULogServiceMachineGroup - 删除机器组"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
 API: DeleteULogServiceTopic
 
 删除ULogService主题
@@ -108,6 +268,61 @@ class DeleteULogServiceTopicResponseSchema(schema.ResponseSchema):
 
     fields = {
         "Message": fields.Str(required=False, load_from="Message"),
+    }
+
+
+"""
+API: DescribeULogServiceMachineGroup
+
+查询日志采集机器组
+"""
+
+
+class DescribeULogServiceMachineGroupRequestSchema(schema.RequestSchema):
+    """DescribeULogServiceMachineGroup - 查询日志采集机器组"""
+
+    fields = {
+        "Id": fields.Str(required=True, dump_to="Id"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DescribeULogServiceMachineGroupResponseSchema(schema.ResponseSchema):
+    """DescribeULogServiceMachineGroup - 查询日志采集机器组"""
+
+    fields = {
+        "MachineGroup": models.MachineInfoSchema(),
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: ListULogServiceCollectConf
+
+查询日志主题采集配置列表
+"""
+
+
+class ListULogServiceCollectConfRequestSchema(schema.RequestSchema):
+    """ListULogServiceCollectConf - 查询日志主题采集配置列表"""
+
+    fields = {
+        "CollectConfId": fields.Int(required=False, dump_to="CollectConfId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "TopicId": fields.Int(required=True, dump_to="TopicId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ListULogServiceCollectConfResponseSchema(schema.ResponseSchema):
+    """ListULogServiceCollectConf - 查询日志主题采集配置列表"""
+
+    fields = {
+        "CollectConfs": models.CollectConfSchema(),
+        "Message": fields.Str(required=True, load_from="Message"),
     }
 
 
@@ -139,6 +354,36 @@ class ListULogServiceLogSetResponseSchema(schema.ResponseSchema):
 
 
 """
+API: ListULogServiceMachineGroup
+
+查看机器组列表
+"""
+
+
+class ListULogServiceMachineGroupRequestSchema(schema.RequestSchema):
+    """ListULogServiceMachineGroup - 查看机器组列表"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ListULogServiceMachineGroupResponseSchema(schema.ResponseSchema):
+    """ListULogServiceMachineGroup - 查看机器组列表"""
+
+    fields = {
+        "MachineGroups": fields.List(
+            models.MachineGroupSchema(),
+            required=True,
+            load_from="MachineGroups",
+        ),
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
 API: ListULogServiceTopic
 
 获取ULogService主题
@@ -150,6 +395,7 @@ class ListULogServiceTopicRequestSchema(schema.RequestSchema):
 
     fields = {
         "Limit": fields.Int(required=False, dump_to="Limit"),
+        "LogSetId": fields.Str(required=True, dump_to="LogSetId"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
@@ -198,4 +444,81 @@ class QueryULogServiceLogResponseSchema(schema.ResponseSchema):
 
     fields = {
         "Data": models.LogQueryResultSchema(),
+    }
+
+
+"""
+API: UpdateULogServiceCollectConf
+
+修改日志主题采集配置
+"""
+
+
+class UpdateULogServiceCollectConfParamFilePathsSchema(schema.RequestSchema):
+    """UpdateULogServiceCollectConfParamFilePaths -"""
+
+    fields = {
+        "File": fields.Str(required=False, dump_to="File"),
+        "Path": fields.Str(required=False, dump_to="Path"),
+    }
+
+
+class UpdateULogServiceCollectConfRequestSchema(schema.RequestSchema):
+    """UpdateULogServiceCollectConf - 修改日志主题采集配置"""
+
+    fields = {
+        "CollectConfId": fields.Int(required=True, dump_to="CollectConfId"),
+        "CollectPolicy": fields.Str(required=True, dump_to="CollectPolicy"),
+        "Delimiter": fields.Str(required=False, dump_to="Delimiter"),
+        "Encode": fields.Str(required=False, dump_to="Encode"),
+        "ExtractRule": fields.Str(required=False, dump_to="ExtractRule"),
+        "FilePaths": fields.List(
+            UpdateULogServiceCollectConfParamFilePathsSchema()
+        ),
+        "Keys": fields.List(fields.Str()),
+        "LogType": fields.Str(required=True, dump_to="LogType"),
+        "MatchRule": fields.Str(required=False, dump_to="MatchRule"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "TopicId": fields.Str(required=True, dump_to="TopicId"),
+        "UnMatchKey": fields.Str(required=False, dump_to="UnMatchKey"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class UpdateULogServiceCollectConfResponseSchema(schema.ResponseSchema):
+    """UpdateULogServiceCollectConf - 修改日志主题采集配置"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: UpdateULogServiceMachineGroup
+
+更新日志机器组
+"""
+
+
+class UpdateULogServiceMachineGroupRequestSchema(schema.RequestSchema):
+    """UpdateULogServiceMachineGroup - 更新日志机器组"""
+
+    fields = {
+        "Id": fields.Int(required=True, dump_to="Id"),
+        "Ips": fields.Str(required=False, dump_to="Ips"),
+        "Labels": fields.Str(required=False, dump_to="Labels"),
+        "Name": fields.Str(required=True, dump_to="Name"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Type": fields.Str(required=True, dump_to="Type"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class UpdateULogServiceMachineGroupResponseSchema(schema.ResponseSchema):
+    """UpdateULogServiceMachineGroup - 更新日志机器组"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
     }
