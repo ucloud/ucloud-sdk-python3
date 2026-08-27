@@ -578,12 +578,13 @@ class UKMSClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
         - **KeyId** (str) - (Required) 密钥资源长 ID、ARN 或别名。
-        - **ResourceId** (str) - UKMS 实例资源 ID。
+        - **ResourceId** (str) - (Required) UKMS 实例资源 ID。
 
         **Response**
 
         - **KeyId** (str) - 密钥资源长 ID。
         - **KeyRotationEnabled** (bool) - 是否开启自动轮转。取值：true、false。
+        - **LastRotationDate** (int) - 最后一次轮转时间，Unix 时间戳。
         - **NextRotationDate** (int) - 下次轮转时间，Unix 时间戳。
         - **OnDemandRotationStartDate** (int) - 按需轮转开始时间，Unix 时间戳。
         - **RotationPeriodInDays** (int) - 轮转周期，单位天；未开启时返回 0。

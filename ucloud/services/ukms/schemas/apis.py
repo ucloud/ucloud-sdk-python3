@@ -531,7 +531,7 @@ class GetKeyRotationStatusRequestSchema(schema.RequestSchema):
         "KeyId": fields.Str(required=True, dump_to="KeyId"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
+        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
     }
 
 
@@ -542,6 +542,9 @@ class GetKeyRotationStatusResponseSchema(schema.ResponseSchema):
         "KeyId": fields.Str(required=True, load_from="KeyId"),
         "KeyRotationEnabled": fields.Bool(
             required=True, load_from="KeyRotationEnabled"
+        ),
+        "LastRotationDate": fields.Int(
+            required=False, load_from="LastRotationDate"
         ),
         "NextRotationDate": fields.Int(
             required=False, load_from="NextRotationDate"

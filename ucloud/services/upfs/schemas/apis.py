@@ -89,6 +89,7 @@ class DescribeUPFSVolumePriceRequestSchema(schema.RequestSchema):
         "Region": fields.Str(required=True, dump_to="Region"),
         "Size": fields.Int(required=True, dump_to="Size"),
         "VolumeId": fields.Str(required=False, dump_to="VolumeId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
 
@@ -117,6 +118,7 @@ class DescribeUPFSVolumeUpgradePriceRequestSchema(schema.RequestSchema):
         "Region": fields.Str(required=True, dump_to="Region"),
         "Size": fields.Str(required=True, dump_to="Size"),
         "VolumeId": fields.Str(required=True, dump_to="VolumeId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
 
@@ -170,6 +172,7 @@ class RemoveUPFSVolumeRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "VolumeId": fields.Str(required=True, dump_to="VolumeId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
 
@@ -195,6 +198,7 @@ class UpdateUPFSVolumeInfoRequestSchema(schema.RequestSchema):
         "Remark": fields.Str(required=False, dump_to="Remark"),
         "VolumeId": fields.Str(required=True, dump_to="VolumeId"),
         "VolumeName": fields.Str(required=False, dump_to="VolumeName"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
 
