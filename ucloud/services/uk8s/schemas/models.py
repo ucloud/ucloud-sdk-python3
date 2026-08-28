@@ -3,20 +3,58 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class SecGroupIdSchema(schema.ResponseSchema):
+    """SecGroupId - 安全组"""
+
+    fields = {
+        "Id": fields.Str(required=False, load_from="Id"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Priority": fields.Str(required=False, load_from="Priority"),
+    }
+
+
+class IPSetSchema(schema.ResponseSchema):
+    """IPSet - 节点的IP信息"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "Default": fields.Str(required=False, load_from="Default"),
+        "IP": fields.Str(required=False, load_from="IP"),
+        "IPId": fields.Str(required=False, load_from="IPId"),
+        "IPMode": fields.Str(required=False, load_from="IPMode"),
+        "Mac": fields.Str(required=False, load_from="Mac"),
+        "NetworkInterfaceId": fields.Str(
+            required=False, load_from="NetworkInterfaceId"
+        ),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "Type": fields.Str(required=False, load_from="Type"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+    }
+
+
+class DiskSetSchema(schema.ResponseSchema):
+    """DiskSet - 节点磁盘信息"""
+
+    fields = {
+        "BackupType": fields.Str(required=False, load_from="BackupType"),
+        "DiskId": fields.Str(required=False, load_from="DiskId"),
+        "DiskType": fields.Str(required=False, load_from="DiskType"),
+        "Drive": fields.Str(required=False, load_from="Drive"),
+        "Encrypted": fields.Str(required=False, load_from="Encrypted"),
+        "IOPS": fields.Int(required=False, load_from="IOPS"),
+        "IsBoot": fields.Str(required=False, load_from="IsBoot"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Size": fields.Int(required=False, load_from="Size"),
+        "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
 class LoopbackClientCertSchema(schema.ResponseSchema):
     """LoopbackClientCert - API Server 回环客户端证书"""
 
     fields = {
         "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
         "Warn": fields.Bool(required=False, load_from="Warn"),
-    }
-
-
-class KubeProxySchema(schema.ResponseSchema):
-    """KubeProxy - KubeProxy信息"""
-
-    fields = {
-        "Mode": fields.Str(required=False, load_from="Mode"),
     }
 
 
@@ -39,45 +77,6 @@ class AutoscalerSchema(schema.ResponseSchema):
         ),
         "UpdateTime": fields.Int(required=True, load_from="UpdateTime"),
         "Version": fields.Str(required=True, load_from="Version"),
-    }
-
-
-class SecGroupIdSchema(schema.ResponseSchema):
-    """SecGroupId - 安全组"""
-
-    fields = {
-        "Id": fields.Str(required=False, load_from="Id"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Priority": fields.Str(required=False, load_from="Priority"),
-    }
-
-
-class DiskSetSchema(schema.ResponseSchema):
-    """DiskSet - 节点磁盘信息"""
-
-    fields = {
-        "BackupType": fields.Str(required=False, load_from="BackupType"),
-        "DiskId": fields.Str(required=False, load_from="DiskId"),
-        "DiskType": fields.Str(required=False, load_from="DiskType"),
-        "Drive": fields.Str(required=False, load_from="Drive"),
-        "Encrypted": fields.Str(required=False, load_from="Encrypted"),
-        "IOPS": fields.Int(required=False, load_from="IOPS"),
-        "IsBoot": fields.Str(required=False, load_from="IsBoot"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Size": fields.Int(required=False, load_from="Size"),
-        "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
-class IPSetSchema(schema.ResponseSchema):
-    """IPSet - 节点的IP信息"""
-
-    fields = {
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "Default": fields.Str(required=False, load_from="Default"),
-        "IP": fields.Str(required=False, load_from="IP"),
-        "IPId": fields.Str(required=False, load_from="IPId"),
-        "Type": fields.Str(required=False, load_from="Type"),
     }
 
 
@@ -104,6 +103,14 @@ class UhostInfoSchema(schema.ResponseSchema):
         "State": fields.Str(required=True, load_from="State"),
         "TotalDiskSpace": fields.Int(required=True, load_from="TotalDiskSpace"),
         "Zone": fields.Str(required=True, load_from="Zone"),
+    }
+
+
+class KubeProxySchema(schema.ResponseSchema):
+    """KubeProxy - KubeProxy信息"""
+
+    fields = {
+        "Mode": fields.Str(required=False, load_from="Mode"),
     }
 
 
@@ -221,8 +228,8 @@ class NodeInfoV2Schema(schema.ResponseSchema):
         "Tag": fields.Str(required=False, load_from="Tag"),
         "UHostFamily": fields.Str(required=True, load_from="UHostFamily"),
         "Unschedulable": fields.Bool(required=True, load_from="Unschedulable"),
-        "UsedCPU": fields.Str(required=True, load_from="UsedCPU"),
-        "UsedMemory": fields.Str(required=True, load_from="UsedMemory"),
+        "UsedCPU": fields.Int(required=True, load_from="UsedCPU"),
+        "UsedMemory": fields.Int(required=True, load_from="UsedMemory"),
         "Zone": fields.Str(required=True, load_from="Zone"),
     }
 
@@ -260,25 +267,6 @@ class ClusterSetSchema(schema.ResponseSchema):
     }
 
 
-class EvictionConditionSchema(schema.ResponseSchema):
-    """EvictionCondition - 驱逐条件或宽限时间"""
-
-    fields = {
-        "ImagefsAvailable": fields.Str(
-            required=False, load_from="ImagefsAvailable"
-        ),
-        "MemoryAvailable": fields.Str(
-            required=False, load_from="MemoryAvailable"
-        ),
-        "NodefsAvailable": fields.Str(
-            required=False, load_from="NodefsAvailable"
-        ),
-        "NodefsInodesFree": fields.Str(
-            required=False, load_from="NodefsInodesFree"
-        ),
-    }
-
-
 class EIPSchema(schema.ResponseSchema):
     """EIP - 节点EIP"""
 
@@ -311,6 +299,25 @@ class ReservedResourceSchema(schema.ResponseSchema):
         ),
         "Memory": fields.Str(required=False, load_from="Memory"),
         "Pid": fields.Str(required=False, load_from="Pid"),
+    }
+
+
+class EvictionConditionSchema(schema.ResponseSchema):
+    """EvictionCondition - 驱逐条件或宽限时间"""
+
+    fields = {
+        "ImagefsAvailable": fields.Str(
+            required=False, load_from="ImagefsAvailable"
+        ),
+        "MemoryAvailable": fields.Str(
+            required=False, load_from="MemoryAvailable"
+        ),
+        "NodefsAvailable": fields.Str(
+            required=False, load_from="NodefsAvailable"
+        ),
+        "NodefsInodesFree": fields.Str(
+            required=False, load_from="NodefsInodesFree"
+        ),
     }
 
 
@@ -392,4 +399,110 @@ class NodeGroupSetSchema(schema.ResponseSchema):
         "UpdateTime": fields.Int(required=False, load_from="UpdateTime"),
         "UserData": fields.Str(required=False, load_from="UserData"),
         "Zone": fields.Str(required=False, load_from="Zone"),
+    }
+
+
+class ULSFilePathsSchema(schema.ResponseSchema):
+    """ULSFilePaths - ULS采集文件路径"""
+
+    fields = {
+        "File": fields.Str(required=False, load_from="File"),
+        "Path": fields.Str(required=False, load_from="Path"),
+    }
+
+
+class ULSInputMetadataSchema(schema.ResponseSchema):
+    """ULSInputMetadata - ULSInputMetadata"""
+
+    fields = {
+        "Container": fields.Str(required=False, load_from="Container"),
+        "Labels": fields.Str(required=False, load_from="Labels"),
+    }
+
+
+class ULSInputDetailSchema(schema.ResponseSchema):
+    """ULSInputDetail - ULSInputDetail"""
+
+    fields = {
+        "FilePaths": fields.List(ULSFilePathsSchema()),
+        "InputMetadata": ULSInputMetadataSchema(),
+        "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
+class ULSLabelsSchema(schema.ResponseSchema):
+    """ULSLabels - ULSLabels"""
+
+    fields = {
+        "Key": fields.Str(required=False, load_from="Key"),
+        "Value": fields.Str(required=False, load_from="Value"),
+        "ValueOperator": fields.Str(required=False, load_from="ValueOperator"),
+    }
+
+
+class ULSExtractRuleSchema(schema.ResponseSchema):
+    """ULSExtractRule - 定义日志的提取、解析和格式化规则。"""
+
+    fields = {
+        "BeginningRegex": fields.Str(
+            required=False, load_from="BeginningRegex"
+        ),
+        "CollectPolicy": fields.Str(required=False, load_from="CollectPolicy"),
+        "Delimiter": fields.Str(required=False, load_from="Delimiter"),
+        "Encode": fields.Str(required=False, load_from="Encode"),
+        "LogRegex": fields.Str(required=False, load_from="LogRegex"),
+        "LogType": fields.Str(required=False, load_from="LogType"),
+        "TimeFormat": fields.Str(required=False, load_from="TimeFormat"),
+        "TimeKey": fields.Str(required=False, load_from="TimeKey"),
+        "UnMatchKey": fields.Str(required=False, load_from="UnMatchKey"),
+        "UnMatchUpload": fields.Str(required=False, load_from="UnMatchUpload"),
+    }
+
+
+class ULSPodLabelsMatchSchema(schema.ResponseSchema):
+    """ULSPodLabelsMatch - ULSPodLabelsMatch"""
+
+    fields = {
+        "Labels": fields.List(ULSLabelsSchema()),
+        "Namespace": fields.Str(required=False, load_from="Namespace"),
+        "NamespaceOperator": fields.Str(
+            required=False, load_from="NamespaceOperator"
+        ),
+    }
+
+
+class ULSWorkloadMatchSchema(schema.ResponseSchema):
+    """ULSWorkloadMatch - ULSWorkloadMatch"""
+
+    fields = {
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Namespace": fields.Str(required=False, load_from="Namespace"),
+        "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
+class ULSMatchRuleSchema(schema.ResponseSchema):
+    """ULSMatchRule - ULSMatchRule"""
+
+    fields = {
+        "Container": fields.Str(required=True, load_from="Container"),
+        "ContainerOperator": fields.Str(
+            required=True, load_from="ContainerOperator"
+        ),
+        "PodLabels": ULSPodLabelsMatchSchema(),
+        "Workloads": fields.List(ULSWorkloadMatchSchema()),
+    }
+
+
+class ULSLogConfigSchema(schema.ResponseSchema):
+    """ULSLogConfig - ULSLogConfig"""
+
+    fields = {
+        "ClusterId": fields.Str(required=True, load_from="ClusterId"),
+        "ExtractRule": ULSExtractRuleSchema(),
+        "InputDetail": ULSInputDetailSchema(),
+        "MachineGroup": fields.Str(required=True, load_from="MachineGroup"),
+        "MatchRule": ULSMatchRuleSchema(),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "TopicID": fields.Str(required=False, load_from="TopicID"),
     }
