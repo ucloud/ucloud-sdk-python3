@@ -91,7 +91,7 @@ class CreateKeyRequestSchema(schema.RequestSchema):
 
     fields = {
         "Alias": fields.Str(required=False, dump_to="Alias"),
-        "DeletionProtection": fields.Str(
+        "DeletionProtection": fields.Bool(
             required=False, dump_to="DeletionProtection"
         ),
         "Description": fields.Str(required=False, dump_to="Description"),
@@ -237,7 +237,7 @@ class DisableKeyRotationRequestSchema(schema.RequestSchema):
         "KeyId": fields.Str(required=True, dump_to="KeyId"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
+        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
     }
 
 
@@ -711,7 +711,7 @@ class RotateKeyOnDemandRequestSchema(schema.RequestSchema):
         "KeyId": fields.Str(required=True, dump_to="KeyId"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
+        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
     }
 
 

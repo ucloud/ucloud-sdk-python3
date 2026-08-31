@@ -7,6 +7,7 @@ class KeyMetadataSchema(schema.ResponseSchema):
     """KeyMetadata - DescribeKey 返回的密钥元数据"""
 
     fields = {
+        "Arn": fields.Str(required=False, load_from="Arn"),
         "CreationDate": fields.Int(required=True, load_from="CreationDate"),
         "DeletionDate": fields.Int(required=False, load_from="DeletionDate"),
         "DeletionProtection": fields.Bool(
@@ -21,7 +22,7 @@ class KeyMetadataSchema(schema.ResponseSchema):
         "KeyVersion": fields.Int(required=True, load_from="KeyVersion"),
         "OrganizationId": fields.Int(
             required=False, load_from="OrganizationId"
-        ),  # Deprecated, will be removed at 1.0
+        ),
         "Origin": fields.Str(required=True, load_from="Origin"),
         "ProjectId": fields.Str(required=False, load_from="ProjectId"),
         "ResourceId": fields.Str(required=True, load_from="ResourceId"),
