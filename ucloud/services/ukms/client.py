@@ -106,11 +106,11 @@ class UKMSClient(Client):
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
         - **ResourceId** (str) - (Required) UKMS 实例资源 ID。
         - **Alias** (str) - 可选密钥别名，格式为 alias/name。
-        - **DeletionProtection** (str) - 是否开启删除保护。可选值：true、false；默认 false。
+        - **DeletionProtection** (bool) - 是否开启删除保护。可选值：true、false；默认 false。
         - **Description** (str) - 密钥描述，最多 8192 字符。
         - **KeySpec** (str) - 密钥规格，默认 SYMMETRIC_DEFAULT（AES_256）。可选值：SYMMETRIC_DEFAULT(AES_256)、RSA_2048、RSA_3072、RSA_4096、ECC_NIST_P256、ECC_NIST_P384、ECC_NIST_P521、HMAC_256、HMAC_384、HMAC_512。
         - **KeyUsage** (str) - 密钥用途
-        - **Origin** (str) - 密钥材料来源，默认 UCLOUD_KMS。当前仅支持 UCLOUD_KMS；EXTERNAL 为 BYOK 规划值，当前传入会返回 100660。
+        - **Origin** (str) - 密钥材料来源，默认 UCLOUD_KMS。当前仅支持 UCLOUD_KMS；EXTERNAL 为 BYOK 规划值，当前传入会返回 1230。
 
         **Response**
 
@@ -139,7 +139,7 @@ class UKMSClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
         - **CiphertextBlob** (str) - (Required) 待解密密文。
-        - **EncryptionAlgorithm** (str) - 解密算法。可选值：SYMMETRIC_DEFAULT、RSAES_OAEP_SHA_1、RSAES_OAEP_SHA_256；非对称密钥解密时必填或使用默认 RSAES_OAEP_SHA_256。
+        - **EncryptionAlgorithm** (str) - 解密算法。可选值：SYMMETRIC_DEFAULT、RSAES_OAEP_SHA_1、RSAES_OAEP_SHA_256；非对称密钥解密时必填。
         - **EncryptionContext** (str) - 加密上下文，JSON Object。该参数内容会记录在日志中，请勿传入密码、密钥、令牌等敏感信息。
         - **KeyId** (str) - 主密钥 KeyId；对称密钥可空，从 CiphertextBlob 自动识别；非对称必填。
         - **ResourceId** (str) - UKMS 实例资源 ID。
@@ -204,6 +204,7 @@ class UKMSClient(Client):
         **Response Model**
 
         **KeyMetadata**
+        - **Arn** (str) - ucs:ukms:{Region}:{CompanyId}:key/{KeyId}
         - **CreationDate** (int) - 创建时间，Unix 时间戳。
         - **DeletionDate** (int) - 计划删除时间，Unix 时间戳。
         - **DeletionProtection** (bool) - 是否开启删除保护。取值：true、false。
@@ -214,8 +215,9 @@ class UKMSClient(Client):
         - **KeyState** (str) - 密钥对外状态。取值：Enabled、Disabled、PendingDeletion、PendingImport、Unavailable。
         - **KeyUsage** (list) - 密钥用途。取值：ENCRYPT_DECRYPT、SIGN_VERIFY、GENERATE_VERIFY_MAC、KEY_AGREEMENT。
         - **KeyVersion** (int) - 当前密钥版本。
+        - **OrganizationId** (int) - 所属组织数字 ID
         - **Origin** (str) - 密钥材料来源。取值：UCLOUD_KMS、EXTERNAL；当前 CreateKey 仅支持 UCLOUD_KMS。
-        - **ProjectId** (str) - 密钥所属项目的对外别名，格式为 org-xxx。该值由项目数字 ID 解析得到，可能因项目别名查询失败而为空。
+        - **ProjectId** (str) - 密钥所属项目ID。
         - **ResourceId** (str) - 密钥所属的 UKMS 实例资源 ID。
 
 
@@ -238,7 +240,7 @@ class UKMSClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
-        - **KeyId** (str) - (Required) 密钥 DB 数字 ID。
+        - **KeyId** (str) - (Required) 密钥资源长 ID
         - **ResourceId** (str) - UKMS 实例资源 ID。
 
         **Response**
@@ -266,7 +268,7 @@ class UKMSClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
         - **KeyId** (str) - (Required) 密钥 ID、ARN 或别名。
-        - **ResourceId** (str) - UKMS 实例资源 ID。
+        - **ResourceId** (str) - (Required) UKMS 实例资源 ID。
 
         **Response**
 
@@ -290,7 +292,7 @@ class UKMSClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
-        - **KeyId** (str) - (Required) 密钥 DB 数字 ID。
+        - **KeyId** (str) - (Required) 密钥资源长 ID
         - **ResourceId** (str) - UKMS 实例资源 ID。
 
         **Response**
@@ -706,7 +708,7 @@ class UKMSClient(Client):
         - **KeyUsage** (list) - 按 KeySpec 派生的密钥用途。取值：ENCRYPT_DECRYPT、SIGN_VERIFY、GENERATE_VERIFY_MAC、KEY_AGREEMENT。
         - **NextRotationDate** (int) - 下次自动轮转时间（Unix 时间戳，秒）；仅在已开启自动轮转时返回。
         - **OrganizationId** (int) - 密钥所属组织的数字 ID，来源于密钥关联的资源交易记录。
-        - **Origin** (str) - 密钥来源，由 Origin 派生。取值：ucloud、import。当前 CreateKey 仅支持 ucloud。
+        - **Origin** (str) - 密钥来源，由 Origin 派生。取值：UCLOUD_KMS、EXTERNAL。当前 CreateKey 仅支持 UCLOUD_KMS。
         - **PlanDeleteTime** (int) - 计划删除时间，Unix 时间戳。
         - **ProjectId** (str) - 密钥所属项目的对外别名，格式为 org-xxx。该值由项目数字 ID 解析得到，可能因项目别名查询失败而为空。
         - **ResourceId** (str) - 密钥所属的 UKMS 实例资源 ID。
@@ -789,7 +791,7 @@ class UKMSClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
         - **KeyId** (str) - (Required) 密钥 ID、ARN 或别名。
-        - **ResourceId** (str) - UKMS 实例资源 ID。
+        - **ResourceId** (str) - (Required) UKMS 实例资源 ID。
 
         **Response**
 
@@ -816,7 +818,7 @@ class UKMSClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
-        - **KeyId** (str) - (Required) 密钥 DB 数字 ID。
+        - **KeyId** (str) - (Required) 密钥资源长 ID
         - **DeleteDay** (int) - 删除等待天数，取值范围为 7~30 天；未填写时默认为 30 天。
         - **ResourceId** (str) - UKMS 实例资源 ID。
 
