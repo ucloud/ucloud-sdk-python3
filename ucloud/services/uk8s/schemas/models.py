@@ -13,25 +13,6 @@ class SecGroupIdSchema(schema.ResponseSchema):
     }
 
 
-class IPSetSchema(schema.ResponseSchema):
-    """IPSet - 节点的IP信息"""
-
-    fields = {
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "Default": fields.Str(required=False, load_from="Default"),
-        "IP": fields.Str(required=False, load_from="IP"),
-        "IPId": fields.Str(required=False, load_from="IPId"),
-        "IPMode": fields.Str(required=False, load_from="IPMode"),
-        "Mac": fields.Str(required=False, load_from="Mac"),
-        "NetworkInterfaceId": fields.Str(
-            required=False, load_from="NetworkInterfaceId"
-        ),
-        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
-        "Type": fields.Str(required=False, load_from="Type"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-    }
-
-
 class DiskSetSchema(schema.ResponseSchema):
     """DiskSet - 节点磁盘信息"""
 
@@ -49,6 +30,14 @@ class DiskSetSchema(schema.ResponseSchema):
     }
 
 
+class KubeProxySchema(schema.ResponseSchema):
+    """KubeProxy - KubeProxy信息"""
+
+    fields = {
+        "Mode": fields.Str(required=False, load_from="Mode"),
+    }
+
+
 class LoopbackClientCertSchema(schema.ResponseSchema):
     """LoopbackClientCert - API Server 回环客户端证书"""
 
@@ -58,25 +47,22 @@ class LoopbackClientCertSchema(schema.ResponseSchema):
     }
 
 
-class AutoscalerSchema(schema.ResponseSchema):
-    """Autoscaler -"""
+class IPSetSchema(schema.ResponseSchema):
+    """IPSet - 节点的IP信息"""
 
     fields = {
-        "Enabled": fields.Int(required=True, load_from="Enabled"),
-        "ScaleDownDelayAfterAdd": fields.Str(
-            required=True, load_from="ScaleDownDelayAfterAdd"
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "Default": fields.Str(required=False, load_from="Default"),
+        "IP": fields.Str(required=False, load_from="IP"),
+        "IPId": fields.Str(required=False, load_from="IPId"),
+        "IPMode": fields.Str(required=False, load_from="IPMode"),
+        "Mac": fields.Str(required=False, load_from="Mac"),
+        "NetworkInterfaceId": fields.Str(
+            required=False, load_from="NetworkInterfaceId"
         ),
-        "ScaleDownGpuUtilizationThreshold": fields.Str(
-            required=True, load_from="ScaleDownGpuUtilizationThreshold"
-        ),
-        "ScaleDownUnneededTime": fields.Str(
-            required=True, load_from="ScaleDownUnneededTime"
-        ),
-        "ScaleDownUtilizationThreshold": fields.Str(
-            required=True, load_from="ScaleDownUtilizationThreshold"
-        ),
-        "UpdateTime": fields.Int(required=True, load_from="UpdateTime"),
-        "Version": fields.Str(required=True, load_from="Version"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "Type": fields.Str(required=False, load_from="Type"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
     }
 
 
@@ -106,11 +92,25 @@ class UhostInfoSchema(schema.ResponseSchema):
     }
 
 
-class KubeProxySchema(schema.ResponseSchema):
-    """KubeProxy - KubeProxy信息"""
+class AutoscalerSchema(schema.ResponseSchema):
+    """Autoscaler -"""
 
     fields = {
-        "Mode": fields.Str(required=False, load_from="Mode"),
+        "Enabled": fields.Int(required=True, load_from="Enabled"),
+        "ScaleDownDelayAfterAdd": fields.Str(
+            required=True, load_from="ScaleDownDelayAfterAdd"
+        ),
+        "ScaleDownGpuUtilizationThreshold": fields.Str(
+            required=True, load_from="ScaleDownGpuUtilizationThreshold"
+        ),
+        "ScaleDownUnneededTime": fields.Str(
+            required=True, load_from="ScaleDownUnneededTime"
+        ),
+        "ScaleDownUtilizationThreshold": fields.Str(
+            required=True, load_from="ScaleDownUtilizationThreshold"
+        ),
+        "UpdateTime": fields.Int(required=True, load_from="UpdateTime"),
+        "Version": fields.Str(required=True, load_from="Version"),
     }
 
 
@@ -267,28 +267,6 @@ class ClusterSetSchema(schema.ResponseSchema):
     }
 
 
-class EIPSchema(schema.ResponseSchema):
-    """EIP - 节点EIP"""
-
-    fields = {
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "CouponId": fields.Str(required=False, load_from="CouponId"),
-        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
-        "PayMode": fields.Str(required=False, load_from="PayMode"),
-        "ShareBandwidthId": fields.Str(
-            required=False, load_from="ShareBandwidthId"
-        ),
-    }
-
-
-class NetworkInterfaceSchema(schema.ResponseSchema):
-    """NetworkInterface - 网络接口"""
-
-    fields = {
-        "EIP": EIPSchema(),
-    }
-
-
 class ReservedResourceSchema(schema.ResponseSchema):
     """ReservedResource - 预留资源"""
 
@@ -343,6 +321,28 @@ class KubeletConfigurationSchema(schema.ResponseSchema):
         "KubeReserved": ReservedResourceSchema(),
         "MaxPods": fields.Int(required=False, load_from="MaxPods"),
         "SystemReserved": ReservedResourceSchema(),
+    }
+
+
+class EIPSchema(schema.ResponseSchema):
+    """EIP - 节点EIP"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "CouponId": fields.Str(required=False, load_from="CouponId"),
+        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
+        "PayMode": fields.Str(required=False, load_from="PayMode"),
+        "ShareBandwidthId": fields.Str(
+            required=False, load_from="ShareBandwidthId"
+        ),
+    }
+
+
+class NetworkInterfaceSchema(schema.ResponseSchema):
+    """NetworkInterface - 网络接口"""
+
+    fields = {
+        "EIP": EIPSchema(),
     }
 
 
@@ -402,6 +402,26 @@ class NodeGroupSetSchema(schema.ResponseSchema):
     }
 
 
+class ULSWorkloadMatchSchema(schema.ResponseSchema):
+    """ULSWorkloadMatch - ULSWorkloadMatch"""
+
+    fields = {
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Namespace": fields.Str(required=False, load_from="Namespace"),
+        "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
+class ULSLabelsSchema(schema.ResponseSchema):
+    """ULSLabels - ULSLabels"""
+
+    fields = {
+        "Key": fields.Str(required=False, load_from="Key"),
+        "Value": fields.Str(required=False, load_from="Value"),
+        "ValueOperator": fields.Str(required=False, load_from="ValueOperator"),
+    }
+
+
 class ULSFilePathsSchema(schema.ResponseSchema):
     """ULSFilePaths - ULS采集文件路径"""
 
@@ -430,13 +450,28 @@ class ULSInputDetailSchema(schema.ResponseSchema):
     }
 
 
-class ULSLabelsSchema(schema.ResponseSchema):
-    """ULSLabels - ULSLabels"""
+class ULSPodLabelsMatchSchema(schema.ResponseSchema):
+    """ULSPodLabelsMatch - ULSPodLabelsMatch"""
 
     fields = {
-        "Key": fields.Str(required=False, load_from="Key"),
-        "Value": fields.Str(required=False, load_from="Value"),
-        "ValueOperator": fields.Str(required=False, load_from="ValueOperator"),
+        "Labels": fields.List(ULSLabelsSchema()),
+        "Namespace": fields.Str(required=False, load_from="Namespace"),
+        "NamespaceOperator": fields.Str(
+            required=False, load_from="NamespaceOperator"
+        ),
+    }
+
+
+class ULSMatchRuleSchema(schema.ResponseSchema):
+    """ULSMatchRule - ULSMatchRule"""
+
+    fields = {
+        "Container": fields.Str(required=True, load_from="Container"),
+        "ContainerOperator": fields.Str(
+            required=True, load_from="ContainerOperator"
+        ),
+        "PodLabels": ULSPodLabelsMatchSchema(),
+        "Workloads": fields.List(ULSWorkloadMatchSchema()),
     }
 
 
@@ -456,41 +491,6 @@ class ULSExtractRuleSchema(schema.ResponseSchema):
         "TimeKey": fields.Str(required=False, load_from="TimeKey"),
         "UnMatchKey": fields.Str(required=False, load_from="UnMatchKey"),
         "UnMatchUpload": fields.Str(required=False, load_from="UnMatchUpload"),
-    }
-
-
-class ULSPodLabelsMatchSchema(schema.ResponseSchema):
-    """ULSPodLabelsMatch - ULSPodLabelsMatch"""
-
-    fields = {
-        "Labels": fields.List(ULSLabelsSchema()),
-        "Namespace": fields.Str(required=False, load_from="Namespace"),
-        "NamespaceOperator": fields.Str(
-            required=False, load_from="NamespaceOperator"
-        ),
-    }
-
-
-class ULSWorkloadMatchSchema(schema.ResponseSchema):
-    """ULSWorkloadMatch - ULSWorkloadMatch"""
-
-    fields = {
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Namespace": fields.Str(required=False, load_from="Namespace"),
-        "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
-class ULSMatchRuleSchema(schema.ResponseSchema):
-    """ULSMatchRule - ULSMatchRule"""
-
-    fields = {
-        "Container": fields.Str(required=True, load_from="Container"),
-        "ContainerOperator": fields.Str(
-            required=True, load_from="ContainerOperator"
-        ),
-        "PodLabels": ULSPodLabelsMatchSchema(),
-        "Workloads": fields.List(ULSWorkloadMatchSchema()),
     }
 
 

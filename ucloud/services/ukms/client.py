@@ -76,7 +76,7 @@ class UKMSClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
         - **AliasName** (str) - (Required) 密钥别名，格式为 alias/name。
-        - **KeyId** (str) - (Required) 密钥 ID、ARN 或别名。
+        - **KeyId** (str) - (Required) 密钥 ID 或别名。
         - **ResourceId** (str) - UKMS 实例资源 ID。
 
         **Response**
@@ -267,7 +267,7 @@ class UKMSClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
-        - **KeyId** (str) - (Required) 密钥 ID、ARN 或别名。
+        - **KeyId** (str) - (Required) 密钥 ID或别名。
         - **ResourceId** (str) - (Required) UKMS 实例资源 ID。
 
         **Response**
@@ -345,7 +345,7 @@ class UKMSClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
-        - **KeyId** (str) - (Required) 密钥资源长 ID、ARN 或别名。
+        - **KeyId** (str) - (Required) 密钥资源长 ID 或别名。
         - **Plaintext** (str) - (Required) 待加密明文，Base64 编码。
         - **EncryptionAlgorithm** (str) - 加密算法。可选值：SYMMETRIC_DEFAULT、RSAES_OAEP_SHA_1、RSAES_OAEP_SHA_256；对称密钥默认 SYMMETRIC_DEFAULT，RSA 默认 RSAES_OAEP_SHA_256。
         - **EncryptionContext** (str) - 加密上下文，JSON Object。该参数内容会记录在日志中，请勿传入密码、密钥、令牌等敏感信息。
@@ -483,7 +483,7 @@ class UKMSClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
-        - **KeyId** (str) - (Required) 密钥资源长 ID、ARN 或别名。
+        - **KeyId** (str) - (Required) 密钥资源长 ID或别名。
         - **EncryptionContext** (str) - 加密上下文，JSON Object。
         - **KeySpec** (str) - 数据密钥规格。可选值：AES_256、AES_128；默认 AES_256。与 NumberOfBytes 二选一，同时填写时 NumberOfBytes 优先。
         - **NumberOfBytes** (int) - 生成数据密钥的字节长度，取值范围 1~1024。与 KeySpec 二选一，同时填写时本字段优先。
@@ -579,7 +579,7 @@ class UKMSClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
-        - **KeyId** (str) - (Required) 密钥资源长 ID、ARN 或别名。
+        - **KeyId** (str) - (Required) 密钥资源长 ID 或别名。
         - **ResourceId** (str) - (Required) UKMS 实例资源 ID。
 
         **Response**
@@ -612,7 +612,7 @@ class UKMSClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
-        - **KeyId** (str) - (Required) 密钥 ID、ARN 或别名。
+        - **KeyId** (str) - (Required) 密钥 ID 或 别名。
         - **ResourceId** (str) - UKMS 实例资源 ID。
 
         **Response**
@@ -790,7 +790,7 @@ class UKMSClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
-        - **KeyId** (str) - (Required) 密钥 ID、ARN 或别名。
+        - **KeyId** (str) - (Required) 密钥 ID 或别名。
         - **ResourceId** (str) - (Required) UKMS 实例资源 ID。
 
         **Response**
@@ -844,7 +844,7 @@ class UKMSClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
-        - **KeyId** (str) - (Required) 密钥资源长 ID、ARN 或别名。
+        - **KeyId** (str) - (Required) 密钥资源长 ID 或别名。
         - **SigningAlgorithm** (str) - (Required) 签名算法。可选值：RSASSA_PSS_SHA_256、RSASSA_PSS_SHA_384、RSASSA_PSS_SHA_512、RSASSA_PKCS1_V1_5_SHA_256、RSASSA_PKCS1_V1_5_SHA_384、RSASSA_PKCS1_V1_5_SHA_512、ECDSA_SHA_256、ECDSA_SHA_384、ECDSA_SHA_512；须与密钥 KeySpec 匹配。
         - **SigningMessage** (str) - (Required) 待签名消息，Base64 编码，最大 4096 字节。
         - **MessageType** (str) - 消息类型。可选值：RAW、DIGEST；默认 RAW。
@@ -876,7 +876,7 @@ class UKMSClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
         - **AliasName** (str) - (Required) 密钥别名，格式为 alias/name。
-        - **KeyId** (str) - (Required) 密钥 ID、ARN 或别名。
+        - **KeyId** (str) - (Required) 密钥 ID 或别名。
         - **ResourceId** (str) - UKMS 实例资源 ID。
 
         **Response**
@@ -904,7 +904,7 @@ class UKMSClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
         - **Description** (str) - (Required) 新的密钥描述，最多 8192 字符；空字符串表示清空描述。
-        - **KeyId** (str) - (Required) 密钥资源长 ID、ARN 或别名。
+        - **KeyId** (str) - (Required) 密钥资源长 ID或别名。
         - **ResourceId** (str) - UKMS 实例资源 ID。
 
         **Response**
@@ -931,7 +931,7 @@ class UKMSClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子账号必须填写。
         - **Region** (str) - (Config) 地域。参见地域和可用区列表。
-        - **KeyId** (str) - (Required) 密钥 ID、ARN 或别名。
+        - **KeyId** (str) - (Required) 密钥 ID或别名。
         - **SignatureResult** (str) - (Required) 待验证的签名，Base64 编码。
         - **SigningAlgorithm** (str) - (Required) 签名时使用的算法。可选值：RSASSA_PSS_SHA_256、RSASSA_PSS_SHA_384、RSASSA_PSS_SHA_512、RSASSA_PKCS1_V1_5_SHA_256、RSASSA_PKCS1_V1_5_SHA_384、RSASSA_PKCS1_V1_5_SHA_512、ECDSA_SHA_256、ECDSA_SHA_384、ECDSA_SHA_512；须与密钥 KeySpec 匹配。
         - **SigningMessage** (str) - (Required) 待验签的消息或消息摘要，Base64 编码。

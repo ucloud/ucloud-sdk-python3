@@ -355,6 +355,42 @@ class ULogServiceClient(Client):
         resp = self.invoke("DescribeULogServiceMachineGroup", d, **kwargs)
         return apis.DescribeULogServiceMachineGroupResponseSchema().loads(resp)
 
+    def get_u_log_service_topic_field(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetULogServiceTopicField - 获取ULogService主题索引字段
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **TopicId** (str) - (Required) 主题Id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Data** (list) - 见 **TopicField** 模型定义
+
+        **Response Model**
+
+        **TopicField**
+        - **FieldName** (str) - 索引名称
+        - **FieldType** (str) - 索引类型，可取的值有: long, double, text
+        - **IsReserved** (bool) - 是否保留字段，true表示保留字段，false表示非保留字段
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetULogServiceTopicFieldRequestSchema().dumps(d)
+
+        resp = self.invoke("GetULogServiceTopicField", d, **kwargs)
+        return apis.GetULogServiceTopicFieldResponseSchema().loads(resp)
+
     def list_u_log_service_collect_conf(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -561,17 +597,17 @@ class ULogServiceClient(Client):
 
         **Response Model**
 
+        **AnalysisField**
+        - **Name** (str) - 字段名
+        - **Type** (str) - 字段类型
+
+
         **LogContent**
         - **FileName** (str) - 日志文件路径
         - **HostName** (str) - 日志来源主机
         - **LogId** (str) - 日志标识ID
         - **LogJson** (str) - JSON格式的日志内容
         - **Timestamp** (int) - 日志时间
-
-
-        **AnalysisField**
-        - **Name** (str) - 字段名
-        - **Type** (str) - 字段类型
 
 
         **LogQueryResult**
@@ -674,3 +710,38 @@ class ULogServiceClient(Client):
 
         resp = self.invoke("UpdateULogServiceMachineGroup", d, **kwargs)
         return apis.UpdateULogServiceMachineGroupResponseSchema().loads(resp)
+
+    def update_u_log_service_topic_field(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """UpdateULogServiceTopicField - 更新ULogService主题索引字段
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **TopicId** (str) - (Required) 主题Id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **FieldInfos** (list) - 见 **UpdateULogServiceTopicFieldParamFieldInfos** 模型定义
+
+        **Response**
+
+
+        **Request Model**
+
+        **UpdateULogServiceTopicFieldParamFieldInfos**
+        - **FieldName** (str) - 字段名称支持字母、横线(-)、斜杠(/)、特殊符号（@）、数字、下划线（_）和点（.），且不能以下划线开头，长度不超过255个字符
+        - **FieldType** (str) - 主题字段类型（text、long、double）
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.UpdateULogServiceTopicFieldRequestSchema().dumps(d)
+
+        resp = self.invoke("UpdateULogServiceTopicField", d, **kwargs)
+        return apis.UpdateULogServiceTopicFieldResponseSchema().loads(resp)
