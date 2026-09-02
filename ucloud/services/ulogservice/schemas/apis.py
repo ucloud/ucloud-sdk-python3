@@ -299,6 +299,34 @@ class DescribeULogServiceMachineGroupResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetULogServiceTopicField
+
+获取ULogService主题索引字段
+"""
+
+
+class GetULogServiceTopicFieldRequestSchema(schema.RequestSchema):
+    """GetULogServiceTopicField - 获取ULogService主题索引字段"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "TopicId": fields.Str(required=True, dump_to="TopicId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class GetULogServiceTopicFieldResponseSchema(schema.ResponseSchema):
+    """GetULogServiceTopicField - 获取ULogService主题索引字段"""
+
+    fields = {
+        "Data": fields.List(
+            models.TopicFieldSchema(), required=True, load_from="Data"
+        ),
+    }
+
+
+"""
 API: ListULogServiceCollectConf
 
 查询日志主题采集配置列表
@@ -522,3 +550,39 @@ class UpdateULogServiceMachineGroupResponseSchema(schema.ResponseSchema):
     fields = {
         "Message": fields.Str(required=True, load_from="Message"),
     }
+
+
+"""
+API: UpdateULogServiceTopicField
+
+更新ULogService主题索引字段
+"""
+
+
+class UpdateULogServiceTopicFieldParamFieldInfosSchema(schema.RequestSchema):
+    """UpdateULogServiceTopicFieldParamFieldInfos -"""
+
+    fields = {
+        "FieldName": fields.Str(required=False, dump_to="FieldName"),
+        "FieldType": fields.Str(required=False, dump_to="FieldType"),
+    }
+
+
+class UpdateULogServiceTopicFieldRequestSchema(schema.RequestSchema):
+    """UpdateULogServiceTopicField - 更新ULogService主题索引字段"""
+
+    fields = {
+        "FieldInfos": fields.List(
+            UpdateULogServiceTopicFieldParamFieldInfosSchema()
+        ),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "TopicId": fields.Str(required=True, dump_to="TopicId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class UpdateULogServiceTopicFieldResponseSchema(schema.ResponseSchema):
+    """UpdateULogServiceTopicField - 更新ULogService主题索引字段"""
+
+    fields = {}

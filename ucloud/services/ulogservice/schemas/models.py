@@ -29,15 +29,13 @@ class MachineInfoSchema(schema.ResponseSchema):
     }
 
 
-class MachineGroupSchema(schema.ResponseSchema):
-    """MachineGroup - 机器组"""
+class TopicFieldSchema(schema.ResponseSchema):
+    """TopicField - 索引字段"""
 
     fields = {
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "Id": fields.Str(required=False, load_from="Id"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Type": fields.Str(required=False, load_from="Type"),
-        "UpdateTime": fields.Int(required=False, load_from="UpdateTime"),
+        "FieldName": fields.Str(required=False, load_from="FieldName"),
+        "FieldType": fields.Str(required=False, load_from="FieldType"),
+        "IsReserved": fields.Bool(required=False, load_from="IsReserved"),
     }
 
 
@@ -47,6 +45,18 @@ class FilePathSchema(schema.ResponseSchema):
     fields = {
         "File": fields.Str(required=False, load_from="File"),
         "Path": fields.Str(required=False, load_from="Path"),
+    }
+
+
+class MachineGroupSchema(schema.ResponseSchema):
+    """MachineGroup - 机器组"""
+
+    fields = {
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "Id": fields.Str(required=False, load_from="Id"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Type": fields.Str(required=False, load_from="Type"),
+        "UpdateTime": fields.Int(required=False, load_from="UpdateTime"),
     }
 
 
