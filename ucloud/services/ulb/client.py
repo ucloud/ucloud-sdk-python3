@@ -234,6 +234,7 @@ class ULBClient(Client):
         - **Scheduler** (str) - 负载均衡算法。应用型限定取值："Roundrobin"/"Source"/"WeightRoundrobin"/" Leastconn"/"Backup"，默认值"Roundrobin"
         - **SecurityPolicyId** (str) - （应用型专用）安全策略组ID。仅HTTPS监听支持绑定；默认值“Default”，表示绑定原生策略
         - **StickinessConfig** (dict) - 见 **CreateListenerParamStickinessConfig** 模型定义
+        - **TargetProtocol** (str) - 后端协议。应用型限定取值：“HTTP,HTTPS,GRPC"，默认值“HTTP”
 
         **Response**
 
@@ -242,12 +243,18 @@ class ULBClient(Client):
         **Request Model**
 
         **CreateListenerParamHealthCheckConfig**
-        - **Domain** (str) - （应用型专用）HTTP检查域名
-        - **Enabled** (bool) - 是否开启健康检查功能。暂时不支持关闭。默认值为：true
+        - **Domain** (str) - （应用型专用）HTTP/GRPC检查域名
+        - **DownCounts** (int) - （应用型专用）判定失败的连续次数
+        - **Enabled** (bool) - 是否开启健康检查功能。默认值为：true
+        - **HTTPVersion** (str) - （应用型专用）检查协议
+        - **Interval** (int) - （应用型专用）间隔时间，秒，必须大于TimeOut
         - **Method** (str) - （应用型专用）HTTP检查方法。只支持GET和HEAD。
-        - **Path** (str) - （应用型专用）HTTP检查路径
-        - **ResponseCode** (str) - （应用型专用）GRPC检查响应码
+        - **Path** (str) - （应用型专用）HTTP/GRPC检查路径
+        - **Port** (int) - （应用型专用）端口
+        - **ResponseCode** (str) - （应用型专用）HTTP时为2xx,3xx格式(逗号分隔)，GRPC时为数字码(逗号分隔)
+        - **TimeOut** (int) - （应用型专用）超时时间，秒，必须小于Interval
         - **Type** (str) - 健康检查方式。应用型限定取值：“Port”/"HTTP/GRPC"，默认值：“Port”
+        - **UpCounts** (int) - （应用型专用）判定成功的连续次数
 
 
         **CreateListenerParamStickinessConfig**
@@ -379,10 +386,6 @@ class ULBClient(Client):
 
         **Request Model**
 
-        **CreateRuleParamRuleActionsProxyBufferingConfig**
-        - **CloseProxyBuffering** (bool) - 关闭缓存
-
-
         **CreateRuleParamRuleActionsForwardConfigTargets**
         - **Id** (str) - 转发的后端服务节点的标识ID。限定在监听器的服务节点池里；数组长度可以是0；转发服务节点配置的数组长度不为0时，Id必填
         - **Weight** (int) - 转发的后端服务节点的权重。仅监听器负载均衡算法是加权轮询是有效
@@ -390,6 +393,15 @@ class ULBClient(Client):
 
         **CreateRuleParamRuleActionsForwardConfig**
         - **Targets** (list) - 见 **CreateRuleParamRuleActionsForwardConfigTargets** 模型定义
+
+
+        **CreateRuleParamRuleActionsProxyBufferingConfig**
+        - **CloseProxyBuffering** (bool) - 关闭缓存
+
+
+        **CreateRuleParamRuleConditionsHostConfig**
+        - **MatchMode** (str) - 匹配方式。限定枚举值："Regular"/"Wildcard"，默认值："Regular"
+        - **Values** (list) - 取值。暂时只支持数组长度为1；取值需符合相关匹配方式的条件；域名匹配时必填
 
 
         **CreateRuleParamRuleActionsInsertHeaderConfig**
@@ -406,6 +418,15 @@ class ULBClient(Client):
         - **EnablePersistentConnection** (bool) - 开启长连接
 
 
+        **CreateRuleParamRuleActionsFixedResponseConfig**
+        - **Content** (str) - 返回的固定内容。最大支持存储 1 KB，只支持 ASCII 码值ch >= 32 && ch < 127范围内、不包括 $ 的可打印字符。
+        - **HttpCode** (int) - 返回的 HTTP 响应码，仅支持 2xx、4xx、5xx 数字，x 为任意数字。
+
+
+        **CreateRuleParamRuleConditionsPathConfig**
+        - **Values** (list) - 取值。暂时只支持数组长度为1；取值需符合相关条件；路径匹配时必填
+
+
         **CreateRuleParamRuleActionsCorsConfig**
         - **AllowCredentials** (str) - 是否允许携带凭证信息。取值：on：是。off：否。
         - **AllowHeaders** (list) - 允许跨域的 Header 列表。支持配置为*或配置一个或多个 value 值。单个 value 值只允许包含大小写字母、数字，不能以下划线（_）和短划线（-）开头或结尾，最大长度限制为 32 个字符。最多支持20个值
@@ -413,11 +434,6 @@ class ULBClient(Client):
         - **AllowOrigin** (list) - 允许的访问来源列表。支持只配置一个元素*，或配置一个或多个值。单个值必须以http://或者https://开头，后边加一个正确的域名或一级泛域名。（例：http://*.test.abc.example.com）单个值可以不加端口，也可以指定端口，端口范围：1~65535。最多支持5个值
         - **ExposeHeaders** (list) - 允许暴露的 Header 列表。支持配置为*或配置一个或多个 value 值。单个 value 值只允许包含大小写字母、数字，不能以下划线（_）和短划线（-）开头或结尾，最大长度限制为 32 个字符。最多支持20个值
         - **MaxAge** (int) - 预检请求在浏览器的最大缓存时间，单位：秒。取值范围：-1~172800。
-
-
-        **CreateRuleParamRuleActionsFixedResponseConfig**
-        - **Content** (str) - 返回的固定内容。最大支持存储 1 KB，只支持 ASCII 码值ch >= 32 && ch < 127范围内、不包括 $ 的可打印字符。
-        - **HttpCode** (int) - 返回的 HTTP 响应码，仅支持 2xx、4xx、5xx 数字，x 为任意数字。
 
 
         **CreateRuleParamRuleActions**
@@ -430,15 +446,6 @@ class ULBClient(Client):
         - **ProxyBufferingConfig** (dict) - 见 **CreateRuleParamRuleActionsProxyBufferingConfig** 模型定义
         - **RemoveHeaderConfig** (dict) - 见 **CreateRuleParamRuleActionsRemoveHeaderConfig** 模型定义
         - **Type** (str) - 动作类型。限定枚举值："Forward"、"InsertHeader"、"Cors"、"FixedResponse"、"RemoveHeader"。只会处理 Type 对应的结构体。
-
-
-        **CreateRuleParamRuleConditionsPathConfig**
-        - **Values** (list) - 取值。暂时只支持数组长度为1；取值需符合相关条件；路径匹配时必填
-
-
-        **CreateRuleParamRuleConditionsHostConfig**
-        - **MatchMode** (str) - 匹配方式。限定枚举值："Regular"/"Wildcard"，默认值："Regular"
-        - **Values** (list) - 取值。暂时只支持数组长度为1；取值需符合相关匹配方式的条件；域名匹配时必填
 
 
         **CreateRuleParamRuleConditions**
@@ -872,19 +879,9 @@ class ULBClient(Client):
 
         **Response Model**
 
-        **ProxyBufferingConfig**
-        - **CloseProxyBuffering** (bool) - 关闭缓存
-
-
-        **HostConfigSet**
-        - **MatchMode** (str) - 匹配方式。限定枚举值：Regular-正则，Wildcard-泛域名； 默认值：Regular
-        - **Values** (list) - 取值。暂时只支持数组长度为1； 取值需符合相关匹配方式的条件
-
-
-        **StickinessConfigSet**
-        - **CookieName** (str) - （应用型专用）自定义Cookie。当StickinessType取值"UserDefined"时有效
-        - **Enabled** (bool) - 是否开启会话保持功能。应用型负载均衡实例基于Cookie实现
-        - **Type** (str) - （应用型专用）Cookie处理方式。限定枚举值： ServerInsert -> 自动生成KEY；UserDefined -> 用户自定义KEY
+        **ForwardTargetSet**
+        - **Id** (str) - 服务节点的标识ID
+        - **Weight** (int) - 权重。仅监听器负载均衡算法是加权轮询是有效；取值范围[1-100]，默认值为1
 
 
         **Target**
@@ -902,24 +899,19 @@ class ULBClient(Client):
         - **Weight** (int) - 服务节点的权重。仅在加权轮询算法时有效
 
 
-        **Certificate**
-        - **IsDefault** (bool) - 是否为默认证书
-        - **SSLId** (str) - 证书ID
+        **HostConfigSet**
+        - **MatchMode** (str) - 匹配方式。限定枚举值：Regular-正则，Wildcard-泛域名； 默认值：Regular
+        - **Values** (list) - 取值。暂时只支持数组长度为1； 取值需符合相关匹配方式的条件
 
 
-        **HealthCheckConfigSet**
-        - **Domain** (str) - （应用型专用）HTTP检查域名。 当Type为HTTP/GRPC时，此字段有意义，代表HTTP检查域名
-        - **DownCounts** (int) - （应用型专用）判定失败的连续次数
-        - **Enabled** (bool) - 是否开启健康检查功能。 默认值为：true
-        - **HTTPVersion** (str) - （应用型专用）检查协议
-        - **Interval** (int) - （应用型专用）间隔时间，秒，必须大于TimeOut
-        - **Method** (str) - （应用型专用）HTTP检查方法。当Type为HTTP/GRPC时，此字段有意义，代表HTTP检查方法
-        - **Path** (str) - （应用型专用）HTTP检查路径。当Type为HTTP/GRPC时，此字段有意义，代表HTTP检查路径
-        - **Port** (int) - （应用型专用）端口
-        - **ResponseCode** (str) - （应用型专用）检查预期状态码。HTTP时为2xx,3xx格式(逗号分隔)，GRPC时为数字码(逗号分隔)。
-        - **TimeOut** (int) - （应用型专用）超时时间，秒，必须小于Interval
-        - **Type** (str) - 健康检查方式。应用型限定取值： Port -> 端口检查；HTTP -> HTTP检查；GRPC -> GRPC检测； 默认值：Port
-        - **UpCounts** (int) - （应用型专用）判定成功的连续次数
+        **PathConfigSet**
+        - **Values** (list) - 取值。暂时只支持数组长度为1； 取值需符合相关匹配方式的条件
+
+
+        **RuleCondition**
+        - **HostConfig** (dict) - 见 **HostConfigSet** 模型定义
+        - **PathConfig** (dict) - 见 **PathConfigSet** 模型定义
+        - **Type** (str) - 匹配条件类型。限定枚举值：Host，Path
 
 
         **CorsConfigSet**
@@ -931,19 +923,14 @@ class ULBClient(Client):
         - **MaxAge** (int) - 预检请求在浏览器的最大缓存时间，单位：秒。取值范围：-1~172800。
 
 
-        **ForwardTargetSet**
-        - **Id** (str) - 服务节点的标识ID
-        - **Weight** (int) - 权重。仅监听器负载均衡算法是加权轮询是有效；取值范围[1-100]，默认值为1
-
-
-        **ForwardConfigSet**
-        - **Targets** (list) - 见 **ForwardTargetSet** 模型定义
-
-
         **InsertHeaderConfigSet**
         - **Key** (str) - 插入的 header 字段名称，长度为 1~40 个字符，支持大小写字母 a~z、数字、下划线（_）和短划线（-）。头字段名称不能重复用于InsertHeader中。header 字段不能使用以下(此处判断大小写不敏感)x-real-ip、x-forwarded-for、x-forwarded-proto、x-forwarded-srcport、ucloud-alb-trace、connection、upgrade、content-length、transfer-encoding、keep-alive、te、host、cookie、remoteip、authority
         - **Value** (str) - 插入的 header 字段内容。ValueType 取值为 SystemDefined 时取值如下：ClientSrcPort：客户端端口。ClientSrcIp：客户端 IP 地址。Protocol：客户端请求的协议（HTTP 或 HTTPS)。RuleID：客户端请求命中的转发规则ID。ALBID：ALB ID。ALBPort：ALB 端口。ValueType 取值为 UserDefined 时：可以自定义头字段内容，限制长度为 1~128 个字符，只支持 ASCII 码值ch >= 32 && ch < 127范围内、不包括 $ 的可打印字符。ValueType 取值为 ReferenceHeader 时：可以引用请求头字段中的某一个字段，限制长度限制为 1~128 个字符，支持小写字母 a~z、数字、短划线（-）和下划线（_）。
         - **ValueType** (str) - 头字段内容类型。取值：UserDefined：用户指定。ReferenceHeader：引用用户请求头中的某一个字段。SystemDefined：系统定义。
+
+
+        **RemoveHeaderConfigSet**
+        - **Key** (str) - 删除的 header 字段名称，目前只能删除以下几个默认配置的字段: X-Real-IP、X-Forwarded-For、X-Forwarded-Proto、X-Forwarded-SrcPort
 
 
         **FixedResponseConfigSet**
@@ -951,8 +938,12 @@ class ULBClient(Client):
         - **HttpCode** (int) - 返回的 HTTP 响应码，仅支持 2xx、4xx、5xx 数字，x 为任意数字。
 
 
-        **RemoveHeaderConfigSet**
-        - **Key** (str) - 删除的 header 字段名称，目前只能删除以下几个默认配置的字段: X-Real-IP、X-Forwarded-For、X-Forwarded-Proto、X-Forwarded-SrcPort
+        **ForwardConfigSet**
+        - **Targets** (list) - 见 **ForwardTargetSet** 模型定义
+
+
+        **ProxyBufferingConfig**
+        - **CloseProxyBuffering** (bool) - 关闭缓存
 
 
         **BackendConnectionConfig**
@@ -971,22 +962,38 @@ class ULBClient(Client):
         - **Type** (str) - 动作类型。限定枚举值：Forward、"InsertHeader"、"Cors"、"FixedResponse"、"RemoveHeader"
 
 
-        **PathConfigSet**
-        - **Values** (list) - 取值。暂时只支持数组长度为1； 取值需符合相关匹配方式的条件
-
-
-        **RuleCondition**
-        - **HostConfig** (dict) - 见 **HostConfigSet** 模型定义
-        - **PathConfig** (dict) - 见 **PathConfigSet** 模型定义
-        - **Type** (str) - 匹配条件类型。限定枚举值：Host，Path
-
-
         **Rule**
         - **IsDefault** (bool) - 是否为默认转发规则
         - **Pass** (bool) - 当转发的服务节点为空时，规则是否忽略
         - **RuleActions** (list) - 见 **RuleAction** 模型定义
         - **RuleConditions** (list) - 见 **RuleCondition** 模型定义
         - **RuleId** (str) - 转发规则的ID
+
+
+        **HealthCheckConfigSet**
+        - **Domain** (str) - （应用型专用）HTTP检查域名。 当Type为HTTP/GRPC时，此字段有意义，代表HTTP检查域名
+        - **DownCounts** (int) - （应用型专用）判定失败的连续次数
+        - **Enabled** (bool) - 是否开启健康检查功能。 默认值为：true
+        - **HTTPVersion** (str) - （应用型专用）检查协议
+        - **Interval** (int) - （应用型专用）间隔时间，秒，必须大于TimeOut
+        - **Method** (str) - （应用型专用）HTTP检查方法。当Type为HTTP/GRPC时，此字段有意义，代表HTTP检查方法
+        - **Path** (str) - （应用型专用）HTTP检查路径。当Type为HTTP/GRPC时，此字段有意义，代表HTTP检查路径
+        - **Port** (int) - （应用型专用）端口
+        - **ResponseCode** (str) - （应用型专用）检查预期状态码。HTTP时为2xx,3xx格式(逗号分隔)，GRPC时为数字码(逗号分隔)。
+        - **TimeOut** (int) - （应用型专用）超时时间，秒，必须小于Interval
+        - **Type** (str) - 健康检查方式。应用型限定取值： Port -> 端口检查；HTTP -> HTTP检查；GRPC -> GRPC检测； 默认值：Port
+        - **UpCounts** (int) - （应用型专用）判定成功的连续次数
+
+
+        **StickinessConfigSet**
+        - **CookieName** (str) - （应用型专用）自定义Cookie。当StickinessType取值"UserDefined"时有效
+        - **Enabled** (bool) - 是否开启会话保持功能。应用型负载均衡实例基于Cookie实现
+        - **Type** (str) - （应用型专用）Cookie处理方式。限定枚举值： ServerInsert -> 自动生成KEY；UserDefined -> 用户自定义KEY
+
+
+        **Certificate**
+        - **IsDefault** (bool) - 是否为默认证书
+        - **SSLId** (str) - 证书ID
 
 
         **Listener**
@@ -1047,57 +1054,35 @@ class ULBClient(Client):
 
         **Response Model**
 
-        **FixedResponseConfigSet**
-        - **Content** (str) - 返回的固定内容。最大支持存储 1 KB，只支持 ASCII 码值ch >= 32 && ch < 127范围内、不包括 $ 的可打印字符。
-        - **HttpCode** (int) - 返回的 HTTP 响应码，仅支持 2xx、4xx、5xx 数字，x 为任意数字。
+        **FirewallSet**
+        - **FirewallId** (str) - 防火墙ID
+        - **FirewallName** (str) - 防火墙名称
 
 
-        **ForwardTargetSet**
-        - **Id** (str) - 服务节点的标识ID
-        - **Weight** (int) - 权重。仅监听器负载均衡算法是加权轮询是有效；取值范围[1-100]，默认值为1
+        **HealthCheckConfigSet**
+        - **Domain** (str) - （应用型专用）HTTP检查域名。 当Type为HTTP/GRPC时，此字段有意义，代表HTTP检查域名
+        - **DownCounts** (int) - （应用型专用）判定失败的连续次数
+        - **Enabled** (bool) - 是否开启健康检查功能。 默认值为：true
+        - **HTTPVersion** (str) - （应用型专用）检查协议
+        - **Interval** (int) - （应用型专用）间隔时间，秒，必须大于TimeOut
+        - **Method** (str) - （应用型专用）HTTP检查方法。当Type为HTTP/GRPC时，此字段有意义，代表HTTP检查方法
+        - **Path** (str) - （应用型专用）HTTP检查路径。当Type为HTTP/GRPC时，此字段有意义，代表HTTP检查路径
+        - **Port** (int) - （应用型专用）端口
+        - **ResponseCode** (str) - （应用型专用）检查预期状态码。HTTP时为2xx,3xx格式(逗号分隔)，GRPC时为数字码(逗号分隔)。
+        - **TimeOut** (int) - （应用型专用）超时时间，秒，必须小于Interval
+        - **Type** (str) - 健康检查方式。应用型限定取值： Port -> 端口检查；HTTP -> HTTP检查；GRPC -> GRPC检测； 默认值：Port
+        - **UpCounts** (int) - （应用型专用）判定成功的连续次数
 
 
-        **ForwardConfigSet**
-        - **Targets** (list) - 见 **ForwardTargetSet** 模型定义
+        **Certificate**
+        - **IsDefault** (bool) - 是否为默认证书
+        - **SSLId** (str) - 证书ID
 
 
-        **InsertHeaderConfigSet**
-        - **Key** (str) - 插入的 header 字段名称，长度为 1~40 个字符，支持大小写字母 a~z、数字、下划线（_）和短划线（-）。头字段名称不能重复用于InsertHeader中。header 字段不能使用以下(此处判断大小写不敏感)x-real-ip、x-forwarded-for、x-forwarded-proto、x-forwarded-srcport、ucloud-alb-trace、connection、upgrade、content-length、transfer-encoding、keep-alive、te、host、cookie、remoteip、authority
-        - **Value** (str) - 插入的 header 字段内容。ValueType 取值为 SystemDefined 时取值如下：ClientSrcPort：客户端端口。ClientSrcIp：客户端 IP 地址。Protocol：客户端请求的协议（HTTP 或 HTTPS)。RuleID：客户端请求命中的转发规则ID。ALBID：ALB ID。ALBPort：ALB 端口。ValueType 取值为 UserDefined 时：可以自定义头字段内容，限制长度为 1~128 个字符，只支持 ASCII 码值ch >= 32 && ch < 127范围内、不包括 $ 的可打印字符。ValueType 取值为 ReferenceHeader 时：可以引用请求头字段中的某一个字段，限制长度限制为 1~128 个字符，支持小写字母 a~z、数字、短划线（-）和下划线（_）。
-        - **ValueType** (str) - 头字段内容类型。取值：UserDefined：用户指定。ReferenceHeader：引用用户请求头中的某一个字段。SystemDefined：系统定义。
-
-
-        **BackendConnectionConfig**
-        - **EnablePersistentConnection** (bool) - 是否开启长连接
-
-
-        **CorsConfigSet**
-        - **AllowCredentials** (str) - 是否允许携带凭证信息。取值：on：是。off：否。
-        - **AllowHeaders** (list) - 允许跨域的 Header 列表。支持配置为*或配置一个或多个 value 值。单个 value 值只允许包含大小写字母、数字，不能以下划线（_）和短划线（-）开头或结尾，最大长度限制为 32 个字符。最多支持20个值
-        - **AllowMethods** (list) - 选择跨域访问时允许的 HTTP 方法。取值：GETPOSTPUTDELETEHEADOPTIONSPATCH
-        - **AllowOrigin** (list) - 允许的访问来源列表。支持只配置一个元素*，或配置一个或多个值。单个值必须以http://或者https://开头，后边加一个正确的域名或一级泛域名。（例：http://*.test.abc.example.com）单个值可以不加端口，也可以指定端口，端口范围：1~65535。最多支持5个值
-        - **ExposeHeaders** (list) - 允许暴露的 Header 列表。支持配置为*或配置一个或多个 value 值。单个 value 值只允许包含大小写字母、数字，不能以下划线（_）和短划线（-）开头或结尾，最大长度限制为 32 个字符。最多支持20个值
-        - **MaxAge** (int) - 预检请求在浏览器的最大缓存时间，单位：秒。取值范围：-1~172800。
-
-
-        **RemoveHeaderConfigSet**
-        - **Key** (str) - 删除的 header 字段名称，目前只能删除以下几个默认配置的字段: X-Real-IP、X-Forwarded-For、X-Forwarded-Proto、X-Forwarded-SrcPort
-
-
-        **ProxyBufferingConfig**
-        - **CloseProxyBuffering** (bool) - 关闭缓存
-
-
-        **RuleAction**
-        - **BackendConnectionConfig** (dict) - 见 **BackendConnectionConfig** 模型定义
-        - **CorsConfig** (dict) - 见 **CorsConfigSet** 模型定义
-        - **FixedResponseConfig** (dict) - 见 **FixedResponseConfigSet** 模型定义
-        - **ForwardConfig** (dict) - 见 **ForwardConfigSet** 模型定义
-        - **InsertHeaderConfig** (dict) - 见 **InsertHeaderConfigSet** 模型定义
-        - **Order** (int) - 转发规则动作执行的顺序，取值为1~1000，按值从小到大执行动作。值不能为空，不能重复。Forward、FixedResponse 类型的动作不判断 Order，最后一个执行
-        - **ProxyBufferingConfig** (dict) - 见 **ProxyBufferingConfig** 模型定义
-        - **RemoveHeaderConfig** (dict) - 见 **RemoveHeaderConfigSet** 模型定义
-        - **Type** (str) - 动作类型。限定枚举值：Forward、"InsertHeader"、"Cors"、"FixedResponse"、"RemoveHeader"
+        **StickinessConfigSet**
+        - **CookieName** (str) - （应用型专用）自定义Cookie。当StickinessType取值"UserDefined"时有效
+        - **Enabled** (bool) - 是否开启会话保持功能。应用型负载均衡实例基于Cookie实现
+        - **Type** (str) - （应用型专用）Cookie处理方式。限定枚举值： ServerInsert -> 自动生成KEY；UserDefined -> 用户自定义KEY
 
 
         **HostConfigSet**
@@ -1113,6 +1098,59 @@ class ULBClient(Client):
         - **HostConfig** (dict) - 见 **HostConfigSet** 模型定义
         - **PathConfig** (dict) - 见 **PathConfigSet** 模型定义
         - **Type** (str) - 匹配条件类型。限定枚举值：Host，Path
+
+
+        **InsertHeaderConfigSet**
+        - **Key** (str) - 插入的 header 字段名称，长度为 1~40 个字符，支持大小写字母 a~z、数字、下划线（_）和短划线（-）。头字段名称不能重复用于InsertHeader中。header 字段不能使用以下(此处判断大小写不敏感)x-real-ip、x-forwarded-for、x-forwarded-proto、x-forwarded-srcport、ucloud-alb-trace、connection、upgrade、content-length、transfer-encoding、keep-alive、te、host、cookie、remoteip、authority
+        - **Value** (str) - 插入的 header 字段内容。ValueType 取值为 SystemDefined 时取值如下：ClientSrcPort：客户端端口。ClientSrcIp：客户端 IP 地址。Protocol：客户端请求的协议（HTTP 或 HTTPS)。RuleID：客户端请求命中的转发规则ID。ALBID：ALB ID。ALBPort：ALB 端口。ValueType 取值为 UserDefined 时：可以自定义头字段内容，限制长度为 1~128 个字符，只支持 ASCII 码值ch >= 32 && ch < 127范围内、不包括 $ 的可打印字符。ValueType 取值为 ReferenceHeader 时：可以引用请求头字段中的某一个字段，限制长度限制为 1~128 个字符，支持小写字母 a~z、数字、短划线（-）和下划线（_）。
+        - **ValueType** (str) - 头字段内容类型。取值：UserDefined：用户指定。ReferenceHeader：引用用户请求头中的某一个字段。SystemDefined：系统定义。
+
+
+        **RemoveHeaderConfigSet**
+        - **Key** (str) - 删除的 header 字段名称，目前只能删除以下几个默认配置的字段: X-Real-IP、X-Forwarded-For、X-Forwarded-Proto、X-Forwarded-SrcPort
+
+
+        **CorsConfigSet**
+        - **AllowCredentials** (str) - 是否允许携带凭证信息。取值：on：是。off：否。
+        - **AllowHeaders** (list) - 允许跨域的 Header 列表。支持配置为*或配置一个或多个 value 值。单个 value 值只允许包含大小写字母、数字，不能以下划线（_）和短划线（-）开头或结尾，最大长度限制为 32 个字符。最多支持20个值
+        - **AllowMethods** (list) - 选择跨域访问时允许的 HTTP 方法。取值：GETPOSTPUTDELETEHEADOPTIONSPATCH
+        - **AllowOrigin** (list) - 允许的访问来源列表。支持只配置一个元素*，或配置一个或多个值。单个值必须以http://或者https://开头，后边加一个正确的域名或一级泛域名。（例：http://*.test.abc.example.com）单个值可以不加端口，也可以指定端口，端口范围：1~65535。最多支持5个值
+        - **ExposeHeaders** (list) - 允许暴露的 Header 列表。支持配置为*或配置一个或多个 value 值。单个 value 值只允许包含大小写字母、数字，不能以下划线（_）和短划线（-）开头或结尾，最大长度限制为 32 个字符。最多支持20个值
+        - **MaxAge** (int) - 预检请求在浏览器的最大缓存时间，单位：秒。取值范围：-1~172800。
+
+
+        **ForwardTargetSet**
+        - **Id** (str) - 服务节点的标识ID
+        - **Weight** (int) - 权重。仅监听器负载均衡算法是加权轮询是有效；取值范围[1-100]，默认值为1
+
+
+        **ForwardConfigSet**
+        - **Targets** (list) - 见 **ForwardTargetSet** 模型定义
+
+
+        **ProxyBufferingConfig**
+        - **CloseProxyBuffering** (bool) - 关闭缓存
+
+
+        **BackendConnectionConfig**
+        - **EnablePersistentConnection** (bool) - 是否开启长连接
+
+
+        **FixedResponseConfigSet**
+        - **Content** (str) - 返回的固定内容。最大支持存储 1 KB，只支持 ASCII 码值ch >= 32 && ch < 127范围内、不包括 $ 的可打印字符。
+        - **HttpCode** (int) - 返回的 HTTP 响应码，仅支持 2xx、4xx、5xx 数字，x 为任意数字。
+
+
+        **RuleAction**
+        - **BackendConnectionConfig** (dict) - 见 **BackendConnectionConfig** 模型定义
+        - **CorsConfig** (dict) - 见 **CorsConfigSet** 模型定义
+        - **FixedResponseConfig** (dict) - 见 **FixedResponseConfigSet** 模型定义
+        - **ForwardConfig** (dict) - 见 **ForwardConfigSet** 模型定义
+        - **InsertHeaderConfig** (dict) - 见 **InsertHeaderConfigSet** 模型定义
+        - **Order** (int) - 转发规则动作执行的顺序，取值为1~1000，按值从小到大执行动作。值不能为空，不能重复。Forward、FixedResponse 类型的动作不判断 Order，最后一个执行
+        - **ProxyBufferingConfig** (dict) - 见 **ProxyBufferingConfig** 模型定义
+        - **RemoveHeaderConfig** (dict) - 见 **RemoveHeaderConfigSet** 模型定义
+        - **Type** (str) - 动作类型。限定枚举值：Forward、"InsertHeader"、"Cors"、"FixedResponse"、"RemoveHeader"
 
 
         **Rule**
@@ -1138,32 +1176,6 @@ class ULBClient(Client):
         - **Weight** (int) - 服务节点的权重。仅在加权轮询算法时有效
 
 
-        **Certificate**
-        - **IsDefault** (bool) - 是否为默认证书
-        - **SSLId** (str) - 证书ID
-
-
-        **StickinessConfigSet**
-        - **CookieName** (str) - （应用型专用）自定义Cookie。当StickinessType取值"UserDefined"时有效
-        - **Enabled** (bool) - 是否开启会话保持功能。应用型负载均衡实例基于Cookie实现
-        - **Type** (str) - （应用型专用）Cookie处理方式。限定枚举值： ServerInsert -> 自动生成KEY；UserDefined -> 用户自定义KEY
-
-
-        **HealthCheckConfigSet**
-        - **Domain** (str) - （应用型专用）HTTP检查域名。 当Type为HTTP/GRPC时，此字段有意义，代表HTTP检查域名
-        - **DownCounts** (int) - （应用型专用）判定失败的连续次数
-        - **Enabled** (bool) - 是否开启健康检查功能。 默认值为：true
-        - **HTTPVersion** (str) - （应用型专用）检查协议
-        - **Interval** (int) - （应用型专用）间隔时间，秒，必须大于TimeOut
-        - **Method** (str) - （应用型专用）HTTP检查方法。当Type为HTTP/GRPC时，此字段有意义，代表HTTP检查方法
-        - **Path** (str) - （应用型专用）HTTP检查路径。当Type为HTTP/GRPC时，此字段有意义，代表HTTP检查路径
-        - **Port** (int) - （应用型专用）端口
-        - **ResponseCode** (str) - （应用型专用）检查预期状态码。HTTP时为2xx,3xx格式(逗号分隔)，GRPC时为数字码(逗号分隔)。
-        - **TimeOut** (int) - （应用型专用）超时时间，秒，必须小于Interval
-        - **Type** (str) - 健康检查方式。应用型限定取值： Port -> 端口检查；HTTP -> HTTP检查；GRPC -> GRPC检测； 默认值：Port
-        - **UpCounts** (int) - （应用型专用）判定成功的连续次数
-
-
         **Listener**
         - **Certificates** (list) - 见 **Certificate** 模型定义
         - **CompressionEnabled** (bool) - （应用型专用）是否开启数据压缩功能。目前只支持使用gzip对特定文件类型进行压缩
@@ -1186,9 +1198,17 @@ class ULBClient(Client):
         - **Targets** (list) - 见 **Target** 模型定义
 
 
-        **FirewallSet**
-        - **FirewallId** (str) - 防火墙ID
-        - **FirewallName** (str) - 防火墙名称
+        **AccessLogConfigSet**
+        - **Enabled** (bool) - （应用型专用）是否开启访问日志记录功能
+        - **US3BucketName** (str) - （应用型专用）用于存储访问日志的bucket
+        - **US3TokenId** (str) - （应用型专用）上传访问日志到bucket所需的token
+
+
+        **SecGroupInfo**
+        - **Name** (str) - 安全组名称
+        - **Priority** (int) - 优先级
+        - **SecgroupId** (str) - 安全组id
+        - **VPCId** (str) - 安全组所属vpc id
 
 
         **IPInfo**
@@ -1199,19 +1219,6 @@ class ULBClient(Client):
         - **IPVersion** (str) - IP协议版本
         - **Id** (str) - 唯一标识ID
         - **OperatorName** (str) - 外网IP的运营商信息。枚举值为：Telecom -> 电信，Unicom -> 联通，International -> 国际IP，Bgp -> BGP，Duplet -> 双线（电信+联通双线路），BGPPro -> 精品BGP，China-mobile -> 中国移动，Anycast -> AnycastEIP
-
-
-        **SecGroupInfo**
-        - **Name** (str) - 安全组名称
-        - **Priority** (int) - 优先级
-        - **SecgroupId** (str) - 安全组id
-        - **VPCId** (str) - 安全组所属vpc id
-
-
-        **AccessLogConfigSet**
-        - **Enabled** (bool) - （应用型专用）是否开启访问日志记录功能
-        - **US3BucketName** (str) - （应用型专用）用于存储访问日志的bucket
-        - **US3TokenId** (str) - （应用型专用）上传访问日志到bucket所需的token
 
 
         **LoadBalancer**
@@ -1272,13 +1279,41 @@ class ULBClient(Client):
         - **Values** (list) - 取值。暂时只支持数组长度为1； 取值需符合相关匹配方式的条件
 
 
+        **PathConfigSet**
+        - **Values** (list) - 取值。暂时只支持数组长度为1； 取值需符合相关匹配方式的条件
+
+
+        **RuleCondition**
+        - **HostConfig** (dict) - 见 **HostConfigSet** 模型定义
+        - **PathConfig** (dict) - 见 **PathConfigSet** 模型定义
+        - **Type** (str) - 匹配条件类型。限定枚举值：Host，Path
+
+
+        **RemoveHeaderConfigSet**
+        - **Key** (str) - 删除的 header 字段名称，目前只能删除以下几个默认配置的字段: X-Real-IP、X-Forwarded-For、X-Forwarded-Proto、X-Forwarded-SrcPort
+
+
+        **BackendConnectionConfig**
+        - **EnablePersistentConnection** (bool) - 是否开启长连接
+
+
         **ForwardTargetSet**
         - **Id** (str) - 服务节点的标识ID
         - **Weight** (int) - 权重。仅监听器负载均衡算法是加权轮询是有效；取值范围[1-100]，默认值为1
 
 
-        **BackendConnectionConfig**
-        - **EnablePersistentConnection** (bool) - 是否开启长连接
+        **ForwardConfigSet**
+        - **Targets** (list) - 见 **ForwardTargetSet** 模型定义
+
+
+        **InsertHeaderConfigSet**
+        - **Key** (str) - 插入的 header 字段名称，长度为 1~40 个字符，支持大小写字母 a~z、数字、下划线（_）和短划线（-）。头字段名称不能重复用于InsertHeader中。header 字段不能使用以下(此处判断大小写不敏感)x-real-ip、x-forwarded-for、x-forwarded-proto、x-forwarded-srcport、ucloud-alb-trace、connection、upgrade、content-length、transfer-encoding、keep-alive、te、host、cookie、remoteip、authority
+        - **Value** (str) - 插入的 header 字段内容。ValueType 取值为 SystemDefined 时取值如下：ClientSrcPort：客户端端口。ClientSrcIp：客户端 IP 地址。Protocol：客户端请求的协议（HTTP 或 HTTPS)。RuleID：客户端请求命中的转发规则ID。ALBID：ALB ID。ALBPort：ALB 端口。ValueType 取值为 UserDefined 时：可以自定义头字段内容，限制长度为 1~128 个字符，只支持 ASCII 码值ch >= 32 && ch < 127范围内、不包括 $ 的可打印字符。ValueType 取值为 ReferenceHeader 时：可以引用请求头字段中的某一个字段，限制长度限制为 1~128 个字符，支持小写字母 a~z、数字、短划线（-）和下划线（_）。
+        - **ValueType** (str) - 头字段内容类型。取值：UserDefined：用户指定。ReferenceHeader：引用用户请求头中的某一个字段。SystemDefined：系统定义。
+
+
+        **ProxyBufferingConfig**
+        - **CloseProxyBuffering** (bool) - 关闭缓存
 
 
         **CorsConfigSet**
@@ -1295,24 +1330,6 @@ class ULBClient(Client):
         - **HttpCode** (int) - 返回的 HTTP 响应码，仅支持 2xx、4xx、5xx 数字，x 为任意数字。
 
 
-        **ForwardConfigSet**
-        - **Targets** (list) - 见 **ForwardTargetSet** 模型定义
-
-
-        **InsertHeaderConfigSet**
-        - **Key** (str) - 插入的 header 字段名称，长度为 1~40 个字符，支持大小写字母 a~z、数字、下划线（_）和短划线（-）。头字段名称不能重复用于InsertHeader中。header 字段不能使用以下(此处判断大小写不敏感)x-real-ip、x-forwarded-for、x-forwarded-proto、x-forwarded-srcport、ucloud-alb-trace、connection、upgrade、content-length、transfer-encoding、keep-alive、te、host、cookie、remoteip、authority
-        - **Value** (str) - 插入的 header 字段内容。ValueType 取值为 SystemDefined 时取值如下：ClientSrcPort：客户端端口。ClientSrcIp：客户端 IP 地址。Protocol：客户端请求的协议（HTTP 或 HTTPS)。RuleID：客户端请求命中的转发规则ID。ALBID：ALB ID。ALBPort：ALB 端口。ValueType 取值为 UserDefined 时：可以自定义头字段内容，限制长度为 1~128 个字符，只支持 ASCII 码值ch >= 32 && ch < 127范围内、不包括 $ 的可打印字符。ValueType 取值为 ReferenceHeader 时：可以引用请求头字段中的某一个字段，限制长度限制为 1~128 个字符，支持小写字母 a~z、数字、短划线（-）和下划线（_）。
-        - **ValueType** (str) - 头字段内容类型。取值：UserDefined：用户指定。ReferenceHeader：引用用户请求头中的某一个字段。SystemDefined：系统定义。
-
-
-        **RemoveHeaderConfigSet**
-        - **Key** (str) - 删除的 header 字段名称，目前只能删除以下几个默认配置的字段: X-Real-IP、X-Forwarded-For、X-Forwarded-Proto、X-Forwarded-SrcPort
-
-
-        **ProxyBufferingConfig**
-        - **CloseProxyBuffering** (bool) - 关闭缓存
-
-
         **RuleAction**
         - **BackendConnectionConfig** (dict) - 见 **BackendConnectionConfig** 模型定义
         - **CorsConfig** (dict) - 见 **CorsConfigSet** 模型定义
@@ -1323,16 +1340,6 @@ class ULBClient(Client):
         - **ProxyBufferingConfig** (dict) - 见 **ProxyBufferingConfig** 模型定义
         - **RemoveHeaderConfig** (dict) - 见 **RemoveHeaderConfigSet** 模型定义
         - **Type** (str) - 动作类型。限定枚举值：Forward、"InsertHeader"、"Cors"、"FixedResponse"、"RemoveHeader"
-
-
-        **PathConfigSet**
-        - **Values** (list) - 取值。暂时只支持数组长度为1； 取值需符合相关匹配方式的条件
-
-
-        **RuleCondition**
-        - **HostConfig** (dict) - 见 **HostConfigSet** 模型定义
-        - **PathConfig** (dict) - 见 **PathConfigSet** 模型定义
-        - **Type** (str) - 匹配条件类型。限定枚举值：Host，Path
 
 
         **Rule**
@@ -1613,29 +1620,6 @@ class ULBClient(Client):
 
         **Response Model**
 
-        **FirewallSet**
-        - **FirewallId** (str) - 防火墙ID
-        - **FirewallName** (str) - 防火墙名称
-
-
-        **ULBBackendSet**
-        - **BackendId** (str) - 后端资源实例的Id
-        - **Enabled** (int) - 后端提供服务的实例启用与否，枚举值：0 禁用 1 启用
-        - **IsBackup** (int) - 是否为backup，只有当vserver的Backup属性为1时才会有此字段，说明：0：主rs1：备rs
-        - **Port** (int) - 后端提供服务的端口
-        - **PrivateIP** (str) - 后端提供服务的内网IP
-        - **ResourceId** (str) - 资源实例的资源Id
-        - **ResourceName** (str) - 资源实例的资源名称
-        - **ResourceType** (str) - 资源实例的类型
-        - **Status** (int) - 后端提供服务的实例运行状态，枚举值：0健康检查健康状态 1 健康检查异常
-        - **SubResourceId** (str) - 资源绑定的虚拟网卡实例的资源Id
-        - **SubResourceName** (str) - 资源绑定的虚拟网卡实例的资源名称
-        - **SubResourceType** (str) - 资源绑定的虚拟网卡实例的类型
-        - **SubnetId** (str) - 后端提供服务的资源所在的子网的ID
-        - **VPCId** (str) - 后端服务器所在的VPC
-        - **Weight** (int) - 后端RS权重（在加权轮询算法下有效）
-
-
         **SSLBindedTargetSet**
         - **ULBId** (str) - VServer 所属的ULB实例的资源ID
         - **ULBName** (str) - ULB实例的名称
@@ -1658,12 +1642,22 @@ class ULBClient(Client):
         - **USSLId** (str) - USSL证书平台的编号,只有当SSLSource为1时才出现
 
 
-        **BindSecurityPolicy**
-        - **SSLCiphers** (list) - 加密套件
-        - **SecurityPolicyId** (str) - 安全策略组ID
-        - **SecurityPolicyName** (str) - 安全策略组名称
-        - **SecurityPolicyType** (int) - 安全策略类型 0：预定义 1：自定义
-        - **TLSVersion** (str) - TLS最低版本
+        **ULBBackendSet**
+        - **BackendId** (str) - 后端资源实例的Id
+        - **Enabled** (int) - 后端提供服务的实例启用与否，枚举值：0 禁用 1 启用
+        - **IsBackup** (int) - 是否为backup，只有当vserver的Backup属性为1时才会有此字段，说明：0：主rs1：备rs
+        - **Port** (int) - 后端提供服务的端口
+        - **PrivateIP** (str) - 后端提供服务的内网IP
+        - **ResourceId** (str) - 资源实例的资源Id
+        - **ResourceName** (str) - 资源实例的资源名称
+        - **ResourceType** (str) - 资源实例的类型
+        - **Status** (int) - 后端提供服务的实例运行状态，枚举值：0健康检查健康状态 1 健康检查异常
+        - **SubResourceId** (str) - 资源绑定的虚拟网卡实例的资源Id
+        - **SubResourceName** (str) - 资源绑定的虚拟网卡实例的资源名称
+        - **SubResourceType** (str) - 资源绑定的虚拟网卡实例的类型
+        - **SubnetId** (str) - 后端提供服务的资源所在的子网的ID
+        - **VPCId** (str) - 后端服务器所在的VPC
+        - **Weight** (int) - 后端RS权重（在加权轮询算法下有效）
 
 
         **PolicyBackendSet**
@@ -1676,6 +1670,28 @@ class ULBClient(Client):
         - **SubResourceId** (str) - 如果资源绑定了弹性网卡，则展示弹性网卡的资源ID
         - **SubResourceName** (str) - 如果资源绑定了弹性网卡，则展示弹性网卡的资源名称
         - **SubResourceType** (str) - "UNI"或者为空
+
+
+        **ULBIPSet**
+        - **Bandwidth** (int) - 弹性IP的带宽值（暂未对外开放）
+        - **BandwidthType** (int) - 弹性IP的带宽类型，枚举值：1 表示是共享带宽，0 普通带宽类型（暂未对外开放）
+        - **EIP** (str) - 弹性IP地址
+        - **EIPId** (str) - 弹性IP的ID
+        - **OperatorName** (str) - 弹性IP的运营商信息，枚举值为：  Bgp：BGP IP International：国际IP
+
+
+        **LoggerSet**
+        - **BucketName** (str) - ulb日志上传的bucket
+        - **TokenID** (str) - 上传到bucket使用的token的tokenid
+        - **TokenName** (str) - bucket的token名称
+
+
+        **BindSecurityPolicy**
+        - **SSLCiphers** (list) - 加密套件
+        - **SecurityPolicyId** (str) - 安全策略组ID
+        - **SecurityPolicyName** (str) - 安全策略组名称
+        - **SecurityPolicyType** (int) - 安全策略类型 0：预定义 1：自定义
+        - **TLSVersion** (str) - TLS最低版本
 
 
         **ULBPolicySet**
@@ -1716,18 +1732,9 @@ class ULBClient(Client):
         - **VServerName** (str) - VServer实例的名字
 
 
-        **ULBIPSet**
-        - **Bandwidth** (int) - 弹性IP的带宽值（暂未对外开放）
-        - **BandwidthType** (int) - 弹性IP的带宽类型，枚举值：1 表示是共享带宽，0 普通带宽类型（暂未对外开放）
-        - **EIP** (str) - 弹性IP地址
-        - **EIPId** (str) - 弹性IP的ID
-        - **OperatorName** (str) - 弹性IP的运营商信息，枚举值为：  Bgp：BGP IP International：国际IP
-
-
-        **LoggerSet**
-        - **BucketName** (str) - ulb日志上传的bucket
-        - **TokenID** (str) - 上传到bucket使用的token的tokenid
-        - **TokenName** (str) - bucket的token名称
+        **FirewallSet**
+        - **FirewallId** (str) - 防火墙ID
+        - **FirewallName** (str) - 防火墙名称
 
 
         **ULBSet**
@@ -1788,6 +1795,12 @@ class ULBClient(Client):
 
         **Response Model**
 
+        **LoggerSet**
+        - **BucketName** (str) - ulb日志上传的bucket
+        - **TokenID** (str) - 上传到bucket使用的token的tokenid
+        - **TokenName** (str) - bucket的token名称
+
+
         **FirewallSet**
         - **FirewallId** (str) - 防火墙ID
         - **FirewallName** (str) - 防火墙名称
@@ -1799,12 +1812,6 @@ class ULBClient(Client):
         - **EIP** (str) - 弹性IP地址
         - **EIPId** (str) - 弹性IP的ID
         - **OperatorName** (str) - 弹性IP的运营商信息，枚举值为：  Bgp：BGP IP International：国际IP
-
-
-        **LoggerSet**
-        - **BucketName** (str) - ulb日志上传的bucket
-        - **TokenID** (str) - 上传到bucket使用的token的tokenid
-        - **TokenName** (str) - bucket的token名称
 
 
         **ULBSimpleSet**
@@ -1864,11 +1871,35 @@ class ULBClient(Client):
 
         **Response Model**
 
+        **PolicyBackendSet**
+        - **BackendId** (str) - 所添加的后端资源在ULB中的对象ID，（为ULB系统中使用，与资源自身ID无关
+        - **ObjectId** (str) - 后端资源的对象ID
+        - **Port** (int) - 所添加的后端资源服务端口
+        - **PrivateIP** (str) - 后端资源的内网IP
+        - **ResourceName** (str) - 后端资源的实例名称
+        - **ResourceType** (str) - 所添加的后端资源的类型，枚举值：UHost -> 云主机；UPM -> 物理云主机； UDHost -> 私有专区主机；UDocker -> 容器；UHybrid->混合云主机；CUBE->Cube；UNI -> 虚拟网卡
+        - **SubResourceId** (str) - 如果资源绑定了弹性网卡，则展示弹性网卡的资源ID
+        - **SubResourceName** (str) - 如果资源绑定了弹性网卡，则展示弹性网卡的资源名称
+        - **SubResourceType** (str) - "UNI"或者为空
+
+
         **SSLBindedTargetSet**
         - **ULBId** (str) - VServer 所属的ULB实例的资源ID
         - **ULBName** (str) - ULB实例的名称
         - **VServerId** (str) - SSL证书绑定到的VServer的资源ID
         - **VServerName** (str) - 对应的VServer的名字
+
+
+        **ULBPolicySet**
+        - **BackendSet** (list) - 见 **PolicyBackendSet** 模型定义
+        - **DomainMatchMode** (str) - 内容转发规则中域名的匹配方式。枚举值：Regular，正则；Wildcard，泛域名
+        - **Match** (str) - 内容转发匹配字段;默认内容转发类型下为空。
+        - **PolicyId** (str) - 内容转发Id，默认内容转发类型下为空。
+        - **PolicyPriority** (int) - 内容转发优先级，范围[1,9999]，数字越大优先级越高。默认内容转发规则下为0。
+        - **PolicyType** (str) - 内容类型，枚举值：Custom -> 客户自定义；Default -> 默认内容转发
+        - **TotalCount** (int) - 默认内容转发类型下返回当前rs总数
+        - **Type** (str) - 内容转发匹配字段的类型，枚举值：Domain -> 域名；Path -> 路径； 默认内容转发类型下为空
+        - **VServerId** (str) - 所属VServerId
 
 
         **ULBSSLSet**
@@ -1884,30 +1915,6 @@ class ULBClient(Client):
         - **SSLSource** (int) - SSL证书来源，SSL证书来源，0代表证书来自于ULB平台，1代表证书来自于USSL平台
         - **SSLType** (str) - SSL证书类型，暂时只有 Pem 一种类型
         - **USSLId** (str) - USSL证书平台的编号,只有当SSLSource为1时才出现
-
-
-        **PolicyBackendSet**
-        - **BackendId** (str) - 所添加的后端资源在ULB中的对象ID，（为ULB系统中使用，与资源自身ID无关
-        - **ObjectId** (str) - 后端资源的对象ID
-        - **Port** (int) - 所添加的后端资源服务端口
-        - **PrivateIP** (str) - 后端资源的内网IP
-        - **ResourceName** (str) - 后端资源的实例名称
-        - **ResourceType** (str) - 所添加的后端资源的类型，枚举值：UHost -> 云主机；UPM -> 物理云主机； UDHost -> 私有专区主机；UDocker -> 容器；UHybrid->混合云主机；CUBE->Cube；UNI -> 虚拟网卡
-        - **SubResourceId** (str) - 如果资源绑定了弹性网卡，则展示弹性网卡的资源ID
-        - **SubResourceName** (str) - 如果资源绑定了弹性网卡，则展示弹性网卡的资源名称
-        - **SubResourceType** (str) - "UNI"或者为空
-
-
-        **ULBPolicySet**
-        - **BackendSet** (list) - 见 **PolicyBackendSet** 模型定义
-        - **DomainMatchMode** (str) - 内容转发规则中域名的匹配方式。枚举值：Regular，正则；Wildcard，泛域名
-        - **Match** (str) - 内容转发匹配字段;默认内容转发类型下为空。
-        - **PolicyId** (str) - 内容转发Id，默认内容转发类型下为空。
-        - **PolicyPriority** (int) - 内容转发优先级，范围[1,9999]，数字越大优先级越高。默认内容转发规则下为0。
-        - **PolicyType** (str) - 内容类型，枚举值：Custom -> 客户自定义；Default -> 默认内容转发
-        - **TotalCount** (int) - 默认内容转发类型下返回当前rs总数
-        - **Type** (str) - 内容转发匹配字段的类型，枚举值：Domain -> 域名；Path -> 路径； 默认内容转发类型下为空
-        - **VServerId** (str) - 所属VServerId
 
 
         **BindSecurityPolicy**
@@ -2181,6 +2188,7 @@ class ULBClient(Client):
         - **Scheduler** (str) - 负载均衡算法。应用型限定取值："Roundrobin"/"Source"/"WeightRoundrobin"/" Leastconn"/"Backup"
         - **SecurityPolicyId** (str) - （应用型专用）安全策略组ID。仅HTTPS监听支持绑定。“Default”，表示绑定原生策略
         - **StickinessConfig** (dict) - 见 **UpdateListenerAttributeParamStickinessConfig** 模型定义
+        - **TargetProtocol** (str) - 后端协议。应用型限定取值：“HTTP,HTTPS,GRPC"，默认值“HTTP”
 
         **Response**
 
@@ -2194,12 +2202,18 @@ class ULBClient(Client):
 
 
         **UpdateListenerAttributeParamHealthCheckConfig**
-        - **Domain** (str) - （应用型专用）HTTP检查域名
-        - **Enabled** (bool) - 是否开启健康检查功能。暂时不支持关闭；默认值为：true
+        - **Domain** (str) - （应用型专用）HTTP/GRPC检查域名
+        - **DownCounts** (int) - （应用型专用）判定失败的连续次数
+        - **Enabled** (bool) - 是否开启健康检查功能。默认值为：true
+        - **HTTPVersion** (str) - （应用型专用）检查协议
+        - **Interval** (int) - （应用型专用）间隔时间，秒，必须大于TimeOut
         - **Method** (str) - （应用型专用）HTTP检查方法。只支持GET和HEAD。
-        - **Path** (str) - （应用型专用）HTTP检查路径
-        - **ResponseCode** (str) - （应用型专用）GRPC检查响应码
-        - **Type** (str) - 健康检查方式。应用型限定取值：“Port”/"HTTP"；默认值：“Port”
+        - **Path** (str) - （应用型专用）HTTP/GRPC检查路径
+        - **Port** (int) - （应用型专用）端口
+        - **ResponseCode** (str) - （应用型专用）HTTP时为2xx,3xx格式(逗号分隔)，GRPC时为数字码(逗号分隔)
+        - **TimeOut** (int) - （应用型专用）超时时间，秒，必须小于Interval
+        - **Type** (str) - 健康检查方式。应用型限定取值：“Port”/"HTTP/GRPC"，默认值：“Port”
+        - **UpCounts** (int) - （应用型专用）判定成功的连续次数
 
 
         """
@@ -2306,57 +2320,9 @@ class ULBClient(Client):
 
         **Request Model**
 
-        **UpdateRuleAttributeParamRuleActionsInsertHeaderConfig**
-        - **Key** (str) - 插入的 header 字段名称，长度为 1~40 个字符，支持大小写字母 a~z、数字、下划线（_）和短划线（-）。头字段名称不能重复用于InsertHeader中。header 字段不能使用以下(此处判断大小写不敏感)x-real-ip、x-forwarded-for、x-forwarded-proto、x-forwarded-srcport、ucloud-alb-trace、connection、upgrade、content-length、transfer-encoding、keep-alive、te、host、cookie、remoteip、authority
-        - **Value** (str) - 插入的 header 字段内容。ValueType 取值为 SystemDefined 时取值如下：ClientSrcPort：客户端端口。ClientSrcIp：客户端 IP 地址。Protocol：客户端请求的协议（HTTP 或 HTTPS)。RuleID：客户端请求命中的转发规则ID。ALBID：ALB ID。ALBPort：ALB 端口。ValueType 取值为 UserDefined 时：可以自定义头字段内容，限制长度为 1~128 个字符，只支持 ASCII 码值ch >= 32 && ch < 127范围内、不包括 $ 的可打印字符。ValueType 取值为 ReferenceHeader 时：可以引用请求头字段中的某一个字段，限制长度限制为 1~128 个字符，支持小写字母 a~z、数字、短划线（-）和下划线（_）。
-        - **ValueType** (str) - 头字段内容类型。取值：UserDefined：用户指定。ReferenceHeader：引用用户请求头中的某一个字段。SystemDefined：系统定义。
-
-
-        **UpdateRuleAttributeParamRuleActionsRemoveHeaderConfig**
-        - **Key** (str) - 删除的 header 字段名称，目前只能删除以下几个默认配置的字段X-Real-IP、X-Forwarded-For、X-Forwarded-Proto、X-Forwarded-SrcPort
-
-
-        **UpdateRuleAttributeParamRuleActionsProxyBufferingConfig**
-        - **CloseProxyBuffering** (bool) - 关闭缓存
-
-
-        **UpdateRuleAttributeParamRuleActionsCorsConfig**
-        - **AllowCredentials** (str) - 是否允许携带凭证信息。取值：on：是。off：否。
-        - **AllowHeaders** (list) - 允许跨域的 Header 列表。支持配置为*或配置一个或多个 value 值。单个 value 值只允许包含大小写字母、数字，不能以下划线（_）和短划线（-）开头或结尾，最大长度限制为 32 个字符。最多支持20个值
-        - **AllowMethods** (list) - 选择跨域访问时允许的 HTTP 方法。取值：GET。POST。PUT。DELETE。HEAD。OPTIONS。PATCH。
-        - **AllowOrigin** (list) - 允许的访问来源列表。支持只配置一个元素*，或配置一个或多个值。单个值必须以http://或者https://开头，后边加一个正确的域名或一级泛域名。（例：http://*.test.abc.example.com）单个值可以不加端口，也可以指定端口，端口范围：1~65535。最多支持5个值
-        - **ExposeHeaders** (list) - 允许暴露的 Header 列表。支持配置为*或配置一个或多个 value 值。单个 value 值只允许包含大小写字母、数字，不能以下划线（_）和短划线（-）开头或结尾，最大长度限制为 32 个字符。最多支持20个值
-        - **MaxAge** (int) - 预检请求在浏览器的最大缓存时间，单位：秒。取值范围：-1~172800。
-
-
         **UpdateRuleAttributeParamRuleActionsForwardConfigTargets**
         - **Id** (str) - 转发的后端服务节点的标识ID。限定在监听器的服务节点池里；数组长度可以是0；转发服务节点配置的数组长度不为0时，Id必填
         - **Weight** (int) - 转发的后端服务节点的权重。仅监听器负载均衡算法是加权轮询是有效
-
-
-        **UpdateRuleAttributeParamRuleActionsForwardConfig**
-        - **Targets** (list) - 见 **UpdateRuleAttributeParamRuleActionsForwardConfigTargets** 模型定义
-
-
-        **UpdateRuleAttributeParamRuleActionsBackendConnectionConfig**
-        - **EnablePersistentConnection** (bool) - 开启长连接
-
-
-        **UpdateRuleAttributeParamRuleActionsFixedResponseConfig**
-        - **Content** (str) - 返回的固定内容。最大支持存储 1 KB，只支持 ASCII 码值ch >= 32 && ch < 127范围内、不包括 $ 的可打印字符。
-        - **HttpCode** (int) - 返回的 HTTP 响应码，仅支持 2xx、4xx、5xx 数字，x 为任意数字。
-
-
-        **UpdateRuleAttributeParamRuleActions**
-        - **BackendConnectionConfig** (dict) - 见 **UpdateRuleAttributeParamRuleActionsBackendConnectionConfig** 模型定义
-        - **CorsConfig** (dict) - 见 **UpdateRuleAttributeParamRuleActionsCorsConfig** 模型定义
-        - **FixedResponseConfig** (dict) - 见 **UpdateRuleAttributeParamRuleActionsFixedResponseConfig** 模型定义
-        - **ForwardConfig** (dict) - 见 **UpdateRuleAttributeParamRuleActionsForwardConfig** 模型定义
-        - **InsertHeaderConfig** (dict) - 见 **UpdateRuleAttributeParamRuleActionsInsertHeaderConfig** 模型定义
-        - **Order** (int) - 转发规则动作执行的顺序，取值为1~1000，按值从小到大执行动作。值不能为空，不能重复。Forward、FixedResponse 类型的动作不判断 Order，最后一个执行
-        - **ProxyBufferingConfig** (dict) - 见 **UpdateRuleAttributeParamRuleActionsProxyBufferingConfig** 模型定义
-        - **RemoveHeaderConfig** (dict) - 见 **UpdateRuleAttributeParamRuleActionsRemoveHeaderConfig** 模型定义
-        - **Type** (str) - 动作类型。限定枚举值："Forward"；RuleActions数组长度不为0时必填
 
 
         **UpdateRuleAttributeParamRuleConditionsHostConfig**
@@ -2372,6 +2338,54 @@ class ULBClient(Client):
         - **HostConfig** (dict) - 见 **UpdateRuleAttributeParamRuleConditionsHostConfig** 模型定义
         - **PathConfig** (dict) - 见 **UpdateRuleAttributeParamRuleConditionsPathConfig** 模型定义
         - **Type** (str) - 匹配条件类型。限定枚举值："Host"/"Path"；RuleConditions数组长度不为0时必填
+
+
+        **UpdateRuleAttributeParamRuleActionsInsertHeaderConfig**
+        - **Key** (str) - 插入的 header 字段名称，长度为 1~40 个字符，支持大小写字母 a~z、数字、下划线（_）和短划线（-）。头字段名称不能重复用于InsertHeader中。header 字段不能使用以下(此处判断大小写不敏感)x-real-ip、x-forwarded-for、x-forwarded-proto、x-forwarded-srcport、ucloud-alb-trace、connection、upgrade、content-length、transfer-encoding、keep-alive、te、host、cookie、remoteip、authority
+        - **Value** (str) - 插入的 header 字段内容。ValueType 取值为 SystemDefined 时取值如下：ClientSrcPort：客户端端口。ClientSrcIp：客户端 IP 地址。Protocol：客户端请求的协议（HTTP 或 HTTPS)。RuleID：客户端请求命中的转发规则ID。ALBID：ALB ID。ALBPort：ALB 端口。ValueType 取值为 UserDefined 时：可以自定义头字段内容，限制长度为 1~128 个字符，只支持 ASCII 码值ch >= 32 && ch < 127范围内、不包括 $ 的可打印字符。ValueType 取值为 ReferenceHeader 时：可以引用请求头字段中的某一个字段，限制长度限制为 1~128 个字符，支持小写字母 a~z、数字、短划线（-）和下划线（_）。
+        - **ValueType** (str) - 头字段内容类型。取值：UserDefined：用户指定。ReferenceHeader：引用用户请求头中的某一个字段。SystemDefined：系统定义。
+
+
+        **UpdateRuleAttributeParamRuleActionsProxyBufferingConfig**
+        - **CloseProxyBuffering** (bool) - 关闭缓存
+
+
+        **UpdateRuleAttributeParamRuleActionsBackendConnectionConfig**
+        - **EnablePersistentConnection** (bool) - 开启长连接
+
+
+        **UpdateRuleAttributeParamRuleActionsFixedResponseConfig**
+        - **Content** (str) - 返回的固定内容。最大支持存储 1 KB，只支持 ASCII 码值ch >= 32 && ch < 127范围内、不包括 $ 的可打印字符。
+        - **HttpCode** (int) - 返回的 HTTP 响应码，仅支持 2xx、4xx、5xx 数字，x 为任意数字。
+
+
+        **UpdateRuleAttributeParamRuleActionsRemoveHeaderConfig**
+        - **Key** (str) - 删除的 header 字段名称，目前只能删除以下几个默认配置的字段X-Real-IP、X-Forwarded-For、X-Forwarded-Proto、X-Forwarded-SrcPort
+
+
+        **UpdateRuleAttributeParamRuleActionsCorsConfig**
+        - **AllowCredentials** (str) - 是否允许携带凭证信息。取值：on：是。off：否。
+        - **AllowHeaders** (list) - 允许跨域的 Header 列表。支持配置为*或配置一个或多个 value 值。单个 value 值只允许包含大小写字母、数字，不能以下划线（_）和短划线（-）开头或结尾，最大长度限制为 32 个字符。最多支持20个值
+        - **AllowMethods** (list) - 选择跨域访问时允许的 HTTP 方法。取值：GET。POST。PUT。DELETE。HEAD。OPTIONS。PATCH。
+        - **AllowOrigin** (list) - 允许的访问来源列表。支持只配置一个元素*，或配置一个或多个值。单个值必须以http://或者https://开头，后边加一个正确的域名或一级泛域名。（例：http://*.test.abc.example.com）单个值可以不加端口，也可以指定端口，端口范围：1~65535。最多支持5个值
+        - **ExposeHeaders** (list) - 允许暴露的 Header 列表。支持配置为*或配置一个或多个 value 值。单个 value 值只允许包含大小写字母、数字，不能以下划线（_）和短划线（-）开头或结尾，最大长度限制为 32 个字符。最多支持20个值
+        - **MaxAge** (int) - 预检请求在浏览器的最大缓存时间，单位：秒。取值范围：-1~172800。
+
+
+        **UpdateRuleAttributeParamRuleActionsForwardConfig**
+        - **Targets** (list) - 见 **UpdateRuleAttributeParamRuleActionsForwardConfigTargets** 模型定义
+
+
+        **UpdateRuleAttributeParamRuleActions**
+        - **BackendConnectionConfig** (dict) - 见 **UpdateRuleAttributeParamRuleActionsBackendConnectionConfig** 模型定义
+        - **CorsConfig** (dict) - 见 **UpdateRuleAttributeParamRuleActionsCorsConfig** 模型定义
+        - **FixedResponseConfig** (dict) - 见 **UpdateRuleAttributeParamRuleActionsFixedResponseConfig** 模型定义
+        - **ForwardConfig** (dict) - 见 **UpdateRuleAttributeParamRuleActionsForwardConfig** 模型定义
+        - **InsertHeaderConfig** (dict) - 见 **UpdateRuleAttributeParamRuleActionsInsertHeaderConfig** 模型定义
+        - **Order** (int) - 转发规则动作执行的顺序，取值为1~1000，按值从小到大执行动作。值不能为空，不能重复。Forward、FixedResponse 类型的动作不判断 Order，最后一个执行
+        - **ProxyBufferingConfig** (dict) - 见 **UpdateRuleAttributeParamRuleActionsProxyBufferingConfig** 模型定义
+        - **RemoveHeaderConfig** (dict) - 见 **UpdateRuleAttributeParamRuleActionsRemoveHeaderConfig** 模型定义
+        - **Type** (str) - 动作类型。限定枚举值："Forward"；RuleActions数组长度不为0时必填
 
 
         """
