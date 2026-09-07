@@ -69,6 +69,10 @@ class NetworkInterfaceInfoSchema(schema.ResponseSchema):
         ),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "Default": fields.Bool(required=False, load_from="Default"),
+        "EipDirectMode": fields.Bool(required=False, load_from="EipDirectMode"),
+        "EipDirectVersion": fields.Int(
+            required=False, load_from="EipDirectVersion"
+        ),
         "Gateway": fields.Str(required=False, load_from="Gateway"),
         "InterfaceId": fields.Str(required=True, load_from="InterfaceId"),
         "MacAddress": fields.Str(required=True, load_from="MacAddress"),
@@ -122,8 +126,8 @@ class NatGatewaySubnetSetSchema(schema.ResponseSchema):
 
     fields = {
         "Subnet": fields.Str(required=True, load_from="Subnet"),
-        "SubnetName": fields.Str(required=True, load_from="SubnetName"),
-        "SubnetworkId": fields.Str(required=True, load_from="SubnetworkId"),
+        "SubnetName": fields.Str(required=False, load_from="SubnetName"),
+        "SubnetworkId": fields.Str(required=False, load_from="SubnetworkId"),
     }
 
 
@@ -240,6 +244,25 @@ class UNIIpInfoSchema(schema.ResponseSchema):
     }
 
 
+class FwInfoSchema(schema.ResponseSchema):
+    """FwInfo - 防火墙信息"""
+
+    fields = {
+        "Id": fields.Str(required=False, load_from="Id"),
+        "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
+class SimpleIPv6AddressInfoSchema(schema.ResponseSchema):
+    """SimpleIPv6AddressInfo -"""
+
+    fields = {
+        "Attribute": fields.Str(required=False, load_from="Attribute"),
+        "IPv6Address": fields.Str(required=False, load_from="IPv6Address"),
+        "IPv6Id": fields.Str(required=False, load_from="IPv6Id"),
+    }
+
+
 class UNIQuotaInfoSchema(schema.ResponseSchema):
     """UNIQuotaInfo - 虚拟网卡内网IP配额使用情况"""
 
@@ -253,6 +276,16 @@ class UNIQuotaInfoSchema(schema.ResponseSchema):
     }
 
 
+class SecGroupSchema(schema.ResponseSchema):
+    """SecGroup - UNI关联的安全组信息"""
+
+    fields = {
+        "Name": fields.Str(required=True, load_from="Name"),
+        "Priority": fields.Int(required=False, load_from="Priority"),
+        "SecGroupId": fields.Str(required=False, load_from="SecGroupId"),
+    }
+
+
 class NetworkInterfaceSchema(schema.ResponseSchema):
     """NetworkInterface - 虚拟网卡信息"""
 
@@ -262,17 +295,29 @@ class NetworkInterfaceSchema(schema.ResponseSchema):
         ),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "Default": fields.Bool(required=False, load_from="Default"),
+        "DefaultOutput": fields.Str(required=True, load_from="DefaultOutput"),
         "EIPIdSet": fields.List(fields.Str()),
+        "EipDirectMode": fields.Bool(required=True, load_from="EipDirectMode"),
+        "EipDirectionVersion": fields.Int(
+            required=True, load_from="EipDirectionVersion"
+        ),
         "FirewallIdSet": fields.List(fields.Str()),
+        "FirewallSet": fields.List(FwInfoSchema()),
         "Gateway": fields.Str(required=False, load_from="Gateway"),
+        "IPv6AddressInfo": fields.List(SimpleIPv6AddressInfoSchema()),
+        "IPv6Gateway": fields.Str(required=True, load_from="IPv6Gateway"),
+        "IPv6Mask": fields.Int(required=True, load_from="IPv6Mask"),
         "InterfaceId": fields.Str(required=True, load_from="InterfaceId"),
         "MacAddress": fields.Str(required=True, load_from="MacAddress"),
         "Name": fields.Str(required=False, load_from="Name"),
         "Netmask": fields.Str(required=False, load_from="Netmask"),
+        "OperatorName": fields.Str(required=True, load_from="OperatorName"),
         "PrivateIp": fields.List(UNIIpInfoSchema()),
-        "PrivateIpLimit": UNIQuotaInfoSchema(),
+        "PrivateIpLimit": fields.List(UNIQuotaInfoSchema()),
         "PrivateIpSet": fields.List(fields.Str()),
         "Remark": fields.Str(required=False, load_from="Remark"),
+        "SecGroup": fields.List(SecGroupSchema()),
+        "SecGroupCount": fields.Int(required=False, load_from="SecGroupCount"),
         "Status": fields.Int(required=True, load_from="Status"),
         "SubnetId": fields.Str(required=True, load_from="SubnetId"),
         "Tag": fields.Str(required=False, load_from="Tag"),
@@ -299,17 +344,6 @@ class ResourceSecgroupInfoSchema(schema.ResponseSchema):
     }
 
 
-class BindingSecGroupInfoSchema(schema.ResponseSchema):
-    """BindingSecGroupInfo -"""
-
-    fields = {
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Priority": fields.Int(required=False, load_from="Priority"),
-        "SecGroupId": fields.Str(required=False, load_from="SecGroupId"),
-        "VPCId": fields.Str(required=False, load_from="VPCId"),
-    }
-
-
 class ResourceExInfoSchema(schema.ResponseSchema):
     """ResourceExInfo - 资源额外信息（for 安全组）"""
 
@@ -324,6 +358,17 @@ class ResourceExInfoSchema(schema.ResponseSchema):
             required=False, load_from="SuperResourceName"
         ),
         "Uni": fields.List(ResourceSecgroupInfoSchema()),
+    }
+
+
+class BindingSecGroupInfoSchema(schema.ResponseSchema):
+    """BindingSecGroupInfo -"""
+
+    fields = {
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Priority": fields.Int(required=False, load_from="Priority"),
+        "SecGroupId": fields.Str(required=False, load_from="SecGroupId"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
     }
 
 
@@ -464,6 +509,9 @@ class SubnetInfoSchema(schema.ResponseSchema):
 
     fields = {
         "AvailableIPs": fields.Int(required=False, load_from="AvailableIPs"),
+        "AvailableIPv6Count": fields.Int(
+            required=False, load_from="AvailableIPv6Count"
+        ),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "Gateway": fields.Str(required=False, load_from="Gateway"),
         "HasNATGW": fields.Bool(required=False, load_from="HasNATGW"),
@@ -487,21 +535,17 @@ class SubnetResourceSchema(schema.ResponseSchema):
 
     fields = {
         "IP": fields.Str(required=False, load_from="IP"),
-        "IPv6Address": fields.Str(
-            required=False, load_from="IPv6Address"
-        ),  # Deprecated, will be removed at 1.0
+        "IPv6Address": fields.Str(required=False, load_from="IPv6Address"),
         "Name": fields.Str(required=False, load_from="Name"),
         "ResourceId": fields.Str(required=False, load_from="ResourceId"),
         "ResourceType": fields.Str(required=False, load_from="ResourceType"),
-        "SubResourceId": fields.Str(
-            required=False, load_from="SubResourceId"
-        ),  # Deprecated, will be removed at 1.0
+        "SubResourceId": fields.Str(required=False, load_from="SubResourceId"),
         "SubResourceName": fields.Str(
             required=False, load_from="SubResourceName"
-        ),  # Deprecated, will be removed at 1.0
+        ),
         "SubResourceType": fields.Str(
             required=False, load_from="SubResourceType"
-        ),  # Deprecated, will be removed at 1.0
+        ),
     }
 
 
@@ -531,12 +575,25 @@ class VPCNetworkInfoSchema(schema.ResponseSchema):
     }
 
 
+class IPv6NetworkInfoSchema(schema.ResponseSchema):
+    """IPv6NetworkInfo -"""
+
+    fields = {
+        "IPv6Network": fields.Str(required=False, load_from="IPv6Network"),
+        "IPv6SubnetCount": fields.Int(
+            required=False, load_from="IPv6SubnetCount"
+        ),
+        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
+    }
+
+
 class VPCInfoSchema(schema.ResponseSchema):
     """VPCInfo - VPC信息"""
 
     fields = {
         "CreateTime": fields.Int(required=True, load_from="CreateTime"),
         "IPv6Network": fields.Str(required=False, load_from="IPv6Network"),
+        "IPv6NetworkInfos": fields.List(IPv6NetworkInfoSchema()),
         "Name": fields.Str(required=True, load_from="Name"),
         "Network": fields.List(fields.Str()),
         "NetworkInfo": fields.List(VPCNetworkInfoSchema()),
@@ -646,6 +703,6 @@ class NatgwSubnetDataSetSchema(schema.ResponseSchema):
         "HasNATGW": fields.Bool(required=True, load_from="HasNATGW"),
         "Netmask": fields.Str(required=True, load_from="Netmask"),
         "Subnet": fields.Str(required=True, load_from="Subnet"),
-        "SubnetId": fields.Str(required=True, load_from="SubnetId"),
-        "SubnetName": fields.Str(required=True, load_from="SubnetName"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "SubnetName": fields.Str(required=False, load_from="SubnetName"),
     }
