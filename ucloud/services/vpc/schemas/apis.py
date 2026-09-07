@@ -34,6 +34,71 @@ class AddSnatRuleResponseSchema(schema.ResponseSchema):
 
 
 """
+API: AddSubnetIPv6
+
+子网关联IPv6
+"""
+
+
+class AddSubnetIPv6RequestSchema(schema.RequestSchema):
+    """AddSubnetIPv6 - 子网关联IPv6"""
+
+    fields = {
+        "IPv6Network": fields.Str(required=False, dump_to="IPv6Network"),
+        "IPv6PrefixLength": fields.Int(
+            required=False, dump_to="IPv6PrefixLength"
+        ),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SubnetworkId": fields.Str(required=True, dump_to="SubnetworkId"),
+        "VPCIPv6Network": fields.Str(required=False, dump_to="VPCIPv6Network"),
+        "VPCId": fields.Str(required=False, dump_to="VPCId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class AddSubnetIPv6ResponseSchema(schema.ResponseSchema):
+    """AddSubnetIPv6 - 子网关联IPv6"""
+
+    fields = {
+        "IPv6Network": fields.Str(required=True, load_from="IPv6Network"),
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: AddVPCIPv6
+
+VPC关联IPv6网段
+"""
+
+
+class AddVPCIPv6RequestSchema(schema.RequestSchema):
+    """AddVPCIPv6 - VPC关联IPv6网段"""
+
+    fields = {
+        "IPv6Network": fields.Str(required=False, dump_to="IPv6Network"),
+        "IPv6NetworkType": fields.Str(
+            required=False, dump_to="IPv6NetworkType"
+        ),
+        "OperatorName": fields.Str(required=True, dump_to="OperatorName"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "VPCId": fields.Str(required=True, dump_to="VPCId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class AddVPCIPv6ResponseSchema(schema.ResponseSchema):
+    """AddVPCIPv6 - VPC关联IPv6网段"""
+
+    fields = {
+        "IPv6Network": fields.Str(required=True, load_from="IPv6Network"),
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
 API: AddVPCNetwork
 
 添加VPC网段
@@ -183,6 +248,46 @@ class AllocateVIPResponseSchema(schema.ResponseSchema):
 
 
 """
+API: AssignIPv6
+
+申请IPv6地址
+"""
+
+
+class AssignIPv6RequestSchema(schema.RequestSchema):
+    """AssignIPv6 - 申请IPv6地址"""
+
+    fields = {
+        "Attribute": fields.Str(required=False, dump_to="Attribute"),
+        "Count": fields.Int(required=False, dump_to="Count"),
+        "IPv6Addresses": fields.List(fields.Str()),
+        "InstanceId": fields.Str(required=False, dump_to="InstanceId"),
+        "InstanceType": fields.Int(required=False, dump_to="InstanceType"),
+        "Mac": fields.Str(required=False, dump_to="Mac"),
+        "ObjectId": fields.Str(required=True, dump_to="ObjectId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Segment": fields.Str(required=False, dump_to="Segment"),
+        "SubnetworkId": fields.Str(required=True, dump_to="SubnetworkId"),
+        "VPCId": fields.Str(required=False, dump_to="VPCId"),
+    }
+
+
+class AssignIPv6ResponseSchema(schema.ResponseSchema):
+    """AssignIPv6 - 申请IPv6地址"""
+
+    fields = {
+        "IPv6Addresses": fields.List(
+            fields.Str(), required=True, load_from="IPv6Addresses"
+        ),
+        "IPv6Gateway": fields.Str(required=True, load_from="IPv6Gateway"),
+        "Mask": fields.Int(required=True, load_from="Mask"),
+        "Message": fields.Str(required=True, load_from="Message"),
+        "OperatorName": fields.Str(required=True, load_from="OperatorName"),
+    }
+
+
+"""
 API: AssociateRouteTable
 
 绑定子网的路由表
@@ -311,6 +416,38 @@ class CloneRouteTableResponseSchema(schema.ResponseSchema):
 
     fields = {
         "RouteTableId": fields.Str(required=False, load_from="RouteTableId"),
+    }
+
+
+"""
+API: CopySecGroup
+
+复制安全组
+"""
+
+
+class CopySecGroupRequestSchema(schema.RequestSchema):
+    """CopySecGroup - 复制安全组"""
+
+    fields = {
+        "DstName": fields.Str(required=False, dump_to="DstName"),
+        "DstProjectId": fields.Str(required=True, dump_to="DstProjectId"),
+        "DstRegion": fields.Str(required=True, dump_to="DstRegion"),
+        "DstRemark": fields.Str(required=False, dump_to="DstRemark"),
+        "DstVPCId": fields.Str(required=True, dump_to="DstVPCId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SecGroupId": fields.Str(required=True, dump_to="SecGroupId"),
+    }
+
+
+class CopySecGroupResponseSchema(schema.ResponseSchema):
+    """CopySecGroup - 复制安全组"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+        "RuleID": fields.List(fields.Str(), required=True, load_from="RuleID"),
+        "SecGroupId": fields.Str(required=True, load_from="SecGroupId"),
     }
 
 
@@ -486,6 +623,9 @@ class CreateNetworkInterfaceRequestSchema(schema.RequestSchema):
 
     fields = {
         "EipDirectMode": fields.Bool(required=False, dump_to="EipDirectMode"),
+        "EipDirectVersion": fields.Int(
+            required=False, dump_to="EipDirectVersion"
+        ),
         "Name": fields.Str(required=False, dump_to="Name"),
         "PrioritySecGroup": fields.List(
             CreateNetworkInterfaceParamPrioritySecGroupSchema()
@@ -643,6 +783,8 @@ class CreateSubnetRequestSchema(schema.RequestSchema):
     """CreateSubnet - 创建子网"""
 
     fields = {
+        "AssociateIPv6": fields.Bool(required=False, dump_to="AssociateIPv6"),
+        "IPv6Network": fields.Str(required=False, dump_to="IPv6Network"),
         "Netmask": fields.Int(required=False, dump_to="Netmask"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
@@ -650,6 +792,7 @@ class CreateSubnetRequestSchema(schema.RequestSchema):
         "Subnet": fields.Str(required=True, dump_to="Subnet"),
         "SubnetName": fields.Str(required=False, dump_to="SubnetName"),
         "Tag": fields.Str(required=False, dump_to="Tag"),
+        "VPCIPv6Network": fields.Str(required=False, dump_to="VPCIPv6Network"),
         "VPCId": fields.Str(required=True, dump_to="VPCId"),
     }
 
@@ -658,6 +801,7 @@ class CreateSubnetResponseSchema(schema.ResponseSchema):
     """CreateSubnet - 创建子网"""
 
     fields = {
+        "IPv6Network": fields.Str(required=False, load_from="IPv6Network"),
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
     }
 
@@ -673,8 +817,10 @@ class CreateVPCRequestSchema(schema.RequestSchema):
     """CreateVPC - 创建VPC"""
 
     fields = {
+        "AssociateIPv6": fields.Bool(required=False, dump_to="AssociateIPv6"),
         "Name": fields.Str(required=True, dump_to="Name"),
         "Network": fields.List(fields.Str()),
+        "OperatorName": fields.Str(required=False, dump_to="OperatorName"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Remark": fields.Str(required=False, dump_to="Remark"),
@@ -1032,6 +1178,32 @@ class DeleteSubnetResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DeleteSubnetIPv6
+
+子网取消关联IPv6
+"""
+
+
+class DeleteSubnetIPv6RequestSchema(schema.RequestSchema):
+    """DeleteSubnetIPv6 - 子网取消关联IPv6"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SubnetworkId": fields.Str(required=True, dump_to="SubnetworkId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DeleteSubnetIPv6ResponseSchema(schema.ResponseSchema):
+    """DeleteSubnetIPv6 - 子网取消关联IPv6"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
 API: DeleteVPC
 
 删除VPC
@@ -1052,6 +1224,33 @@ class DeleteVPCResponseSchema(schema.ResponseSchema):
     """DeleteVPC - 删除VPC"""
 
     fields = {}
+
+
+"""
+API: DeleteVPCIPv6
+
+VPC取消关联IPv6网段
+"""
+
+
+class DeleteVPCIPv6RequestSchema(schema.RequestSchema):
+    """DeleteVPCIPv6 - VPC取消关联IPv6网段"""
+
+    fields = {
+        "IPv6Network": fields.Str(required=True, dump_to="IPv6Network"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "VPCId": fields.Str(required=True, dump_to="VPCId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DeleteVPCIPv6ResponseSchema(schema.ResponseSchema):
+    """DeleteVPCIPv6 - VPC取消关联IPv6网段"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
 
 
 """
@@ -1334,6 +1533,7 @@ class DescribeNetworkInterfaceRequestSchema(schema.RequestSchema):
         "SubnetId": fields.Str(required=False, dump_to="SubnetId"),
         "Tag": fields.Str(required=False, dump_to="Tag"),
         "VPCId": fields.Str(required=False, dump_to="VPCId"),
+        "WithSecGroup": fields.Bool(required=False, dump_to="WithSecGroup"),
     }
 
 
@@ -1589,6 +1789,7 @@ class DescribeSubnetRequestSchema(schema.RequestSchema):
         "BusinessId": fields.Str(
             required=False, dump_to="BusinessId"
         ),  # Deprecated, will be removed at 1.0
+        "IgnoreResource": fields.Bool(required=False, dump_to="IgnoreResource"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -1753,9 +1954,13 @@ class DescribeWhiteListResourceRequestSchema(schema.RequestSchema):
     """DescribeWhiteListResource - 展示NAT网关白名单资源列表"""
 
     fields = {
-        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Limit": fields.Int(
+            required=False, dump_to="Limit"
+        ),  # Deprecated, will be removed at 1.0
         "NATGWIds": fields.List(fields.Str()),
-        "Offset": fields.Int(required=False, dump_to="Offset"),
+        "Offset": fields.Int(
+            required=False, dump_to="Offset"
+        ),  # Deprecated, will be removed at 1.0
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
     }
@@ -1826,6 +2031,32 @@ class DisableUniEipDirectModeResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DisableVPCIPv6
+
+VPC关闭IPv6
+"""
+
+
+class DisableVPCIPv6RequestSchema(schema.RequestSchema):
+    """DisableVPCIPv6 - VPC关闭IPv6"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "VPCId": fields.Str(required=True, dump_to="VPCId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DisableVPCIPv6ResponseSchema(schema.ResponseSchema):
+    """DisableVPCIPv6 - VPC关闭IPv6"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
 API: DisassociateSecGroup
 
 解绑安全组和资源绑定关系
@@ -1861,6 +2092,9 @@ class EnableUniEipDirectModeRequestSchema(schema.RequestSchema):
     """EnableUniEipDirectMode - 开启虚拟网卡EIP直通功能"""
 
     fields = {
+        "EipDirectVersion": fields.Int(
+            required=False, dump_to="EipDirectVersion"
+        ),
         "InterfaceId": fields.Str(required=True, dump_to="InterfaceId"),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
@@ -1929,6 +2163,7 @@ class GetAvailableResourceForPolicyResponseSchema(schema.ResponseSchema):
             required=True,
             load_from="DataSet",
         ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
     }
 
 
@@ -1955,13 +2190,11 @@ class GetAvailableResourceForSnatRuleResponseSchema(schema.ResponseSchema):
     """GetAvailableResourceForSnatRule - 获取可用于添加snat规则（出口规则）的资源列表"""
 
     fields = {
-        "Action": fields.Str(required=True, load_from="Action"),
         "DataSet": fields.List(
             models.GetAvailableResourceForSnatRuleDataSetSchema(),
             required=True,
             load_from="DataSet",
         ),
-        "RetCode": fields.Str(required=True, load_from="RetCode"),
         "TotalCount": fields.Int(required=True, load_from="TotalCount"),
     }
 
@@ -2157,6 +2390,115 @@ class SetGwDefaultExportResponseSchema(schema.ResponseSchema):
 
 
 """
+API: SwitchToFirewall
+
+切换至防火墙模式
+"""
+
+
+class SwitchToFirewallRequestSchema(schema.RequestSchema):
+    """SwitchToFirewall - 切换至防火墙模式"""
+
+    fields = {
+        "Firewall": fields.Str(required=False, dump_to="Firewall"),
+        "NodeToFirewall": fields.Str(required=False, dump_to="NodeToFirewall"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
+    }
+
+
+class SwitchToFirewallResponseSchema(schema.ResponseSchema):
+    """SwitchToFirewall - 切换至防火墙模式"""
+
+    fields = {}
+
+
+"""
+API: SwitchToSecGroup
+
+切换至安全组模式
+"""
+
+
+class SwitchToSecGroupRequestSchema(schema.RequestSchema):
+    """SwitchToSecGroup - 切换至安全组模式"""
+
+    fields = {
+        "IsRemoveFirewall": fields.Bool(
+            required=True, dump_to="IsRemoveFirewall"
+        ),
+        "PrioritySecGroup": fields.List(fields.Str()),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "ResourceId": fields.Str(required=True, dump_to="ResourceId"),
+        "UniToPrioritySecGroup": fields.Str(
+            required=False, dump_to="UniToPrioritySecGroup"
+        ),
+    }
+
+
+class SwitchToSecGroupResponseSchema(schema.ResponseSchema):
+    """SwitchToSecGroup - 切换至安全组模式"""
+
+    fields = {
+        "Message": fields.Str(required=False, load_from="Message"),
+    }
+
+
+"""
+API: UnassignIPv6
+
+释放IPv6地址
+"""
+
+
+class UnassignIPv6RequestSchema(schema.RequestSchema):
+    """UnassignIPv6 - 释放IPv6地址"""
+
+    fields = {
+        "IPv6Addresses": fields.List(fields.Str()),
+        "ObjectId": fields.Str(required=True, dump_to="ObjectId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class UnassignIPv6ResponseSchema(schema.ResponseSchema):
+    """UnassignIPv6 - 释放IPv6地址"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: UpdateNATGW
+
+更新nat网关基本信息
+"""
+
+
+class UpdateNATGWRequestSchema(schema.RequestSchema):
+    """UpdateNATGW - 更新nat网关基本信息"""
+
+    fields = {
+        "NATGWId": fields.Str(required=True, dump_to="NATGWId"),
+        "NATGWName": fields.Str(required=False, dump_to="NATGWName"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Remark": fields.Str(required=False, dump_to="Remark"),
+        "Tag": fields.Str(required=False, dump_to="Tag"),
+    }
+
+
+class UpdateNATGWResponseSchema(schema.ResponseSchema):
+    """UpdateNATGW - 更新nat网关基本信息"""
+
+    fields = {}
+
+
+"""
 API: UpdateNATGWPolicy
 
 更新NAT网关端口转发规则
@@ -2182,6 +2524,32 @@ class UpdateNATGWPolicyRequestSchema(schema.RequestSchema):
 
 class UpdateNATGWPolicyResponseSchema(schema.ResponseSchema):
     """UpdateNATGWPolicy - 更新NAT网关端口转发规则"""
+
+    fields = {}
+
+
+"""
+API: UpdateNATGWSnatpool
+
+NAT网关默认出口规则是否开启Snatpool，若开启，对应控制台上的负载均衡流量出口方式。
+"""
+
+
+class UpdateNATGWSnatpoolRequestSchema(schema.RequestSchema):
+    """UpdateNATGWSnatpool - NAT网关默认出口规则是否开启Snatpool，若开启，对应控制台上的负载均衡流量出口方式。"""
+
+    fields = {
+        "IsSnatpoolEnabled": fields.Str(
+            required=True, dump_to="IsSnatpoolEnabled"
+        ),
+        "NATGWId": fields.Str(required=True, dump_to="NATGWId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class UpdateNATGWSnatpoolResponseSchema(schema.ResponseSchema):
+    """UpdateNATGWSnatpool - NAT网关默认出口规则是否开启Snatpool，若开启，对应控制台上的负载均衡流量出口方式。"""
 
     fields = {}
 
@@ -2499,6 +2867,45 @@ class UpdateVIPAttributeResponseSchema(schema.ResponseSchema):
     """UpdateVIPAttribute - 更新VIP信息"""
 
     fields = {}
+
+
+"""
+API: UpdateVPCIPv6
+
+更新VPC IPv6网段
+"""
+
+
+class UpdateVPCIPv6ParamIPv6NetworkConfigSchema(schema.RequestSchema):
+    """UpdateVPCIPv6ParamIPv6NetworkConfig -"""
+
+    fields = {
+        "IPv6Network": fields.Str(required=True, dump_to="IPv6Network"),
+        "OperatorName": fields.Str(required=True, dump_to="OperatorName"),
+        "Type": fields.Str(required=False, dump_to="Type"),
+    }
+
+
+class UpdateVPCIPv6RequestSchema(schema.RequestSchema):
+    """UpdateVPCIPv6 - 更新VPC IPv6网段"""
+
+    fields = {
+        "IPv6NetworkConfig": fields.List(
+            UpdateVPCIPv6ParamIPv6NetworkConfigSchema()
+        ),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "VPCId": fields.Str(required=True, dump_to="VPCId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class UpdateVPCIPv6ResponseSchema(schema.ResponseSchema):
+    """UpdateVPCIPv6 - 更新VPC IPv6网段"""
+
+    fields = {
+        "Message": fields.Str(required=True, load_from="Message"),
+    }
 
 
 """
