@@ -53,6 +53,7 @@ class CreateSandboxSiteRequestSchema(schema.RequestSchema):
         "Name": fields.Str(required=True, dump_to="Name"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "TemplateName": fields.Str(required=True, dump_to="TemplateName"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 

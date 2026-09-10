@@ -3,24 +3,6 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class KubeProxySchema(schema.ResponseSchema):
-    """KubeProxy - KubeProxy信息"""
-
-    fields = {
-        "Mode": fields.Str(required=False, load_from="Mode"),
-    }
-
-
-class SecGroupIdSchema(schema.ResponseSchema):
-    """SecGroupId - 安全组"""
-
-    fields = {
-        "Id": fields.Str(required=False, load_from="Id"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Priority": fields.Str(required=False, load_from="Priority"),
-    }
-
-
 class DiskSetSchema(schema.ResponseSchema):
     """DiskSet - 节点磁盘信息"""
 
@@ -79,6 +61,16 @@ class AutoscalerSchema(schema.ResponseSchema):
     }
 
 
+class SecGroupIdSchema(schema.ResponseSchema):
+    """SecGroupId - 安全组"""
+
+    fields = {
+        "Id": fields.Str(required=False, load_from="Id"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Priority": fields.Str(required=False, load_from="Priority"),
+    }
+
+
 class UhostInfoSchema(schema.ResponseSchema):
     """UhostInfo - 机器信息"""
 
@@ -102,6 +94,14 @@ class UhostInfoSchema(schema.ResponseSchema):
         "State": fields.Str(required=True, load_from="State"),
         "TotalDiskSpace": fields.Int(required=True, load_from="TotalDiskSpace"),
         "Zone": fields.Str(required=True, load_from="Zone"),
+    }
+
+
+class KubeProxySchema(schema.ResponseSchema):
+    """KubeProxy - KubeProxy信息"""
+
+    fields = {
+        "Mode": fields.Str(required=False, load_from="Mode"),
     }
 
 
@@ -267,19 +267,6 @@ class ClusterSetSchema(schema.ResponseSchema):
     }
 
 
-class ReservedResourceSchema(schema.ResponseSchema):
-    """ReservedResource - 预留资源"""
-
-    fields = {
-        "CPU": fields.Str(required=False, load_from="CPU"),
-        "EphemeralStorage": fields.Str(
-            required=False, load_from="EphemeralStorage"
-        ),
-        "Memory": fields.Str(required=False, load_from="Memory"),
-        "Pid": fields.Str(required=False, load_from="Pid"),
-    }
-
-
 class EIPSchema(schema.ResponseSchema):
     """EIP - 节点EIP"""
 
@@ -310,6 +297,19 @@ class EvictionConditionSchema(schema.ResponseSchema):
         "NodefsInodesFree": fields.Str(
             required=False, load_from="NodefsInodesFree"
         ),
+    }
+
+
+class ReservedResourceSchema(schema.ResponseSchema):
+    """ReservedResource - 预留资源"""
+
+    fields = {
+        "CPU": fields.Str(required=False, load_from="CPU"),
+        "EphemeralStorage": fields.Str(
+            required=False, load_from="EphemeralStorage"
+        ),
+        "Memory": fields.Str(required=False, load_from="Memory"),
+        "Pid": fields.Str(required=False, load_from="Pid"),
     }
 
 
@@ -402,35 +402,6 @@ class NodeGroupSetSchema(schema.ResponseSchema):
     }
 
 
-class ULSExtractRuleSchema(schema.ResponseSchema):
-    """ULSExtractRule - 定义日志的提取、解析和格式化规则。"""
-
-    fields = {
-        "BeginningRegex": fields.Str(
-            required=False, load_from="BeginningRegex"
-        ),
-        "BeginningRegexBase64": fields.Str(
-            required=False, load_from="BeginningRegexBase64"
-        ),
-        "CollectPolicy": fields.Str(required=False, load_from="CollectPolicy"),
-        "Delimiter": fields.Str(required=False, load_from="Delimiter"),
-        "DelimiterBase64": fields.Str(
-            required=False, load_from="DelimiterBase64"
-        ),
-        "Encode": fields.Str(required=False, load_from="Encode"),
-        "Keys": fields.List(fields.Str()),
-        "LogRegex": fields.Str(required=False, load_from="LogRegex"),
-        "LogRegexBase64": fields.Str(
-            required=False, load_from="LogRegexBase64"
-        ),
-        "LogType": fields.Str(required=False, load_from="LogType"),
-        "TimeFormat": fields.Str(required=False, load_from="TimeFormat"),
-        "TimeKey": fields.Str(required=False, load_from="TimeKey"),
-        "UnMatchKey": fields.Str(required=False, load_from="UnMatchKey"),
-        "UnMatchUpload": fields.Str(required=False, load_from="UnMatchUpload"),
-    }
-
-
 class ULSFilePathsSchema(schema.ResponseSchema):
     """ULSFilePaths - ULS采集文件路径"""
 
@@ -502,6 +473,35 @@ class ULSMatchRuleSchema(schema.ResponseSchema):
         ),
         "PodLabels": ULSPodLabelsMatchSchema(),
         "Workloads": fields.List(ULSWorkloadMatchSchema()),
+    }
+
+
+class ULSExtractRuleSchema(schema.ResponseSchema):
+    """ULSExtractRule - 定义日志的提取、解析和格式化规则。"""
+
+    fields = {
+        "BeginningRegex": fields.Str(
+            required=False, load_from="BeginningRegex"
+        ),
+        "BeginningRegexBase64": fields.Str(
+            required=False, load_from="BeginningRegexBase64"
+        ),
+        "CollectPolicy": fields.Str(required=False, load_from="CollectPolicy"),
+        "Delimiter": fields.Str(required=False, load_from="Delimiter"),
+        "DelimiterBase64": fields.Str(
+            required=False, load_from="DelimiterBase64"
+        ),
+        "Encode": fields.Str(required=False, load_from="Encode"),
+        "Keys": fields.List(fields.Str()),
+        "LogRegex": fields.Str(required=False, load_from="LogRegex"),
+        "LogRegexBase64": fields.Str(
+            required=False, load_from="LogRegexBase64"
+        ),
+        "LogType": fields.Str(required=False, load_from="LogType"),
+        "TimeFormat": fields.Str(required=False, load_from="TimeFormat"),
+        "TimeKey": fields.Str(required=False, load_from="TimeKey"),
+        "UnMatchKey": fields.Str(required=False, load_from="UnMatchKey"),
+        "UnMatchUpload": fields.Str(required=False, load_from="UnMatchUpload"),
     }
 
 

@@ -58,6 +58,7 @@ class SandboxClient(Client):
         - **AccessCode** (str) - (Required) 访问码
         - **KeyID** (str) - (Required) 密钥ID
         - **Name** (str) - (Required) 站点空间名称
+        - **TemplateName** (str) - (Required) 站点空间空间模版，格式：site-nc-ng,n为偶数
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Envs** (str) - 环境变量，格式：["key=value"]
 

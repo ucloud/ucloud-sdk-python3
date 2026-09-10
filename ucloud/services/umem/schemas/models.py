@@ -3,13 +3,30 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class ProxyClientListSchema(schema.ResponseSchema):
+    """ProxyClientList - 代理连接信息"""
+
+    fields = {
+        "ConnCnt": fields.Int(required=True, load_from="ConnCnt"),
+        "Ip": fields.Str(required=True, load_from="Ip"),
+    }
+
+
 class UDRedisProxyInfoSchema(schema.ResponseSchema):
     """UDRedisProxyInfo - udredis代理信息"""
 
     fields = {
+        "CPU": fields.Int(required=True, load_from="CPU"),
         "ProxyId": fields.Str(required=True, load_from="ProxyId"),
+        "ProxyType": fields.Int(required=True, load_from="ProxyType"),
+        "PublicIp": fields.Str(required=False, load_from="PublicIp"),
+        "ReadMode": fields.Str(required=False, load_from="ReadMode"),
+        "ReadOnly": fields.Bool(required=False, load_from="ReadOnly"),
         "ResourceId": fields.Str(required=True, load_from="ResourceId"),
         "State": fields.Str(required=True, load_from="State"),
+        "SupportReadOnly": fields.Bool(
+            required=False, load_from="SupportReadOnly"
+        ),
         "Vip": fields.Str(required=True, load_from="Vip"),
     }
 
@@ -26,6 +43,17 @@ class UDRedisSlowlogSetSchema(schema.ResponseSchema):
     }
 
 
+class UMemSpaceAddressSetSchema(schema.ResponseSchema):
+    """UMemSpaceAddressSet - DescribeUMemSpace"""
+
+    fields = {
+        "IP": fields.Str(required=False, load_from="IP"),
+        "Port": fields.Int(required=False, load_from="Port"),
+        "PrivateDomain": fields.Str(required=False, load_from="PrivateDomain"),
+        "PublicIp": fields.Str(required=False, load_from="PublicIp"),
+    }
+
+
 class UMemSlaveDataSetSchema(schema.ResponseSchema):
     """UMemSlaveDataSet - DescribeUMem"""
 
@@ -33,9 +61,13 @@ class UMemSlaveDataSetSchema(schema.ResponseSchema):
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
         "ConfigId": fields.Str(required=False, load_from="ConfigId"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "DefaultConfigId": fields.Str(
+            required=False, load_from="DefaultConfigId"
+        ),
         "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
         "GroupId": fields.Str(required=False, load_from="GroupId"),
         "GroupName": fields.Str(required=False, load_from="GroupName"),
+        "HasPassword": fields.Bool(required=False, load_from="HasPassword"),
         "MasterGroupId": fields.Str(required=False, load_from="MasterGroupId"),
         "MemorySize": fields.Int(required=False, load_from="MemorySize"),
         "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
@@ -48,6 +80,7 @@ class UMemSlaveDataSetSchema(schema.ResponseSchema):
         "State": fields.Str(required=False, load_from="State"),
         "SubnetId": fields.Str(required=True, load_from="SubnetId"),
         "Tag": fields.Str(required=False, load_from="Tag"),
+        "UDACEnable": fields.Bool(required=False, load_from="UDACEnable"),
         "UsedSize": fields.Int(required=False, load_from="UsedSize"),
         "VPCId": fields.Str(required=True, load_from="VPCId"),
         "Version": fields.Str(required=False, load_from="Version"),
@@ -56,43 +89,57 @@ class UMemSlaveDataSetSchema(schema.ResponseSchema):
     }
 
 
-class UMemSpaceAddressSetSchema(schema.ResponseSchema):
-    """UMemSpaceAddressSet - DescribeUMemSpace"""
-
-    fields = {
-        "IP": fields.Str(required=False, load_from="IP"),
-        "Port": fields.Int(required=False, load_from="Port"),
-    }
-
-
 class UMemDataSetSchema(schema.ResponseSchema):
     """UMemDataSet - DescribeUMem"""
 
     fields = {
         "Address": fields.List(UMemSpaceAddressSetSchema()),
+        "AofRollbackEnable": fields.Bool(
+            required=False, load_from="AofRollbackEnable"
+        ),
         "AutoBackup": fields.Str(required=False, load_from="AutoBackup"),
         "BackupTime": fields.Int(required=False, load_from="BackupTime"),
         "ChargeType": fields.Str(required=False, load_from="ChargeType"),
         "ConfigId": fields.Str(required=False, load_from="ConfigId"),
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "DataSet": fields.List(UMemSlaveDataSetSchema()),
+        "DefaultConfigId": fields.Str(
+            required=False, load_from="DefaultConfigId"
+        ),
         "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
+        "HasPassword": fields.Bool(required=False, load_from="HasPassword"),
         "HighAvailability": fields.Str(
             required=False, load_from="HighAvailability"
         ),
+        "IsHighPerformance": fields.Bool(
+            required=False, load_from="IsHighPerformance"
+        ),
+        "IsRWMode": fields.Bool(required=False, load_from="IsRWMode"),
         "Name": fields.Str(required=False, load_from="Name"),
-        "OwnSlave": fields.Str(required=True, load_from="OwnSlave"),
+        "OwnSlave": fields.Str(required=False, load_from="OwnSlave"),
+        "ProductType": fields.Int(required=False, load_from="ProductType"),
         "Protocol": fields.Str(required=False, load_from="Protocol"),
+        "ProxyName": fields.Str(required=False, load_from="ProxyName"),
         "ResourceId": fields.Str(required=False, load_from="ResourceId"),
         "ResourceType": fields.Str(required=False, load_from="ResourceType"),
         "RewriteTime": fields.Int(required=False, load_from="RewriteTime"),
         "Role": fields.Str(required=False, load_from="Role"),
+        "SSLCertExpireTime": fields.Int(
+            required=False, load_from="SSLCertExpireTime"
+        ),
+        "SSLEnable": fields.Bool(required=False, load_from="SSLEnable"),
+        "SSLVersion": fields.Str(required=False, load_from="SSLVersion"),
+        "SecPolicy": fields.Int(required=False, load_from="SecPolicy"),
         "Size": fields.Int(required=False, load_from="Size"),
         "SlaveZone": fields.Str(required=False, load_from="SlaveZone"),
         "State": fields.Str(required=False, load_from="State"),
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "SupportAofRollback": fields.Bool(
+            required=False, load_from="SupportAofRollback"
+        ),
         "Tag": fields.Str(required=False, load_from="Tag"),
         "Type": fields.Str(required=False, load_from="Type"),
+        "UDACEnable": fields.Bool(required=False, load_from="UDACEnable"),
         "UsedSize": fields.Int(required=False, load_from="UsedSize"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
         "Version": fields.Str(required=False, load_from="Version"),
@@ -229,8 +276,12 @@ class URedisBackupSetSchema(schema.ResponseSchema):
         "BackupSize": fields.Int(required=False, load_from="BackupSize"),
         "BackupTime": fields.Int(required=False, load_from="BackupTime"),
         "BackupType": fields.Str(required=False, load_from="BackupType"),
+        "DstRegionName": fields.Str(required=False, load_from="DstRegionName"),
         "GroupId": fields.Str(required=False, load_from="GroupId"),
         "GroupName": fields.Str(required=False, load_from="GroupName"),
+        "MemorySize": fields.Int(required=False, load_from="MemorySize"),
+        "RedisVersion": fields.Str(required=False, load_from="RedisVersion"),
+        "SrcRegionName": fields.Str(required=False, load_from="SrcRegionName"),
         "State": fields.Str(required=False, load_from="State"),
         "Zone": fields.Str(required=False, load_from="Zone"),
     }
@@ -290,6 +341,7 @@ class URedisGroupSetSchema(schema.ResponseSchema):
         "SubnetId": fields.Str(required=False, load_from="SubnetId"),
         "Tag": fields.Str(required=False, load_from="Tag"),
         "Type": fields.Str(required=False, load_from="Type"),
+        "UDACEnable": fields.Bool(required=False, load_from="UDACEnable"),
         "UsedSize": fields.Int(required=False, load_from="UsedSize"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
         "Version": fields.Str(required=False, load_from="Version"),

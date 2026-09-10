@@ -80,6 +80,7 @@ class CreateScanHotBigKeysRequestSchema(schema.RequestSchema):
         "IsRetry": fields.Bool(required=False, dump_to="IsRetry"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "SpaceId": fields.Str(required=False, dump_to="SpaceId"),
         "TaskId": fields.Str(required=False, dump_to="TaskId"),
         "Type": fields.Str(required=True, dump_to="Type"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
@@ -90,6 +91,36 @@ class CreateScanHotBigKeysResponseSchema(schema.ResponseSchema):
     """CreateScanHotBigKeys - 创建执行扫大key和热key的任务"""
 
     fields = {}
+
+
+"""
+API: CreateUDRedisUhproxy
+
+添加分布式Redis代理
+"""
+
+
+class CreateUDRedisUhproxyRequestSchema(schema.RequestSchema):
+    """CreateUDRedisUhproxy - 添加分布式Redis代理"""
+
+    fields = {
+        "CPU": fields.Int(required=True, dump_to="CPU"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "Port": fields.Int(required=False, dump_to="Port"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "ProxyCnt": fields.Int(required=False, dump_to="ProxyCnt"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SpaceId": fields.Str(required=True, dump_to="SpaceId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class CreateUDRedisUhproxyResponseSchema(schema.ResponseSchema):
+    """CreateUDRedisUhproxy - 添加分布式Redis代理"""
+
+    fields = {
+        "ResourceId": fields.Str(required=True, load_from="ResourceId"),
+    }
 
 
 """
@@ -291,6 +322,31 @@ class CreateURedisGroupResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DeleteUDRedisProxy
+
+删除分布式Redis代理
+"""
+
+
+class DeleteUDRedisProxyRequestSchema(schema.RequestSchema):
+    """DeleteUDRedisProxy - 删除分布式Redis代理"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "ProxyId": fields.Str(required=True, dump_to="ProxyId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SpaceId": fields.Str(required=True, dump_to="SpaceId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DeleteUDRedisProxyResponseSchema(schema.ResponseSchema):
+    """DeleteUDRedisProxy - 删除分布式Redis代理"""
+
+    fields = {}
+
+
+"""
 API: DeleteUMemSpace
 
 删除UMem内存空间
@@ -304,7 +360,7 @@ class DeleteUMemSpaceRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SpaceId": fields.Str(required=True, dump_to="SpaceId"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
 
@@ -362,6 +418,39 @@ class DeleteURedisGroupResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeUDRedisProxyClientList
+
+查询分布式代理客户端连接信息
+"""
+
+
+class DescribeUDRedisProxyClientListRequestSchema(schema.RequestSchema):
+    """DescribeUDRedisProxyClientList - 查询分布式代理客户端连接信息"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "ProxyId": fields.Str(required=True, dump_to="ProxyId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SpaceId": fields.Str(required=True, dump_to="SpaceId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DescribeUDRedisProxyClientListResponseSchema(schema.ResponseSchema):
+    """DescribeUDRedisProxyClientList - 查询分布式代理客户端连接信息"""
+
+    fields = {
+        "Count": fields.Int(required=True, load_from="Count"),
+        "ProxyClientList": fields.List(
+            models.ProxyClientListSchema(),
+            required=True,
+            load_from="ProxyClientList",
+        ),
+        "Time": fields.Int(required=False, load_from="Time"),
+    }
+
+
+"""
 API: DescribeUDRedisProxyInfo
 
 拉取udredis所有的代理信息
@@ -405,6 +494,7 @@ class DescribeUDRedisSlowlogRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "ProxyId": fields.Str(required=False, dump_to="ProxyId"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "SpaceId": fields.Str(required=False, dump_to="SpaceId"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
@@ -563,6 +653,7 @@ class DescribeUMemPriceRequestSchema(schema.RequestSchema):
             required=False, dump_to="HighPerformance"
         ),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "ProxyCnt": fields.Int(required=False, dump_to="ProxyCnt"),
         "ProxySize": fields.Int(required=False, dump_to="ProxySize"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
@@ -762,11 +853,13 @@ class DescribeURedisBackupRequestSchema(schema.RequestSchema):
     """DescribeURedisBackup - 查询主备redis备份"""
 
     fields = {
-        "GroupId": fields.Str(required=True, dump_to="GroupId"),
+        "BackupId": fields.Str(required=False, dump_to="BackupId"),
+        "GroupId": fields.Str(required=False, dump_to="GroupId"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "RegionType": fields.Str(required=False, dump_to="RegionType"),
         "SlaveZone": fields.Str(required=False, dump_to="SlaveZone"),
     }
 
@@ -795,6 +888,7 @@ class DescribeURedisBackupURLRequestSchema(schema.RequestSchema):
     fields = {
         "BackupId": fields.Str(required=True, dump_to="BackupId"),
         "GroupId": fields.Str(required=False, dump_to="GroupId"),
+        "IsCrossRegion": fields.Bool(required=False, dump_to="IsCrossRegion"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "RegionFlag": fields.Bool(required=False, dump_to="RegionFlag"),
@@ -952,6 +1046,7 @@ class DescribeURedisUpgradePriceRequestSchema(schema.RequestSchema):
     """DescribeURedisUpgradePrice - 获取uredis升级价格信息"""
 
     fields = {
+        "ConvertType": fields.Str(required=False, dump_to="ConvertType"),
         "GroupId": fields.Str(required=True, dump_to="GroupId"),
         "HighPerformance": fields.Bool(
             required=False, dump_to="HighPerformance"
@@ -1045,7 +1140,7 @@ class GetUMemSpaceStateRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SpaceId": fields.Str(required=True, dump_to="SpaceId"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
 
@@ -1053,7 +1148,7 @@ class GetUMemSpaceStateResponseSchema(schema.ResponseSchema):
     """GetUMemSpaceState - 获取UMem内存空间列表"""
 
     fields = {
-        "State": fields.Str(required=False, load_from="State"),
+        "State": fields.List(fields.Str(), required=False, load_from="State"),
     }
 
 
@@ -1084,6 +1179,31 @@ class ISolationURedisGroupResponseSchema(schema.ResponseSchema):
 
 
 """
+API: ModifyUMemPassword
+
+更改分布式redis密码
+"""
+
+
+class ModifyUMemPasswordRequestSchema(schema.RequestSchema):
+    """ModifyUMemPassword - 更改分布式redis密码"""
+
+    fields = {
+        "Password": fields.Str(required=True, dump_to="Password"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SpaceId": fields.Str(required=True, dump_to="SpaceId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ModifyUMemPasswordResponseSchema(schema.ResponseSchema):
+    """ModifyUMemPassword - 更改分布式redis密码"""
+
+    fields = {}
+
+
+"""
 API: ModifyUMemSpaceName
 
 修改UMem内存空间名称
@@ -1098,7 +1218,7 @@ class ModifyUMemSpaceNameRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SpaceId": fields.Str(required=True, dump_to="SpaceId"),
-        "Zone": fields.Str(required=False, dump_to="Zone"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
     }
 
 
@@ -1151,6 +1271,7 @@ class ModifyURedisGroupNameRequestSchema(schema.RequestSchema):
         "Name": fields.Str(required=True, dump_to="Name"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
 
@@ -1301,6 +1422,32 @@ class ResizeUMemSpaceResponseSchema(schema.ResponseSchema):
 
 
 """
+API: ResizeUMemcacheGroup
+
+调整memcache实例的容量
+"""
+
+
+class ResizeUMemcacheGroupRequestSchema(schema.RequestSchema):
+    """ResizeUMemcacheGroup - 调整memcache实例的容量"""
+
+    fields = {
+        "CouponId": fields.Int(required=False, dump_to="CouponId"),
+        "GroupId": fields.Str(required=True, dump_to="GroupId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Size": fields.Int(required=True, dump_to="Size"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
+    }
+
+
+class ResizeUMemcacheGroupResponseSchema(schema.ResponseSchema):
+    """ResizeUMemcacheGroup - 调整memcache实例的容量"""
+
+    fields = {}
+
+
+"""
 API: ResizeURedisGroup
 
 通过调用CheckURedisAllowance接口，检查资源情况，根据不同情形来调整主备redis容量，其中主要包括可用区资源不足无法扩容，主备所在宿主机资源不足需要迁移完成扩容（需要主从切换，会闪断及负载升高），以及直接扩容（业务无感知）
@@ -1333,6 +1480,33 @@ class ResizeURedisGroupResponseSchema(schema.ResponseSchema):
 
 
 """
+API: ResizeUhproxy
+
+分布式Redis代理规格调整
+"""
+
+
+class ResizeUhproxyRequestSchema(schema.RequestSchema):
+    """ResizeUhproxy - 分布式Redis代理规格调整"""
+
+    fields = {
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "NewCPU": fields.Int(required=True, dump_to="NewCPU"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "ProxyId": fields.Str(required=True, dump_to="ProxyId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SpaceId": fields.Str(required=True, dump_to="SpaceId"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ResizeUhproxyResponseSchema(schema.ResponseSchema):
+    """ResizeUhproxy - 分布式Redis代理规格调整"""
+
+    fields = {}
+
+
+"""
 API: RestartUMemcacheGroup
 
 重启单机Memcache
@@ -1346,7 +1520,7 @@ class RestartUMemcacheGroupRequestSchema(schema.RequestSchema):
         "GroupId": fields.Str(required=True, dump_to="GroupId"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
-        "Zone": fields.Str(required=True, dump_to="Zone"),
+        "Zone": fields.Str(required=False, dump_to="Zone"),
     }
 
 
@@ -1436,10 +1610,13 @@ class UpdateURedisBackupStrategyRequestSchema(schema.RequestSchema):
 
     fields = {
         "AutoBackup": fields.Str(required=False, dump_to="AutoBackup"),
-        "BackupTime": fields.Str(required=True, dump_to="BackupTime"),
+        "BackupTime": fields.Str(required=False, dump_to="BackupTime"),
+        "DstRegion": fields.Str(required=False, dump_to="DstRegion"),
         "GroupId": fields.Str(required=True, dump_to="GroupId"),
+        "OperationType": fields.Str(required=False, dump_to="OperationType"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "SaveDays": fields.Int(required=False, dump_to="SaveDays"),
         "SlaveZone": fields.Str(required=False, dump_to="SlaveZone"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
     }

@@ -51,6 +51,35 @@ API: AddUK8SNodeGroup
 """
 
 
+class AddUK8SNodeGroupParamKubeletConfigurationKubeReservedSchema(
+    schema.RequestSchema
+):
+    """AddUK8SNodeGroupParamKubeletConfigurationKubeReserved -"""
+
+    fields = {
+        "CPU": fields.Str(required=False, dump_to="CPU"),
+        "EphemeralStorage": fields.Str(
+            required=False, dump_to="EphemeralStorage"
+        ),
+        "Memory": fields.Str(required=False, dump_to="Memory"),
+        "Pid": fields.Str(required=False, dump_to="Pid"),
+    }
+
+
+class AddUK8SNodeGroupParamNetworkInterfaceEIPSchema(schema.RequestSchema):
+    """AddUK8SNodeGroupParamNetworkInterfaceEIP -"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=False, dump_to="Bandwidth"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "OperatorName": fields.Str(required=False, dump_to="OperatorName"),
+        "PayMode": fields.Str(required=False, dump_to="PayMode"),
+        "ShareBandwidthId": fields.Str(
+            required=False, dump_to="ShareBandwidthId"
+        ),
+    }
+
+
 class AddUK8SNodeGroupParamKubeletConfigurationEvictionHardSchema(
     schema.RequestSchema
 ):
@@ -114,59 +143,10 @@ class AddUK8SNodeGroupParamKubeletConfigurationEvictionSoftGracePeriodSchema(
     }
 
 
-class AddUK8SNodeGroupParamNetworkInterfaceEIPSchema(schema.RequestSchema):
-    """AddUK8SNodeGroupParamNetworkInterfaceEIP -"""
-
-    fields = {
-        "Bandwidth": fields.Int(required=False, dump_to="Bandwidth"),
-        "CouponId": fields.Str(required=False, dump_to="CouponId"),
-        "OperatorName": fields.Str(required=False, dump_to="OperatorName"),
-        "PayMode": fields.Str(required=False, dump_to="PayMode"),
-        "ShareBandwidthId": fields.Str(
-            required=False, dump_to="ShareBandwidthId"
-        ),
-    }
-
-
-class AddUK8SNodeGroupParamSecGroupIdSchema(schema.RequestSchema):
-    """AddUK8SNodeGroupParamSecGroupId -"""
-
-    fields = {
-        "Id": fields.Str(required=False, dump_to="Id"),
-        "Name": fields.Str(required=False, dump_to="Name"),
-        "Priority": fields.Str(required=False, dump_to="Priority"),
-    }
-
-
-class AddUK8SNodeGroupParamNetworkInterfaceSchema(schema.RequestSchema):
-    """AddUK8SNodeGroupParamNetworkInterface -"""
-
-    fields = {
-        "EIP": AddUK8SNodeGroupParamNetworkInterfaceEIPSchema(
-            required=False, dump_to="EIP"
-        ),
-    }
-
-
 class AddUK8SNodeGroupParamKubeletConfigurationSystemReservedSchema(
     schema.RequestSchema
 ):
     """AddUK8SNodeGroupParamKubeletConfigurationSystemReserved -"""
-
-    fields = {
-        "CPU": fields.Str(required=False, dump_to="CPU"),
-        "EphemeralStorage": fields.Str(
-            required=False, dump_to="EphemeralStorage"
-        ),
-        "Memory": fields.Str(required=False, dump_to="Memory"),
-        "Pid": fields.Str(required=False, dump_to="Pid"),
-    }
-
-
-class AddUK8SNodeGroupParamKubeletConfigurationKubeReservedSchema(
-    schema.RequestSchema
-):
-    """AddUK8SNodeGroupParamKubeletConfigurationKubeReserved -"""
 
     fields = {
         "CPU": fields.Str(required=False, dump_to="CPU"),
@@ -209,6 +189,26 @@ class AddUK8SNodeGroupParamKubeletConfigurationSchema(schema.RequestSchema):
         "MaxPods": fields.Int(required=False, dump_to="MaxPods"),
         "SystemReserved": AddUK8SNodeGroupParamKubeletConfigurationSystemReservedSchema(
             required=False, dump_to="SystemReserved"
+        ),
+    }
+
+
+class AddUK8SNodeGroupParamSecGroupIdSchema(schema.RequestSchema):
+    """AddUK8SNodeGroupParamSecGroupId -"""
+
+    fields = {
+        "Id": fields.Str(required=False, dump_to="Id"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "Priority": fields.Str(required=False, dump_to="Priority"),
+    }
+
+
+class AddUK8SNodeGroupParamNetworkInterfaceSchema(schema.RequestSchema):
+    """AddUK8SNodeGroupParamNetworkInterface -"""
+
+    fields = {
+        "EIP": AddUK8SNodeGroupParamNetworkInterfaceEIPSchema(
+            required=False, dump_to="EIP"
         ),
     }
 
@@ -322,16 +322,6 @@ API: AddUK8SUHostNode
 """
 
 
-class AddUK8SUHostNodeParamKubeletConfigurationSchema(schema.RequestSchema):
-    """AddUK8SUHostNodeParamKubeletConfiguration -"""
-
-    fields = {
-        "ContainerLogMaxFiles": fields.Str(
-            required=False, dump_to="ContainerLogMaxFiles"
-        ),
-    }
-
-
 class AddUK8SUHostNodeParamSecGroupIdSchema(schema.RequestSchema):
     """AddUK8SUHostNodeParamSecGroupId -"""
 
@@ -339,15 +329,6 @@ class AddUK8SUHostNodeParamSecGroupIdSchema(schema.RequestSchema):
         "Id": fields.Str(required=False, dump_to="Id"),
         "Name": fields.Str(required=False, dump_to="Name"),
         "Priority": fields.Str(required=False, dump_to="Priority"),
-    }
-
-
-class AddUK8SUHostNodeParamUserLabelsSchema(schema.RequestSchema):
-    """AddUK8SUHostNodeParamUserLabels -"""
-
-    fields = {
-        "Key": fields.Str(required=False, dump_to="Key"),
-        "Value": fields.Str(required=False, dump_to="Value"),
     }
 
 
@@ -372,6 +353,25 @@ class AddUK8SUHostNodeParamNetworkInterfaceSchema(schema.RequestSchema):
         "EIP": AddUK8SUHostNodeParamNetworkInterfaceEIPSchema(
             required=False, dump_to="EIP"
         ),
+    }
+
+
+class AddUK8SUHostNodeParamKubeletConfigurationSchema(schema.RequestSchema):
+    """AddUK8SUHostNodeParamKubeletConfiguration -"""
+
+    fields = {
+        "ContainerLogMaxFiles": fields.Str(
+            required=False, dump_to="ContainerLogMaxFiles"
+        ),
+    }
+
+
+class AddUK8SUHostNodeParamUserLabelsSchema(schema.RequestSchema):
+    """AddUK8SUHostNodeParamUserLabels -"""
+
+    fields = {
+        "Key": fields.Str(required=False, dump_to="Key"),
+        "Value": fields.Str(required=False, dump_to="Value"),
     }
 
 
@@ -452,11 +452,29 @@ API: CreateUK8SClusterV2
 """
 
 
-class CreateUK8SClusterV2ParamKubeProxySchema(schema.RequestSchema):
-    """CreateUK8SClusterV2ParamKubeProxy -"""
+class CreateUK8SClusterV2ParamNodesSecGroupIdSchema(schema.RequestSchema):
+    """CreateUK8SClusterV2ParamNodesSecGroupId -"""
 
     fields = {
-        "Mode": fields.Str(required=False, dump_to="Mode"),
+        "Id": fields.Str(required=False, dump_to="Id"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "Priority": fields.Str(required=False, dump_to="Priority"),
+    }
+
+
+class CreateUK8SClusterV2ParamNodesNetworkInterfaceEIPSchema(
+    schema.RequestSchema
+):
+    """CreateUK8SClusterV2ParamNodesNetworkInterfaceEIP -"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=False, dump_to="Bandwidth"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "OperatorName": fields.Str(required=False, dump_to="OperatorName"),
+        "PayMode": fields.Str(required=False, dump_to="PayMode"),
+        "ShareBandwidthId": fields.Str(
+            required=False, dump_to="ShareBandwidthId"
+        ),
     }
 
 
@@ -481,19 +499,11 @@ class CreateUK8SClusterV2ParamMasterSchema(schema.RequestSchema):
     }
 
 
-class CreateUK8SClusterV2ParamNodesNetworkInterfaceEIPSchema(
-    schema.RequestSchema
-):
-    """CreateUK8SClusterV2ParamNodesNetworkInterfaceEIP -"""
+class CreateUK8SClusterV2ParamKubeProxySchema(schema.RequestSchema):
+    """CreateUK8SClusterV2ParamKubeProxy -"""
 
     fields = {
-        "Bandwidth": fields.Int(required=False, dump_to="Bandwidth"),
-        "CouponId": fields.Str(required=False, dump_to="CouponId"),
-        "OperatorName": fields.Str(required=False, dump_to="OperatorName"),
-        "PayMode": fields.Str(required=False, dump_to="PayMode"),
-        "ShareBandwidthId": fields.Str(
-            required=False, dump_to="ShareBandwidthId"
-        ),
+        "Mode": fields.Str(required=False, dump_to="Mode"),
     }
 
 
@@ -504,16 +514,6 @@ class CreateUK8SClusterV2ParamNodesNetworkInterfaceSchema(schema.RequestSchema):
         "EIP": CreateUK8SClusterV2ParamNodesNetworkInterfaceEIPSchema(
             required=False, dump_to="EIP"
         ),
-    }
-
-
-class CreateUK8SClusterV2ParamNodesSecGroupIdSchema(schema.RequestSchema):
-    """CreateUK8SClusterV2ParamNodesSecGroupId -"""
-
-    fields = {
-        "Id": fields.Str(required=False, dump_to="Id"),
-        "Name": fields.Str(required=False, dump_to="Name"),
-        "Priority": fields.Str(required=False, dump_to="Priority"),
     }
 
 
@@ -635,21 +635,21 @@ API: CreateUK8SULSConfig
 """
 
 
-class CreateUK8SULSConfigParamInputDetailMetadataSchema(schema.RequestSchema):
-    """CreateUK8SULSConfigParamInputDetailMetadata -"""
-
-    fields = {
-        "Container": fields.Str(required=False, dump_to="Container"),
-        "Labels": fields.Str(required=False, dump_to="Labels"),
-    }
-
-
 class CreateUK8SULSConfigParamInputDetailFilePathsSchema(schema.RequestSchema):
     """CreateUK8SULSConfigParamInputDetailFilePaths -"""
 
     fields = {
         "File": fields.Str(required=False, dump_to="File"),
         "Path": fields.Str(required=False, dump_to="Path"),
+    }
+
+
+class CreateUK8SULSConfigParamInputDetailMetadataSchema(schema.RequestSchema):
+    """CreateUK8SULSConfigParamInputDetailMetadata -"""
+
+    fields = {
+        "Container": fields.Str(required=False, dump_to="Container"),
+        "Labels": fields.Str(required=False, dump_to="Labels"),
     }
 
 
@@ -668,13 +668,13 @@ class CreateUK8SULSConfigParamInputDetailSchema(schema.RequestSchema):
     }
 
 
-class CreateUK8SULSConfigParamMatchRuleWorkloadsSchema(schema.RequestSchema):
-    """CreateUK8SULSConfigParamMatchRuleWorkloads -"""
+class CreateUK8SULSConfigParamExtractRuleExtractRuleSchema(
+    schema.RequestSchema
+):
+    """CreateUK8SULSConfigParamExtractRuleExtractRule -"""
 
     fields = {
-        "Name": fields.Str(required=False, dump_to="Name"),
-        "Namespace": fields.Str(required=False, dump_to="Namespace"),
-        "Type": fields.Str(required=False, dump_to="Type"),
+        "LogRegexBase64": fields.Str(required=False, dump_to="LogRegexBase64"),
     }
 
 
@@ -704,33 +704,6 @@ class CreateUK8SULSConfigParamMatchRulePodLabelsSchema(schema.RequestSchema):
     }
 
 
-class CreateUK8SULSConfigParamMatchRuleSchema(schema.RequestSchema):
-    """CreateUK8SULSConfigParamMatchRule -"""
-
-    fields = {
-        "Container": fields.Str(required=False, dump_to="Container"),
-        "ContainerOperator": fields.Str(
-            required=False, dump_to="ContainerOperator"
-        ),
-        "PodLabels": CreateUK8SULSConfigParamMatchRulePodLabelsSchema(
-            required=False, dump_to="PodLabels"
-        ),
-        "Workloads": fields.List(
-            CreateUK8SULSConfigParamMatchRuleWorkloadsSchema()
-        ),
-    }
-
-
-class CreateUK8SULSConfigParamExtractRuleExtractRuleSchema(
-    schema.RequestSchema
-):
-    """CreateUK8SULSConfigParamExtractRuleExtractRule -"""
-
-    fields = {
-        "LogRegexBase64": fields.Str(required=False, dump_to="LogRegexBase64"),
-    }
-
-
 class CreateUK8SULSConfigParamExtractRuleSchema(schema.RequestSchema):
     """CreateUK8SULSConfigParamExtractRule -"""
 
@@ -755,6 +728,33 @@ class CreateUK8SULSConfigParamExtractRuleSchema(schema.RequestSchema):
         "TimeKey": fields.Str(required=False, dump_to="TimeKey"),
         "UnMatchKey": fields.Str(required=False, dump_to="UnMatchKey"),
         "UnMatchUpload": fields.Str(required=False, dump_to="UnMatchUpload"),
+    }
+
+
+class CreateUK8SULSConfigParamMatchRuleWorkloadsSchema(schema.RequestSchema):
+    """CreateUK8SULSConfigParamMatchRuleWorkloads -"""
+
+    fields = {
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "Namespace": fields.Str(required=False, dump_to="Namespace"),
+        "Type": fields.Str(required=False, dump_to="Type"),
+    }
+
+
+class CreateUK8SULSConfigParamMatchRuleSchema(schema.RequestSchema):
+    """CreateUK8SULSConfigParamMatchRule -"""
+
+    fields = {
+        "Container": fields.Str(required=False, dump_to="Container"),
+        "ContainerOperator": fields.Str(
+            required=False, dump_to="ContainerOperator"
+        ),
+        "PodLabels": CreateUK8SULSConfigParamMatchRulePodLabelsSchema(
+            required=False, dump_to="PodLabels"
+        ),
+        "Workloads": fields.List(
+            CreateUK8SULSConfigParamMatchRuleWorkloadsSchema()
+        ),
     }
 
 
@@ -1247,6 +1247,30 @@ class ListUK8SULSConfigResponseSchema(schema.ResponseSchema):
 
 
 """
+API: ModifyUK8SClusterName
+
+修改k8s集群名称
+"""
+
+
+class ModifyUK8SClusterNameRequestSchema(schema.RequestSchema):
+    """ModifyUK8SClusterName - 修改k8s集群名称"""
+
+    fields = {
+        "ClusterId": fields.Str(required=True, dump_to="ClusterId"),
+        "ClusterName": fields.Str(required=True, dump_to="ClusterName"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class ModifyUK8SClusterNameResponseSchema(schema.ResponseSchema):
+    """ModifyUK8SClusterName - 修改k8s集群名称"""
+
+    fields = {}
+
+
+"""
 API: RemoveUK8SNodeGroup
 
 删除UK8S节点池
@@ -1280,13 +1304,13 @@ API: UpdateUK8SNodeGroup
 """
 
 
-class UpdateUK8SNodeGroupParamKubeletConfigurationSchema(schema.RequestSchema):
-    """UpdateUK8SNodeGroupParamKubeletConfiguration -"""
+class UpdateUK8SNodeGroupParamSecGroupIdSchema(schema.RequestSchema):
+    """UpdateUK8SNodeGroupParamSecGroupId -"""
 
     fields = {
-        "ContainerLogMaxFiles": fields.Int(
-            required=False, dump_to="ContainerLogMaxFiles"
-        ),
+        "Id": fields.Str(required=False, dump_to="Id"),
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "Priority": fields.Str(required=False, dump_to="Priority"),
     }
 
 
@@ -1314,13 +1338,13 @@ class UpdateUK8SNodeGroupParamNetworkInterfaceSchema(schema.RequestSchema):
     }
 
 
-class UpdateUK8SNodeGroupParamSecGroupIdSchema(schema.RequestSchema):
-    """UpdateUK8SNodeGroupParamSecGroupId -"""
+class UpdateUK8SNodeGroupParamKubeletConfigurationSchema(schema.RequestSchema):
+    """UpdateUK8SNodeGroupParamKubeletConfiguration -"""
 
     fields = {
-        "Id": fields.Str(required=False, dump_to="Id"),
-        "Name": fields.Str(required=False, dump_to="Name"),
-        "Priority": fields.Str(required=False, dump_to="Priority"),
+        "ContainerLogMaxFiles": fields.Int(
+            required=False, dump_to="ContainerLogMaxFiles"
+        ),
     }
 
 
@@ -1393,31 +1417,12 @@ API: UpdateUK8SULSConfig
 """
 
 
-class UpdateUK8SULSConfigParamMatchRuleWorkloadsSchema(schema.RequestSchema):
-    """UpdateUK8SULSConfigParamMatchRuleWorkloads -"""
-
-    fields = {
-        "Name": fields.Str(required=False, dump_to="Name"),
-        "Namespace": fields.Str(required=False, dump_to="Namespace"),
-        "Type": fields.Str(required=False, dump_to="Type"),
-    }
-
-
 class UpdateUK8SULSConfigParamInputDetailFilePathsSchema(schema.RequestSchema):
     """UpdateUK8SULSConfigParamInputDetailFilePaths -"""
 
     fields = {
         "File": fields.Str(required=False, dump_to="File"),
         "Path": fields.Str(required=False, dump_to="Path"),
-    }
-
-
-class UpdateUK8SULSConfigParamInputDetailMetadataSchema(schema.RequestSchema):
-    """UpdateUK8SULSConfigParamInputDetailMetadata -"""
-
-    fields = {
-        "Container": fields.Str(required=False, dump_to="Container"),
-        "Labels": fields.Str(required=False, dump_to="Labels"),
     }
 
 
@@ -1430,6 +1435,47 @@ class UpdateUK8SULSConfigParamMatchRulePodLabelsLabelsSchema(
         "Key": fields.Str(required=False, dump_to="Key"),
         "Value": fields.Str(required=False, dump_to="Value"),
         "ValueOperator": fields.Str(required=False, dump_to="ValueOperator"),
+    }
+
+
+class UpdateUK8SULSConfigParamMatchRulePodLabelsSchema(schema.RequestSchema):
+    """UpdateUK8SULSConfigParamMatchRulePodLabels -"""
+
+    fields = {
+        "Labels": fields.List(
+            UpdateUK8SULSConfigParamMatchRulePodLabelsLabelsSchema()
+        ),
+        "Namespace": fields.Str(required=False, dump_to="Namespace"),
+        "NamespaceOperator": fields.Str(
+            required=False, dump_to="NamespaceOperator"
+        ),
+    }
+
+
+class UpdateUK8SULSConfigParamMatchRuleWorkloadsSchema(schema.RequestSchema):
+    """UpdateUK8SULSConfigParamMatchRuleWorkloads -"""
+
+    fields = {
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "Namespace": fields.Str(required=False, dump_to="Namespace"),
+        "Type": fields.Str(required=False, dump_to="Type"),
+    }
+
+
+class UpdateUK8SULSConfigParamMatchRuleSchema(schema.RequestSchema):
+    """UpdateUK8SULSConfigParamMatchRule -"""
+
+    fields = {
+        "Container": fields.Str(required=False, dump_to="Container"),
+        "ContainerOperator": fields.Str(
+            required=False, dump_to="ContainerOperator"
+        ),
+        "PodLabels": UpdateUK8SULSConfigParamMatchRulePodLabelsSchema(
+            required=False, dump_to="PodLabels"
+        ),
+        "Workloads": fields.List(
+            UpdateUK8SULSConfigParamMatchRuleWorkloadsSchema()
+        ),
     }
 
 
@@ -1458,34 +1504,12 @@ class UpdateUK8SULSConfigParamExtractRuleSchema(schema.RequestSchema):
     }
 
 
-class UpdateUK8SULSConfigParamMatchRulePodLabelsSchema(schema.RequestSchema):
-    """UpdateUK8SULSConfigParamMatchRulePodLabels -"""
-
-    fields = {
-        "Labels": fields.List(
-            UpdateUK8SULSConfigParamMatchRulePodLabelsLabelsSchema()
-        ),
-        "Namespace": fields.Str(required=False, dump_to="Namespace"),
-        "NamespaceOperator": fields.Str(
-            required=False, dump_to="NamespaceOperator"
-        ),
-    }
-
-
-class UpdateUK8SULSConfigParamMatchRuleSchema(schema.RequestSchema):
-    """UpdateUK8SULSConfigParamMatchRule -"""
+class UpdateUK8SULSConfigParamInputDetailMetadataSchema(schema.RequestSchema):
+    """UpdateUK8SULSConfigParamInputDetailMetadata -"""
 
     fields = {
         "Container": fields.Str(required=False, dump_to="Container"),
-        "ContainerOperator": fields.Str(
-            required=False, dump_to="ContainerOperator"
-        ),
-        "PodLabels": UpdateUK8SULSConfigParamMatchRulePodLabelsSchema(
-            required=False, dump_to="PodLabels"
-        ),
-        "Workloads": fields.List(
-            UpdateUK8SULSConfigParamMatchRuleWorkloadsSchema()
-        ),
+        "Labels": fields.Str(required=False, dump_to="Labels"),
     }
 
 
