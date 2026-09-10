@@ -87,6 +87,7 @@ class UMemClient(Client):
         - **Type** (str) - (Required) 任务类型。"ScanBigKeys"：扫大key，"ScanHotKeys"：扫热key
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **IsRetry** (bool) - 是否要重试任务，如果是的话，TaskId必填
+        - **SpaceId** (str) - 分布式资源ID
         - **TaskId** (str) - 要重试的任务id
 
         **Response**
@@ -107,6 +108,41 @@ class UMemClient(Client):
         resp = self.invoke("CreateScanHotBigKeys", d, **kwargs)
         return apis.CreateScanHotBigKeysResponseSchema().loads(resp)
 
+    def create_ud_redis_uhproxy(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """CreateUDRedisUhproxy - 添加分布式Redis代理
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CPU** (int) - (Required) 代理核数
+        - **SpaceId** (str) - (Required) UMem内存空间ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CouponId** (str) - 使用的代金券id
+        - **Port** (int) - 代理端口, 默认为 6379
+        - **ProxyCnt** (int) - 代理个数
+
+        **Response**
+
+        - **ResourceId** (str) - 代理资源id
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.CreateUDRedisUhproxyRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("CreateUDRedisUhproxy", d, **kwargs)
+        return apis.CreateUDRedisUhproxyResponseSchema().loads(resp)
+
     def create_umem_backup(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -114,11 +150,11 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BackupName** (str) - (Required) 请求创建备份的名称 (范围[6-63],只能包含英文、数字以及符号-和_)
         - **SpaceId** (str) - (Required) 资源id
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -241,12 +277,12 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BackupName** (str) - (Required) 请求创建组的名称 (范围[6-63],只能包含英文、数字以及符号-和_)
         - **GroupId** (str) - (Required) 资源id
         - **SlaveZone** (str) - 跨机房URedis，slave所在可用区（必须和Zone在同一Region，且不可相同）
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -320,6 +356,34 @@ class UMemClient(Client):
         resp = self.invoke("CreateURedisGroup", d, **kwargs)
         return apis.CreateURedisGroupResponseSchema().loads(resp)
 
+    def delete_ud_redis_proxy(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteUDRedisProxy - 删除分布式Redis代理
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProxyId** (str) - (Required) 代理id
+        - **SpaceId** (str) - (Required) 分布式Redis资源ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteUDRedisProxyRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteUDRedisProxy", d, **kwargs)
+        return apis.DeleteUDRedisProxyResponseSchema().loads(resp)
+
     def delete_umem_space(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -327,10 +391,10 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **SpaceId** (str) - (Required) UMem内存空间ID
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -354,10 +418,10 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **GroupId** (str) - (Required) 组ID
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -381,8 +445,8 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **GroupId** (str) - (Required) 组ID
 
         **Response**
@@ -399,6 +463,44 @@ class UMemClient(Client):
 
         resp = self.invoke("DeleteURedisGroup", d, **kwargs)
         return apis.DeleteURedisGroupResponseSchema().loads(resp)
+
+    def describe_ud_redis_proxy_client_list(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUDRedisProxyClientList - 查询分布式代理客户端连接信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **ProxyId** (str) - (Required) 分布式Redis代理Id
+        - **SpaceId** (str) - (Required) 分布式Redis集群id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Count** (int) - 连接数
+        - **ProxyClientList** (list) - 见 **ProxyClientList** 模型定义
+        - **Time** (int) - 连接获取时间
+
+        **Response Model**
+
+        **ProxyClientList**
+        - **ConnCnt** (int) - 该客户端Ip连接数量
+        - **Ip** (str) - 客户端Ip
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeUDRedisProxyClientListRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeUDRedisProxyClientList", d, **kwargs)
+        return apis.DescribeUDRedisProxyClientListResponseSchema().loads(resp)
 
     def describe_ud_redis_proxy_info(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -419,9 +521,15 @@ class UMemClient(Client):
         **Response Model**
 
         **UDRedisProxyInfo**
+        - **CPU** (int) - 代理CPU核数
         - **ProxyId** (str) - 代理id
+        - **ProxyType** (int) - 0 : 物理机版分布式代理, 1: NVME(或SSD)版分布式代理
+        - **PublicIp** (str) - 开启外网状态下的外网IP，否则为空
+        - **ReadMode** (str) - 读写分离策略, "Custom": 用户自定义节点权重， "Uniform": 包括主节点在内的所有节点平均读请求， "ReadOnly": 读请求均分至只读节点
+        - **ReadOnly** (bool) - 代理是否为只读
         - **ResourceId** (str) - 代理资源id
-        - **State** (str) - 代理状态
+        - **State** (str) - 代理状态 [PROXY_CREATING:创建中, PROXY_NORMAL:正常运行, PROXY_FAILED:创建失败, PROXY_CLOSED:关闭, PROXY_INIT_RESIZE:初始化核数调整, PROXY_WAIT_RESIZE:等待核数调整, PROXY_RESIZING:核数调整中, PROXY_RESIZE_ERROR:核数调整失败]
+        - **SupportReadOnly** (bool) - 代理是否支持设置为只读
         - **Vip** (str) - 代理ip
 
 
@@ -450,6 +558,7 @@ class UMemClient(Client):
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Limit** (int) - 分页显示的条目数，默认为10
         - **ProxyId** (str) - 代理Id
+        - **SpaceId** (str) - 分布式资源Id
 
         **Response**
 
@@ -501,47 +610,15 @@ class UMemClient(Client):
 
         **Response Model**
 
-        **UMemDataSet**
-        - **Address** (list) - 见 **UMemSpaceAddressSet** 模型定义
-        - **AutoBackup** (str) - 是否需要自动备份,enable,disable
-        - **BackupTime** (int) - 自动备份开始时间,单位小时计,范围[0-23]
-        - **ChargeType** (str) - 计费模式，Year, Month, Dynamic, Trial
-        - **ConfigId** (str) - 节点的配置ID
-        - **CreateTime** (int) - 创建时间
-        - **DataSet** (list) - 见 **UMemSlaveDataSet** 模型定义
-        - **ExpireTime** (int) - 到期时间
-        - **HighAvailability** (str) - 是否开启高可用,enable,disable
-        - **Name** (str) - 资源名称
-        - **OwnSlave** (str) - 是否拥有只读Slave“Yes” 包含“No” 不包含
-        - **Protocol** (str) - 协议类型: memcache, redis
-        - **ResourceId** (str) - 资源ID
-        - **ResourceType** (str) - distributed: 分布式版Redis,或者分布式Memcache；single：主备版Redis,或者单机Memcache；performance：高性能版
-        - **RewriteTime** (int) - 主备redis和分布式redis运维时间0  //0点1  //1点以此类推单机版memcache不返回该项
-        - **Role** (str) - 表示实例是主库还是从库,master,slave仅主备redis返回该项参数
-        - **Size** (int) - 容量单位GB
-        - **SlaveZone** (str) - 跨机房URedis，slave redis所在可用区，参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **State** (str) - 实例状态                                  Starting                  // 创建中       Creating                  // 初始化中     CreateFail                // 创建失败     Fail                      // 创建失败     Deleting                  // 删除中       DeleteFail                // 删除失败     Running                   // 运行         Resizing                  // 容量调整中   ResizeFail                // 容量调整失败 Configing                 // 配置中       ConfigFail                // 配置失败Restarting                // 重启中SetPasswordFail    //设置密码失败
-        - **SubnetId** (str) - 子网
-        - **Tag** (str) - 业务组名称
-        - **Type** (str) - 空间类型:single(无热备),double(热备)
-        - **UsedSize** (int) - 使用量单位MB
-        - **VPCId** (str) - vpc
-        - **Version** (str) - Redis版本信息
-        - **Zone** (str) - 实例所在可用区，或者master redis所在可用区，参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-
-
-        **UMemSpaceAddressSet**
-        - **IP** (str) - UMem实例访问IP
-        - **Port** (int) - UMem实例访问Port
-
-
         **UMemSlaveDataSet**
         - **ChargeType** (str) - 计费模式，Year, Month, Dynamic, Trial
         - **ConfigId** (str) - 节点的配置ID
         - **CreateTime** (int) - 创建时间
+        - **DefaultConfigId** (str) - 是否是默认配置文件；true表示默认；false表示非默认
         - **ExpireTime** (int) - 到期时间
         - **GroupId** (str) - 资源id
         - **GroupName** (str) - 资源名称
+        - **HasPassword** (bool) - 实例是否设置密码
         - **MasterGroupId** (str) - 主实例id
         - **MemorySize** (int) - 实力大小
         - **ModifyTime** (int) - 修改时间
@@ -554,10 +631,60 @@ class UMemClient(Client):
         - **State** (str) - 实例状态                                  Starting                  // 创建中       Creating                  // 初始化中     CreateFail                // 创建失败     Fail                      // 创建失败     Deleting                  // 删除中       DeleteFail                // 删除失败     Running                   // 运行         Resizing                  // 容量调整中   ResizeFail                // 容量调整失败 Configing                 // 配置中       ConfigFail                // 配置失败Restarting                // 重启中SetPasswordFail  //设置密码失败
         - **SubnetId** (str) - 子网
         - **Tag** (str) - 业务组名称
+        - **UDACEnable** (bool) - 实例是否有加入到自治中心
         - **UsedSize** (int) - 使用量单位MB
         - **VPCId** (str) - vpc
         - **Version** (str) - Redis版本信息
         - **VirtualIP** (str) -
+        - **Zone** (str) - 实例所在可用区，或者master redis所在可用区，参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+
+
+        **UMemSpaceAddressSet**
+        - **IP** (str) - UMem实例内网访问IP
+        - **Port** (int) - UMem实例访问Port
+        - **PrivateDomain** (str) - UMem实例内网访问域名地址，未开启状态下返回为空
+        - **PublicIp** (str) - 开启外网状态下外网IP，否则为空
+
+
+        **UMemDataSet**
+        - **Address** (list) - 见 **UMemSpaceAddressSet** 模型定义
+        - **AofRollbackEnable** (bool) - 实例是否开启了回档
+        - **AutoBackup** (str) - 是否需要自动备份,enable,disable
+        - **BackupTime** (int) - 自动备份开始时间,单位小时计,范围[0-23]
+        - **ChargeType** (str) - 计费模式，Year, Month, Dynamic, Trial
+        - **ConfigId** (str) - 节点的配置ID
+        - **CreateTime** (int) - 创建时间
+        - **DataSet** (list) - 见 **UMemSlaveDataSet** 模型定义
+        - **DefaultConfigId** (str) - 是否是默认配置文件，true表示默认；false表示非默认
+        - **ExpireTime** (int) - 到期时间
+        - **HasPassword** (bool) - 实例是否设置密码
+        - **HighAvailability** (str) - 是否开启高可用,enable,disable
+        - **IsHighPerformance** (bool) - 是否是高性能Redis，true表示是；false表示否
+        - **IsRWMode** (bool) - 是否是读写分离
+        - **Name** (str) - 资源名称
+        - **OwnSlave** (str) - 是否拥有只读Slave“Yes” 包含“No” 不包含
+        - **ProductType** (int) - 判断后端是否快杰资源（非快杰:  0或者1   快杰:  2或者3）
+        - **Protocol** (str) - 协议类型: memcache, redis
+        - **ProxyName** (str) - URedis是否开启读写分离
+        - **ResourceId** (str) - 资源ID
+        - **ResourceType** (str) - distributed: 分布式版Redis,或者分布式Memcache；single：主备版Redis,或者单机Memcache；performance：高性能版
+        - **RewriteTime** (int) - 主备redis和分布式redis运维时间0  //0点1  //1点以此类推单机版memcache不返回该项
+        - **Role** (str) - 表示实例是主库还是从库,master,slave仅主备redis返回该项参数
+        - **SSLCertExpireTime** (int) - 证书过期时间
+        - **SSLEnable** (bool) - 实例是否开启SSL
+        - **SSLVersion** (str) - SSL版本
+        - **SecPolicy** (int) - 安全策略。1:内网隔离，2:加密通信，3:内网隔离+加密通信
+        - **Size** (int) - 容量单位GB
+        - **SlaveZone** (str) - 跨机房URedis，slave redis所在可用区，参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **State** (str) - 实例状态Starting                     // 创建中Creating                    // 初始化中Deleting                    // 删除中CreateFail                 // 创建失败DeleteFail                 // 删除失败Resizing                   // 容量调整中ResizeFail                // 容量调整失败Disasting                 // 容灾中Running                   // 运行SetPassword           // 设置密码SetPasswordFail     // 设置密码失败ISolation                  // 关闭Replicating              // 同步中ReplicateDone        //  数据同步完成ExecTimeout           // 待重试SlaveRecovering     // 备库恢复中ReplicateFail           // 同步失败DelayUpgrade         // 待扩容迁移 VersionUpgrading   // 升级中VersionUpgradeFail // 升级失败UpgradeMemInit     // 任务初始化ClusterUpgrading    // 规格调整中SSLSwitching         // 修改TLS中SSLSwitchFail        // 修改TLS失败
+        - **SubnetId** (str) - 子网
+        - **SupportAofRollback** (bool) - 实例是否支持回档
+        - **Tag** (str) - 业务组名称
+        - **Type** (str) - 空间类型:single(无热备),double(热备)
+        - **UDACEnable** (bool) - 实例是否有加入到自治中心
+        - **UsedSize** (int) - 使用量单位MB
+        - **VPCId** (str) - vpc
+        - **Version** (str) - Redis版本信息
         - **Zone** (str) - 实例所在可用区，或者master redis所在可用区，参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
 
 
@@ -623,11 +750,11 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BackupId** (str) - (Required) 备份Id
         - **SpaceId** (str) - (Required) 资源id
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BlockId** (str) - 分片id
 
         **Response**
@@ -709,6 +836,7 @@ class UMemClient(Client):
         - **ChargeType** (str) - Year， Month， Dynamic 如果不指定，则一次性获取三种计费
         - **ClusterMode** (str) - 数据库类型，RWMode为读写分离
         - **HighPerformance** (bool) - 实例类型是否为性能增强型。默认为false，或者不填，true为性能增强型。
+        - **ProxyCnt** (int) - umem 代理个数
         - **ProxySize** (int) - umem 代理CPU核心数
         - **Quantity** (int) - 购买UMem的时长，默认值为1
         - **UlbMode** (str) - umem分布式代理类型，默认false，true为负载均衡型代理
@@ -759,6 +887,13 @@ class UMemClient(Client):
 
         **Response Model**
 
+        **UMemSpaceAddressSet**
+        - **IP** (str) - UMem实例内网访问IP
+        - **Port** (int) - UMem实例访问Port
+        - **PrivateDomain** (str) - UMem实例内网访问域名地址，未开启状态下返回为空
+        - **PublicIp** (str) - 开启外网状态下外网IP，否则为空
+
+
         **UMemSpaceSet**
         - **Address** (list) - 见 **UMemSpaceAddressSet** 模型定义
         - **AofRollbackEnable** (bool) - 实例是否开启了回档
@@ -778,11 +913,6 @@ class UMemClient(Client):
         - **UsedSize** (int) - 使用量单位MB
         - **VPCId** (str) - VPC ID
         - **Zone** (str) - 可用区，参见 `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-
-
-        **UMemSpaceAddressSet**
-        - **IP** (str) - UMem实例访问IP
-        - **Port** (int) - UMem实例访问Port
 
 
         """
@@ -850,12 +980,12 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **GroupId** (str) - 组的ID,如果指定则获取描述，否则为列表操 作,需指定Offset/Limit
         - **Limit** (int) - 分页显示的条目数, 默认值为20
         - **Offset** (int) - 分页显示的起始偏移, 默认值为0
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -975,9 +1105,11 @@ class UMemClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **GroupId** (str) - (Required) 组的ID
+        - **BackupId** (str) - 备份Id，若传入，则只返回该BackupId的备份信息
+        - **GroupId** (str) - 组的ID，如果不传RegionType,GroupId为必传项
         - **Limit** (int) - 分页显示的条目数, 默认值为10
         - **Offset** (int) - 分页显示的起始偏移, 默认值为0
+        - **RegionType** (str) - 用于区分跨可用备份以及普通备份。默认为normal。跨可用则分为(source, target)
         - **SlaveZone** (str) - 跨机房URedis，slave所在可用区（必须和Zone在同一Region，且不可相同）
 
         **Response**
@@ -993,8 +1125,12 @@ class UMemClient(Client):
         - **BackupSize** (int) - 备份文件大小, 以字节为单位
         - **BackupTime** (int) - 备份时间 (UNIX时间戳)
         - **BackupType** (str) - 备份类型: Manual 手动 Auto 自动
+        - **DstRegionName** (str) - 跨地域备份目标地域
         - **GroupId** (str) - 对应的实例ID
         - **GroupName** (str) - 组名称
+        - **MemorySize** (int) - 源实例容量大小
+        - **RedisVersion** (str) - 源实例Redis版本
+        - **SrcRegionName** (str) - 跨地域备份源地域
         - **State** (str) - 备份的状态: Backuping 备份中 Success 备份成功 Error 备份失败 Expired 备份过期
         - **Zone** (str) - 可用区，参见 `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
 
@@ -1022,6 +1158,7 @@ class UMemClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BackupId** (str) - (Required) 备份ID
         - **GroupId** (str) - 实例ID
+        - **IsCrossRegion** (bool) - 默认为false,true时代表查询跨地域备份URL
         - **RegionFlag** (bool) - 是否是跨机房URedis(默认false)
         - **SlaveZone** (str) - 跨机房URedis，slave所在可用区（必须和Zone在同一Region，且不可相同）
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
@@ -1140,6 +1277,7 @@ class UMemClient(Client):
         - **SubnetId** (str) - subnetid
         - **Tag** (str) - 业务组名称
         - **Type** (str) - 空间类型:single(无热备),double(热备)
+        - **UDACEnable** (bool) - 实例是否有加入到自治中心
         - **UsedSize** (int) - 使用量单位MB
         - **VPCId** (str) - vpcid
         - **Version** (str) - Redis版本信息
@@ -1208,10 +1346,10 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **GroupId** (str) - (Required) 资源ID
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Limit** (int) - 分页显示的条目数，默认为10
 
         **Response**
@@ -1250,6 +1388,7 @@ class UMemClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **GroupId** (str) - (Required) 要升级的空间的GroupId,请参考DescribeURedisGroup接口
         - **Size** (int) - (Required) 购买uredis大小,单位:GB,范围是[1-32]
+        - **ConvertType** (str) - 切换类型，执行类型切换时询价需要传入的参数。“HighPerformance”： 表示转换为性能加强型，“Normal”： 表示转换为普通主备版类型
         - **HighPerformance** (bool) - 查询高性能Redis， 默认为false， 或者不填， 查询高性能为true
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
@@ -1311,11 +1450,11 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **FlushType** (str) - (Required) FlushDb或FlushAll
         - **GroupId** (str) - (Required) 组的ID
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **DbNum** (int) - 清空的db，FlushType为FlushDb，此项为必传项
         - **OrganizationId** (int) - OrganizationId
         - **SlaveZone** (str) - 跨机房URedis，slave所在可用区（必须和Zone在同一Region，且不可相同）
@@ -1343,14 +1482,14 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **SpaceId** (str) - (Required) 内存空间ID
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
-        - **State** (str) - Starting:创建中 Running:运行中 Fail:失败
+        - **State** (list) - Starting:创建中 Running:运行中 Fail:失败
 
         """
         # build request
@@ -1393,6 +1532,34 @@ class UMemClient(Client):
         resp = self.invoke("ISolationURedisGroup", d, **kwargs)
         return apis.ISolationURedisGroupResponseSchema().loads(resp)
 
+    def modify_umem_password(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ModifyUMemPassword - 更改分布式redis密码
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Password** (str) - (Required) 新密码字符串，要求长度为6~36个字符,且只能包含英文、数字以及-和下划线；并且需要base64加密；如要取消密码，此值为空字符串
+        - **SpaceId** (str) - (Required) 资源id
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ModifyUMemPasswordRequestSchema().dumps(d)
+
+        resp = self.invoke("ModifyUMemPassword", d, **kwargs)
+        return apis.ModifyUMemPasswordResponseSchema().loads(resp)
+
     def modify_umem_space_name(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1400,11 +1567,11 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Name** (str) - (Required) 新的名称,长度(6<=size<=63)
         - **SpaceId** (str) - (Required) UMem内存空间ID
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -1459,10 +1626,11 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **GroupId** (str) - (Required) 组的ID
         - **Name** (str) - (Required) Redis组名称 (范围[6-63],只能包含英文、数字以及符号-和_)
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -1486,12 +1654,12 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **GroupId** (str) - (Required) 组的ID
         - **Password** (str) - (Required) 新密码字符串，要求长度为6~36个字符,且只能包含英文、数字以及-和下划线；并且需要base64加密；如要取消密码，此值为空字符串，
         - **ResourceType** (str) -
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -1553,10 +1721,10 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **SpaceId** (str) - (Required) 实例id
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -1634,6 +1802,35 @@ class UMemClient(Client):
         resp = self.invoke("ResizeUMemSpace", d, **kwargs)
         return apis.ResizeUMemSpaceResponseSchema().loads(resp)
 
+    def resize_umem_cache_group(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ResizeUMemcacheGroup - 调整memcache实例的容量
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **GroupId** (str) - (Required) umemcache资源ID
+        - **Size** (int) - (Required) 内存大小, 单位:GB 目前支持1/2/4/8/16/32五种规格(暂时只支持扩容)
+        - **CouponId** (int) - 代金券ID
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ResizeUMemcacheGroupRequestSchema().dumps(d)
+
+        resp = self.invoke("ResizeUMemcacheGroup", d, **kwargs)
+        return apis.ResizeUMemcacheGroupResponseSchema().loads(resp)
+
     def resize_uredis_group(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1667,6 +1864,36 @@ class UMemClient(Client):
         resp = self.invoke("ResizeURedisGroup", d, **kwargs)
         return apis.ResizeURedisGroupResponseSchema().loads(resp)
 
+    def resize_uhproxy(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ResizeUhproxy - 分布式Redis代理规格调整
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **NewCPU** (int) - (Required) 代理目标核数
+        - **ProxyId** (str) - (Required) 代理id
+        - **SpaceId** (str) - (Required) 分布式Redis资源ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **CouponId** (str) - 使用的代金券id
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ResizeUhproxyRequestSchema().dumps(d)
+
+        resp = self.invoke("ResizeUhproxy", d, **kwargs)
+        return apis.ResizeUhproxyResponseSchema().loads(resp)
+
     def restart_umem_cache_group(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -1674,10 +1901,10 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **GroupId** (str) - (Required) 组的ID
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -1701,10 +1928,10 @@ class UMemClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **GroupId** (str) - (Required) 资源ID
-        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
 
@@ -1778,9 +2005,12 @@ class UMemClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **BackupTime** (str) - (Required) 备份时间，默认为0
         - **GroupId** (str) - (Required) 组的ID
         - **AutoBackup** (str) - 是否打开默认备份功能。enable(打开)，disable(关闭)，默认enable
+        - **BackupTime** (str) - 备份时间，默认为0
+        - **DstRegion** (str) - 跨可用备份目标地域（当Operation为modify时必选）
+        - **OperationType** (str) - 操作类型，不传默认为normal(即操控自动备份打开以及时间)，modify（修改跨地域备份策略）,close(关闭跨地域备份策略)
+        - **SaveDays** (int) - 保存天数（当Operation为modify时必选）
         - **SlaveZone** (str) - 跨机房URedis，slave所在可用区（必须和Zone在同一Region，且不可相同）
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
