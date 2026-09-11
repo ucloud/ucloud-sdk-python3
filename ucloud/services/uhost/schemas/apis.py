@@ -41,14 +41,6 @@ API: CheckUHostResourceCapacity
 """
 
 
-class CheckUHostResourceCapacityParamFeaturesSchema(schema.RequestSchema):
-    """CheckUHostResourceCapacityParamFeatures -"""
-
-    fields = {
-        "UNI": fields.Bool(required=False, dump_to="UNI"),
-    }
-
-
 class CheckUHostResourceCapacityParamDisksCustomBackupSchema(
     schema.RequestSchema
 ):
@@ -75,6 +67,14 @@ class CheckUHostResourceCapacityParamDisksSchema(schema.RequestSchema):
         "Size": fields.Int(required=True, dump_to="Size"),
         "SnapshotId": fields.Str(required=False, dump_to="SnapshotId"),
         "Type": fields.Str(required=True, dump_to="Type"),
+    }
+
+
+class CheckUHostResourceCapacityParamFeaturesSchema(schema.RequestSchema):
+    """CheckUHostResourceCapacityParamFeatures -"""
+
+    fields = {
+        "UNI": fields.Bool(required=False, dump_to="UNI"),
     }
 
 
@@ -230,32 +230,12 @@ API: CreateUHostInstance
 """
 
 
-class CreateUHostInstanceParamDisksCustomBackupSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamDisksCustomBackup -"""
+class CreateUHostInstanceParamLabelsSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamLabels -"""
 
     fields = {
-        "Day": fields.Str(required=False, dump_to="Day"),
-        "Hour": fields.Str(required=False, dump_to="Hour"),
-        "Journal": fields.Str(required=False, dump_to="Journal"),
-    }
-
-
-class CreateUHostInstanceParamDisksSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamDisks -"""
-
-    fields = {
-        "BackupMode": fields.Str(required=False, dump_to="BackupMode"),
-        "BackupType": fields.Str(required=False, dump_to="BackupType"),
-        "CouponId": fields.Str(required=False, dump_to="CouponId"),
-        "CustomBackup": CreateUHostInstanceParamDisksCustomBackupSchema(
-            required=False, dump_to="CustomBackup"
-        ),
-        "Encrypted": fields.Bool(required=False, dump_to="Encrypted"),
-        "IsBoot": fields.Str(required=True, dump_to="IsBoot"),
-        "KmsKeyId": fields.Str(required=False, dump_to="KmsKeyId"),
-        "Size": fields.Int(required=True, dump_to="Size"),
-        "SnapshotId": fields.Str(required=False, dump_to="SnapshotId"),
-        "Type": fields.Str(required=True, dump_to="Type"),
+        "Key": fields.Str(required=False, dump_to="Key"),
+        "Value": fields.Str(required=False, dump_to="Value"),
     }
 
 
@@ -277,6 +257,7 @@ class CreateUHostInstanceParamNetworkInterfaceEIPSchema(schema.RequestSchema):
     fields = {
         "Bandwidth": fields.Int(required=False, dump_to="Bandwidth"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "ExistEIPId": fields.Str(required=False, dump_to="ExistEIPId"),
         "GlobalSSH": CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSHSchema(
             required=False, dump_to="GlobalSSH"
         ),  # Deprecated, will be removed at 1.0
@@ -299,15 +280,6 @@ class CreateUHostInstanceParamNetworkInterfaceIPv6Schema(schema.RequestSchema):
     }
 
 
-class CreateUHostInstanceParamLabelsSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamLabels -"""
-
-    fields = {
-        "Key": fields.Str(required=False, dump_to="Key"),
-        "Value": fields.Str(required=False, dump_to="Value"),
-    }
-
-
 class CreateUHostInstanceParamNetworkInterfaceSchema(schema.RequestSchema):
     """CreateUHostInstanceParamNetworkInterface -"""
 
@@ -319,6 +291,41 @@ class CreateUHostInstanceParamNetworkInterfaceSchema(schema.RequestSchema):
         "IPv6": CreateUHostInstanceParamNetworkInterfaceIPv6Schema(
             required=False, dump_to="IPv6"
         ),
+    }
+
+
+class CreateUHostInstanceParamDisksCustomBackupSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamDisksCustomBackup -"""
+
+    fields = {
+        "Day": fields.Str(required=False, dump_to="Day"),
+        "Hour": fields.Str(required=False, dump_to="Hour"),
+        "Journal": fields.Str(required=False, dump_to="Journal"),
+    }
+
+
+class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamVolumes -"""
+
+    fields = {}
+
+
+class CreateUHostInstanceParamDisksSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamDisks -"""
+
+    fields = {
+        "BackupMode": fields.Str(required=False, dump_to="BackupMode"),
+        "BackupType": fields.Str(required=False, dump_to="BackupType"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "CustomBackup": CreateUHostInstanceParamDisksCustomBackupSchema(
+            required=False, dump_to="CustomBackup"
+        ),
+        "Encrypted": fields.Bool(required=False, dump_to="Encrypted"),
+        "IsBoot": fields.Str(required=True, dump_to="IsBoot"),
+        "KmsKeyId": fields.Str(required=False, dump_to="KmsKeyId"),
+        "Size": fields.Int(required=True, dump_to="Size"),
+        "SnapshotId": fields.Str(required=False, dump_to="SnapshotId"),
+        "Type": fields.Str(required=True, dump_to="Type"),
     }
 
 
@@ -337,12 +344,6 @@ class CreateUHostInstanceParamSecGroupIdSchema(schema.RequestSchema):
         "Id": fields.Str(required=False, dump_to="Id"),
         "Priority": fields.Int(required=False, dump_to="Priority"),
     }
-
-
-class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamVolumes -"""
-
-    fields = {}
 
 
 class CreateUHostInstanceRequestSchema(schema.RequestSchema):

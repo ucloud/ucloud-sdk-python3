@@ -41,6 +41,82 @@ class BootDiskInfoSchema(schema.ResponseSchema):
     }
 
 
+class CpuPlatformWithModelsSchema(schema.ResponseSchema):
+    """CpuPlatformWithModels -"""
+
+    fields = {
+        "CpuFrequency": fields.Str(required=False, load_from="CpuFrequency"),
+        "CpuModels": fields.List(fields.Str()),
+        "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
+class CollectionSchema(schema.ResponseSchema):
+    """Collection - CPU和内存可支持的规格"""
+
+    fields = {
+        "Cpu": fields.Int(required=False, load_from="Cpu"),
+        "Memory": fields.List(fields.Int()),
+        "MinimalCpuPlatform": fields.List(fields.Str()),
+    }
+
+
+class FeatureModesSchema(schema.ResponseSchema):
+    """FeatureModes - 可以支持的模式类别"""
+
+    fields = {
+        "MinimalCpuPlatform": fields.List(fields.Str()),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "RelatedToImageFeature": fields.List(fields.Str()),
+    }
+
+
+class MachineSizesSchema(schema.ResponseSchema):
+    """MachineSizes - GPU、CPU和内存信息"""
+
+    fields = {
+        "Collection": fields.List(CollectionSchema()),
+        "Gpu": fields.Int(required=False, load_from="Gpu"),
+    }
+
+
+class PerformanceSchema(schema.ResponseSchema):
+    """Performance - GPU的性能指标"""
+
+    fields = {
+        "Rate": fields.Int(required=False, load_from="Rate"),
+        "Value": fields.Float(required=False, load_from="Value"),
+    }
+
+
+class CpuPlatformsSchema(schema.ResponseSchema):
+    """CpuPlatforms - CPU平台信息"""
+
+    fields = {
+        "Amd": fields.List(fields.Str()),
+        "Ampere": fields.List(fields.Str()),
+        "Intel": fields.List(fields.Str()),
+    }
+
+
+class FeaturesSchema(schema.ResponseSchema):
+    """Features - 虚机可支持的特性"""
+
+    fields = {
+        "Modes": fields.List(FeatureModesSchema()),
+        "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
+class GraphicsMemorySchema(schema.ResponseSchema):
+    """GraphicsMemory - GPU的显存指标"""
+
+    fields = {
+        "Rate": fields.Int(required=False, load_from="Rate"),
+        "Value": fields.Int(required=False, load_from="Value"),
+    }
+
+
 class DataDiskInfoSchema(schema.ResponseSchema):
     """DataDiskInfo - 数据盘信息"""
 
@@ -63,25 +139,6 @@ class DisksSchema(schema.ResponseSchema):
     }
 
 
-class GraphicsMemorySchema(schema.ResponseSchema):
-    """GraphicsMemory - GPU的显存指标"""
-
-    fields = {
-        "Rate": fields.Int(required=False, load_from="Rate"),
-        "Value": fields.Int(required=False, load_from="Value"),
-    }
-
-
-class CpuPlatformWithModelsSchema(schema.ResponseSchema):
-    """CpuPlatformWithModels -"""
-
-    fields = {
-        "CpuFrequency": fields.Str(required=False, load_from="CpuFrequency"),
-        "CpuModels": fields.List(fields.Str()),
-        "Name": fields.Str(required=False, load_from="Name"),
-    }
-
-
 class UHostFamilySchema(schema.ResponseSchema):
     """UHostFamily -"""
 
@@ -89,63 +146,6 @@ class UHostFamilySchema(schema.ResponseSchema):
         "CpuFrequency": fields.Str(required=False, load_from="CpuFrequency"),
         "CpuPlatforms": fields.List(CpuPlatformWithModelsSchema()),
         "Name": fields.Str(required=False, load_from="Name"),
-    }
-
-
-class CpuPlatformsSchema(schema.ResponseSchema):
-    """CpuPlatforms - CPU平台信息"""
-
-    fields = {
-        "Amd": fields.List(fields.Str()),
-        "Ampere": fields.List(fields.Str()),
-        "Intel": fields.List(fields.Str()),
-    }
-
-
-class FeatureModesSchema(schema.ResponseSchema):
-    """FeatureModes - 可以支持的模式类别"""
-
-    fields = {
-        "MinimalCpuPlatform": fields.List(fields.Str()),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "RelatedToImageFeature": fields.List(fields.Str()),
-    }
-
-
-class CollectionSchema(schema.ResponseSchema):
-    """Collection - CPU和内存可支持的规格"""
-
-    fields = {
-        "Cpu": fields.Int(required=False, load_from="Cpu"),
-        "Memory": fields.List(fields.Int()),
-        "MinimalCpuPlatform": fields.List(fields.Str()),
-    }
-
-
-class PerformanceSchema(schema.ResponseSchema):
-    """Performance - GPU的性能指标"""
-
-    fields = {
-        "Rate": fields.Int(required=False, load_from="Rate"),
-        "Value": fields.Float(required=False, load_from="Value"),
-    }
-
-
-class FeaturesSchema(schema.ResponseSchema):
-    """Features - 虚机可支持的特性"""
-
-    fields = {
-        "Modes": fields.List(FeatureModesSchema()),
-        "Name": fields.Str(required=False, load_from="Name"),
-    }
-
-
-class MachineSizesSchema(schema.ResponseSchema):
-    """MachineSizes - GPU、CPU和内存信息"""
-
-    fields = {
-        "Collection": fields.List(CollectionSchema()),
-        "Gpu": fields.Int(required=False, load_from="Gpu"),
     }
 
 
@@ -170,13 +170,14 @@ class AvailableInstanceTypesSchema(schema.ResponseSchema):
     }
 
 
-class FamiliesGpuTypeSchema(schema.ResponseSchema):
-    """FamiliesGpuType -"""
+class CpuPlatformStatusSchema(schema.ResponseSchema):
+    """CpuPlatformStatus -"""
 
     fields = {
-        "GraphicsMemory": GraphicsMemorySchema(),
         "Name": fields.Str(required=False, load_from="Name"),
-        "Performance": PerformanceSchema(),
+        "OperationStatus": fields.Str(
+            required=False, load_from="OperationStatus"
+        ),
     }
 
 
@@ -211,6 +212,23 @@ class FamiliesBootDiskInfoSchema(schema.ResponseSchema):
     }
 
 
+class FrequencySchema(schema.ResponseSchema):
+    """Frequency - 频率"""
+
+    fields = {
+        "Value": fields.Float(required=False, load_from="Value"),
+    }
+
+
+class NameFrequencySchema(schema.ResponseSchema):
+    """NameFrequency - 名称及频率"""
+
+    fields = {
+        "Frequency": FrequencySchema(),
+        "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
 class FamiliesDataDiskInfoSchema(schema.ResponseSchema):
     """FamiliesDataDiskInfo - 数据盘信息"""
 
@@ -235,31 +253,13 @@ class FamiliesDisksSchema(schema.ResponseSchema):
     }
 
 
-class CpuPlatformStatusSchema(schema.ResponseSchema):
-    """CpuPlatformStatus -"""
+class FamiliesGpuTypeSchema(schema.ResponseSchema):
+    """FamiliesGpuType -"""
 
     fields = {
+        "GraphicsMemory": GraphicsMemorySchema(),
         "Name": fields.Str(required=False, load_from="Name"),
-        "OperationStatus": fields.Str(
-            required=False, load_from="OperationStatus"
-        ),
-    }
-
-
-class FrequencySchema(schema.ResponseSchema):
-    """Frequency - 频率"""
-
-    fields = {
-        "Value": fields.Float(required=False, load_from="Value"),
-    }
-
-
-class NameFrequencySchema(schema.ResponseSchema):
-    """NameFrequency - 名称及频率"""
-
-    fields = {
-        "Frequency": FrequencySchema(),
-        "Name": fields.Str(required=False, load_from="Name"),
+        "Performance": PerformanceSchema(),
     }
 
 
@@ -364,24 +364,6 @@ class AvailableDiskTypesSchema(schema.ResponseSchema):
     }
 
 
-class UDSetUDHostAttributeSchema(schema.ResponseSchema):
-    """UDSetUDHostAttribute - 私有专区对应的宿主机属性"""
-
-    fields = {
-        "HostBinding": fields.Bool(required=False, load_from="HostBinding"),
-        "UDHostId": fields.Str(required=False, load_from="UDHostId"),
-        "UDSetId": fields.Str(required=False, load_from="UDSetId"),
-    }
-
-
-class SpotAttributeSchema(schema.ResponseSchema):
-    """SpotAttribute - 竞价实例属性"""
-
-    fields = {
-        "RecycleTime": fields.Int(required=False, load_from="RecycleTime"),
-    }
-
-
 class UHostIPSetSchema(schema.ResponseSchema):
     """UHostIPSet - DescribeUHostInstance"""
 
@@ -399,6 +381,24 @@ class UHostIPSetSchema(schema.ResponseSchema):
         "Type": fields.Str(required=False, load_from="Type"),
         "VPCId": fields.Str(required=False, load_from="VPCId"),
         "Weight": fields.Int(required=False, load_from="Weight"),
+    }
+
+
+class UDSetUDHostAttributeSchema(schema.ResponseSchema):
+    """UDSetUDHostAttribute - 私有专区对应的宿主机属性"""
+
+    fields = {
+        "HostBinding": fields.Bool(required=False, load_from="HostBinding"),
+        "UDHostId": fields.Str(required=False, load_from="UDHostId"),
+        "UDSetId": fields.Str(required=False, load_from="UDSetId"),
+    }
+
+
+class SpotAttributeSchema(schema.ResponseSchema):
+    """SpotAttribute - 竞价实例属性"""
+
+    fields = {
+        "RecycleTime": fields.Int(required=False, load_from="RecycleTime"),
     }
 
 

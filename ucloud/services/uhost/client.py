@@ -80,10 +80,6 @@ class UHostClient(Client):
 
         **Request Model**
 
-        **CheckUHostResourceCapacityParamFeatures**
-        - **UNI** (bool) - 弹性网卡特性。开启了弹性网卡权限位，此特性才生效，默认 false 未开启，true 开启，仅与 NetCapability Normal 兼容。
-
-
         **CheckUHostResourceCapacityParamDisksCustomBackup**
         - **Day** (str) - Disks.N.BackupMode为"Custom"时，进行设置, 以5天级为基础进行倍数扩增，如5、10、15、20、25、30。
         - **Hour** (str) - Disks.N.BackupMode为"Custom"时，进行设置, 以24小时级为基础进行倍数扩增，如24、48、72、96。
@@ -99,6 +95,10 @@ class UHostClient(Client):
         - **Size** (int) - 磁盘大小，单位GB。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
         - **SnapshotId** (str) - 从快照创建盘时所用快照id，目前仅支持数据盘
         - **Type** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
+
+
+        **CheckUHostResourceCapacityParamFeatures**
+        - **UNI** (bool) - 弹性网卡特性。开启了弹性网卡权限位，此特性才生效，默认 false 未开启，true 开启，仅与 NetCapability Normal 兼容。
 
 
         """
@@ -284,10 +284,43 @@ class UHostClient(Client):
 
         **Request Model**
 
+        **CreateUHostInstanceParamLabels**
+        - **Key** (str) - 用户资源标签的键值
+        - **Value** (str) - 用户资源标签的值
+
+
+        **CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSH**
+        - **Area** (str) -
+        - **AreaCode** (str) -
+        - **Port** (int) -
+
+
+        **CreateUHostInstanceParamNetworkInterfaceEIP**
+        - **Bandwidth** (int) - 【若绑定EIP，此参数必填】弹性IP的外网带宽, 单位为Mbps. 共享带宽模式下非必传, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-800]
+        - **CouponId** (str) - 当前EIP代金券id。请通过DescribeCoupon接口查询，或登录用户中心查看。
+        - **ExistEIPId** (str) - 指定EIP Id进行绑定
+        - **OperatorName** (str) - 【若绑定EIP，此参数必填】弹性IP的线路。枚举值: 国际: International BGP: Bgp 各地域允许的线路参数如下: cn-sh1: Bgp cn-sh2: Bgp cn-gd: Bgp cn-bj1: Bgp cn-bj2: Bgp hk: International us-ca: International th-bkk: International kr-seoul:International us-ws:International ge-fra:International sg:International tw-kh:International.其他海外线路均为 International
+        - **PayMode** (str) - 弹性IP的计费模式. 枚举值: "Traffic", 流量计费; "Bandwidth", 带宽计费; "ShareBandwidth",共享带宽模式. "Free":免费带宽模式,默认为 "Bandwidth"
+        - **ShareBandwidthId** (str) - 绑定的共享带宽Id，仅当PayMode为ShareBandwidth时有效
+
+
+        **CreateUHostInstanceParamNetworkInterfaceIPv6**
+        - **Address** (str) - 第N个网卡对应的IPv6地址，默认不分配IPv6，“Auto”自动分配，不为空的其他字符串为实际要分配的IPv6地址。当前仅支持分配一个IPv6地址
+
+
+        **CreateUHostInstanceParamNetworkInterface**
+        - **CreateCernetIp** (bool) - 申请并绑定一个教育网EIP。True为申请并绑定，False为不会申请绑定，默认False。当前只支持具有HPC特性的机型。
+        - **EIP** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceEIP** 模型定义
+        - **IPv6** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceIPv6** 模型定义
+
+
         **CreateUHostInstanceParamDisksCustomBackup**
         - **Day** (str) - Disks.N.BackupMode为"Custom"时，进行设置, 以5天级为基础进行倍数扩增，如5、10、15、20、25、30。
         - **Hour** (str) - Disks.N.BackupMode为"Custom"时，进行设置, 以24小时级为基础进行倍数扩增，如24、48、72、96。
         - **Journal** (str) - Disks.N.BackupMode为"Custom"时，进行设置, 以12小时秒级为基础进行倍数扩增，如12、24、36、48。
+
+
+        **CreateUHostInstanceParamVolumes**
 
 
         **CreateUHostInstanceParamDisks**
@@ -303,35 +336,6 @@ class UHostClient(Client):
         - **Type** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
 
 
-        **CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSH**
-        - **Area** (str) -
-        - **AreaCode** (str) -
-        - **Port** (int) -
-
-
-        **CreateUHostInstanceParamNetworkInterfaceEIP**
-        - **Bandwidth** (int) - 【若绑定EIP，此参数必填】弹性IP的外网带宽, 单位为Mbps. 共享带宽模式下非必传, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-800]
-        - **CouponId** (str) - 当前EIP代金券id。请通过DescribeCoupon接口查询，或登录用户中心查看。
-        - **OperatorName** (str) - 【若绑定EIP，此参数必填】弹性IP的线路。枚举值: 国际: International BGP: Bgp 各地域允许的线路参数如下: cn-sh1: Bgp cn-sh2: Bgp cn-gd: Bgp cn-bj1: Bgp cn-bj2: Bgp hk: International us-ca: International th-bkk: International kr-seoul:International us-ws:International ge-fra:International sg:International tw-kh:International.其他海外线路均为 International
-        - **PayMode** (str) - 弹性IP的计费模式. 枚举值: "Traffic", 流量计费; "Bandwidth", 带宽计费; "ShareBandwidth",共享带宽模式. "Free":免费带宽模式,默认为 "Bandwidth"
-        - **ShareBandwidthId** (str) - 绑定的共享带宽Id，仅当PayMode为ShareBandwidth时有效
-
-
-        **CreateUHostInstanceParamNetworkInterfaceIPv6**
-        - **Address** (str) - 第N个网卡对应的IPv6地址，默认不分配IPv6，“Auto”自动分配，不为空的其他字符串为实际要分配的IPv6地址。当前仅支持分配一个IPv6地址
-
-
-        **CreateUHostInstanceParamLabels**
-        - **Key** (str) - 用户资源标签的键值
-        - **Value** (str) - 用户资源标签的值
-
-
-        **CreateUHostInstanceParamNetworkInterface**
-        - **CreateCernetIp** (bool) - 申请并绑定一个教育网EIP。True为申请并绑定，False为不会申请绑定，默认False。当前只支持具有HPC特性的机型。
-        - **EIP** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceEIP** 模型定义
-        - **IPv6** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceIPv6** 模型定义
-
-
         **CreateUHostInstanceParamFeatures**
         - **UNI** (bool) - 弹性网卡特性。开启了弹性网卡权限位，此特性才生效，默认 false 未开启，true 开启。
 
@@ -339,9 +343,6 @@ class UHostClient(Client):
         **CreateUHostInstanceParamSecGroupId**
         - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
         - **Priority** (int) - 安全组优先级。取值范围[1, 5]
-
-
-        **CreateUHostInstanceParamVolumes**
 
 
         """
@@ -474,60 +475,6 @@ class UHostClient(Client):
 
         **Response Model**
 
-        **Collection**
-        - **Cpu** (int) - CPU规格
-        - **Memory** (list) - 内存规格
-        - **MinimalCpuPlatform** (list) - CPU和内存规格只能在列出来的CPU平台支持
-
-
-        **CpuPlatformWithModels**
-        - **CpuFrequency** (str) - CPU频率
-        - **CpuModels** (list) - CPU Model列表
-        - **Name** (str) - CPU平台
-
-
-        **UHostFamily**
-        - **CpuFrequency** (str) - CPU频率信息
-        - **CpuPlatforms** (list) - 见 **CpuPlatformWithModels** 模型定义
-        - **Name** (str) - 规格族
-
-
-        **Performance**
-        - **Rate** (int) - 交互展示参数，可忽略
-        - **Value** (float) - 值，单位是TFlops
-
-
-        **DataDiskInfo**
-        - **Features** (list) - 数据盘可支持的服务
-        - **MaximalSize** (int) - MaximalSize为磁盘最大值
-        - **MinimalSize** (int) - 磁盘最小值，如果没有该字段，最小值取基础镜像Size值即可（linux为20G，windows为40G）。
-        - **Name** (str) - 数据盘类别，包含普通云盘|CLOUD_NORMAL、SSD云盘|CLOUD_SSD和RSSD云盘|CLOUD_RSSD。普通本地盘只包含普通本地盘|LOCAL_NORMAL一种。SSD本地盘只包含SSD本地盘|LOCAL_SSD一种。
-
-
-        **CpuPlatforms**
-        - **Amd** (list) - 返回AMD的CPU平台信息，例如：AMD: ['Amd/Epyc2']
-        - **Ampere** (list) - 返回Arm的CPU平台信息，例如：Ampere: ['Ampere/Altra']
-        - **Intel** (list) - 返回Intel的CPU平台信息，例如：Intel: ['Intel/CascadeLake','Intel/CascadelakeR','Intel/IceLake']
-
-
-        **BootDiskInfo**
-        - **Features** (list) - 磁盘可支持的服务
-        - **InstantResize** (bool) - 系统盘是否允许扩容，如果是本地盘，则不允许扩容，InstantResize为false。
-        - **MaximalSize** (int) - MaximalSize为磁盘最大值
-        - **Name** (str) - 系统盘类别，包含普通云盘|CLOUD_NORMAL、SSD云盘|CLOUD_SSD和RSSD云盘|CLOUD_RSSD。普通本地盘只包含普通本地盘|LOCAL_NORMAL一种。SSD本地盘只包含SSD本地盘|LOCAL_SSD一种。
-
-
-        **Disks**
-        - **BootDisk** (list) - 见 **BootDiskInfo** 模型定义
-        - **DataDisk** (list) - 见 **DataDiskInfo** 模型定义
-        - **Name** (str) - 磁盘介质类别信息，磁盘主要分类如下：云盘|cloudDisk、普通本地盘|normalLocalDisk和SSD本地盘|ssdLocalDisk。
-
-
-        **MachineSizes**
-        - **Collection** (list) - 见 **Collection** 模型定义
-        - **Gpu** (int) - Gpu为GPU可支持的规格即GPU颗数，非GPU机型，Gpu为0
-
-
         **FeatureModes**
         - **MinimalCpuPlatform** (list) - 这个特性必须是列出来的CPU平台及以上的CPU才支持
         - **Name** (str) - 模式|特性名称
@@ -539,9 +486,63 @@ class UHostClient(Client):
         - **Name** (str) - 可支持的特性名称。目前支持的特性网络增强|NetCapability、热升级|Hotplug
 
 
+        **CpuPlatforms**
+        - **Amd** (list) - 返回AMD的CPU平台信息，例如：AMD: ['Amd/Epyc2']
+        - **Ampere** (list) - 返回Arm的CPU平台信息，例如：Ampere: ['Ampere/Altra']
+        - **Intel** (list) - 返回Intel的CPU平台信息，例如：Intel: ['Intel/CascadeLake','Intel/CascadelakeR','Intel/IceLake']
+
+
+        **Performance**
+        - **Rate** (int) - 交互展示参数，可忽略
+        - **Value** (float) - 值，单位是TFlops
+
+
+        **Collection**
+        - **Cpu** (int) - CPU规格
+        - **Memory** (list) - 内存规格
+        - **MinimalCpuPlatform** (list) - CPU和内存规格只能在列出来的CPU平台支持
+
+
+        **MachineSizes**
+        - **Collection** (list) - 见 **Collection** 模型定义
+        - **Gpu** (int) - Gpu为GPU可支持的规格即GPU颗数，非GPU机型，Gpu为0
+
+
+        **CpuPlatformWithModels**
+        - **CpuFrequency** (str) - CPU频率
+        - **CpuModels** (list) - CPU Model列表
+        - **Name** (str) - CPU平台
+
+
         **GraphicsMemory**
         - **Rate** (int) - 交互展示参数，可忽略
         - **Value** (int) - 值，单位是GB
+
+
+        **UHostFamily**
+        - **CpuFrequency** (str) - CPU频率信息
+        - **CpuPlatforms** (list) - 见 **CpuPlatformWithModels** 模型定义
+        - **Name** (str) - 规格族
+
+
+        **BootDiskInfo**
+        - **Features** (list) - 磁盘可支持的服务
+        - **InstantResize** (bool) - 系统盘是否允许扩容，如果是本地盘，则不允许扩容，InstantResize为false。
+        - **MaximalSize** (int) - MaximalSize为磁盘最大值
+        - **Name** (str) - 系统盘类别，包含普通云盘|CLOUD_NORMAL、SSD云盘|CLOUD_SSD和RSSD云盘|CLOUD_RSSD。普通本地盘只包含普通本地盘|LOCAL_NORMAL一种。SSD本地盘只包含SSD本地盘|LOCAL_SSD一种。
+
+
+        **DataDiskInfo**
+        - **Features** (list) - 数据盘可支持的服务
+        - **MaximalSize** (int) - MaximalSize为磁盘最大值
+        - **MinimalSize** (int) - 磁盘最小值，如果没有该字段，最小值取基础镜像Size值即可（linux为20G，windows为40G）。
+        - **Name** (str) - 数据盘类别，包含普通云盘|CLOUD_NORMAL、SSD云盘|CLOUD_SSD和RSSD云盘|CLOUD_RSSD。普通本地盘只包含普通本地盘|LOCAL_NORMAL一种。SSD本地盘只包含SSD本地盘|LOCAL_SSD一种。
+
+
+        **Disks**
+        - **BootDisk** (list) - 见 **BootDiskInfo** 模型定义
+        - **DataDisk** (list) - 见 **DataDiskInfo** 模型定义
+        - **Name** (str) - 磁盘介质类别信息，磁盘主要分类如下：云盘|cloudDisk、普通本地盘|normalLocalDisk和SSD本地盘|ssdLocalDisk。
 
 
         **AvailableInstanceTypes**
@@ -588,22 +589,6 @@ class UHostClient(Client):
 
         **Response Model**
 
-        **GraphicsMemory**
-        - **Rate** (int) - 交互展示参数，可忽略
-        - **Value** (int) - 值，单位是GB
-
-
-        **Performance**
-        - **Rate** (int) - 交互展示参数，可忽略
-        - **Value** (float) - 值，单位是TFlops
-
-
-        **FamiliesGpuType**
-        - **GraphicsMemory** (dict) - 见 **GraphicsMemory** 模型定义
-        - **Name** (str) - 机型名称
-        - **Performance** (dict) - 见 **Performance** 模型定义
-
-
         **CpuPlatformWithModels**
         - **CpuFrequency** (str) - CPU频率
         - **CpuModels** (list) - CPU Model列表
@@ -616,13 +601,9 @@ class UHostClient(Client):
         - **Name** (str) - 规格族
 
 
-        **Frequency**
-        - **Value** (float) - 值
-
-
-        **NameFrequency**
-        - **Frequency** (dict) - 见 **Frequency** 模型定义
-        - **Name** (str) - 机型名称
+        **CpuPlatformStatus**
+        - **Name** (str) - CPU平台
+        - **OperationStatus** (str) - 运营Commpont Code
 
 
         **Collection**
@@ -631,9 +612,9 @@ class UHostClient(Client):
         - **MinimalCpuPlatform** (list) - CPU和内存规格只能在列出来的CPU平台支持
 
 
-        **CpuPlatformStatus**
-        - **Name** (str) - CPU平台
-        - **OperationStatus** (str) - 运营Commpont Code
+        **MachineSizes**
+        - **Collection** (list) - 见 **Collection** 模型定义
+        - **Gpu** (int) - Gpu为GPU可支持的规格即GPU颗数，非GPU机型，Gpu为0
 
 
         **FeatureModes**
@@ -642,14 +623,13 @@ class UHostClient(Client):
         - **RelatedToImageFeature** (list) - 为镜像上支持这个特性的标签。例如DescribeImage返回的字段Features包含HotPlug，说明该镜像支持热升级。
 
 
-        **Features**
-        - **Modes** (list) - 见 **FeatureModes** 模型定义
-        - **Name** (str) - 可支持的特性名称。目前支持的特性网络增强|NetCapability、热升级|Hotplug
+        **Performance**
+        - **Rate** (int) - 交互展示参数，可忽略
+        - **Value** (float) - 值，单位是TFlops
 
 
-        **MachineSizes**
-        - **Collection** (list) - 见 **Collection** 模型定义
-        - **Gpu** (int) - Gpu为GPU可支持的规格即GPU颗数，非GPU机型，Gpu为0
+        **Frequency**
+        - **Value** (float) - 值
 
 
         **NameOperationStatus**
@@ -660,6 +640,27 @@ class UHostClient(Client):
         **DiskFeature**
         - **Modes** (list) - 见 **NameOperationStatus** 模型定义
         - **Name** (str) - 特性名称
+
+
+        **Features**
+        - **Modes** (list) - 见 **FeatureModes** 模型定义
+        - **Name** (str) - 可支持的特性名称。目前支持的特性网络增强|NetCapability、热升级|Hotplug
+
+
+        **GraphicsMemory**
+        - **Rate** (int) - 交互展示参数，可忽略
+        - **Value** (int) - 值，单位是GB
+
+
+        **FamiliesGpuType**
+        - **GraphicsMemory** (dict) - 见 **GraphicsMemory** 模型定义
+        - **Name** (str) - 机型名称
+        - **Performance** (dict) - 见 **Performance** 模型定义
+
+
+        **NameFrequency**
+        - **Frequency** (dict) - 见 **Frequency** 模型定义
+        - **Name** (str) - 机型名称
 
 
         **FamiliesBootDiskInfo**
@@ -909,6 +910,10 @@ class UHostClient(Client):
 
         **Response Model**
 
+        **SpotAttribute**
+        - **RecycleTime** (int) - 回收时间
+
+
         **UHostDiskSet**
         - **BackupType** (str) - 备份方案。若开通了数据方舟，则为DATAARK
         - **DiskId** (str) - 磁盘ID
@@ -921,10 +926,9 @@ class UHostClient(Client):
         - **Type** (str) - 【建议不再使用】磁盘类型。系统盘: Boot，数据盘: Data,网络盘：Udisk
 
 
-        **UDSetUDHostAttribute**
-        - **HostBinding** (bool) - 是否绑定私有专区宿主机
-        - **UDHostId** (str) - 私有专区宿主机
-        - **UDSetId** (str) - 私有专区
+        **UHostKeyPair**
+        - **KeyPairId** (str) - 密钥对ID
+        - **KeyPairState** (str) - 主机密钥对状态，Normal 正常，Deleted 删除
 
 
         **UHostIPSet**
@@ -941,13 +945,10 @@ class UHostClient(Client):
         - **Weight** (int) - 当前EIP的权重。权重最大的为当前的出口IP。
 
 
-        **SpotAttribute**
-        - **RecycleTime** (int) - 回收时间
-
-
-        **UHostKeyPair**
-        - **KeyPairId** (str) - 密钥对ID
-        - **KeyPairState** (str) - 主机密钥对状态，Normal 正常，Deleted 删除
+        **UDSetUDHostAttribute**
+        - **HostBinding** (bool) - 是否绑定私有专区宿主机
+        - **UDHostId** (str) - 私有专区宿主机
+        - **UDSetId** (str) - 私有专区
 
 
         **UHostInstanceSet**
