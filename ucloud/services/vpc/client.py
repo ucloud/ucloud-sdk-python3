@@ -1590,15 +1590,15 @@ class VPCClient(Client):
 
         **Response Model**
 
-        **NatGWIPResInfo**
-        - **EIP** (str) - 外网IP
-        - **OperatorName** (str) - IP的运营商信息
-
-
         **NatGatewaySubnetSet**
         - **Subnet** (str) - 子网网段
         - **SubnetName** (str) - 子网名字
         - **SubnetworkId** (str) - 子网id
+
+
+        **NatGWIPResInfo**
+        - **EIP** (str) - 外网IP
+        - **OperatorName** (str) - IP的运营商信息
 
 
         **NatGatewayIPSet**
@@ -1912,23 +1912,6 @@ class VPCClient(Client):
 
         **Response Model**
 
-        **UNIQuotaInfo**
-        - **PrivateIpCount** (int) - 网卡拥有的内网IP数量
-        - **PrivateIpQuota** (int) - 网卡内网IP配额
-
-
-        **SimpleIPv6AddressInfo**
-        - **Attribute** (str) - 属性
-        - **IPv6Address** (str) - IPv6 地址
-        - **IPv6Id** (str) - IPv6 资源 ID
-
-
-        **SecGroup**
-        - **Name** (str) - 安全组名称
-        - **Priority** (int) - 关联优先级
-        - **SecGroupId** (str) - 安全组ID
-
-
         **UNIIpInfo**
         - **IpAddr** (list) - ip 地址
         - **IpType** (str) - ip类型 SecondaryIp/PrimaryIp
@@ -1937,6 +1920,23 @@ class VPCClient(Client):
         **FwInfo**
         - **Id** (str) - 防火墙资源 ID
         - **Name** (str) - 防火墙资源名称
+
+
+        **SimpleIPv6AddressInfo**
+        - **Attribute** (str) - 属性
+        - **IPv6Address** (str) - IPv6 地址
+        - **IPv6Id** (str) - IPv6 资源 ID
+
+
+        **UNIQuotaInfo**
+        - **PrivateIpCount** (int) - 网卡拥有的内网IP数量
+        - **PrivateIpQuota** (int) - 网卡内网IP配额
+
+
+        **SecGroup**
+        - **Name** (str) - 安全组名称
+        - **Priority** (int) - 关联优先级
+        - **SecGroupId** (str) - 安全组ID
 
 
         **NetworkInterface**
@@ -1959,7 +1959,7 @@ class VPCClient(Client):
         - **Netmask** (str) - 内网IP掩码
         - **OperatorName** (str) - 运营商
         - **PrivateIp** (list) - 见 **UNIIpInfo** 模型定义
-        - **PrivateIpLimit** (list) - 见 **UNIQuotaInfo** 模型定义
+        - **PrivateIpLimit** (dict) - 见 **UNIQuotaInfo** 模型定义
         - **PrivateIpSet** (list) - 关联内网IP。当前一个网卡仅支持绑定一个内网IP
         - **Remark** (str) - 备注
         - **SecGroup** (list) - 见 **SecGroup** 模型定义
@@ -2506,15 +2506,15 @@ class VPCClient(Client):
 
         **Response Model**
 
+        **VPCNetworkInfo**
+        - **Network** (str) - vpc地址空间
+        - **SubnetCount** (int) - 地址空间中子网数量
+
+
         **IPv6NetworkInfo**
         - **IPv6Network** (str) - IPv6网段
         - **IPv6SubnetCount** (int) - IPv6子网数量
         - **OperatorName** (str) - 类型
-
-
-        **VPCNetworkInfo**
-        - **Network** (str) - vpc地址空间
-        - **SubnetCount** (int) - 地址空间中子网数量
 
 
         **VPCInfo**
