@@ -235,24 +235,6 @@ class AclInfoSchema(schema.ResponseSchema):
     }
 
 
-class UNIIpInfoSchema(schema.ResponseSchema):
-    """UNIIpInfo - 虚拟网卡内网IP信息"""
-
-    fields = {
-        "IpAddr": fields.List(fields.Str()),
-        "IpType": fields.Str(required=False, load_from="IpType"),
-    }
-
-
-class FwInfoSchema(schema.ResponseSchema):
-    """FwInfo - 防火墙信息"""
-
-    fields = {
-        "Id": fields.Str(required=False, load_from="Id"),
-        "Name": fields.Str(required=False, load_from="Name"),
-    }
-
-
 class SimpleIPv6AddressInfoSchema(schema.ResponseSchema):
     """SimpleIPv6AddressInfo -"""
 
@@ -276,6 +258,15 @@ class UNIQuotaInfoSchema(schema.ResponseSchema):
     }
 
 
+class UNIIpInfoSchema(schema.ResponseSchema):
+    """UNIIpInfo - 虚拟网卡内网IP信息"""
+
+    fields = {
+        "IpAddr": fields.List(fields.Str()),
+        "IpType": fields.Str(required=False, load_from="IpType"),
+    }
+
+
 class SecGroupSchema(schema.ResponseSchema):
     """SecGroup - UNI关联的安全组信息"""
 
@@ -283,6 +274,15 @@ class SecGroupSchema(schema.ResponseSchema):
         "Name": fields.Str(required=True, load_from="Name"),
         "Priority": fields.Int(required=False, load_from="Priority"),
         "SecGroupId": fields.Str(required=False, load_from="SecGroupId"),
+    }
+
+
+class FwInfoSchema(schema.ResponseSchema):
+    """FwInfo - 防火墙信息"""
+
+    fields = {
+        "Id": fields.Str(required=False, load_from="Id"),
+        "Name": fields.Str(required=False, load_from="Name"),
     }
 
 
@@ -313,7 +313,7 @@ class NetworkInterfaceSchema(schema.ResponseSchema):
         "Netmask": fields.Str(required=False, load_from="Netmask"),
         "OperatorName": fields.Str(required=True, load_from="OperatorName"),
         "PrivateIp": fields.List(UNIIpInfoSchema()),
-        "PrivateIpLimit": fields.List(UNIQuotaInfoSchema()),
+        "PrivateIpLimit": UNIQuotaInfoSchema(),
         "PrivateIpSet": fields.List(fields.Str()),
         "Remark": fields.Str(required=False, load_from="Remark"),
         "SecGroup": fields.List(SecGroupSchema()),
@@ -566,15 +566,6 @@ class VIPDetailSetSchema(schema.ResponseSchema):
     }
 
 
-class VPCNetworkInfoSchema(schema.ResponseSchema):
-    """VPCNetworkInfo - vpc地址空间信息"""
-
-    fields = {
-        "Network": fields.Str(required=False, load_from="Network"),
-        "SubnetCount": fields.Int(required=False, load_from="SubnetCount"),
-    }
-
-
 class IPv6NetworkInfoSchema(schema.ResponseSchema):
     """IPv6NetworkInfo -"""
 
@@ -584,6 +575,15 @@ class IPv6NetworkInfoSchema(schema.ResponseSchema):
             required=False, load_from="IPv6SubnetCount"
         ),
         "OperatorName": fields.Str(required=False, load_from="OperatorName"),
+    }
+
+
+class VPCNetworkInfoSchema(schema.ResponseSchema):
+    """VPCNetworkInfo - vpc地址空间信息"""
+
+    fields = {
+        "Network": fields.Str(required=False, load_from="Network"),
+        "SubnetCount": fields.Int(required=False, load_from="SubnetCount"),
     }
 
 

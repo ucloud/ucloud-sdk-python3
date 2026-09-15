@@ -12,6 +12,15 @@ class SiteIPAccessSchema(schema.ResponseSchema):
     }
 
 
+class SiteResourceSchema(schema.ResponseSchema):
+    """SiteResource - 站点资源"""
+
+    fields = {
+        "CPU": fields.Int(required=True, load_from="CPU"),
+        "MemoryMB": fields.Int(required=True, load_from="MemoryMB"),
+    }
+
+
 class SiteSchema(schema.ResponseSchema):
     """Site - 站点空间"""
 

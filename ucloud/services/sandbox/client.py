@@ -125,6 +125,11 @@ class SandboxClient(Client):
 
         **Response Model**
 
+        **SiteResource**
+        - **CPU** (int) - CPU核心
+        - **MemoryMB** (int) - 内存占用MB
+
+
         **SiteIPAccess**
         - **IPList** (list) - IP 列表
         - **Mode** (str) - IP限制模式"":不限制IP“allow”:自定义白名单“deny”:自定义黑名单
@@ -136,13 +141,14 @@ class SandboxClient(Client):
         - **CustomDomain** (str) - 自定义域名
         - **CustomDomainError** (str) - 自定义域名签发错误信息
         - **CustomDomainStatus** (str) - 自定义域名签发状态
-        - **Envs** (list) - 站点环境变量。格式：key=value
+        - **Envs** (list) - 站点环境变量。格式：["key=value"]
         - **Host** (str) - 站点访问地址
         - **ID** (str) - 站点ID
         - **IPAccess** (dict) - 见 **SiteIPAccess** 模型定义
         - **KeyID** (str) - 站点Key ID
         - **Name** (str) - 名称
         - **Ready** (bool) - 是否就绪
+        - **Resource** (dict) - 见 **SiteResource** 模型定义
         - **SandboxID** (str) - 沙箱ID
         - **UpdateTime** (int) - 更新时间
 
