@@ -358,6 +358,25 @@ class UAI_ModelverseClient(Client):
 
         **Response Model**
 
+        **InferenceRegionInfo**
+        - **ModelId** (str) - 地域模型ID (例如: deepseek-v4-flash-sg)
+        - **RegionCode** (str) - 地域代码: sg(新加坡)/us(美国)/hk(香港)
+        - **RegionName** (str) - 地域名称: 新加坡/美国/香港
+        - **RegionNameEn** (str) - 地域名称(英文): Singapore/United States/Hong Kong
+        - **SquareModelId** (str) - 广场模型ID (umodel-xxx)
+        - **Status** (str) - 状态: published(已发布)/unpublished(未发布)
+
+
+        **ModelTypeMap**
+        - **ImageToImage** (bool) - 图生图模型
+        - **ImageToVideo** (bool) - 图生视频模型
+        - **Inference** (bool) - 微调模型
+        - **Sensitive** (bool) - 海外模型
+        - **TextGeneration** (bool) - 文生文模型，true 表示是文生文模型，下同
+        - **TextToImage** (bool) - 文生图模型
+        - **TextToVideo** (bool) - 文生视频模型
+
+
         **Pricing**
         - **Completion** (float) - 输出定价
         - **Currency** (str) - 币种
@@ -378,6 +397,24 @@ class UAI_ModelverseClient(Client):
         - **UnitEn** (str) - 计价单位英文
 
 
+        **ApiProtocols**
+        - **Anthropic** (bool) - 是否支持Anthropic协议
+        - **ChatCompletions** (bool) - 是否支持chat协议
+        - **Gemini** (bool) - 是否支持gemini协议
+        - **Responses** (bool) - 是否支持responses协议
+
+
+        **ModelCapabilities**
+        - **BatchInference** (bool) - 是否支持批量推理
+        - **ContextCaching** (bool) - 是否支持上下文缓存
+        - **Experience** (bool) - 是否支持体验
+        - **FunctionCall** (bool) - 是否支持函数调用
+        - **KnowledgeBase** (bool) - 是否支持知识库
+        - **Mcp** (bool) - 是否支持MCP
+        - **StructuredOutput** (bool) - 是否支持结构化输出
+        - **WebSearch** (bool) - 是否支持联网搜索
+
+
         **PriceTier**
         - **Condition** (str) - 档位/条件（例如 "32k"、"128k"）
         - **Description** (str) - 档位描述（例如 "标准上下文 32k"）
@@ -386,16 +423,33 @@ class UAI_ModelverseClient(Client):
 
 
         **SquareModel**
+        - **ApiProtocols** (dict) - 见 **ApiProtocols** 模型定义
+        - **BatchName** (str) - 关联的 batch 模型名称
+        - **BatchSquareModelId** (str) - 关联的 batch 模型广场id
+        - **Capabilities** (dict) - 见 **ModelCapabilities** 模型定义
+        - **CoverUrl** (str) - 模型封面链接
         - **CreateAt** (int) - 创建时间
         - **Describe** (str) - 详细描述
+        - **ExtraModelTags** (list) - 模型额外标签
         - **HfUpdateTime** (int) - HuggingFace 更新时间
         - **Icon** (str) - 图标
         - **Id** (str) - 主键
+        - **InferenceRegions** (list) - 见 **InferenceRegionInfo** 模型定义
+        - **InputModalities** (list) - 输入模态
+        - **IsHasBatch** (bool) - 是否关联有可用 batch 模型
+        - **IsHasInferenceRegions** (bool) - 是否有关联的推理地域模型
         - **Language** (list) - 语言
         - **Manufacturer** (str) - 制造商
-        - **MaxModelLen** (int) - 模型长度
+        - **MaxInputTokens** (int) - 最大输入token数
+        - **MaxModelLen** (int) - 模型长度，单位 token
+        - **MaxModelLenNew** (int) - 模型长度，单位 K tokens
+        - **MaxOutputTokens** (int) - 最大输出token数
+        - **ModelCategory** (str) - 一级分类
+        - **ModelSubCategories** (str) - 二级分类列表
         - **ModelType** (str) - 模型类型
+        - **ModelTypeMap** (dict) - 见 **ModelTypeMap** 模型定义
         - **Name** (str) - 名称
+        - **OutputModalities** (list) - 输出模态
         - **Pricing** (dict) - 见 **Pricing** 模型定义
         - **SimpleDescribe** (str) - 简要描述
         - **SupportedCapabilities** (list) - 模型能力
@@ -860,6 +914,24 @@ class UAI_ModelverseClient(Client):
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
+
+        - **ApiProtocols** (list) - 见 **FilterOption** 模型定义
+        - **Capabilities** (list) - 见 **FilterOption** 模型定义
+        - **InferenceRegions** (list) - 见 **FilterOption** 模型定义
+        - **InputModalities** (list) - 见 **FilterOption** 模型定义
+        - **IsComingOffline** (list) - 见 **FilterOption** 模型定义
+        - **Manufacturers** (list) - 见 **FilterOption** 模型定义
+        - **MaxModelLens** (list) - 见 **FilterOption** 模型定义
+        - **ModalTypes** (list) - 见 **FilterOption** 模型定义
+        - **OutputModalities** (list) - 见 **FilterOption** 模型定义
+
+        **Response Model**
+
+        **FilterOption**
+        - **Children** (str) -
+        - **Label** (str) - 显示标签
+        - **LabelEn** (str) - 英文标签
+        - **Value** (str) - 枚举值
 
 
         """

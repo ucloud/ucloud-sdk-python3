@@ -589,7 +589,51 @@ class ListUFSquareModelFiltersAuthRequestSchema(schema.RequestSchema):
 class ListUFSquareModelFiltersAuthResponseSchema(schema.ResponseSchema):
     """ListUFSquareModelFiltersAuth - 登录状态下获取模型广场过滤器中内容"""
 
-    fields = {}
+    fields = {
+        "ApiProtocols": fields.List(
+            models.FilterOptionSchema(),
+            required=False,
+            load_from="ApiProtocols",
+        ),
+        "Capabilities": fields.List(
+            models.FilterOptionSchema(),
+            required=False,
+            load_from="Capabilities",
+        ),
+        "InferenceRegions": fields.List(
+            models.FilterOptionSchema(),
+            required=False,
+            load_from="InferenceRegions",
+        ),
+        "InputModalities": fields.List(
+            models.FilterOptionSchema(),
+            required=False,
+            load_from="InputModalities",
+        ),
+        "IsComingOffline": fields.List(
+            models.FilterOptionSchema(),
+            required=False,
+            load_from="IsComingOffline",
+        ),
+        "Manufacturers": fields.List(
+            models.FilterOptionSchema(),
+            required=False,
+            load_from="Manufacturers",
+        ),
+        "MaxModelLens": fields.List(
+            models.FilterOptionSchema(),
+            required=False,
+            load_from="MaxModelLens",
+        ),
+        "ModalTypes": fields.List(
+            models.FilterOptionSchema(), required=False, load_from="ModalTypes"
+        ),
+        "OutputModalities": fields.List(
+            models.FilterOptionSchema(),
+            required=False,
+            load_from="OutputModalities",
+        ),
+    }
 
 
 """
