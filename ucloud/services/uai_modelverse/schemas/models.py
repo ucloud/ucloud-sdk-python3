@@ -56,21 +56,21 @@ class DownloadFileDataSchema(schema.ResponseSchema):
     }
 
 
-class FilterOptionStringSchema(schema.ResponseSchema):
-    """FilterOptionString - 字符串类型筛选选项"""
-
-    fields = {
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Value": fields.Str(required=False, load_from="Value"),
-    }
-
-
 class FilterOptionIntegerSchema(schema.ResponseSchema):
     """FilterOptionInteger - 整数类型筛选选项"""
 
     fields = {
         "Name": fields.Str(required=False, load_from="Name"),
         "Value": fields.Int(required=False, load_from="Value"),
+    }
+
+
+class FilterOptionStringSchema(schema.ResponseSchema):
+    """FilterOptionString - 字符串类型筛选选项"""
+
+    fields = {
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Value": fields.Str(required=False, load_from="Value"),
     }
 
 
@@ -103,6 +103,22 @@ class PriceTierSchema(schema.ResponseSchema):
     }
 
 
+class ModelTypeMapSchema(schema.ResponseSchema):
+    """ModelTypeMap - ModelTypeMap"""
+
+    fields = {
+        "ImageToImage": fields.Bool(required=False, load_from="ImageToImage"),
+        "ImageToVideo": fields.Bool(required=False, load_from="ImageToVideo"),
+        "Inference": fields.Bool(required=False, load_from="Inference"),
+        "Sensitive": fields.Bool(required=False, load_from="Sensitive"),
+        "TextGeneration": fields.Bool(
+            required=False, load_from="TextGeneration"
+        ),
+        "TextToImage": fields.Bool(required=False, load_from="TextToImage"),
+        "TextToVideo": fields.Bool(required=False, load_from="TextToVideo"),
+    }
+
+
 class PricingSchema(schema.ResponseSchema):
     """Pricing - 定价策略"""
 
@@ -114,6 +130,53 @@ class PricingSchema(schema.ResponseSchema):
         "Unit": fields.Str(required=False, load_from="Unit"),
         "UnitEn": fields.Str(required=False, load_from="UnitEn"),
         "Video": fields.Str(required=False, load_from="Video"),
+    }
+
+
+class ApiProtocolsSchema(schema.ResponseSchema):
+    """ApiProtocols - ApiProtocols"""
+
+    fields = {
+        "Anthropic": fields.Bool(required=False, load_from="Anthropic"),
+        "ChatCompletions": fields.Bool(
+            required=False, load_from="ChatCompletions"
+        ),
+        "Gemini": fields.Bool(required=False, load_from="Gemini"),
+        "Responses": fields.Bool(required=False, load_from="Responses"),
+    }
+
+
+class ModelCapabilitiesSchema(schema.ResponseSchema):
+    """ModelCapabilities - ModelCapabilities"""
+
+    fields = {
+        "BatchInference": fields.Bool(
+            required=False, load_from="BatchInference"
+        ),
+        "ContextCaching": fields.Bool(
+            required=False, load_from="ContextCaching"
+        ),
+        "Experience": fields.Bool(required=False, load_from="Experience"),
+        "FunctionCall": fields.Bool(required=False, load_from="FunctionCall"),
+        "KnowledgeBase": fields.Bool(required=False, load_from="KnowledgeBase"),
+        "Mcp": fields.Bool(required=False, load_from="Mcp"),
+        "StructuredOutput": fields.Bool(
+            required=False, load_from="StructuredOutput"
+        ),
+        "WebSearch": fields.Bool(required=False, load_from="WebSearch"),
+    }
+
+
+class InferenceRegionInfoSchema(schema.ResponseSchema):
+    """InferenceRegionInfo - 地域推理模型信息"""
+
+    fields = {
+        "ModelId": fields.Str(required=False, load_from="ModelId"),
+        "RegionCode": fields.Str(required=False, load_from="RegionCode"),
+        "RegionName": fields.Str(required=False, load_from="RegionName"),
+        "RegionNameEn": fields.Str(required=False, load_from="RegionNameEn"),
+        "SquareModelId": fields.Str(required=False, load_from="SquareModelId"),
+        "Status": fields.Str(required=False, load_from="Status"),
     }
 
 
@@ -347,6 +410,17 @@ class OrderItemDetailSchema(schema.ResponseSchema):
         "StatusDisplay": fields.Str(required=False, load_from="StatusDisplay"),
         "UnpaidOrderNo": fields.Str(required=False, load_from="UnpaidOrderNo"),
         "UserEmail": fields.Str(required=False, load_from="UserEmail"),
+    }
+
+
+class FilterOptionSchema(schema.ResponseSchema):
+    """FilterOption - 模型广场选项"""
+
+    fields = {
+        "Children": fields.Str(required=True, load_from="Children"),
+        "Label": fields.Str(required=False, load_from="Label"),
+        "LabelEn": fields.Str(required=False, load_from="LabelEn"),
+        "Value": fields.Str(required=False, load_from="Value"),
     }
 
 
