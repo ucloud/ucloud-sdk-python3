@@ -82,6 +82,16 @@ class Client(client.Client):
             self.logger,
         )
 
+    def ses(self):
+        from ucloud.services.ses.client import SESClient
+
+        return SESClient(
+            self._auto_config("ses"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
+
     def sts(self):
         from ucloud.services.sts.client import STSClient
 
