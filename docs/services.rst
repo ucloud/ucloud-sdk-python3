@@ -129,6 +129,13 @@ NLB
    :members:
 
 
+SES
+---
+
+.. autoclass:: ucloud.services.ses.client.SESClient
+   :members:
+
+
 STS
 ---
 
