@@ -1590,12 +1590,6 @@ class VPCClient(Client):
 
         **Response Model**
 
-        **NatGatewaySubnetSet**
-        - **Subnet** (str) - 子网网段
-        - **SubnetName** (str) - 子网名字
-        - **SubnetworkId** (str) - 子网id
-
-
         **NatGWIPResInfo**
         - **EIP** (str) - 外网IP
         - **OperatorName** (str) - IP的运营商信息
@@ -1607,6 +1601,12 @@ class VPCClient(Client):
         - **EIPId** (str) - 外网IP的 EIPId
         - **IPResInfo** (list) - 见 **NatGWIPResInfo** 模型定义
         - **Weight** (int) - 权重为100的为出口
+
+
+        **NatGatewaySubnetSet**
+        - **Subnet** (str) - 子网网段
+        - **SubnetName** (str) - 子网名字
+        - **SubnetworkId** (str) - 子网id
 
 
         **NatGatewayDataSet**
@@ -1912,16 +1912,6 @@ class VPCClient(Client):
 
         **Response Model**
 
-        **UNIIpInfo**
-        - **IpAddr** (list) - ip 地址
-        - **IpType** (str) - ip类型 SecondaryIp/PrimaryIp
-
-
-        **FwInfo**
-        - **Id** (str) - 防火墙资源 ID
-        - **Name** (str) - 防火墙资源名称
-
-
         **SimpleIPv6AddressInfo**
         - **Attribute** (str) - 属性
         - **IPv6Address** (str) - IPv6 地址
@@ -1937,6 +1927,16 @@ class VPCClient(Client):
         - **Name** (str) - 安全组名称
         - **Priority** (int) - 关联优先级
         - **SecGroupId** (str) - 安全组ID
+
+
+        **FwInfo**
+        - **Id** (str) - 防火墙资源 ID
+        - **Name** (str) - 防火墙资源名称
+
+
+        **UNIIpInfo**
+        - **IpAddr** (list) - ip 地址
+        - **IpType** (str) - ip类型 SecondaryIp/PrimaryIp
 
 
         **NetworkInterface**
@@ -3446,7 +3446,7 @@ class VPCClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **SecGroupId** (str) - (Required) 安全组资源ID数组。不支持 .n 格式。Type 为 string 数组。
+        - **SecGroupId** (list) - (Required) 安全组资源ID数组。不支持 .n 格式。Type 为 string 数组。
         - **Name** (str) - 安全组名称，默认为空，为空则不做修改。Name,Tag,Remark必须填写1个及以上
         - **Remark** (str) - 安全组备注，默认为空，为空则不做修改。Name,Tag,Remark必须填写1个及以上
 

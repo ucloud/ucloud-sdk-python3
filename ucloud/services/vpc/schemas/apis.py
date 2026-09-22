@@ -2704,7 +2704,7 @@ class UpdateSecGroupRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Remark": fields.Str(required=False, dump_to="Remark"),
-        "SecGroupId": fields.Str(required=True, dump_to="SecGroupId"),
+        "SecGroupId": fields.List(fields.Str()),
     }
 
 
