@@ -14,6 +14,15 @@ API: SendSESEmail
 """
 
 
+class SendSESEmailParamHeadersSchema(schema.RequestSchema):
+    """SendSESEmailParamHeaders -"""
+
+    fields = {
+        "Name": fields.Str(required=False, dump_to="Name"),
+        "Value": fields.Str(required=False, dump_to="Value"),
+    }
+
+
 class SendSESEmailParamAttachmentsSchema(schema.RequestSchema):
     """SendSESEmailParamAttachments -"""
 
@@ -21,15 +30,6 @@ class SendSESEmailParamAttachmentsSchema(schema.RequestSchema):
         "ContentType": fields.Str(required=False, dump_to="ContentType"),
         "Data": fields.Str(required=False, dump_to="Data"),
         "Filename": fields.Str(required=False, dump_to="Filename"),
-    }
-
-
-class SendSESEmailParamHeadersSchema(schema.RequestSchema):
-    """SendSESEmailParamHeaders -"""
-
-    fields = {
-        "Name": fields.Str(required=False, dump_to="Name"),
-        "Value": fields.Str(required=False, dump_to="Value"),
     }
 
 
@@ -75,16 +75,6 @@ API: SendSESEmailTemplate
 """
 
 
-class SendSESEmailTemplateParamAttachmentsSchema(schema.RequestSchema):
-    """SendSESEmailTemplateParamAttachments -"""
-
-    fields = {
-        "ContentType": fields.Str(required=False, dump_to="ContentType"),
-        "Data": fields.Str(required=False, dump_to="Data"),
-        "Filename": fields.Str(required=False, dump_to="Filename"),
-    }
-
-
 class SendSESEmailTemplateParamEmailContentSchema(schema.RequestSchema):
     """SendSESEmailTemplateParamEmailContent -"""
 
@@ -93,6 +83,16 @@ class SendSESEmailTemplateParamEmailContentSchema(schema.RequestSchema):
         "Cc": fields.List(fields.Str()),
         "TemplateVariableParams": fields.List(fields.Str()),
         "To": fields.Str(required=False, dump_to="To"),
+    }
+
+
+class SendSESEmailTemplateParamAttachmentsSchema(schema.RequestSchema):
+    """SendSESEmailTemplateParamAttachments -"""
+
+    fields = {
+        "ContentType": fields.Str(required=False, dump_to="ContentType"),
+        "Data": fields.Str(required=False, dump_to="Data"),
+        "Filename": fields.Str(required=False, dump_to="Filename"),
     }
 
 

@@ -469,11 +469,13 @@ class ULogServiceClient(Client):
         **Response**
 
         - **Data** (list) - 见 **LogSetInfo** 模型定义
+        - **TotalCount** (int) - 日志集数量
 
         **Response Model**
 
         **LogSetInfo**
         - **CreateTime** (int) - 创建时间
+        - **LogSetId** (str) - 日志集ID
         - **LogSetName** (str) - 日志集名称
         - **LogSetRemark** (str) - 日志集备注
         - **TopicCount** (int) - 日志集下主题数量
@@ -597,17 +599,17 @@ class ULogServiceClient(Client):
 
         **Response Model**
 
-        **AnalysisField**
-        - **Name** (str) - 字段名
-        - **Type** (str) - 字段类型
-
-
         **LogContent**
         - **FileName** (str) - 日志文件路径
         - **HostName** (str) - 日志来源主机
         - **LogId** (str) - 日志标识ID
         - **LogJson** (str) - JSON格式的日志内容
         - **Timestamp** (int) - 日志时间
+
+
+        **AnalysisField**
+        - **Name** (str) - 字段名
+        - **Type** (str) - 字段类型
 
 
         **LogQueryResult**
