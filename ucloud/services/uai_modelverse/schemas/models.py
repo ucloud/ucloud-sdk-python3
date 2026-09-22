@@ -74,35 +74,6 @@ class FilterOptionStringSchema(schema.ResponseSchema):
     }
 
 
-class PriceRateSchema(schema.ResponseSchema):
-    """PriceRate - 该档位下的收费列表（有序数组）"""
-
-    fields = {
-        "ChargeItem": fields.Str(required=False, load_from="ChargeItem"),
-        "ChargeItemDescription": fields.Str(
-            required=False, load_from="ChargeItemDescription"
-        ),
-        "ChargeItemDescriptionEn": fields.Str(
-            required=True, load_from="ChargeItemDescriptionEn"
-        ),
-        "Currency": fields.Str(required=True, load_from="Currency"),
-        "Price": fields.Str(required=False, load_from="Price"),
-        "Unit": fields.Str(required=True, load_from="Unit"),
-        "UnitEn": fields.Str(required=True, load_from="UnitEn"),
-    }
-
-
-class PriceTierSchema(schema.ResponseSchema):
-    """PriceTier - 价格阶梯"""
-
-    fields = {
-        "Condition": fields.Str(required=False, load_from="Condition"),
-        "Description": fields.Str(required=False, load_from="Description"),
-        "DescriptionEn": fields.Str(required=True, load_from="DescriptionEn"),
-        "Rates": fields.List(PriceRateSchema()),
-    }
-
-
 class ModelTypeMapSchema(schema.ResponseSchema):
     """ModelTypeMap - ModelTypeMap"""
 
@@ -133,16 +104,21 @@ class PricingSchema(schema.ResponseSchema):
     }
 
 
-class ApiProtocolsSchema(schema.ResponseSchema):
-    """ApiProtocols - ApiProtocols"""
+class PriceRateSchema(schema.ResponseSchema):
+    """PriceRate - 该档位下的收费列表（有序数组）"""
 
     fields = {
-        "Anthropic": fields.Bool(required=False, load_from="Anthropic"),
-        "ChatCompletions": fields.Bool(
-            required=False, load_from="ChatCompletions"
+        "ChargeItem": fields.Str(required=False, load_from="ChargeItem"),
+        "ChargeItemDescription": fields.Str(
+            required=False, load_from="ChargeItemDescription"
         ),
-        "Gemini": fields.Bool(required=False, load_from="Gemini"),
-        "Responses": fields.Bool(required=False, load_from="Responses"),
+        "ChargeItemDescriptionEn": fields.Str(
+            required=True, load_from="ChargeItemDescriptionEn"
+        ),
+        "Currency": fields.Str(required=True, load_from="Currency"),
+        "Price": fields.Str(required=False, load_from="Price"),
+        "Unit": fields.Str(required=True, load_from="Unit"),
+        "UnitEn": fields.Str(required=True, load_from="UnitEn"),
     }
 
 
@@ -167,6 +143,19 @@ class ModelCapabilitiesSchema(schema.ResponseSchema):
     }
 
 
+class ApiProtocolsSchema(schema.ResponseSchema):
+    """ApiProtocols - ApiProtocols"""
+
+    fields = {
+        "Anthropic": fields.Bool(required=False, load_from="Anthropic"),
+        "ChatCompletions": fields.Bool(
+            required=False, load_from="ChatCompletions"
+        ),
+        "Gemini": fields.Bool(required=False, load_from="Gemini"),
+        "Responses": fields.Bool(required=False, load_from="Responses"),
+    }
+
+
 class InferenceRegionInfoSchema(schema.ResponseSchema):
     """InferenceRegionInfo - 地域推理模型信息"""
 
@@ -177,6 +166,17 @@ class InferenceRegionInfoSchema(schema.ResponseSchema):
         "RegionNameEn": fields.Str(required=False, load_from="RegionNameEn"),
         "SquareModelId": fields.Str(required=False, load_from="SquareModelId"),
         "Status": fields.Str(required=False, load_from="Status"),
+    }
+
+
+class PriceTierSchema(schema.ResponseSchema):
+    """PriceTier - 价格阶梯"""
+
+    fields = {
+        "Condition": fields.Str(required=False, load_from="Condition"),
+        "Description": fields.Str(required=False, load_from="Description"),
+        "DescriptionEn": fields.Str(required=True, load_from="DescriptionEn"),
+        "Rates": fields.List(PriceRateSchema()),
     }
 
 

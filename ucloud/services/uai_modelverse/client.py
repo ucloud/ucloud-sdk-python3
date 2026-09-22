@@ -358,23 +358,15 @@ class UAI_ModelverseClient(Client):
 
         **Response Model**
 
-        **InferenceRegionInfo**
-        - **ModelId** (str) - 地域模型ID (例如: deepseek-v4-flash-sg)
-        - **RegionCode** (str) - 地域代码: sg(新加坡)/us(美国)/hk(香港)
-        - **RegionName** (str) - 地域名称: 新加坡/美国/香港
-        - **RegionNameEn** (str) - 地域名称(英文): Singapore/United States/Hong Kong
-        - **SquareModelId** (str) - 广场模型ID (umodel-xxx)
-        - **Status** (str) - 状态: published(已发布)/unpublished(未发布)
-
-
-        **ModelTypeMap**
-        - **ImageToImage** (bool) - 图生图模型
-        - **ImageToVideo** (bool) - 图生视频模型
-        - **Inference** (bool) - 微调模型
-        - **Sensitive** (bool) - 海外模型
-        - **TextGeneration** (bool) - 文生文模型，true 表示是文生文模型，下同
-        - **TextToImage** (bool) - 文生图模型
-        - **TextToVideo** (bool) - 文生视频模型
+        **ModelCapabilities**
+        - **BatchInference** (bool) - 是否支持批量推理
+        - **ContextCaching** (bool) - 是否支持上下文缓存
+        - **Experience** (bool) - 是否支持体验
+        - **FunctionCall** (bool) - 是否支持函数调用
+        - **KnowledgeBase** (bool) - 是否支持知识库
+        - **Mcp** (bool) - 是否支持MCP
+        - **StructuredOutput** (bool) - 是否支持结构化输出
+        - **WebSearch** (bool) - 是否支持联网搜索
 
 
         **Pricing**
@@ -387,6 +379,16 @@ class UAI_ModelverseClient(Client):
         - **Video** (str) - 生视频定价
 
 
+        **ModelTypeMap**
+        - **ImageToImage** (bool) - 图生图模型
+        - **ImageToVideo** (bool) - 图生视频模型
+        - **Inference** (bool) - 微调模型
+        - **Sensitive** (bool) - 海外模型
+        - **TextGeneration** (bool) - 文生文模型，true 表示是文生文模型，下同
+        - **TextToImage** (bool) - 文生图模型
+        - **TextToVideo** (bool) - 文生视频模型
+
+
         **PriceRate**
         - **ChargeItem** (str) - 收费项：input/output/thinking/tool...
         - **ChargeItemDescription** (str) - 收费项描述
@@ -397,22 +399,13 @@ class UAI_ModelverseClient(Client):
         - **UnitEn** (str) - 计价单位英文
 
 
-        **ApiProtocols**
-        - **Anthropic** (bool) - 是否支持Anthropic协议
-        - **ChatCompletions** (bool) - 是否支持chat协议
-        - **Gemini** (bool) - 是否支持gemini协议
-        - **Responses** (bool) - 是否支持responses协议
-
-
-        **ModelCapabilities**
-        - **BatchInference** (bool) - 是否支持批量推理
-        - **ContextCaching** (bool) - 是否支持上下文缓存
-        - **Experience** (bool) - 是否支持体验
-        - **FunctionCall** (bool) - 是否支持函数调用
-        - **KnowledgeBase** (bool) - 是否支持知识库
-        - **Mcp** (bool) - 是否支持MCP
-        - **StructuredOutput** (bool) - 是否支持结构化输出
-        - **WebSearch** (bool) - 是否支持联网搜索
+        **InferenceRegionInfo**
+        - **ModelId** (str) - 地域模型ID (例如: deepseek-v4-flash-sg)
+        - **RegionCode** (str) - 地域代码: sg(新加坡)/us(美国)/hk(香港)
+        - **RegionName** (str) - 地域名称: 新加坡/美国/香港
+        - **RegionNameEn** (str) - 地域名称(英文): Singapore/United States/Hong Kong
+        - **SquareModelId** (str) - 广场模型ID (umodel-xxx)
+        - **Status** (str) - 状态: published(已发布)/unpublished(未发布)
 
 
         **PriceTier**
@@ -420,6 +413,13 @@ class UAI_ModelverseClient(Client):
         - **Description** (str) - 档位描述（例如 "标准上下文 32k"）
         - **DescriptionEn** (str) - 档位描述（例如 "标准上下文 32k"）
         - **Rates** (list) - 见 **PriceRate** 模型定义
+
+
+        **ApiProtocols**
+        - **Anthropic** (bool) - 是否支持Anthropic协议
+        - **ChatCompletions** (bool) - 是否支持chat协议
+        - **Gemini** (bool) - 是否支持gemini协议
+        - **Responses** (bool) - 是否支持responses协议
 
 
         **SquareModel**
@@ -492,7 +492,7 @@ class UAI_ModelverseClient(Client):
         - **ChargeItemDescription** (str) - 收费项描述
         - **ChargeItemDescriptionEn** (str) - 收费项描述英文描述
         - **Currency** (str) - 货币单位
-        - **Price** (str) - 价格
+        - **Price** (int) - 价格
         - **Unit** (str) - 计价单位
         - **UnitEn** (str) - 计价单位英文
 
@@ -842,16 +842,6 @@ class UAI_ModelverseClient(Client):
 
         **Response Model**
 
-        **Pricing**
-        - **Completion** (float) - 输出定价
-        - **Currency** (str) - 币种
-        - **Image** (float) - 生图定价
-        - **Prompt** (float) - 提示词定价
-        - **Unit** (str) - 单位（中文），如“次” “百万”
-        - **UnitEn** (str) - 单位（English），如“Time” “Million”
-        - **Video** (str) - 生视频定价
-
-
         **PriceRate**
         - **ChargeItem** (str) - 收费项：input/output/thinking/tool...
         - **ChargeItemDescription** (str) - 收费项描述
@@ -860,6 +850,16 @@ class UAI_ModelverseClient(Client):
         - **Price** (str) - 价格
         - **Unit** (str) - 计价单位
         - **UnitEn** (str) - 计价单位英文
+
+
+        **Pricing**
+        - **Completion** (float) - 输出定价
+        - **Currency** (str) - 币种
+        - **Image** (float) - 生图定价
+        - **Prompt** (float) - 提示词定价
+        - **Unit** (str) - 单位（中文），如“次” “百万”
+        - **UnitEn** (str) - 单位（English），如“Time” “Million”
+        - **Video** (str) - 生视频定价
 
 
         **PriceTier**
