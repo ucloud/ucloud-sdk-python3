@@ -43,15 +43,15 @@ class SESClient(Client):
 
         **Request Model**
 
+        **SendSESEmailParamHeaders**
+        - **Name** (str) - 邮件头名称，最多 20 个且仅允许字母、数字和 -（正则 ^[A-Za-z0-9-]+$）。禁止使用保留名称：From/To/Cc/Bcc/Subject/Reply-To/Content-Type/Mime-Version，以及 X-SES- 前缀（均不区分大小写）。
+        - **Value** (str) - 邮件头值
+
+
         **SendSESEmailParamAttachments**
         - **ContentType** (str) - MIME 类型，如： application/pdf
         - **Data** (str) - 附件内容（Base64 编码），单次请求最多 10 个附件；总大小不超过 10MB
         - **Filename** (str) - 附件文件名
-
-
-        **SendSESEmailParamHeaders**
-        - **Name** (str) - 邮件头名称，最多 20 个且仅允许字母、数字和 -（正则 ^[A-Za-z0-9-]+$）。禁止使用保留名称：From/To/Cc/Bcc/Subject/Reply-To/Content-Type/Mime-Version，以及 X-SES- 前缀（均不区分大小写）。
-        - **Value** (str) - 邮件头值
 
 
         **Response Model**
@@ -61,7 +61,7 @@ class SESClient(Client):
         - **Cc** (list) - 抄送
         - **EmailAddress** (str) - 收件邮箱
         - **FailureReason** (str) - 失败原因
-        - **TemplateVariableParams** (list) - 模版变量
+        - **TemplateVariableParams** (list) - 模版变量,variableName{##}variableValue 格式；仅使用模版发送（SendSESEmailTemplate）时返回，未使用模版发送（SendSESEmail）时不返回该字段
         - **To** (str) - 收件人
 
 
@@ -107,17 +107,17 @@ class SESClient(Client):
 
         **Request Model**
 
-        **SendSESEmailTemplateParamAttachments**
-        - **ContentType** (str) - MIME 类型，如： application/pdf
-        - **Data** (str) - 附件内容（Base64 编码），单次请求最多 10 个附件；总大小不超过 10MB
-        - **Filename** (str) - 附件文件名
-
-
         **SendSESEmailTemplateParamEmailContent**
         - **Bcc** (list) - 密送（抄送+密送总数量不能超过100）
         - **Cc** (list) - 抄送（抄送+密送总数量不能超过100）
         - **TemplateVariableParams** (list) - 模版变量，格式 variableName{##}variableValue （例：{"name{##}Tom", "code{##}1234"}）
         - **To** (str) - 收件人，最多100条
+
+
+        **SendSESEmailTemplateParamAttachments**
+        - **ContentType** (str) - MIME 类型，如： application/pdf
+        - **Data** (str) - 附件内容（Base64 编码），单次请求最多 10 个附件；总大小不超过 10MB
+        - **Filename** (str) - 附件文件名
 
 
         **SendSESEmailTemplateParamHeaders**

@@ -84,10 +84,11 @@ class CollectConfSchema(schema.ResponseSchema):
 
 
 class LogSetInfoSchema(schema.ResponseSchema):
-    """LogSetInfo -"""
+    """LogSetInfo - 日志集信息"""
 
     fields = {
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "LogSetId": fields.Str(required=False, load_from="LogSetId"),
         "LogSetName": fields.Str(required=False, load_from="LogSetName"),
         "LogSetRemark": fields.Str(required=False, load_from="LogSetRemark"),
         "TopicCount": fields.Int(required=False, load_from="TopicCount"),
@@ -108,15 +109,6 @@ class TopicInfoSchema(schema.ResponseSchema):
     }
 
 
-class AnalysisFieldSchema(schema.ResponseSchema):
-    """AnalysisField - 统计分析结果字段头"""
-
-    fields = {
-        "Name": fields.Str(required=True, load_from="Name"),
-        "Type": fields.Str(required=True, load_from="Type"),
-    }
-
-
 class LogContentSchema(schema.ResponseSchema):
     """LogContent - 日志内容"""
 
@@ -126,6 +118,15 @@ class LogContentSchema(schema.ResponseSchema):
         "LogId": fields.Str(required=True, load_from="LogId"),
         "LogJson": fields.Str(required=True, load_from="LogJson"),
         "Timestamp": fields.Int(required=True, load_from="Timestamp"),
+    }
+
+
+class AnalysisFieldSchema(schema.ResponseSchema):
+    """AnalysisField - 统计分析结果字段头"""
+
+    fields = {
+        "Name": fields.Str(required=True, load_from="Name"),
+        "Type": fields.Str(required=True, load_from="Type"),
     }
 
 

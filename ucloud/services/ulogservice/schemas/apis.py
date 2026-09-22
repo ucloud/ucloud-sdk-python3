@@ -378,6 +378,7 @@ class ListULogServiceLogSetResponseSchema(schema.ResponseSchema):
         "Data": fields.List(
             models.LogSetInfoSchema(), required=False, load_from="Data"
         ),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
     }
 
 
