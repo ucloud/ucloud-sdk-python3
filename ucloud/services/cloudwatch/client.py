@@ -255,10 +255,10 @@ class CloudWatchClient(Client):
         resp = self.invoke("GetMetricDataAggregationMethod", d, **kwargs)
         return apis.GetMetricDataAggregationMethodResponseSchema().loads(resp)
 
-    def get_product_metrics(
+    def get_product_high_precision_metrics(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """GetProductMetrics - 获取云产品关联的指标列表
+        """GetProductHighPrecisionMetrics - 获取云产品关联的高精度指标列表
 
         **Request**
 
@@ -269,6 +269,12 @@ class CloudWatchClient(Client):
         - **Data** (dict) - 见 **GetProductMetricsRespData** 模型定义
 
         **Response Model**
+
+        **ConversionRule**
+        - **ConversionFactor** (int) - 转换因子
+        - **From** (str) - 来源
+        - **To** (str) - 目标
+
 
         **MetricUnit**
         - **ConversionFactor** (int) - 转换因子
@@ -302,6 +308,43 @@ class CloudWatchClient(Client):
         - **UpdatedBy** (str) - 修改者
 
 
+        **MetricUnitConfig**
+        - **ConversionFactor** (int) - 转换因子
+        - **ConversionRules** (list) - 见 **ConversionRule** 模型定义
+        - **UnitCnNames** (list) - 指标中文名列表
+        - **UnitEnNames** (list) - 指标英文名列表
+
+
+        **GetProductMetricsRespData**
+        - **List** (list) - 见 **Metirc** 模型定义
+        - **Total** (int) - 查询结果总数
+        - **UnitConfigs** (list) - 见 **MetricUnitConfig** 模型定义
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.GetProductHighPrecisionMetricsRequestSchema().dumps(d)
+
+        resp = self.invoke("GetProductHighPrecisionMetrics", d, **kwargs)
+        return apis.GetProductHighPrecisionMetricsResponseSchema().loads(resp)
+
+    def get_product_metrics(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetProductMetrics - 获取云产品关联的指标列表
+
+        **Request**
+
+        - **ProductKey** (str) - (Required) 产品唯一标识，参见  `产品概览 <https://docs.ucloud.cn/cloudwatch/metric/intro>`_
+
+        **Response**
+
+        - **Data** (dict) - 见 **GetProductMetricsRespData** 模型定义
+
+        **Response Model**
+
         **ConversionRule**
         - **ConversionFactor** (int) - 转换因子
         - **From** (str) - 来源
@@ -313,6 +356,38 @@ class CloudWatchClient(Client):
         - **ConversionRules** (list) - 见 **ConversionRule** 模型定义
         - **UnitCnNames** (list) - 指标中文名列表
         - **UnitEnNames** (list) - 指标英文名列表
+
+
+        **MetricUnit**
+        - **ConversionFactor** (int) - 转换因子
+        - **CreatedAt** (str) - 创建时间
+        - **CreatedBy** (str) - 创建人
+        - **DeletedAt** (int) - 删除时间
+        - **GroupId** (int) - GroupId
+        - **UnitChName** (str) - 单位中文名称
+        - **UnitDesc** (str) - 单位描述
+        - **UnitEnName** (str) - 单位英文名称
+        - **UnitID** (int) - 单位id
+        - **UpdatedAt** (str) - 修改时间
+        - **UpdatedBy** (str) - 修改人
+
+
+        **Metirc**
+        - **CreatedAt** (str) - 创建时间
+        - **CreatedBy** (str) - 创建者
+        - **FrequencyMs** (int) - 上报频率毫秒
+        - **Metric** (str) - 指标唯一标识 (uhost_cpu_usage)
+        - **MetricChDesc** (str) - 指标中文描述
+        - **MetricChName** (str) - 指标中文名称
+        - **MetricEnDesc** (str) - 指标英文描述
+        - **MetricEnName** (str) - 指标英文名称
+        - **MetricGroup** (str) - 指标分类/指标组
+        - **MetricID** (int) - 指标ID
+        - **ProductType** (int) - 云产品ID
+        - **Unit** (dict) - 见 **MetricUnit** 模型定义
+        - **UnitID** (int) - 单位ID
+        - **UpdatedAt** (str) - 修改时间
+        - **UpdatedBy** (str) - 修改者
 
 
         **GetProductMetricsRespData**
@@ -656,9 +731,9 @@ class CloudWatchClient(Client):
 
         **Response Model**
 
-        **TagEntry**
-        - **KeyList** (list) - 标签候选值列表
-        - **TagName** (str) - 标签名称
+        **MetricSample**
+        - **Timestamp** (int) - 时间戳
+        - **Value** (float) - 样本值
 
 
         **TagListItem**
@@ -666,16 +741,16 @@ class CloudWatchClient(Client):
         - **TagValue** (str) - 标签值
 
 
-        **MetricSample**
-        - **Timestamp** (int) - 时间戳
-        - **Value** (float) - 样本值
-
-
         **MetricResult**
         - **ResourceId** (str) - 资源的短id
         - **ResourceName** (str) - 资源名称
         - **TagList** (list) - 见 **TagListItem** 模型定义
         - **Values** (list) - 见 **MetricSample** 模型定义
+
+
+        **TagEntry**
+        - **KeyList** (list) - 标签候选值列表
+        - **TagName** (str) - 标签名称
 
 
         **QueryMetricDataRespItem**
@@ -743,17 +818,17 @@ class CloudWatchClient(Client):
         - **Value** (dict) - 见 **MetricSample** 模型定义
 
 
+        **LabelAttrItem**
+        - **Key** (str) - 键
+        - **Value** (str) - 值
+
+
         **ResourceMonitorItem**
         - **Metric** (str) - 指标名
         - **MetricValues** (list) - 见 **MetricSingleSample** 模型定义
 
 
         **ResourceExtendAttrItem**
-        - **Key** (str) - 键
-        - **Value** (str) - 值
-
-
-        **LabelAttrItem**
         - **Key** (str) - 键
         - **Value** (str) - 值
 
@@ -791,6 +866,86 @@ class CloudWatchClient(Client):
 
         resp = self.invoke("QueryMetricDataSummary", d, **kwargs)
         return apis.QueryMetricDataSummaryResponseSchema().loads(resp)
+
+    def query_metric_dense_data(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """QueryMetricDenseData - 获取高精度指标样本数据
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID
+        - **Region** (str) - (Config) 地域。 全局产品可不传，其他类型必传。
+        - **EndTime** (int) - (Required) 截止时间戳
+        - **ProductKey** (str) - (Required) 资源类型
+        - **StartTime** (int) - (Required) 开始时间戳
+        - **MetricInfos** (list) - 见 **QueryMetricDenseDataParamMetricInfos** 模型定义
+
+        **Response**
+
+        - **Data** (dict) - 见 **QueryMetricDataResp** 模型定义
+        - **Message** (str) - 错误信息
+
+        **Request Model**
+
+        **QueryMetricDenseDataParamMetricInfosTags**
+        - **AnyKey** (str) - AnyKey：代表任意一个用户自定义的key。Tags是一个用户自定义对象map，是要查询指标的tag的key和value。用户自定义的Tags对象里的key和value，它们分别是要查询的tag的key和value。如："Tags":{  "tag1":"value1",  "tag2":"value2",  "tag3":"value3"}
+
+
+        **QueryMetricDenseDataParamMetricInfos**
+        - **Metric** (str) - 指标名
+        - **ResourceId** (str) - 资源id
+        - **Tags** (dict) - 见 **QueryMetricDenseDataParamMetricInfosTags** 模型定义
+
+
+        **Response Model**
+
+        **TagEntry**
+        - **KeyList** (list) - 标签候选值列表
+        - **TagName** (str) - 标签名称
+
+
+        **TagListItem**
+        - **Tag** (str) - 标签名
+        - **TagValue** (str) - 标签值
+
+
+        **MetricSample**
+        - **Timestamp** (int) - 时间戳
+        - **Value** (float) - 样本值
+
+
+        **MetricResult**
+        - **ResourceId** (str) - 资源的短id
+        - **ResourceName** (str) - 资源名称
+        - **TagList** (list) - 见 **TagListItem** 模型定义
+        - **Values** (list) - 见 **MetricSample** 模型定义
+
+
+        **QueryMetricDataRespItem**
+        - **ErrCode** (int) - 该指标查询的处理状态码
+        - **ErrMsg** (str) - 该指标查询的状态说明
+        - **Metric** (str) - 指标名
+        - **Results** (list) - 见 **MetricResult** 模型定义
+        - **TagEntries** (list) - 见 **TagEntry** 模型定义
+
+
+        **QueryMetricDataResp**
+        - **InvalidResourceIds** (list) - 无效或无权限资源的 ID 列表
+        - **List** (list) - 见 **QueryMetricDataRespItem** 模型定义
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.QueryMetricDenseDataRequestSchema().dumps(d)
+
+        resp = self.invoke("QueryMetricDenseData", d, **kwargs)
+        return apis.QueryMetricDenseDataResponseSchema().loads(resp)
 
     def un_bind_alert_strategy(
         self, req: typing.Optional[dict] = None, **kwargs
