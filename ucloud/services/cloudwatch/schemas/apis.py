@@ -209,6 +209,29 @@ class GetMetricDataAggregationMethodResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetProductHighPrecisionMetrics
+
+获取云产品关联的高精度指标列表
+"""
+
+
+class GetProductHighPrecisionMetricsRequestSchema(schema.RequestSchema):
+    """GetProductHighPrecisionMetrics - 获取云产品关联的高精度指标列表"""
+
+    fields = {
+        "ProductKey": fields.Str(required=True, dump_to="ProductKey"),
+    }
+
+
+class GetProductHighPrecisionMetricsResponseSchema(schema.ResponseSchema):
+    """GetProductHighPrecisionMetrics - 获取云产品关联的高精度指标列表"""
+
+    fields = {
+        "Data": models.GetProductMetricsRespDataSchema(),
+    }
+
+
+"""
 API: GetProductMetrics
 
 获取云产品关联的指标列表
@@ -493,6 +516,57 @@ class QueryMetricDataSummaryResponseSchema(schema.ResponseSchema):
         "Message": fields.Str(required=False, load_from="Message"),
         "TotalCount": fields.Int(required=False, load_from="TotalCount"),
         "TraceId": fields.Str(required=False, load_from="TraceId"),
+    }
+
+
+"""
+API: QueryMetricDenseData
+
+获取高精度指标样本数据
+"""
+
+
+class QueryMetricDenseDataParamMetricInfosTagsSchema(schema.RequestSchema):
+    """QueryMetricDenseDataParamMetricInfosTags -"""
+
+    fields = {
+        "AnyKey": fields.Str(required=False, dump_to="AnyKey"),
+    }
+
+
+class QueryMetricDenseDataParamMetricInfosSchema(schema.RequestSchema):
+    """QueryMetricDenseDataParamMetricInfos -"""
+
+    fields = {
+        "Metric": fields.Str(required=False, dump_to="Metric"),
+        "ResourceId": fields.Str(required=False, dump_to="ResourceId"),
+        "Tags": QueryMetricDenseDataParamMetricInfosTagsSchema(
+            required=False, dump_to="Tags"
+        ),
+    }
+
+
+class QueryMetricDenseDataRequestSchema(schema.RequestSchema):
+    """QueryMetricDenseData - 获取高精度指标样本数据"""
+
+    fields = {
+        "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "MetricInfos": fields.List(
+            QueryMetricDenseDataParamMetricInfosSchema()
+        ),
+        "ProductKey": fields.Str(required=True, dump_to="ProductKey"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=False, dump_to="Region"),
+        "StartTime": fields.Int(required=True, dump_to="StartTime"),
+    }
+
+
+class QueryMetricDenseDataResponseSchema(schema.ResponseSchema):
+    """QueryMetricDenseData - 获取高精度指标样本数据"""
+
+    fields = {
+        "Data": models.QueryMetricDataRespSchema(),
+        "Message": fields.Str(required=False, load_from="Message"),
     }
 
 
