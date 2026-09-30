@@ -230,13 +230,10 @@ API: CreateUHostInstance
 """
 
 
-class CreateUHostInstanceParamLabelsSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamLabels -"""
+class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamVolumes -"""
 
-    fields = {
-        "Key": fields.Str(required=False, dump_to="Key"),
-        "Value": fields.Str(required=False, dump_to="Value"),
-    }
+    fields = {}
 
 
 class CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSHSchema(
@@ -269,6 +266,24 @@ class CreateUHostInstanceParamNetworkInterfaceEIPSchema(schema.RequestSchema):
     }
 
 
+class CreateUHostInstanceParamDisksCustomBackupSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamDisksCustomBackup -"""
+
+    fields = {
+        "Day": fields.Str(required=False, dump_to="Day"),
+        "Hour": fields.Str(required=False, dump_to="Hour"),
+        "Journal": fields.Str(required=False, dump_to="Journal"),
+    }
+
+
+class CreateUHostInstanceParamFeaturesSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamFeatures -"""
+
+    fields = {
+        "UNI": fields.Bool(required=False, dump_to="UNI"),
+    }
+
+
 class CreateUHostInstanceParamNetworkInterfaceIPv6Schema(schema.RequestSchema):
     """CreateUHostInstanceParamNetworkInterfaceIPv6 -"""
 
@@ -294,20 +309,13 @@ class CreateUHostInstanceParamNetworkInterfaceSchema(schema.RequestSchema):
     }
 
 
-class CreateUHostInstanceParamDisksCustomBackupSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamDisksCustomBackup -"""
+class CreateUHostInstanceParamSecGroupIdSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamSecGroupId -"""
 
     fields = {
-        "Day": fields.Str(required=False, dump_to="Day"),
-        "Hour": fields.Str(required=False, dump_to="Hour"),
-        "Journal": fields.Str(required=False, dump_to="Journal"),
+        "Id": fields.Str(required=False, dump_to="Id"),
+        "Priority": fields.Int(required=False, dump_to="Priority"),
     }
-
-
-class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamVolumes -"""
-
-    fields = {}
 
 
 class CreateUHostInstanceParamDisksSchema(schema.RequestSchema):
@@ -329,20 +337,12 @@ class CreateUHostInstanceParamDisksSchema(schema.RequestSchema):
     }
 
 
-class CreateUHostInstanceParamFeaturesSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamFeatures -"""
+class CreateUHostInstanceParamLabelsSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamLabels -"""
 
     fields = {
-        "UNI": fields.Bool(required=False, dump_to="UNI"),
-    }
-
-
-class CreateUHostInstanceParamSecGroupIdSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamSecGroupId -"""
-
-    fields = {
-        "Id": fields.Str(required=False, dump_to="Id"),
-        "Priority": fields.Int(required=False, dump_to="Priority"),
+        "Key": fields.Str(required=False, dump_to="Key"),
+        "Value": fields.Str(required=False, dump_to="Value"),
     }
 
 
@@ -877,12 +877,6 @@ API: GetUHostInstancePrice
 """
 
 
-class GetUHostInstancePriceParamVolumesSchema(schema.RequestSchema):
-    """GetUHostInstancePriceParamVolumes -"""
-
-    fields = {}
-
-
 class GetUHostInstancePriceParamDisksSchema(schema.RequestSchema):
     """GetUHostInstancePriceParamDisks -"""
 
@@ -892,6 +886,12 @@ class GetUHostInstancePriceParamDisksSchema(schema.RequestSchema):
         "Size": fields.Int(required=True, dump_to="Size"),
         "Type": fields.Str(required=True, dump_to="Type"),
     }
+
+
+class GetUHostInstancePriceParamVolumesSchema(schema.RequestSchema):
+    """GetUHostInstancePriceParamVolumes -"""
+
+    fields = {}
 
 
 class GetUHostInstancePriceRequestSchema(schema.RequestSchema):

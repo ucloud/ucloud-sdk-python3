@@ -71,7 +71,7 @@ class UHostClient(Client):
         - **MinimalCpuPlatform** (str) - 最低cpu平台，枚举值["Intel/Auto", "Intel/IvyBridge", "Intel/Haswell", "Intel/Broadwell", "Intel/Skylake", "Intel/Cascadelake", "Intel/CascadelakeR", "Intel/IceLake", "Amd/Epyc2", "Amd/Auto","Ampere/Auto","Ampere/Altra"],默认值是"Intel/Auto"。
         - **NetCapability** (str) - 网络增强特性。枚举值：Normal，不开启;  Super，开启网络增强1.0； Ultra，开启网络增强2.0（详情参考官网文档）
         - **SecurityMode** (str) - 主机安全模式。Firewall：防火墙；SecGroup：安全组；默认值：Firewall。
-        - **UHostFamily** (str) - 规格族。由机型代号和 CPU 平台组成，用于指定云主机的硬件类型与处理器平台。当 MachineType 为 "O"（快杰型）时，支持以下取值：o1i：快杰型 O1 代，Intel 平台o1a：快杰型 O1 代，AMD 平台o1r：快杰型 O1 代，ARM 平台o2i：快杰型 O2 代，Intel 平台默认值：o1i 或 o1a（系统将根据资源情况自动选择）当 MachineType 为 "OM"（快杰共享型）时，支持以下取值：om1i：快杰内存增强型 OM1 代，Intel 平台om2i：快杰内存增强型 OM2 代，Intel 平台⚠️ 注意：规格族必须与 MachineType 匹配，否则请求将被拒绝。
+        - **UHostFamily** (str) - 规格族。 由机型代号和 CPU 平台组成，用于指定云主机的硬件类型与处理器平台。 当 MachineType 为 "O"\"OM"\"OPRO"\"OPROG"（快杰系列）时，支持以下取值：- o1i：快杰型 O1 代，Intel 平台 - o1a：快杰型 O1 代，AMD 平台- o1r：快杰型 O1 代，ARM 平台 - o1h: 快杰型 O1 代，Hygon 平台- o2i：快杰型 O2 代，Intel 平台 默认值：o1i 或 o1a当 MachineType 为 "OM"（快杰共享型）时，支持以下取值： - om1i：快杰内存增强型 OM1 代，Intel 平台 - om2i：快杰内存增强型 OM2 代，Intel 平台- om1a：快杰内存增强型 OM1 代，Amd 平台默认值：om1i 或 om1a当 MachineType 为 "OPROG"（快杰PRO通用型）时，支持以下取值： - oprog1i：快杰PRO通用型 OPROG1 代，Intel 平台 - oprog2i：快杰PRO通用型 OPROG2 代，Intel 平台 - oprog1a：快杰PRO通用型 OPROG1 代，Amd 平台 当 MachineType 为 "OPRO"（快杰PRO增强型）时，支持以下取值： - opro1a：快杰PRO增强型 OPRO1 代，Amd 平台 - opro2a：快杰PRO增强型 OPRO2 代，Amd 平台 注意：规格族必须与 MachineType 匹配，否则请求将被拒绝。
 
         **Response**
 
@@ -272,7 +272,7 @@ class UHostClient(Client):
         - **Tag** (str) - 业务组。默认：Default（Default即为未分组）。请遵照 `字段规范 <https://docs.ucloud.cn/api/uhost-api/specification>`_ 设定业务组。
         - **UDHostId** (str) - 【私有专区属性】专区宿主机id
         - **UDSetId** (str) - 【私有专区属性】专区id
-        - **UHostFamily** (str) - 规格族。 由机型代号和 CPU 平台组成，用于指定云主机的硬件类型与处理器平台。 当 MachineType 为 "O"（快杰型）时，支持以下取值：- o1i：快杰型 O1 代，Intel 平台 - o1a：快杰型 O1 代，AMD 平台- o1r：快杰型 O1 代，ARM 平台 - o2i：快杰型 O2 代，Intel 平台 默认值：o1i 或 o1a当 MachineType 为 "OM"（快杰共享型）时，支持以下取值： - om1i：快杰内存增强型 OM1 代，Intel 平台 - om2i：快杰内存增强型 OM2 代，Intel 平台注意：规格族必须与 MachineType 匹配，否则请求将被拒绝。
+        - **UHostFamily** (str) - 规格族。 由机型代号和 CPU 平台组成，用于指定云主机的硬件类型与处理器平台。 当 MachineType 为 "O"\"OM"\"OPRO"\"OPROG"（快杰系列）时，支持以下取值：- o1i：快杰型 O1 代，Intel 平台 - o1a：快杰型 O1 代，AMD 平台- o1r：快杰型 O1 代，ARM 平台 - o1h: 快杰型 O1 代，Hygon 平台- o2i：快杰型 O2 代，Intel 平台 默认值：o1i 或 o1a当 MachineType 为 "OM"（快杰共享型）时，支持以下取值： - om1i：快杰内存增强型 OM1 代，Intel 平台 - om2i：快杰内存增强型 OM2 代，Intel 平台- om1a：快杰内存增强型 OM1 代，Amd 平台默认值：om1i 或 om1a当 MachineType 为 "OPROG"（快杰PRO通用型）时，支持以下取值： - oprog1i：快杰PRO通用型 OPROG1 代，Intel 平台 - oprog2i：快杰PRO通用型 OPROG2 代，Intel 平台 - oprog1a：快杰PRO通用型 OPROG1 代，Amd 平台 当 MachineType 为 "OPRO"（快杰PRO增强型）时，支持以下取值： - opro1a：快杰PRO增强型 OPRO1 代，Amd 平台 - opro2a：快杰PRO增强型 OPRO2 代，Amd 平台 注意：规格族必须与 MachineType 匹配，否则请求将被拒绝。
         - **UHostType** (str) - 【建议后续不再使用】云主机机型（V1.0），在本字段和字段MachineType中，仅需要其中1个字段即可。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
         - **UserData** (str) - 用户自定义数据。当镜像支持Cloud-init Feature时可填写此字段。注意：1、总数据量大小不超过 16K；2、使用base64编码
         - **VPCId** (str) - VPC ID。默认为当前地域的默认VPC。
@@ -284,9 +284,7 @@ class UHostClient(Client):
 
         **Request Model**
 
-        **CreateUHostInstanceParamLabels**
-        - **Key** (str) - 用户资源标签的键值
-        - **Value** (str) - 用户资源标签的值
+        **CreateUHostInstanceParamVolumes**
 
 
         **CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSH**
@@ -304,6 +302,16 @@ class UHostClient(Client):
         - **ShareBandwidthId** (str) - 绑定的共享带宽Id，仅当PayMode为ShareBandwidth时有效
 
 
+        **CreateUHostInstanceParamDisksCustomBackup**
+        - **Day** (str) - Disks.N.BackupMode为"Custom"时，进行设置, 以5天级为基础进行倍数扩增，如5、10、15、20、25、30。
+        - **Hour** (str) - Disks.N.BackupMode为"Custom"时，进行设置, 以24小时级为基础进行倍数扩增，如24、48、72、96。
+        - **Journal** (str) - Disks.N.BackupMode为"Custom"时，进行设置, 以12小时秒级为基础进行倍数扩增，如12、24、36、48。
+
+
+        **CreateUHostInstanceParamFeatures**
+        - **UNI** (bool) - 弹性网卡特性。开启了弹性网卡权限位，此特性才生效，默认 false 未开启，true 开启。
+
+
         **CreateUHostInstanceParamNetworkInterfaceIPv6**
         - **Address** (str) - 第N个网卡对应的IPv6地址，默认不分配IPv6，“Auto”自动分配，不为空的其他字符串为实际要分配的IPv6地址。当前仅支持分配一个IPv6地址
 
@@ -314,13 +322,9 @@ class UHostClient(Client):
         - **IPv6** (dict) - 见 **CreateUHostInstanceParamNetworkInterfaceIPv6** 模型定义
 
 
-        **CreateUHostInstanceParamDisksCustomBackup**
-        - **Day** (str) - Disks.N.BackupMode为"Custom"时，进行设置, 以5天级为基础进行倍数扩增，如5、10、15、20、25、30。
-        - **Hour** (str) - Disks.N.BackupMode为"Custom"时，进行设置, 以24小时级为基础进行倍数扩增，如24、48、72、96。
-        - **Journal** (str) - Disks.N.BackupMode为"Custom"时，进行设置, 以12小时秒级为基础进行倍数扩增，如12、24、36、48。
-
-
-        **CreateUHostInstanceParamVolumes**
+        **CreateUHostInstanceParamSecGroupId**
+        - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
+        - **Priority** (int) - 安全组优先级。取值范围[1, 5]
 
 
         **CreateUHostInstanceParamDisks**
@@ -336,13 +340,9 @@ class UHostClient(Client):
         - **Type** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
 
 
-        **CreateUHostInstanceParamFeatures**
-        - **UNI** (bool) - 弹性网卡特性。开启了弹性网卡权限位，此特性才生效，默认 false 未开启，true 开启。
-
-
-        **CreateUHostInstanceParamSecGroupId**
-        - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
-        - **Priority** (int) - 安全组优先级。取值范围[1, 5]
+        **CreateUHostInstanceParamLabels**
+        - **Key** (str) - 用户资源标签的键值
+        - **Value** (str) - 用户资源标签的值
 
 
         """
@@ -475,26 +475,34 @@ class UHostClient(Client):
 
         **Response Model**
 
-        **FeatureModes**
-        - **MinimalCpuPlatform** (list) - 这个特性必须是列出来的CPU平台及以上的CPU才支持
-        - **Name** (str) - 模式|特性名称
-        - **RelatedToImageFeature** (list) - 为镜像上支持这个特性的标签。例如DescribeImage返回的字段Features包含HotPlug，说明该镜像支持热升级。
+        **BootDiskInfo**
+        - **Features** (list) - 磁盘可支持的服务
+        - **InstantResize** (bool) - 系统盘是否允许扩容，如果是本地盘，则不允许扩容，InstantResize为false。
+        - **MaximalSize** (int) - MaximalSize为磁盘最大值
+        - **Name** (str) - 系统盘类别，包含普通云盘|CLOUD_NORMAL、SSD云盘|CLOUD_SSD和RSSD云盘|CLOUD_RSSD。普通本地盘只包含普通本地盘|LOCAL_NORMAL一种。SSD本地盘只包含SSD本地盘|LOCAL_SSD一种。
 
 
-        **Features**
-        - **Modes** (list) - 见 **FeatureModes** 模型定义
-        - **Name** (str) - 可支持的特性名称。目前支持的特性网络增强|NetCapability、热升级|Hotplug
+        **DataDiskInfo**
+        - **Features** (list) - 数据盘可支持的服务
+        - **MaximalSize** (int) - MaximalSize为磁盘最大值
+        - **MinimalSize** (int) - 磁盘最小值，如果没有该字段，最小值取基础镜像Size值即可（linux为20G，windows为40G）。
+        - **Name** (str) - 数据盘类别，包含普通云盘|CLOUD_NORMAL、SSD云盘|CLOUD_SSD和RSSD云盘|CLOUD_RSSD。普通本地盘只包含普通本地盘|LOCAL_NORMAL一种。SSD本地盘只包含SSD本地盘|LOCAL_SSD一种。
 
 
-        **CpuPlatforms**
-        - **Amd** (list) - 返回AMD的CPU平台信息，例如：AMD: ['Amd/Epyc2']
-        - **Ampere** (list) - 返回Arm的CPU平台信息，例如：Ampere: ['Ampere/Altra']
-        - **Intel** (list) - 返回Intel的CPU平台信息，例如：Intel: ['Intel/CascadeLake','Intel/CascadelakeR','Intel/IceLake']
+        **Disks**
+        - **BootDisk** (list) - 见 **BootDiskInfo** 模型定义
+        - **DataDisk** (list) - 见 **DataDiskInfo** 模型定义
+        - **Name** (str) - 磁盘介质类别信息，磁盘主要分类如下：云盘|cloudDisk、普通本地盘|normalLocalDisk和SSD本地盘|ssdLocalDisk。
 
 
         **Performance**
         - **Rate** (int) - 交互展示参数，可忽略
         - **Value** (float) - 值，单位是TFlops
+
+
+        **GraphicsMemory**
+        - **Rate** (int) - 交互展示参数，可忽略
+        - **Value** (int) - 值，单位是GB
 
 
         **Collection**
@@ -514,35 +522,27 @@ class UHostClient(Client):
         - **Name** (str) - CPU平台
 
 
-        **GraphicsMemory**
-        - **Rate** (int) - 交互展示参数，可忽略
-        - **Value** (int) - 值，单位是GB
+        **FeatureModes**
+        - **MinimalCpuPlatform** (list) - 这个特性必须是列出来的CPU平台及以上的CPU才支持
+        - **Name** (str) - 模式|特性名称
+        - **RelatedToImageFeature** (list) - 为镜像上支持这个特性的标签。例如DescribeImage返回的字段Features包含HotPlug，说明该镜像支持热升级。
+
+
+        **Features**
+        - **Modes** (list) - 见 **FeatureModes** 模型定义
+        - **Name** (str) - 可支持的特性名称。目前支持的特性网络增强|NetCapability、热升级|Hotplug
+
+
+        **CpuPlatforms**
+        - **Amd** (list) - 返回AMD的CPU平台信息，例如：AMD: ['Amd/Epyc2']
+        - **Ampere** (list) - 返回Arm的CPU平台信息，例如：Ampere: ['Ampere/Altra']
+        - **Intel** (list) - 返回Intel的CPU平台信息，例如：Intel: ['Intel/CascadeLake','Intel/CascadelakeR','Intel/IceLake']
 
 
         **UHostFamily**
         - **CpuFrequency** (str) - CPU频率信息
         - **CpuPlatforms** (list) - 见 **CpuPlatformWithModels** 模型定义
         - **Name** (str) - 规格族
-
-
-        **BootDiskInfo**
-        - **Features** (list) - 磁盘可支持的服务
-        - **InstantResize** (bool) - 系统盘是否允许扩容，如果是本地盘，则不允许扩容，InstantResize为false。
-        - **MaximalSize** (int) - MaximalSize为磁盘最大值
-        - **Name** (str) - 系统盘类别，包含普通云盘|CLOUD_NORMAL、SSD云盘|CLOUD_SSD和RSSD云盘|CLOUD_RSSD。普通本地盘只包含普通本地盘|LOCAL_NORMAL一种。SSD本地盘只包含SSD本地盘|LOCAL_SSD一种。
-
-
-        **DataDiskInfo**
-        - **Features** (list) - 数据盘可支持的服务
-        - **MaximalSize** (int) - MaximalSize为磁盘最大值
-        - **MinimalSize** (int) - 磁盘最小值，如果没有该字段，最小值取基础镜像Size值即可（linux为20G，windows为40G）。
-        - **Name** (str) - 数据盘类别，包含普通云盘|CLOUD_NORMAL、SSD云盘|CLOUD_SSD和RSSD云盘|CLOUD_RSSD。普通本地盘只包含普通本地盘|LOCAL_NORMAL一种。SSD本地盘只包含SSD本地盘|LOCAL_SSD一种。
-
-
-        **Disks**
-        - **BootDisk** (list) - 见 **BootDiskInfo** 模型定义
-        - **DataDisk** (list) - 见 **DataDiskInfo** 模型定义
-        - **Name** (str) - 磁盘介质类别信息，磁盘主要分类如下：云盘|cloudDisk、普通本地盘|normalLocalDisk和SSD本地盘|ssdLocalDisk。
 
 
         **AvailableInstanceTypes**
@@ -589,6 +589,23 @@ class UHostClient(Client):
 
         **Response Model**
 
+        **NameOperationStatus**
+        - **Name** (str) - 名称
+        - **OperationStatus** (str) - 标记
+
+
+        **DiskFeature**
+        - **Modes** (list) - 见 **NameOperationStatus** 模型定义
+        - **Name** (str) - 特性名称
+
+
+        **FamiliesDataDiskInfo**
+        - **Features** (list) - 见 **DiskFeature** 模型定义
+        - **MaximalSize** (int) - MaximalSize为磁盘最大值
+        - **MinimalSize** (int) - 磁盘最小值，如果没有该字段，最小值取基础镜像Size值即可（linux为20G，windows为40G）。
+        - **Name** (str) - 数据盘类别，包含普通云盘|CLOUD_NORMAL、SSD云盘|CLOUD_SSD和RSSD云盘|CLOUD_RSSD。普通本地盘只包含普通本地盘|LOCAL_NORMAL一种。SSD本地盘只包含SSD本地盘|LOCAL_SSD一种。
+
+
         **CpuPlatformWithModels**
         - **CpuFrequency** (str) - CPU频率
         - **CpuModels** (list) - CPU Model列表
@@ -599,6 +616,40 @@ class UHostClient(Client):
         - **CpuFrequency** (str) - CPU频率信息
         - **CpuPlatforms** (list) - 见 **CpuPlatformWithModels** 模型定义
         - **Name** (str) - 规格族
+
+
+        **FamiliesBootDiskInfo**
+        - **Features** (list) - 见 **DiskFeature** 模型定义
+        - **InstantResize** (bool) - 系统盘是否允许扩容，如果是本地盘，则不允许扩容，InstantResize为false。
+        - **MaximalSize** (int) - MaximalSize为磁盘最大值
+        - **Name** (str) - 系统盘类别，包含普通云盘|CLOUD_NORMAL、SSD云盘|CLOUD_SSD和RSSD云盘|CLOUD_RSSD。普通本地盘只包含普通本地盘|LOCAL_NORMAL一种。SSD本地盘只包含SSD本地盘|LOCAL_SSD一种。
+
+
+        **FeatureModes**
+        - **MinimalCpuPlatform** (list) - 这个特性必须是列出来的CPU平台及以上的CPU才支持
+        - **Name** (str) - 模式|特性名称
+        - **RelatedToImageFeature** (list) - 为镜像上支持这个特性的标签。例如DescribeImage返回的字段Features包含HotPlug，说明该镜像支持热升级。
+
+
+        **GraphicsMemory**
+        - **Rate** (int) - 交互展示参数，可忽略
+        - **Value** (int) - 值，单位是GB
+
+
+        **FamiliesDisks**
+        - **BootDisk** (list) - 见 **FamiliesBootDiskInfo** 模型定义
+        - **DataDisk** (list) - 见 **FamiliesDataDiskInfo** 模型定义
+        - **Name** (str) - 磁盘介质类别信息，磁盘主要分类如下：云盘|cloudDisk、普通本地盘|normalLocalDisk和SSD本地盘|ssdLocalDisk。
+        - **OperationStatus** (str) - 权限位
+
+
+        **Features**
+        - **Modes** (list) - 见 **FeatureModes** 模型定义
+        - **Name** (str) - 可支持的特性名称。目前支持的特性网络增强|NetCapability、热升级|Hotplug
+
+
+        **Frequency**
+        - **Value** (float) - 值
 
 
         **CpuPlatformStatus**
@@ -612,44 +663,14 @@ class UHostClient(Client):
         - **MinimalCpuPlatform** (list) - CPU和内存规格只能在列出来的CPU平台支持
 
 
-        **MachineSizes**
-        - **Collection** (list) - 见 **Collection** 模型定义
-        - **Gpu** (int) - Gpu为GPU可支持的规格即GPU颗数，非GPU机型，Gpu为0
-
-
-        **FeatureModes**
-        - **MinimalCpuPlatform** (list) - 这个特性必须是列出来的CPU平台及以上的CPU才支持
-        - **Name** (str) - 模式|特性名称
-        - **RelatedToImageFeature** (list) - 为镜像上支持这个特性的标签。例如DescribeImage返回的字段Features包含HotPlug，说明该镜像支持热升级。
+        **NameFrequency**
+        - **Frequency** (dict) - 见 **Frequency** 模型定义
+        - **Name** (str) - 机型名称
 
 
         **Performance**
         - **Rate** (int) - 交互展示参数，可忽略
         - **Value** (float) - 值，单位是TFlops
-
-
-        **Frequency**
-        - **Value** (float) - 值
-
-
-        **NameOperationStatus**
-        - **Name** (str) - 名称
-        - **OperationStatus** (str) - 标记
-
-
-        **DiskFeature**
-        - **Modes** (list) - 见 **NameOperationStatus** 模型定义
-        - **Name** (str) - 特性名称
-
-
-        **Features**
-        - **Modes** (list) - 见 **FeatureModes** 模型定义
-        - **Name** (str) - 可支持的特性名称。目前支持的特性网络增强|NetCapability、热升级|Hotplug
-
-
-        **GraphicsMemory**
-        - **Rate** (int) - 交互展示参数，可忽略
-        - **Value** (int) - 值，单位是GB
 
 
         **FamiliesGpuType**
@@ -658,30 +679,9 @@ class UHostClient(Client):
         - **Performance** (dict) - 见 **Performance** 模型定义
 
 
-        **NameFrequency**
-        - **Frequency** (dict) - 见 **Frequency** 模型定义
-        - **Name** (str) - 机型名称
-
-
-        **FamiliesBootDiskInfo**
-        - **Features** (list) - 见 **DiskFeature** 模型定义
-        - **InstantResize** (bool) - 系统盘是否允许扩容，如果是本地盘，则不允许扩容，InstantResize为false。
-        - **MaximalSize** (int) - MaximalSize为磁盘最大值
-        - **Name** (str) - 系统盘类别，包含普通云盘|CLOUD_NORMAL、SSD云盘|CLOUD_SSD和RSSD云盘|CLOUD_RSSD。普通本地盘只包含普通本地盘|LOCAL_NORMAL一种。SSD本地盘只包含SSD本地盘|LOCAL_SSD一种。
-
-
-        **FamiliesDataDiskInfo**
-        - **Features** (list) - 见 **DiskFeature** 模型定义
-        - **MaximalSize** (int) - MaximalSize为磁盘最大值
-        - **MinimalSize** (int) - 磁盘最小值，如果没有该字段，最小值取基础镜像Size值即可（linux为20G，windows为40G）。
-        - **Name** (str) - 数据盘类别，包含普通云盘|CLOUD_NORMAL、SSD云盘|CLOUD_SSD和RSSD云盘|CLOUD_RSSD。普通本地盘只包含普通本地盘|LOCAL_NORMAL一种。SSD本地盘只包含SSD本地盘|LOCAL_SSD一种。
-
-
-        **FamiliesDisks**
-        - **BootDisk** (list) - 见 **FamiliesBootDiskInfo** 模型定义
-        - **DataDisk** (list) - 见 **FamiliesDataDiskInfo** 模型定义
-        - **Name** (str) - 磁盘介质类别信息，磁盘主要分类如下：云盘|cloudDisk、普通本地盘|normalLocalDisk和SSD本地盘|ssdLocalDisk。
-        - **OperationStatus** (str) - 权限位
+        **MachineSizes**
+        - **Collection** (list) - 见 **Collection** 模型定义
+        - **Gpu** (int) - Gpu为GPU可支持的规格即GPU颗数，非GPU机型，Gpu为0
 
 
         **MachineTypes**
@@ -914,6 +914,11 @@ class UHostClient(Client):
         - **RecycleTime** (int) - 回收时间
 
 
+        **UHostKeyPair**
+        - **KeyPairId** (str) - 密钥对ID
+        - **KeyPairState** (str) - 主机密钥对状态，Normal 正常，Deleted 删除
+
+
         **UHostDiskSet**
         - **BackupType** (str) - 备份方案。若开通了数据方舟，则为DATAARK
         - **DiskId** (str) - 磁盘ID
@@ -924,11 +929,6 @@ class UHostClient(Client):
         - **Name** (str) - UDisk名字（仅当磁盘是UDisk时返回）
         - **Size** (int) - 磁盘大小，单位: GB
         - **Type** (str) - 【建议不再使用】磁盘类型。系统盘: Boot，数据盘: Data,网络盘：Udisk
-
-
-        **UHostKeyPair**
-        - **KeyPairId** (str) - 密钥对ID
-        - **KeyPairState** (str) - 主机密钥对状态，Normal 正常，Deleted 删除
 
 
         **UHostIPSet**
@@ -1199,7 +1199,7 @@ class UHostClient(Client):
         - **Quantity** (int) - 购买时长。默认: 1。按小时购买(Dynamic)时无需此参数。 月付时，此参数传0，代表了购买至月末。
         - **ShowPriceDetails** (bool) - 返回价格详细信息
         - **UDSetUHostInstance** (bool) - 专区云主机。如果要在专区宿主机上创建云主机，该参数可以填写为true
-        - **UHostFamily** (str) - 规格族。 由机型代号和 CPU 平台组成，用于指定云主机的硬件类型与处理器平台。当 MachineType 为 "O"（快杰型）时，支持以下取值： - o1i：快杰型 O1 代，Intel 平台 - o1a：快杰型 O1 代，AMD 平台- o1r：快杰型 O1 代，ARM 平台 - o2i：快杰型 O2 代，Intel 平台 默认值：o1i 或 o1a或o1r当 MachineType 为 "OM"（快杰共享型）时，支持以下取值： - om1i：快杰内存增强型 OM1 代，Intel 平台 - om2i：快杰内存增强型 OM2 代，Intel 平台注意：规格族必须与 MachineType 匹配，否则请求将被拒绝。
+        - **UHostFamily** (str) - 规格族。 由机型代号和 CPU 平台组成，用于指定云主机的硬件类型与处理器平台。 当 MachineType 为 "O"\"OM"\"OPRO"\"OPROG"（快杰系列）时，支持以下取值：- o1i：快杰型 O1 代，Intel 平台 - o1a：快杰型 O1 代，AMD 平台- o1r：快杰型 O1 代，ARM 平台 - o1h: 快杰型 O1 代，Hygon 平台- o2i：快杰型 O2 代，Intel 平台 默认值：o1i 或 o1a当 MachineType 为 "OM"（快杰共享型）时，支持以下取值： - om1i：快杰内存增强型 OM1 代，Intel 平台 - om2i：快杰内存增强型 OM2 代，Intel 平台- om1a：快杰内存增强型 OM1 代，Amd 平台默认值：om1i 或 om1a当 MachineType 为 "OPROG"（快杰PRO通用型）时，支持以下取值： - oprog1i：快杰PRO通用型 OPROG1 代，Intel 平台 - oprog2i：快杰PRO通用型 OPROG2 代，Intel 平台 - oprog1a：快杰PRO通用型 OPROG1 代，Amd 平台 当 MachineType 为 "OPRO"（快杰PRO增强型）时，支持以下取值： - opro1a：快杰PRO增强型 OPRO1 代，Amd 平台 - opro2a：快杰PRO增强型 OPRO2 代，Amd 平台 注意：规格族必须与 MachineType 匹配，否则请求将被拒绝。
         - **UHostType** (str) - 【待废弃】云主机机型（V1版本概念）。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
@@ -1209,14 +1209,14 @@ class UHostClient(Client):
 
         **Request Model**
 
-        **GetUHostInstancePriceParamVolumes**
-
-
         **GetUHostInstancePriceParamDisks**
         - **BackupType** (str) - 磁盘备份方案。枚举值：\\ > NONE，无备份 \\ > DATAARK，数据方舟 \\ > SNAPSHOT，快照\\ 当前磁盘支持的备份模式参考  `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_
         - **IsBoot** (str) - 是否是系统盘。枚举值：\\ > True，是系统盘 \\ > False，是数据盘（默认）。Disks数组中有且只能有一块盘是系统盘。
         - **Size** (int) - 磁盘大小，单位GB。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
         - **Type** (str) - 磁盘类型。请参考 `磁盘类型 <https://docs.ucloud.cn/api/uhost-api/disk_type>`_ 。
+
+
+        **GetUHostInstancePriceParamVolumes**
 
 
         **Response Model**
