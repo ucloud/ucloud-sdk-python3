@@ -141,6 +141,32 @@ class UDNSClient(Client):
         resp = self.invoke("DeleteUDNSRecord", d, **kwargs)
         return apis.DeleteUDNSRecordResponseSchema().loads(resp)
 
+    def delete_udns_zone(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DeleteUDNSZone - 删除域名
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **DNSZoneId** (str) - (Required) 域名资源ID
+
+        **Response**
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DeleteUDNSZoneRequestSchema().dumps(d)
+
+        resp = self.invoke("DeleteUDNSZone", d, **kwargs)
+        return apis.DeleteUDNSZoneResponseSchema().loads(resp)
+
     def describe_udns_domain(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -296,6 +322,55 @@ class UDNSClient(Client):
         resp = self.invoke("DescribeUDNSZone", d, **kwargs)
         return apis.DescribeUDNSZoneResponseSchema().loads(resp)
 
+    def describe_udns_zone_by_vpc(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUDNSZoneByVPC - 根据VPC id 查询绑定的UDNSZone
+
+        **Request**
+
+        - **VPCId** (str) - (Required) VPC id
+
+        **Response**
+
+
+        """
+        # build request
+        d = {}
+        req and d.update(req)
+        d = apis.DescribeUDNSZoneByVPCRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeUDNSZoneByVPC", d, **kwargs)
+        return apis.DescribeUDNSZoneByVPCResponseSchema().loads(resp)
+
+    def describe_udns_zone_forward(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUDNSZoneForward - 获取域名转发配置
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **DNSZoneId** (str) - (Required) 域名ID
+
+        **Response**
+
+        - **Servers** (list) - 转发目标DNS 服务器地址
+        - **VPCId** (str) - 转发目标VPC的ID
+        - **VPCProjectId** (str) - 转发目标VPC所属VPC
+        - **VPCRegion** (str) - 转发目标VPC所属地域
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.DescribeUDNSZoneForwardRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeUDNSZoneForward", d, **kwargs)
+        return apis.DescribeUDNSZoneForwardResponseSchema().loads(resp)
+
     def disassociate_udns_zone_vpc(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -366,7 +441,7 @@ class UDNSClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **DNSZoneId** (str) - (Required) 域名资源ID
-        - **IsRecursionEnabled** (str) - 是否支持迭代。枚举值,"enable",支持迭代; "disable",不支持迭代
+        - **IsRecursionEnabled** (str) - 是否支持递归。枚举值,"enable",支持; "disable",不支持
         - **Remark** (str) - 备注
 
         **Response**
