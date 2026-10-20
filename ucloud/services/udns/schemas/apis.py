@@ -122,6 +122,29 @@ class DeleteUDNSRecordResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DeleteUDNSZone
+
+删除域名
+"""
+
+
+class DeleteUDNSZoneRequestSchema(schema.RequestSchema):
+    """DeleteUDNSZone - 删除域名"""
+
+    fields = {
+        "DNSZoneId": fields.Str(required=True, dump_to="DNSZoneId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+    }
+
+
+class DeleteUDNSZoneResponseSchema(schema.ResponseSchema):
+    """DeleteUDNSZone - 删除域名"""
+
+    fields = {}
+
+
+"""
 API: DescribeUDNSDomain
 
 zone下所有域名的rr记录
@@ -213,6 +236,56 @@ class DescribeUDNSZoneResponseSchema(schema.ResponseSchema):
             models.ZoneInfoSchema(), required=False, load_from="DNSZoneInfos"
         ),
         "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
+API: DescribeUDNSZoneByVPC
+
+根据VPC id 查询绑定的UDNSZone
+"""
+
+
+class DescribeUDNSZoneByVPCRequestSchema(schema.RequestSchema):
+    """DescribeUDNSZoneByVPC - 根据VPC id 查询绑定的UDNSZone"""
+
+    fields = {
+        "VPCId": fields.Str(required=True, dump_to="VPCId"),
+    }
+
+
+class DescribeUDNSZoneByVPCResponseSchema(schema.ResponseSchema):
+    """DescribeUDNSZoneByVPC - 根据VPC id 查询绑定的UDNSZone"""
+
+    fields = {}
+
+
+"""
+API: DescribeUDNSZoneForward
+
+获取域名转发配置
+"""
+
+
+class DescribeUDNSZoneForwardRequestSchema(schema.RequestSchema):
+    """DescribeUDNSZoneForward - 获取域名转发配置"""
+
+    fields = {
+        "DNSZoneId": fields.Str(required=True, dump_to="DNSZoneId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+    }
+
+
+class DescribeUDNSZoneForwardResponseSchema(schema.ResponseSchema):
+    """DescribeUDNSZoneForward - 获取域名转发配置"""
+
+    fields = {
+        "Servers": fields.List(
+            fields.Str(), required=False, load_from="Servers"
+        ),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+        "VPCProjectId": fields.Str(required=False, load_from="VPCProjectId"),
+        "VPCRegion": fields.Str(required=False, load_from="VPCRegion"),
     }
 
 
