@@ -55,6 +55,7 @@ class USMSClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Attr** (int) - (Required) 资质属性，0-自用 1-他用
+        - **HandlerPhone** (str) - (Required) 经办人手机号
         - **Name** (str) - (Required) 资质名称
         - **Status** (int) - (Required) 状态：0-草稿，1-提交审核
         - **CompanyCertificateFileId** (str) - 公司证件文件FileId
@@ -68,6 +69,7 @@ class USMSClient(Client):
         - **HandlerName** (str) - 经办人姓名
         - **ManagerIDNumber** (str) - 法人身份证号码
         - **ManagerName** (str) - 法人姓名
+        - **ManagerPhone** (str) - 法人手机号
 
         **Response**
 
@@ -259,11 +261,6 @@ class USMSClient(Client):
 
         **Response Model**
 
-        **ReceiptPerSession**
-        - **ReceiptSet** (list) - 见 **ReceiptPerPhone** 模型定义
-        - **SessionNo** (str) - 发送短信时返回的SessionNo
-
-
         **ReceiptPerPhone**
         - **CostCount** (int) - 消耗短信条数
         - **Phone** (str) - 手机号码
@@ -272,6 +269,11 @@ class USMSClient(Client):
         - **ReceiptResult** (str) - 回执结果，枚举值：\\ > 发送成功: 代表成功 \\ > Success: 代表成功 \\ > 发送失败: 代表失败 \\ > Fail: 代表失败 \\ > 状态未知: 代表未知 \\ > Unknow: 代表未知
         - **ReceiptTime** (int) - 回执返回时间
         - **UserId** (str) - 自定义的业务标识ID，字符串
+
+
+        **ReceiptPerSession**
+        - **ReceiptSet** (list) - 见 **ReceiptPerPhone** 模型定义
+        - **SessionNo** (str) - 发送短信时返回的SessionNo
 
 
         """
@@ -313,6 +315,19 @@ class USMSClient(Client):
 
         **Response Model**
 
+        **StatisticsData**
+        - **FailCostCount** (int) - 发送失败数（拆分条数）
+        - **FailCount** (int) - 发送失败数（提交条数）
+        - **SendCostCount** (int) - 发送总数（拆分条数）
+        - **SendCount** (int) - 发送总数（提交条数）
+        - **SubmitFailCostCount** (int) - 提交失败数（拆分条数）
+        - **SubmitFailCount** (int) - 提交失败数（提交条数）
+        - **SuccessCostCount** (int) - 发送成功数（拆分条数）
+        - **SuccessCount** (int) - 发送成功数（提交条数）
+        - **UnknownCostCount** (int) - 状态未知数（拆分条数）
+        - **UnknownCount** (int) - 状态未知数（提交条数）
+
+
         **StatisticsDataInfo**
         - **BrevityCode** (str) - 国际/地区标识码
         - **CostCount** (int) - 发送总数（拆分条数）
@@ -328,19 +343,6 @@ class USMSClient(Client):
         - **UnknownCostCount** (int) - 状态未知数（拆分条数）
         - **UnknownCount** (int) - 状态未知数（提交条数）
         - **UserId** (str) - UserId
-
-
-        **StatisticsData**
-        - **FailCostCount** (int) - 发送失败数（拆分条数）
-        - **FailCount** (int) - 发送失败数（提交条数）
-        - **SendCostCount** (int) - 发送总数（拆分条数）
-        - **SendCount** (int) - 发送总数（提交条数）
-        - **SubmitFailCostCount** (int) - 提交失败数（拆分条数）
-        - **SubmitFailCount** (int) - 提交失败数（提交条数）
-        - **SuccessCostCount** (int) - 发送成功数（拆分条数）
-        - **SuccessCount** (int) - 发送成功数（提交条数）
-        - **UnknownCostCount** (int) - 状态未知数（拆分条数）
-        - **UnknownCount** (int) - 状态未知数（提交条数）
 
 
         """
@@ -405,6 +407,73 @@ class USMSClient(Client):
 
         resp = self.invoke("GetUSMSSignatureQualification", d, **kwargs)
         return apis.GetUSMSSignatureQualificationResponseSchema().loads(resp)
+
+    def get_usms_template_send_statistics(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUSMSTemplateSendStatistics - 获取模板发送统计数据
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Domestic** (int) - (Required) 国内标记，0-国际短信 1-国内短信
+        - **EndDate** (str) - (Required) 结束日期，格式为YYYY-MM-DD
+        - **NumPerPage** (int) - (Required) 每页记录个数
+        - **OrderBy** (str) - (Required) 排序字段，如BrevityCode表示按照BrevityCode排列，配合OrderType使用。目前支持SendDate、BrevityCode
+        - **OrderType** (str) - (Required) 排序方式，asc-正序 desc-倒序
+        - **Page** (int) - (Required) 页编号，从0开始
+        - **StartDate** (str) - (Required) 开始日期，格式为YYYY-MM-DD
+        - **BrevityCode** (str) - 国际简码，如CN表示中国，当需要查询多个国家时，使用-分割，如CN-ID。
+        - **TemplateId** (str) - 短信模板ID
+
+        **Response**
+
+        - **Data** (list) - 见 **TemplateStatisticsDataInfo** 模型定义
+        - **Message** (str) - 描述信息
+        - **StatisticsData** (dict) - 见 **StatisticsData** 模型定义
+        - **Total** (int) - 返回记录数
+
+        **Response Model**
+
+        **TemplateStatisticsDataInfo**
+        - **BrevityCode** (str) - 国际/地区标识码
+        - **CostCount** (int) - 发送总数（拆分条数）
+        - **Count** (int) - 发送总数（提交条数）
+        - **FailedCostCount** (int) - 发送失败数（拆分条数）
+        - **FailedCount** (int) - 发送失败数（提交条数）
+        - **SendDate** (str) - 发送时间
+        - **SubmitFailedCostCount** (int) - 提交失败数（拆分条数）
+        - **SubmitFailedCount** (int) - 提交失败数（提交条数）
+        - **SuccessCostCount** (int) - 发送成功数（拆分条数）
+        - **SuccessCount** (int) - 发送成功数（提交条数）
+        - **TemplateId** (str) - 短信模板ID
+        - **UnknownCostCount** (int) - 状态未知数（拆分条数）
+        - **UnknownCount** (int) - 状态未知数（提交条数）
+
+
+        **StatisticsData**
+        - **FailCostCount** (int) - 发送失败数（拆分条数）
+        - **FailCount** (int) - 发送失败数（提交条数）
+        - **SendCostCount** (int) - 发送总数（拆分条数）
+        - **SendCount** (int) - 发送总数（提交条数）
+        - **SubmitFailCostCount** (int) - 提交失败数（拆分条数）
+        - **SubmitFailCount** (int) - 提交失败数（提交条数）
+        - **SuccessCostCount** (int) - 发送成功数（拆分条数）
+        - **SuccessCount** (int) - 发送成功数（提交条数）
+        - **UnknownCostCount** (int) - 状态未知数（拆分条数）
+        - **UnknownCount** (int) - 状态未知数（提交条数）
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.GetUSMSTemplateSendStatisticsRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUSMSTemplateSendStatistics", d, **kwargs)
+        return apis.GetUSMSTemplateSendStatisticsResponseSchema().loads(resp)
 
     def query_usms_signature(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -473,8 +542,10 @@ class USMSClient(Client):
         - **HandlerIDCardFrontImage** (str) - 经办人身份证人像面图片链接
         - **HandlerIDNumber** (str) - 经办人证件号码
         - **HandlerName** (str) - 经办人姓名
+        - **HandlerPhone** (str) - 经办人手机号
         - **ManagerIDNumber** (str) - 负责人证件号码
         - **ManagerName** (str) - 负责人姓名
+        - **ManagerPhone** (str) - 负责人手机号
         - **ModifyTime** (int) - 修改时间戳
         - **Name** (str) - 资质名称
         - **PowerOfAttorney** (str) - 授权委托书文件链接
@@ -557,19 +628,19 @@ class USMSClient(Client):
 
         **Response Model**
 
-        **BatchInfo**
-        - **FailureDetails** (str) - 未能成功发送的详情。注：模板/签名检验失败时，该字段有效
-        - **SigContent** (str) - 签名
-        - **Target** (list) - 见 **FailPhoneDetail** 模型定义
-        - **TemplateId** (str) - 模板ID
-
-
         **FailPhoneDetail**
         - **ExtendCode** (str) - 扩展号码
         - **FailureDetails** (str) - 发送失败原因。注：若模板/签名校验失败，该字段为空
         - **Phone** (str) - 手机号
         - **TemplateParams** (list) - 模板参数
         - **UserId** (str) - 用户自定义ID
+
+
+        **BatchInfo**
+        - **FailureDetails** (str) - 未能成功发送的详情。注：模板/签名检验失败时，该字段有效
+        - **SigContent** (str) - 签名
+        - **Target** (list) - 见 **FailPhoneDetail** 模型定义
+        - **TemplateId** (str) - 模板ID
 
 
         """
@@ -678,8 +749,10 @@ class USMSClient(Client):
         - **HandlerIDCardFrontImageFileId** (str) - 经办人身份证人像面图片FileId
         - **HandlerIDNumber** (str) - 经办人身份证号码
         - **HandlerName** (str) - 经办人姓名
+        - **HandlerPhone** (str) - 经办人手机号
         - **ManagerIDNumber** (str) - 法人身份证号码
         - **ManagerName** (str) - 法人姓名
+        - **ManagerPhone** (str) - 法人手机号
         - **Name** (str) - 资质名称
 
         **Response**

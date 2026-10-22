@@ -107,6 +107,36 @@ class OutSignatureQualificationSchema(schema.ResponseSchema):
     }
 
 
+class TemplateStatisticsDataInfoSchema(schema.ResponseSchema):
+    """TemplateStatisticsDataInfo - 模版统计信息按天聚合"""
+
+    fields = {
+        "BrevityCode": fields.Str(required=True, load_from="BrevityCode"),
+        "CostCount": fields.Int(required=True, load_from="CostCount"),
+        "Count": fields.Int(required=True, load_from="Count"),
+        "FailedCostCount": fields.Int(
+            required=True, load_from="FailedCostCount"
+        ),
+        "FailedCount": fields.Int(required=True, load_from="FailedCount"),
+        "SendDate": fields.Str(required=True, load_from="SendDate"),
+        "SubmitFailedCostCount": fields.Int(
+            required=True, load_from="SubmitFailedCostCount"
+        ),
+        "SubmitFailedCount": fields.Int(
+            required=True, load_from="SubmitFailedCount"
+        ),
+        "SuccessCostCount": fields.Int(
+            required=True, load_from="SuccessCostCount"
+        ),
+        "SuccessCount": fields.Int(required=True, load_from="SuccessCount"),
+        "TemplateId": fields.Str(required=True, load_from="TemplateId"),
+        "UnknownCostCount": fields.Int(
+            required=True, load_from="UnknownCostCount"
+        ),
+        "UnknownCount": fields.Int(required=True, load_from="UnknownCount"),
+    }
+
+
 class OutSignatureSchema(schema.ResponseSchema):
     """OutSignature - 短信签名"""
 
@@ -119,7 +149,7 @@ class OutSignatureSchema(schema.ResponseSchema):
 
 
 class OutSignatureQualificationDetailSchema(schema.ResponseSchema):
-    """OutSignatureQualificationDetail -"""
+    """OutSignatureQualificationDetail - 签名资质详情"""
 
     fields = {
         "Attr": fields.Int(required=False, load_from="Attr"),
@@ -149,10 +179,12 @@ class OutSignatureQualificationDetailSchema(schema.ResponseSchema):
             required=False, load_from="HandlerIDNumber"
         ),
         "HandlerName": fields.Str(required=False, load_from="HandlerName"),
+        "HandlerPhone": fields.Str(required=False, load_from="HandlerPhone"),
         "ManagerIDNumber": fields.Str(
             required=False, load_from="ManagerIDNumber"
         ),
         "ManagerName": fields.Str(required=False, load_from="ManagerName"),
+        "ManagerPhone": fields.Str(required=False, load_from="ManagerPhone"),
         "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
         "Name": fields.Str(required=False, load_from="Name"),
         "PowerOfAttorney": fields.Str(
