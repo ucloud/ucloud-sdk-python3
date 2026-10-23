@@ -15,14 +15,21 @@ class APIKeySchema(schema.ResponseSchema):
         "DailyUsedAmount": fields.Str(
             required=False, load_from="DailyUsedAmount"
         ),
+        "DeniedModels": fields.List(fields.Str()),
         "ExpireTime": fields.Int(required=False, load_from="ExpireTime"),
         "GrantAllModels": fields.Bool(
             required=False, load_from="GrantAllModels"
         ),
         "GrantedModels": fields.List(fields.Str()),
         "IPWhitelist": fields.Str(required=True, load_from="IPWhitelist"),
+        "InferenceLogEnabled": fields.Int(
+            required=True, load_from="InferenceLogEnabled"
+        ),
         "Key": fields.Str(required=False, load_from="Key"),
         "KeyId": fields.Str(required=False, load_from="KeyId"),
+        "ModelAccessMode": fields.Str(
+            required=False, load_from="ModelAccessMode"
+        ),
         "ModelverseDisabled": fields.Int(
             required=False, load_from="ModelverseDisabled"
         ),
@@ -56,21 +63,21 @@ class DownloadFileDataSchema(schema.ResponseSchema):
     }
 
 
-class FilterOptionIntegerSchema(schema.ResponseSchema):
-    """FilterOptionInteger - 整数类型筛选选项"""
-
-    fields = {
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Value": fields.Int(required=False, load_from="Value"),
-    }
-
-
 class FilterOptionStringSchema(schema.ResponseSchema):
     """FilterOptionString - 字符串类型筛选选项"""
 
     fields = {
         "Name": fields.Str(required=False, load_from="Name"),
         "Value": fields.Str(required=False, load_from="Value"),
+    }
+
+
+class FilterOptionIntegerSchema(schema.ResponseSchema):
+    """FilterOptionInteger - 整数类型筛选选项"""
+
+    fields = {
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Value": fields.Int(required=False, load_from="Value"),
     }
 
 
@@ -90,6 +97,19 @@ class ModelTypeMapSchema(schema.ResponseSchema):
     }
 
 
+class InferenceRegionInfoSchema(schema.ResponseSchema):
+    """InferenceRegionInfo - 地域推理模型信息"""
+
+    fields = {
+        "ModelId": fields.Str(required=False, load_from="ModelId"),
+        "RegionCode": fields.Str(required=False, load_from="RegionCode"),
+        "RegionName": fields.Str(required=False, load_from="RegionName"),
+        "RegionNameEn": fields.Str(required=False, load_from="RegionNameEn"),
+        "SquareModelId": fields.Str(required=False, load_from="SquareModelId"),
+        "Status": fields.Str(required=False, load_from="Status"),
+    }
+
+
 class PricingSchema(schema.ResponseSchema):
     """Pricing - 定价策略"""
 
@@ -101,24 +121,6 @@ class PricingSchema(schema.ResponseSchema):
         "Unit": fields.Str(required=False, load_from="Unit"),
         "UnitEn": fields.Str(required=False, load_from="UnitEn"),
         "Video": fields.Str(required=False, load_from="Video"),
-    }
-
-
-class PriceRateSchema(schema.ResponseSchema):
-    """PriceRate - 该档位下的收费列表（有序数组）"""
-
-    fields = {
-        "ChargeItem": fields.Str(required=False, load_from="ChargeItem"),
-        "ChargeItemDescription": fields.Str(
-            required=False, load_from="ChargeItemDescription"
-        ),
-        "ChargeItemDescriptionEn": fields.Str(
-            required=True, load_from="ChargeItemDescriptionEn"
-        ),
-        "Currency": fields.Str(required=True, load_from="Currency"),
-        "Price": fields.Str(required=False, load_from="Price"),
-        "Unit": fields.Str(required=True, load_from="Unit"),
-        "UnitEn": fields.Str(required=True, load_from="UnitEn"),
     }
 
 
@@ -156,16 +158,21 @@ class ApiProtocolsSchema(schema.ResponseSchema):
     }
 
 
-class InferenceRegionInfoSchema(schema.ResponseSchema):
-    """InferenceRegionInfo - 地域推理模型信息"""
+class PriceRateSchema(schema.ResponseSchema):
+    """PriceRate - 该档位下的收费列表（有序数组）"""
 
     fields = {
-        "ModelId": fields.Str(required=False, load_from="ModelId"),
-        "RegionCode": fields.Str(required=False, load_from="RegionCode"),
-        "RegionName": fields.Str(required=False, load_from="RegionName"),
-        "RegionNameEn": fields.Str(required=False, load_from="RegionNameEn"),
-        "SquareModelId": fields.Str(required=False, load_from="SquareModelId"),
-        "Status": fields.Str(required=False, load_from="Status"),
+        "ChargeItem": fields.Str(required=False, load_from="ChargeItem"),
+        "ChargeItemDescription": fields.Str(
+            required=False, load_from="ChargeItemDescription"
+        ),
+        "ChargeItemDescriptionEn": fields.Str(
+            required=True, load_from="ChargeItemDescriptionEn"
+        ),
+        "Currency": fields.Str(required=True, load_from="Currency"),
+        "Price": fields.Str(required=False, load_from="Price"),
+        "Unit": fields.Str(required=True, load_from="Unit"),
+        "UnitEn": fields.Str(required=True, load_from="UnitEn"),
     }
 
 
