@@ -369,16 +369,6 @@ class UAI_ModelverseClient(Client):
         - **WebSearch** (bool) - 是否支持联网搜索
 
 
-        **Pricing**
-        - **Completion** (float) - 输出定价
-        - **Currency** (str) - 币种
-        - **Image** (float) - 生图定价
-        - **Prompt** (float) - 提示词定价
-        - **Unit** (str) - 单位（中文），如“次” “百万”
-        - **UnitEn** (str) - 单位（English），如“Time” “Million”
-        - **Video** (str) - 生视频定价
-
-
         **ModelTypeMap**
         - **ImageToImage** (bool) - 图生图模型
         - **ImageToVideo** (bool) - 图生视频模型
@@ -387,6 +377,13 @@ class UAI_ModelverseClient(Client):
         - **TextGeneration** (bool) - 文生文模型，true 表示是文生文模型，下同
         - **TextToImage** (bool) - 文生图模型
         - **TextToVideo** (bool) - 文生视频模型
+
+
+        **ApiProtocols**
+        - **Anthropic** (bool) - 是否支持Anthropic协议
+        - **ChatCompletions** (bool) - 是否支持chat协议
+        - **Gemini** (bool) - 是否支持gemini协议
+        - **Responses** (bool) - 是否支持responses协议
 
 
         **PriceRate**
@@ -399,13 +396,14 @@ class UAI_ModelverseClient(Client):
         - **UnitEn** (str) - 计价单位英文
 
 
-        **InferenceRegionInfo**
-        - **ModelId** (str) - 地域模型ID (例如: deepseek-v4-flash-sg)
-        - **RegionCode** (str) - 地域代码: sg(新加坡)/us(美国)/hk(香港)
-        - **RegionName** (str) - 地域名称: 新加坡/美国/香港
-        - **RegionNameEn** (str) - 地域名称(英文): Singapore/United States/Hong Kong
-        - **SquareModelId** (str) - 广场模型ID (umodel-xxx)
-        - **Status** (str) - 状态: published(已发布)/unpublished(未发布)
+        **Pricing**
+        - **Completion** (float) - 输出定价
+        - **Currency** (str) - 币种
+        - **Image** (float) - 生图定价
+        - **Prompt** (float) - 提示词定价
+        - **Unit** (str) - 单位（中文），如“次” “百万”
+        - **UnitEn** (str) - 单位（English），如“Time” “Million”
+        - **Video** (str) - 生视频定价
 
 
         **PriceTier**
@@ -415,11 +413,13 @@ class UAI_ModelverseClient(Client):
         - **Rates** (list) - 见 **PriceRate** 模型定义
 
 
-        **ApiProtocols**
-        - **Anthropic** (bool) - 是否支持Anthropic协议
-        - **ChatCompletions** (bool) - 是否支持chat协议
-        - **Gemini** (bool) - 是否支持gemini协议
-        - **Responses** (bool) - 是否支持responses协议
+        **InferenceRegionInfo**
+        - **ModelId** (str) - 地域模型ID (例如: deepseek-v4-flash-sg)
+        - **RegionCode** (str) - 地域代码: sg(新加坡)/us(美国)/hk(香港)
+        - **RegionName** (str) - 地域名称: 新加坡/美国/香港
+        - **RegionNameEn** (str) - 地域名称(英文): Singapore/United States/Hong Kong
+        - **SquareModelId** (str) - 广场模型ID (umodel-xxx)
+        - **Status** (str) - 状态: published(已发布)/unpublished(未发布)
 
 
         **SquareModel**
@@ -842,16 +842,6 @@ class UAI_ModelverseClient(Client):
 
         **Response Model**
 
-        **PriceRate**
-        - **ChargeItem** (str) - 收费项：input/output/thinking/tool...
-        - **ChargeItemDescription** (str) - 收费项描述
-        - **ChargeItemDescriptionEn** (str) - 收费项描述英文描述
-        - **Currency** (str) - 货币单位
-        - **Price** (str) - 价格
-        - **Unit** (str) - 计价单位
-        - **UnitEn** (str) - 计价单位英文
-
-
         **Pricing**
         - **Completion** (float) - 输出定价
         - **Currency** (str) - 币种
@@ -860,6 +850,16 @@ class UAI_ModelverseClient(Client):
         - **Unit** (str) - 单位（中文），如“次” “百万”
         - **UnitEn** (str) - 单位（English），如“Time” “Million”
         - **Video** (str) - 生视频定价
+
+
+        **PriceRate**
+        - **ChargeItem** (str) - 收费项：input/output/thinking/tool...
+        - **ChargeItemDescription** (str) - 收费项描述
+        - **ChargeItemDescriptionEn** (str) - 收费项描述英文描述
+        - **Currency** (str) - 货币单位
+        - **Price** (str) - 价格
+        - **Unit** (str) - 计价单位
+        - **UnitEn** (str) - 计价单位英文
 
 
         **PriceTier**
@@ -949,15 +949,15 @@ class UAI_ModelverseClient(Client):
     def list_um_infer_api_key(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """ListUMInferAPIKey - 列表查询apikey
+        """ListUMInferAPIKey -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
-        - **Limit** (int) - 返回数据长度，默认为20，最大100
-        - **ModelverseDisabled** (int) - 是否modelverse可用 0: 启用 1: 禁用
-        - **Offset** (int) - 列表起始位置偏移量，默认为0
-        - **SandBoxDisabled** (int) - 是否沙盒可用 0: 启用 1: 禁用(astraflow 沙盒控制未上线，暂时无效)
+        - **ProjectId** (str) - (Config)
+        - **Limit** (int) -
+        - **ModelverseDisabled** (int) -
+        - **Offset** (int) -
+        - **SandBoxDisabled** (int) -
 
         **Response**
 
@@ -966,16 +966,80 @@ class UAI_ModelverseClient(Client):
         **Response Model**
 
         **APIKey**
+        - **ChannelId** (int) -
+        - **CreateTime** (int) -
+        - **DailyLimitAmount** (str) -
+        - **DailyUsedAmount** (str) -
+        - **ExpireTime** (int) -
+        - **GrantAllModels** (bool) -
+        - **GrantedModels** (list) -
+        - **IPWhitelist** (str) -
+        - **Key** (str) -
+        - **KeyId** (str) -
+        - **ModelverseDisabled** (int) -
+        - **MonthlyLimitAmount** (str) -
+        - **MonthlyUsedAmount** (str) -
+        - **Name** (str) -
+        - **OrganizationId** (int) -
+        - **SandBoxDisabled** (int) -
+        - **Status** (int) -
+        - **TopOrganizationId** (int) -
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+        }
+        req and d.update(req)
+        d = apis.ListUMInferAPIKeyRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
+
+        resp = self.invoke("ListUMInferAPIKey", d, **kwargs)
+        return apis.ListUMInferAPIKeyResponseSchema().loads(resp)
+
+    def list_um_infer_api_key_v2(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListUMInferAPIKeyV2 - 获取modelverse apikey，密钥掩码返回
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **AllStatus** (int) - 默认 false，排除已删除记录；true 包含已删除记录
+        - **KeyId** (str) - 按 API Key 资源 ID 精确过滤；为空不限制
+        - **Limit** (int) - 每页条数；0 表示不限制条数
+        - **Offset** (str) - 从 0 开始的页号，默认 0；不是记录偏移量
+        - **SandBoxDisabled** (str) - 不传不限制；0 启用，1 禁用
+        - **SortByCreateTimeAsc** (bool) - true 按创建时间升序，false 降序
+        - **SortByUpdateTimeAsc** (bool) - true 按更新时间升序，false 降序；优先于创建时间排序
+
+        **Response**
+
+        - **Data** (list) - 见 **APIKey** 模型定义
+        - **Timestamp** (int) - 时间戳
+        - **TotalCount** (int) - 数据量
+
+        **Response Model**
+
+        **APIKey**
         - **ChannelId** (int) - 渠道id
         - **CreateTime** (int) - 创建时间
         - **DailyLimitAmount** (str) - 日限额，单位随用户所在渠道。126渠道单位为美元
         - **DailyUsedAmount** (str) - 日已使用额，单位随用户所在渠道。126渠道单位为美元
+        - **DeniedModels** (list) - 禁止访问的模型列表。当 ModelAccessMode=blacklist 时生效。
         - **ExpireTime** (int) - 过期时间的unix时间戳，-1 用不过期
         - **GrantAllModels** (bool) - 全部模型访问开关，开启不受 GrantedModels 参数控制，关闭只能访问 GrantedModels 中添加模型
         - **GrantedModels** (list) - 授权的模型，英文逗号分隔，all表示所有模型都有权限
         - **IPWhitelist** (str) - ip白名单，换行分割的多组ip。支持IPv4和网段,输入后回车生效,最多100个, 示例: ﻿ 192.168.1.1 192.168.1.10-192.168.1.100 192.168.1.10/24
-        - **Key** (str) - 密钥值
+        - **InferenceLogEnabled** (int) - 是否开启推理日志
+        - **Key** (str) - 密钥值，前四后四，中间*掩码展示
         - **KeyId** (str) - 资源ID
+        - **ModelAccessMode** (str) - 模型访问策略。可选值：whitelist（白名单模式，默认）或 blacklist（黑名单模式）。
         - **ModelverseDisabled** (int) - 是否modelverse可用 0: 启用 1: 禁用
         - **MonthlyLimitAmount** (str) - 月限额，单位随用户所在渠道。126渠道单位为美元
         - **MonthlyUsedAmount** (str) - 月已使用额，单位随用户所在渠道。126渠道单位为美元
@@ -990,12 +1054,13 @@ class UAI_ModelverseClient(Client):
         # build request
         d = {
             "ProjectId": self.config.project_id,
+            "Region": self.config.region,
         }
         req and d.update(req)
-        d = apis.ListUMInferAPIKeyRequestSchema().dumps(d)
+        d = apis.ListUMInferAPIKeyV2RequestSchema().dumps(d)
 
-        resp = self.invoke("ListUMInferAPIKey", d, **kwargs)
-        return apis.ListUMInferAPIKeyResponseSchema().loads(resp)
+        resp = self.invoke("ListUMInferAPIKeyV2", d, **kwargs)
+        return apis.ListUMInferAPIKeyV2ResponseSchema().loads(resp)
 
     def list_um_infer_request_logs(
         self, req: typing.Optional[dict] = None, **kwargs
@@ -1021,6 +1086,11 @@ class UAI_ModelverseClient(Client):
 
         **Response Model**
 
+        **RequestLogSummary**
+        - **FailedRequests** (int) - 查询条件命中的失败请求数
+        - **TotalRequests** (int) - 查询条件命中的总请求数
+
+
         **RequestLogItem**
         - **ApiKeyId** (str) - API Key ID
         - **ApiKeyName** (str) - API Key 名称
@@ -1043,11 +1113,6 @@ class UAI_ModelverseClient(Client):
         - **StartTime** (int) - 请求开始时间，Unix 毫秒时间戳
         - **StartTimeReadable** (str) - 请求开始时间，可读格式
         - **TotalTokens** (int) - 总 Token 数
-
-
-        **RequestLogSummary**
-        - **FailedRequests** (int) - 查询条件命中的失败请求数
-        - **TotalRequests** (int) - 查询条件命中的总请求数
 
 
         **ListUMInferRequestLogsData**

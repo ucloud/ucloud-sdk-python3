@@ -639,12 +639,12 @@ class ListUFSquareModelFiltersAuthResponseSchema(schema.ResponseSchema):
 """
 API: ListUMInferAPIKey
 
-列表查询apikey
+
 """
 
 
 class ListUMInferAPIKeyRequestSchema(schema.RequestSchema):
-    """ListUMInferAPIKey - 列表查询apikey"""
+    """ListUMInferAPIKey -"""
 
     fields = {
         "Limit": fields.Int(required=False, dump_to="Limit"),
@@ -660,12 +660,54 @@ class ListUMInferAPIKeyRequestSchema(schema.RequestSchema):
 
 
 class ListUMInferAPIKeyResponseSchema(schema.ResponseSchema):
-    """ListUMInferAPIKey - 列表查询apikey"""
+    """ListUMInferAPIKey -"""
 
     fields = {
         "Data": fields.List(
             models.APIKeySchema(), required=True, load_from="Data"
         ),
+    }
+
+
+"""
+API: ListUMInferAPIKeyV2
+
+获取modelverse apikey，密钥掩码返回
+"""
+
+
+class ListUMInferAPIKeyV2RequestSchema(schema.RequestSchema):
+    """ListUMInferAPIKeyV2 - 获取modelverse apikey，密钥掩码返回"""
+
+    fields = {
+        "AllStatus": fields.Int(required=False, dump_to="AllStatus"),
+        "KeyId": fields.Str(required=False, dump_to="KeyId"),
+        "Limit": fields.Int(required=False, dump_to="Limit"),
+        "Offset": fields.Str(required=False, dump_to="Offset"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SandBoxDisabled": fields.Str(
+            required=False, dump_to="SandBoxDisabled"
+        ),
+        "SortByCreateTimeAsc": fields.Bool(
+            required=False, dump_to="SortByCreateTimeAsc"
+        ),
+        "SortByUpdateTimeAsc": fields.Bool(
+            required=False, dump_to="SortByUpdateTimeAsc"
+        ),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ListUMInferAPIKeyV2ResponseSchema(schema.ResponseSchema):
+    """ListUMInferAPIKeyV2 - 获取modelverse apikey，密钥掩码返回"""
+
+    fields = {
+        "Data": fields.List(
+            models.APIKeySchema(), required=False, load_from="Data"
+        ),
+        "Timestamp": fields.Int(required=False, load_from="Timestamp"),
+        "TotalCount": fields.Int(required=False, load_from="TotalCount"),
     }
 
 
