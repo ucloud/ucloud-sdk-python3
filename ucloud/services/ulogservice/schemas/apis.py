@@ -272,6 +272,33 @@ class DeleteULogServiceTopicResponseSchema(schema.ResponseSchema):
 
 
 """
+API: DescribeULogServiceLogSet
+
+获取日志集信息
+"""
+
+
+class DescribeULogServiceLogSetRequestSchema(schema.RequestSchema):
+    """DescribeULogServiceLogSet - 获取日志集信息"""
+
+    fields = {
+        "LogSetId": fields.Str(required=True, dump_to="LogSetId"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DescribeULogServiceLogSetResponseSchema(schema.ResponseSchema):
+    """DescribeULogServiceLogSet - 获取日志集信息"""
+
+    fields = {
+        "LogSetInfo": models.LogSetInfoSchema(),
+        "TotalCount": fields.Int(required=True, load_from="TotalCount"),
+    }
+
+
+"""
 API: DescribeULogServiceMachineGroup
 
 查询日志采集机器组
@@ -295,6 +322,31 @@ class DescribeULogServiceMachineGroupResponseSchema(schema.ResponseSchema):
     fields = {
         "MachineGroup": models.MachineInfoSchema(),
         "Message": fields.Str(required=True, load_from="Message"),
+    }
+
+
+"""
+API: DescribeULogServiceTopic
+
+获取ULogService主题详情
+"""
+
+
+class DescribeULogServiceTopicRequestSchema(schema.RequestSchema):
+    """DescribeULogServiceTopic - 获取ULogService主题详情"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "TopicId": fields.Str(required=True, dump_to="TopicId"),
+    }
+
+
+class DescribeULogServiceTopicResponseSchema(schema.ResponseSchema):
+    """DescribeULogServiceTopic - 获取ULogService主题详情"""
+
+    fields = {
+        "Data": models.TopicInfoSchema(),
     }
 
 
