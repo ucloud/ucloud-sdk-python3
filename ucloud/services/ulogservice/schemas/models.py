@@ -3,6 +3,19 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class LogSetInfoSchema(schema.ResponseSchema):
+    """LogSetInfo - 日志集信息"""
+
+    fields = {
+        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
+        "LogSetId": fields.Str(required=False, load_from="LogSetId"),
+        "LogSetName": fields.Str(required=False, load_from="LogSetName"),
+        "LogSetRemark": fields.Str(required=False, load_from="LogSetRemark"),
+        "TopicCount": fields.Int(required=False, load_from="TopicCount"),
+        "UpdateTime": fields.Int(required=False, load_from="UpdateTime"),
+    }
+
+
 class LogAgentSchema(schema.ResponseSchema):
     """LogAgent - logagent 信息"""
 
@@ -26,6 +39,22 @@ class MachineInfoSchema(schema.ResponseSchema):
         "LogAgents": LogAgentSchema(),
         "Name": fields.Str(required=False, load_from="Name"),
         "Type": fields.Str(required=False, load_from="Type"),
+    }
+
+
+class TopicInfoSchema(schema.ResponseSchema):
+    """TopicInfo - 主题信息"""
+
+    fields = {
+        "IsReserved": fields.Int(required=False, load_from="IsReserved"),
+        "ReserveAge": fields.Int(required=False, load_from="ReserveAge"),
+        "State": fields.Str(required=False, load_from="State"),
+        "TopicDesc": fields.Str(
+            required=False, load_from="TopicDesc"
+        ),  # Deprecated, will be removed at 1.0
+        "TopicId": fields.Str(required=False, load_from="TopicId"),
+        "TopicName": fields.Str(required=False, load_from="TopicName"),
+        "TopicShardNum": fields.Int(required=False, load_from="TopicShardNum"),
     }
 
 
@@ -83,29 +112,12 @@ class CollectConfSchema(schema.ResponseSchema):
     }
 
 
-class LogSetInfoSchema(schema.ResponseSchema):
-    """LogSetInfo - 日志集信息"""
+class AnalysisFieldSchema(schema.ResponseSchema):
+    """AnalysisField - 统计分析结果字段头"""
 
     fields = {
-        "CreateTime": fields.Int(required=False, load_from="CreateTime"),
-        "LogSetId": fields.Str(required=False, load_from="LogSetId"),
-        "LogSetName": fields.Str(required=False, load_from="LogSetName"),
-        "LogSetRemark": fields.Str(required=False, load_from="LogSetRemark"),
-        "TopicCount": fields.Int(required=False, load_from="TopicCount"),
-        "UpdateTime": fields.Int(required=False, load_from="UpdateTime"),
-    }
-
-
-class TopicInfoSchema(schema.ResponseSchema):
-    """TopicInfo - 主题信息"""
-
-    fields = {
-        "IsReserved": fields.Int(required=False, load_from="IsReserved"),
-        "ReserveAge": fields.Int(required=False, load_from="ReserveAge"),
-        "TopicDesc": fields.Str(required=False, load_from="TopicDesc"),
-        "TopicId": fields.Str(required=False, load_from="TopicId"),
-        "TopicName": fields.Str(required=False, load_from="TopicName"),
-        "TopicShardNum": fields.Int(required=False, load_from="TopicShardNum"),
+        "Name": fields.Str(required=True, load_from="Name"),
+        "Type": fields.Str(required=True, load_from="Type"),
     }
 
 
@@ -118,15 +130,6 @@ class LogContentSchema(schema.ResponseSchema):
         "LogId": fields.Str(required=True, load_from="LogId"),
         "LogJson": fields.Str(required=True, load_from="LogJson"),
         "Timestamp": fields.Int(required=True, load_from="Timestamp"),
-    }
-
-
-class AnalysisFieldSchema(schema.ResponseSchema):
-    """AnalysisField - 统计分析结果字段头"""
-
-    fields = {
-        "Name": fields.Str(required=True, load_from="Name"),
-        "Type": fields.Str(required=True, load_from="Type"),
     }
 
 
