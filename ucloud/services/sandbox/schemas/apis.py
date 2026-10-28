@@ -46,7 +46,9 @@ class CreateSandboxSiteRequestSchema(schema.RequestSchema):
     """CreateSandboxSite - 创建站点空间"""
 
     fields = {
-        "APIKey": fields.Str(required=True, dump_to="APIKey"),
+        "APIKey": fields.Str(
+            required=True, dump_to="APIKey"
+        ),  # Deprecated, will be removed at 1.0
         "AccessCode": fields.Str(required=True, dump_to="AccessCode"),
         "Envs": fields.Str(required=False, dump_to="Envs"),
         "KeyID": fields.Str(required=True, dump_to="KeyID"),
@@ -164,7 +166,9 @@ class UpdateSandboxSiteRequestSchema(schema.RequestSchema):
     """UpdateSandboxSite - 更新站点空间"""
 
     fields = {
-        "APIKey": fields.Str(required=False, dump_to="APIKey"),
+        "APIKey": fields.Str(
+            required=False, dump_to="APIKey"
+        ),  # Deprecated, will be removed at 1.0
         "AccessCode": fields.Str(required=False, dump_to="AccessCode"),
         "Envs": fields.Str(required=False, dump_to="Envs"),
         "IPAccess": UpdateSandboxSiteParamIPAccessSchema(
