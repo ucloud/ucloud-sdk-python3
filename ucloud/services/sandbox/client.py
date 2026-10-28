@@ -54,7 +54,7 @@ class SandboxClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **APIKey** (str) - (Required) 密钥
+        - **APIKey** (str) - (Required)
         - **AccessCode** (str) - (Required) 访问码
         - **KeyID** (str) - (Required) 密钥ID
         - **Name** (str) - (Required) 站点空间名称
@@ -228,7 +228,6 @@ class SandboxClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **SandboxID** (str) - (Required) 站点沙箱ID
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **APIKey** (str) - 更新站点空间API Key
         - **AccessCode** (str) - 访问码
         - **Envs** (str) - 更新站点空间环境变量，格式为["Key=Value"]
         - **IPAccess** (dict) - 见 **UpdateSandboxSiteParamIPAccess** 模型定义

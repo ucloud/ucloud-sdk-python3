@@ -3,21 +3,21 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class SiteIPAccessSchema(schema.ResponseSchema):
-    """SiteIPAccess - 站点空间-访问设置-IP限制"""
-
-    fields = {
-        "IPList": fields.List(fields.Str()),
-        "Mode": fields.Str(required=False, load_from="Mode"),
-    }
-
-
 class SiteResourceSchema(schema.ResponseSchema):
     """SiteResource - 站点资源"""
 
     fields = {
         "CPU": fields.Int(required=True, load_from="CPU"),
         "MemoryMB": fields.Int(required=True, load_from="MemoryMB"),
+    }
+
+
+class SiteIPAccessSchema(schema.ResponseSchema):
+    """SiteIPAccess - 站点空间-访问设置-IP限制"""
+
+    fields = {
+        "IPList": fields.List(fields.Str()),
+        "Mode": fields.Str(required=False, load_from="Mode"),
     }
 
 
