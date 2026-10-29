@@ -199,6 +199,13 @@ UCompShare
    :members:
 
 
+UDBPostgreSQL
+-------------
+
+.. autoclass:: ucloud.services.udbpostgresql.client.UDBPostgreSQLClient
+   :members:
+
+
 UDBProxy
 --------
 
@@ -339,13 +346,6 @@ UPFS
    :members:
 
 
-UPgSQL
-------
-
-.. autoclass:: ucloud.services.upgsql.client.UPgSQLClient
-   :members:
-
-
 UPhone
 ------
 
@@ -401,3 +401,9 @@ sandbox
 .. autoclass:: ucloud.services.sandbox.client.SandboxClient
    :members:
 
+
+UPgSQL
+------
+
+.. autoclass:: ucloud.services.upgsql.client.UPgSQLClient
+   :members:
