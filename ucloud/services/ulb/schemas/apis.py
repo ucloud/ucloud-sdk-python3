@@ -174,16 +174,6 @@ API: CreateListener
 """
 
 
-class CreateListenerParamStickinessConfigSchema(schema.RequestSchema):
-    """CreateListenerParamStickinessConfig -"""
-
-    fields = {
-        "CookieName": fields.Str(required=False, dump_to="CookieName"),
-        "Enabled": fields.Bool(required=False, dump_to="Enabled"),
-        "Type": fields.Str(required=False, dump_to="Type"),
-    }
-
-
 class CreateListenerParamHealthCheckConfigSchema(schema.RequestSchema):
     """CreateListenerParamHealthCheckConfig -"""
 
@@ -200,6 +190,16 @@ class CreateListenerParamHealthCheckConfigSchema(schema.RequestSchema):
         "TimeOut": fields.Int(required=False, dump_to="TimeOut"),
         "Type": fields.Str(required=False, dump_to="Type"),
         "UpCounts": fields.Int(required=False, dump_to="UpCounts"),
+    }
+
+
+class CreateListenerParamStickinessConfigSchema(schema.RequestSchema):
+    """CreateListenerParamStickinessConfig -"""
+
+    fields = {
+        "CookieName": fields.Str(required=False, dump_to="CookieName"),
+        "Enabled": fields.Bool(required=False, dump_to="Enabled"),
+        "Type": fields.Str(required=False, dump_to="Type"),
     }
 
 
@@ -255,21 +255,21 @@ API: CreateLoadBalancer
 """
 
 
-class CreateLoadBalancerParamLabelInfosSchema(schema.RequestSchema):
-    """CreateLoadBalancerParamLabelInfos -"""
-
-    fields = {
-        "Key": fields.Str(required=False, dump_to="Key"),
-        "Value": fields.Str(required=False, dump_to="Value"),
-    }
-
-
 class CreateLoadBalancerParamSecGroupsSchema(schema.RequestSchema):
     """CreateLoadBalancerParamSecGroups -"""
 
     fields = {
         "Priority": fields.Int(required=False, dump_to="Priority"),
         "SecGroupId": fields.Str(required=False, dump_to="SecGroupId"),
+    }
+
+
+class CreateLoadBalancerParamLabelInfosSchema(schema.RequestSchema):
+    """CreateLoadBalancerParamLabelInfos -"""
+
+    fields = {
+        "Key": fields.Str(required=False, dump_to="Key"),
+        "Value": fields.Str(required=False, dump_to="Value"),
     }
 
 
@@ -356,58 +356,6 @@ class CreateRuleParamRuleActionsBackendConnectionConfigSchema(
     }
 
 
-class CreateRuleParamRuleActionsFixedResponseConfigSchema(schema.RequestSchema):
-    """CreateRuleParamRuleActionsFixedResponseConfig -"""
-
-    fields = {
-        "Content": fields.Str(required=False, dump_to="Content"),
-        "HttpCode": fields.Int(required=False, dump_to="HttpCode"),
-    }
-
-
-class CreateRuleParamRuleConditionsPathConfigSchema(schema.RequestSchema):
-    """CreateRuleParamRuleConditionsPathConfig -"""
-
-    fields = {
-        "Values": fields.List(fields.Str()),
-    }
-
-
-class CreateRuleParamRuleConditionsHostConfigSchema(schema.RequestSchema):
-    """CreateRuleParamRuleConditionsHostConfig -"""
-
-    fields = {
-        "MatchMode": fields.Str(required=False, dump_to="MatchMode"),
-        "Values": fields.List(fields.Str()),
-    }
-
-
-class CreateRuleParamRuleActionsForwardConfigTargetsSchema(
-    schema.RequestSchema
-):
-    """CreateRuleParamRuleActionsForwardConfigTargets -"""
-
-    fields = {
-        "Id": fields.Str(required=False, dump_to="Id"),
-        "Weight": fields.Int(required=False, dump_to="Weight"),
-    }
-
-
-class CreateRuleParamRuleActionsCorsConfigSchema(schema.RequestSchema):
-    """CreateRuleParamRuleActionsCorsConfig -"""
-
-    fields = {
-        "AllowCredentials": fields.Str(
-            required=False, dump_to="AllowCredentials"
-        ),
-        "AllowHeaders": fields.List(fields.Str()),
-        "AllowMethods": fields.List(fields.Str()),
-        "AllowOrigin": fields.List(fields.Str()),
-        "ExposeHeaders": fields.List(fields.Str()),
-        "MaxAge": fields.Int(required=False, dump_to="MaxAge"),
-    }
-
-
 class CreateRuleParamRuleActionsInsertHeaderConfigSchema(schema.RequestSchema):
     """CreateRuleParamRuleActionsInsertHeaderConfig -"""
 
@@ -430,11 +378,38 @@ class CreateRuleParamRuleActionsProxyBufferingConfigSchema(
     }
 
 
-class CreateRuleParamRuleActionsRemoveHeaderConfigSchema(schema.RequestSchema):
-    """CreateRuleParamRuleActionsRemoveHeaderConfig -"""
+class CreateRuleParamRuleActionsCorsConfigSchema(schema.RequestSchema):
+    """CreateRuleParamRuleActionsCorsConfig -"""
 
     fields = {
-        "Key": fields.Str(required=False, dump_to="Key"),
+        "AllowCredentials": fields.Str(
+            required=False, dump_to="AllowCredentials"
+        ),
+        "AllowHeaders": fields.List(fields.Str()),
+        "AllowMethods": fields.List(fields.Str()),
+        "AllowOrigin": fields.List(fields.Str()),
+        "ExposeHeaders": fields.List(fields.Str()),
+        "MaxAge": fields.Int(required=False, dump_to="MaxAge"),
+    }
+
+
+class CreateRuleParamRuleActionsFixedResponseConfigSchema(schema.RequestSchema):
+    """CreateRuleParamRuleActionsFixedResponseConfig -"""
+
+    fields = {
+        "Content": fields.Str(required=False, dump_to="Content"),
+        "HttpCode": fields.Int(required=False, dump_to="HttpCode"),
+    }
+
+
+class CreateRuleParamRuleActionsForwardConfigTargetsSchema(
+    schema.RequestSchema
+):
+    """CreateRuleParamRuleActionsForwardConfigTargets -"""
+
+    fields = {
+        "Id": fields.Str(required=False, dump_to="Id"),
+        "Weight": fields.Int(required=False, dump_to="Weight"),
     }
 
 
@@ -445,6 +420,14 @@ class CreateRuleParamRuleActionsForwardConfigSchema(schema.RequestSchema):
         "Targets": fields.List(
             CreateRuleParamRuleActionsForwardConfigTargetsSchema()
         ),
+    }
+
+
+class CreateRuleParamRuleActionsRemoveHeaderConfigSchema(schema.RequestSchema):
+    """CreateRuleParamRuleActionsRemoveHeaderConfig -"""
+
+    fields = {
+        "Key": fields.Str(required=False, dump_to="Key"),
     }
 
 
@@ -475,6 +458,23 @@ class CreateRuleParamRuleActionsSchema(schema.RequestSchema):
             required=False, dump_to="RemoveHeaderConfig"
         ),
         "Type": fields.Str(required=True, dump_to="Type"),
+    }
+
+
+class CreateRuleParamRuleConditionsHostConfigSchema(schema.RequestSchema):
+    """CreateRuleParamRuleConditionsHostConfig -"""
+
+    fields = {
+        "MatchMode": fields.Str(required=False, dump_to="MatchMode"),
+        "Values": fields.List(fields.Str()),
+    }
+
+
+class CreateRuleParamRuleConditionsPathConfigSchema(schema.RequestSchema):
+    """CreateRuleParamRuleConditionsPathConfig -"""
+
+    fields = {
+        "Values": fields.List(fields.Str()),
     }
 
 
@@ -1492,7 +1492,22 @@ class UpdateLoadBalancerAttributeParamAccessLogConfigSchema(
     """UpdateLoadBalancerAttributeParamAccessLogConfig -"""
 
     fields = {
+        "ContentType": fields.Str(required=False, dump_to="ContentType"),
+        "Destination": fields.Str(required=False, dump_to="Destination"),
+        "DestinationAddrs": fields.Str(
+            required=False, dump_to="DestinationAddrs"
+        ),
+        "EnableAggregate": fields.Bool(
+            required=False, dump_to="EnableAggregate"
+        ),
+        "EnableCustomLog": fields.Bool(
+            required=False, dump_to="EnableCustomLog"
+        ),
         "Enabled": fields.Bool(required=False, dump_to="Enabled"),
+        "Frequency": fields.Int(required=False, dump_to="Frequency"),
+        "Params": fields.List(fields.Str()),
+        "Topic": fields.Str(required=False, dump_to="Topic"),
+        "ULSTopic": fields.Str(required=False, dump_to="ULSTopic"),
         "US3BucketName": fields.Str(required=False, dump_to="US3BucketName"),
         "US3TokenId": fields.Str(required=False, dump_to="US3TokenId"),
     }
@@ -1563,6 +1578,27 @@ API: UpdateRuleAttribute
 """
 
 
+class UpdateRuleAttributeParamRuleConditionsPathConfigSchema(
+    schema.RequestSchema
+):
+    """UpdateRuleAttributeParamRuleConditionsPathConfig -"""
+
+    fields = {
+        "Values": fields.List(fields.Str()),
+    }
+
+
+class UpdateRuleAttributeParamRuleActionsForwardConfigTargetsSchema(
+    schema.RequestSchema
+):
+    """UpdateRuleAttributeParamRuleActionsForwardConfigTargets -"""
+
+    fields = {
+        "Id": fields.Str(required=False, dump_to="Id"),
+        "Weight": fields.Int(required=False, dump_to="Weight"),
+    }
+
+
 class UpdateRuleAttributeParamRuleActionsBackendConnectionConfigSchema(
     schema.RequestSchema
 ):
@@ -1583,17 +1619,6 @@ class UpdateRuleAttributeParamRuleActionsFixedResponseConfigSchema(
     fields = {
         "Content": fields.Str(required=False, dump_to="Content"),
         "HttpCode": fields.Int(required=False, dump_to="HttpCode"),
-    }
-
-
-class UpdateRuleAttributeParamRuleActionsForwardConfigTargetsSchema(
-    schema.RequestSchema
-):
-    """UpdateRuleAttributeParamRuleActionsForwardConfigTargets -"""
-
-    fields = {
-        "Id": fields.Str(required=False, dump_to="Id"),
-        "Weight": fields.Int(required=False, dump_to="Weight"),
     }
 
 
@@ -1624,16 +1649,6 @@ class UpdateRuleAttributeParamRuleActionsCorsConfigSchema(schema.RequestSchema):
     }
 
 
-class UpdateRuleAttributeParamRuleActionsRemoveHeaderConfigSchema(
-    schema.RequestSchema
-):
-    """UpdateRuleAttributeParamRuleActionsRemoveHeaderConfig -"""
-
-    fields = {
-        "Key": fields.Str(required=False, dump_to="Key"),
-    }
-
-
 class UpdateRuleAttributeParamRuleActionsInsertHeaderConfigSchema(
     schema.RequestSchema
 ):
@@ -1655,6 +1670,16 @@ class UpdateRuleAttributeParamRuleActionsProxyBufferingConfigSchema(
         "CloseProxyBuffering": fields.Bool(
             required=False, dump_to="CloseProxyBuffering"
         ),
+    }
+
+
+class UpdateRuleAttributeParamRuleActionsRemoveHeaderConfigSchema(
+    schema.RequestSchema
+):
+    """UpdateRuleAttributeParamRuleActionsRemoveHeaderConfig -"""
+
+    fields = {
+        "Key": fields.Str(required=False, dump_to="Key"),
     }
 
 
@@ -1695,16 +1720,6 @@ class UpdateRuleAttributeParamRuleConditionsHostConfigSchema(
 
     fields = {
         "MatchMode": fields.Str(required=False, dump_to="MatchMode"),
-        "Values": fields.List(fields.Str()),
-    }
-
-
-class UpdateRuleAttributeParamRuleConditionsPathConfigSchema(
-    schema.RequestSchema
-):
-    """UpdateRuleAttributeParamRuleConditionsPathConfig -"""
-
-    fields = {
         "Values": fields.List(fields.Str()),
     }
 
