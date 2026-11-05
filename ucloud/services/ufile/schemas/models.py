@@ -36,6 +36,7 @@ class UFileBucketSetSchema(schema.ResponseSchema):
     """UFileBucketSet - DescribeBucket"""
 
     fields = {
+        "AcStorage": fields.Int(required=False, load_from="AcStorage"),
         "Biz": fields.Str(required=False, load_from="Biz"),
         "BucketId": fields.Str(required=False, load_from="BucketId"),
         "BucketName": fields.Str(required=False, load_from="BucketName"),
@@ -43,8 +44,10 @@ class UFileBucketSetSchema(schema.ResponseSchema):
         "CreateTime": fields.Int(required=False, load_from="CreateTime"),
         "Domain": UFileDomainSetSchema(),
         "HasUserDomain": fields.Int(required=False, load_from="HasUserDomain"),
+        "IaStorage": fields.Int(required=False, load_from="IaStorage"),
         "ModifyTime": fields.Int(required=False, load_from="ModifyTime"),
         "Region": fields.Str(required=False, load_from="Region"),
+        "Storage": fields.Int(required=False, load_from="Storage"),
         "StorageClass": fields.Str(required=False, load_from="StorageClass"),
         "Tag": fields.Str(required=False, load_from="Tag"),
         "Type": fields.Str(required=False, load_from="Type"),
