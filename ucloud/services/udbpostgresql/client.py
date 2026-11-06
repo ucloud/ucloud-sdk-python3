@@ -99,12 +99,27 @@ class UDBPostgreSQLClient(Client):
         - **SubnetID** (str) - (Required) 子网ID
         - **VPCID** (str) - (Required) VPC的ID
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **BackupZone** (str) - 高可用实例的备库可用区
         - **InstanceMode** (str) - UDB实例模式类型, 可选值如下: "Normal": 普通版UDB实例 "HA": 高可用版UDB实例 默认是"Normal"
+        - **Labels** (list) - 见 **CreateUPgSQLInstanceParamLabels** 模型定义
+        - **SecGroupId** (list) - 见 **CreateUPgSQLInstanceParamSecGroupId** 模型定义
 
         **Response**
 
         - **InstanceID** (str) - 资源ID
         - **Message** (str) - 返回信息
+
+        **Request Model**
+
+        **CreateUPgSQLInstanceParamLabels**
+        - **Key** (str) - 用户资源标签的键值
+        - **Value** (str) - 用户资源标签的键名
+
+
+        **CreateUPgSQLInstanceParamSecGroupId**
+        - **Id** (str) - 安全组id
+        - **Priority** (int) - 安全组优先级
+
 
         """
         # build request

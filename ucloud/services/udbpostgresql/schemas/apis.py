@@ -77,20 +77,41 @@ API: CreateUPgSQLInstance
 """
 
 
+class CreateUPgSQLInstanceParamLabelsSchema(schema.RequestSchema):
+    """CreateUPgSQLInstanceParamLabels -"""
+
+    fields = {
+        "Key": fields.Str(required=False, dump_to="Key"),
+        "Value": fields.Str(required=False, dump_to="Value"),
+    }
+
+
+class CreateUPgSQLInstanceParamSecGroupIdSchema(schema.RequestSchema):
+    """CreateUPgSQLInstanceParamSecGroupId -"""
+
+    fields = {
+        "Id": fields.Str(required=False, dump_to="Id"),
+        "Priority": fields.Int(required=False, dump_to="Priority"),
+    }
+
+
 class CreateUPgSQLInstanceRequestSchema(schema.RequestSchema):
     """CreateUPgSQLInstance - 创建PG云数据库"""
 
     fields = {
         "AdminPassword": fields.Str(required=True, dump_to="AdminPassword"),
+        "BackupZone": fields.Str(required=False, dump_to="BackupZone"),
         "DBVersion": fields.Str(required=True, dump_to="DBVersion"),
         "DiskSpace": fields.Str(required=True, dump_to="DiskSpace"),
         "InstanceMode": fields.Str(required=False, dump_to="InstanceMode"),
+        "Labels": fields.List(CreateUPgSQLInstanceParamLabelsSchema()),
         "MachineType": fields.Str(required=True, dump_to="MachineType"),
         "Name": fields.Str(required=True, dump_to="Name"),
         "ParamGroupID": fields.Int(required=True, dump_to="ParamGroupID"),
         "Port": fields.Int(required=True, dump_to="Port"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "SecGroupId": fields.List(CreateUPgSQLInstanceParamSecGroupIdSchema()),
         "SubnetID": fields.Str(required=True, dump_to="SubnetID"),
         "VPCID": fields.Str(required=True, dump_to="VPCID"),
         "Zone": fields.Str(required=True, dump_to="Zone"),
