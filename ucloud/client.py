@@ -502,16 +502,6 @@ class Client(client.Client):
             self.logger,
         )
 
-    def upgsql(self):
-        from ucloud.services.upgsql.client import UPgSQLClient
-
-        return UPgSQLClient(
-            self._auto_config("upgsql"),
-            self.transport,
-            self.middleware,
-            self.logger,
-        )
-
     def uphone(self):
         from ucloud.services.uphone.client import UPhoneClient
 
@@ -607,3 +597,13 @@ class Client(client.Client):
             package, self._config.get("user_agent") or ""
         )
         return dict(user_agent=user_agent.rstrip(), **self._config)
+
+    def upgsql(self):
+        from ucloud.services.upgsql.client import UPgSQLClient
+
+        return UPgSQLClient(
+            self._auto_config("upgsql"),
+            self.transport,
+            self.middleware,
+            self.logger,
+        )
