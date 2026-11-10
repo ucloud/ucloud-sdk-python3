@@ -163,6 +163,12 @@ class UK8SClient(Client):
 
         **Request Model**
 
+        **AddUK8SNodeGroupParamSecGroupId**
+        - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
+        - **Name** (str) - 安全组名称。
+        - **Priority** (str) - 安全组优先级。取值范围[1, 5]
+
+
         **AddUK8SNodeGroupParamNetworkInterfaceEIP**
         - **Bandwidth** (int) - 【若绑定EIP，此参数必填】弹性IP的外网带宽, 单位为Mbps. 共享带宽模式下非必传, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-800]
         - **CouponId** (str) - 当前EIP代金券id。请通过DescribeCoupon接口查询，或登录用户中心查看。
@@ -171,18 +177,8 @@ class UK8SClient(Client):
         - **ShareBandwidthId** (str) - 绑定的共享带宽Id，仅当PayMode为ShareBandwidth时有效
 
 
-        **AddUK8SNodeGroupParamKubeletConfigurationEvictionSoft**
-        - **ImagefsAvailable** (str) - 触发Pod驱逐操作的软性门限之容器镜像剩余空间: 需以%结尾。配置此值时必须同时配置EvictionSoftGracePeriod.ImagefsAvailable。控制台展示为evictionSoft - imagefs.available
-        - **MemoryAvailable** (str) - 触发Pod驱逐操作的软性门限之内存用量: 需以Mi或Gi结尾。配置此值时必须同时配置EvictionSoftGracePeriod.MemoryAvailable。控制台展示为evictionSoft - memory.available
-        - **NodefsAvailable** (str) - 触发Pod驱逐操作的软性门限之节点存储剩余空间: 需以%结尾。配置此值时必须同时配置EvictionSoftGracePeriod.NodefsAvailable。控制台展示为evictionSoft - nodefs.available
-        - **NodefsInodesFree** (str) - 触发Pod驱逐操作的软性门限节点inode剩余量: 需以%结尾。配置此值时必须同时配置EvictionSoftGracePeriod.NodefsInodesFree。控制台展示为evictionSoft - nodefs.inodesFree
-
-
-        **AddUK8SNodeGroupParamKubeletConfigurationKubeReserved**
-        - **CPU** (str) - kubelet预留CPU资源，以m结尾。控制台展示为kubeReserved - cpu
-        - **EphemeralStorage** (str) - kubelet预留存储空间，以Gi结尾。控制台展示为kubeReserved - ephemeral-storage
-        - **Memory** (str) - kubelet预留内存资源，以Mi结尾。控制台展示为kubeReserved - memory
-        - **Pid** (str) - kubelet预留pid数量，必须大于等于500, string方式提供。控制台展示为kubeReserved - pid
+        **AddUK8SNodeGroupParamNetworkInterface**
+        - **EIP** (dict) - 见 **AddUK8SNodeGroupParamNetworkInterfaceEIP** 模型定义
 
 
         **AddUK8SNodeGroupParamKubeletConfigurationEvictionHard**
@@ -192,6 +188,20 @@ class UK8SClient(Client):
         - **NodefsInodesFree** (str) - 触发Pod驱逐操作的硬性门限节点inode剩余量: 需以%结尾。控制台展示为evictionHard - nodefs.inodesFree
 
 
+        **AddUK8SNodeGroupParamKubeletConfigurationSystemReserved**
+        - **CPU** (str) - 系统预留CPU资源，以m结尾。控制台展示为systemReserved - cpu
+        - **EphemeralStorage** (str) - 系统预留存储空间，以Gi结尾。控制台展示为systemReserved - ephemeral-storage
+        - **Memory** (str) - 系统预留内存资源，以Mi结尾。控制台展示为systemReserved - memory
+        - **Pid** (str) - 系统预留pid数量，必须大于等于500, string方式提供。控制台展示为systemReserved - pid
+
+
+        **AddUK8SNodeGroupParamKubeletConfigurationEvictionSoft**
+        - **ImagefsAvailable** (str) - 触发Pod驱逐操作的软性门限之容器镜像剩余空间: 需以%结尾。配置此值时必须同时配置EvictionSoftGracePeriod.ImagefsAvailable。控制台展示为evictionSoft - imagefs.available
+        - **MemoryAvailable** (str) - 触发Pod驱逐操作的软性门限之内存用量: 需以Mi或Gi结尾。配置此值时必须同时配置EvictionSoftGracePeriod.MemoryAvailable。控制台展示为evictionSoft - memory.available
+        - **NodefsAvailable** (str) - 触发Pod驱逐操作的软性门限之节点存储剩余空间: 需以%结尾。配置此值时必须同时配置EvictionSoftGracePeriod.NodefsAvailable。控制台展示为evictionSoft - nodefs.available
+        - **NodefsInodesFree** (str) - 触发Pod驱逐操作的软性门限节点inode剩余量: 需以%结尾。配置此值时必须同时配置EvictionSoftGracePeriod.NodefsInodesFree。控制台展示为evictionSoft - nodefs.inodesFree
+
+
         **AddUK8SNodeGroupParamKubeletConfigurationEvictionSoftGracePeriod**
         - **ImagefsAvailable** (str) - ImagefsAvailable软性门限的宽限时间，必须以s结尾。控制台展示为evictionSoftGracePeriod - imagefs.available
         - **MemoryAvailable** (str) - MemoryAvailable软性门限的宽限时间，必须以s结尾。控制台展示为evictionSoftGracePeriod - memory.available
@@ -199,11 +209,11 @@ class UK8SClient(Client):
         - **NodefsInodesFree** (str) - NodefsInodesFree软性门限的宽限时间，必须以s结尾。控制台展示为evictionSoftGracePeriod - nodefs.inodesFree
 
 
-        **AddUK8SNodeGroupParamKubeletConfigurationSystemReserved**
-        - **CPU** (str) - 系统预留CPU资源，以m结尾。控制台展示为systemReserved - cpu
-        - **EphemeralStorage** (str) - 系统预留存储空间，以Gi结尾。控制台展示为systemReserved - ephemeral-storage
-        - **Memory** (str) - 系统预留内存资源，以Mi结尾。控制台展示为systemReserved - memory
-        - **Pid** (str) - 系统预留pid数量，必须大于等于500, string方式提供。控制台展示为systemReserved - pid
+        **AddUK8SNodeGroupParamKubeletConfigurationKubeReserved**
+        - **CPU** (str) - kubelet预留CPU资源，以m结尾。控制台展示为kubeReserved - cpu
+        - **EphemeralStorage** (str) - kubelet预留存储空间，以Gi结尾。控制台展示为kubeReserved - ephemeral-storage
+        - **Memory** (str) - kubelet预留内存资源，以Mi结尾。控制台展示为kubeReserved - memory
+        - **Pid** (str) - kubelet预留pid数量，必须大于等于500, string方式提供。控制台展示为kubeReserved - pid
 
 
         **AddUK8SNodeGroupParamKubeletConfiguration**
@@ -217,16 +227,6 @@ class UK8SClient(Client):
         - **KubeReserved** (dict) - 见 **AddUK8SNodeGroupParamKubeletConfigurationKubeReserved** 模型定义
         - **MaxPods** (int) - Node能运行的Pod最大数量。需大于0。控制台展示为maxPods
         - **SystemReserved** (dict) - 见 **AddUK8SNodeGroupParamKubeletConfigurationSystemReserved** 模型定义
-
-
-        **AddUK8SNodeGroupParamSecGroupId**
-        - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
-        - **Name** (str) - 安全组名称。
-        - **Priority** (str) - 安全组优先级。取值范围[1, 5]
-
-
-        **AddUK8SNodeGroupParamNetworkInterface**
-        - **EIP** (dict) - 见 **AddUK8SNodeGroupParamNetworkInterfaceEIP** 模型定义
 
 
         """
@@ -347,8 +347,10 @@ class UK8SClient(Client):
         - **Value** (str) - UK8S用户资源标签的值
 
 
-        **AddUK8SUHostNodeParamKubeletConfiguration**
-        - **ContainerLogMaxFiles** (str) - 全量KubeletConfiguration.XXX定义参考AddUK8SNodeGroup接口: https://uxiao.ucloudadmin.com/#/api-manager/api/detail/UK8S/AddUK8SNodeGroup
+        **AddUK8SUHostNodeParamSecGroupId**
+        - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
+        - **Name** (str) - 安全组名称。
+        - **Priority** (str) - 安全组优先级。取值范围[1, 5]
 
 
         **AddUK8SUHostNodeParamNetworkInterfaceEIP**
@@ -363,10 +365,8 @@ class UK8SClient(Client):
         - **EIP** (dict) - 见 **AddUK8SUHostNodeParamNetworkInterfaceEIP** 模型定义
 
 
-        **AddUK8SUHostNodeParamSecGroupId**
-        - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
-        - **Name** (str) - 安全组名称。
-        - **Priority** (str) - 安全组优先级。取值范围[1, 5]
+        **AddUK8SUHostNodeParamKubeletConfiguration**
+        - **ContainerLogMaxFiles** (str) - 全量KubeletConfiguration.XXX定义参考AddUK8SNodeGroup接口: https://uxiao.ucloudadmin.com/#/api-manager/api/detail/UK8S/AddUK8SNodeGroup
 
 
         """
@@ -405,6 +405,7 @@ class UK8SClient(Client):
         - **VPCId** (str) - (Required) 集群Node及Pod所属VPC
         - **ChargeType** (str) - 集群所有节点的付费模式。枚举值为： Year，按年付费； Month，按月付费； Dynamic，按小时付费（需开启权限），默认按月。
         - **ClusterDomain** (str) - 创建集群的时候定义clusterdomain
+        - **DedicatedPodSubnet** (bool) - Pod是否使用独立子网
         - **ExternalApiServer** (str) - 是否允许外网访问apiserver，开启：Yes 不开启：No。默认为No。
         - **ForwardSrcIPMethod** (str) - LbClass为nlb的时候支持的源ip转发模式，目前只支持Toa,为空则不开源ip功能 枚举："",Toa
         - **InitScript** (str) - 用户自定义脚本，与UserData不同，自定义脚本将在集群安装完毕后执行。注意：1、总数据量大小不超多16K；2、使用base64编码。
@@ -423,6 +424,8 @@ class UK8SClient(Client):
         - **MasterMinimalCpuPlatform** (str) - Master节点的最低cpu平台，不选则随机。枚举值["Intel/Auto", "Intel/IvyBridge", "Intel/Haswell", "Intel/Broadwell", "Intel/Skylake", "Intel/Cascadelake"。
         - **MasterUHostFamily** (str) - Master节点规格族，如o1a, o1i
         - **Nodes** (list) - 见 **CreateUK8SClusterV2ParamNodes** 模型定义
+        - **PodSubnetId** (str) - Pod独立子网模式下的子网Id
+        - **PodSubnetSecGroup** (str) - Pod独立子网模式下使用的安全组，如不配置则使用防火墙模式
         - **Quantity** (int) - 购买时长。默认为1。按小时购买(Dynamic)时无需此参数。 月付时，此参数传0，代表了购买至月末。
         - **Tag** (str) - 业务组
         - **UserData** (str) - 用户自定义数据。注意：1、总数据量大小不超多16K；2、使用base64编码。
@@ -433,12 +436,6 @@ class UK8SClient(Client):
         - **ClusterId** (str) - 集群ID
 
         **Request Model**
-
-        **CreateUK8SClusterV2ParamMasterSecGroupId**
-        - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
-        - **Name** (str) - 安全组名称。
-        - **Priority** (str) - 安全组优先级。取值范围[1, 5]
-
 
         **CreateUK8SClusterV2ParamNodesNetworkInterfaceEIP**
         - **Bandwidth** (int) - 【若绑定EIP，此参数必填】弹性IP的外网带宽, 单位为Mbps. 共享带宽模式下非必传, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-800]
@@ -452,7 +449,12 @@ class UK8SClient(Client):
         - **EIP** (dict) - 见 **CreateUK8SClusterV2ParamNodesNetworkInterfaceEIP** 模型定义
 
 
-        **CreateUK8SClusterV2ParamNodesSecGroupId**
+        **CreateUK8SClusterV2ParamUserLabels**
+        - **Key** (str) - UK8S用户资源标签的键值
+        - **Value** (str) - UK8S用户资源标签的值
+
+
+        **CreateUK8SClusterV2ParamMasterSecGroupId**
         - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
         - **Name** (str) - 安全组名称。
         - **Priority** (str) - 安全组优先级。取值范围[1, 5]
@@ -460,6 +462,21 @@ class UK8SClient(Client):
 
         **CreateUK8SClusterV2ParamNodesKubeletConfiguration**
         - **ContainerLogMaxFiles** (str) - 全量KubeletConfiguration.XXX定义参考AddUK8SNodeGroup接口: https://uxiao.ucloudadmin.com/#/api-manager/api/detail/UK8S/AddUK8SNodeGroup
+
+
+        **CreateUK8SClusterV2ParamNodesSecGroupId**
+        - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
+        - **Name** (str) - 安全组名称。
+        - **Priority** (str) - 安全组优先级。取值范围[1, 5]
+
+
+        **CreateUK8SClusterV2ParamMaster**
+        - **SecGroupId** (list) - 见 **CreateUK8SClusterV2ParamMasterSecGroupId** 模型定义
+        - **Zone** (str) - Master节点所属可用区，需要设置 Master.0.Zone、 Master.1.Zone、Master.2.Zone 三个 Master 节点的可用区。 三个节点可部署在不同可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+
+        **CreateUK8SClusterV2ParamKubeProxy**
+        - **Mode** (str) - 集群kube-proxy模式。支持iptables和ipvs，默认为iptables。
 
 
         **CreateUK8SClusterV2ParamNodes**
@@ -489,20 +506,6 @@ class UK8SClient(Client):
         - **UHostFamily** (str) - Node节点规格族
         - **UNIFeature** (str) - 弹性网卡特性。开启了弹性网卡权限位，此特性才生效，默认 false 未开启，true 开启。
         - **Zone** (str) - 一组Nodes节点所属可用区，可创建多组Nodes节点，如一组是CPU Nodes节点，另一组是GPU Nodes节点。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-
-
-        **CreateUK8SClusterV2ParamUserLabels**
-        - **Key** (str) - UK8S用户资源标签的键值
-        - **Value** (str) - UK8S用户资源标签的值
-
-
-        **CreateUK8SClusterV2ParamKubeProxy**
-        - **Mode** (str) - 集群kube-proxy模式。支持iptables和ipvs，默认为iptables。
-
-
-        **CreateUK8SClusterV2ParamMaster**
-        - **SecGroupId** (list) - 见 **CreateUK8SClusterV2ParamMasterSecGroupId** 模型定义
-        - **Zone** (str) - Master节点所属可用区，需要设置 Master.0.Zone、 Master.1.Zone、Master.2.Zone 三个 Master 节点的可用区。 三个节点可部署在不同可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
 
         """
@@ -542,14 +545,14 @@ class UK8SClient(Client):
 
         **Request Model**
 
-        **CreateUK8SULSConfigParamInputDetailMetadata**
-        - **Container** (str) - 指定具体要采集元数据的容器名。如果留空，则不采集容器的元数据,可选字段：container_name,namespace,pod_name,pod_ip,pod_uid,container_id,image_name。Pod Label 元数据通过指定 InputDetail.Metadata.Labels字段。
-        - **Labels** (str) - 定义要采集哪些 Pod 的标签 (Labels)。可选值: * (采集所有标签), "app,version" (仅采集 app 和 version), "" (不采集任何标签)。
-
-
         **CreateUK8SULSConfigParamInputDetailFilePaths**
         - **File** (str) - 定义采集路径的文件名
         - **Path** (str) - 定义采集路径
+
+
+        **CreateUK8SULSConfigParamInputDetailMetadata**
+        - **Container** (str) - 指定具体要采集元数据的容器名。如果留空，则不采集容器的元数据,可选字段：container_name,namespace,pod_name,pod_ip,pod_uid,container_id,image_name。Pod Label 元数据通过指定 InputDetail.Metadata.Labels字段。
+        - **Labels** (str) - 定义要采集哪些 Pod 的标签 (Labels)。可选值: * (采集所有标签), "app,version" (仅采集 app 和 version), "" (不采集任何标签)。
 
 
         **CreateUK8SULSConfigParamInputDetail**
@@ -559,8 +562,33 @@ class UK8SClient(Client):
         - **Type** (str) - 日志输入类型。支持 container_file 和 container_stdout
 
 
+        **CreateUK8SULSConfigParamMatchRuleWorkloads**
+        - **Name** (str) - 按工作负载匹配时，工作负载的名称。
+        - **Namespace** (str) - 按工作负载匹配时，工作负载所在的命名空间。
+        - **Type** (str) - 按工作负载匹配时，工作负载的类型，例如 deployment, statefulset, daemonset,job, cronjob。
+
+
         **CreateUK8SULSConfigParamExtractRuleExtractRule**
         - **LogRegexBase64** (str) - Base64 编码的日志提取正则表达式。
+
+
+        **CreateUK8SULSConfigParamMatchRulePodLabelsLabels**
+        - **Key** (str) - 按 Pod 标签匹配时，要匹配的标签的 Key。
+        - **Value** (str) - 按 Pod 标签匹配时，要匹配的标签的值。
+        - **ValueOperator** (str) - 按 Pod 标签匹配时，标签值的匹配操作符。可选值: in, notin。
+
+
+        **CreateUK8SULSConfigParamMatchRulePodLabels**
+        - **Labels** (list) - 见 **CreateUK8SULSConfigParamMatchRulePodLabelsLabels** 模型定义
+        - **Namespace** (str) - 命名空间名称
+        - **NamespaceOperator** (str) - 指定/排除命名空间, 可选值: in/notin
+
+
+        **CreateUK8SULSConfigParamMatchRule**
+        - **Container** (str) - 要匹配的容器名称，*表示所有容器，用逗号分隔
+        - **ContainerOperator** (str) - 容器名称匹配操作符。支持：in(包含)，notin(不包含)
+        - **PodLabels** (dict) - 见 **CreateUK8SULSConfigParamMatchRulePodLabels** 模型定义
+        - **Workloads** (list) - 见 **CreateUK8SULSConfigParamMatchRuleWorkloads** 模型定义
 
 
         **CreateUK8SULSConfigParamExtractRule**
@@ -578,31 +606,6 @@ class UK8SClient(Client):
         - **TimeKey** (str) - 当日志为 json 或正则提取时，指定包含日志时间的字段名 (Key)。
         - **UnMatchKey** (str) - 没有设置默认值；UnMatchUpload="true" 时强制要求填写
         - **UnMatchUpload** (str) - 是否上传解析失败的日志。true 表示上传，false 表示丢弃。默认为 false。
-
-
-        **CreateUK8SULSConfigParamMatchRulePodLabelsLabels**
-        - **Key** (str) - 按 Pod 标签匹配时，要匹配的标签的 Key。
-        - **Value** (str) - 按 Pod 标签匹配时，要匹配的标签的值。
-        - **ValueOperator** (str) - 按 Pod 标签匹配时，标签值的匹配操作符。可选值: in, notin。
-
-
-        **CreateUK8SULSConfigParamMatchRulePodLabels**
-        - **Labels** (list) - 见 **CreateUK8SULSConfigParamMatchRulePodLabelsLabels** 模型定义
-        - **Namespace** (str) - 命名空间名称
-        - **NamespaceOperator** (str) - 指定/排除命名空间, 可选值: in/notin
-
-
-        **CreateUK8SULSConfigParamMatchRuleWorkloads**
-        - **Name** (str) - 按工作负载匹配时，工作负载的名称。
-        - **Namespace** (str) - 按工作负载匹配时，工作负载所在的命名空间。
-        - **Type** (str) - 按工作负载匹配时，工作负载的类型，例如 deployment, statefulset, daemonset,job, cronjob。
-
-
-        **CreateUK8SULSConfigParamMatchRule**
-        - **Container** (str) - 要匹配的容器名称，*表示所有容器，用逗号分隔
-        - **ContainerOperator** (str) - 容器名称匹配操作符。支持：in(包含)，notin(不包含)
-        - **PodLabels** (dict) - 见 **CreateUK8SULSConfigParamMatchRulePodLabels** 模型定义
-        - **Workloads** (list) - 见 **CreateUK8SULSConfigParamMatchRuleWorkloads** 模型定义
 
 
         """
@@ -751,12 +754,6 @@ class UK8SClient(Client):
 
         **Response Model**
 
-        **SecGroupId**
-        - **Id** (str) - 安全组 ID
-        - **Name** (str) - 安全组名称
-        - **Priority** (str) - 安全组优先级
-
-
         **EIP**
         - **Bandwidth** (int) - 【若绑定EIP，此参数必填】弹性IP的外网带宽, 单位为Mbps. 共享带宽模式下非必传, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-800]
         - **CouponId** (str) - 当前EIP代金券id。请通过DescribeCoupon接口查询，或登录用户中心查看。
@@ -794,6 +791,12 @@ class UK8SClient(Client):
         - **KubeReserved** (dict) - 见 **ReservedResource** 模型定义
         - **MaxPods** (int) - 最大Pod数量
         - **SystemReserved** (dict) - 见 **ReservedResource** 模型定义
+
+
+        **SecGroupId**
+        - **Id** (str) - 安全组 ID
+        - **Name** (str) - 安全组名称
+        - **Priority** (str) - 安全组优先级
 
 
         **AutoScalingGroup**
@@ -922,8 +925,17 @@ class UK8SClient(Client):
 
         **Response Model**
 
-        **KubeProxy**
-        - **Mode** (str) - KubeProxy模式，枚举值为[ipvs,iptables]
+        **IPSet**
+        - **Bandwidth** (int) - IP对应的带宽, 单位: Mb (内网IP不显示带宽信息)
+        - **Default** (str) - 是否默认的弹性网卡的信息。true: 是默认弹性网卡；其他值：不是。
+        - **IP** (str) - IP地址
+        - **IPId** (str) - IP资源ID (内网IP无对应的资源ID)
+        - **IPMode** (str) - IP 地址分配模式
+        - **Mac** (str) - 网卡的 MAC 地址
+        - **NetworkInterfaceId** (str) - 虚拟网卡 Id
+        - **SubnetId** (str) - IP 所在的 子网 Id
+        - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
+        - **VPCId** (str) - IP 所属的 VPC Id
 
 
         **SecGroupId**
@@ -943,19 +955,6 @@ class UK8SClient(Client):
         - **Name** (str) - UDisk名字（仅当磁盘是UDisk时返回）
         - **Size** (int) - 磁盘大小，单位: GB
         - **Type** (str) - 磁盘类型。系统盘: Boot，数据盘: Data,网络盘：Udisk
-
-
-        **IPSet**
-        - **Bandwidth** (int) - IP对应的带宽, 单位: Mb (内网IP不显示带宽信息)
-        - **Default** (str) - 是否默认的弹性网卡的信息。true: 是默认弹性网卡；其他值：不是。
-        - **IP** (str) - IP地址
-        - **IPId** (str) - IP资源ID (内网IP无对应的资源ID)
-        - **IPMode** (str) - IP 地址分配模式
-        - **Mac** (str) - 网卡的 MAC 地址
-        - **NetworkInterfaceId** (str) - 虚拟网卡 Id
-        - **SubnetId** (str) - IP 所在的 子网 Id
-        - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
-        - **VPCId** (str) - IP 所属的 VPC Id
 
 
         **LoopbackClientCert**
@@ -983,6 +982,10 @@ class UK8SClient(Client):
         - **State** (str) - 主机状态
         - **TotalDiskSpace** (int) - 节点总磁盘空间
         - **Zone** (str) - 所在机房
+
+
+        **KubeProxy**
+        - **Mode** (str) - KubeProxy模式，枚举值为[ipvs,iptables]
 
 
         **Autoscaler**
@@ -1200,11 +1203,16 @@ class UK8SClient(Client):
 
         **Response Model**
 
-        **InstanceTypeBootDisk**
-        - **Features** (list) - 磁盘特性列表
-        - **InstantResize** (bool) - 是否支持即时扩容
-        - **MaximalSize** (int) - 最大磁盘容量
-        - **Name** (str) - 系统盘类型名称
+        **InstanceTypeMachineSizeCollection**
+        - **Cpu** (int) - CPU 核数
+        - **Memory** (list) - 可用内存容量列表
+        - **MinimalCpuPlatform** (list) - 最低 CPU 平台列表
+
+
+        **InstanceTypeCpuPlatform**
+        - **CpuFrequency** (str) - CPU 频率
+        - **CpuModels** (list) - CPU 型号列表
+        - **Name** (str) - CPU 平台名称
 
 
         **InstanceTypeDataDisk**
@@ -1214,27 +1222,11 @@ class UK8SClient(Client):
         - **Name** (str) - 数据盘类型名称
 
 
-        **InstanceTypeFeatureMode**
-        - **MinimalCpuPlatform** (list) - 最低 CPU 平台列表
-        - **Name** (str) - 模式名称
-        - **RelatedToImageFeature** (list) - 关联的镜像特性
-
-
-        **InstanceTypeValueRate**
-        - **Rate** (int) - 评分
-        - **Value** (float) - 数值
-
-
-        **InstanceTypeCpuPlatform**
-        - **CpuFrequency** (str) - CPU 频率
-        - **CpuModels** (list) - CPU 型号列表
-        - **Name** (str) - CPU 平台名称
-
-
-        **InstanceTypeUHostFamily**
-        - **CpuFrequency** (str) - CPU 频率
-        - **CpuPlatforms** (list) - 见 **InstanceTypeCpuPlatform** 模型定义
-        - **Name** (str) - 规格族名称
+        **InstanceTypeBootDisk**
+        - **Features** (list) - 磁盘特性列表
+        - **InstantResize** (bool) - 是否支持即时扩容
+        - **MaximalSize** (int) - 最大磁盘容量
+        - **Name** (str) - 系统盘类型名称
 
 
         **InstanceTypeDisk**
@@ -1243,15 +1235,26 @@ class UK8SClient(Client):
         - **Name** (str) - 磁盘配置名称
 
 
+        **InstanceTypeFeatureMode**
+        - **MinimalCpuPlatform** (list) - 最低 CPU 平台列表
+        - **Name** (str) - 模式名称
+        - **RelatedToImageFeature** (list) - 关联的镜像特性
+
+
         **InstanceTypeFeature**
         - **Modes** (list) - 见 **InstanceTypeFeatureMode** 模型定义
         - **Name** (str) - 特性名称
 
 
-        **InstanceTypeMachineSizeCollection**
-        - **Cpu** (int) - CPU 核数
-        - **Memory** (list) - 可用内存容量列表
-        - **MinimalCpuPlatform** (list) - 最低 CPU 平台列表
+        **InstanceTypeValueRate**
+        - **Rate** (int) - 评分
+        - **Value** (float) - 数值
+
+
+        **InstanceTypeUHostFamily**
+        - **CpuFrequency** (str) - CPU 频率
+        - **CpuPlatforms** (list) - 见 **InstanceTypeCpuPlatform** 模型定义
+        - **Name** (str) - 规格族名称
 
 
         **InstanceTypeMachineSize**
@@ -1428,6 +1431,13 @@ class UK8SClient(Client):
         - **Pid** (str) - Pid
 
 
+        **NodeGroupDiskConfig**
+        - **IsBoot** (bool) - 是否为系统盘
+        - **KmsKeyId** (str) - 磁盘加密密钥 ID
+        - **Size** (int) - 磁盘大小，单位 GB
+        - **Type** (str) - 磁盘类型
+
+
         **EIP**
         - **Bandwidth** (int) - 【若绑定EIP，此参数必填】弹性IP的外网带宽, 单位为Mbps. 共享带宽模式下非必传, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-800]
         - **CouponId** (str) - 当前EIP代金券id。请通过DescribeCoupon接口查询，或登录用户中心查看。
@@ -1440,11 +1450,10 @@ class UK8SClient(Client):
         - **EIP** (dict) - 见 **EIP** 模型定义
 
 
-        **NodeGroupDiskConfig**
-        - **IsBoot** (bool) - 是否为系统盘
-        - **KmsKeyId** (str) - 磁盘加密密钥 ID
-        - **Size** (int) - 磁盘大小，单位 GB
-        - **Type** (str) - 磁盘类型
+        **SecGroupId**
+        - **Id** (str) - 安全组 ID
+        - **Name** (str) - 安全组名称
+        - **Priority** (str) - 安全组优先级
 
 
         **KubeletConfiguration**
@@ -1458,12 +1467,6 @@ class UK8SClient(Client):
         - **KubeReserved** (dict) - 见 **ReservedResource** 模型定义
         - **MaxPods** (int) - 最大Pod数量
         - **SystemReserved** (dict) - 见 **ReservedResource** 模型定义
-
-
-        **SecGroupId**
-        - **Id** (str) - 安全组 ID
-        - **Name** (str) - 安全组名称
-        - **Priority** (str) - 安全组优先级
 
 
         **NodeGroupSet**
@@ -1550,25 +1553,6 @@ class UK8SClient(Client):
 
         **Response Model**
 
-        **ClusterUpdateNodeInfo**
-        - **IP** (str) - Node节点IP
-        - **Node** (str) - Node节点名称
-        - **OperationResult** (int) - 上次插件操作结果，0：没有上次操作结果，或当前正在执行升级或查询 1：获取成功 2 获取失败  3 升级成功 4 升级失败
-        - **Role** (str) - 节点角色， master 或者 node
-        - **Status** (int) - 插件工作状态，0：未知，1：正常，2：异常, 3: 升级中
-        - **UpdateTime** (int) - 插件信息更新时间
-        - **Version** (str) - 插件版本
-
-
-        **ClusterUpgradeInfo**
-        - **AvailableVersions** (list) - string 数组，可用新版本，例如  ["1.15.12","1.16.15","1.17.4","1.18.9"]
-        - **NodeInfoSet** (list) - 见 **ClusterUpdateNodeInfo** 模型定义
-        - **Stage** (str) - string，集群升级所处阶段 Unknown、Precheck、MasterUpdating、NodeUpdating、Failed、Success集群从未进行过升级则返回 Unknown集群开始升级过程几个阶段 Precheck->MasterUpdating->NodeUpdating→Success如果升级失败则为 Failed
-        - **TargetVersion** (str) - string，集群升级目标版本
-        - **UpdateTime** (int) - 集群信息更新时间戳，单位 s
-        - **Version** (str) - string， 集群当前版本
-
-
         **VKNodeInfo**
         - **Node** (str) - 节点 ID。
         - **OperationResult** (int) - 上次插件操作结果：0 无结果，1 查询成功，2 查询失败，3 升级成功，4 升级失败。
@@ -1609,6 +1593,25 @@ class UK8SClient(Client):
         - **Status** (int) - 插件状态。
         - **UpdateTime** (int) - 更新时间，Unix 时间戳，单位秒。
         - **Version** (str) - 当前插件版本。
+
+
+        **ClusterUpdateNodeInfo**
+        - **IP** (str) - Node节点IP
+        - **Node** (str) - Node节点名称
+        - **OperationResult** (int) - 上次插件操作结果，0：没有上次操作结果，或当前正在执行升级或查询 1：获取成功 2 获取失败  3 升级成功 4 升级失败
+        - **Role** (str) - 节点角色， master 或者 node
+        - **Status** (int) - 插件工作状态，0：未知，1：正常，2：异常, 3: 升级中
+        - **UpdateTime** (int) - 插件信息更新时间
+        - **Version** (str) - 插件版本
+
+
+        **ClusterUpgradeInfo**
+        - **AvailableVersions** (list) - string 数组，可用新版本，例如  ["1.15.12","1.16.15","1.17.4","1.18.9"]
+        - **NodeInfoSet** (list) - 见 **ClusterUpdateNodeInfo** 模型定义
+        - **Stage** (str) - string，集群升级所处阶段 Unknown、Precheck、MasterUpdating、NodeUpdating、Failed、Success集群从未进行过升级则返回 Unknown集群开始升级过程几个阶段 Precheck->MasterUpdating->NodeUpdating→Success如果升级失败则为 Failed
+        - **TargetVersion** (str) - string，集群升级目标版本
+        - **UpdateTime** (int) - 集群信息更新时间戳，单位 s
+        - **Version** (str) - string， 集群当前版本
 
 
         **NodePluginInfo**
@@ -1701,10 +1704,6 @@ class UK8SClient(Client):
 
         **Response Model**
 
-        **KubeProxy**
-        - **Mode** (str) - KubeProxy模式，枚举值为[ipvs,iptables]
-
-
         **UHostIPSet**
         - **Bandwidth** (int) - IP对应的带宽, 单位: Mb (内网IP不显示带宽信息)
         - **IP** (str) - IP地址
@@ -1715,6 +1714,10 @@ class UK8SClient(Client):
         - **SubnetId** (str) - IP地址对应的子网 ID
         - **Type** (str) - 国际: Internation，BGP: Bgp，内网: Private
         - **VPCId** (str) - IP地址对应的VPC ID
+
+
+        **KubeProxy**
+        - **Mode** (str) - KubeProxy模式，枚举值为[ipvs,iptables]
 
 
         **NodeInfoV2**
@@ -1855,6 +1858,13 @@ class UK8SClient(Client):
 
         **Response Model**
 
+        **EvictionCondition**
+        - **ImagefsAvailable** (str) - 镜像文件系统存储相关驱逐条件或宽限时间。
+        - **MemoryAvailable** (str) - 内存相关驱逐条件或宽限时间。
+        - **NodefsAvailable** (str) - 节点存储余量相关驱逐条件或宽限时间。
+        - **NodefsInodesFree** (str) - 节点剩余inodes驱逐条件或宽限时间。
+
+
         **ReservedResource**
         - **CPU** (str) - CPU
         - **EphemeralStorage** (str) - 存储
@@ -1862,11 +1872,12 @@ class UK8SClient(Client):
         - **Pid** (str) - Pid
 
 
-        **EvictionCondition**
-        - **ImagefsAvailable** (str) - 镜像文件系统存储相关驱逐条件或宽限时间。
-        - **MemoryAvailable** (str) - 内存相关驱逐条件或宽限时间。
-        - **NodefsAvailable** (str) - 节点存储余量相关驱逐条件或宽限时间。
-        - **NodefsInodesFree** (str) - 节点剩余inodes驱逐条件或宽限时间。
+        **EIP**
+        - **Bandwidth** (int) - 【若绑定EIP，此参数必填】弹性IP的外网带宽, 单位为Mbps. 共享带宽模式下非必传, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-800]
+        - **CouponId** (str) - 当前EIP代金券id。请通过DescribeCoupon接口查询，或登录用户中心查看。
+        - **OperatorName** (str) - 【若绑定EIP，此参数必填】弹性IP的线路。枚举值: 国际: International，BGP: Bgp。 各地域允许的线路参数如下: cn-sh1: Bgp cn-sh2: Bgp cn-gd: Bgp cn-bj1: Bgp cn-bj2: Bgp hk: International us-ca: International th-bkk: International kr-seoul:International us-ws:International ge-fra:International sg:International tw-kh:International.其他海外线路均为 International
+        - **PayMode** (str) - 弹性IP的计费模式. 枚举值: "Traffic", 流量计费; "Bandwidth", 带宽计费; "ShareBandwidth",共享带宽模式. "Free":免费带宽模式,默认为 "Bandwidth"
+        - **ShareBandwidthId** (str) - 绑定的共享带宽Id，仅当PayMode为ShareBandwidth时有效
 
 
         **SecGroupId**
@@ -1875,17 +1886,8 @@ class UK8SClient(Client):
         - **Priority** (str) - 安全组优先级
 
 
-        **KubeletConfiguration**
-        - **ContainerLogMaxFiles** (int) - 最大日志文件数量
-        - **ContainerLogMaxSize** (str) - 最大日志文件大小
-        - **EvictionHard** (dict) - 见 **EvictionCondition** 模型定义
-        - **EvictionSoft** (dict) - 见 **EvictionCondition** 模型定义
-        - **EvictionSoftGracePeriod** (dict) - 见 **EvictionCondition** 模型定义
-        - **ImageGCHighThresholdPercent** (int) - 镜像垃圾收集阈值
-        - **ImageGCLowThresholdPercent** (int) - 停止镜像垃圾收集阈值
-        - **KubeReserved** (dict) - 见 **ReservedResource** 模型定义
-        - **MaxPods** (int) - 最大Pod数量
-        - **SystemReserved** (dict) - 见 **ReservedResource** 模型定义
+        **NetworkInterface**
+        - **EIP** (dict) - 见 **EIP** 模型定义
 
 
         **DiskSet**
@@ -1901,16 +1903,17 @@ class UK8SClient(Client):
         - **Type** (str) - 磁盘类型。系统盘: Boot，数据盘: Data,网络盘：Udisk
 
 
-        **EIP**
-        - **Bandwidth** (int) - 【若绑定EIP，此参数必填】弹性IP的外网带宽, 单位为Mbps. 共享带宽模式下非必传, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-800]
-        - **CouponId** (str) - 当前EIP代金券id。请通过DescribeCoupon接口查询，或登录用户中心查看。
-        - **OperatorName** (str) - 【若绑定EIP，此参数必填】弹性IP的线路。枚举值: 国际: International，BGP: Bgp。 各地域允许的线路参数如下: cn-sh1: Bgp cn-sh2: Bgp cn-gd: Bgp cn-bj1: Bgp cn-bj2: Bgp hk: International us-ca: International th-bkk: International kr-seoul:International us-ws:International ge-fra:International sg:International tw-kh:International.其他海外线路均为 International
-        - **PayMode** (str) - 弹性IP的计费模式. 枚举值: "Traffic", 流量计费; "Bandwidth", 带宽计费; "ShareBandwidth",共享带宽模式. "Free":免费带宽模式,默认为 "Bandwidth"
-        - **ShareBandwidthId** (str) - 绑定的共享带宽Id，仅当PayMode为ShareBandwidth时有效
-
-
-        **NetworkInterface**
-        - **EIP** (dict) - 见 **EIP** 模型定义
+        **KubeletConfiguration**
+        - **ContainerLogMaxFiles** (int) - 最大日志文件数量
+        - **ContainerLogMaxSize** (str) - 最大日志文件大小
+        - **EvictionHard** (dict) - 见 **EvictionCondition** 模型定义
+        - **EvictionSoft** (dict) - 见 **EvictionCondition** 模型定义
+        - **EvictionSoftGracePeriod** (dict) - 见 **EvictionCondition** 模型定义
+        - **ImageGCHighThresholdPercent** (int) - 镜像垃圾收集阈值
+        - **ImageGCLowThresholdPercent** (int) - 停止镜像垃圾收集阈值
+        - **KubeReserved** (dict) - 见 **ReservedResource** 模型定义
+        - **MaxPods** (int) - 最大Pod数量
+        - **SystemReserved** (dict) - 见 **ReservedResource** 模型定义
 
 
         **NodeGroupSet**
@@ -1988,38 +1991,9 @@ class UK8SClient(Client):
 
         **Response Model**
 
-        **ULSFilePaths**
-        - **File** (str) - 采集文件
-        - **Path** (str) - 定义采集路径
-
-
         **ULSInputMetadata**
         - **Container** (str) - 指定具体要采集元数据的容器名。如果留空，则不采集容器的元数据，可选字段：container_name,namespace,pod_name,pod_ip,pod_uid,container_id,image_name。Pod Label 元数据通过指定 InputDetail.Metadata.Labels 字段。
         - **Labels** (str) - 定义要采集哪些 Pod 的标签 (Labels)。可选值：*：采集所有标签。app,version：仅采集 app 和 version 这两个标签。""（空字符串）：不采集任何标签。
-
-
-        **ULSInputDetail**
-        - **FilePaths** (list) - 见 **ULSFilePaths** 模型定义
-        - **InputMetadata** (dict) - 见 **ULSInputMetadata** 模型定义
-        - **Stream** (str) - 容器标准输出流类型。仅适用于 container_stdout，可选值：all、stdout、stderr，默认为 all。
-        - **Type** (str) - 日志输入类型。可选值：container_file、container_stdout。
-
-
-        **ULSExtractRule**
-        - **BeginningRegex** (str) - 行首正则表达式。在 multi_line、multi_line_full_regex 或 multi_line_delimiter 模式下，BeginningRegex 和 BeginningRegexBase64 必须至少填写一个。
-        - **BeginningRegexBase64** (str) - Base64 编码的行首正则表达式。填写时优先于 BeginningRegex。
-        - **CollectPolicy** (str) - 采集策略。可选值：full（全量采集存量日志）、increment（从当前时间点增量采集）。默认为 full。
-        - **Delimiter** (str) - 分隔符。适用于 delimiter 或 multi_line_delimiter，可选值：space、tab、|、;、,。
-        - **DelimiterBase64** (str) - Base64 编码的分隔符。填写时优先于 Delimiter。
-        - **Encode** (str) - 日志原文的编码格式。可选值：utf-8、gbk。默认为 utf-8。
-        - **Keys** (list) - 提取后的字段名列表。仅适用于 delimiter、full_regex、multi_line_full_regex 和 multi_line_delimiter。
-        - **LogRegex** (str) - 日志提取正则表达式。在 full_regex 或 multi_line_full_regex 模式下，LogRegex 和 LogRegexBase64 必须至少填写一个。
-        - **LogRegexBase64** (str) - Base64 编码的日志提取正则表达式。填写时优先于 LogRegex。
-        - **LogType** (str) - 日志解析类型。可选值：json、delimiter、full_regex、multi_line_full_regex、multi_line_delimiter、minimal_list、multi_line。
-        - **TimeFormat** (str) - TimeKey 对应的时间格式。在 json、full_regex 或 multi_line_full_regex 模式下，填写 TimeKey 时必须同时填写 TimeFormat。
-        - **TimeKey** (str) - 包含日志时间的字段名。
-        - **UnMatchKey** (str) - 存放无法解析的日志原文的 Key。UnMatchUpload 为 true 时必须填写。
-        - **UnMatchUpload** (str) - 是否上传解析失败的日志。字符串 true 表示上传，false 表示丢弃。默认为 false。
 
 
         **ULSWorkloadMatch**
@@ -2045,6 +2019,35 @@ class UK8SClient(Client):
         - **ContainerOperator** (str) - 容器名称匹配操作符。支持：in(包含)，notin(不包含)
         - **PodLabels** (dict) - 见 **ULSPodLabelsMatch** 模型定义
         - **Workloads** (list) - 见 **ULSWorkloadMatch** 模型定义
+
+
+        **ULSExtractRule**
+        - **BeginningRegex** (str) - 行首正则表达式。在 multi_line、multi_line_full_regex 或 multi_line_delimiter 模式下，BeginningRegex 和 BeginningRegexBase64 必须至少填写一个。
+        - **BeginningRegexBase64** (str) - Base64 编码的行首正则表达式。填写时优先于 BeginningRegex。
+        - **CollectPolicy** (str) - 采集策略。可选值：full（全量采集存量日志）、increment（从当前时间点增量采集）。默认为 full。
+        - **Delimiter** (str) - 分隔符。适用于 delimiter 或 multi_line_delimiter，可选值：space、tab、|、;、,。
+        - **DelimiterBase64** (str) - Base64 编码的分隔符。填写时优先于 Delimiter。
+        - **Encode** (str) - 日志原文的编码格式。可选值：utf-8、gbk。默认为 utf-8。
+        - **Keys** (list) - 提取后的字段名列表。仅适用于 delimiter、full_regex、multi_line_full_regex 和 multi_line_delimiter。
+        - **LogRegex** (str) - 日志提取正则表达式。在 full_regex 或 multi_line_full_regex 模式下，LogRegex 和 LogRegexBase64 必须至少填写一个。
+        - **LogRegexBase64** (str) - Base64 编码的日志提取正则表达式。填写时优先于 LogRegex。
+        - **LogType** (str) - 日志解析类型。可选值：json、delimiter、full_regex、multi_line_full_regex、multi_line_delimiter、minimal_list、multi_line。
+        - **TimeFormat** (str) - TimeKey 对应的时间格式。在 json、full_regex 或 multi_line_full_regex 模式下，填写 TimeKey 时必须同时填写 TimeFormat。
+        - **TimeKey** (str) - 包含日志时间的字段名。
+        - **UnMatchKey** (str) - 存放无法解析的日志原文的 Key。UnMatchUpload 为 true 时必须填写。
+        - **UnMatchUpload** (str) - 是否上传解析失败的日志。字符串 true 表示上传，false 表示丢弃。默认为 false。
+
+
+        **ULSFilePaths**
+        - **File** (str) - 采集文件
+        - **Path** (str) - 定义采集路径
+
+
+        **ULSInputDetail**
+        - **FilePaths** (list) - 见 **ULSFilePaths** 模型定义
+        - **InputMetadata** (dict) - 见 **ULSInputMetadata** 模型定义
+        - **Stream** (str) - 容器标准输出流类型。仅适用于 container_stdout，可选值：all、stdout、stderr，默认为 all。
+        - **Type** (str) - 日志输入类型。可选值：container_file、container_stdout。
 
 
         **ULSLogConfig**
@@ -2237,6 +2240,16 @@ class UK8SClient(Client):
 
         **Request Model**
 
+        **UpdateUK8SNodeGroupParamKubeletConfiguration**
+        - **ContainerLogMaxFiles** (int) - 全量KubeletConfiguration.XXX定义参考AddUK8SNodeGroup接口: https://uxiao.ucloudadmin.com/#/api-manager/api/detail/UK8S/AddUK8SNodeGroup
+
+
+        **UpdateUK8SNodeGroupParamSecGroupId**
+        - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
+        - **Name** (str) - 安全组名称。
+        - **Priority** (str) - 安全组优先级。取值范围[1, 5]
+
+
         **UpdateUK8SNodeGroupParamNetworkInterfaceEIP**
         - **Bandwidth** (int) - 【若绑定EIP，此参数必填】弹性IP的外网带宽, 单位为Mbps. 共享带宽模式下非必传, 非共享带宽模式必须指定非0Mbps带宽. 各地域非共享带宽的带宽范围如下： 流量计费[1-300]，带宽计费[1-800]
         - **CouponId** (str) - 当前EIP代金券id。请通过DescribeCoupon接口查询，或登录用户中心查看。
@@ -2247,16 +2260,6 @@ class UK8SClient(Client):
 
         **UpdateUK8SNodeGroupParamNetworkInterface**
         - **EIP** (dict) - 见 **UpdateUK8SNodeGroupParamNetworkInterfaceEIP** 模型定义
-
-
-        **UpdateUK8SNodeGroupParamSecGroupId**
-        - **Id** (str) - 安全组 ID。至多可以同时绑定5个安全组。
-        - **Name** (str) - 安全组名称。
-        - **Priority** (str) - 安全组优先级。取值范围[1, 5]
-
-
-        **UpdateUK8SNodeGroupParamKubeletConfiguration**
-        - **ContainerLogMaxFiles** (int) - 全量KubeletConfiguration.XXX定义参考AddUK8SNodeGroup接口: https://uxiao.ucloudadmin.com/#/api-manager/api/detail/UK8S/AddUK8SNodeGroup
 
 
         """
@@ -2312,23 +2315,6 @@ class UK8SClient(Client):
         - **Type** (str) - 工作负载类型。可选值：deployment、statefulset、daemonset、job、cronjob。
 
 
-        **UpdateUK8SULSConfigParamInputDetailFilePaths**
-        - **File** (str) - 要采集的文件名。仅适用于container_file。
-        - **Path** (str) - 日志采集路径。仅适用于container_file。
-
-
-        **UpdateUK8SULSConfigParamInputDetailMetadata**
-        - **Container** (str) - 要附加到日志中的容器元数据字段，多个字段使用逗号分隔。可选字段：container_name、namespace、pod_name、pod_ip、pod_uid、container_id、image_name。留空表示不采集容器元数据。
-        - **Labels** (str) - 要采集的Pod标签。*表示采集所有标签，app,version表示仅采集指定标签，空字符串表示不采集标签。
-
-
-        **UpdateUK8SULSConfigParamMatchRule**
-        - **Container** (str) - 要匹配的容器名称，*表示所有容器，多个名称使用逗号分隔。
-        - **ContainerOperator** (str) - 容器名称匹配操作符。可选值：in、notin。填写该参数时必须同时填写MatchRule.Container。
-        - **PodLabels** (dict) - 见 **UpdateUK8SULSConfigParamMatchRulePodLabels** 模型定义
-        - **Workloads** (list) - 见 **UpdateUK8SULSConfigParamMatchRuleWorkloads** 模型定义
-
-
         **UpdateUK8SULSConfigParamExtractRule**
         - **BeginningRegex** (str) - 行首正则表达式。multi_line、multi_line_full_regex或multi_line_delimiter模式下，BeginningRegex和BeginningRegexBase64必须至少填写一个。
         - **BeginningRegexBase64** (str) - Base64编码的行首正则表达式。填写时优先于BeginningRegex。
@@ -2346,11 +2332,28 @@ class UK8SClient(Client):
         - **UnMatchUpload** (str) - 是否上传解析失败的日志。字符串true表示上传，false表示丢弃。默认为false。
 
 
+        **UpdateUK8SULSConfigParamInputDetailFilePaths**
+        - **File** (str) - 要采集的文件名。仅适用于container_file。
+        - **Path** (str) - 日志采集路径。仅适用于container_file。
+
+
+        **UpdateUK8SULSConfigParamInputDetailMetadata**
+        - **Container** (str) - 要附加到日志中的容器元数据字段，多个字段使用逗号分隔。可选字段：container_name、namespace、pod_name、pod_ip、pod_uid、container_id、image_name。留空表示不采集容器元数据。
+        - **Labels** (str) - 要采集的Pod标签。*表示采集所有标签，app,version表示仅采集指定标签，空字符串表示不采集标签。
+
+
         **UpdateUK8SULSConfigParamInputDetail**
         - **FilePaths** (list) - 见 **UpdateUK8SULSConfigParamInputDetailFilePaths** 模型定义
         - **Metadata** (dict) - 见 **UpdateUK8SULSConfigParamInputDetailMetadata** 模型定义
         - **Stream** (str) - 容器标准输出流类型。仅适用于container_stdout，可选值：all、stdout、stderr，默认为all。
         - **Type** (str) - 日志输入类型。可选值：container_file、container_stdout。
+
+
+        **UpdateUK8SULSConfigParamMatchRule**
+        - **Container** (str) - 要匹配的容器名称，*表示所有容器，多个名称使用逗号分隔。
+        - **ContainerOperator** (str) - 容器名称匹配操作符。可选值：in、notin。填写该参数时必须同时填写MatchRule.Container。
+        - **PodLabels** (dict) - 见 **UpdateUK8SULSConfigParamMatchRulePodLabels** 模型定义
+        - **Workloads** (list) - 见 **UpdateUK8SULSConfigParamMatchRuleWorkloads** 模型定义
 
 
         """

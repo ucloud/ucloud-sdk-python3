@@ -3,38 +3,6 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class SecGroupIdSchema(schema.ResponseSchema):
-    """SecGroupId - 安全组"""
-
-    fields = {
-        "Id": fields.Str(required=False, load_from="Id"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Priority": fields.Str(required=False, load_from="Priority"),
-    }
-
-
-class EIPSchema(schema.ResponseSchema):
-    """EIP - 节点EIP"""
-
-    fields = {
-        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
-        "CouponId": fields.Str(required=False, load_from="CouponId"),
-        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
-        "PayMode": fields.Str(required=False, load_from="PayMode"),
-        "ShareBandwidthId": fields.Str(
-            required=False, load_from="ShareBandwidthId"
-        ),
-    }
-
-
-class NetworkInterfaceSchema(schema.ResponseSchema):
-    """NetworkInterface - 网络接口"""
-
-    fields = {
-        "EIP": EIPSchema(),
-    }
-
-
 class EvictionConditionSchema(schema.ResponseSchema):
     """EvictionCondition - 驱逐条件或宽限时间"""
 
@@ -51,6 +19,16 @@ class EvictionConditionSchema(schema.ResponseSchema):
         "NodefsInodesFree": fields.Str(
             required=False, load_from="NodefsInodesFree"
         ),
+    }
+
+
+class SecGroupIdSchema(schema.ResponseSchema):
+    """SecGroupId - 安全组"""
+
+    fields = {
+        "Id": fields.Str(required=False, load_from="Id"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Priority": fields.Str(required=False, load_from="Priority"),
     }
 
 
@@ -89,6 +67,28 @@ class KubeletConfigurationSchema(schema.ResponseSchema):
         "KubeReserved": ReservedResourceSchema(),
         "MaxPods": fields.Int(required=False, load_from="MaxPods"),
         "SystemReserved": ReservedResourceSchema(),
+    }
+
+
+class EIPSchema(schema.ResponseSchema):
+    """EIP - 节点EIP"""
+
+    fields = {
+        "Bandwidth": fields.Int(required=False, load_from="Bandwidth"),
+        "CouponId": fields.Str(required=False, load_from="CouponId"),
+        "OperatorName": fields.Str(required=False, load_from="OperatorName"),
+        "PayMode": fields.Str(required=False, load_from="PayMode"),
+        "ShareBandwidthId": fields.Str(
+            required=False, load_from="ShareBandwidthId"
+        ),
+    }
+
+
+class NetworkInterfaceSchema(schema.ResponseSchema):
+    """NetworkInterface - 网络接口"""
+
+    fields = {
+        "EIP": EIPSchema(),
     }
 
 
@@ -180,6 +180,14 @@ class AutoscalerSchema(schema.ResponseSchema):
     }
 
 
+class KubeProxySchema(schema.ResponseSchema):
+    """KubeProxy - KubeProxy信息"""
+
+    fields = {
+        "Mode": fields.Str(required=False, load_from="Mode"),
+    }
+
+
 class IPSetSchema(schema.ResponseSchema):
     """IPSet - 节点的IP信息"""
 
@@ -251,14 +259,6 @@ class UhostInfoSchema(schema.ResponseSchema):
     }
 
 
-class KubeProxySchema(schema.ResponseSchema):
-    """KubeProxy - KubeProxy信息"""
-
-    fields = {
-        "Mode": fields.Str(required=False, load_from="Mode"),
-    }
-
-
 class ImageInfoSchema(schema.ResponseSchema):
     """ImageInfo - UK8S 可用镜像信息"""
 
@@ -293,22 +293,43 @@ class K8SNodeConditionSchema(schema.ResponseSchema):
     }
 
 
-class InstanceTypeCpuPlatformSchema(schema.ResponseSchema):
-    """InstanceTypeCpuPlatform - 机型 CPU 平台"""
+class InstanceTypeMachineSizeCollectionSchema(schema.ResponseSchema):
+    """InstanceTypeMachineSizeCollection - 机型 CPU 与内存组合"""
 
     fields = {
-        "CpuFrequency": fields.Str(required=False, load_from="CpuFrequency"),
-        "CpuModels": fields.List(fields.Str()),
+        "Cpu": fields.Int(required=False, load_from="Cpu"),
+        "Memory": fields.List(fields.Int()),
+        "MinimalCpuPlatform": fields.List(fields.Str()),
+    }
+
+
+class InstanceTypeMachineSizeSchema(schema.ResponseSchema):
+    """InstanceTypeMachineSize - 机型规格组合"""
+
+    fields = {
+        "Collection": fields.List(InstanceTypeMachineSizeCollectionSchema()),
+        "Gpu": fields.Int(required=False, load_from="Gpu"),
+    }
+
+
+class InstanceTypeBootDiskSchema(schema.ResponseSchema):
+    """InstanceTypeBootDisk - 机型系统盘能力"""
+
+    fields = {
+        "Features": fields.List(fields.Str()),
+        "InstantResize": fields.Bool(required=False, load_from="InstantResize"),
+        "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
         "Name": fields.Str(required=False, load_from="Name"),
     }
 
 
-class InstanceTypeUHostFamilySchema(schema.ResponseSchema):
-    """InstanceTypeUHostFamily - 机型规格族"""
+class InstanceTypeDataDiskSchema(schema.ResponseSchema):
+    """InstanceTypeDataDisk - 机型数据盘能力"""
 
     fields = {
-        "CpuFrequency": fields.Str(required=False, load_from="CpuFrequency"),
-        "CpuPlatforms": fields.List(InstanceTypeCpuPlatformSchema()),
+        "Features": fields.List(fields.Str()),
+        "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
+        "MinimalSize": fields.Int(required=False, load_from="MinimalSize"),
         "Name": fields.Str(required=False, load_from="Name"),
     }
 
@@ -332,36 +353,6 @@ class InstanceTypeFeatureSchema(schema.ResponseSchema):
     }
 
 
-class InstanceTypeBootDiskSchema(schema.ResponseSchema):
-    """InstanceTypeBootDisk - 机型系统盘能力"""
-
-    fields = {
-        "Features": fields.List(fields.Str()),
-        "InstantResize": fields.Bool(required=False, load_from="InstantResize"),
-        "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
-        "Name": fields.Str(required=False, load_from="Name"),
-    }
-
-
-class InstanceTypeMachineSizeCollectionSchema(schema.ResponseSchema):
-    """InstanceTypeMachineSizeCollection - 机型 CPU 与内存组合"""
-
-    fields = {
-        "Cpu": fields.Int(required=False, load_from="Cpu"),
-        "Memory": fields.List(fields.Int()),
-        "MinimalCpuPlatform": fields.List(fields.Str()),
-    }
-
-
-class InstanceTypeMachineSizeSchema(schema.ResponseSchema):
-    """InstanceTypeMachineSize - 机型规格组合"""
-
-    fields = {
-        "Collection": fields.List(InstanceTypeMachineSizeCollectionSchema()),
-        "Gpu": fields.Int(required=False, load_from="Gpu"),
-    }
-
-
 class InstanceTypeValueRateSchema(schema.ResponseSchema):
     """InstanceTypeValueRate - 机型数值与评分"""
 
@@ -371,13 +362,22 @@ class InstanceTypeValueRateSchema(schema.ResponseSchema):
     }
 
 
-class InstanceTypeDataDiskSchema(schema.ResponseSchema):
-    """InstanceTypeDataDisk - 机型数据盘能力"""
+class InstanceTypeCpuPlatformSchema(schema.ResponseSchema):
+    """InstanceTypeCpuPlatform - 机型 CPU 平台"""
 
     fields = {
-        "Features": fields.List(fields.Str()),
-        "MaximalSize": fields.Int(required=False, load_from="MaximalSize"),
-        "MinimalSize": fields.Int(required=False, load_from="MinimalSize"),
+        "CpuFrequency": fields.Str(required=False, load_from="CpuFrequency"),
+        "CpuModels": fields.List(fields.Str()),
+        "Name": fields.Str(required=False, load_from="Name"),
+    }
+
+
+class InstanceTypeUHostFamilySchema(schema.ResponseSchema):
+    """InstanceTypeUHostFamily - 机型规格族"""
+
+    fields = {
+        "CpuFrequency": fields.Str(required=False, load_from="CpuFrequency"),
+        "CpuPlatforms": fields.List(InstanceTypeCpuPlatformSchema()),
         "Name": fields.Str(required=False, load_from="Name"),
     }
 
@@ -494,25 +494,6 @@ class NodeGroupSetSchema(schema.ResponseSchema):
     }
 
 
-class CloudProviderInfoSchema(schema.ResponseSchema):
-    """CloudProviderInfo - CloudProvider 插件版本与状态"""
-
-    fields = {
-        "AvailableVersion": fields.Str(
-            required=False, load_from="AvailableVersion"
-        ),
-        "ManageEnabled": fields.Bool(required=False, load_from="ManageEnabled"),
-        "Name": fields.Str(required=False, load_from="Name"),
-        "OperationResult": fields.Int(
-            required=False, load_from="OperationResult"
-        ),
-        "ReleaseTime": fields.Str(required=False, load_from="ReleaseTime"),
-        "Status": fields.Int(required=False, load_from="Status"),
-        "UpdateTime": fields.Int(required=False, load_from="UpdateTime"),
-        "Version": fields.Str(required=False, load_from="Version"),
-    }
-
-
 class ClusterUpdateNodeInfoSchema(schema.ResponseSchema):
     """ClusterUpdateNodeInfo - 集群升级时单个Node节点的状态等信息"""
 
@@ -542,20 +523,6 @@ class ClusterUpgradeInfoSchema(schema.ResponseSchema):
     }
 
 
-class RuntimeConvertInfoSchema(schema.ResponseSchema):
-    """RuntimeConvertInfo - 集群Runtime转换信息"""
-
-    fields = {
-        "NodeInfoSet": fields.List(NodePluginInfoSchema()),
-        "RuntimeName": fields.Str(required=False, load_from="RuntimeName"),
-        "RuntimeVersion": fields.Str(
-            required=False, load_from="RuntimeVersion"
-        ),
-        "Stage": fields.Str(required=False, load_from="Stage"),
-        "UpdateTime": fields.Int(required=False, load_from="UpdateTime"),
-    }
-
-
 class VKNodeInfoSchema(schema.ResponseSchema):
     """VKNodeInfo - 单个虚拟节点插件信息"""
 
@@ -570,16 +537,6 @@ class VKNodeInfoSchema(schema.ResponseSchema):
     }
 
 
-class MonitorInfoSchema(schema.ResponseSchema):
-    """MonitorInfo - 监控插件信息"""
-
-    fields = {
-        "AvailableVersion": fields.Str(
-            required=False, load_from="AvailableVersion"
-        ),
-    }
-
-
 class VKNodeSchema(schema.ResponseSchema):
     """VKNode - 虚拟节点插件信息"""
 
@@ -591,6 +548,34 @@ class VKNodeSchema(schema.ResponseSchema):
         "Name": fields.Str(required=True, load_from="Name"),
         "PluginInfoSet": fields.List(VKNodeInfoSchema()),
         "ReleaseTime": fields.Str(required=False, load_from="ReleaseTime"),
+    }
+
+
+class NodePluginSchema(schema.ResponseSchema):
+    """NodePlugin - 节点类插件信息"""
+
+    fields = {
+        "AvailableVersion": fields.Str(
+            required=False, load_from="AvailableVersion"
+        ),
+        "ManageEnabled": fields.Bool(required=False, load_from="ManageEnabled"),
+        "Name": fields.Str(required=True, load_from="Name"),
+        "PluginInfoSet": fields.List(NodePluginInfoSchema()),
+        "ReleaseTime": fields.Str(required=False, load_from="ReleaseTime"),
+    }
+
+
+class RuntimeConvertInfoSchema(schema.ResponseSchema):
+    """RuntimeConvertInfo - 集群Runtime转换信息"""
+
+    fields = {
+        "NodeInfoSet": fields.List(NodePluginInfoSchema()),
+        "RuntimeName": fields.Str(required=False, load_from="RuntimeName"),
+        "RuntimeVersion": fields.Str(
+            required=False, load_from="RuntimeVersion"
+        ),
+        "Stage": fields.Str(required=False, load_from="Stage"),
+        "UpdateTime": fields.Int(required=False, load_from="UpdateTime"),
     }
 
 
@@ -613,17 +598,32 @@ class CSIInfoSchema(schema.ResponseSchema):
     }
 
 
-class NodePluginSchema(schema.ResponseSchema):
-    """NodePlugin - 节点类插件信息"""
+class MonitorInfoSchema(schema.ResponseSchema):
+    """MonitorInfo - 监控插件信息"""
+
+    fields = {
+        "AvailableVersion": fields.Str(
+            required=False, load_from="AvailableVersion"
+        ),
+    }
+
+
+class CloudProviderInfoSchema(schema.ResponseSchema):
+    """CloudProviderInfo - CloudProvider 插件版本与状态"""
 
     fields = {
         "AvailableVersion": fields.Str(
             required=False, load_from="AvailableVersion"
         ),
         "ManageEnabled": fields.Bool(required=False, load_from="ManageEnabled"),
-        "Name": fields.Str(required=True, load_from="Name"),
-        "PluginInfoSet": fields.List(NodePluginInfoSchema()),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "OperationResult": fields.Int(
+            required=False, load_from="OperationResult"
+        ),
         "ReleaseTime": fields.Str(required=False, load_from="ReleaseTime"),
+        "Status": fields.Int(required=False, load_from="Status"),
+        "UpdateTime": fields.Int(required=False, load_from="UpdateTime"),
+        "Version": fields.Str(required=False, load_from="Version"),
     }
 
 
@@ -746,25 +746,6 @@ class ClusterSetSchema(schema.ResponseSchema):
     }
 
 
-class ULSInputMetadataSchema(schema.ResponseSchema):
-    """ULSInputMetadata - ULSInputMetadata"""
-
-    fields = {
-        "Container": fields.Str(required=False, load_from="Container"),
-        "Labels": fields.Str(required=False, load_from="Labels"),
-    }
-
-
-class ULSWorkloadMatchSchema(schema.ResponseSchema):
-    """ULSWorkloadMatch - ULSWorkloadMatch"""
-
-    fields = {
-        "Name": fields.Str(required=False, load_from="Name"),
-        "Namespace": fields.Str(required=False, load_from="Namespace"),
-        "Type": fields.Str(required=False, load_from="Type"),
-    }
-
-
 class ULSExtractRuleSchema(schema.ResponseSchema):
     """ULSExtractRule - 定义日志的提取、解析和格式化规则。"""
 
@@ -803,6 +784,15 @@ class ULSFilePathsSchema(schema.ResponseSchema):
     }
 
 
+class ULSInputMetadataSchema(schema.ResponseSchema):
+    """ULSInputMetadata - ULSInputMetadata"""
+
+    fields = {
+        "Container": fields.Str(required=False, load_from="Container"),
+        "Labels": fields.Str(required=False, load_from="Labels"),
+    }
+
+
 class ULSInputDetailSchema(schema.ResponseSchema):
     """ULSInputDetail - 定义日志的输入来源，例如容器文件或容器标准输出。"""
 
@@ -833,6 +823,16 @@ class ULSPodLabelsMatchSchema(schema.ResponseSchema):
         "NamespaceOperator": fields.Str(
             required=False, load_from="NamespaceOperator"
         ),
+    }
+
+
+class ULSWorkloadMatchSchema(schema.ResponseSchema):
+    """ULSWorkloadMatch - ULSWorkloadMatch"""
+
+    fields = {
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Namespace": fields.Str(required=False, load_from="Namespace"),
+        "Type": fields.Str(required=False, load_from="Type"),
     }
 
 
