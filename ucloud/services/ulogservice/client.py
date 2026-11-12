@@ -677,6 +677,11 @@ class ULogServiceClient(Client):
 
         **Response Model**
 
+        **AnalysisField**
+        - **Name** (str) - 字段名
+        - **Type** (str) - 字段类型
+
+
         **LogContent**
         - **FileName** (str) - 日志文件路径
         - **HostName** (str) - 日志来源主机
@@ -685,15 +690,10 @@ class ULogServiceClient(Client):
         - **Timestamp** (int) - 日志时间
 
 
-        **AnalysisField**
-        - **Name** (str) - 字段名
-        - **Type** (str) - 字段类型
-
-
         **LogQueryResult**
         - **AnalysisRecords** (list) - 当使用SQL语句查询时，数据通过该字段返回
         - **Columns** (list) - 见 **AnalysisField** 模型定义
-        - **Contents** (dict) - 见 **LogContent** 模型定义
+        - **Contents** (list) - 见 **LogContent** 模型定义
         - **IsOver** (bool) - 检索结果是否到底
         - **LastId** (str) - 滚动检索,当前页最后一条数据ID
         - **LastTimestamp** (str) - 滚动检索,当前页最后一条数据Timestamp
