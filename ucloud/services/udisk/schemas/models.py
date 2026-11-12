@@ -4,7 +4,7 @@ from ucloud.core.typesystem import schema, fields
 
 
 class RecycleUDiskSetSchema(schema.ResponseSchema):
-    """RecycleUDiskSet - 回收站列表"""
+    """RecycleUDiskSet -"""
 
     fields = {
         "CountdownTime": fields.Int(required=True, load_from="CountdownTime"),

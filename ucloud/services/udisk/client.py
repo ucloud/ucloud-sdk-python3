@@ -22,7 +22,8 @@ class UDiskClient(Client):
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **UDiskId** (str) - (Required) 需要挂载的UDisk实例ID.
         - **EnableCrossPodAttach** (str) - 是否允许跨pod挂载（Yes：允许跨pod挂载，No：不允许跨pod挂载，不填默认No）
-        - **HostId** (str) - Host实例ID
+        - **HostId** (str) - Host实例ID。
+        - **Lable** (str) - 用户标签
         - **MultiAttach** (str) - 是否允许多点挂载（Yes: 允许多点挂载， No: 不允许多点挂载， 不填默认Yes ）
         - **UHostId** (str) - UHost实例ID。【UHostId和HostId必须选填一个，本字段即将废弃，建议使用HostId】
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
@@ -56,7 +57,7 @@ class UDiskClient(Client):
         - **Name** (str) - (Required) 实例名称
         - **SourceId** (str) - (Required) 克隆父Disk的Id
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **BackupMode** (str) - 快照服务备份策略。默认采用基础版套餐开通，“Base”：基础版，“ Ultimate”：旗舰版，“ Custom”：自定义备份链
+        - **BackupMode** (str) - 快照服务备份策略。普通云盘，SSD云盘，RSSD云盘套餐选择：“Base”：基础版，“ Ultimate”：旗舰版，“ Custom”：自定义备份链，默认采用基础版套餐开通；ESSD云盘，ERSSD云盘套餐：“Lite”：精简版，默认采用精简版套餐开通。
         - **ChargeType** (str) - Year , Month, Dynamic，Postpay，Trial 默认: Month
         - **Comment** (str) - Disk注释
         - **CouponId** (str) - 使用的代金券id
@@ -66,7 +67,7 @@ class UDiskClient(Client):
         - **Journal** (int) - BackupMode为Custom时，进行设置, 以12小时秒级为基础进行倍数扩增，如12、24、36、48
         - **Quantity** (int) - 购买时长 默认: 1
         - **RdmaClusterId** (str) - RDMA集群id。指定RSSD云盘克隆到对应的RDMA集群。
-        - **Size** (int) - 新克隆UDisk的大小,单位:GB。指定Size须大于等于源盘Size，小于源盘Size或者不指定该参数均按源盘Size克隆新盘。普通数据盘：范围[1~8000]；SSD数据盘：范围[1~8000]；RSSD数据盘：范围[1~32000]；高效数据盘：范围[1~32000]。
+        - **Size** (int) - 新克隆UDisk的大小,单位:GB。指定Size须大于等于源盘Size，小于源盘Size或者不指定该参数均按源盘Size克隆新盘。普通数据盘：范围[1~8000]；SSD数据盘、经济型SSD数据盘：范围[1~8000]；RSSD数据盘、经济型RSSD数据盘：范围[1~32000]；高效数据盘：范围[1~32000]
         - **SnapshotService** (str) - 是否开启快照服务（开启快照服务，可免费开启数据方舟）。Yes：开启，No：不开启，默认值：No
         - **Tag** (str) - 业务组 默认：Default
         - **UDataArkMode** (str) - 【开启数据方舟入口已关闭】是否开启数据方舟。Yes：开启，No：不开启，默认值：No
@@ -99,7 +100,7 @@ class UDiskClient(Client):
         - **Name** (str) - (Required) 实例名称
         - **SourceId** (str) - (Required) 克隆父Snapshot的Id
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **BackupMode** (str) - 快照服务备份策略。默认采用基础版套餐开通，“Base”：基础版，“ Ultimate”：旗舰版，“ Custom”：自定义备份链
+        - **BackupMode** (str) - 快照服务备份策略。普通云盘，SSD云盘，RSSD云盘套餐选择：“Base”：基础版，“ Ultimate”：旗舰版，“ Custom”：自定义备份链，默认采用基础版套餐开通；ESSD云盘，ERSSD云盘套餐：“Lite”：精简版，默认采用精简版套餐开通
         - **ChargeType** (str) - Year , Month, Dynamic，Postpay 默认: Dynamic
         - **Comment** (str) - Disk注释
         - **CouponId** (str) - 使用的代金券id
@@ -109,7 +110,7 @@ class UDiskClient(Client):
         - **Journal** (int) - BackupMode为Custom时，进行设置, 以12小时秒级为基础进行倍数扩增，如12、24、36、48
         - **Quantity** (int) - 购买时长 默认: 1
         - **RdmaClusterId** (str) - RDMA集群id。指定RSSD云盘克隆到对应的RDMA集群。
-        - **Size** (int) - 新克隆UDisk的大小,单位:GB。指定Size须大于等于源盘Size，小于源盘Size或者不指定该参数均按源盘Size克隆新盘。普通数据盘：范围[1~8000]；SSD数据盘：范围[1~8000]；RSSD数据盘：范围[1~32000]；高效数据盘：范围[1~32000]。
+        - **Size** (int) - 新克隆UDisk的大小,单位:GB。指定Size须大于等于源盘Size，小于源盘Size或者不指定该参数均按源盘Size克隆新盘。普通数据盘：范围[1~8000]；SSD数据盘、经济型SSD数据盘：范围[1~8000]；RSSD数据盘、经济型RSSD数据盘：范围[1~32000]；高效数据盘：范围[1~32000]。
         - **SnapshotService** (str) - 是否开启快照服务（开启快照服务，可免费开启数据方舟）。Yes：开启，No：不开启，默认值：No
         - **Tag** (str) - 业务组 默认：Default
         - **UDataArkMode** (str) - 【开启数据方舟入口已关闭】是否开启数据方舟。Yes：开启，No：不开启，默认值：No
@@ -184,14 +185,14 @@ class UDiskClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Name** (str) - (Required) 实例名称
-        - **Size** (int) - (Required) 购买UDisk大小,单位:GB,普通数据盘：范围[1~8000]；SSD数据盘：范围[1~8000]；RSSD数据盘：范围[1~32000]；高效数据盘：范围[1~32000]。
+        - **Size** (int) - (Required) 购买UDisk大小,单位:GB,普通数据盘：范围[1~8000]；SSD数据盘、经济型SSD数据盘：范围[1~8000]；RSSD数据盘、经济型RSSD数据盘：范围[1~32000]；高效数据盘：范围[1~32000]。
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **BackupMode** (str) - 快照服务备份策略。默认采用基础版套餐开通，“Base”：基础版，“ Ultimate”：旗舰版，“ Custom”：自定义备份链
+        - **BackupMode** (str) - 快照服务备份策略。普通云盘，SSD云盘，RSSD云盘套餐选择：“Base”：基础版，“ Ultimate”：旗舰版，“ Custom”：自定义备份链，默认采用基础版套餐开通；ESSD云盘，ERSSD云盘套餐：“Lite”：精简版，默认采用精简版套餐开通。
         - **ChargeType** (str) - Year , Month, Dynamic, Postpay, Trial 。 Size小于等于2000时，默认为Dynamic；Size大于2000时，默认为Month。
         - **CmkId** (str) - 加密需要的cmk id，UKmsMode为Yes时，必填
         - **CouponId** (str) - 使用的代金券id
         - **Day** (int) - BackupMode为Custom时，进行设置, 以5天级为基础进行倍数扩增，如5、10、15、20、25、30
-        - **DiskType** (str) - UDisk 类型: DataDisk（普通数据盘），SSDDataDisk（SSD数据盘），RSSDDataDisk（RSSD数据盘），EfficiencyDataDisk（高效数据盘），默认值（DataDisk）
+        - **DiskType** (str) - UDisk 类型: DataDisk（普通数据盘），SSDDataDisk（SSD数据盘），ESSDDataDisk（经济型SSD数据盘），RSSDDataDisk（RSSD数据盘），ERSSDDataDisk（经济型 RSSD数据盘），EfficiencyDataDisk（高效数据盘），默认值（DataDisk）
         - **HostId** (str) - Host实例ID。当创建云盘类型为RSSDDataDisk时，根据传入的HostId，创建与虚机在同一PodId下的云盘。
         - **Hour** (int) - BackupMode为Custom时，进行设置, 以24小时级为基础进行倍数扩增，如24、48、72、96
         - **Journal** (int) - BackupMode为Custom时，进行设置, 以12小时秒级为基础进行倍数扩增，如12、24、36、48
@@ -233,16 +234,17 @@ class UDiskClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Name** (str) - (Required) 实例名称
-        - **Size** (int) - (Required) 购买UDisk大小,单位:GB,普通数据盘：范围[1~8000]；SSD数据盘：范围[1~8000]；RSSD数据盘：范围[1~32000]；高效数据盘：范围[1~32000]。
+        - **Size** (int) - (Required) 购买UDisk大小,单位:GB,普通数据盘：范围[1~8000]；SSD数据盘、经济型SSD数据盘：范围[1~8000]；RSSD数据盘、经济型RSSD数据盘：范围[1~32000]；高效数据盘：范围[1~32000]。
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **BackupMode** (str) - 快照服务备份策略。默认采用基础版套餐开通，“Base”：基础版，“ Ultimate”：旗舰版，“ Custom”：自定义备份链
+        - **BackupMode** (str) - 快照服务备份策略。普通云盘，SSD云盘，RSSD云盘套餐选择：“Base”：基础版，“ Ultimate”：旗舰版，“ Custom”：自定义备份链，默认采用基础版套餐开通；ESSD云盘，ERSSD云盘套餐：“Lite”：精简版，默认采用精简版套餐开通。
         - **ChargeType** (str) - Year , Month, Dynamic, Postpay, Trial 。默认为Dynamic。
         - **CmkId** (str) - 加密需要的cmk id，UKmsMode为Yes时，必填
         - **CouponId** (str) - 使用的代金券id
         - **Day** (int) - BackupMode为Custom时，进行设置, 以5天级为基础进行倍数扩增，如5、10、15、20、25、30
-        - **DiskType** (str) - UDisk 类型: DataDisk（普通数据盘），SSDDataDisk（SSD数据盘），RSSDDataDisk（RSSD数据盘），EfficiencyDataDisk（高效数据盘），默认值（DataDisk）
+        - **DiskType** (str) - UDisk 类型: DataDisk（普通数据盘），SSDDataDisk（SSD数据盘），ESSDDataDisk（经济型SSD数据盘），RSSDDataDisk（RSSD数据盘），ERSSDDataDisk（经济型 RSSD数据盘），EfficiencyDataDisk（高效数据盘），默认值（DataDisk）
         - **Hour** (int) - BackupMode为Custom时，进行设置, 以24小时级为基础进行倍数扩增，如24、48、72、96
         - **Journal** (int) - BackupMode为Custom时，进行设置, 以12小时秒级为基础进行倍数扩增，如12、24、36、48
+        - **Labels** (str) - 用户标签
         - **Quantity** (int) - 购买时长 默认: 1
         - **RdmaClusterId** (str) - RDMA集群id。DiskType为RSSDDataDisk可填，指定云盘创建到对应的RDMA集群。
         - **SnapshotService** (str) - 是否开启快照服务（开启快照服务，可免费开启数据方舟）。Yes：开启，No：不开启，默认值：No
@@ -276,11 +278,11 @@ class UDiskClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Name** (str) - (Required) 快照名称
         - **UDiskId** (str) - (Required) 快照的UDisk的Id
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **ChargeType** (str) - Year , Month, Dynamic 默认: Dynamic  (已废弃)
         - **Comment** (str) - 快照描述
         - **Quantity** (int) - 购买时长 默认: 1  (已废弃)
@@ -360,32 +362,32 @@ class UDiskClient(Client):
     def describe_recycle_udisk(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """DescribeRecycleUDisk - 拉取回收站中云硬盘列表
+        """DescribeRecycleUDisk -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **Limit** (int) - 返回数据长度, 默认为20
-        - **Offset** (int) - 数据偏移量, 默认为0
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **Zone** (str) - (Required)
+        - **Limit** (int) -
+        - **Offset** (int) -
 
         **Response**
 
         - **DataSet** (list) - 见 **RecycleUDiskSet** 模型定义
-        - **TotalCount** (int) - 磁盘数量
+        - **TotalCount** (int) -
 
         **Response Model**
 
         **RecycleUDiskSet**
-        - **CountdownTime** (int) - 销毁倒计时
-        - **CreateTime** (int) - 创建时间
-        - **ExpiredTime** (int) - 过期时间
-        - **Name** (str) - 磁盘名称
-        - **Size** (int) - 磁盘容量
-        - **Tag** (str) - 业务组
-        - **UDiskId** (str) - 磁盘id
-        - **Zone** (str) - 可用区
+        - **CountdownTime** (int) -
+        - **CreateTime** (int) -
+        - **ExpiredTime** (int) -
+        - **Name** (str) -
+        - **Size** (int) -
+        - **Tag** (str) -
+        - **UDiskId** (str) -
+        - **Zone** (str) -
 
 
         """
@@ -396,6 +398,9 @@ class UDiskClient(Client):
         }
         req and d.update(req)
         d = apis.DescribeRecycleUDiskRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("DescribeRecycleUDisk", d, **kwargs)
         return apis.DescribeRecycleUDiskResponseSchema().loads(resp)
@@ -409,7 +414,7 @@ class UDiskClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **DiskType** (str) - ProtocolVersion字段为1时，需结合IsBoot确定具体磁盘类型:普通数据盘：DiskType:"CLOUD_NORMAL",IsBoot:"False"；普通系统盘：DiskType:"CLOUD_NORMAL",IsBoot:"True"；SSD数据盘：DiskType:"CLOUD_SSD",IsBoot:"False"；SSD系统盘：DiskType:"CLOUD_SSD",IsBoot:"True"；RSSD数据盘：DiskType:"CLOUD_RSSD",IsBoot:"False"；RSSD系统盘：DiskType:"CLOUD_RSSD",IsBoot:"True"；高效数据盘：DiskType:"CLOUD_EFFICIENCY",IsBoot:"False"；高效系统盘：DiskType:"CLOUD_EFFICIENCY",IsBoot:"True"；为空拉取所有。ProtocolVersion字段为0或没有该字段时，可设为以下几个值:普通数据盘：DataDisk；普通系统盘：SystemDisk；SSD数据盘：SSDDataDisk；SSD系统盘：SSDSystemDisk；RSSD数据盘：RSSDDataDisk；RSSD系统盘：RSSDSystemDisk：高效数据盘：EfficiencyDataDisk；高效系统盘：EfficiencySystemDisk；为空拉取所有。
+        - **DiskType** (str) - ProtocolVersion字段为1时，需结合IsBoot确定具体磁盘类型:普通数据盘：DiskType:"CLOUD_NORMAL",IsBoot:"False"；普通系统盘：DiskType:"CLOUD_NORMAL",IsBoot:"True"；SSD数据盘：DiskType:"CLOUD_SSD",IsBoot:"False"；SSD系统盘：DiskType:"CLOUD_SSD",IsBoot:"True"；经济型SSD数据盘：DiskType:"CLOUD_ESSD",IsBoot:"False"；经济型SSD系统盘：DiskType:"CLOUD_ESSD",IsBoot:"True"；RSSD数据盘：DiskType:"CLOUD_RSSD",IsBoot:"False"；RSSD系统盘：DiskType:"CLOUD_RSSD",IsBoot:"True"；经济型RSSD数据盘：DiskType:"CLOUD_ERSSD",IsBoot:"False"；经济型RSSD系统盘：DiskType:"CLOUD_ERSSD",IsBoot:"True"；高效数据盘：DiskType:"CLOUD_EFFICIENCY",IsBoot:"False"；高效系统盘：DiskType:"CLOUD_EFFICIENCY",IsBoot:"True"；为空拉取所有。ProtocolVersion字段为0或没有该字段时，可设为以下几个值:普通数据盘：DataDisk；普通系统盘：SystemDisk；SSD数据盘：SSDDataDisk；SSD系统盘：SSDSystemDisk；经济型SSD数据盘：ESSDDataDisk；经济型SSD系统盘：ESSDSystemDisk；RSSD数据盘：RSSDDataDisk；RSSD系统盘：RSSDSystemDisk；经济型RSSD数据盘：ERSSDDataDisk；经济型RSSD系统盘：ERSSDSystemDisk；高效数据盘：EfficiencyDataDisk；高效系统盘：EfficiencySystemDisk；为空拉取所有。
         - **HostId** (str) - 根据传入的HostId，返回与该主机关联的云盘信息。
         - **HostIdForAttachment** (str) - 根据传入的HostIdForAttachment，筛选出能被挂载在该主机上的云盘。目前主要针对RSSD云盘。
         - **HostProduct** (str) - 宿主产品类型，可筛选挂载在该类型宿主上的云盘。可选值：uhost, uphost。为空拉取所有。（当HostIdForAttachment字段不为空时，该字段可以不填，若HostIdForAttachment与该字段宿主类型冲突，则以HostIdForAttachment字段为准。）
@@ -423,6 +428,7 @@ class UDiskClient(Client):
         - **Tag** (str) - 业务组名称
         - **UDiskBasicInfo** (str) - 是否只返回云盘基础信息（只包含云盘及关联主机的资源信息）。Yes：是，No：否，默认值（No）。（如仅需要基础信息，建议选填“Yes”，可降低请求延时）
         - **UDiskId** (str) - UDisk Id(留空返回全部)
+        - **UDiskName** (str) - 云盘实例名称
         - **UHostIdForAttachment** (str) - 根据传入的UHostIdForAttachment，筛选出能被挂载在该主机上的云盘【本字段即将废弃，建议使用HostIdForAttachment】
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
@@ -444,7 +450,7 @@ class UDiskClient(Client):
         - **CreateTime** (int) - 创建时间
         - **DataKey** (str) - 该盘的密文密钥
         - **DeviceName** (str) - 挂载的设备名称
-        - **DiskType** (str) - 请求中的ProtocolVersion字段为1时，需结合IsBoot确定具体磁盘类型:普通数据盘：DiskType:"CLOUD_NORMAL",IsBoot:"False"； 普通系统盘：DiskType:"CLOUD_NORMAL",IsBoot:"True"；SSD数据盘：DiskType:"CLOUD_SSD",IsBoot:"False"；SSD系统盘：DiskType:"CLOUD_SSD",IsBoot:"True"；RSSD数据盘：DiskType:"CLOUD_RSSD",IsBoot:"False"；RSSD系统盘：DiskType:"CLOUD_RSSD",IsBoot:"True"；高效数据盘：DiskType:"CLOUD_EFFICIENCY",IsBoot:"False"；高效系统盘：DiskType:"CLOUD_EFFICIENCY",IsBoot:"True"。请求中的ProtocolVersion字段为0或没有该字段时，云硬盘类型参照如下:普通数据盘：DataDisk；普通系统盘：SystemDisk；SSD数据盘：SSDDataDisk；SSD系统盘：SSDSystemDisk；RSSD数据盘：RSSDDataDisk；RSSD系统盘：RSSDSystemDisk；高效数据盘：EfficiencyDataDisk；高效系统盘：EfficiencySystemDisk。
+        - **DiskType** (str) - 请求中的ProtocolVersion字段为1时，需结合IsBoot确定具体磁盘类型:普通数据盘：DiskType:"CLOUD_NORMAL",IsBoot:"False"； 普通系统盘：DiskType:"CLOUD_NORMAL",IsBoot:"True"；SSD数据盘：DiskType:"CLOUD_SSD",IsBoot:"False"；SSD系统盘：DiskType:"CLOUD_SSD",IsBoot:"True"；经济型SSD数据盘：DiskType:"CLOUD_ESSD",IsBoot:"False"；经济型SSD系统盘：DiskType:"CLOUD_ESSD",IsBoot:"True"；RSSD数据盘：DiskType:"CLOUD_RSSD",IsBoot:"False"；RSSD系统盘：DiskType:"CLOUD_RSSD",IsBoot:"True"；经济型RSSD数据盘：DiskType:"CLOUD_ERSSD",IsBoot:"False"；经济型RSSD系统盘：DiskType:"CLOUD_ERSSD",IsBoot:"True"；高效数据盘：DiskType:"CLOUD_EFFICIENCY",IsBoot:"False"；高效系统盘：DiskType:"CLOUD_EFFICIENCY",IsBoot:"True"。请求中的ProtocolVersion字段为0或没有该字段时，云硬盘类型参照如下:普通数据盘：DataDisk；普通系统盘：SystemDisk；SSD数据盘：SSDDataDisk；SSD系统盘：SSDSystemDisk；经济型SSD数据盘：ESSDDataDisk；经济型SSD系统盘：ESSDSystemDisk；RSSD数据盘：RSSDDataDisk；RSSD系统盘：RSSDSystemDisk；经济型RSSD数据盘：ERSSDDataDisk；经济型RSSD系统盘：ERSSDSystemDisk；高效数据盘：EfficiencyDataDisk；高效系统盘：EfficiencySystemDisk。
         - **ExpiredTime** (int) - 过期时间
         - **HostIP** (str) - 挂载的Host的IP
         - **HostId** (str) - 挂载的Host的Id
@@ -452,7 +458,7 @@ class UDiskClient(Client):
         - **IsBoot** (str) - 是否是系统盘，是："True", 否："False"
         - **IsExpire** (str) - 资源是否过期，过期:"Yes", 未过期:"No"
         - **Name** (str) - 实例名称
-        - **RdmaClusterId** (str) - RDMA集群id，仅RSSD返回该值；其他类型云盘返回""。当云盘的此值与快杰云主机的RdmaClusterId相同时，RSSD可以挂载到这台云主机。
+        - **RdmaClusterId** (str) - RDMA集群id，仅RSSD、ERSSD返回该值；其他类型云盘返回""。当云盘的此值与快杰云主机的RdmaClusterId相同时，该云盘可以挂载到这台云主机
         - **Size** (int) - 容量单位GB
         - **SnapEnable** (int) - 是否支持快照，1支持 ，0不支持
         - **SnapshotCount** (int) - 该盘快照个数
@@ -490,12 +496,12 @@ class UDiskClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **Size** (int) - (Required) 购买UDisk大小,单位:GB,普通数据盘：范围[1~8000]；SSD数据盘：范围[1~8000]；普通系统盘：范围[1~8000]；SSD系统盘：范围[1~4000]；RSSD数据盘：范围[1~32000]；RSSD系统盘：范围[1~4000]；高效数据盘：范围[1~32000]；高效系统盘：范围[1~500]。
+        - **Size** (int) - (Required) 购买UDisk大小,单位:GB,普通数据盘：范围[1~8000]；SSD数据盘、经济型SSD数据盘：范围[1~8000]；普通系统盘：范围[1~8000]；SSD系统盘、经济型SSD系统盘：范围[1~4000]；RSSD数据盘、经济型RSSD数据盘：范围[1~32000]；RSSD系统盘、经济型RSSD系统盘：范围[1~4000]；高效数据盘：范围[1~32000]；高效系统盘：范围[1~500]。
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **BackupMode** (str) - 快照服务备份策略。默认采用基础版套餐开通，“Base”：基础版，“ Ultimate”：旗舰版，“ Custom”：自定义备份链
+        - **BackupMode** (str) - 快照服务备份策略。普通云盘，SSD云盘，RSSD云盘套餐选择：“Base”：基础版，“ Ultimate”：旗舰版，“ Custom”：自定义备份链，默认采用基础版套餐开通；ESSD云盘，ERSSD云盘套餐：“Lite”：精简版，默认采用精简版套餐开通。
         - **ChargeType** (str) - Year , Month, Dynamic，Postpay，Trial 默认: Month
         - **Day** (int) - BackupMode为Custom时，进行设置, 以5天级为基础进行倍数扩增，如5、10、15、20、25、30
-        - **DiskType** (str) - UDisk 类型: DataDisk（普通数据盘），SSDDataDisk（SSD数据盘），RSSDDataDisk(RSSD数据盘)，EfficiencyDataDisk（高效数据盘），SystemDisk（普通系统盘），SSDSystemDisk（SSD系统盘），RSSDSystemDisk(RSSD系统盘)，EfficiencySystemDisk（高效系统盘），默认值（DataDisk）
+        - **DiskType** (str) - UDisk 类型: DataDisk（普通数据盘），SSDDataDisk（SSD数据盘），ESSDDataDisk（经济型SSD数据盘），RSSDDataDisk(RSSD数据盘)，ERSSDDataDisk(经济型RSSD数据盘)，EfficiencyDataDisk（高效数据盘），SystemDisk（普通系统盘），SSDSystemDisk（SSD系统盘），ESSDSystemDisk（经济型SSD系统盘），RSSDSystemDisk(RSSD系统盘)，ERSSDSystemDisk(经济型RSSD系统盘)，EfficiencySystemDisk（高效系统盘），默认值（DataDisk）
         - **Hour** (int) - BackupMode为Custom时，进行设置, 以24小时级为基础进行倍数扩增，如24、48、72、96
         - **IsTotalPrice** (str) - 是否将快照服务(数据方舟)，云硬盘放入一张订单, 是："Yes",否："No"，默认是"No"
         - **Journal** (int) - BackupMode为Custom时，进行设置, 以12小时秒级为基础进行倍数扩增，如12、24、36、48
@@ -595,10 +601,10 @@ class UDiskClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **Size** (int) - (Required) 购买UDisk大小,单位:GB,普通数据盘：范围[1~8000]；SSD数据盘：范围[1~8000]；普通系统盘：范围[1~8000]；SSD系统盘：范围[1~4000]；RSSD数据盘：范围[1~32000]；RSSD系统盘：范围[1~4000]；高效数据盘：范围[1~32000]；高效系统盘：范围[1~500]。
+        - **Size** (int) - (Required) 购买UDisk大小,单位:GB,普通数据盘：范围[1~8000]；SSD数据盘、经济型SSD数据盘：范围[1~8000]；普通系统盘：范围[1~8000]；SSD系统盘、经济型SSD系统盘：范围[1~4000]；RSSD数据盘、经济型RSSD数据盘：范围[1~32000]；RSSD系统盘、经济型RSSD系统盘：范围[1~4000]；高效数据盘：范围[1~32000]；高效系统盘：范围[1~500]。
         - **SourceId** (str) - (Required) 升级目标UDisk ID
         - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
-        - **BackupMode** (str) - 快照服务备份策略。默认采用基础版套餐开通，“Base”：基础版，“ Ultimate”：旗舰版，“ Custom”：自定义备份链
+        - **BackupMode** (str) - 快照服务备份策略。普通云盘，SSD云盘，RSSD云盘套餐选择：“Base”：基础版，“ Ultimate”：旗舰版，“ Custom”：自定义备份链，默认采用基础版套餐开通；ESSD云盘，ERSSD云盘套餐：“Lite”：精简版，默认采用精简版套餐开通。
         - **Day** (int) - BackupMode为Custom时，进行设置, 以5天级为基础进行倍数扩增，如5、10、15、20、25、30
         - **DiskType** (str) - 【已废弃】UDisk 类型: DataDisk（普通数据盘），SSDDataDisk（SSD数据盘），RSSDDataDisk(RSSD数据盘)，EfficiencyDataDisk（高效数据盘），SystemDisk（普通系统盘），SSDSystemDisk（SSD系统盘），RSSDSystemDisk(RSSD系统盘)，EfficiencySystemDisk（高效系统盘），默认值（DataDisk）
         - **Hour** (int) - BackupMode为Custom时，进行设置, 以24小时级为基础进行倍数扩增，如24、48、72、96
@@ -690,16 +696,16 @@ class UDiskClient(Client):
     def recover_udisk(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
-        """RecoverUDisk - 从回收站中恢复云硬盘
+        """RecoverUDisk -
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **UDiskId** (str) - (Required) 云硬盘资源ID
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **ChargeType** (str) - Year , Month, Dynamic 默认: Dynamic
-        - **Quantity** (int) - 购买时长 默认: 1
+        - **ProjectId** (str) - (Config)
+        - **Region** (str) - (Config)
+        - **UDiskId** (str) - (Required)
+        - **Zone** (str) - (Required)
+        - **ChargeType** (str) -
+        - **Quantity** (int) -
 
         **Response**
 
@@ -712,6 +718,9 @@ class UDiskClient(Client):
         }
         req and d.update(req)
         d = apis.RecoverUDiskRequestSchema().dumps(d)
+
+        # build options
+        kwargs["max_retries"] = 0  # ignore retry when api is not idempotent
 
         resp = self.invoke("RecoverUDisk", d, **kwargs)
         return apis.RecoverUDiskResponseSchema().loads(resp)
@@ -747,11 +756,11 @@ class UDiskClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **Size** (int) - (Required) 调整后大小, 单位:GB,普通数据盘：范围[1~8000]；SSD数据盘：范围[1~8000]；RSSD数据盘：范围[1~32000]。
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **Size** (int) - (Required) 调整后大小, 单位:GB,普通数据盘：范围[1~8000]；SSD数据盘、经济型SSD数据盘：范围[1~8000]；RSSD数据盘、经济型RSSD数据盘：范围[1~32000]；高效数据盘：范围[1~32000]。
         - **UDiskId** (str) - (Required) UDisk Id
-        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **CouponId** (str) - 使用的代金券id
         - **MachineType** (str) - 云主机机型（V2.0），枚举值["N", "C", "G", "O", "OM"]。参考 `云主机机型说明 <https://docs.ucloud.cn/api/uhost-api/uhost_type>`_ 。
 

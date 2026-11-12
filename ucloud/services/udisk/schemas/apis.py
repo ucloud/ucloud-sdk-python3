@@ -22,6 +22,7 @@ class AttachUDiskRequestSchema(schema.RequestSchema):
             required=False, dump_to="EnableCrossPodAttach"
         ),
         "HostId": fields.Str(required=False, dump_to="HostId"),
+        "Lable": fields.Str(required=False, dump_to="Lable"),
         "MultiAttach": fields.Str(required=False, dump_to="MultiAttach"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
@@ -245,6 +246,7 @@ class CreateUDiskRequestSchema(schema.RequestSchema):
         "DiskType": fields.Str(required=False, dump_to="DiskType"),
         "Hour": fields.Int(required=False, dump_to="Hour"),
         "Journal": fields.Int(required=False, dump_to="Journal"),
+        "Labels": fields.Str(required=False, dump_to="Labels"),
         "Name": fields.Str(required=True, dump_to="Name"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
@@ -355,12 +357,12 @@ class DeleteUDiskSnapshotResponseSchema(schema.ResponseSchema):
 """
 API: DescribeRecycleUDisk
 
-拉取回收站中云硬盘列表
+
 """
 
 
 class DescribeRecycleUDiskRequestSchema(schema.RequestSchema):
-    """DescribeRecycleUDisk - 拉取回收站中云硬盘列表"""
+    """DescribeRecycleUDisk -"""
 
     fields = {
         "Limit": fields.Int(required=False, dump_to="Limit"),
@@ -372,7 +374,7 @@ class DescribeRecycleUDiskRequestSchema(schema.RequestSchema):
 
 
 class DescribeRecycleUDiskResponseSchema(schema.ResponseSchema):
-    """DescribeRecycleUDisk - 拉取回收站中云硬盘列表"""
+    """DescribeRecycleUDisk -"""
 
     fields = {
         "DataSet": fields.List(
@@ -417,6 +419,7 @@ class DescribeUDiskRequestSchema(schema.RequestSchema):
         "Tag": fields.Str(required=False, dump_to="Tag"),
         "UDiskBasicInfo": fields.Str(required=False, dump_to="UDiskBasicInfo"),
         "UDiskId": fields.Str(required=False, dump_to="UDiskId"),
+        "UDiskName": fields.Str(required=False, dump_to="UDiskName"),
         "UHostIdForAttachment": fields.Str(
             required=False, dump_to="UHostIdForAttachment"
         ),
@@ -614,12 +617,12 @@ class DetachUDiskResponseSchema(schema.ResponseSchema):
 """
 API: RecoverUDisk
 
-从回收站中恢复云硬盘
+
 """
 
 
 class RecoverUDiskRequestSchema(schema.RequestSchema):
-    """RecoverUDisk - 从回收站中恢复云硬盘"""
+    """RecoverUDisk -"""
 
     fields = {
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
@@ -632,7 +635,7 @@ class RecoverUDiskRequestSchema(schema.RequestSchema):
 
 
 class RecoverUDiskResponseSchema(schema.ResponseSchema):
-    """RecoverUDisk - 从回收站中恢复云硬盘"""
+    """RecoverUDisk -"""
 
     fields = {}
 

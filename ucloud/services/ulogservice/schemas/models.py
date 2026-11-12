@@ -139,7 +139,7 @@ class LogQueryResultSchema(schema.ResponseSchema):
     fields = {
         "AnalysisRecords": fields.List(fields.Str()),
         "Columns": fields.List(AnalysisFieldSchema()),
-        "Contents": LogContentSchema(),
+        "Contents": fields.List(LogContentSchema()),
         "IsOver": fields.Bool(required=True, load_from="IsOver"),
         "LastId": fields.Str(required=False, load_from="LastId"),
         "LastTimestamp": fields.Str(required=False, load_from="LastTimestamp"),
