@@ -10,6 +10,7 @@ class UFileTokenSetSchema(schema.ResponseSchema):
         "AllowedBuckets": fields.List(fields.Str()),
         "AllowedOps": fields.List(fields.Str()),
         "AllowedPrefixes": fields.List(fields.Str()),
+        "BlackIPList": fields.List(fields.Str()),
         "CreateTime": fields.Int(required=True, load_from="CreateTime"),
         "ExpireTime": fields.Int(required=True, load_from="ExpireTime"),
         "ModifyTime": fields.Int(required=True, load_from="ModifyTime"),
@@ -18,6 +19,7 @@ class UFileTokenSetSchema(schema.ResponseSchema):
         "Region": fields.Str(required=True, load_from="Region"),
         "TokenId": fields.Str(required=True, load_from="TokenId"),
         "TokenName": fields.Str(required=True, load_from="TokenName"),
+        "WhiteIPList": fields.List(fields.Str()),
     }
 
 
