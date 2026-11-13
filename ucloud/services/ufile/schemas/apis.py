@@ -132,6 +132,7 @@ class CreateBucketRequestSchema(schema.RequestSchema):
 
     fields = {
         "BucketName": fields.Str(required=True, dump_to="BucketName"),
+        "FakeRegion": fields.Str(required=False, dump_to="FakeRegion"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Tag": fields.Str(required=False, dump_to="Tag"),
@@ -205,6 +206,7 @@ class CreateUFileTokenRequestSchema(schema.RequestSchema):
         "AllowedPrefixes": fields.List(fields.Str()),
         "BlackIPList": fields.List(fields.Str()),
         "ExpireTime": fields.Int(required=False, dump_to="ExpireTime"),
+        "FakeRegion": fields.Str(required=False, dump_to="FakeRegion"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=False, dump_to="Region"),
         "TokenName": fields.Str(required=True, dump_to="TokenName"),
@@ -387,7 +389,8 @@ class DeleteUFileTokenRequestSchema(schema.RequestSchema):
     """DeleteUFileToken - 删除令牌"""
 
     fields = {
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "FakeRegion": fields.Str(required=False, dump_to="FakeRegion"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "TokenId": fields.Str(required=True, dump_to="TokenId"),
     }
@@ -411,6 +414,7 @@ class DescribeBucketRequestSchema(schema.RequestSchema):
 
     fields = {
         "BucketName": fields.Str(required=False, dump_to="BucketName"),
+        "FakeRegion": fields.Str(required=False, dump_to="FakeRegion"),
         "Limit": fields.Int(required=False, dump_to="Limit"),
         "Offset": fields.Int(required=False, dump_to="Offset"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
@@ -646,6 +650,7 @@ class DescribeUFileTokenRequestSchema(schema.RequestSchema):
 
     fields = {
         "Display": fields.Int(required=False, dump_to="Display"),
+        "FakeRegion": fields.Str(required=False, dump_to="FakeRegion"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=False, dump_to="Region"),
         "TokenId": fields.Str(required=False, dump_to="TokenId"),
@@ -753,6 +758,7 @@ class GetProjectRegionQuotaRequestSchema(schema.RequestSchema):
     """GetProjectRegionQuota - 获取项目地域配额"""
 
     fields = {
+        "FakeRegion": fields.Str(required=False, dump_to="FakeRegion"),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "Zone": fields.Str(required=False, dump_to="Zone"),
@@ -782,6 +788,7 @@ class GetUFileDailyBillRequestSchema(schema.RequestSchema):
     fields = {
         "BucketName": fields.Str(required=False, dump_to="BucketName"),
         "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "FakeRegion": fields.Str(required=False, dump_to="FakeRegion"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "StartTime": fields.Int(required=True, dump_to="StartTime"),
@@ -811,6 +818,7 @@ class GetUFileDailyReportRequestSchema(schema.RequestSchema):
     fields = {
         "BucketName": fields.Str(required=False, dump_to="BucketName"),
         "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "FakeRegion": fields.Str(required=False, dump_to="FakeRegion"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "StartTime": fields.Int(required=True, dump_to="StartTime"),
@@ -840,6 +848,7 @@ class GetUFileMonthlyBillRequestSchema(schema.RequestSchema):
     fields = {
         "BucketName": fields.Str(required=False, dump_to="BucketName"),
         "EndMonth": fields.Str(required=True, dump_to="EndMonth"),
+        "FakeRegion": fields.Str(required=False, dump_to="FakeRegion"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "StartMonth": fields.Str(required=True, dump_to="StartMonth"),
@@ -983,6 +992,7 @@ class GetUFileReportRequestSchema(schema.RequestSchema):
 
     fields = {
         "EndTime": fields.Int(required=True, dump_to="EndTime"),
+        "FakeRegion": fields.Str(required=False, dump_to="FakeRegion"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "StartTime": fields.Int(required=True, dump_to="StartTime"),
@@ -1061,6 +1071,7 @@ class SetProjectRegionQuotaRequestSchema(schema.RequestSchema):
     """SetProjectRegionQuota - 设置项目地域配额"""
 
     fields = {
+        "FakeRegion": fields.Str(required=False, dump_to="FakeRegion"),
         "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
         "QuotaLimit": fields.Int(required=True, dump_to="QuotaLimit"),
         "Region": fields.Str(required=True, dump_to="Region"),
@@ -1272,11 +1283,14 @@ class UpdateUFileTokenRequestSchema(schema.RequestSchema):
         "AllowedBuckets": fields.List(fields.Str()),
         "AllowedOps": fields.List(fields.Str()),
         "AllowedPrefixes": fields.List(fields.Str()),
+        "BlackIPList": fields.List(fields.Str()),
         "ExpireTime": fields.Int(required=False, dump_to="ExpireTime"),
-        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "FakeRegion": fields.Str(required=False, dump_to="FakeRegion"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=False, dump_to="Region"),
         "TokenId": fields.Str(required=True, dump_to="TokenId"),
         "TokenName": fields.Str(required=False, dump_to="TokenName"),
+        "WhiteIPList": fields.List(fields.Str()),
     }
 
 

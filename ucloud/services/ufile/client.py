@@ -148,6 +148,7 @@ class UFileClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **BucketName** (str) - (Required) 待创建Bucket的名称，具有全局唯一性
+        - **FakeRegion** (str) - bucket的可用区
         - **Tag** (str) - Bucket所属业务组，默认为default
         - **Type** (str) - Bucket访问类型，public或private; 默认为private
 
@@ -228,6 +229,7 @@ class UFileClient(Client):
         - **AllowedPrefixes** (list) - 令牌允许操作的key前缀，默认*表示全部
         - **BlackIPList** (list) - 令牌黑名单，支持ipv4，ipv6格式。
         - **ExpireTime** (int) - Unix 时间戳，精确到秒，为令牌过期时间点。默认过期时间为一天（即当前Unix时间戳+86400）；注意：过期时间不能超过 4102416000
+        - **FakeRegion** (str) - bucket的可用区
         - **WhiteIPList** (list) - 令牌白名单，支持ipv4，ipv6格式。
 
         **Response**
@@ -440,9 +442,10 @@ class UFileClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **TokenId** (str) - (Required) 令牌ID
+        - **FakeRegion** (str) - bucket的可用区
 
         **Response**
 
@@ -469,6 +472,7 @@ class UFileClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 如果提供此参数，则获取相应地域下所有空间的空间名称(只返回空间名称信息)
         - **BucketName** (str) - 待获取Bucket的名称，若不提供，则获取所有Bucket
+        - **FakeRegion** (str) - bucket可用区
         - **Limit** (int) - 获取所有Bucket列表的限制数目，默认为20
         - **Offset** (int) - 获取所有Bucket列表的偏移数目，默认为0
 
@@ -794,9 +798,10 @@ class UFileClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **Display** (int) - 0表示显示部分token信息；不传递和其他情况表示显示全部token信息
+        - **FakeRegion** (str) - bucket的可用区
         - **TokenId** (str) - 令牌ID，只返回指定ID信息，否则拉取所有令牌
         - **TokenName** (str) - 令牌名称，只返回指定令牌名称信息，否则拉取所有令牌
 
@@ -808,8 +813,9 @@ class UFileClient(Client):
 
         **UFileTokenSet**
         - **AllowedBuckets** (list) - 令牌允许操作的bucket
-        - **AllowedOps** (list) - 令牌允许执行的操作，[ TOKEN_ALLOW_NONE , TOKEN_ALLOW_READ , TOKEN_ALLOW_WRITE , TOKEN_ALLOW_DELETE , TOKEN_ALLOW_LIST, TOKEN_ALLOW_IOP , TOKEN_ALLOW_DP ]
+        - **AllowedOps** (list) - 令牌允许执行的操作，[ TOKEN_ALLOW_NONE 没有权限, TOKEN_ALLOW_READ 下载权限, TOKEN_ALLOW_WRITE 上传权限, TOKEN_ALLOW_DELETE 删除权限, TOKEN_ALLOW_LIST 列表权限, TOKEN_ALLOW_IOP 图片处理权限]
         - **AllowedPrefixes** (list) - 令牌允许操作的key前缀
+        - **BlackIPList** (list) - 令牌黑名单
         - **CreateTime** (int) - 创建时间
         - **ExpireTime** (int) - 令牌的超时时间点
         - **ModifyTime** (int) - 修改时间
@@ -818,6 +824,7 @@ class UFileClient(Client):
         - **Region** (str) - 所属地区
         - **TokenId** (str) - 令牌ID
         - **TokenName** (str) - 令牌名称
+        - **WhiteIPList** (list) - 令牌白名单
 
 
         """
@@ -930,6 +937,7 @@ class UFileClient(Client):
 
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **FakeRegion** (str) - bucket可用区
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
@@ -962,6 +970,7 @@ class UFileClient(Client):
         - **EndTime** (int) - (Required) 查询结束时间;unix时间戳,单位s
         - **StartTime** (int) - (Required) 查询开始时间;unix时间戳，单位s
         - **BucketName** (str) - 空间名称。此字段不为空，返回此Bucket日账单,否则，返回这个项目的日账单
+        - **FakeRegion** (str) - bucket的可用区
 
         **Response**
 
@@ -1029,6 +1038,7 @@ class UFileClient(Client):
         - **EndTime** (int) - (Required) 查询结束时间;unix时间戳,单位s
         - **StartTime** (int) - (Required) 查询开始时间;unix时间戳，单位s
         - **BucketName** (str) - 空间名称。此字段不为空，返回此Bucket日使用量；否则，返回这个项目的日使用量
+        - **FakeRegion** (str) - bucket可用区
 
         **Response**
 
@@ -1093,6 +1103,7 @@ class UFileClient(Client):
         - **EndMonth** (str) - (Required) 查询结束时间;例如"1994-07"
         - **StartMonth** (str) - (Required) 查询开始月份;例如"1994-07"
         - **BucketName** (str) - 空间名称。此字段不为空，返回此Bucket日账单,否则，返回这个项目的日账单
+        - **FakeRegion** (str) - bucket可用区
 
         **Response**
 
@@ -1282,10 +1293,11 @@ class UFileClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
-        - **EndTime** (int) - (Required) 查询结束时间
-        - **StartTime** (int) - (Required) 查询开始时间
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **EndTime** (int) - (Required) 查询结束时间, 单位 s
+        - **StartTime** (int) - (Required) 查询开始时间，单位 s
+        - **FakeRegion** (str) - bucket的可用区
 
         **Response**
 
@@ -1378,6 +1390,7 @@ class UFileClient(Client):
         - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
         - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **QuotaLimit** (int) - (Required) 配额数目(单位是Byte)
+        - **FakeRegion** (str) - bucket的可用区
         - **Zone** (str) - 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
 
         **Response**
@@ -1590,14 +1603,17 @@ class UFileClient(Client):
 
         **Request**
 
-        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list.html>`_
-        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist.html>`_
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
         - **TokenId** (str) - (Required) 令牌ID
         - **AllowedBuckets** (list) - 令牌允许操作的bucket
-        - **AllowedOps** (list) - 令牌允许执行的操作，[ TOKEN_ALLOW_NONE , TOKEN_ALLOW_READ , TOKEN_ALLOW_WRITE , TOKEN_ALLOW_DELETE , TOKEN_ALLOW_LIST, TOKEN_ALLOW_IOP , TOKEN_ALLOW_DP ]
+        - **AllowedOps** (list) - 令牌允许执行的操作，[ TOKEN_ALLOW_NONE , TOKEN_ALLOW_READ , TOKEN_ALLOW_WRITE , TOKEN_ALLOW_DELETE , TOKEN_ALLOW_LIST, TOKEN_ALLOW_IOP , TOKEN_ALLOW_DP ，TOKEN_DENY_UPDATE]
         - **AllowedPrefixes** (list) - 令牌允许操作的key前缀
+        - **BlackIPList** (list) - 令牌黑名单，支持ipv4，ipv6格式。
         - **ExpireTime** (int) - 令牌的超时时间点（时间戳）;注意：过期时间不能超过 4102416000
+        - **FakeRegion** (str) - bucket的可用区
         - **TokenName** (str) - 令牌名称
+        - **WhiteIPList** (list) - 令牌黑名单，支持ipv4，ipv6格式。
 
         **Response**
 
