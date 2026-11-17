@@ -316,6 +316,9 @@ class DeleteUDiskRequestSchema(schema.RequestSchema):
     """DeleteUDisk - 删除UDisk"""
 
     fields = {
+        "DeleteSnapshotService": fields.Str(
+            required=False, dump_to="DeleteSnapshotService"
+        ),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "UDiskId": fields.Str(required=True, dump_to="UDiskId"),
@@ -340,6 +343,7 @@ class DeleteUDiskSnapshotRequestSchema(schema.RequestSchema):
     """DeleteUDiskSnapshot - 删除Snapshot"""
 
     fields = {
+        "BindImage": fields.Int(required=False, dump_to="BindImage"),
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Region": fields.Str(required=True, dump_to="Region"),
         "SnapshotId": fields.Str(required=False, dump_to="SnapshotId"),
