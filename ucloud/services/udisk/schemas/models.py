@@ -84,6 +84,7 @@ class UDiskSnapshotSetSchema(schema.ResponseSchema):
         "DataKey": fields.Str(required=False, load_from="DataKey"),
         "DiskType": fields.Int(required=True, load_from="DiskType"),
         "ExpiredTime": fields.Int(required=False, load_from="ExpiredTime"),
+        "ImageId": fields.Str(required=False, load_from="ImageId"),
         "IsUDiskAvailable": fields.Bool(
             required=False, load_from="IsUDiskAvailable"
         ),
