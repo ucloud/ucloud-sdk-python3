@@ -8,6 +8,62 @@ from ucloud.services.udbproxy.schemas import models
 
 
 """
+API: DescribeUDBProxy
+
+获取UDB代理服务详细信息
+"""
+
+
+class DescribeUDBProxyRequestSchema(schema.RequestSchema):
+    """DescribeUDBProxy - 获取UDB代理服务详细信息"""
+
+    fields = {
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "UDBProxyID": fields.Str(required=True, dump_to="UDBProxyID"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class DescribeUDBProxyResponseSchema(schema.ResponseSchema):
+    """DescribeUDBProxy - 获取UDB代理服务详细信息"""
+
+    fields = {
+        "CPUCores": fields.Int(required=True, load_from="CPUCores"),
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "DelayThreshold": fields.Int(required=True, load_from="DelayThreshold"),
+        "EnableTransSplit": fields.Int(
+            required=False, load_from="EnableTransSplit"
+        ),
+        "InstanceVersion": fields.Str(
+            required=False, load_from="InstanceVersion"
+        ),
+        "MaxConnection": fields.Int(required=True, load_from="MaxConnection"),
+        "Memory": fields.Int(required=True, load_from="Memory"),
+        "ModifyTime": fields.Int(required=True, load_from="ModifyTime"),
+        "Name": fields.Str(required=True, load_from="Name"),
+        "NodeCount": fields.Int(required=True, load_from="NodeCount"),
+        "Nodes": fields.List(
+            models.NodeSchema(), required=True, load_from="Nodes"
+        ),
+        "PrivateDomainInfo": models.PrivateDomainInfoSchema(),
+        "ReadWeightMode": fields.Int(required=True, load_from="ReadWeightMode"),
+        "SQLLimitCount": fields.Int(required=False, load_from="SQLLimitCount"),
+        "SQLRouterCount": fields.Int(
+            required=False, load_from="SQLRouterCount"
+        ),
+        "State": fields.Str(required=True, load_from="State"),
+        "UDBProxyID": fields.Str(required=True, load_from="UDBProxyID"),
+        "UDBProxyIP": fields.Str(required=True, load_from="UDBProxyIP"),
+        "UDBProxyPort": fields.Int(required=True, load_from="UDBProxyPort"),
+        "UDBReplicas": fields.List(
+            models.ReplicaSchema(), required=True, load_from="UDBReplicas"
+        ),
+        "ZoneId": fields.Int(required=True, load_from="ZoneId"),
+    }
+
+
+"""
 API: ListUDBProxyClient
 
 查询代理客户端连接IP信息(实时）
@@ -35,4 +91,35 @@ class ListUDBProxyClientResponseSchema(schema.ResponseSchema):
             load_from="NodeClientInfos",
         ),
         "UDBProxyID": fields.Str(required=True, load_from="UDBProxyID"),
+    }
+
+
+"""
+API: ListUDBProxyInstanceByDB
+
+查询DB启用代理数据
+"""
+
+
+class ListUDBProxyInstanceByDBRequestSchema(schema.RequestSchema):
+    """ListUDBProxyInstanceByDB - 查询DB启用代理数据"""
+
+    fields = {
+        "DBID": fields.Str(required=True, dump_to="DBID"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class ListUDBProxyInstanceByDBResponseSchema(schema.ResponseSchema):
+    """ListUDBProxyInstanceByDB - 查询DB启用代理数据"""
+
+    fields = {
+        "Message": fields.Str(required=False, load_from="Message"),
+        "UDBProxyBaseItems": fields.List(
+            models.UDBProxyBaseItemSchema(),
+            required=True,
+            load_from="UDBProxyBaseItems",
+        ),
     }

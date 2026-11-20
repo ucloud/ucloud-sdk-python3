@@ -835,6 +835,20 @@ class UDBClient(Client):
 
         **Response Model**
 
+        **MongoDBShardedClusterSet**
+        - **CreateTime** (int) -
+        - **DBId** (str) -
+        - **DBTypeId** (str) -
+        - **MongosCount** (int) -
+        - **Name** (str) -
+        - **ShardsrvCount** (int) -
+        - **SubnetId** (str) -
+        - **Tag** (str) -
+        - **VPCId** (str) -
+        - **VirtualIPs** (list) -
+        - **Zone** (str) -
+
+
         **UFileDataSet**
         - **Bucket** (str) -
         - **TokenID** (str) -
@@ -939,20 +953,6 @@ class UDBClient(Client):
         - **VPCId** (str) -
         - **VirtualIP** (str) -
         - **VirtualIPMac** (str) -
-        - **Zone** (str) -
-
-
-        **MongoDBShardedClusterSet**
-        - **CreateTime** (int) -
-        - **DBId** (str) -
-        - **DBTypeId** (str) -
-        - **MongosCount** (int) -
-        - **Name** (str) -
-        - **ShardsrvCount** (int) -
-        - **SubnetId** (str) -
-        - **Tag** (str) -
-        - **VPCId** (str) -
-        - **VirtualIPs** (list) -
         - **Zone** (str) -
 
 
@@ -1224,11 +1224,6 @@ class UDBClient(Client):
 
         **Response Model**
 
-        **UFileDataSet**
-        - **Bucket** (str) - bucket名称
-        - **TokenID** (str) - Ufile的令牌tokenid
-
-
         **UDBSlaveInstanceSet**
         - **AdminUser** (str) - 管理员帐户名，默认root
         - **BackupBeginTime** (int) - 备份策略，不可修改，开始时间，单位小时计，默认3点
@@ -1272,6 +1267,11 @@ class UDBClient(Client):
         - **VirtualIP** (str) - DB实例虚ip
         - **VirtualIPMac** (str) - DB实例虚ip的mac地址
         - **Zone** (str) - 可用区
+
+
+        **UFileDataSet**
+        - **Bucket** (str) - bucket名称
+        - **TokenID** (str) - Ufile的令牌tokenid
 
 
         **UDBInstanceSet**
@@ -1975,6 +1975,56 @@ class UDBClient(Client):
         return apis.FetchUDBInstanceEarliestRecoverTimeResponseSchema().loads(
             resp
         )
+
+    def get_udb_access_info(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """GetUDBAccessInfo - 查询 UDB 实例的内网与外网访问信息，包含外网地址端口、带宽、白名单，以及内网 VPC、子网、内网 IP、内网域名与端口1
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **DBId** (str) - (Required) 实例ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **ExternalInfo** (list) - 见 **ExternalInfo** 模型定义
+        - **Message** (str) - 错误信息
+        - **PrivateInfo** (list) - 见 **PrivateInfo** 模型定义
+
+        **Response Model**
+
+        **PrivateInfo**
+        - **PrivateDomain** (str) - 实例的内网域名；未开通内网域名时为空字符串
+        - **PrivateDomainStatus** (str) - 实例内网服务端口
+        - **PrivateIP** (str) - 实例内网服务地址（VIP）
+        - **PrivatePort** (int) - 内网域名状态，字符串枚举，取值与 Status 同源；未开通内网域名时返回NetworkConnectionDisabled
+        - **SubnetId** (str) - 实例内网所在的子网 ID
+        - **VPCId** (str) - 实例内网所在的 VPC ID
+
+
+        **ExternalInfo**
+        - **Bindwidth** (int) - 外网带宽，单位 Mbps，取自 EIP 带宽；无 EIP 时为 0
+        - **ExternalAddress** (str) - 外网访问地址；未开通外网访问时为空字符串
+        - **ExternalPort** (int) - 外网访问端口；未开通时为 0
+        - **Status** (str) - 外网访问状态，字符串枚举，取值见下表
+        - **Support** (int) - 实例是否支持外网访问能力：1 支持；当前实现恒返回 1
+        - **WhiteList** (str) - 外网访问白名单，多个 IP 以逗号分隔，取自 NLB 白名单
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.GetUDBAccessInfoRequestSchema().dumps(d)
+
+        resp = self.invoke("GetUDBAccessInfo", d, **kwargs)
+        return apis.GetUDBAccessInfoResponseSchema().loads(resp)
 
     def get_udb_client_conn_num(
         self, req: typing.Optional[dict] = None, **kwargs
