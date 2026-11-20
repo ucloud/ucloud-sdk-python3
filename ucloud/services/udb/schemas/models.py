@@ -3,15 +3,6 @@
 from ucloud.core.typesystem import schema, fields
 
 
-class UFileDataSetSchema(schema.ResponseSchema):
-    """UFileDataSet - 增加ufile的描述"""
-
-    fields = {
-        "Bucket": fields.Str(required=False, load_from="Bucket"),
-        "TokenID": fields.Str(required=False, load_from="TokenID"),
-    }
-
-
 class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
     """UDBSlaveInstanceSet - DescribeUDBSlaveInstance"""
 
@@ -79,6 +70,15 @@ class UDBSlaveInstanceSetSchema(schema.ResponseSchema):
         "VirtualIP": fields.Str(required=False, load_from="VirtualIP"),
         "VirtualIPMac": fields.Str(required=False, load_from="VirtualIPMac"),
         "Zone": fields.Str(required=False, load_from="Zone"),
+    }
+
+
+class UFileDataSetSchema(schema.ResponseSchema):
+    """UFileDataSet - 增加ufile的描述"""
+
+    fields = {
+        "Bucket": fields.Str(required=False, load_from="Bucket"),
+        "TokenID": fields.Str(required=False, load_from="TokenID"),
     }
 
 
@@ -305,6 +305,36 @@ class UDBTypeSetSchema(schema.ResponseSchema):
     fields = {
         "DBSubVersion": fields.Str(required=False, load_from="DBSubVersion"),
         "DBTypeId": fields.Str(required=False, load_from="DBTypeId"),
+    }
+
+
+class PrivateInfoSchema(schema.ResponseSchema):
+    """PrivateInfo - 实例内网访问信息，含 VPC、子网、内网 IP、内网域名与端口"""
+
+    fields = {
+        "PrivateDomain": fields.Str(required=False, load_from="PrivateDomain"),
+        "PrivateDomainStatus": fields.Str(
+            required=False, load_from="PrivateDomainStatus"
+        ),
+        "PrivateIP": fields.Str(required=False, load_from="PrivateIP"),
+        "PrivatePort": fields.Int(required=False, load_from="PrivatePort"),
+        "SubnetId": fields.Str(required=False, load_from="SubnetId"),
+        "VPCId": fields.Str(required=False, load_from="VPCId"),
+    }
+
+
+class ExternalInfoSchema(schema.ResponseSchema):
+    """ExternalInfo - 实例外网访问信息，含状态、地址、端口、带宽与白名单"""
+
+    fields = {
+        "Bindwidth": fields.Int(required=False, load_from="Bindwidth"),
+        "ExternalAddress": fields.Str(
+            required=False, load_from="ExternalAddress"
+        ),
+        "ExternalPort": fields.Int(required=False, load_from="ExternalPort"),
+        "Status": fields.Str(required=False, load_from="Status"),
+        "Support": fields.Int(required=False, load_from="Support"),
+        "WhiteList": fields.Str(required=False, load_from="WhiteList"),
     }
 
 

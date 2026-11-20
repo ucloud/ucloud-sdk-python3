@@ -15,6 +15,80 @@ class UDBProxyClient(Client):
             config, transport, middleware, logger
         )
 
+    def describe_udb_proxy(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """DescribeUDBProxy - 获取UDB代理服务详细信息
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **UDBProxyID** (str) - (Required) 读写分离ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **CPUCores** (int) - cpu核数
+        - **CreateTime** (int) - 创建时间
+        - **DelayThreshold** (int) - 延迟阈值(单位s)
+        - **EnableTransSplit** (int) - 是否启用事务拆分(1：启用事务拆分，2:关闭事务拆分)
+        - **InstanceVersion** (str) - 实例版本
+        - **MaxConnection** (int) - UDB代理服务最大连接数
+        - **Memory** (int) - 内存
+        - **ModifyTime** (int) - 修改时间
+        - **Name** (str) - 名称
+        - **NodeCount** (int) - 集群实例节点数
+        - **Nodes** (list) - 见 **Node** 模型定义
+        - **PrivateDomainInfo** (dict) - 见 **PrivateDomainInfo** 模型定义
+        - **ReadWeightMode** (int) - 读权重模式:1-主节点模式;2-节点均衡模式;3-从节点均衡(排除主节点);5-用户自定义模式
+        - **SQLLimitCount** (int) - sql限流数量
+        - **SQLRouterCount** (int) - sql路由数量
+        - **State** (str) - 状态
+        - **UDBProxyID** (str) - UDBProxy实例ID
+        - **UDBProxyIP** (str) - UDB代理服务IP
+        - **UDBProxyPort** (int) - UDB代理服务端口
+        - **UDBReplicas** (list) - 见 **Replica** 模型定义
+        - **ZoneId** (int) - 可用区id
+
+        **Response Model**
+
+        **Replica**
+        - **CreateTime** (int) - 创建时间
+        - **ID** (str) - 数据库ID
+        - **IP** (str) - 数据库IP
+        - **JoinState** (bool) - 是否加入代理服务(true:加入，false:未加入)
+        - **ModifyTime** (int) - 修改时间
+        - **Name** (str) - 数据库名称
+        - **Port** (int) - 数据库服务端口
+        - **ReadWeight** (int) - 读权重
+        - **Role** (str) - 角色[master-主库，slave-从库]
+        - **State** (str) - 状态
+
+
+        **PrivateDomainInfo**
+        - **EnableConnectToDB** (int) - 内网域名指向的数据源：1 指向主库（可直连数据库），2 指向代理（经 UDBProxy访问）；未开通时返回 2
+        - **EnablePrivateDomain** (int) - 内网域名是否已开启：1 已开启，2 已关闭；未开通内网域名时返回 2
+        - **PrivateDomain** (str) - 实例的内网域名地址，形如 xxx.ucloudcs.com；未开通内网域名时为空字符串
+
+
+        **Node**
+        - **ID** (str) - 服务节点id
+        - **State** (str) - 服务节点状态
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.DescribeUDBProxyRequestSchema().dumps(d)
+
+        resp = self.invoke("DescribeUDBProxy", d, **kwargs)
+        return apis.DescribeUDBProxyResponseSchema().loads(resp)
+
     def list_udb_proxy_client(
         self, req: typing.Optional[dict] = None, **kwargs
     ) -> dict:
@@ -34,14 +108,8 @@ class UDBProxyClient(Client):
 
         **Response Model**
 
-        **NodeClientInfo**
-        - **ID** (str) - 代理节点ID
-        - **IP** (str) - 代理节点IP
-        - **Records** (list) - 见 **ProxyProcesslist** 模型定义
-
-
         **ProxyProcesslist**
-        - **ClientHost** (str) - 代理连接DB地址
+        - **ClientHost** (str) - 客户端来源IP地址
         - **Command** (str) - 显示当前连接的执行的命令
         - **DB** (str) - 当前执行的命令是在哪一个数据库上。如果没有指定数据库，则该值为 NULL
         - **DBID** (str) - 数据库资源ID
@@ -52,6 +120,12 @@ class UDBProxyClient(Client):
         - **State** (str) - 线程的状态，和 Command 对应
         - **Time** (int) - 表示该线程处于当前状态的时间
         - **User** (str) - 启动这个线程的用户
+
+
+        **NodeClientInfo**
+        - **ID** (str) - 代理节点ID
+        - **IP** (str) - 代理节点IP
+        - **Records** (list) - 见 **ProxyProcesslist** 模型定义
 
 
         """
@@ -65,3 +139,56 @@ class UDBProxyClient(Client):
 
         resp = self.invoke("ListUDBProxyClient", d, **kwargs)
         return apis.ListUDBProxyClientResponseSchema().loads(resp)
+
+    def list_udb_proxy_instance_by_db(
+        self, req: typing.Optional[dict] = None, **kwargs
+    ) -> dict:
+        """ListUDBProxyInstanceByDB - 查询DB启用代理数据
+
+        **Request**
+
+        - **ProjectId** (str) - (Config) 项目ID。不填写为默认项目，子帐号必须填写。 请参考 `GetProjectList接口 <https://docs.ucloud.cn/api/summary/get_project_list>`_
+        - **Region** (str) - (Config) 地域。 参见  `地域和可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+        - **DBID** (str) - (Required) 数据库DB资源ID
+        - **Zone** (str) - (Required) 可用区。参见  `可用区列表 <https://docs.ucloud.cn/api/summary/regionlist>`_
+
+        **Response**
+
+        - **Message** (str) - 错误码
+        - **UDBProxyBaseItems** (list) - 见 **UDBProxyBaseItem** 模型定义
+
+        **Response Model**
+
+        **BaseDBData**
+        - **ID** (str) - 数据库ID
+        - **Name** (str) - 数据库名称
+        - **ReadWeight** (int) - 权重
+
+
+        **UDBProxyBaseItem**
+        - **BaseDBDataArr** (list) - 见 **BaseDBData** 模型定义
+        - **CPUCores** (int) - 单个代理节点CPU核数
+        - **CreateTime** (int) - 创建时间
+        - **ID** (str) - 代理ID
+        - **IP** (str) - 代理IP
+        - **InstanceVersion** (str) - 实例版本
+        - **Memory** (int) - 单个代理内存
+        - **Name** (str) - 代理名称
+        - **NodeCount** (int) - 代理节点数
+        - **Port** (int) - 代理端口
+        - **ReadWeightMode** (int) - 读权重模式:1-主节点模式;2-节点均衡模式;3-从节点均衡(排除主节点);5-用户自定义模式
+        - **State** (str) - 状态
+        - **ZoneID** (int) - 可用区ID
+
+
+        """
+        # build request
+        d = {
+            "ProjectId": self.config.project_id,
+            "Region": self.config.region,
+        }
+        req and d.update(req)
+        d = apis.ListUDBProxyInstanceByDBRequestSchema().dumps(d)
+
+        resp = self.invoke("ListUDBProxyInstanceByDB", d, **kwargs)
+        return apis.ListUDBProxyInstanceByDBResponseSchema().loads(resp)

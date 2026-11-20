@@ -1621,6 +1621,38 @@ class FetchUDBInstanceEarliestRecoverTimeResponseSchema(schema.ResponseSchema):
 
 
 """
+API: GetUDBAccessInfo
+
+查询 UDB 实例的内网与外网访问信息，包含外网地址端口、带宽、白名单，以及内网 VPC、子网、内网 IP、内网域名与端口1
+"""
+
+
+class GetUDBAccessInfoRequestSchema(schema.RequestSchema):
+    """GetUDBAccessInfo - 查询 UDB 实例的内网与外网访问信息，包含外网地址端口、带宽、白名单，以及内网 VPC、子网、内网 IP、内网域名与端口1"""
+
+    fields = {
+        "DBId": fields.Str(required=True, dump_to="DBId"),
+        "ProjectId": fields.Str(required=True, dump_to="ProjectId"),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class GetUDBAccessInfoResponseSchema(schema.ResponseSchema):
+    """GetUDBAccessInfo - 查询 UDB 实例的内网与外网访问信息，包含外网地址端口、带宽、白名单，以及内网 VPC、子网、内网 IP、内网域名与端口1"""
+
+    fields = {
+        "ExternalInfo": fields.List(
+            models.ExternalInfoSchema(), required=True, load_from="ExternalInfo"
+        ),
+        "Message": fields.Str(required=True, load_from="Message"),
+        "PrivateInfo": fields.List(
+            models.PrivateInfoSchema(), required=True, load_from="PrivateInfo"
+        ),
+    }
+
+
+"""
 API: GetUDBClientConnNum
 
 输入一个DBID，能够获取客户端来源IP以及对应的连接数

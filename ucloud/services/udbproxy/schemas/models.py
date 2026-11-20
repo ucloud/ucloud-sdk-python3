@@ -3,21 +3,61 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class NodeSchema(schema.ResponseSchema):
+    """Node - UDB代理服务节点数据"""
+
+    fields = {
+        "ID": fields.Str(required=True, load_from="ID"),
+        "State": fields.Str(required=True, load_from="State"),
+    }
+
+
+class ReplicaSchema(schema.ResponseSchema):
+    """Replica - UDB数据"""
+
+    fields = {
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "ID": fields.Str(required=True, load_from="ID"),
+        "IP": fields.Str(required=True, load_from="IP"),
+        "JoinState": fields.Bool(required=True, load_from="JoinState"),
+        "ModifyTime": fields.Int(required=True, load_from="ModifyTime"),
+        "Name": fields.Str(required=True, load_from="Name"),
+        "Port": fields.Int(required=True, load_from="Port"),
+        "ReadWeight": fields.Int(required=True, load_from="ReadWeight"),
+        "Role": fields.Str(required=True, load_from="Role"),
+        "State": fields.Str(required=True, load_from="State"),
+    }
+
+
+class PrivateDomainInfoSchema(schema.ResponseSchema):
+    """PrivateDomainInfo - 代理实例的内网域名及其开关状态，含域名地址、域名开关、域名数据源指向"""
+
+    fields = {
+        "EnableConnectToDB": fields.Int(
+            required=False, load_from="EnableConnectToDB"
+        ),
+        "EnablePrivateDomain": fields.Int(
+            required=False, load_from="EnablePrivateDomain"
+        ),
+        "PrivateDomain": fields.Str(required=False, load_from="PrivateDomain"),
+    }
+
+
 class ProxyProcesslistSchema(schema.ResponseSchema):
     """ProxyProcesslist - 连接代理信息"""
 
     fields = {
-        "ClientHost": fields.Str(required=True, load_from="ClientHost"),
-        "Command": fields.Str(required=True, load_from="Command"),
-        "DB": fields.Str(required=True, load_from="DB"),
-        "DBID": fields.Str(required=True, load_from="DBID"),
-        "Host": fields.Str(required=True, load_from="Host"),
-        "ID": fields.Int(required=True, load_from="ID"),
-        "Info": fields.Str(required=True, load_from="Info"),
-        "Role": fields.Str(required=True, load_from="Role"),
-        "State": fields.Str(required=True, load_from="State"),
-        "Time": fields.Int(required=True, load_from="Time"),
-        "User": fields.Str(required=True, load_from="User"),
+        "ClientHost": fields.Str(required=False, load_from="ClientHost"),
+        "Command": fields.Str(required=False, load_from="Command"),
+        "DB": fields.Str(required=False, load_from="DB"),
+        "DBID": fields.Str(required=False, load_from="DBID"),
+        "Host": fields.Str(required=False, load_from="Host"),
+        "ID": fields.Int(required=False, load_from="ID"),
+        "Info": fields.Str(required=False, load_from="Info"),
+        "Role": fields.Str(required=False, load_from="Role"),
+        "State": fields.Str(required=False, load_from="State"),
+        "Time": fields.Int(required=False, load_from="Time"),
+        "User": fields.Str(required=False, load_from="User"),
     }
 
 
@@ -28,4 +68,36 @@ class NodeClientInfoSchema(schema.ResponseSchema):
         "ID": fields.Str(required=False, load_from="ID"),
         "IP": fields.Str(required=False, load_from="IP"),
         "Records": fields.List(ProxyProcesslistSchema()),
+    }
+
+
+class BaseDBDataSchema(schema.ResponseSchema):
+    """BaseDBData - 加入代理DB基础信息"""
+
+    fields = {
+        "ID": fields.Str(required=False, load_from="ID"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "ReadWeight": fields.Int(required=False, load_from="ReadWeight"),
+    }
+
+
+class UDBProxyBaseItemSchema(schema.ResponseSchema):
+    """UDBProxyBaseItem - 代理列表基础信息"""
+
+    fields = {
+        "BaseDBDataArr": fields.List(BaseDBDataSchema()),
+        "CPUCores": fields.Int(required=False, load_from="CPUCores"),
+        "CreateTime": fields.Int(required=True, load_from="CreateTime"),
+        "ID": fields.Str(required=False, load_from="ID"),
+        "IP": fields.Str(required=False, load_from="IP"),
+        "InstanceVersion": fields.Str(
+            required=False, load_from="InstanceVersion"
+        ),
+        "Memory": fields.Int(required=False, load_from="Memory"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "NodeCount": fields.Int(required=False, load_from="NodeCount"),
+        "Port": fields.Int(required=False, load_from="Port"),
+        "ReadWeightMode": fields.Int(required=True, load_from="ReadWeightMode"),
+        "State": fields.Str(required=False, load_from="State"),
+        "ZoneID": fields.Int(required=False, load_from="ZoneID"),
     }
