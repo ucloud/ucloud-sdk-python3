@@ -3,6 +3,17 @@
 from ucloud.core.typesystem import schema, fields
 
 
+class BatchCreateUMInferAPIKeySchema(schema.ResponseSchema):
+    """BatchCreateUMInferAPIKey - 批量创建APIKey"""
+
+    fields = {
+        "APIKey": fields.Str(required=False, load_from="APIKey"),
+        "KeyId": fields.Str(required=False, load_from="KeyId"),
+        "Name": fields.Str(required=False, load_from="Name"),
+        "Success": fields.Bool(required=False, load_from="Success"),
+    }
+
+
 class APIKeySchema(schema.ResponseSchema):
     """APIKey - apikey"""
 
@@ -81,6 +92,35 @@ class FilterOptionIntegerSchema(schema.ResponseSchema):
     }
 
 
+class PriceRateSchema(schema.ResponseSchema):
+    """PriceRate - 该档位下的收费列表（有序数组）"""
+
+    fields = {
+        "ChargeItem": fields.Str(required=False, load_from="ChargeItem"),
+        "ChargeItemDescription": fields.Str(
+            required=False, load_from="ChargeItemDescription"
+        ),
+        "ChargeItemDescriptionEn": fields.Str(
+            required=True, load_from="ChargeItemDescriptionEn"
+        ),
+        "Currency": fields.Str(required=True, load_from="Currency"),
+        "Price": fields.Str(required=False, load_from="Price"),
+        "Unit": fields.Str(required=True, load_from="Unit"),
+        "UnitEn": fields.Str(required=True, load_from="UnitEn"),
+    }
+
+
+class PriceTierSchema(schema.ResponseSchema):
+    """PriceTier - 价格阶梯"""
+
+    fields = {
+        "Condition": fields.Str(required=False, load_from="Condition"),
+        "Description": fields.Str(required=False, load_from="Description"),
+        "DescriptionEn": fields.Str(required=True, load_from="DescriptionEn"),
+        "Rates": fields.List(PriceRateSchema()),
+    }
+
+
 class ModelTypeMapSchema(schema.ResponseSchema):
     """ModelTypeMap - ModelTypeMap"""
 
@@ -94,33 +134,6 @@ class ModelTypeMapSchema(schema.ResponseSchema):
         ),
         "TextToImage": fields.Bool(required=False, load_from="TextToImage"),
         "TextToVideo": fields.Bool(required=False, load_from="TextToVideo"),
-    }
-
-
-class InferenceRegionInfoSchema(schema.ResponseSchema):
-    """InferenceRegionInfo - 地域推理模型信息"""
-
-    fields = {
-        "ModelId": fields.Str(required=False, load_from="ModelId"),
-        "RegionCode": fields.Str(required=False, load_from="RegionCode"),
-        "RegionName": fields.Str(required=False, load_from="RegionName"),
-        "RegionNameEn": fields.Str(required=False, load_from="RegionNameEn"),
-        "SquareModelId": fields.Str(required=False, load_from="SquareModelId"),
-        "Status": fields.Str(required=False, load_from="Status"),
-    }
-
-
-class PricingSchema(schema.ResponseSchema):
-    """Pricing - 定价策略"""
-
-    fields = {
-        "Completion": fields.Float(required=False, load_from="Completion"),
-        "Currency": fields.Str(required=False, load_from="Currency"),
-        "Image": fields.Float(required=False, load_from="Image"),
-        "Prompt": fields.Float(required=False, load_from="Prompt"),
-        "Unit": fields.Str(required=False, load_from="Unit"),
-        "UnitEn": fields.Str(required=False, load_from="UnitEn"),
-        "Video": fields.Str(required=False, load_from="Video"),
     }
 
 
@@ -158,32 +171,30 @@ class ApiProtocolsSchema(schema.ResponseSchema):
     }
 
 
-class PriceRateSchema(schema.ResponseSchema):
-    """PriceRate - 该档位下的收费列表（有序数组）"""
+class InferenceRegionInfoSchema(schema.ResponseSchema):
+    """InferenceRegionInfo - 地域推理模型信息"""
 
     fields = {
-        "ChargeItem": fields.Str(required=False, load_from="ChargeItem"),
-        "ChargeItemDescription": fields.Str(
-            required=False, load_from="ChargeItemDescription"
-        ),
-        "ChargeItemDescriptionEn": fields.Str(
-            required=True, load_from="ChargeItemDescriptionEn"
-        ),
-        "Currency": fields.Str(required=True, load_from="Currency"),
-        "Price": fields.Str(required=False, load_from="Price"),
-        "Unit": fields.Str(required=True, load_from="Unit"),
-        "UnitEn": fields.Str(required=True, load_from="UnitEn"),
+        "ModelId": fields.Str(required=False, load_from="ModelId"),
+        "RegionCode": fields.Str(required=False, load_from="RegionCode"),
+        "RegionName": fields.Str(required=False, load_from="RegionName"),
+        "RegionNameEn": fields.Str(required=False, load_from="RegionNameEn"),
+        "SquareModelId": fields.Str(required=False, load_from="SquareModelId"),
+        "Status": fields.Str(required=False, load_from="Status"),
     }
 
 
-class PriceTierSchema(schema.ResponseSchema):
-    """PriceTier - 价格阶梯"""
+class PricingSchema(schema.ResponseSchema):
+    """Pricing - 定价策略"""
 
     fields = {
-        "Condition": fields.Str(required=False, load_from="Condition"),
-        "Description": fields.Str(required=False, load_from="Description"),
-        "DescriptionEn": fields.Str(required=True, load_from="DescriptionEn"),
-        "Rates": fields.List(PriceRateSchema()),
+        "Completion": fields.Float(required=False, load_from="Completion"),
+        "Currency": fields.Str(required=False, load_from="Currency"),
+        "Image": fields.Float(required=False, load_from="Image"),
+        "Prompt": fields.Float(required=False, load_from="Prompt"),
+        "Unit": fields.Str(required=False, load_from="Unit"),
+        "UnitEn": fields.Str(required=False, load_from="UnitEn"),
+        "Video": fields.Str(required=False, load_from="Video"),
     }
 
 

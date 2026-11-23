@@ -53,14 +53,6 @@ class CheckUHostResourceCapacityParamDisksCustomBackupSchema(
     }
 
 
-class CheckUHostResourceCapacityParamFeaturesSchema(schema.RequestSchema):
-    """CheckUHostResourceCapacityParamFeatures -"""
-
-    fields = {
-        "UNI": fields.Bool(required=False, dump_to="UNI"),
-    }
-
-
 class CheckUHostResourceCapacityParamDisksSchema(schema.RequestSchema):
     """CheckUHostResourceCapacityParamDisks -"""
 
@@ -75,6 +67,14 @@ class CheckUHostResourceCapacityParamDisksSchema(schema.RequestSchema):
         "Size": fields.Int(required=True, dump_to="Size"),
         "SnapshotId": fields.Str(required=False, dump_to="SnapshotId"),
         "Type": fields.Str(required=True, dump_to="Type"),
+    }
+
+
+class CheckUHostResourceCapacityParamFeaturesSchema(schema.RequestSchema):
+    """CheckUHostResourceCapacityParamFeatures -"""
+
+    fields = {
+        "UNI": fields.Bool(required=False, dump_to="UNI"),
     }
 
 
@@ -230,32 +230,14 @@ API: CreateUHostInstance
 """
 
 
-class CreateUHostInstanceParamDisksCustomBackupSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamDisksCustomBackup -"""
+class CreateUHostInstanceParamNetworkInterfaceIPv6Schema(schema.RequestSchema):
+    """CreateUHostInstanceParamNetworkInterfaceIPv6 -"""
 
     fields = {
-        "Day": fields.Str(required=False, dump_to="Day"),
-        "Hour": fields.Str(required=False, dump_to="Hour"),
-        "Journal": fields.Str(required=False, dump_to="Journal"),
-    }
-
-
-class CreateUHostInstanceParamDisksSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamDisks -"""
-
-    fields = {
-        "BackupMode": fields.Str(required=False, dump_to="BackupMode"),
-        "BackupType": fields.Str(required=False, dump_to="BackupType"),
-        "CouponId": fields.Str(required=False, dump_to="CouponId"),
-        "CustomBackup": CreateUHostInstanceParamDisksCustomBackupSchema(
-            required=False, dump_to="CustomBackup"
-        ),
-        "Encrypted": fields.Bool(required=False, dump_to="Encrypted"),
-        "IsBoot": fields.Str(required=True, dump_to="IsBoot"),
-        "KmsKeyId": fields.Str(required=False, dump_to="KmsKeyId"),
-        "Size": fields.Int(required=True, dump_to="Size"),
-        "SnapshotId": fields.Str(required=False, dump_to="SnapshotId"),
-        "Type": fields.Str(required=True, dump_to="Type"),
+        "Address": fields.Str(required=False, dump_to="Address"),
+        "ShareBandwidthId": fields.Str(
+            required=False, dump_to="ShareBandwidthId"
+        ),  # Deprecated, will be removed at 1.0
     }
 
 
@@ -268,6 +250,22 @@ class CreateUHostInstanceParamNetworkInterfaceEIPGlobalSSHSchema(
         "Area": fields.Str(required=False, dump_to="Area"),
         "AreaCode": fields.Str(required=False, dump_to="AreaCode"),
         "Port": fields.Int(required=False, dump_to="Port"),
+    }
+
+
+class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamVolumes -"""
+
+    fields = {}
+
+
+class CreateUHostInstanceParamDisksCustomBackupSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamDisksCustomBackup -"""
+
+    fields = {
+        "Day": fields.Str(required=False, dump_to="Day"),
+        "Hour": fields.Str(required=False, dump_to="Hour"),
+        "Journal": fields.Str(required=False, dump_to="Journal"),
     }
 
 
@@ -286,26 +284,6 @@ class CreateUHostInstanceParamNetworkInterfaceEIPSchema(schema.RequestSchema):
         "ShareBandwidthId": fields.Str(
             required=False, dump_to="ShareBandwidthId"
         ),
-    }
-
-
-class CreateUHostInstanceParamLabelsSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamLabels -"""
-
-    fields = {
-        "Key": fields.Str(required=False, dump_to="Key"),
-        "Value": fields.Str(required=False, dump_to="Value"),
-    }
-
-
-class CreateUHostInstanceParamNetworkInterfaceIPv6Schema(schema.RequestSchema):
-    """CreateUHostInstanceParamNetworkInterfaceIPv6 -"""
-
-    fields = {
-        "Address": fields.Str(required=False, dump_to="Address"),
-        "ShareBandwidthId": fields.Str(
-            required=False, dump_to="ShareBandwidthId"
-        ),  # Deprecated, will be removed at 1.0
     }
 
 
@@ -331,10 +309,23 @@ class CreateUHostInstanceParamFeaturesSchema(schema.RequestSchema):
     }
 
 
-class CreateUHostInstanceParamVolumesSchema(schema.RequestSchema):
-    """CreateUHostInstanceParamVolumes -"""
+class CreateUHostInstanceParamDisksSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamDisks -"""
 
-    fields = {}
+    fields = {
+        "BackupMode": fields.Str(required=False, dump_to="BackupMode"),
+        "BackupType": fields.Str(required=False, dump_to="BackupType"),
+        "CouponId": fields.Str(required=False, dump_to="CouponId"),
+        "CustomBackup": CreateUHostInstanceParamDisksCustomBackupSchema(
+            required=False, dump_to="CustomBackup"
+        ),
+        "Encrypted": fields.Bool(required=False, dump_to="Encrypted"),
+        "IsBoot": fields.Str(required=True, dump_to="IsBoot"),
+        "KmsKeyId": fields.Str(required=False, dump_to="KmsKeyId"),
+        "Size": fields.Int(required=True, dump_to="Size"),
+        "SnapshotId": fields.Str(required=False, dump_to="SnapshotId"),
+        "Type": fields.Str(required=True, dump_to="Type"),
+    }
 
 
 class CreateUHostInstanceParamSecGroupIdSchema(schema.RequestSchema):
@@ -346,6 +337,15 @@ class CreateUHostInstanceParamSecGroupIdSchema(schema.RequestSchema):
     }
 
 
+class CreateUHostInstanceParamLabelsSchema(schema.RequestSchema):
+    """CreateUHostInstanceParamLabels -"""
+
+    fields = {
+        "Key": fields.Str(required=False, dump_to="Key"),
+        "Value": fields.Str(required=False, dump_to="Value"),
+    }
+
+
 class CreateUHostInstanceRequestSchema(schema.RequestSchema):
     """CreateUHostInstance - 创建UHost实例。"""
 
@@ -353,6 +353,7 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
         "AlarmTemplateId": fields.Int(
             required=False, dump_to="AlarmTemplateId"
         ),
+        "AutoConfigUni": fields.Bool(required=False, dump_to="AutoConfigUni"),
         "AutoDataDiskInit": fields.Str(
             required=False, dump_to="AutoDataDiskInit"
         ),
@@ -360,6 +361,10 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
             required=False, dump_to="BootDiskSpace"
         ),  # Deprecated, will be removed at 1.0
         "CPU": fields.Int(required=False, dump_to="CPU"),
+        "CUDAInstaller": fields.Str(required=False, dump_to="CUDAInstaller"),
+        "CUDAVersion": fields.Str(required=False, dump_to="CUDAVersion"),
+        "CUDNNInstaller": fields.Str(required=False, dump_to="CUDNNInstaller"),
+        "CUDNNVersion": fields.Str(required=False, dump_to="CUDNNVersion"),
         "ChargeType": fields.Str(required=False, dump_to="ChargeType"),
         "CouponId": fields.Str(required=False, dump_to="CouponId"),
         "DeletionProtection": fields.Bool(
@@ -372,10 +377,17 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
             required=False, dump_to="DiskSpace"
         ),  # Deprecated, will be removed at 1.0
         "Disks": fields.List(CreateUHostInstanceParamDisksSchema()),
+        "DriverInstaller": fields.Str(
+            required=False, dump_to="DriverInstaller"
+        ),
+        "DriverVersion": fields.Str(required=False, dump_to="DriverVersion"),
         "Features": CreateUHostInstanceParamFeaturesSchema(
             required=False, dump_to="Features"
         ),
         "GPU": fields.Int(required=False, dump_to="GPU"),
+        "GpuDriverConfigId": fields.Str(
+            required=False, dump_to="GpuDriverConfigId"
+        ),
         "GpuType": fields.Str(required=False, dump_to="GpuType"),
         "HostBinding": fields.Bool(required=False, dump_to="HostBinding"),
         "HostIp": fields.Str(
@@ -392,6 +404,9 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
         "InstallAgent": fields.Str(
             required=False, dump_to="InstallAgent"
         ),  # Deprecated, will be removed at 1.0
+        "InstallGpuDriver": fields.Bool(
+            required=False, dump_to="InstallGpuDriver"
+        ),
         "IsolationGroup": fields.Str(required=False, dump_to="IsolationGroup"),
         "KeyPair": fields.Str(
             required=False, dump_to="KeyPair"
@@ -414,6 +429,7 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
         "NetworkInterface": fields.List(
             CreateUHostInstanceParamNetworkInterfaceSchema()
         ),
+        "OSName": fields.Str(required=False, dump_to="OSName"),
         "Password": fields.Base64(required=False, dump_to="Password"),
         "PrivateIp": fields.List(fields.Str()),
         "PrivateMac": fields.Str(
@@ -422,6 +438,9 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
         "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
         "Quantity": fields.Int(required=False, dump_to="Quantity"),
         "Region": fields.Str(required=True, dump_to="Region"),
+        "RequireMetadataToken": fields.Bool(
+            required=False, dump_to="RequireMetadataToken"
+        ),
         "ResourceType": fields.Str(
             required=False, dump_to="ResourceType"
         ),  # Deprecated, will be removed at 1.0
@@ -433,6 +452,9 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
             required=False, dump_to="SecurityGroupId"
         ),
         "SecurityMode": fields.Str(required=False, dump_to="SecurityMode"),
+        "SecurityReinforce": fields.Bool(
+            required=False, dump_to="SecurityReinforce"
+        ),
         "SetId": fields.Int(
             required=False, dump_to="SetId"
         ),  # Deprecated, will be removed at 1.0
@@ -448,6 +470,7 @@ class CreateUHostInstanceRequestSchema(schema.RequestSchema):
         "UDSetId": fields.Str(required=False, dump_to="UDSetId"),
         "UHostFamily": fields.Str(required=False, dump_to="UHostFamily"),
         "UHostType": fields.Str(required=False, dump_to="UHostType"),
+        "UboltAgent": fields.Bool(required=False, dump_to="UboltAgent"),
         "UserData": fields.Str(required=False, dump_to="UserData"),
         "UserDataScript": fields.Str(
             required=False, dump_to="UserDataScript"

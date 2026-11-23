@@ -8,6 +8,89 @@ from ucloud.services.uai_modelverse.schemas import models
 
 
 """
+API: BatchCreateUMInferAPIKey
+
+批量创建api key
+"""
+
+
+class BatchCreateUMInferAPIKeyRequestSchema(schema.RequestSchema):
+    """BatchCreateUMInferAPIKey - 批量创建api key"""
+
+    fields = {
+        "Count": fields.Int(required=True, dump_to="Count"),
+        "DailyLimitAmount": fields.Str(
+            required=False, dump_to="DailyLimitAmount"
+        ),
+        "DailyQuotaAlertThreshold": fields.Int(
+            required=False, dump_to="DailyQuotaAlertThreshold"
+        ),
+        "DeniedModels": fields.Str(required=False, dump_to="DeniedModels"),
+        "ExpireTime": fields.Int(required=False, dump_to="ExpireTime"),
+        "GrantAllModels": fields.Bool(required=False, dump_to="GrantAllModels"),
+        "GrantedModels": fields.Str(required=False, dump_to="GrantedModels"),
+        "IPBlacklist": fields.Str(required=False, dump_to="IPBlacklist"),
+        "IPWhitelist": fields.Str(required=False, dump_to="IPWhitelist"),
+        "InferenceLogEnabled": fields.Int(
+            required=False, dump_to="InferenceLogEnabled"
+        ),
+        "ModelAccessMode": fields.Str(
+            required=False, dump_to="ModelAccessMode"
+        ),
+        "ModelverseDisabled": fields.Int(
+            required=False, dump_to="ModelverseDisabled"
+        ),
+        "MonthlyLimitAmount": fields.Str(
+            required=False, dump_to="MonthlyLimitAmount"
+        ),
+        "MonthlyQuotaAlertThreshold": fields.Int(
+            required=False, dump_to="MonthlyQuotaAlertThreshold"
+        ),
+        "Prefix": fields.Str(required=True, dump_to="Prefix"),
+        "ProjectId": fields.Str(required=False, dump_to="ProjectId"),
+        "QuotaAlertChannels": fields.Str(
+            required=False, dump_to="QuotaAlertChannels"
+        ),
+        "QuotaAlertEmail": fields.Str(
+            required=False, dump_to="QuotaAlertEmail"
+        ),
+        "QuotaAlertEmailVerificationToken": fields.Str(
+            required=False, dump_to="QuotaAlertEmailVerificationToken"
+        ),
+        "QuotaAlertPhone": fields.Str(
+            required=False, dump_to="QuotaAlertPhone"
+        ),
+        "QuotaAlertPhoneVerificationToken": fields.Str(
+            required=False, dump_to="QuotaAlertPhoneVerificationToken"
+        ),
+        "Region": fields.Str(required=True, dump_to="Region"),
+        "SandBoxDisabled": fields.Int(
+            required=False, dump_to="SandBoxDisabled"
+        ),
+        "Start": fields.Int(required=True, dump_to="Start"),
+        "TotalLimitAmount": fields.Str(
+            required=False, dump_to="TotalLimitAmount"
+        ),
+        "TotalQuotaAlertThreshold": fields.Int(
+            required=False, dump_to="TotalQuotaAlertThreshold"
+        ),
+        "Zone": fields.Str(required=True, dump_to="Zone"),
+    }
+
+
+class BatchCreateUMInferAPIKeyResponseSchema(schema.ResponseSchema):
+    """BatchCreateUMInferAPIKey - 批量创建api key"""
+
+    fields = {
+        "Data": fields.List(
+            models.BatchCreateUMInferAPIKeySchema(),
+            required=False,
+            load_from="Data",
+        ),
+    }
+
+
+"""
 API: CreateUMInferAPIKey
 
 创建apikey
